@@ -1,7 +1,3 @@
-require('simple-auth/session');
-require('simple-auth/login_controller');
-require('simple-auth/logout_route');
-
 /**
   Simple Auth
 
@@ -26,3 +22,7 @@ SimpleAuth = Ember.Object.extend({
     }
   }
 });
+
+require('simple-auth/session');
+require('simple-auth/login_controller');
+require('simple-auth/logout_route');
