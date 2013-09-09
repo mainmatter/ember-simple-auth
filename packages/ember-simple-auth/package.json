@@ -1,0 +1,12 @@
+{
+  "name": "ember-simple-auth",
+  "summary": "A simple authentication/session implementation for Ember.js",
+  "description": "A simple implementation of authentication/session handling for Ember.js that can be used out of the box any only has minimal requirements on the server side.",
+  "homepage": "https://github.com/simplabs/ember-simple-auth",
+  "authors": ["Marco Otte-Witte"],
+  "version": "0.0.1",
+
+  "directories": {
+    "lib": "lib"
+  }
+}
