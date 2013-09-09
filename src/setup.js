@@ -5,9 +5,17 @@ EmberAuthSimple = Ember.Object.extend({
       this.route('login');
       this.route('logout');
     });
-    app.register('session', EmberAuthSimple.Session);
-    $.each(['model', 'store', 'controller', 'route'], function(target) {
-      app.inject(target, 'session', 'session');
+    var session = EmberAuthSimple.Session.create();
+    app.register('auth:session', session, { instantiate: false, singleton: true });
+    $.each(['model', 'controller', 'view', 'route'], function(i, component) {
+      app.inject(component, 'session', 'auth:session');
     });
+    if (options.authenticateAjax)
+      Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+        if (!jqXHR.crossDomain) {
+          jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', session.get('authToken'));
+        }
+      });
+    }
   }
 });
