@@ -1,3 +1,7 @@
+/**
+@module simple-auth
+*/
+
 SimpleAuth.LogoutRoute = Ember.Mixin.create({
   beforeModel: function() {
     var self = this;

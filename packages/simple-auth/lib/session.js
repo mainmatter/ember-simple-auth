@@ -1,3 +1,12 @@
+/**
+@module simple-auth
+*/
+
+/**
+  @class Session
+  @namespace SimpleAuth
+  @extends Ember.Object
+*/
 SimpleAuth.Session = Ember.Object.extend({
   init: function() {
     this._super();

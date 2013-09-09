@@ -2,6 +2,13 @@ require('simple-auth/session');
 require('simple-auth/login_controller');
 require('simple-auth/logout_route');
 
+/**
+  Simple Auth
+
+  @module simple-auth
+  @requires ember-runtime
+*/
+
 SimpleAuth = Ember.Object.extend({
   setup: function(app, options) {
     this.baseUrl = options.baseUrl || '';
