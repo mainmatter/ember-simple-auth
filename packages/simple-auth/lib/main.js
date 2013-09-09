@@ -10,9 +10,9 @@ SimpleAuth = Ember.Object.extend({
       this.route('logout');
     });
     var session = SimpleAuth.Session.create();
-    app.register('auth:session', session, { instantiate: false, singleton: true });
+    app.register('simple_auth:session', session, { instantiate: false, singleton: true });
     $.each(['model', 'controller', 'view', 'route'], function(i, component) {
-      app.inject(component, 'session', 'auth:session');
+      app.inject(component, 'session', 'simple_auth:session');
     });
     if (options.authenticateAjax)
       Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
