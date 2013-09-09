@@ -1,0 +1,32 @@
+instance_eval File.read(EmberDev.support_path.join('Assetfile'))
+
+distros = {
+  'ember-simple-auth' => %w(list-view)
+}
+
+output 'dist'
+
+distros.each do |name, modules|
+  input 'dist/modules' do
+    module_paths = modules.map{|m| "#{m}.js" }
+    match "{#{module_paths.join(',')}}" do
+      concat(module_paths){ ["#{name}.js", "#{name}.prod.js"] }
+    end
+
+    match "#{name}.js" do
+      filter VersionInfo
+    end
+
+    match "#{name}.prod.js" do
+      filter(EmberStripDebugMessagesFilter) { ["#{name}.prod.js", "min/#{name}.js"] }
+    end
+
+    match "min/#{name}.js" do
+      uglify{ "#{name}.min.js" }
+      filter VersionInfo
+      filter EmberLicenseFilter
+    end
+  end
+end
+
+# vim: filetype=ruby
