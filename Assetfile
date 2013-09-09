@@ -1,7 +1,7 @@
 instance_eval File.read(EmberDev.support_path.join('Assetfile'))
 
 distros = {
-  'ember-simple-auth' => %w(list-view)
+  'simple-auth' => %w(simple-auth)
 }
 
 output 'dist'

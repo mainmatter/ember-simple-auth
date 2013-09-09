@@ -1,4 +1,4 @@
-ember-auth-simple
+auth-simple
 =================
 
-simple authentication with ember.js
+Simple Authentication for Ember.js

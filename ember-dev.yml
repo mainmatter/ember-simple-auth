@@ -1,4 +1,4 @@
-name: Ember Simple Auth
+name: Simple Auth
 assetfile: 'Assetfile'
 testing_suites:
   default:
@@ -8,4 +8,4 @@ testing_suites:
     - "package=all&extendprototypes=true&nojshint=true"
     - "package=all&dist=build&nojshint=true"
 testing_packages:
-  - ember-simple-auth
+  - simple-auth
