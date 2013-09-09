@@ -1,11 +1,15 @@
-EmberAuthSimple = Ember.Object.extend({
+require('simple-auth/session');
+require('simple-auth/login_controller');
+require('simple-auth/logout_route');
+
+SimpleAuth = Ember.Object.extend({
   setup: function(app, options) {
     this.baseUrl = options.baseUrl || '';
     app.Router.map(function() {
       this.route('login');
       this.route('logout');
     });
-    var session = EmberAuthSimple.Session.create();
+    var session = SimpleAuth.Session.create();
     app.register('auth:session', session, { instantiate: false, singleton: true });
     $.each(['model', 'controller', 'view', 'route'], function(i, component) {
       app.inject(component, 'session', 'auth:session');
