@@ -1,4 +1,4 @@
-App.LogoutRoute = Ember.Controller.extend({
+SimpleAuth.LogoutRoute = Ember.Mixin.extend({
   beforeModel: function() {
     var self = this;
     $.ajax({
