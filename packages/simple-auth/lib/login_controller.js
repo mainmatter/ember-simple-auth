@@ -1,4 +1,4 @@
-SimpleAuth.LoginController = Ember.Mixin.extend({
+SimpleAuth.LoginController = Ember.Mixin.create({
   actions: {
     login: function() {
       var self = this;
