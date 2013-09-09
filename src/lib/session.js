@@ -1,9 +1,9 @@
 EmberAuthSimple.Session = Ember.Object.extend({
   init: function() {
     this._super();
-    this.set('authToken', $.cookie('auth_token'));
+    this.set('authToken', sessionStorage.authToken);
   },
   authTokenChanged: function() {
-    $.cookie('authToken', this.get('authToken'));
+    sessionStorage.authToken = this.get('authToken');
   }.observes('authToken'),
 });
