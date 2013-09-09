@@ -5,7 +5,9 @@ testing_suites:
     - "package=all"
   all:
     - "package=all"
-    - "package=all&extendprototypes=true&nojshint=true"
-    - "package=all&dist=build&nojshint=true"
+    - "package=all&jquery=1.7.2&nojshint=true"
+    - "package=all&jquery=1.8.3&nojshint=true"
+    - "package=all&jquery=1.9.1&nojshint=true"
+    - "package=all&jquery=1.10.2&nojshint=true"
 testing_packages:
   - simple-auth
