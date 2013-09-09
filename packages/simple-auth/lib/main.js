@@ -10,7 +10,7 @@ SimpleAuth = Ember.Object.extend({
     $.each(['model', 'controller', 'view', 'route'], function(i, component) {
       app.inject(component, 'session', 'simple_auth:session');
     });
-    if (options.authenticateAjax)
+    if (options.authenticateAjax) {
       Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
         if (!jqXHR.crossDomain) {
           jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', session.get('authToken'));
