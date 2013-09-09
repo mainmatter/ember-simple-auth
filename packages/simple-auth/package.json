@@ -8,5 +8,22 @@
 
   "directories": {
     "lib": "lib"
+  },
+
+  "dependencies": {
+    "spade":         "~> 1.0",
+    "ember-runtime": "1.0.0-rc.8"
+  },
+
+  "dependencies:development": {
+    "spade-qunit": "~> 1.0.0"
+  },
+
+  "bpm:build": {
+
+    "bpm_libs.js": {
+      "files": ["lib"],
+      "modes": "*"
+    }
   }
 }
