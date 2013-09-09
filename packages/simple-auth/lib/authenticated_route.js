@@ -1,4 +1,4 @@
-App.AuthenticatedRoute = Ember.Route.extend({
+SimpleAuth.AuthenticatedRoute = Ember.Mixin.extend({
   redirectToLogin: function(transition) {
     session.set('attemptedTransition', transition);
     this.transitionTo('login');
