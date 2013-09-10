@@ -9,12 +9,13 @@ test('reads the authToken from sessionStorage when it is initialized', function(
   sessionStorage.authToken = token;
   var session = Ember.SimpleAuth.Session.create();
 
-  ok(session.get('authToken') === token, 'Ember.SimpleAuth.Session reads the authToken from sessionStorage when initialized');
+  equal(session.get('authToken'), token, 'Ember.SimpleAuth.Session reads the authToken from sessionStorage when initialized');
 });
 
 test('persists the authToken to the sessionStorage when it changes', function() {
   var session = Ember.SimpleAuth.Session.create();
   var token = Math.random().toString(36);
   session.set('authToken', token);
-  ok(sessionStorage.authToken === token, 'Ember.SimpleAuth.Session persists the authToken in the sessionStorage');
+
+  equal(sessionStorage.authToken, token, 'Ember.SimpleAuth.Session persists the authToken in the sessionStorage');
 });
