@@ -1,5 +1,6 @@
 Ember.SimpleAuth = {};
 Ember.SimpleAuth.setup = function(app, options) {
+  options = options || {};
   this.baseUrl = options.baseUrl || '';
   var session = Ember.SimpleAuth.Session.create();
   app.register('simple_auth:session', session, { instantiate: false, singleton: true });
