@@ -8,6 +8,7 @@ test('exists', function() {
 
 test('persists the authToken to the sessionStorage when it changes', function() {
   var session = Ember.SimpleAuth.Session.create();
-  session.set('authToken', 'new Token');
-  ok(sessionStorage.authToken === 'new Token', 'Ember.SimpleAuth.Session persists the authToken in the sessionStorage');
+  var token = Math.random().toString(36);
+  session.set('authToken', token);
+  ok(sessionStorage.authToken === token, 'Ember.SimpleAuth.Session persists the authToken in the sessionStorage');
 });
