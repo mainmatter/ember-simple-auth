@@ -6,10 +6,10 @@ Ember.SimpleAuth.LogoutRoute = Ember.Mixin.create({
   beforeModel: function() {
     var self = this;
     Ember.$.ajax({
-      url:  SimpleAuth.baseUrl + '/session',
+      url:  Ember.SimpleAuth.baseUrl + '/session',
       type: 'DELETE'
     }).always(function(response) {
-      session.set('authToken', '');
+      this.set('session.authToken', undefined);
       self.transitionToRoute('login');
     });
   }
