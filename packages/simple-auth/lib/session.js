@@ -12,8 +12,7 @@ SimpleAuth.Session = Ember.Object.extend({
     this._super();
     this.set('authToken', sessionStorage.authToken);
   },
-  persistAuthToken: function() {
+  authTokenObserver: Ember.observer(function() {
     sessionStorage.authToken = this.get('authToken');
-  },
-  _authTokenDidChange: Ember.observer(persistAuthToken, 'authToken')
+  }, 'authToken')
 });
