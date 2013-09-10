@@ -1,43 +1,40 @@
-var container;
-
-module('Ember.SimpleAuth', {
-  setup: function() {
-    container = Ember.Object.extend({
-      init: function() {
-        this._super();
-        this.registrations = [];
-        this.injections = [];
-      },
-      register: function(name, factory, options) {
-        this.registrations.push({
-          name:    name,
-          factory: factory,
-          options: options
-        });
-      },
-      inject: function(target, property, name) {
-        var registration = Ember.$.grep(this.registrations, function(registration, i) {
-          return registration.name === name;
-        })[0];
-        if (registration) {
-          this.injections.push({
-            target:   target,
-            property: property,
-            object:   registration.factory
-          });
-        }
-      }
-    }).create();
+var MockContainer = Ember.Object.extend({
+  init: function() {
+    this._super();
+    this.registrations = [];
+    this.injections = [];
+  },
+  register: function(name, factory, options) {
+    this.registrations.push({
+      name:    name,
+      factory: factory,
+      options: options
+    });
+  },
+  inject: function(target, property, name) {
+    var registration = Ember.$.grep(this.registrations, function(registration, i) {
+      return registration.name === name;
+    })[0];
+    if (registration) {
+      this.injections.push({
+        target:   target,
+        property: property,
+        object:   registration.factory
+      });
+    }
   }
 });
 
+module('Ember.SimpleAuth');
+
 test('saves a baseUrl if specified', function() {
-  Ember.SimpleAuth.setup(container, { baseUrl: 'base!' });
+  Ember.SimpleAuth.setup(MockContainer.create(), { baseUrl: 'base!' });
 
   equal(Ember.SimpleAuth.baseUrl, 'base!', 'Ember.SimpleAuth saves baseUrl when specified');
 });
 
 test('injects a session object in models, views, controllers and routes', function() {
+  var container = MockContainer.create();
   Ember.SimpleAuth.setup(container);
 
   Ember.$.each(['model', 'view', 'controller', 'view'], function(i, component) {
