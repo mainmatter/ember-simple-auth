@@ -1,4 +1,4 @@
-module('SimpleAuth.Session');
+module('Ember.SimpleAuth.Session');
 
 test('exists', function() {
   ok(Ember.Object.detect(Ember.SimpleAuth.Session), 'Ember.SimpleAuth.Session is an Ember.Object');
