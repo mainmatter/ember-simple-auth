@@ -10,4 +10,4 @@ testing_suites:
     - "package=all&jquery=1.9.1&nojshint=true"
     - "package=all&jquery=1.10.2&nojshint=true"
 testing_packages:
-  - simple-auth
+  - ember-simple-auth

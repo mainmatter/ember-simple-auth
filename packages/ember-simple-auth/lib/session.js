@@ -7,7 +7,7 @@
   @namespace SimpleAuth
   @extends Ember.Object
 */
-SimpleAuth.Session = Ember.Object.extend({
+Ember.SimpleAuth.Session = Ember.Object.extend({
   init: function() {
     this._super();
     this.set('authToken', sessionStorage.authToken);

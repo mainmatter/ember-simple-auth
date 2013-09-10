@@ -2,7 +2,7 @@
 @module simple-auth
 */
 
-SimpleAuth.AuthenticatedRoute = Ember.Mixin.create({
+Ember.SimpleAuth.AuthenticatedRoute = Ember.Mixin.create({
   redirectToLogin: function(transition) {
     session.set('attemptedTransition', transition);
     this.transitionTo('login');

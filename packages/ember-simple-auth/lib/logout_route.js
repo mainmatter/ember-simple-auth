@@ -2,10 +2,10 @@
 @module simple-auth
 */
 
-SimpleAuth.LogoutRoute = Ember.Mixin.create({
+Ember.SimpleAuth.LogoutRoute = Ember.Mixin.create({
   beforeModel: function() {
     var self = this;
-    $.ajax({
+    Ember.$.ajax({
       url:  SimpleAuth.baseUrl + '/session',
       type: 'DELETE'
     }).always(function(response) {
