@@ -31,6 +31,12 @@ module('Ember.SimpleAuth', {
   }
 });
 
+test('saves a baseUrl if specified', function() {
+  Ember.SimpleAuth.setup(container, { baseUrl: 'base!' });
+
+  equal(Ember.SimpleAuth.baseUrl, 'base!', 'Ember.SimpleAuth saves baseUrl when specified');
+});
+
 test('injects a session object in models, views, controllers and routes', function() {
   Ember.SimpleAuth.setup(container);
 
