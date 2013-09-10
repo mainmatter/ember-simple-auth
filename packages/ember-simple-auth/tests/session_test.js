@@ -1,5 +1,3 @@
-var get = Ember.get, set = Ember.set, _$;
-
 module('SimpleAuth.Session');
 
 test('exists', function() {
