@@ -1,4 +1,4 @@
-var MockContainer = Ember.Object.extend({
+var ContainerMock = Ember.Object.extend({
   init: function() {
     this._super();
     this.registrations = [];
@@ -28,13 +28,13 @@ var MockContainer = Ember.Object.extend({
 module('Ember.SimpleAuth');
 
 test('saves a baseUrl if specified', function() {
-  Ember.SimpleAuth.setup(MockContainer.create(), { baseUrl: 'base!' });
+  Ember.SimpleAuth.setup(ContainerMock.create(), { baseUrl: 'base!' });
 
   equal(Ember.SimpleAuth.baseUrl, 'base!', 'Ember.SimpleAuth saves baseUrl when specified');
 });
 
 test('injects a session object in models, views, controllers and routes', function() {
-  var container = MockContainer.create();
+  var container = ContainerMock.create();
   Ember.SimpleAuth.setup(container);
 
   Ember.$.each(['model', 'view', 'controller', 'view'], function(i, component) {
