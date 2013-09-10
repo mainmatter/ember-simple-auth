@@ -1,7 +1,3 @@
-/**
-@module simple-auth
-*/
-
 Ember.SimpleAuth.LoginController = Ember.Mixin.create({
   actions: {
     login: function() {
