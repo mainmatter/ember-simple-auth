@@ -1,9 +1,5 @@
 module('Ember.SimpleAuth.Session');
 
-test('exists', function() {
-  ok(Ember.Object.detect(Ember.SimpleAuth.Session), 'Ember.SimpleAuth.Session is an Ember.Object');
-});
-
 test('reads the authToken from sessionStorage when it is initialized', function() {
   var token = Math.random().toString(36);
   sessionStorage.authToken = token;
