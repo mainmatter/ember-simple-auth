@@ -4,8 +4,8 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
       var self = this;
       var data = this.getProperties('identification', 'password');
       if (!Ember.isEmpty(data.identification) && !Ember.isEmpty(data.password)) {
-        var postData = { session: { identification: data.identification, password: data.password } };
-        Ember.$.post(Ember.SimpleAuth.serverSessionRoute, postData).then(function(response) {
+        var postData = JSON.stringify({ session: { identification: data.identification, password: data.password } });
+        Ember.$.post(Ember.SimpleAuth.serverSessionRoute, postData, null, 'json').then(function(response) {
           var sessionData = (response.session || {});
           self.get('session').setProperties(sessionData);
           var attemptedTransition = self.get('session.attemptedTransition');
