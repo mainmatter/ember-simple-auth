@@ -2,7 +2,7 @@ var testRoute = Ember.Object.extend(Ember.SimpleAuth.LogoutRouteMixin, {
   session: Ember.SimpleAuth.Session.create(),
   route:   null,
 
-  transitionToRoute: function(targetRoute) {
+  transitionTo: function(targetRoute) {
     this.route = targetRoute;
   }
 }).create();
