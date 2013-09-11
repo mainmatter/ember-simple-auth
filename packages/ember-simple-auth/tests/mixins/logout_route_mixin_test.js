@@ -28,14 +28,13 @@ module('Ember.SimpleAuth.LogoutRouteMixin', {
 });
 
 test('it sends a DELETE request to the /session route before model', function() {
-  Ember.SimpleAuth.pathPrefix = '';
   testRoute.beforeModel();
 
-  equal(ajaxRequestOptions.url, '/session', 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request to the /session route before model.');
+  equal(ajaxRequestOptions.url, Ember.SimpleAuth.serverSessionRoute, 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request to the /session route before model.');
   equal(ajaxRequestOptions.type, 'DELETE', 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request to the /session route before model.');
 
-  Ember.SimpleAuth.pathPrefix = '/some/other/base';
+  Ember.SimpleAuth.serverSessionRoute = '/some/other/route';
   testRoute.beforeModel();
 
-  equal(ajaxRequestOptions.url, '/some/other/base/session', 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request to the correct route before model if a pathPrefix is defined.');
+  equal(ajaxRequestOptions.url, '/some/other/route', 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request to the correct route before model if a custom serverSessionRoute is defined.');
 });

@@ -50,10 +50,10 @@ module('Ember.SimpleAuth', {
   }
 });
 
-test('saves pathPrefix if specified', function() {
-  Ember.SimpleAuth.setup(ContainerMock.create(), { pathPrefix: 'base!' });
+test('saves serverSessionRoute if specified', function() {
+  Ember.SimpleAuth.setup(ContainerMock.create(), { serverSessionRoute: '/route' });
 
-  equal(Ember.SimpleAuth.pathPrefix, 'base!', 'Ember.SimpleAuth saves baseUrl when specified.');
+  equal(Ember.SimpleAuth.serverSessionRoute, '/route', 'Ember.SimpleAuth saves serverSessionRoute when specified.');
 });
 
 test('saves routeAfterLogin if specified', function() {
