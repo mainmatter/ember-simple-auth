@@ -5,7 +5,7 @@ Ember.SimpleAuth.LogoutRoute = Ember.Mixin.create({
       url:  Ember.SimpleAuth.baseUrl + '/session',
       type: 'DELETE'
     }).always(function(response) {
-      this.get('session').logout();
+      self.get('session').logout();
       self.transitionToRoute(Ember.SimpleAuth.routeAfterLogout);
     });
   }
