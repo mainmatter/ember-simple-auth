@@ -6,6 +6,6 @@ Ember.SimpleAuth.AuthenticatedRouteMixin = Ember.Mixin.create({
   },
   redirectToLogin: function(transition) {
     this.set('session.attemptedTransition', transition);
-    this.transitionTo('login');
+    this.transitionTo(Ember.SimpleAuth.loginRoute);
   }
 });

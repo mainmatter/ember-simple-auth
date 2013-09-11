@@ -27,16 +27,11 @@ module('Ember.SimpleAuth.LogoutRouteMixin', {
   }
 });
 
-test('sends a DELETE request to the /session route before model', function() {
+test('sends a DELETE request to the correct route before model', function() {
+  Ember.SimpleAuth.serverSessionRoute = '/session/route';
   testRoute.beforeModel();
 
-  equal(ajaxRequestOptions.url, Ember.SimpleAuth.serverSessionRoute, 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request to the /session route before model.');
-  equal(ajaxRequestOptions.type, 'DELETE', 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request to the /session route before model.');
-
-  Ember.SimpleAuth.serverSessionRoute = '/some/other/route';
-  testRoute.beforeModel();
-
-  equal(ajaxRequestOptions.url, '/some/other/route', 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request to the correct route before model if a custom serverSessionRoute is defined.');
+  equal(ajaxRequestOptions.url, '/session/route', 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request to the correct route before model.');
 });
 
 test('destroys the current session before model', function() {
@@ -46,13 +41,9 @@ test('destroys the current session before model', function() {
   equal(testRoute.get('session.isAuthenticated'), false, 'Ember.SimpleAuth.LogoutRouteMixin destroy the current session before model.');
 });
 
-test('redirects to the index route before model', function() {
+test('redirects to the correct route before model', function() {
+  Ember.SimpleAuth.routeAfterLogout = 'some.route';
   testRoute.beforeModel();
 
-  equal(testRoute.route, 'index', 'Ember.SimpleAuth.LogoutRouteMixin redirects to the index route before model.');
-
-  Ember.SimpleAuth.routeAfterLogout = '/some/other/route';
-  testRoute.beforeModel();
-
-  equal(testRoute.route, '/some/other/route', 'Ember.SimpleAuth.LogoutRouteMixin redirects to the correct route before model if a custom routeAfterLogout is specified.');
+  equal(testRoute.route, 'some.route', 'Ember.SimpleAuth.LogoutRouteMixin redirects to the correct route before model.');
 });

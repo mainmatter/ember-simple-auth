@@ -3,6 +3,8 @@ Ember.SimpleAuth.setup = function(app, options) {
   options = options || {};
   this.routeAfterLogin = options.routeAfterLogin || 'index';
   this.routeAfterLogout = options.routeAfterLogout || 'index';
+  this.loginRoute = options.loginRoute || 'login';
+  this.logoutRoute = options.logoutRoute || 'logout';
   this.serverSessionRoute = options.serverSessionRoute || '/session';
 
   var session = Ember.SimpleAuth.Session.create();
