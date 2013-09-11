@@ -16,7 +16,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
             self.transitionToRoute(Ember.SimpleAuth.routeAfterLogin);
           }
         }, function() {
-          self.send('loginFailed', arguments);
+          Ember.tryInvoke(self, 'loginFailed', arguments);
         });
       }
     }

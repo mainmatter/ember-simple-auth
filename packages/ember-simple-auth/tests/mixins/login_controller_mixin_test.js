@@ -6,11 +6,8 @@ var testController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMix
   transitionToRoute: function(targetRoute) {
     this.route = targetRoute;
   },
-
-  actions: {
-    loginFailed: function(args) {
-      loginFailedError = args[0];
-    }
+  loginFailed: function(error) {
+    loginFailedError = error;
   }
 }).create();
 
@@ -22,7 +19,7 @@ var postMock = function(url, data) {
   return {
     then: function(success, fail) {
       success({ session: { authToken: 'authToken' } });
-      fail('error!');
+      fail('error!', 'and another one');
     }
   };
 };
@@ -74,7 +71,7 @@ test('redirects to the correct route on submit', function() {
   ok(retried, 'Ember.SimpleAuth.LoginControllerMixin redirects retries an attempted transition on submit.');
 });
 
-test('invokes the loginFailed action with the callback arguments', function() {
+test('invokes the loginFailed method with the callback arguments', function() {
   testController.send('login');
 
   equal(loginFailedError, 'error!', 'Ember.SimpleAuth.LoginControllerMixin invokes the loginFailed action with the callback arguments when the request fails.');
