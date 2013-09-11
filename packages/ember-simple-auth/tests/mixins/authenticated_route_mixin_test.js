@@ -4,7 +4,6 @@ var testRoute = Ember.Object.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
   transitionTo: function(targetRoute) {
     this.route = targetRoute;
   }
-
 }).create();
 
 module('Ember.SimpleAuth.AuthenticatedRouteMixin', {
