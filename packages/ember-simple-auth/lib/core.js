@@ -1,7 +1,7 @@
 Ember.SimpleAuth = {};
 Ember.SimpleAuth.setup = function(app, options) {
   options = options || {};
-  this.baseUrl = options.baseUrl || '';
+  this.basePath = options.basePath || '';
   this.routeAfterLogin = options.routeAfterLogin || 'index';
   this.routeAfterLogout = options.routeAfterLogout || 'index';
 

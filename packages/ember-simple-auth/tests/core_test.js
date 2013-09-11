@@ -50,10 +50,10 @@ module('Ember.SimpleAuth', {
   }
 });
 
-test('saves baseUrl if specified', function() {
-  Ember.SimpleAuth.setup(ContainerMock.create(), { baseUrl: 'base!' });
+test('saves basePath if specified', function() {
+  Ember.SimpleAuth.setup(ContainerMock.create(), { basePath: 'base!' });
 
-  equal(Ember.SimpleAuth.baseUrl, 'base!', 'Ember.SimpleAuth saves baseUrl when specified.');
+  equal(Ember.SimpleAuth.basePath, 'base!', 'Ember.SimpleAuth saves baseUrl when specified.');
 });
 
 test('saves routeAfterLogin if specified', function() {
