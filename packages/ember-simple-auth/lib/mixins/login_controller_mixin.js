@@ -1,4 +1,4 @@
-Ember.SimpleAuth.LoginController = Ember.Mixin.create({
+Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
   actions: {
     login: function() {
       var self = this;
