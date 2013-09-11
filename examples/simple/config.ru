@@ -9,7 +9,9 @@ run Proc.new { |env|
     Rack::File.new(File.join(File.dirname(__FILE__), 'index.html')).call(env)
   elsif request.get? && request.path =~ /js$/
     Rack::File.new(File.join(File.dirname(__FILE__), '../../dist')).call(env)
-  elsif request.post?
+  elsif request.delete? && request.path == '/session'
+    [200, { 'Content-Type' => 'application/json' }, ['']]
+  elsif request.post? && request.path == '/session'
     payload = request.body.read
     json = JSON.parse(payload)
     if json['session']['identification'] == 'letme' && json['session']['password'] == 'in'
