@@ -10,6 +10,11 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     return !Ember.isEmpty(this.get('authToken'));
   }),
   authTokenObserver: Ember.observer(function() {
-    sessionStorage.authToken = this.get('authToken');
+    var authToken = this.get('authToken');
+    if (Ember.isEmpty(authToken)) {
+      delete sessionStorage.authToken;
+    } else {
+      sessionStorage.authToken = this.get('authToken');
+    }
   }, 'authToken')
 });

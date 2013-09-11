@@ -16,6 +16,14 @@ test('persists the authToken to the sessionStorage when it changes', function() 
   equal(sessionStorage.authToken, token, 'Ember.SimpleAuth.Session persists the authToken in the sessionStorage.');
 });
 
+test('deletes the authToken from sessionStorage when it changes to empty', function() {
+  var session = Ember.SimpleAuth.Session.create();
+  session.set('authToken', 'some token');
+  session.set('authToken', undefined);
+
+  equal(sessionStorage.authToken, undefined, 'Ember.SimpleAuth.Session deletes the authToken from the sessionStorage when it changes ti empty.');
+});
+
 test('clears the authToken on logout', function() {
   var session = Ember.SimpleAuth.Session.create();
   session.set('authToken', 'some Token');
