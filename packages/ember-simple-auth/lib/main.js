@@ -1,5 +1,5 @@
 require('ember-simple-auth/core');
 require('ember-simple-auth/session');
-require('ember-simple-auth/authenticated_route');
-require('ember-simple-auth/login_controller');
-require('ember-simple-auth/logout_route');
+require('ember-simple-auth/mixins/authenticated_route_mixin');
+require('ember-simple-auth/mixins/login_controller_mixin');
+require('ember-simple-auth/mixins/logout_route_mixin');
