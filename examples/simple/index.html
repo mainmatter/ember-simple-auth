@@ -11,7 +11,7 @@
   </head>
   <body style="padding-top: 100px;">
     <script type="text/x-handlebars">
-      <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <nav class="navbar navbar-default navbar-fixed-top">
         <div class="navbar-header">
           {{#link-to 'index' classNames='navbar-brand'}}
             Home
@@ -42,7 +42,7 @@
       </div>
     </script>
     <script type="text/x-handlebars" data-template-name="login">
-      <form role="form" {{action login on="submit"}}>
+      <form {{action login on="submit"}}>
         <div class="form-group">
           <label for="identification">Login</label>
           {{view Ember.TextField id="identification" valueBinding="identification" placeholder="Enter Login" class="form-control"}}
