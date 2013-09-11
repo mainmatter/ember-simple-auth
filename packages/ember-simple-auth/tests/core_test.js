@@ -42,10 +42,22 @@ var ajaxPrefilterMock = function(prefilter) {
 
 module('Ember.SimpleAuth');
 
-test('saves a baseUrl if specified', function() {
+test('saves baseUrl if specified', function() {
   Ember.SimpleAuth.setup(ContainerMock.create(), { baseUrl: 'base!' });
 
   equal(Ember.SimpleAuth.baseUrl, 'base!', 'Ember.SimpleAuth saves baseUrl when specified.');
+});
+
+test('saves routeAfterLogin if specified', function() {
+  Ember.SimpleAuth.setup(ContainerMock.create(), { routeAfterLogin: 'somewhere' });
+
+  equal(Ember.SimpleAuth.routeAfterLogin, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogin when specified.');
+});
+
+test('saves routeAfterLogout if specified', function() {
+  Ember.SimpleAuth.setup(ContainerMock.create(), { routeAfterLogout: 'somewhere' });
+
+  equal(Ember.SimpleAuth.routeAfterLogout, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogout when specified.');
 });
 
 test('injects a session object in models, views, controllers and routes', function() {
