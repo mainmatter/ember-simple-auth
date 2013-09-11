@@ -13,11 +13,11 @@ run Proc.new { |env|
     payload = request.body.read
     json = JSON.parse(payload)
     if json['session']['identification'] == 'letme' && json['session']['password'] == 'in'
-      [200, { 'Content-Type' => 'application/json' }, ['{ session: { authToken: "secret token!" } }']]
+      [200, { 'Content-Type' => 'application/json' }, ['{ "session": { "authToken": "secret token!" } }']]
     else
-      [422, { 'Content-Type' => 'application/json' }, ['{ error: "invalid credentials" }']]
+      [422, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid credentials" }']]
     end
   else
-    [422, { 'Content-Type' => 'application/json' }, ['{ error: "invalid request" }']]
+    [422, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid request" }']]
   end
 }
