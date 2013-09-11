@@ -24,10 +24,10 @@ test('deletes the authToken from sessionStorage when it changes to empty', funct
   equal(sessionStorage.authToken, undefined, 'Ember.SimpleAuth.Session deletes the authToken from the sessionStorage when it changes ti empty.');
 });
 
-test('clears the authToken on logout', function() {
+test('clears the authToken when destroyed', function() {
   var session = Ember.SimpleAuth.Session.create();
   session.set('authToken', 'some Token');
-  session.logout();
+  session.destroy();
 
   equal(session.get('authToken'), undefined, 'Ember.SimpleAuth.Session clears the authToken on logout.');
 });

@@ -3,7 +3,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     this._super();
     this.set('authToken', sessionStorage.authToken);
   },
-  logout: function() {
+  destroy: function() {
     this.set('authToken', undefined);
   },
   isAuthenticated: Ember.computed('authToken', function() {
