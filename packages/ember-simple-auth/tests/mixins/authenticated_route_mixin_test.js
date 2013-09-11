@@ -32,5 +32,5 @@ test('it redirects to the correct route before model when the session is not aut
   testRoute.set('session.authToken', 'token');
   testRoute.beforeModel();
 
-  notEqual(testRoute.route, 'login', 'Ember.SimpleAuth.AuthenticatedRouteMixin does not redirect to the login route before model when the session is authenticated.');
+  notEqual(testRoute.route, 'login.route', 'Ember.SimpleAuth.AuthenticatedRouteMixin does not redirect to the login route before model when the session is authenticated.');
 });
