@@ -42,6 +42,14 @@
       </div>
     </script>
 
+    <script type="text/x-handlebars" data-template-name="index">
+      {{#unless session.isAuthenticated}}
+        <div class="alert alert-info">
+          You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
+        </div>
+      {{/unless}}
+    </script>
+
     <script type="text/x-handlebars" data-template-name="login">
       <form {{action login on="submit"}}>
         <div class="form-group">
