@@ -7,14 +7,16 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
         var postData = { session: { identification: data.identification, password: data.password } };
         Ember.$.post(Ember.SimpleAuth.serverSessionRoute, postData).then(function(response) {
           var sessionData = (response.session || {});
-          this.set('session.authToken', sessionData.auth_token);
-          var attemptedTransition = this.get('session.attemptedTransition');
+          self.get('session').setProperties(sessionData);
+          var attemptedTransition = self.get('session.attemptedTransition');
           if (attemptedTransition) {
             attemptedTransition.retry();
-            this.set('session.attemptedTransition', null);
+            self.set('session.attemptedTransition', null);
           } else {
-            self.transitionToRoute('index');
+            self.transitionToRoute(Ember.SimpleAuth.routeAfterLogin);
           }
+        }, function() {
+          self.send('loginFailed', arguments);
         });
       }
     }
