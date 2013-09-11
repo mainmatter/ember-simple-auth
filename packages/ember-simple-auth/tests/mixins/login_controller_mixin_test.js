@@ -42,8 +42,7 @@ test('sends a POST request to the correct route', function() {
   testController.send('login');
 
   equal(postRequestUrl, '/session/route', 'Ember.SimpleAuth.LoginControllerMixin sends a request to the correct route on submit.');
-  equal(postRequestData.session.identification, 'identification', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct identification on submit.');
-  equal(postRequestData.session.password, 'password', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct password on submit.');
+  equal(postRequestData, '{"session":{"identification":"identification","password":"password"}}', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct data on submit.');
 
   postRequestUrl = undefined;
   testController.setProperties({ identification: '', password: 'password' });
