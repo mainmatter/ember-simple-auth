@@ -31,7 +31,8 @@ module('Ember.SimpleAuth.LogoutRouteMixin', {
 test('sends a DELETE request to the correct route before model', function() {
   testRoute.beforeModel();
 
-  equal(ajaxRequestOptions.url, '/session/route', 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request to the correct route before model.');
+  equal(ajaxRequestOptions.url, '/session/route', 'Ember.SimpleAuth.LogoutRouteMixin sends a request to the correct route before model.');
+  equal(ajaxRequestOptions.type, 'DELETE', 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request before model.');
 });
 
 test('destroys the current session before model', function() {
