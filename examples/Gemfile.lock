@@ -1,12 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    oj (2.1.4)
+    json_pure (1.7.6)
     rack (1.5.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  oj
+  json_pure
   rack

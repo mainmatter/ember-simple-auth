@@ -11,7 +11,7 @@ run Proc.new { |env|
     Rack::File.new(File.join(File.dirname(__FILE__), '../../dist')).call(env)
   elsif request.post?
     payload = request.body.read
-    json = Oj.load(payload)
+    json = JSON.parse(payload)
     if json['session']['identification'] == 'letme' && json['session']['password'] == 'in'
       [200, { 'Content-Type' => 'application/json' }, ['{ session: { authToken: "secret token!" } }']]
     else
