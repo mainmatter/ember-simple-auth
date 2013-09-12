@@ -8,6 +8,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
         Ember.$.post(Ember.SimpleAuth.serverSessionRoute, postData, null, 'json').then(function(response) {
           var sessionData = (response.session || {});
           self.get('session').setProperties(sessionData);
+          Ember.tryInvoke(self, 'loginSucceeded');
           var attemptedTransition = self.get('session.attemptedTransition');
           if (attemptedTransition) {
             attemptedTransition.retry();
