@@ -73,7 +73,7 @@
         },
         setup: function(serverSession) {
           this.set('authToken', serverSession.TOKEN);
-          this.set('accountId', serverSession.AUTHENTICATED_USER_ID);
+          this.set('accountId', serverSession.AUTHENTICATED_USER.ID);
         },
         destroy: function() {
           this._super();
