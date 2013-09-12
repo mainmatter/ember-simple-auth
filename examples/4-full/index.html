@@ -11,6 +11,9 @@
         {{#link-to 'protected' tagName='li'}}
           <a style="cursor: pointer">Protected Page</a>
         {{/link-to}}
+        {{#link-to 'posts' tagName='li'}}
+          <a style="cursor: pointer">Recent Posts</a>
+        {{/link-to}}
       </ul>
       {{#if session.isAuthenticated}}
         {{#link-to 'logout' classNames='btn btn-danger navbar-btn navbar-right'}}
@@ -35,6 +38,17 @@
       You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
     </div>
   {{/unless}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="posts">
+  <h3>Recent Posts</h3>
+  {{#each}}
+    <article>
+      <h4>{{title}}</h4>
+      <p>{{body}}</p>
+    </article>
+  {{/each}}
+  </ul>
 </script>
 
 <script type="text/x-handlebars" data-template-name="login">
@@ -100,10 +114,16 @@
     name: DS.attr()
   });
 
+  App.Post = DS.Model.extend({
+    title: DS.attr(),
+    body: DS.attr()
+  });
+
   App.Router.map(function() {
     this.route('login');
     this.route('logout');
     this.route('protected');
+    this.route('posts');
   });
 
   App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
@@ -121,4 +141,9 @@
   });
   App.LogoutRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
   App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+  App.PostsRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    model: function() {
+      return this.get('store').findAll('post');
+    }
+  });
 </script>
