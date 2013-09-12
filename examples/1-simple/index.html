@@ -7,11 +7,9 @@
     </div>
     <div class="collapse navbar-collapse navbar-ex5-collapse">
       <ul class="nav navbar-nav">
-        <li>
-          {{#link-to 'protected'}}
-            Protected Page
-          {{/link-to}}
-        </li>
+        {{#link-to 'protected' tagName='li'}}
+          <a style="cursor: pointer">Protected Page</a>
+        {{/link-to}}
       </ul>
       {{#if session.isAuthenticated}}
         {{#link-to 'logout' classNames='btn btn-danger navbar-btn navbar-right'}}
