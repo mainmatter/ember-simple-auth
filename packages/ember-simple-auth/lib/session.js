@@ -3,6 +3,9 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     this._super();
     this.set('authToken', sessionStorage.authToken);
   },
+  setup: function(serverSession) {
+    this.set('authToken', (serverSession.session || {}).authToken);
+  },
   destroy: function() {
     this.set('authToken', undefined);
   },
