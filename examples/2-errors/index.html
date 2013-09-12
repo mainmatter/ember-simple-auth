@@ -1,111 +1,97 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>simple example with errors</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
-    <script src="http://builds.emberjs.com/release/ember.js"></script>
-    <script src="ember-simple-auth.js"></script>
-  </head>
-  <body style="padding-top: 100px;">
-    <script type="text/x-handlebars">
-      <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="navbar-header">
-          {{#link-to 'index' classNames='navbar-brand'}}
-            Home
+<script type="text/x-handlebars">
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-header">
+      {{#link-to 'index' classNames='navbar-brand'}}
+        Home
+      {{/link-to}}
+    </div>
+    <div class="collapse navbar-collapse navbar-ex5-collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          {{#link-to 'protected'}}
+            Protected Page
           {{/link-to}}
-        </div>
-        <div class="collapse navbar-collapse navbar-ex5-collapse">
-          <ul class="nav navbar-nav">
-            <li>
-              {{#link-to 'protected'}}
-                Protected Page
-              {{/link-to}}
-            </li>
-          </ul>
-          {{#if session.isAuthenticated}}
-            {{#link-to 'logout' classNames='btn btn-danger navbar-btn navbar-right'}}
-              Logout
-            {{/link-to}}
-            <p class="navbar-text pull-right">Signed in</p>
-          {{else}}
-            {{#link-to 'login' classNames='btn btn-success navbar-btn navbar-right'}}
-              Login
-            {{/link-to}}
-          {{/if}}
-        </div>
-      </nav>
-      <div class="container">
-        {{outlet}}
-      </div>
-    </script>
-
-    <script type="text/x-handlebars" data-template-name="index">
-      {{#unless session.isAuthenticated}}
-        <div class="alert alert-info">
-          You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
-        </div>
-      {{/unless}}
-    </script>
-
-    <script type="text/x-handlebars" data-template-name="login">
-      <form {{action login on='submit'}}>
-        <div class="form-group">
-          <label for="identification">Login</label>
-          {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login' class='form-control'}}
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          {{view Ember.TextField id='password' type='password' valueBinding='password' placeholder='Enter Password' class='form-control'}}
-        </div>
-        <button type="submit" class="btn btn-default">Login</button>
-      </form>
-      {{#if errorMessage}}
-        <div class="alert alert-danger">
-          <strong>Login failed:</strong> {{errorMessage}}
-        </div>
+        </li>
+      </ul>
+      {{#if session.isAuthenticated}}
+        {{#link-to 'logout' classNames='btn btn-danger navbar-btn navbar-right'}}
+          Logout
+        {{/link-to}}
+        <p class="navbar-text pull-right">Signed in</p>
+      {{else}}
+        {{#link-to 'login' classNames='btn btn-success navbar-btn navbar-right'}}
+          Login
+        {{/link-to}}
       {{/if}}
-    </script>
+    </div>
+  </nav>
+  <div class="container">
+    {{outlet}}
+  </div>
+</script>
 
-    <script type="text/x-handlebars" data-template-name="protected">
-      <div class="alert alert-danger">
-        This is a protected page only visible to authenticated users!
-      </div>
-    </script>
+<script type="text/x-handlebars" data-template-name="index">
+  {{#unless session.isAuthenticated}}
+    <div class="alert alert-info">
+      You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
+    </div>
+  {{/unless}}
+</script>
 
-    <script>
-      Ember.Application.initializer({
-        name: 'authentication',
-        initialize: function(container, application) {
-          Ember.SimpleAuth.setup(application);
-        }
+<script type="text/x-handlebars" data-template-name="login">
+  <form {{action login on='submit'}}>
+    <div class="form-group">
+      <label for="identification">Login</label>
+      {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login' class='form-control'}}
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      {{view Ember.TextField id='password' type='password' valueBinding='password' placeholder='Enter Password' class='form-control'}}
+    </div>
+    <button type="submit" class="btn btn-default">Login</button>
+  </form>
+  {{#if errorMessage}}
+    <div class="alert alert-danger">
+      <strong>Login failed:</strong> {{errorMessage}}
+    </div>
+  {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="protected">
+  <div class="alert alert-danger">
+    This is a protected page only visible to authenticated users!
+  </div>
+</script>
+
+<script>
+  Ember.Application.initializer({
+    name: 'authentication',
+    initialize: function(container, application) {
+      Ember.SimpleAuth.setup(application);
+    }
+  });
+
+  App = Ember.Application.create({});
+
+  App.Router.map(function() {
+    this.route('login');
+    this.route('logout');
+    this.route('protected');
+  });
+
+  App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+    loginFailed: function(xhr) {
+      var response = JSON.parse(xhr.responseText);
+      this.set('errorMessage', response.error);
+    }
+  });
+  App.LoginRoute = Ember.Route.extend({
+    setupController: function(controller, model) {
+      controller.setProperties({
+        identification: undefined, password: undefined, errorMessage: undefined
       });
-
-      App = Ember.Application.create({});
-
-      App.Router.map(function() {
-        this.route('login');
-        this.route('logout');
-        this.route('protected');
-      });
-
-      App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-        loginFailed: function(xhr) {
-          var response = JSON.parse(xhr.responseText);
-          this.set('errorMessage', response.error);
-        }
-      });
-      App.LoginRoute = Ember.Route.extend({
-        setupController: function(controller, model) {
-          controller.setProperties({
-            identification: undefined, password: undefined, errorMessage: undefined
-          });
-        }
-      });
-      App.LogoutRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
-      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
-    </script>
-  </body>
-</html>
+    }
+  });
+  App.LogoutRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
+  App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+</script>
