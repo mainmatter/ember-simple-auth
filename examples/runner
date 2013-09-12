@@ -1,11 +1,16 @@
 #!/usr/bin/env ruby
 
+base_dir = File.dirname(__FILE__)
+
+unless File.exists?(File.join(base_dir, '..', 'dist', 'ember-simple-auth.js'))
+  puts "\n** dist/ember-simple-auth.js doesn't exist, building it first...\n\n"
+  `cd .. && bundle && bundle exec rake ember:test`
+end
+
 require 'rubygems'
 require 'bundler'
 
 Bundler.require
-
-base_dir = File.dirname(__FILE__)
 
 get '/' do
   erb :index
