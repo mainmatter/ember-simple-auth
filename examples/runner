@@ -84,7 +84,7 @@ __END__
     <script src="http://builds.emberjs.com/release/ember.js"></script>
     <script src="ember-simple-auth.js"></script>
   </head>
-  <body style="padding-top: 100px;">
+  <body style="padding-top: 50px;">
     <%= yield %>
     <% unless request.path_info == '/' %>
       <nav class="navbar navbar-default navbar-fixed-bottom">

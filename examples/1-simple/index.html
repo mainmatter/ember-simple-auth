@@ -29,6 +29,9 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="index">
+  <div class="page-header">
+    <h1>Simple example</h1>
+  </div>
   {{#unless session.isAuthenticated}}
     <div class="alert alert-info">
       You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
@@ -37,6 +40,9 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="login">
+  <div class="page-header">
+    <h1>Login</h1>
+  </div>
   <form {{action login on='submit'}}>
     <div class="form-group">
       <label for="identification">Login</label>
@@ -51,6 +57,9 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="protected">
+  <div class="page-header">
+    <h1>Protected Page</h1>
+  </div>
   <div class="alert alert-danger">
     This is a protected page only visible to authenticated users!
   </div>
