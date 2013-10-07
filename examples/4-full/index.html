@@ -138,6 +138,9 @@
   });
 
   App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+    serializeCredentials: function(identification, password) {
+      return { USER_NAME: identification, PASS: password };
+    },
     loginFailed: function(xhr) {
       var response = JSON.parse(xhr.responseText);
       this.set('errorMessage', response.MSG);
