@@ -51,6 +51,17 @@ test('sends a POST request to the correct route', function() {
   equal(postRequestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on submit when identification or password are empty.');
 });
 
+test('serializes the credentials correctly when a custom serialization method is provided', function() {
+  testController.reopen({
+    serializeCredentials: function(identification, password) {
+      return { custom: { credentials: identification + '.' + password } };
+    }
+  });
+  testController.send('login');
+
+  equal(postRequestData, '{"custom":{"credentials":"identification.password"}}', 'Ember.SimpleAuth.LoginControllerMixin serializes the credentials correctly when a custom serialization method is provided.');
+});
+
 test('updates the current session with the server response', function() {
   testController.send('login');
 
