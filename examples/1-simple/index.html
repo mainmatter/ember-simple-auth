@@ -11,6 +11,7 @@
           <a style="cursor: pointer">Protected Page</a>
         {{/link-to}}
       </ul>
+      {{! display logout button when a session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
         {{#link-to 'logout' classNames='btn btn-danger navbar-btn navbar-right'}}
           Logout
@@ -43,6 +44,7 @@
   <div class="page-header">
     <h1>Login</h1>
   </div>
+  {{! login form; the fields must be named "identification" and "password" }}
   <form {{action login on='submit'}}>
     <div class="form-group">
       <label for="identification">Login</label>
@@ -66,6 +68,7 @@
 </script>
 
 <script>
+  // setup Ember.SimpleAuth in an initializer
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
@@ -76,12 +79,17 @@
   App = Ember.Application.create({});
 
   App.Router.map(function() {
+    // routes for login/logout
     this.route('login');
     this.route('logout');
+    //protected route that's inaccessible without authentication
     this.route('protected');
   });
 
+  // use the provided mixins in the routes/controlle
   App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
-  App.LogoutRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
-  App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+  App.LogoutRoute     = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
+
+  // make this route protected
+  App.ProtectedRoute  = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
 </script>

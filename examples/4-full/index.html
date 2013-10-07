@@ -15,10 +15,12 @@
           <a style="cursor: pointer">Recent Posts</a>
         {{/link-to}}
       </ul>
+      {{! display logout button when a session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
         {{#link-to 'logout' classNames='btn btn-danger navbar-btn navbar-right'}}
           Logout
         {{/link-to}}
+        {{! display name of signed in account }}
         <p class="navbar-text pull-right">Signed in as {{session.account.name}}</p>
       {{else}}
         {{#link-to 'login' classNames='btn btn-success navbar-btn navbar-right'}}
@@ -60,6 +62,7 @@
   <div class="page-header">
     <h1>Login</h1>
   </div>
+  {{! login form; the fields must be named "identification" and "password" }}
   <form {{action login on='submit'}}>
     <div class="form-group">
       <label for="identification">Login</label>
@@ -88,9 +91,11 @@
 </script>
 
 <script>
+  // setup Ember.SimpleAuth in an initializer
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
+      //customize the session so that it handles the custom payload as well as the additional account
       Ember.SimpleAuth.Session.reopen({
         init: function() {
           this._super();
@@ -114,6 +119,7 @@
           }
         }.property('accountId')
       });
+      //make sure AJAX requests send the authentication token header; also set a custom session endpoint route
       Ember.SimpleAuth.setup(application, { authenticateAjax: true, serverSessionRoute: '/v2/session' });
     }
   });
@@ -131,13 +137,17 @@
   });
 
   App.Router.map(function() {
+    // routes for login/logout
     this.route('login');
     this.route('logout');
+    //protected routes that are inaccessible without authentication
     this.route('protected');
     this.route('posts');
   });
 
+  // login controller that display an error if the login fails
   App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+    // serialize the credentials from the view to what the server expects
     serializeCredentials: function(identification, password) {
       return { USER_NAME: identification, PASS: password };
     },
@@ -146,6 +156,8 @@
       this.set('errorMessage', response.MSG);
     }
   });
+
+  // make sure the controller doesn't keep stale data
   App.LoginRoute = Ember.Route.extend({
     setupController: function(controller, model) {
       controller.setProperties({
@@ -154,6 +166,8 @@
     }
   });
   App.LogoutRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
+
+  // make these routes protected
   App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
   App.PostsRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     model: function() {
