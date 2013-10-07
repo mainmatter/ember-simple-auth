@@ -12,6 +12,7 @@ require 'bundler'
 
 Bundler.require
 
+# serves the main template (see bottom of this file)
 get '/' do
   erb :index
 end
