@@ -16,16 +16,19 @@ get '/' do
   erb :index
 end
 
+# serve the JS file from the /dist directory
 get '/ember-simple-auth.js' do
   File.read(File.join(base_dir, '..', 'dist', 'ember-simple-auth.js'))
 end
 
+# serve the HTML files from the respective example directoy
 %w(1-simple 2-errors 3-ember-data 4-full).each do |example|
   get "/#{example}" do
     erb File.read(File.join(base_dir, example, 'index.html'))
   end
 end
 
+# session creation endpoint; successfull if credentials are letme/in
 post '/session' do
   payload = request.body.read
   json    = JSON.parse(payload)
@@ -36,10 +39,12 @@ post '/session' do
   end
 end
 
+# session deletion endpoint
 delete '/session' do
   [200, { 'Content-Type' => 'application/json' }, ['']]
 end
 
+# posts endpoint; successful if a valid authentication token header is sent
 get '/posts' do
   if env['HTTP_X_AUTHENTICATION_TOKEN'] == 'secret token!'
     [200, { 'Content-Type' => 'application/json' }, ['{ "posts": [{ "id": 1, "title": "first post", "body": "some content"}, { "id": 2, "title": "2nd post", "body": "some other body" }] }']]
@@ -48,6 +53,7 @@ get '/posts' do
   end
 end
 
+# account endpoint; successful if a valid authentication token header is sent
 get '/accounts/1' do
   if env['HTTP_X_AUTHENTICATION_TOKEN'] == 'secret token!'
     [200, { 'Content-Type' => 'application/json' }, ['{ "account": { "id": 1, "login": "letme", "name": "Some Person"} }']]
@@ -56,6 +62,7 @@ get '/accounts/1' do
   end
 end
 
+# session creation endpoint with custom response; successfull if credentials are letme/in
 post '/v2/session' do
   payload = request.body.read
   json    = JSON.parse(payload)
@@ -66,6 +73,7 @@ post '/v2/session' do
   end
 end
 
+# session deletion endpoint for V2
 delete '/v2/session' do
   [200, { 'Content-Type' => 'application/json' }, ['']]
 end
