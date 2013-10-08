@@ -66,6 +66,30 @@ The last step is to add a template that renders the login form:
 </form>
 ```
 
+To make a route in the application protected and inaccessible when the user is
+not authenticated, simply implement the
+```Ember.SimpleAuth.AuthenticatedRouteMixin``` in the respective route:
+
+```js
+App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+```
+
+This will make the route redirect to ```/login``` when no user is
+authenticated.
+
+The current session can always be accessed as ```session```. To display login/
+logout buttons depending on whether the user is currently authenticated or not,
+simple add sth. like this to the respective template:
+
+```html
+{{#if session.isAuthenticated}}
+  {{#link-to 'logout'}}Logout{{/link-to}}
+  <p class="navbar-text pull-right">Your are currently signed in</p>
+{{else}}
+  {{#link-to 'login'}}Login{{/link-to}}
+{{/if}}
+```
+
 For more examples including custom URLs, JSON payloads, error handling,
 handling of the registered user etc., see the [examples](#examples).
 
