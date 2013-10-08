@@ -86,7 +86,7 @@
     this.route('protected');
   });
 
-  // use the provided mixins in the routes/controlle
+  // use the provided mixins in the routes/controller
   App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
   App.LogoutRoute     = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
 
