@@ -29,6 +29,13 @@ Ember.Application.initializer({
 });
 ```
 
+This injects an instance of ```Ember.SimpleAuth.Session``` as ```session```
+into every controller, view, route and model (if applicable). It also registers
+an [ajaxPrefilter](http://api.jquery.com/jQuery.ajaxPrefilter/) that makes sure
+that every AJAX request that's not going to a different domain than the one the
+Ember.js application was loaded from sends the authentication header (see the
+documentation of [the server side](#the-server-side) below).
+
 The routes for logging in and out can be named anything you want:
 
 ```js
