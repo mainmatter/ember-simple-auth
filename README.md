@@ -18,6 +18,47 @@ uses ```X-AUTHENTICATION-TOKEN```.
 
 ## Usage
 
+Ember.SimpleAuth only requires one template/controller pair and 2 routes. To
+set it up it's best to use a custom initializer:
+
+```js
+Ember.Application.initializer({
+  name: 'authentication',
+  initialize: function(container, application) {
+    Ember.SimpleAuth.setup(application);
+  }
+});
+```
+
+The routes for logging in and out can be named anything you want:
+
+```js
+App.Router.map(function() {
+  this.route('login');
+  this.route('logout');
+});
+```
+
+To wire everything up, the generated ```App.LoginController``` and
+```App.LogoutRoute``` need to use the mixins provided by Ember.SimpleAuth:
+
+```js
+App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
+App.LogoutRoute     = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
+```
+
+The last step is to add a template for the login form:
+
+```handlebars
+<form {{action login on='submit'}}>
+  <label for="identification">Login</label>
+  {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login'}}
+  <label for="password">Password</label>
+  {{view Ember.TextField id='password' type='password' valueBinding='password' placeholder='Enter Password'}}
+  <button type="submit">Login</button>
+</form>
+```
+
 ## The Server side
 
 The minimal requirement on the server side is that there is an endpoint for authenticating
