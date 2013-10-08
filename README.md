@@ -59,6 +59,9 @@ The last step is to add a template for the login form:
 </form>
 ```
 
+For more examples including custom URLs, JSON payloads, error handling,
+handling of the registered user etc., see the [examples](#examples).
+
 ## The Server side
 
 The minimal requirement on the server side is that there is an endpoint for authenticating
