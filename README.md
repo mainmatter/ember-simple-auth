@@ -49,7 +49,7 @@ App.LogoutRoute     = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
 
 The last step is to add a template for the login form:
 
-```handlebars
+```html
 <form {{action login on='submit'}}>
   <label for="identification">Login</label>
   {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login'}}
