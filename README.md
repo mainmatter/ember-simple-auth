@@ -155,10 +155,6 @@ options:
 }
 ```
 
-* If you're on [Ruby on Rails](http://rubyonrails.org), you can also use the
-  [ember-simple-auth-source](http://rubygems.org/gems/ember-simple-auth-source)
-  gem.
-
 ## Building
 
 To build Ember.SimpleAuth yourself you need to have Ruby (at least version
