@@ -96,6 +96,20 @@ _"Full-fledged example"_ in the examples).
 In the case of ```DELETE /session``` no JSON is sent with the request and none
 is expected in the response.
 
+## Examples
+
+To run the examples you need to have Ruby and the
+[bundler gem](http://bundler.io) installed. If you have that, you can run:
+
+```bash
+git clone https://github.com/marcoow/ember-simple-auth.git
+cd ember-simple-auth/examples
+bundle
+./runner
+```
+
+Open http://localhost:4567 to see a list of examples.
+
 ## Installation
 
 ## Building
@@ -113,3 +127,10 @@ bundle exec rake dist
 
 After running that you find the compiled source file (including a minified
 version) in the ```dist``` directory.
+
+If you want to run the tests as well you also need
+[PhantomJS](http://phantomjs.org). You can run the tests with:
+
+```bash
+bundle exec rake test
+```
