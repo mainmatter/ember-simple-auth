@@ -116,6 +116,22 @@ Open [http://localhost:4567](http://localhost:4567) for the list of examples.
 
 ## Installation
 
+To install Ember.SimpleAuth in you Ember.js application you have several
+options:
+
+* [build it yourself](#building)
+* if you're using [Bower](http://bower.io), just add it to your
+  ```bower.json``` file:
+```js
+{
+  "dependencies": {
+    "ember-simple-auth": "https://github.com/simplabs/ember-simple-auth.git"
+  }
+}
+```
+* if you're on [Ruby on Rails](http://rubyonrails.org), you can also use the
+  [ember-simple-auth-source](http://rubygems.org/gems/ember-simple-auth-source)
+
 ## Building
 
 To build Ember.SimpleAuth yourself you need to have Ruby (at least version
