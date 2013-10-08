@@ -26,4 +26,4 @@ as easy as running:
 ```
 
 After running that you find the compiled source file (including a minified
-version) in the ```dist/``` directory.
+version) in the ```dist``` directory.
