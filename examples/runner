@@ -23,7 +23,7 @@ get '/ember-simple-auth.js' do
 end
 
 # serve the HTML files from the respective example directoy
-%w(1-simple 2-errors 3-ember-data 4-full).each do |example|
+%w(1-simple 2-errors 3-full).each do |example|
   get "/#{example}" do
     erb File.read(File.join(base_dir, example, 'index.html'))
   end
@@ -118,13 +118,9 @@ __END__
           <h4 class="list-group-item-heading">Example with error handling</h4>
           <p class="list-group-item-text">Simple example with error handling - still no data, no session account etc.</p>
         </a>
-        <a href="/3-ember-data" class="list-group-item">
-          <h4 class="list-group-item-heading">ember-data example</h4>
-          <p class="list-group-item-text">Example with error handling and authnenticated ember-data requests - no session account</p>
-        </a>
-        <a href="/4-full" class="list-group-item">
+        <a href="/3-full" class="list-group-item">
           <h4 class="list-group-item-heading">Full-fledged example</h4>
-          <p class="list-group-item-text">Full-fledged example with error handling, ember-data, session account and custom server responses.</p>
+          <p class="list-group-item-text">Full-fledged example with error handling, session account and custom server responses.</p>
         </a>
       </div>
     </div>

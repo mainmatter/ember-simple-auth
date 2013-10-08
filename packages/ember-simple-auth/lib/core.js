@@ -13,11 +13,9 @@ Ember.SimpleAuth.setup = function(app, options) {
     app.inject(component, 'session', 'simple_auth:session');
   });
 
-  if (options.authenticateAjax) {
-    Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-      if (!jqXHR.crossDomain && !Ember.isEmpty(session.get('authToken'))) {
-        jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN',  session.get('authToken'));
-      }
-    });
-  }
+  Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+    if (!jqXHR.crossDomain && !Ember.isEmpty(session.get('authToken'))) {
+      jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN',  session.get('authToken'));
+    }
+  });
 };
