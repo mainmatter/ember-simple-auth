@@ -23,5 +23,3 @@ distros.each do |name, modules|
     end
   end
 end
-
-# vim: filetype=ruby
