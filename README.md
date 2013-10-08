@@ -2,7 +2,8 @@
 
 Ember.SimpleAuth is a small and unobtrusive library that helps you implement a
 token based authentication mechanism with ember.js applications. It only has
-minimal requirements with respect to the server API.
+minimal requirements with respect to the application setup, routes etc. as well
+as the server interface.
 
 ## Token Based Authentication
 
