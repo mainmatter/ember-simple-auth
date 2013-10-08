@@ -8,11 +8,12 @@ minimal requirements with respect to the server API.
 
 The general idea of token based authentication in ember.js applications is that
 the server provides an endpoint that the client uses to authentication users
-with their credentials and that if authentication is successful responds with a
-secret token that the client uses to identify itself in subsequent requests.
+with their credentials and that - given the credentials are valid - responds
+with a secret token that the client uses to identify itself in subsequent
+requests.
 
-The secret token is best sent in a custom header that the server can then
-evaluate. Ember.SimpleAuth uses "X-AUTHENTICATION-TOKEN".
+The secret token is usually sent in a custom header. Ember.SimpleAuth uses
+```X-AUTHENTICATION-TOKEN```.
 
 ## Usage
 
@@ -46,8 +47,9 @@ The default JSON for ```POST /session``` is as follows:
 }
 ```
 
-Both the JSON in the request as well as the response can be different than this
-defaults (see _"Full-fledged example"_ in the examples).
+Both the request as well as the response JSON can be different than these
+defaults and customization only needs a minimal account of code (see
+_"Full-fledged example"_ in the examples).
 
 In the case of ```DELETE /session``` no JSON is sent with the request and none
 is expected in the response.
