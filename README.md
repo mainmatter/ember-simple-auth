@@ -122,15 +122,13 @@ options:
 * [build it yourself](#building)
 * if you're using [Bower](http://bower.io), just add it to your
   ```bower.json``` file:
-
-```js
-{
-  "dependencies": {
-    "ember-simple-auth": "https://github.com/simplabs/ember-simple-auth.git"
+  ```js
+  {
+    "dependencies": {
+      "ember-simple-auth": "https://github.com/simplabs/ember-simple-auth.git"
+    }
   }
-}
-```
-
+  ```
 * if you're on [Ruby on Rails](http://rubyonrails.org), you can also use the
   [ember-simple-auth-source](http://rubygems.org/gems/ember-simple-auth-source)
 
