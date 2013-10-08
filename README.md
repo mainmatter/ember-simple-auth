@@ -22,7 +22,7 @@ as easy as running:
   git clone https://github.com/simplabs/ember-simple-auth.git
   cd ember-simple-auth
   bundle
-  bundle exec rake ember:dist
+  bundle exec rake dist
 ```
 
 After running that you find the compiled source file (including a minified
