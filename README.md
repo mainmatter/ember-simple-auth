@@ -154,9 +154,9 @@ options:
 }
 ```
 
-* [Build it yourself](#building)
 * Download a prebuilt version from
   [the releases page](https://github.com/simplabs/ember-simple-auth/releases)
+* [Build it yourself](#building)
 
 ## Building
 
