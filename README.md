@@ -12,8 +12,8 @@ with their credentials and that - given the credentials are valid - responds
 with a secret token that the client uses to identify itself in subsequent
 requests.
 
-The secret token is usually sent in a custom header. Ember.SimpleAuth uses
-```X-AUTHENTICATION-TOKEN```.
+The secret token is usually sent in a custom header. Ember.SimpleAuth
+uses ```X-AUTHENTICATION-TOKEN```.
 
 ## Usage
 
