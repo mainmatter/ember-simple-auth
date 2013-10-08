@@ -119,8 +119,8 @@
           }
         }.property('accountId')
       });
-      //make sure AJAX requests send the authentication token header; also set a custom session endpoint route
-      Ember.SimpleAuth.setup(application, { authenticateAjax: true, serverSessionRoute: '/v2/session' });
+      //set a custom session endpoint
+      Ember.SimpleAuth.setup(application, { serverSessionRoute: '/v2/session' });
     }
   });
 
