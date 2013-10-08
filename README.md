@@ -77,7 +77,7 @@ The default request JSON sent to ```POST /session``` is as follows:
 ```json
 {
   session: {
-    identification: "<user name, email or other identification of the user>",
+    identification: "<identification of the user - user name, email or whatever your server expects>",
     password:       "<secret!>"
   }
 }
