@@ -95,7 +95,7 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      //customize the session so that it handles the custom payload as well as the additional account
+      //customize the session so that it handles the custom payload as well as the additional authenticated account
       Ember.SimpleAuth.Session.reopen({
         init: function() {
           this._super();
@@ -124,7 +124,7 @@
         }.property('accountId')
       });
       //set a custom session endpoint
-      Ember.SimpleAuth.setup(application, { serverSessionRoute: '/v2/session' });
+      Ember.SimpleAuth.setup(application, { serverSessionRoute: '/v3/session' });
     }
   });
 

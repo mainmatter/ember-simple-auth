@@ -23,7 +23,7 @@ get '/ember-simple-auth.js' do
 end
 
 # serve the HTML files from the respective example directoy
-%w(1-simple 2-errors 3-full).each do |example|
+%w(1-simple 2-errors 3-authenticated-account 4-custom-response).each do |example|
   get "/#{example}" do
     erb File.read(File.join(base_dir, example, 'index.html'))
   end
@@ -63,8 +63,24 @@ get '/accounts/1' do
   end
 end
 
-# session creation endpoint with custom response; successfull if credentials are letme/in
+# session creation endpoint with additional authenticated user
 post '/v2/session' do
+  payload = request.body.read
+  json    = JSON.parse(payload)
+  if json['USER_NAME'] == 'letme' && json['PASS'] == 'in'
+    [200, { 'Content-Type' => 'application/json' }, ['{ "session": { "authToken": "secret token!", "accountId": 1 } }']]
+  else
+    [422, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid credentials" }']]
+  end
+end
+
+# session deletion endpoint for V2
+delete '/v2/session' do
+  [200, { 'Content-Type' => 'application/json' }, ['']]
+end
+
+# session creation endpoint with custom response
+post '/v3/session' do
   payload = request.body.read
   json    = JSON.parse(payload)
   if json['USER_NAME'] == 'letme' && json['PASS'] == 'in'
@@ -74,8 +90,8 @@ post '/v2/session' do
   end
 end
 
-# session deletion endpoint for V2
-delete '/v2/session' do
+# session deletion endpoint for V3
+delete '/v3/session' do
   [200, { 'Content-Type' => 'application/json' }, ['']]
 end
 
@@ -118,7 +134,11 @@ __END__
           <h4 class="list-group-item-heading">Example with error handling</h4>
           <p class="list-group-item-text">Simple example with error handling - still no data, no session account etc.</p>
         </a>
-        <a href="/3-full" class="list-group-item">
+        <a href="/3-authenticated-account" class="list-group-item">
+          <h4 class="list-group-item-heading">Example with session account</h4>
+          <p class="list-group-item-text">Full-fledged example with error handling and handling of the authenticated account.</p>
+        </a>
+        <a href="/4-custom-response" class="list-group-item">
           <h4 class="list-group-item-heading">Full-fledged example</h4>
           <p class="list-group-item-text">Full-fledged example with error handling, session account and custom server responses.</p>
         </a>
