@@ -18,8 +18,8 @@ uses ```X-AUTHENTICATION-TOKEN```.
 
 ## Usage
 
-Ember.SimpleAuth only requires one template/controller pair and 2 routes. To
-set it up it's best to use a custom initializer:
+Ember.SimpleAuth only requires 2 routes and one template/controller. To set it
+up it's best to use a custom initializer:
 
 ```js
 Ember.Application.initializer({
@@ -111,7 +111,7 @@ bundle
 ./runner
 ```
 
-Open http://localhost:4567 to see a list of examples.
+Open [http://localhost:4567](http://localhost:4567) to see a list of examples.
 
 ## Installation
 
