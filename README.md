@@ -1,17 +1,16 @@
 #  Ember.SimpleAuth
 
 Ember.SimpleAuth is a small and unobtrusive library that helps you implement a
-token based authentication mechanism with ember.js applications. It only has
-minimal requirements with respect to the application setup, routes etc. as well
-as the server interface.
+token based authentication mechanism with [Ember.js](http://emberjs.com)
+applications. It has minimal requirements with respect to the application
+structure, routes etc. as well as the server interface.
 
 ## Token Based Authentication
 
-The general idea of token based authentication in ember.js applications is that
-the server provides an endpoint that the client uses to authentication users
-with their credentials and that - given the credentials are valid - responds
-with a secret token that the client uses to identify itself in subsequent
-requests.
+The general idea of token based authentication is that the server provides an
+endpoint that the clients use to authenticate users with their credentials and
+that - given the credentials are valid - responds with a secret token that the
+client then uses to identify the user in subsequent requests.
 
 The secret token is usually sent in a custom header. Ember.SimpleAuth
 uses ```X-AUTHENTICATION-TOKEN```.
@@ -40,14 +39,15 @@ App.Router.map(function() {
 ```
 
 To wire everything up, the generated ```App.LoginController``` and
-```App.LogoutRoute``` need to use the mixins provided by Ember.SimpleAuth:
+```App.LogoutRoute``` need to implement the respective mixins provided by
+Ember.SimpleAuth:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
 App.LogoutRoute     = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
 ```
 
-The last step is to add a template for the login form:
+The last step is to add a template that renders the login form:
 
 ```html
 <form {{action login on='submit'}}>
@@ -64,12 +64,13 @@ handling of the registered user etc., see the [examples](#examples).
 
 ## The Server side
 
-The minimal requirement on the server side is that there is an endpoint for authenticating
-the user that accepts the credentials as JSON via POST and an endpoint that invalidates the
-secret token via DELETE. By default these endpoints are expected as ```POST /session``` and
-```DELETE /session``` but the exact URLs can be customized.
+The minimal requirement on the server side is that there is an endpoint for
+authenticating the user that accepts the credentials as JSON via POST and an
+endpoint that invalidates the secret token via DELETE. By default these
+endpoints are expected as ```POST /session``` and ```DELETE /session``` but the
+exact URLs can be customized.
 
-The default JSON for ```POST /session``` is as follows:
+The default request JSON sent to ```POST /session``` is as follows:
 
 ### Request
 
@@ -101,24 +102,24 @@ is expected in the response.
 
 ## Examples
 
-To run the examples you need to have Ruby and the
+To run the examples you need to have Ruby (at least version 1.9.3) and the
 [bundler gem](http://bundler.io) installed. If you have that, you can run:
 
 ```bash
-git clone https://github.com/marcoow/ember-simple-auth.git
+git clone https://github.com/simplabs/ember-simple-auth.git
 cd ember-simple-auth/examples
 bundle
 ./runner
 ```
 
-Open [http://localhost:4567](http://localhost:4567) to see a list of examples.
+Open [http://localhost:4567](http://localhost:4567) for the list of examples.
 
 ## Installation
 
 ## Building
 
-In order to build ember-simple-auth yourself you need to have Ruby and the
-[bundler gem](http://bundler.io) installed. If you have that, building is
+To build Ember.SimpleAuth yourself you need to have Ruby (at least version
+1.9.3) and the [bundler gem](http://bundler.io) installed. If you have that, building is
 as easy as running:
 
 ```bash
