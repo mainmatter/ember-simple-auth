@@ -62,7 +62,7 @@ The last step is to add a template that renders the login form:
 ```
 At this point the infrastructure for users to log in and out is set up. Also
 every AJAX request (unless it's a cross domain request) will include
-[the authentication header](Token Based Authentication).
+[the authentication header](#token-based-authentication).
 
 To actually make a route in the application protected and inaccessible when no
 user is authenticated, simply implement the
