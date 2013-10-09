@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/simplabs/ember-simple-auth.png)](https://travis-ci.org/simplabs/ember-simple-auth)
+
 #  Ember.SimpleAuth
 
 Ember.SimpleAuth is a lightweight and unobtrusive library for implementing
