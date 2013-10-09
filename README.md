@@ -149,7 +149,7 @@ options:
 ```js
 {
   "dependencies": {
-    "ember-simple-auth": "https://github.com/simplabs/ember-simple-auth.git"
+    "ember-simple-auth": "https://github.com/simplabs/ember-simple-auth-component.git"
   }
 }
 ```
