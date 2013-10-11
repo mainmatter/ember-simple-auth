@@ -82,7 +82,7 @@ configured) when no user is authenticated.
 
 The current session can always be accessed as ```session```. To display
 login/logout buttons depending on whether the user is currently authenticated
-or not, simple add sth. like this to the respective template:
+or not, simple add something like this to the respective template:
 
 ```html
 {{#if session.isAuthenticated}}
@@ -126,7 +126,7 @@ The response JSON expected by default is:
 ```
 
 Both the request as well as the response JSON can be different than these
-defaults and customization only needs a minimal account of code (see
+defaults and customization only needs a minimal amount of code (see
 _"Full-fledged example"_ in the examples).
 
 In the case of ```DELETE /session``` no JSON is sent with the request and none
@@ -179,7 +179,7 @@ bundle
 bundle exec rake dist
 ```
 
-After running that you find the compiled source file (including a minified
+After running that you will find the compiled source file (including a minified
 version) in the ```dist``` directory.
 
 If you want to run the tests as well you also need
