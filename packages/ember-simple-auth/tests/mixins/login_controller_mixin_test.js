@@ -11,11 +11,11 @@ var testController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMix
   }
 }).create();
 
-var postRequestUrl;
-var postRequestData;
-var postMock = function(url, data) {
-  postRequestUrl = url;
-  postRequestData = data;
+var ajaxRequestUrl;
+var ajaxRequestOptions;
+var ajaxMock = function(url, options) {
+  ajaxRequestUrl     = url;
+  ajaxRequestOptions = options;
   return {
     then: function(success, fail) {
       success({ session: { authToken: 'authToken' } });
@@ -25,30 +25,33 @@ var postMock = function(url, data) {
 };
 
 module('Ember.SimpleAuth.LoginControllerMixin', {
-  originalPost: Ember.$.post,
+  originalAjax: Ember.$.ajax,
   setup: function() {
     Ember.SimpleAuth.serverSessionRoute = '/session/route';
     testController.setProperties({ identification: 'identification', password: 'password' });
     testController.session.destroy();
-    loginFailedError = undefined;
-    Ember.$.post = postMock;
+    loginFailedError   = undefined;
+    Ember.$.ajax       = ajaxMock;
+    ajaxRequestUrl     = undefined;
+    ajaxRequestOptions = undefined;
   },
   teardown: function() {
-    Ember.$.post = this.originalPost;
+    Ember.$.ajax = this.originalAjax;
   }
 });
 
 test('sends a POST request to the correct route', function() {
   testController.send('login');
 
-  equal(postRequestUrl, '/session/route', 'Ember.SimpleAuth.LoginControllerMixin sends a request to the correct route on submit.');
-  equal(postRequestData, '{"session":{"identification":"identification","password":"password"}}', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct data on submit.');
+  equal(ajaxRequestUrl, '/session/route', 'Ember.SimpleAuth.LoginControllerMixin sends a request to the correct route on submit.');
+  equal(ajaxRequestOptions.data, '{"session":{"identification":"identification","password":"password"}}', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct data on submit.');
+  equal(ajaxRequestOptions.contentType, 'application/json', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct content type on submit.');
 
-  postRequestUrl = undefined;
+  ajaxRequestUrl = undefined;
   testController.setProperties({ identification: '', password: 'password' });
   testController.send('login');
 
-  equal(postRequestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on submit when identification or password are empty.');
+  equal(ajaxRequestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on submit when identification or password are empty.');
 });
 
 test('serializes the credentials correctly when a custom serialization method is provided', function() {
@@ -59,7 +62,7 @@ test('serializes the credentials correctly when a custom serialization method is
   });
   testController.send('login');
 
-  equal(postRequestData, '{"custom":{"credentials":"identification.password"}}', 'Ember.SimpleAuth.LoginControllerMixin serializes the credentials correctly when a custom serialization method is provided.');
+  equal(ajaxRequestOptions.data, '{"custom":{"credentials":"identification.password"}}', 'Ember.SimpleAuth.LoginControllerMixin serializes the credentials correctly when a custom serialization method is provided.');
 });
 
 test('updates the current session with the server response', function() {
