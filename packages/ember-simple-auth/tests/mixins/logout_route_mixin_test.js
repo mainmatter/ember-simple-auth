@@ -7,8 +7,10 @@ var testRoute = Ember.Object.extend(Ember.SimpleAuth.LogoutRouteMixin, {
   }
 }).create();
 
+var ajaxRequestUrl;
 var ajaxRequestOptions;
-var ajaxMock = function(options) {
+var ajaxMock = function(url, options) {
+  ajaxRequestUrl     = url;
   ajaxRequestOptions = options;
   return {
     always: function(callback) {
@@ -21,7 +23,9 @@ module('Ember.SimpleAuth.LogoutRouteMixin', {
   originalAjax: Ember.$.ajax,
   setup: function() {
     Ember.SimpleAuth.serverSessionRoute = '/session/route';
-    Ember.$.ajax = ajaxMock;
+    ajaxRequestUrl     = undefined;
+    ajaxRequestOptions = undefined;
+    Ember.$.ajax       = ajaxMock;
   },
   teardown: function() {
     Ember.$.ajax = this.originalAjax;
@@ -31,7 +35,7 @@ module('Ember.SimpleAuth.LogoutRouteMixin', {
 test('sends a DELETE request to the correct route before model', function() {
   testRoute.beforeModel();
 
-  equal(ajaxRequestOptions.url, '/session/route', 'Ember.SimpleAuth.LogoutRouteMixin sends a request to the correct route before model.');
+  equal(ajaxRequestUrl, '/session/route', 'Ember.SimpleAuth.LogoutRouteMixin sends a request to the correct route before model.');
   equal(ajaxRequestOptions.type, 'DELETE', 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request before model.');
 });
 

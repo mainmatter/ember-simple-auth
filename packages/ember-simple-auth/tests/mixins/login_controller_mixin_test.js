@@ -31,9 +31,9 @@ module('Ember.SimpleAuth.LoginControllerMixin', {
     testController.setProperties({ identification: 'identification', password: 'password' });
     testController.session.destroy();
     loginFailedError   = undefined;
-    Ember.$.ajax       = ajaxMock;
     ajaxRequestUrl     = undefined;
     ajaxRequestOptions = undefined;
+    Ember.$.ajax       = ajaxMock;
   },
   teardown: function() {
     Ember.$.ajax = this.originalAjax;
@@ -44,6 +44,7 @@ test('sends a POST request to the correct route', function() {
   testController.send('login');
 
   equal(ajaxRequestUrl, '/session/route', 'Ember.SimpleAuth.LoginControllerMixin sends a request to the correct route on submit.');
+  equal(ajaxRequestOptions.type, 'POST', 'Ember.SimpleAuth.LoginControllerMixin sends a POST request on submit.');
   equal(ajaxRequestOptions.data, '{"session":{"identification":"identification","password":"password"}}', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct data on submit.');
   equal(ajaxRequestOptions.contentType, 'application/json', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct content type on submit.');
 
@@ -52,6 +53,23 @@ test('sends a POST request to the correct route', function() {
   testController.send('login');
 
   equal(ajaxRequestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on submit when identification or password are empty.');
+});
+
+test('does not send a request when identification or password are empty', function() {
+  testController.setProperties({ identification: '', password: 'password' });
+  testController.send('login');
+
+  equal(ajaxRequestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on submit when identification is empty.');
+
+  testController.setProperties({ identification: 'identification', password: '' });
+  testController.send('login');
+
+  equal(ajaxRequestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on submit when password is empty.');
+
+  testController.setProperties({ identification: '', password: '' });
+  testController.send('login');
+
+  equal(ajaxRequestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on submit when identification and password are empty.');
 });
 
 test('serializes the credentials correctly when a custom serialization method is provided', function() {
