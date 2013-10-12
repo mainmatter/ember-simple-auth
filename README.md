@@ -20,7 +20,7 @@ The secret token is usually sent in a header. Ember.SimpleAuth uses the
 requests. The server will see the something like this:
 
 ```
-Authorization: Token token="secret token"
+Authorization: Token token="<secret token>"
 ```
 
 ## Usage
@@ -138,14 +138,14 @@ is expected in the response.
 
 ### The `Authorization` header
 
-Once the session has been successfully established via the `POST /session`
+Once the session has successfully been established via the `POST /session`
 endpoint and the server responded with the authentication token, all subsequent
 request the client sends will includes the `Authorization` header. That header
 includes the authentication token which the server can use to identify the
 user. The header looks something like this:
 
 ```
-Authorization: Token token="secret token"
+Authorization: Token token="<secret token>"
 ```
 
 If your server is a [Ruby on Rails](http://rubyonrails.org) application, it
