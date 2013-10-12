@@ -15,9 +15,13 @@ with their credentials and that - given the credentials are valid - responds
 with a secret token that the client then uses to identify the user in
 subsequent requests.
 
-The secret token is usually sent as a header. Ember.SimpleAuth uses the
-`Authorization` header and automatically injects this header into all AJAX
-requests.
+The secret token is usually sent in a header. Ember.SimpleAuth uses the
+`Authorization` header and automatically injects that into all AJAX
+requests. The server will see the something like this:
+
+```
+Authorization: Token token="secret token"
+```
 
 ## Usage
 
