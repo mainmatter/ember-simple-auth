@@ -46,8 +46,8 @@ App.Router.map(function() {
 });
 ```
 
-To wire everything up, the generated ```App.LoginController``` and
-```App.LogoutRoute``` need to implement the respective mixins provided by
+To wire everything up, the generated `App.LoginController` and
+`App.LogoutRoute` need to implement the respective mixins provided by
 Ember.SimpleAuth:
 
 ```js
@@ -72,7 +72,7 @@ every AJAX request (unless it's a cross domain request) will include
 
 To actually make a route in the application protected and inaccessible when no
 user is authenticated, simply implement the
-```Ember.SimpleAuth.AuthenticatedRouteMixin``` in the respective route:
+`Ember.SimpleAuth.AuthenticatedRouteMixin` in the respective route:
 
 ```js
 App.Router.map(function() {
@@ -81,10 +81,10 @@ App.Router.map(function() {
 App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
 ```
 
-This will make the route redirect to ```/login``` (or a different URL if
+This will make the route redirect to `/login` (or a different URL if
 configured) when no user is authenticated.
 
-The current session can always be accessed as ```session```. To display
+The current session can always be accessed as `session`. To display
 login/logout buttons depending on whether the user is currently authenticated
 or not, simple add something like this to the respective template:
 
@@ -105,10 +105,10 @@ handling of the session user etc., see the [examples](#examples).
 The only requirement on the server side is that there is an endpoint for
 authenticating users that accepts the credentials as JSON via POST and an
 endpoint that invalidates the secret token via DELETE. By default these
-endpoints are expected as ```POST /session``` and ```DELETE /session``` but the
+endpoints are expected as `POST /session` and `DELETE /session` but the
 exact URLs can be customized.
 
-The default request JSON sent to ```POST /session``` is as follows:
+The default request JSON sent to `POST /session` is as follows:
 
 ```json
 {
@@ -133,7 +133,7 @@ Both the request as well as the response JSON can be different than these
 defaults and customization only needs a minimal amount of code (see
 _"Full-fledged example"_ in the examples).
 
-In the case of ```DELETE /session``` no JSON is sent with the request and none
+In the case of `DELETE /session` no JSON is sent with the request and none
 is expected in the response.
 
 ## Examples
@@ -156,7 +156,7 @@ To install Ember.SimpleAuth in you Ember.js application you have several
 options:
 
 * If you're using [Bower](http://bower.io), just add it to your
-  ```bower.json``` file:
+  `bower.json` file:
 
 ```js
 {
@@ -184,7 +184,7 @@ bundle exec rake dist
 ```
 
 After running that you will find the compiled source file (including a minified
-version) in the ```dist``` directory.
+version) in the `dist` directory.
 
 If you want to run the tests as well you also need
 [PhantomJS](http://phantomjs.org). You can run the tests with:
