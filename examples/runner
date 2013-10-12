@@ -47,7 +47,7 @@ end
 
 # posts endpoint; successful if a valid authentication token header is sent
 get '/posts' do
-  if env['HTTP_X_AUTHENTICATION_TOKEN'] == 'secret token!'
+  if env['HTTP_AUTHORIZATION'] == 'Token token="secret token!"'
     [200, { 'Content-Type' => 'application/json' }, ['{ "posts": [{ "id": 1, "title": "first post", "body": "some content"}, { "id": 2, "title": "2nd post", "body": "some other body" }] }']]
   else
     [401, {}, ['']]
@@ -56,7 +56,7 @@ end
 
 # account endpoint; successful if a valid authentication token header is sent
 get '/accounts/1' do
-  if env['HTTP_X_AUTHENTICATION_TOKEN'] == 'secret token!'
+  if env['HTTP_AUTHORIZATION'] == 'Token token="secret token!"'
     [200, { 'Content-Type' => 'application/json' }, ['{ "account": { "id": 1, "login": "letme", "name": "Some Person"} }']]
   else
     [401, {}, ['']]
