@@ -152,6 +152,9 @@ If your server is a [Ruby on Rails](http://rubyonrails.org) application, it
 already has
 [support for token based authentication built in](http://api.rubyonrails.org/classes/ActionController/HttpAuthentication/Token.html).
 
+**In any case of course you should use `HTTPS` for all communication between
+client and server so the authentication token can't be intercepted.**
+
 ## Examples
 
 To run the examples you need to have Ruby (at least version 1.9.3) and the
