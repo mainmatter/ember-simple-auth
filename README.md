@@ -136,6 +136,22 @@ _"Full-fledged example"_ in the examples).
 In the case of `DELETE /session` no JSON is sent with the request and none
 is expected in the response.
 
+### The `Authorization` header
+
+Once the session has been successfully established via the `POST /session`
+endpoint and the server responded with the authentication token, all subsequent
+request the client sends will includes the `Authorization` header. That header
+includes the authentication token which the server can use to identify the
+user. The header looks something like this:
+
+```
+Authorization: Token token="secret token"
+```
+
+If your server is a [Ruby on Rails](http://rubyonrails.org) application, it
+already has
+[support for token based authentication built in](http://api.rubyonrails.org/classes/ActionController/HttpAuthentication/Token.html).
+
 ## Examples
 
 To run the examples you need to have Ruby (at least version 1.9.3) and the
