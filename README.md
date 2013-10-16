@@ -142,7 +142,9 @@ Once the session has successfully been established via the `POST /session`
 endpoint and the server responded with the authentication token, all subsequent
 request the client sends will includes the `Authorization` header. That header
 includes the authentication token which the server can use to identify the
-user. The header looks something like this:
+user. The header looks something like this (roughly based on
+[this](http://tools.ietf.org/html/draft-hammer-http-token-auth-01)
+Internet-Draft that never became an RFC though):
 
 ```
 Authorization: Token token="<secret token>"
