@@ -1,4 +1,4 @@
-var ContainerMock = Ember.Object.extend({
+var ApplicationMock = Ember.Object.extend({
   init: function() {
     this._super();
     this.registrations = [];
@@ -51,25 +51,25 @@ module('Ember.SimpleAuth', {
 });
 
 test('saves serverSessionRoute if specified', function() {
-  Ember.SimpleAuth.setup(ContainerMock.create(), { serverSessionRoute: '/route' });
+  Ember.SimpleAuth.setup(ApplicationMock.create(), { serverSessionRoute: '/route' });
 
   equal(Ember.SimpleAuth.serverSessionRoute, '/route', 'Ember.SimpleAuth saves serverSessionRoute when specified.');
 });
 
 test('saves routeAfterLogin if specified', function() {
-  Ember.SimpleAuth.setup(ContainerMock.create(), { routeAfterLogin: 'somewhere' });
+  Ember.SimpleAuth.setup(ApplicationMock.create(), { routeAfterLogin: 'somewhere' });
 
   equal(Ember.SimpleAuth.routeAfterLogin, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogin when specified.');
 });
 
 test('saves routeAfterLogout if specified', function() {
-  Ember.SimpleAuth.setup(ContainerMock.create(), { routeAfterLogout: 'somewhere' });
+  Ember.SimpleAuth.setup(ApplicationMock.create(), { routeAfterLogout: 'somewhere' });
 
   equal(Ember.SimpleAuth.routeAfterLogout, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogout when specified.');
 });
 
 test('injects a session object in models, views, controllers and routes', function() {
-  var container = ContainerMock.create();
+  var container = ApplicationMock.create();
   Ember.SimpleAuth.setup(container);
 
   Ember.$.each(['model', 'view', 'controller', 'view'], function(i, component) {
@@ -86,7 +86,7 @@ test('registers an AJAX prefilter that adds the authToken for non-crossdomain re
   var xhrMock = XhrMock.create();
   var token = Math.random().toString(36);
   sessionStorage.authToken = token;
-  Ember.SimpleAuth.setup(ContainerMock.create());
+  Ember.SimpleAuth.setup(ApplicationMock.create());
 
   registeredAjaxPrefilter({}, {}, xhrMock);
   equal(xhrMock.requestHeaders['Authorization'], 'Token token="' + token + '"', 'Ember.SimpleAuth registers an AJAX prefilter that adds the authToken for non-crossdomain requests.');
