@@ -1,4 +1,4 @@
-var testRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutActionableMixin, {
+var testRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
   session: Ember.SimpleAuth.Session.create(),
   route:   null,
 
@@ -23,9 +23,9 @@ module('Ember.SimpleAuth.LogoutActionableMixin', {
   originalAjax: Ember.$.ajax,
   setup: function() {
     Ember.SimpleAuth.serverSessionRoute = '/session/route';
-    ajaxRequestUrl     = undefined;
-    ajaxRequestOptions = undefined;
-    Ember.$.ajax       = ajaxMock;
+    Ember.$.ajax                        = ajaxMock;
+    ajaxRequestUrl                      = undefined;
+    ajaxRequestOptions                  = undefined;
   },
   teardown: function() {
     Ember.$.ajax = this.originalAjax;
