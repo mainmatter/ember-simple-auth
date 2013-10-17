@@ -68,37 +68,37 @@ module('Ember.SimpleAuth', {
   }
 });
 
-test('saves serverSessionRoute if specified', function() {
+test('.setup saves serverSessionRoute if specified', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { serverSessionRoute: '/route' });
 
   equal(Ember.SimpleAuth.serverSessionRoute, '/route', 'Ember.SimpleAuth saves serverSessionRoute when specified.');
 });
 
-test('saves routeAfterLogin if specified', function() {
+test('.setup saves routeAfterLogin if specified', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { routeAfterLogin: 'somewhere' });
 
   equal(Ember.SimpleAuth.routeAfterLogin, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogin when specified.');
 });
 
-test('saves routeAfterLogout if specified', function() {
+test('.setup saves routeAfterLogout if specified', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { routeAfterLogout: 'somewhere' });
 
   equal(Ember.SimpleAuth.routeAfterLogout, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogout when specified.');
 });
 
-test('saves loginRoute if specified', function() {
+test('.setup saves loginRoute if specified', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { loginRoute: 'somewhere' });
 
   equal(Ember.SimpleAuth.loginRoute, 'somewhere', 'Ember.SimpleAuth saves loginRoute when specified.');
 });
 
-test('saves logoutRoute if specified', function() {
+test('.setup saves logoutRoute if specified', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { logoutRoute: 'somewhere' });
 
   equal(Ember.SimpleAuth.logoutRoute, 'somewhere', 'Ember.SimpleAuth saves logutRoute when specified.');
 });
 
-test('injects a session object in models, views, controllers and routes', function() {
+test('.setup injects a session object in models, views, controllers and routes', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
 
   Ember.$.each(['model', 'view', 'controller', 'view'], function(i, component) {
@@ -111,7 +111,7 @@ test('injects a session object in models, views, controllers and routes', functi
   });
 });
 
-test('registers an AJAX prefilter that adds the authToken for non-crossdomain requests', function() {
+test('.setup registers an AJAX prefilter that adds the authToken for non-crossdomain requests', function() {
   var xhrMock = XhrMock.create();
   var token = Math.random().toString(36);
   sessionStorage.authToken = token;
