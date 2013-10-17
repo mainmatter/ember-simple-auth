@@ -1,4 +1,5 @@
-var applicationMock = Ember.Object.extend({
+var applicationMock;
+var ApplicationMock = Ember.Object.extend({
   init: function() {
     this._super();
     this.registrations = [];
@@ -23,18 +24,20 @@ var applicationMock = Ember.Object.extend({
       });
     }
   }
-}).create();
+});
 
-var applicationRouteMock = Ember.Object.extend({
+var applicationRouteMock;
+var ApplicationRouteMock = Ember.Object.extend({
   send: function() {
   }
-}).create();
+});
 
-var containerMock = Ember.Object.extend({
+var containerMock;
+var ContainerMock = Ember.Object.extend({
   lookup: function(name) {
     return applicationRouteMock;
   }
-}).create();
+});
 
 var XhrMock = Ember.Object.extend({
   init: function() {
@@ -54,7 +57,11 @@ var ajaxPrefilterMock = function(prefilter) {
 module('Ember.SimpleAuth', {
   originalAjaxPrefilter: Ember.$.ajaxPrefilter,
   setup: function() {
-    Ember.$.ajaxPrefilter = ajaxPrefilterMock;
+    Ember.$.ajaxPrefilter   = ajaxPrefilterMock;
+    registeredAjaxPrefilter = undefined;
+    applicationMock         = ApplicationMock.create();
+    applicationRouteMock    = ApplicationRouteMock.create();
+    containerMock           = ContainerMock.create();
   },
   teardown: function() {
     Ember.$.ajaxPrefilter = this.originalAjaxPrefilter;
