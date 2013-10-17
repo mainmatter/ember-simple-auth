@@ -75,7 +75,7 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      Ember.SimpleAuth.setup(application);
+      Ember.SimpleAuth.setup(container, application);
     }
   });
 
@@ -89,7 +89,7 @@
   });
 
   // use the provided mixins in the application route and login controller
-  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutActionableMixin);
+  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
   App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
     // display an error when loggign in fails
     loginFailed: function(xhr) {

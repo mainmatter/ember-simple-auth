@@ -50,7 +50,7 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      Ember.SimpleAuth.setup(application);
+      Ember.SimpleAuth.setup(container, application);
     }
   });
 
@@ -62,7 +62,7 @@
   });
 
   // use the provided mixin in the application route
-  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutActionableMixin, {
+  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
     actions: {
       login: function() {
         window.open(

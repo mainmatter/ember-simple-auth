@@ -14,13 +14,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
           contentType: 'application/json'
         }).then(function(response) {
           self.get('session').setup(response);
-          var attemptedTransition = self.get('session.attemptedTransition');
-          if (attemptedTransition) {
-            attemptedTransition.retry();
-            self.set('session.attemptedTransition', null);
-          } else {
-            self.transitionToRoute(Ember.SimpleAuth.routeAfterLogin);
-          }
+          self.send('loginComplete');
         }, function() {
           Ember.tryInvoke(self, 'loginFailed', arguments);
         });

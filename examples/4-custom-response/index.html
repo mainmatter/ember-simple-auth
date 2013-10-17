@@ -122,7 +122,7 @@
         }.property('accountId')
       });
       //set a custom session endpoint
-      Ember.SimpleAuth.setup(application, { serverSessionRoute: '/v3/session' });
+      Ember.SimpleAuth.setup(container, application, { serverSessionRoute: '/v3/session' });
     }
   });
 
@@ -147,7 +147,7 @@
   });
 
   // use the provided mixins in the application route and login controller
-  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutActionableMixin);
+  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
   App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
     // serialize the credentials from the view to what the server expects
     serializeCredentials: function(identification, password) {

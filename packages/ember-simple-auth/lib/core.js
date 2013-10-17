@@ -1,5 +1,5 @@
 Ember.SimpleAuth = {};
-Ember.SimpleAuth.setup = function(app, options) {
+Ember.SimpleAuth.setup = function(container, application, options) {
   options = options || {};
   this.routeAfterLogin    = options.routeAfterLogin || 'index';
   this.routeAfterLogout   = options.routeAfterLogout || 'index';
@@ -8,9 +8,9 @@ Ember.SimpleAuth.setup = function(app, options) {
   this.serverSessionRoute = options.serverSessionRoute || '/session';
 
   var session = Ember.SimpleAuth.Session.create();
-  app.register('simple_auth:session', session, { instantiate: false, singleton: true });
+  application.register('simple_auth:session', session, { instantiate: false, singleton: true });
   Ember.$.each(['model', 'controller', 'view', 'route'], function(i, component) {
-    app.inject(component, 'session', 'simple_auth:session');
+    application.inject(component, 'session', 'simple_auth:session');
   });
 
   Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
@@ -18,4 +18,9 @@ Ember.SimpleAuth.setup = function(app, options) {
       jqXHR.setRequestHeader('Authorization', 'Token token="' + session.get('authToken') + '"');
     }
   });
+
+  this.externalLoginCallback = function(sessionData) {
+    session.setup(sessionData);
+    container.lookup('route:application').send('loginComplete');
+  };
 };
