@@ -95,10 +95,14 @@ delete '/v3/session' do
   [200, { 'Content-Type' => 'application/json' }, ['']]
 end
 
+# callback for Facebook OAuth
 get '/5-oauth/callback' do
   if !!params[:error]
+    # in case of error simply render an error message
     erb :oauth_callback_error, locals: { error_message: params[:error_description] }
   else
+    # when login succeeded, verify/exchange the token from the response here
+    # the template sets up the client session with your app's own auth token (see below)
     erb :oauth_callback_success, layout: false
   end
 end
@@ -179,7 +183,7 @@ __END__
 <head></head>
 <body>
   <script>
-    window.opener.App.__container__.lookup('simple_auth:session').setup({ session: { authToken: "secret token!" } });
+    window.opener.App.__container__.lookup('simple_auth:session').setup({ session: { authToken: 'secret token!' } });
     window.close();
   </script>
 </body>
