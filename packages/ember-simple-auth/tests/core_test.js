@@ -30,7 +30,7 @@ var ApplicationRouteMock = Ember.Object.extend({
     this.sentLoginComplete = false;
   },
   send: function(name) {
-    this.sentLoginComplete = name == 'loginComplete';
+    this.sentLoginComplete = (name === 'loginComplete');
   }
 });
 
