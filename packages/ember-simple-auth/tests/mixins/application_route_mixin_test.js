@@ -1,9 +1,9 @@
 var testRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
-  session: Ember.SimpleAuth.Session.create(),
-  route:   null,
+  session:        Ember.SimpleAuth.Session.create(),
+  transitionedTo: null,
 
   transitionTo: function(targetRoute) {
-    this.route = targetRoute;
+    this.transitionedTo = targetRoute;
   }
 }).create();
 
@@ -35,7 +35,7 @@ module('Ember.SimpleAuth.ApplicationRouteMixin', {
 test('redirects to the login route on login', function() {
   testRoute._actions['login'].apply(testRoute);
 
-  equal(testRoute.route, 'login', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route on login.');
+  equal(testRoute.transitionedTo, 'login', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route on login.');
 });
 
 test('sends a DELETE request to the correct route on logout', function() {
@@ -56,5 +56,5 @@ test('redirects to the correct route on logout', function() {
   Ember.SimpleAuth.routeAfterLogout = 'some.route';
   testRoute._actions['logout'].apply(testRoute);
 
-  equal(testRoute.route, 'some.route', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the correct route on logout.');
+  equal(testRoute.transitionedTo, 'some.route', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the correct route on logout.');
 });
