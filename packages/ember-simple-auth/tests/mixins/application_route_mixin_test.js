@@ -71,4 +71,5 @@ test('redirects to the correct route on loginSucceeded', function() {
   testRoute._actions['loginSucceeded'].apply(testRoute);
 
   ok(retried, 'Ember.SimpleAuth.ApplicationRouteMixin redirects retries an attempted transition on loginSucceeded.');
+  equal(testRoute.get('session.attemptedTransition'), undefined, 'Ember.SimpleAuth.ApplicationRouteMixin unsets the saved attempted transition on loginSucceeded.');
 });
