@@ -25,7 +25,12 @@ var ApplicationMock = Ember.Object.extend({
 
 var applicationRouteMock;
 var ApplicationRouteMock = Ember.Object.extend({
-  send: function() {
+  init: function() {
+    this._super();
+    this.sentLoginComplete = false;
+  },
+  send: function(name) {
+    this.sentLoginComplete = name == 'loginComplete';
   }
 });
 
@@ -121,4 +126,13 @@ test('.setup registers an AJAX prefilter that adds the authToken for non-crossdo
   xhrMock.crossDomain = true;
   registeredAjaxPrefilter({}, {}, xhrMock);
   equal(xhrMock.requestHeaders['Authorization'], undefined, 'Ember.SimpleAuth registers an AJAX prefilter that does not add the authToken for crossdomain requests.');
+});
+
+test('.externalLoginCallback sets up the session correctly', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock);
+  var token = Math.random().toString(36);
+  Ember.SimpleAuth.externalLoginCallback({ session: { authToken: token } });
+
+  equal(applicationMock.registrations['simple_auth:session'].factory.get('authToken'), token, 'Ember.SimpleAuth.externalLoginCallback sets up the session with the auth token.');
+  ok(applicationRouteMock.sentLoginComplete, 'Ember.SimpleAuth.externalLoginCallback sends the loginComplete event to the application routes.');
 });
