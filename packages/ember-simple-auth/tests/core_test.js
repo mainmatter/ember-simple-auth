@@ -2,20 +2,17 @@ var applicationMock;
 var ApplicationMock = Ember.Object.extend({
   init: function() {
     this._super();
-    this.registrations = [];
+    this.registrations = {};
     this.injections = [];
   },
   register: function(name, factory, options) {
-    this.registrations.push({
-      name:    name,
+    this.registrations[name] = {
       factory: factory,
       options: options
-    });
+    };
   },
   inject: function(target, property, name) {
-    var registration = Ember.$.grep(this.registrations, function(registration, i) {
-      return registration.name === name;
-    })[0];
+    var registration = this.registrations[name];
     if (registration) {
       this.injections.push({
         target:   target,
