@@ -23,7 +23,7 @@ get '/ember-simple-auth.js' do
 end
 
 # serve the HTML files from the respective example directoy
-%w(1-simple 2-errors 3-authenticated-account 4-custom-response).each do |example|
+%w(1-simple 2-errors 3-authenticated-account 4-custom-response 5-oauth).each do |example|
   get "/#{example}" do
     erb File.read(File.join(base_dir, example, 'index.html'))
   end
@@ -95,6 +95,14 @@ delete '/v3/session' do
   [200, { 'Content-Type' => 'application/json' }, ['']]
 end
 
+get '/5-oauth/callback' do
+  if !!params[:error]
+    erb :oauth_callback_error, locals: { error_message: params[:error_description] }
+  else
+    erb :oauth_callback_success, layout: false
+  end
+end
+
 __END__
 
 @@ layout
@@ -111,7 +119,7 @@ __END__
   </head>
   <body style="padding-top: 50px;">
     <%= yield %>
-    <% unless request.path_info == '/' %>
+    <% unless request.path_info == '/' || request.path_info =~ /oauth\/callback/ %>
       <nav class="navbar navbar-default navbar-fixed-bottom">
         <div class="navbar-header">
           <a href="/" class="navbar-brand">&larr; back to examples list</a>
@@ -142,6 +150,10 @@ __END__
           <h4 class="list-group-item-heading">Full-fledged example</h4>
           <p class="list-group-item-text">Full-fledged example with error handling, session account and custom server responses.</p>
         </a>
+        <a href="/5-oauth" class="list-group-item">
+          <h4 class="list-group-item-heading">OAuth example</h4>
+          <p class="list-group-item-text">Exampled where Facebook OAuth is used to authenticate users instead of credentials-based authentication.</p>
+        </a>
       </div>
     </div>
   </div>
@@ -150,3 +162,25 @@ __END__
   delete sessionStorage.authToken;
   delete sessionStorage.account;
 </script>
+
+@@ oauth_callback_error
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="alert alert-danger">
+        <strong>Login failed:</strong> <%= error_message %>
+      </div>
+    </div>
+  </div>
+</div>
+
+@@ oauth_callback_success
+<html>
+<head></head>
+<body>
+  <script>
+    window.opener.App.__container__.lookup('simple_auth:session').setup({ session: { authToken: "secret token!" } });
+    window.close();
+  </script>
+</body>
+</html>

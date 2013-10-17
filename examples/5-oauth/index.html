@@ -1,0 +1,79 @@
+<script type="text/x-handlebars">
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-header">
+      {{#link-to 'index' classNames='navbar-brand'}}
+        Home
+      {{/link-to}}
+    </div>
+    <div class="collapse navbar-collapse navbar-ex5-collapse">
+      <ul class="nav navbar-nav">
+        {{#link-to 'protected' tagName='li'}}
+          <a style="cursor: pointer">Protected Page</a>
+        {{/link-to}}
+      </ul>
+      {{! display logout button when a session is authenticated, login button otherwise }}
+      {{#if session.isAuthenticated}}
+        <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
+        <p class="navbar-text pull-right">Signed in</p>
+      {{else}}
+        <a {{ action 'login' }} class="btn btn-success navbar-btn navbar-right">Login</a>
+      {{/if}}
+    </div>
+  </nav>
+  <div class="container">
+    {{outlet}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="index">
+  <div class="page-header">
+    <h1>Simple example</h1>
+  </div>
+  {{#unless session.isAuthenticated}}
+    <div class="alert alert-info">
+      You can <a {{ action 'login' }} class="alert-link" style="cursor: pointer;">log in</a> with login <code>letme</code> and password <code>in</code>.
+    </div>
+  {{/unless}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="protected">
+  <div class="page-header">
+    <h1>Protected Page</h1>
+  </div>
+  <div class="alert alert-danger">
+    This is a protected page only visible to authenticated users!
+  </div>
+</script>
+
+<script>
+  // setup Ember.SimpleAuth in an initializer
+  Ember.Application.initializer({
+    name: 'authentication',
+    initialize: function(container, application) {
+      Ember.SimpleAuth.setup(application);
+    }
+  });
+
+  App = Ember.Application.create({});
+
+  App.Router.map(function() {
+    //protected route that's inaccessible without authentication
+    this.route('protected');
+  });
+
+  // use the provided mixin in the application route
+  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutActionableMixin, {
+    actions: {
+      login: function() {
+        window.open(
+          'https://www.facebook.com/dialog/oauth?client_id=631252926924840&redirect_uri=http://localhost:4567/5-oauth/callback',
+          '_blank',
+          'menubar=no,status=no,height=400,width=800'
+        );
+      }
+    }
+  });
+
+  // make this route protected
+  App.ProtectedRoute  = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+</script>
