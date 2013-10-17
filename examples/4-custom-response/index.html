@@ -171,7 +171,7 @@
 
   // make these routes protected
   App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
-  App.PostsRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+  App.PostsRoute     = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     model: function() {
       return this.get('store').findAll('post');
     }
