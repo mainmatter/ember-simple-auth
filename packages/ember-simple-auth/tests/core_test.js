@@ -27,10 +27,10 @@ var applicationRouteMock;
 var ApplicationRouteMock = Ember.Object.extend({
   init: function() {
     this._super();
-    this.sentLoginComplete = false;
+    this.sentloginSucceeded = false;
   },
   send: function(name) {
-    this.sentLoginComplete = (name === 'loginComplete');
+    this.sentloginSucceeded = (name === 'loginSucceeded');
   }
 });
 
@@ -134,5 +134,5 @@ test('sets up the session correctly in the external login callback', function() 
   Ember.SimpleAuth.externalLoginCallback({ session: { authToken: token } });
 
   equal(applicationMock.registrations['simple_auth:session'].factory.get('authToken'), token, 'Ember.SimpleAuth sets up the session with the auth token in the external login callback.');
-  ok(applicationRouteMock.sentLoginComplete, 'Ember.SimpleAuth sends the loginComplete event to the application routes in the external login callback.');
+  ok(applicationRouteMock.sentloginSucceeded, 'Ember.SimpleAuth sends the loginSucceeded event to the application routes in the external login callback.');
 });

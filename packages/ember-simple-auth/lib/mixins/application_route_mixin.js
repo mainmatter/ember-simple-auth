@@ -3,7 +3,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
     login: function() {
       this.transitionTo(Ember.SimpleAuth.loginRoute);
     },
-    loginComplete: function() {
+    loginSucceeded: function() {
       var attemptedTransition = this.get('session.attemptedTransition');
       if (attemptedTransition) {
         attemptedTransition.retry();
