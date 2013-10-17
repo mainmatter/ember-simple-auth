@@ -33,9 +33,10 @@ module('Ember.SimpleAuth.ApplicationRouteMixin', {
 });
 
 test('redirects to the login route on login', function() {
+  Ember.SimpleAuth.loginRoute = 'some.route';
   testRoute._actions['login'].apply(testRoute);
 
-  equal(testRoute.transitionedTo, 'login', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route on login.');
+  equal(testRoute.transitionedTo, 'some.route', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route on login.');
 });
 
 test('sends a DELETE request to the correct route on logout', function() {
@@ -57,4 +58,17 @@ test('redirects to the correct route on logout', function() {
   testRoute._actions['logout'].apply(testRoute);
 
   equal(testRoute.transitionedTo, 'some.route', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the correct route on logout.');
+});
+
+test('redirects to the correct route on loginSucceeded', function() {
+  Ember.SimpleAuth.routeAfterLogin = 'some.route';
+  testRoute._actions['loginSucceeded'].apply(testRoute);
+
+  equal(testRoute.transitionedTo, 'some.route', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterLogin route on loginSucceeded when no attempted transition is stored.');
+
+  var retried = false;
+  testRoute.set('session.attemptedTransition', { retry: function() { retried = true; } });
+  testRoute._actions['loginSucceeded'].apply(testRoute);
+
+  ok(retried, 'Ember.SimpleAuth.ApplicationRouteMixin redirects retries an attempted transition on loginSucceeded.');
 });
