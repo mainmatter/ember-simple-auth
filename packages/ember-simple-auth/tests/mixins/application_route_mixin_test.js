@@ -32,6 +32,12 @@ module('Ember.SimpleAuth.ApplicationRouteMixin', {
   }
 });
 
+test('redirects to the login route on login', function() {
+  testRoute._actions['login'].apply(testRoute);
+
+  equal(testRoute.route, 'login', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route on login.');
+});
+
 test('sends a DELETE request to the correct route on logout', function() {
   testRoute._actions['logout'].apply(testRoute);
 
