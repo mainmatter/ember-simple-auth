@@ -86,6 +86,18 @@ test('saves routeAfterLogout if specified', function() {
   equal(Ember.SimpleAuth.routeAfterLogout, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogout when specified.');
 });
 
+test('saves loginRoute if specified', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { loginRoute: 'somewhere' });
+
+  equal(Ember.SimpleAuth.loginRoute, 'somewhere', 'Ember.SimpleAuth saves loginRoute when specified.');
+});
+
+test('saves logoutRoute if specified', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { logoutRoute: 'somewhere' });
+
+  equal(Ember.SimpleAuth.logoutRoute, 'somewhere', 'Ember.SimpleAuth saves logutRoute when specified.');
+});
+
 test('injects a session object in models, views, controllers and routes', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
 
