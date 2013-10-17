@@ -1,4 +1,4 @@
-var testRoute = Ember.Object.extend(Ember.SimpleAuth.LogoutRouteMixin, {
+var testRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutActionableMixin, {
   session: Ember.SimpleAuth.Session.create(),
   route:   null,
 
@@ -19,7 +19,7 @@ var ajaxMock = function(url, options) {
   };
 };
 
-module('Ember.SimpleAuth.LogoutRouteMixin', {
+module('Ember.SimpleAuth.LogoutActionableMixin', {
   originalAjax: Ember.$.ajax,
   setup: function() {
     Ember.SimpleAuth.serverSessionRoute = '/session/route';
@@ -32,23 +32,23 @@ module('Ember.SimpleAuth.LogoutRouteMixin', {
   }
 });
 
-test('sends a DELETE request to the correct route before model', function() {
-  testRoute.beforeModel();
+test('sends a DELETE request to the correct route on logout', function() {
+  testRoute._actions['logout'].apply(testRoute);
 
   equal(ajaxRequestUrl, '/session/route', 'Ember.SimpleAuth.LogoutRouteMixin sends a request to the correct route before model.');
   equal(ajaxRequestOptions.type, 'DELETE', 'Ember.SimpleAuth.LogoutRouteMixin sends a DELETE request before model.');
 });
 
-test('destroys the current session before model', function() {
+test('destroys the current session on logout', function() {
   testRoute.set('session.authToken', 'some token');
-  testRoute.beforeModel();
+  testRoute._actions['logout'].apply(testRoute);
 
   equal(testRoute.get('session.isAuthenticated'), false, 'Ember.SimpleAuth.LogoutRouteMixin destroy the current session before model.');
 });
 
-test('redirects to the correct route before model', function() {
+test('redirects to the correct route on logout', function() {
   Ember.SimpleAuth.routeAfterLogout = 'some.route';
-  testRoute.beforeModel();
+  testRoute._actions['logout'].apply(testRoute);
 
   equal(testRoute.route, 'some.route', 'Ember.SimpleAuth.LogoutRouteMixin redirects to the correct route before model.');
 });

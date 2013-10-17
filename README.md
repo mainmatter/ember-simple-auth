@@ -25,7 +25,7 @@ Authorization: Token token="<secret token>"
 
 ## Usage
 
-Ember.SimpleAuth only requires 2 routes and one template/controller. To enable
+Ember.SimpleAuth only requires one route and one template/controller. To enable
 it it's best to use a custom initializer:
 
 ```js
@@ -37,22 +37,26 @@ Ember.Application.initializer({
 });
 ```
 
-The routes for logging in and out can be named anything you want:
+The route for logging in can be named anything you want:
 
 ```js
 App.Router.map(function() {
   this.route('login');
-  this.route('logout');
 });
 ```
 
-To wire everything up, the generated `App.LoginController` and
-`App.LogoutRoute` need to implement the respective mixins provided by
-Ember.SimpleAuth:
+To wire everything up, the generated `App.LoginController` needs to implement
+the respective mixin provided by Ember.SimpleAuth:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
-App.LogoutRoute     = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
+```
+
+Also, you need to mixin the `Ember.SimpleAuth.LogoutActionableMixin` in the
+`App.ApplicationRoute`:
+
+```js
+App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutActionableMixin);
 ```
 
 The last step is to add a template that renders the login form:
@@ -66,6 +70,13 @@ The last step is to add a template that renders the login form:
   <button type="submit">Login</button>
 </form>
 ```
+
+and to add a logout button somewhere in your layout:
+
+```html
+<button {{ action 'logout' }}>Logout</button>
+```
+
 At this point the infrastructure for users to log in and out is set up. Also
 every AJAX request (unless it's a cross domain request) will include
 [the authentication header](#token-based-authentication).

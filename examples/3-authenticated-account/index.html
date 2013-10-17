@@ -17,9 +17,7 @@
       </ul>
       {{! display logout button when a session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
-        {{#link-to 'logout' classNames='btn btn-danger navbar-btn navbar-right'}}
-          Logout
-        {{/link-to}}
+        <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
         {{! display name of signed in account }}
         <p class="navbar-text pull-right">Signed in as {{session.account.name}}</p>
       {{else}}
@@ -141,20 +139,21 @@
   });
 
   App.Router.map(function() {
-    // routes for login/logout
+    // login route
     this.route('login');
-    this.route('logout');
     //protected routes that are inaccessible without authentication
     this.route('protected');
     this.route('posts');
   });
 
-  // login controller that display an error if the login fails
-  App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+  // use the provided mixins in the application route and login controller
+  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutActionableMixin);
+  App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
     // serialize the credentials from the view to what the server expects
     serializeCredentials: function(identification, password) {
       return { USER_NAME: identification, PASS: password };
     },
+    // display an error when loggign in fails
     loginFailed: function(xhr) {
       var response = JSON.parse(xhr.responseText);
       this.set('errorMessage', response.error);
@@ -169,11 +168,10 @@
       });
     }
   });
-  App.LogoutRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutRouteMixin);
 
   // make these routes protected
   App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
-  App.PostsRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+  App.PostsRoute     = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     model: function() {
       return this.get('store').findAll('post');
     }
