@@ -63,7 +63,7 @@ module('Ember.SimpleAuth', {
     applicationRouteMock  = ApplicationRouteMock.create();
     ajaxPrefilterMock     = AjaxPrefilterMock.create();
     xhrMock               = XhrMock.create();
-    Ember.$.ajaxPrefilter = ajaxPrefilterMock.ajaxPrefilterCapture.bind(ajaxPrefilterMock);
+    Ember.$.ajaxPrefilter = Ember.$.proxy(ajaxPrefilterMock.ajaxPrefilterCapture, ajaxPrefilterMock);
   },
   teardown: function() {
     Ember.$.ajaxPrefilter = this.originalAjaxPrefilter;

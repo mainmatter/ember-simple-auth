@@ -26,7 +26,7 @@ module('Ember.SimpleAuth.ApplicationRouteMixin', {
     testRoute                           = TestRoute.create();
     ajaxMock                            = AjaxMock.create();
     Ember.SimpleAuth.serverSessionRoute = '/session/route';
-    Ember.$.ajax                        = ajaxMock.ajaxCapture.bind(ajaxMock);
+    Ember.$.ajax                        = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
     testRoute.set('session', Ember.SimpleAuth.Session.create());
   },
   teardown: function() {
