@@ -1,3 +1,4 @@
+var testController;
 var TestController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
   send: function(name) {
     this._super(name);
@@ -27,7 +28,7 @@ module('Ember.SimpleAuth.LoginControllerMixin', {
     ajaxMock                            = AjaxMock.create();
     Ember.SimpleAuth.serverSessionRoute = '/session/route';
     Ember.$.ajax                        = ajaxMock.ajaxCapture.bind(ajaxMock);
-    testController.set('session', Ember.SimpleAuth.Session.create())
+    testController.set('session', Ember.SimpleAuth.Session.create());
     testController.setProperties({ identification: 'identification', password: 'password' });
   },
   teardown: function() {

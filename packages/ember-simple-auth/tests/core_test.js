@@ -46,6 +46,7 @@ var XhrMock = Ember.Object.extend({
   }
 });
 
+var ajaxPrefilterMock;
 var AjaxPrefilterMock = Ember.Object.extend({
   ajaxPrefilterCapture: function(prefilter) {
     this.registeredAjaxPrefilter = prefilter;

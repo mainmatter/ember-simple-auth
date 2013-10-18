@@ -1,3 +1,4 @@
+var testRoute;
 var TestRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
   send: function(name) {
     this.invokedLogin = (name === 'login');
