@@ -1,7 +1,6 @@
 var applicationMock;
 var ApplicationMock = Ember.Object.extend({
   init: function() {
-    this._super();
     this.registrations = {};
     this.injections = [];
   },
@@ -25,11 +24,6 @@ var ApplicationMock = Ember.Object.extend({
 
 var applicationRouteMock;
 var ApplicationRouteMock = Ember.Object.extend({
-  init: function() {
-    this._super();
-    this.invokedloginSucceeded = false;
-    this.invokedLoginFailed    = false;
-  },
   send: function(name) {
     this.invokedLoginSucceeded = (name === 'loginSucceeded');
     this.invokedLoginFailed    = (name === 'loginFailed');
@@ -53,9 +47,6 @@ var XhrMock = Ember.Object.extend({
 });
 
 var AjaxPrefilterMock = Ember.Object.extend({
-  init: function() {
-    this.registeredAjaxPrefilter = undefined;
-  },
   ajaxPrefilterCapture: function(prefilter) {
     this.registeredAjaxPrefilter = prefilter;
   }
