@@ -186,11 +186,12 @@ For a more complete example see _"OAuth example"_ in the [examples](#examples).
 
 ## The Server side
 
-The only requirement on the server side is that there is an endpoint for
-authenticating users that accepts the credentials as JSON via POST and an
-endpoint that invalidates the secret token via DELETE. By default these
-endpoints are expected as `POST /session` and `DELETE /session` but the
-exact URLs can be customized.
+The only requirement on the server side is that in the case you're using
+credentials based authentication against your own server to obtain the user's
+secret token, there has to be an endpoint that accepts the credentials as JSON
+via POST and that responds with the user's token if the credentials are valid.
+By default this endpoint is expected as `POST /session` but the exact URLs can
+be customized.
 
 The default request JSON sent to `POST /session` is as follows:
 
@@ -203,7 +204,7 @@ The default request JSON sent to `POST /session` is as follows:
 }
 ```
 
-The response JSON expected by default is:
+The response JSON that is expected by default is:
 
 ```json
 {
@@ -213,12 +214,9 @@ The response JSON expected by default is:
 }
 ```
 
-Both the request as well as the response JSON can be different than these
-defaults and customization only needs a minimal amount of code (see
+The request as well as the response JSON can be different than these defaults
+and customization only needs a minimal amount of code (see
 _"Full-fledged example"_ in the [examples](#examples)).
-
-In the case of `DELETE /session` no JSON is sent with the request and none
-is expected in the response.
 
 ### The `Authorization` header
 
