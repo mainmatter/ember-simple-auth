@@ -1,8 +1,8 @@
 var testRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
-  sentLogin: false,
+  invokedLogin: false,
 
   send: function(name) {
-    this.sentLogin = (name === 'login');
+    this.invokedLogin = (name === 'login');
   }
 }).create();
 
@@ -19,20 +19,20 @@ test('triggers the login correctly', function() {
   testRoute.triggerLogin(attemptedTransitionMock);
 
   equal(testRoute.get('session.attemptedTransition'), attemptedTransitionMock, 'Ember.SimpleAuth.AuthenticatedRouteMixin saves the attempted transition in the session when login is triggered.');
-  ok(testRoute.sentLogin, 'Ember.SimpleAuth.AuthenticatedRouteMixin invokes the login action on the route when login is triggered.');
+  ok(testRoute.invokedLogin, 'Ember.SimpleAuth.AuthenticatedRouteMixin invokes the login action on the route when login is triggered.');
 });
 
 test('triggers the login before model when the session is not authenticated', function() {
   testRoute.set('session.authToken', '');
   testRoute.beforeModel(attemptedTransitionMock);
 
-  ok(testRoute.sentLogin, 'Ember.SimpleAuth.AuthenticatedRouteMixin triggers login before model when the session is not authenticated.');
+  ok(testRoute.invokedLogin, 'Ember.SimpleAuth.AuthenticatedRouteMixin triggers login before model when the session is not authenticated.');
 
   testRoute.set('session.authToken', 'token');
-  testRoute.sentLogin = false;
+  testRoute.invokedLogin = false;
   testRoute.beforeModel(attemptedTransitionMock);
 
-  ok(!testRoute.sentLogin, 'Ember.SimpleAuth.AuthenticatedRouteMixin does not trigger login before model when the session is authenticated.');
+  ok(!testRoute.invokedLogin, 'Ember.SimpleAuth.AuthenticatedRouteMixin does not trigger login before model when the session is authenticated.');
 });
 
 test('aborts the attempted transaction before model when the session is not authenticated', function() {

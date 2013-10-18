@@ -27,12 +27,12 @@ var applicationRouteMock;
 var ApplicationRouteMock = Ember.Object.extend({
   init: function() {
     this._super();
-    this.sentloginSucceeded = false;
-    this.sentloginFailed    = false;
+    this.invokedloginSucceeded = false;
+    this.invokedLoginFailed    = false;
   },
   send: function(name) {
-    this.sentloginSucceeded = (name === 'loginSucceeded');
-    this.sentloginFailed    = (name === 'loginFailed');
+    this.invokedLoginSucceeded = (name === 'loginSucceeded');
+    this.invokedLoginFailed    = (name === 'loginFailed');
   }
 });
 
@@ -136,12 +136,12 @@ test('invokes the correct action in the external login succeeded callback', func
   Ember.SimpleAuth.setup(containerMock, applicationMock);
   Ember.SimpleAuth.externalLoginSucceededCallback({ session: { authToken: 'token' } });
 
-  ok(applicationRouteMock.sentloginSucceeded, 'Ember.SimpleAuth invokes the loginSucceeded action on the application route in externalLoginSucceededCallback.');
+  ok(applicationRouteMock.invokedLoginSucceeded, 'Ember.SimpleAuth invokes the loginSucceeded action on the application route in externalLoginSucceededCallback.');
 });
 
 test('invokes the correct action in the external login failed callback', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
   Ember.SimpleAuth.externalLoginFailedCallback();
 
-  ok(applicationRouteMock.sentloginFailed, 'Ember.SimpleAuth invokes the loginFailed action on the application route in externalLoginFailedCallback.');
+  ok(applicationRouteMock.invokedLoginFailed, 'Ember.SimpleAuth invokes the loginFailed action on the application route in externalLoginFailedCallback.');
 });
