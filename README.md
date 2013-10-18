@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/simplabs/ember-simple-auth.png)](https://travis-ci.org/simplabs/ember-simple-auth)
+[![Build Status](https://travis-ci.org/simplabs/ember-simple-auth.png?branch=master)](https://travis-ci.org/simplabs/ember-simple-auth)
 
 #  Ember.SimpleAuth
 
