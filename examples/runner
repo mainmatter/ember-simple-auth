@@ -183,9 +183,9 @@ __END__
 <body>
   <script>
     <% if success %>
-      window.opener.Ember.SimpleAuth.externalLoginSucceededCallback({ session: { authToken: 'secret token!' } });
+      window.opener.Ember.SimpleAuth.externalLoginSucceeded({ session: { authToken: 'secret token!' } });
     <% else %>
-      window.opener.Ember.SimpleAuth.externalLoginFailedCallback({ error: 'login failed!' });
+      window.opener.Ember.SimpleAuth.externalLoginFailed({ error: 'login failed!' });
     <% end %>
     window.close();
   </script>

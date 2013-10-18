@@ -18,11 +18,11 @@ Ember.SimpleAuth.setup = function(container, application, options) {
     }
   });
 
-  this.externalLoginSucceededCallback = function(sessionData) {
+  this.externalLoginSucceeded = function(sessionData) {
     session.setup(sessionData);
     container.lookup('route:application').send('loginSucceeded');
   };
-  this.externalLoginFailedCallback = function(error) {
+  this.externalLoginFailed = function(error) {
     container.lookup('route:application').send('loginFailed', error);
   };
 };

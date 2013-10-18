@@ -124,22 +124,22 @@ test('registers an AJAX prefilter that adds the authToken for non-crossdomain re
 test('sets up the session correctly in the external login succeeded callback', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
   var token = Math.random().toString(36);
-  Ember.SimpleAuth.externalLoginSucceededCallback({ session: { authToken: token } });
+  Ember.SimpleAuth.externalLoginSucceeded({ session: { authToken: token } });
 
-  equal(applicationMock.registrations['simple_auth:session'].factory.get('authToken'), token, 'Ember.SimpleAuth sets up the session with the auth token in the external login callback.');
+  equal(applicationMock.registrations['simple_auth:session'].factory.get('authToken'), token, 'Ember.SimpleAuth sets up the session with the auth token in externalLoginSucceeded.');
 });
 
 test('invokes the correct action in the external login succeeded callback', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
-  Ember.SimpleAuth.externalLoginSucceededCallback({ session: { authToken: 'token' } });
+  Ember.SimpleAuth.externalLoginSucceeded({ session: { authToken: 'token' } });
 
-  ok(applicationRouteMock.invokedLoginSucceeded, 'Ember.SimpleAuth invokes the loginSucceeded action on the application route in externalLoginSucceededCallback.');
+  ok(applicationRouteMock.invokedLoginSucceeded, 'Ember.SimpleAuth invokes the loginSucceeded action on the application route in externalLoginSucceeded.');
 });
 
 test('invokes the correct action in the external login failed callback', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
-  Ember.SimpleAuth.externalLoginFailedCallback({ error: 'error!' });
+  Ember.SimpleAuth.externalLoginFailed({ error: 'error!' });
 
-  ok(applicationRouteMock.invokedLoginFailed, 'Ember.SimpleAuth invokes the loginFailed action on the application route in externalLoginFailedCallback.');
-  deepEqual(applicationRouteMock.loginFailedArguments[1], { error: 'error!' }, 'Ember.SimpleAuth invokes the loginFailed action on the application route with the correct arguments in externalLoginSucceededCallback.');
+  ok(applicationRouteMock.invokedLoginFailed, 'Ember.SimpleAuth invokes the loginFailed action on the application route in externalLoginFailed.');
+  deepEqual(applicationRouteMock.loginFailedArguments[1], { error: 'error!' }, 'Ember.SimpleAuth invokes the loginFailed action on the application route with the correct arguments in externalLoginSucceeded.');
 });
