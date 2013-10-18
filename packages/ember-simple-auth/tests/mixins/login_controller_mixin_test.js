@@ -1,9 +1,12 @@
 var testController;
 var TestController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-  send: function(name) {
-    this._super(name);
-    this.invokedLoginSucceeded = this.invokedLoginSucceeded || (name === 'loginSucceeded');
-    this.invokedLoginFailed    = this.invokedLoginFailed || (name === 'loginFailed');
+  actions: {
+    loginSucceeded: function() {
+      this.invokedLoginSucceeded = true;
+    },
+    loginFailed: function() {
+      this.invokedLoginFailed = true;
+    }
   }
 });
 
