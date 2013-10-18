@@ -16,7 +16,7 @@ every AJAX request that the client sends to the server. The header looks
 something like this on the server side:
 
 ```
-Authorization: Token token="<secret token>"
+Authorization: Bearer <secret token>
 ```
 
 The client obtains the user's secret token from the server when the user logs
@@ -229,7 +229,7 @@ user. The header looks something like this (roughly based on
 Internet-Draft that never became an RFC though):
 
 ```
-Authorization: Token token="<secret token>"
+Authorization: Bearer <secret token>
 ```
 
 If your server is a [Ruby on Rails](http://rubyonrails.org) application, it

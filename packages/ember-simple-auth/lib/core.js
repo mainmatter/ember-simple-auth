@@ -14,7 +14,7 @@ Ember.SimpleAuth.setup = function(container, application, options) {
 
   Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
     if (!jqXHR.crossDomain && !Ember.isEmpty(session.get('authToken'))) {
-      jqXHR.setRequestHeader('Authorization', 'Token token="' + session.get('authToken') + '"');
+      jqXHR.setRequestHeader('Authorization', 'Bearer ' + session.get('authToken'));
     }
   });
 
