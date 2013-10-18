@@ -18,9 +18,7 @@
         {{! display name of signed in account }}
         <p class="navbar-text pull-right">Signed in as {{session.account.name}}</p>
       {{else}}
-        {{#link-to 'login' classNames='btn btn-success navbar-btn navbar-right'}}
-          Login
-        {{/link-to}}
+        <a {{ action 'login' }} class="btn btn-success navbar-btn navbar-right">Login</a>
       {{/if}}
     </div>
   </nav>
@@ -106,7 +104,7 @@
         }.property('accountId')
       });
       //set a custom session endpoint
-      Ember.SimpleAuth.setup(container, application);
+      Ember.SimpleAuth.setup(container, application, { serverSessionRoute: '/v2/session' });
     }
   });
 

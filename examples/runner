@@ -67,7 +67,7 @@ end
 post '/v2/session' do
   payload = request.body.read
   json    = JSON.parse(payload)
-  if json['USER_NAME'] == 'letme' && json['PASS'] == 'in'
+  if json['session']['identification'] == 'letme' && json['session']['password'] == 'in'
     [200, { 'Content-Type' => 'application/json' }, ['{ "session": { "authToken": "secret token!", "accountId": 1 } }']]
   else
     [422, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid credentials" }']]

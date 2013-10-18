@@ -16,9 +16,7 @@
         <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
         <p class="navbar-text pull-right">Signed in</p>
       {{else}}
-        {{#link-to 'login' classNames='btn btn-success navbar-btn navbar-right'}}
-          Login
-        {{/link-to}}
+        <a {{ action 'login' }} class="btn btn-success navbar-btn navbar-right">Login</a>
       {{/if}}
     </div>
   </nav>
