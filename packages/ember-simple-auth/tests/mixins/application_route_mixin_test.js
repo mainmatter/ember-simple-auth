@@ -1,7 +1,5 @@
 var testRoute;
 var TestRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
-  transitionedTo: null,
-
   transitionTo: function(targetRoute) {
     this.transitionedTo = targetRoute;
   }
