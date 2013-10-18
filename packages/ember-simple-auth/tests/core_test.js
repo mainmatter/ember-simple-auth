@@ -124,14 +124,14 @@ test('registers an AJAX prefilter that adds the authToken for non-crossdomain re
 test('sets up the session correctly in the external login succeeded callback', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
   var token = Math.random().toString(36);
-  Ember.SimpleAuth.externalLoginSucceeded({ session: { authToken: token } });
+  Ember.SimpleAuth.externalLoginSucceeded({ access_token: token });
 
   equal(applicationMock.registrations['simple_auth:session'].factory.get('authToken'), token, 'Ember.SimpleAuth sets up the session with the auth token in externalLoginSucceeded.');
 });
 
 test('invokes the correct action in the external login succeeded callback', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
-  Ember.SimpleAuth.externalLoginSucceeded({ session: { authToken: 'token' } });
+  Ember.SimpleAuth.externalLoginSucceeded();
 
   ok(applicationRouteMock.invokedLoginSucceeded, 'Ember.SimpleAuth invokes the loginSucceeded action on the application route in externalLoginSucceeded.');
 });

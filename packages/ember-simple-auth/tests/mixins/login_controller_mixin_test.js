@@ -18,7 +18,7 @@ var AjaxMock = Ember.Object.extend({
     this.requestOptions = options;
     return {
       then: function(success, fail) {
-        success({ session: { authToken: 'authToken' } });
+        success({ access_token: 'authToken' });
         fail('xhr', 'status', 'error');
       }
     };

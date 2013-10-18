@@ -27,7 +27,7 @@ test('deletes the auth token from the session storage when it becomes empty', fu
 test('assigns the auth token correctly during setup', function() {
   var session = Ember.SimpleAuth.Session.create();
   var token = Math.random().toString(36);
-  session.setup({ session: { authToken: token }});
+  session.setup({ access_token: token });
 
   equal(session.get('authToken'), token, 'Ember.SimpleAuth.Session assigns authToken correctly during setup.');
 
