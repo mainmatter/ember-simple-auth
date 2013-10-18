@@ -26,7 +26,10 @@ var applicationRouteMock;
 var ApplicationRouteMock = Ember.Object.extend({
   send: function(name) {
     this.invokedLoginSucceeded = (name === 'loginSucceeded');
-    this.invokedLoginFailed    = (name === 'loginFailed');
+    if (name === 'loginFailed') {
+      this.invokedLoginFailed   = true;
+      this.loginFailedArguments = arguments;
+    }
   }
 });
 
@@ -135,7 +138,8 @@ test('invokes the correct action in the external login succeeded callback', func
 
 test('invokes the correct action in the external login failed callback', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
-  Ember.SimpleAuth.externalLoginFailedCallback();
+  Ember.SimpleAuth.externalLoginFailedCallback({ error: 'error!' });
 
   ok(applicationRouteMock.invokedLoginFailed, 'Ember.SimpleAuth invokes the loginFailed action on the application route in externalLoginFailedCallback.');
+  deepEqual(applicationRouteMock.loginFailedArguments[1], { error: 'error!' }, 'Ember.SimpleAuth invokes the loginFailed action on the application route with the correct arguments in externalLoginSucceededCallback.');
 });
