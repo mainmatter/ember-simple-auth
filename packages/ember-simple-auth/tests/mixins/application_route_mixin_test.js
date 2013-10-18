@@ -1,33 +1,35 @@
-var testRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+var testRoute;
+var TestRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
   transitionedTo: null,
 
   transitionTo: function(targetRoute) {
     this.transitionedTo = targetRoute;
   }
-}).create();
+});
 
-var ajaxRequestUrl;
-var ajaxRequestOptions;
-var ajaxMock = function(url, options) {
-  ajaxRequestUrl     = url;
-  ajaxRequestOptions = options;
-  return {
-    always: function(callback) {
-      callback();
-    }
-  };
-};
+var ajaxMock;
+var AjaxMock = Ember.Object.extend({
+  ajaxCapture: function(url, options) {
+    this.requestUrl     = url;
+    this.requestOptions = options;
+    return {
+      always: function(callback) {
+        callback();
+      }
+    };
+  }
+});
 
 var attemptedTransitionMock = { retry: function() { this.retried = true; } };
 
 module('Ember.SimpleAuth.ApplicationRouteMixin', {
   originalAjax: Ember.$.ajax,
   setup: function() {
-    testRoute.set('session', Ember.SimpleAuth.Session.create());
+    testRoute                           = TestRoute.create();
+    ajaxMock                            = AjaxMock.create();
     Ember.SimpleAuth.serverSessionRoute = '/session/route';
-    Ember.$.ajax                        = ajaxMock;
-    ajaxRequestUrl                      = undefined;
-    ajaxRequestOptions                  = undefined;
+    Ember.$.ajax                        = ajaxMock.ajaxCapture.bind(ajaxMock);
+    testRoute.set('session', Ember.SimpleAuth.Session.create());
   },
   teardown: function() {
     Ember.$.ajax = this.originalAjax;
@@ -44,8 +46,8 @@ test('redirects to the correct route on login', function() {
 test('sends a DELETE request to the correct route on logout', function() {
   testRoute._actions['logout'].apply(testRoute);
 
-  equal(ajaxRequestUrl, '/session/route', 'Ember.SimpleAuth.ApplicationRouteMixin sends a request to the correct route on logout.');
-  equal(ajaxRequestOptions.type, 'DELETE', 'Ember.SimpleAuth.ApplicationRouteMixin sends a DELETE request on logout.');
+  equal(ajaxMock.requestUrl, '/session/route', 'Ember.SimpleAuth.ApplicationRouteMixin sends a request to the correct route on logout.');
+  equal(ajaxMock.requestOptions.type, 'DELETE', 'Ember.SimpleAuth.ApplicationRouteMixin sends a DELETE request on logout.');
 });
 
 test('destroys the current session on logout', function() {
