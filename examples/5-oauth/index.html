@@ -78,12 +78,16 @@
           'menubar=no,status=no,height=400,width=800'
         );
       },
+      // set the application controller's error messages when the login fails so it gets displayed
+      // in the application template (see tempate above)
+      loginFailed: function(error) {
+        this.controllerFor('application').set('loginErrorMessage', 'The login failed!');
+      },
+      // clear the error message when the login succeeds (must call _super here to make sure an aborted
+      // transition is retried etc.)
       loginSucceeded: function() {
         this._super();
         this.controllerFor('application').set('loginErrorMessage', undefined);
-      },
-      loginFailed: function(error) {
-        this.controllerFor('application').set('loginErrorMessage', 'The login failed!');
       }
     }
   });
