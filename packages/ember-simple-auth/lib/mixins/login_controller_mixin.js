@@ -5,7 +5,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
       var data = this.getProperties('identification', 'password');
       if (!Ember.isEmpty(data.identification) && !Ember.isEmpty(data.password)) {
         var postData = ['grant_type=password', 'username=' + data.identification, 'password=' + data.password].join('&');
-        Ember.$.ajax(Ember.SimpleAuth.serverSessionRoute, {
+        Ember.$.ajax(Ember.SimpleAuth.serverTokenRoute, {
           type:        'POST',
           data:        postData,
           contentType: 'application/x-www-form-urlencoded'

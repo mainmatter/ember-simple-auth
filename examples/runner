@@ -30,7 +30,7 @@ end
 end
 
 # session creation endpoint; successfull if credentials are letme/in
-post '/session' do
+post '/token' do
   payload = request.body.read
   json    = JSON.parse(payload)
   if json['session']['identification'] == 'letme' && json['session']['password'] == 'in'
@@ -59,7 +59,7 @@ get '/accounts/1' do
 end
 
 # session creation endpoint with additional authenticated user
-post '/v2/session' do
+post '/v2/token' do
   payload = request.body.read
   json    = JSON.parse(payload)
   if json['session']['identification'] == 'letme' && json['session']['password'] == 'in'
@@ -70,7 +70,7 @@ post '/v2/session' do
 end
 
 # session creation endpoint with custom response
-post '/v3/session' do
+post '/v3/token' do
   payload = request.body.read
   json    = JSON.parse(payload)
   if json['USER_NAME'] == 'letme' && json['PASS'] == 'in'

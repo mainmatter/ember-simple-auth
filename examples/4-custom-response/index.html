@@ -120,7 +120,7 @@
         }.property('accountId')
       });
       //set a custom session endpoint
-      Ember.SimpleAuth.setup(container, application, { serverSessionRoute: '/v3/session' });
+      Ember.SimpleAuth.setup(container, application, { serverTokenRoute: '/v3/token' });
     }
   });
 
