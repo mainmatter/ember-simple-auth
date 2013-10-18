@@ -28,9 +28,11 @@ var ApplicationRouteMock = Ember.Object.extend({
   init: function() {
     this._super();
     this.sentloginSucceeded = false;
+    this.sentloginFailed    = false;
   },
   send: function(name) {
     this.sentloginSucceeded = (name === 'loginSucceeded');
+    this.sentloginFailed    = (name === 'loginFailed');
   }
 });
 
@@ -128,11 +130,18 @@ test('registers an AJAX prefilter that adds the authToken for non-crossdomain re
   equal(xhrMock.requestHeaders['Authorization'], undefined, 'Ember.SimpleAuth.setup registers an AJAX prefilter that does not add the authToken for crossdomain requests during setup.');
 });
 
-test('sets up the session correctly in the external login callback', function() {
+test('sets up the session correctly in the external login succeeded callback', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
   var token = Math.random().toString(36);
   Ember.SimpleAuth.externalLoginCallback({ session: { authToken: token } });
 
   equal(applicationMock.registrations['simple_auth:session'].factory.get('authToken'), token, 'Ember.SimpleAuth sets up the session with the auth token in the external login callback.');
   ok(applicationRouteMock.sentloginSucceeded, 'Ember.SimpleAuth sends the loginSucceeded event to the application routes in the external login callback.');
+});
+
+test('invokes the correct action in the external login failed callback', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock);
+  Ember.SimpleAuth.externalLoginFailedCallback();
+
+  ok(applicationRouteMock.sentloginFailed, 'Ember.SimpleAuth invokes the loginFailed action on the application route in externalLoginFailedCallback.');
 });
