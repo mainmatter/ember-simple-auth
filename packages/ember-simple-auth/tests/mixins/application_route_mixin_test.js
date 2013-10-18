@@ -1,5 +1,4 @@
 var testRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
-  session:        Ember.SimpleAuth.Session.create(),
   transitionedTo: null,
 
   transitionTo: function(targetRoute) {
@@ -24,6 +23,7 @@ var attemptedTransitionMock = { retry: function() { this.retried = true; } };
 module('Ember.SimpleAuth.ApplicationRouteMixin', {
   originalAjax: Ember.$.ajax,
   setup: function() {
+    testRoute.set('session', Ember.SimpleAuth.Session.create());
     Ember.SimpleAuth.serverSessionRoute = '/session/route';
     Ember.$.ajax                        = ajaxMock;
     ajaxRequestUrl                      = undefined;
