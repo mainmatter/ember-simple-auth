@@ -72,34 +72,28 @@ module('Ember.SimpleAuth', {
   }
 });
 
-test('saves serverSessionRoute if specified for setup', function() {
+test('saves the server session route when specified for setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { serverSessionRoute: '/route' });
 
   equal(Ember.SimpleAuth.serverSessionRoute, '/route', 'Ember.SimpleAuth saves serverSessionRoute when specified for setup.');
 });
 
-test('saves routeAfterLogin if specified for setup', function() {
+test('saves the route after login when specified for setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { routeAfterLogin: 'somewhere' });
 
   equal(Ember.SimpleAuth.routeAfterLogin, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogin when specified for setup.');
 });
 
-test('saves routeAfterLogout if specified for setup', function() {
+test('saves the route after logout when specified for setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { routeAfterLogout: 'somewhere' });
 
   equal(Ember.SimpleAuth.routeAfterLogout, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogout when specified for setup.');
 });
 
-test('saves loginRoute if specified for setup', function() {
+test('saves the login route when specified for setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { loginRoute: 'somewhere' });
 
   equal(Ember.SimpleAuth.loginRoute, 'somewhere', 'Ember.SimpleAuth saves loginRoute when specified for setup.');
-});
-
-test('saves logoutRoute if specified for setup', function() {
-  Ember.SimpleAuth.setup(containerMock, applicationMock, { logoutRoute: 'somewhere' });
-
-  equal(Ember.SimpleAuth.logoutRoute, 'somewhere', 'Ember.SimpleAuth saves logutRoute when specified for setup.');
 });
 
 test('injects a session object in models, views, controllers and routes during setup', function() {
@@ -110,8 +104,8 @@ test('injects a session object in models, views, controllers and routes during s
       return injection.target === component;
     })[0];
 
-    equal(injection.property, 'session', 'Ember.SimpleAuth injects a session into ' + component + ' during setup.');
-    equal(injection.object.constructor, Ember.SimpleAuth.Session, 'Ember.SimpleAuth.setup injects a session into ' + component + ' during setup.');
+    equal(injection.property, 'session', 'Ember.SimpleAuth injects makes a session object available as "session" in ' + component + ' during setup.');
+    equal(injection.object.constructor, Ember.SimpleAuth.Session, 'Ember.SimpleAuth injects a session object into ' + component + ' during setup.');
   });
 });
 
@@ -122,21 +116,27 @@ test('registers an AJAX prefilter that adds the authToken for non-crossdomain re
   Ember.SimpleAuth.setup(containerMock, applicationMock);
 
   registeredAjaxPrefilter({}, {}, xhrMock);
-  equal(xhrMock.requestHeaders['Authorization'], 'Token token="' + token + '"', 'Ember.SimpleAuth.setup registers an AJAX prefilter that adds the authToken for non-crossdomain requests during setup.');
+  equal(xhrMock.requestHeaders['Authorization'], 'Token token="' + token + '"', 'Ember.SimpleAuth registers an AJAX prefilter that adds the authToken for non-crossdomain requests during setup.');
 
   xhrMock = XhrMock.create();
   xhrMock.crossDomain = true;
   registeredAjaxPrefilter({}, {}, xhrMock);
-  equal(xhrMock.requestHeaders['Authorization'], undefined, 'Ember.SimpleAuth.setup registers an AJAX prefilter that does not add the authToken for crossdomain requests during setup.');
+  equal(xhrMock.requestHeaders['Authorization'], undefined, 'Ember.SimpleAuth registers an AJAX prefilter that does not add the authToken for crossdomain requests during setup.');
 });
 
 test('sets up the session correctly in the external login succeeded callback', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
   var token = Math.random().toString(36);
-  Ember.SimpleAuth.externalLoginCallback({ session: { authToken: token } });
+  Ember.SimpleAuth.externalLoginSucceededCallback({ session: { authToken: token } });
 
   equal(applicationMock.registrations['simple_auth:session'].factory.get('authToken'), token, 'Ember.SimpleAuth sets up the session with the auth token in the external login callback.');
-  ok(applicationRouteMock.sentloginSucceeded, 'Ember.SimpleAuth sends the loginSucceeded event to the application routes in the external login callback.');
+});
+
+test('invokes the correct action in the external login succeeded callback', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock);
+  Ember.SimpleAuth.externalLoginSucceededCallback({ session: { authToken: 'token' } });
+
+  ok(applicationRouteMock.sentloginSucceeded, 'Ember.SimpleAuth invokes the loginSucceeded action on the application route in externalLoginSucceededCallback.');
 });
 
 test('invokes the correct action in the external login failed callback', function() {
