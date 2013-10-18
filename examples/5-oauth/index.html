@@ -79,6 +79,7 @@
         );
       },
       loginSucceeded: function() {
+        this._super();
         this.controllerFor('application').set('loginErrorMessage', undefined);
       },
       loginFailed: function(error) {
