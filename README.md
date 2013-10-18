@@ -30,61 +30,39 @@ be integrated with Ember.SimpleAuth.
 
 ## Usage
 
-Ember.SimpleAuth only requires one route and one template/controller. To enable
-it it's best to use a custom initializer:
+To enable Ember.SimpleAuth simply add a custom initializer:
 
 ```js
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(application);
+    Ember.SimpleAuth.setup(container, application);
   }
 });
 ```
 
-The route for logging in can be named anything you want:
-
-```js
-App.Router.map(function() {
-  this.route('login');
-});
-```
-
-To wire everything up, the generated `App.LoginController` needs to implement
-the respective mixin provided by Ember.SimpleAuth:
-
-```js
-App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
-```
-
-Also, you need to mixin the `Ember.SimpleAuth.LogoutActionableMixin` in the
-`App.ApplicationRoute`:
+The `App.ApplicationRoute` must implement the mixin provided by
+Ember.SimpleAuth so that the `login` and `logout` actions are available:
 
 ```js
 App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutActionableMixin);
 ```
 
-The last step is to add a template that renders the login form:
+At this point every AJAX request (unless it's a cross domain request) will
+include [the authentication header](#token-based-authentication). Also the
+current session can be accessed as `session` in models, views, controllers and
+routes. To display login/logout buttons depending on whether the user is
+currently authenticated or not, simple add something like this to the
+respective template:
 
 ```html
-<form {{action login on='submit'}}>
-  <label for="identification">Login</label>
-  {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login'}}
-  <label for="password">Password</label>
-  {{view Ember.TextField id='password' type='password' valueBinding='password' placeholder='Enter Password'}}
-  <button type="submit">Login</button>
-</form>
+{{#if session.isAuthenticated}}
+  {{#link-to 'logout'}}Logout{{/link-to}}
+  <p class="navbar-text pull-right">Your are currently signed in</p>
+{{else}}
+  {{#link-to 'login'}}Login{{/link-to}}
+{{/if}}
 ```
-
-and to add a logout button somewhere in your layout:
-
-```html
-<button {{ action 'logout' }}>Logout</button>
-```
-
-At this point the infrastructure for users to log in and out is set up. Also
-every AJAX request (unless it's a cross domain request) will include
-[the authentication header](#token-based-authentication).
 
 To actually make a route in the application protected and inaccessible when no
 user is authenticated, simply implement the
@@ -100,21 +78,111 @@ App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin
 This will make the route redirect to `/login` (or a different URL if
 configured) when no user is authenticated.
 
-The current session can always be accessed as `session`. To display
-login/logout buttons depending on whether the user is currently authenticated
-or not, simple add something like this to the respective template:
+To actually authenticate the user so that the secret token is obtained from the
+server, there are two options: using a login form that sends a set of
+credentials to a server or to integrate an OAuth/OpenID provider.
+
+### Login Form
+
+When using a login form to authenticate the user, a login route is needed. This
+can be named anything you want:
+
+```js
+App.Router.map(function() {
+  this.route('login');
+});
+```
+
+To wire this up with Ember.SimpleAuth, the login controller
+`App.LoginController` needs to implement the respective mixin provided by
+Ember.SimpleAuth:
+
+```js
+App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
+```
+
+The last step is to add a template that renders the login form:
 
 ```html
-{{#if session.isAuthenticated}}
-  {{#link-to 'logout'}}Logout{{/link-to}}
-  <p class="navbar-text pull-right">Your are currently signed in</p>
-{{else}}
-  {{#link-to 'login'}}Login{{/link-to}}
-{{/if}}
+<form {{action login on='submit'}}>
+  <label for="identification">Login</label>
+  {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login'}}
+  <label for="password">Password</label>
+  {{view Ember.TextField id='password' type='password' valueBinding='password' placeholder='Enter Password'}}
+  <button type="submit">Login</button>
+</form>
 ```
 
 For more examples including custom URLs, JSON payloads, error handling,
 handling of the session user etc., see the [examples](#examples).
+
+### OAuth/OpenID
+
+When using an external authentication provider to log the user in, there is
+some custom code necessary. Instead of implementing a login route that renders
+a form you need to override the `App.ApplicationRoute`'s `login` action so that
+it opens a new window that displays the external provider's UI for logging in.
+If you're using Facebook that would look something like this:
+
+```js
+App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+  actions: {
+    login: function() {
+      window.open(
+        'https://www.facebook.com/dialog/oauth?client_id=<your app id>&redirect_uri=<your callback URI>'
+      );
+    }
+  }
+});
+```
+
+When Facebook redirects to your callback URI, you server identifies the user by
+the Facebook OAuth token and renders a response that invokes the
+`externalLoginSucceeded` callback on it's opener window (which is the browser
+window the Ember.js application is running in):
+
+```html
+<html>
+<head></head>
+<body>
+  <script>
+    window.opener.Ember.SimpleAuth.externalLoginSucceeded({ session: { authToken: 'secret token!' } });
+    window.close();
+  </script>
+</body>
+</html>
+```
+
+This will set up the current session and redirect to the correct route.
+
+If the external authentication fails, your server renders something like this:
+
+```html
+<html>
+<head></head>
+<body>
+  <script>
+    window.opener.Ember.SimpleAuth.externalLoginFailed('some error message');
+    window.close();
+  </script>
+</body>
+</html>
+```
+
+To intercept this error and for example display an error message, you can
+override the `loginFailed` action of the `App.ApplicationRoute`:
+
+```js
+App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+  actions: {
+    loginFailed: function(errorMessage) {
+      this.controllerFor('application').set('loginErrorMessage', errorMessage);
+    }
+  }
+});
+```
+
+For a more complete example see _"OAuth example"_ in the [examples](#examples).
 
 ## The Server side
 
@@ -147,7 +215,7 @@ The response JSON expected by default is:
 
 Both the request as well as the response JSON can be different than these
 defaults and customization only needs a minimal amount of code (see
-_"Full-fledged example"_ in the examples).
+_"Full-fledged example"_ in the [examples](#examples)).
 
 In the case of `DELETE /session` no JSON is sent with the request and none
 is expected in the response.
