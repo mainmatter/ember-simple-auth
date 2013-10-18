@@ -10,20 +10,19 @@ as well as the server interface.
 ## Token Based Authentication
 
 The general idea behind token based authentication for Ember.js applications is
-that instead of e.g. using a session cookie that keeps the authenticated user's
-id as it would maybe be done in old-school web applications, the client injects
-an `Authorization` header containing the user's unique and secret token in
-every AJAX request it makes. The server uses that token to identify the
-corresponding user. The header looks something like this on the server side:
+that the user making a specific request is identified by a secret, unique token
+on the server side. That token is submitted in the `Authorization` header with
+every AJAX request that the client sends to the server. The header looks
+something like this on the server side:
 
 ```
 Authorization: Token token="<secret token>"
 ```
 
-The client obtains the secret token from the server when the user logs in. This
-can happen either via a regular login form where the user enters credentials
-and which Ember.SimpleAuth supports out of the box or via an external OpenId or
-OAuth provider like
+The client obtains the user's secret token from the server when the user logs
+in. This can happen either via a regular login form where the user enters
+credentials and which Ember.SimpleAuth supports out of the box or via an
+external OpenId or OAuth provider like
 [Facebook](https://developers.facebook.com/docs/facebook-login/getting-started-web/),
 [Twitter](https://dev.twitter.com/docs/auth) or
 [Google](https://developers.google.com/accounts/docs/OpenID) which can easily
