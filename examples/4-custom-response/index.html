@@ -154,7 +154,7 @@
       return { USER_NAME: identification, PASS: password };
     },
     // display an error when loggign in fails
-    loginFailed: function(xhr) {
+    externalLoginSucceededCallback: function(xhr) {
       var response = JSON.parse(xhr.responseText);
       this.set('errorMessage', response.MSG);
     }

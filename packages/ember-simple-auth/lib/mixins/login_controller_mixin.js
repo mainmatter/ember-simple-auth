@@ -16,7 +16,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
           self.get('session').setup(response);
           self.send('loginSucceeded');
         }, function() {
-          Ember.tryInvoke(self, 'loginFailed', arguments);
+          Ember.tryInvoke(self, 'externalLoginSucceededCallback', arguments);
         });
       }
     }

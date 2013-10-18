@@ -92,7 +92,7 @@
   App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
   App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
     // display an error when loggign in fails
-    loginFailed: function(xhr) {
+    externalLoginSucceededCallback: function(xhr) {
       var response = JSON.parse(xhr.responseText);
       this.set('errorMessage', response.error);
     }

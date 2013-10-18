@@ -1,4 +1,4 @@
-var loginFailedError;
+var externalLoginSucceededCallbackError;
 var testController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
   session: Ember.SimpleAuth.Session.create(),
   route:   null,
@@ -6,8 +6,8 @@ var testController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMix
   transitionToRoute: function(targetRoute) {
     this.route = targetRoute;
   },
-  loginFailed: function(error) {
-    loginFailedError = error;
+  externalLoginSucceededCallback: function(error) {
+    externalLoginSucceededCallbackError = error;
   }
 }).create();
 
@@ -30,7 +30,7 @@ module('Ember.SimpleAuth.LoginControllerMixin', {
     Ember.SimpleAuth.serverSessionRoute = '/session/route';
     testController.setProperties({ identification: 'identification', password: 'password' });
     testController.session.destroy();
-    loginFailedError   = undefined;
+    externalLoginSucceededCallbackError   = undefined;
     ajaxRequestUrl     = undefined;
     ajaxRequestOptions = undefined;
     Ember.$.ajax       = ajaxMock;
@@ -102,8 +102,8 @@ test('redirects to the correct route on submit', function() {
   ok(retried, 'Ember.SimpleAuth.LoginControllerMixin redirects retries an attempted transition on submit.');
 });
 
-test('invokes the loginFailed method with the callback arguments', function() {
+test('invokes the externalLoginSucceededCallback method with the callback arguments', function() {
   testController.send('login');
 
-  equal(loginFailedError, 'error!', 'Ember.SimpleAuth.LoginControllerMixin invokes the loginFailed action with the callback arguments when the request fails.');
+  equal(externalLoginSucceededCallbackError, 'error!', 'Ember.SimpleAuth.LoginControllerMixin invokes the externalLoginSucceededCallback action with the callback arguments when the request fails.');
 });
