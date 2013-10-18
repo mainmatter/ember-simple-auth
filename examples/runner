@@ -40,11 +40,6 @@ post '/session' do
   end
 end
 
-# session deletion endpoint
-delete '/session' do
-  [200, { 'Content-Type' => 'application/json' }, ['']]
-end
-
 # posts endpoint; successful if a valid authentication token header is sent
 get '/posts' do
   if env['HTTP_AUTHORIZATION'] == 'Token token="secret token!"'
@@ -74,11 +69,6 @@ post '/v2/session' do
   end
 end
 
-# session deletion endpoint for V2
-delete '/v2/session' do
-  [200, { 'Content-Type' => 'application/json' }, ['']]
-end
-
 # session creation endpoint with custom response
 post '/v3/session' do
   payload = request.body.read
@@ -88,11 +78,6 @@ post '/v3/session' do
   else
     [422, { 'Content-Type' => 'application/json' }, ['{ "MSG": "invalid credentials" }']]
   end
-end
-
-# session deletion endpoint for V3
-delete '/v3/session' do
-  [200, { 'Content-Type' => 'application/json' }, ['']]
 end
 
 # callback for Facebook OAuth
