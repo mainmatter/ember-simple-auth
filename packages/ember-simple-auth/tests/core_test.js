@@ -53,19 +53,19 @@ var XhrMock = Ember.Object.extend({
   }
 });
 
-var registeredAjaxPrefilter;
-var ajaxPrefilterMock = function(prefilter) {
-  registeredAjaxPrefilter = prefilter;
+var ajaxPrefilterMock = {
+  ajaxPrefilterCapture: function(prefilter) {
+    this.registeredAjaxPrefilter = prefilter;
+  }
 };
 
 module('Ember.SimpleAuth', {
   originalAjaxPrefilter: Ember.$.ajaxPrefilter,
   setup: function() {
-    Ember.$.ajaxPrefilter   = ajaxPrefilterMock;
-    registeredAjaxPrefilter = undefined;
-    applicationMock         = ApplicationMock.create();
-    applicationRouteMock    = ApplicationRouteMock.create();
-    containerMock           = ContainerMock.create();
+    applicationMock       = ApplicationMock.create();
+    applicationRouteMock  = ApplicationRouteMock.create();
+    containerMock         = ContainerMock.create();
+    Ember.$.ajaxPrefilter = ajaxPrefilterMock.ajaxPrefilterCapture.bind(ajaxPrefilterMock);
   },
   teardown: function() {
     Ember.$.ajaxPrefilter = this.originalAjaxPrefilter;
@@ -115,12 +115,12 @@ test('registers an AJAX prefilter that adds the authToken for non-crossdomain re
   sessionStorage.authToken = token;
   Ember.SimpleAuth.setup(containerMock, applicationMock);
 
-  registeredAjaxPrefilter({}, {}, xhrMock);
+  ajaxPrefilterMock.registeredAjaxPrefilter({}, {}, xhrMock);
   equal(xhrMock.requestHeaders['Authorization'], 'Token token="' + token + '"', 'Ember.SimpleAuth registers an AJAX prefilter that adds the authToken for non-crossdomain requests during setup.');
 
   xhrMock = XhrMock.create();
   xhrMock.crossDomain = true;
-  registeredAjaxPrefilter({}, {}, xhrMock);
+  ajaxPrefilterMock.registeredAjaxPrefilter({}, {}, xhrMock);
   equal(xhrMock.requestHeaders['Authorization'], undefined, 'Ember.SimpleAuth registers an AJAX prefilter that does not add the authToken for crossdomain requests during setup.');
 });
 

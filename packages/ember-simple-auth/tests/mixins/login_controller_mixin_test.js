@@ -1,13 +1,10 @@
-var externalLoginSucceededCallbackError;
 var testController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-  session: Ember.SimpleAuth.Session.create(),
-  route:   null,
+  invokedLoginSucceeded: false,
+  invokedLoginFailed:    false,
 
-  transitionToRoute: function(targetRoute) {
-    this.route = targetRoute;
-  },
-  externalLoginSucceededCallback: function(error) {
-    externalLoginSucceededCallbackError = error;
+  send: function(name) {
+    this.invokedLoginSucceeded = (name === 'loginSucceeded');
+    this.invokedLoginFailed    = (name === 'loginFailed');
   }
 }).create();
 
@@ -27,6 +24,7 @@ var ajaxMock = function(url, options) {
 module('Ember.SimpleAuth.LoginControllerMixin', {
   originalAjax: Ember.$.ajax,
   setup: function() {
+    testController.set('session', Ember.SimpleAuth.Session.create());
     Ember.SimpleAuth.serverSessionRoute = '/session/route';
     testController.setProperties({ identification: 'identification', password: 'password' });
     testController.session.destroy();
@@ -72,6 +70,12 @@ test('does not send a request when identification or password are empty', functi
   equal(ajaxRequestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on submit when identification and password are empty.');
 });
 
+test('serializes the credentials correctly', function() {
+  var credentials = testController.serializeCredentials('identification', 'password');
+
+  equal(credentials, { session: { identification: 'identification', password: 'password' } }, 'Ember.SimpleAuth.LoginControllerMixin serializes the credentials correctly.');
+});
+
 test('serializes the credentials correctly when a custom serialization method is provided', function() {
   testController.reopen({
     serializeCredentials: function(identification, password) {
@@ -102,7 +106,7 @@ test('redirects to the correct route on submit', function() {
   ok(retried, 'Ember.SimpleAuth.LoginControllerMixin redirects retries an attempted transition on submit.');
 });
 
-test('invokes the externalLoginSucceededCallback method with the callback arguments', function() {
+test('invokes the login failed action with the callback arguments', function() {
   testController.send('login');
 
   equal(externalLoginSucceededCallbackError, 'error!', 'Ember.SimpleAuth.LoginControllerMixin invokes the externalLoginSucceededCallback action with the callback arguments when the request fails.');
