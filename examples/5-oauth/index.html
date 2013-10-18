@@ -70,6 +70,8 @@
   App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
     actions: {
       login: function() {
+        // open a new window that displays the Facebook login dialog; see the callback handler on the server side
+        // (get '/5-oauth/callback') in the runner file
         window.open(
           'https://www.facebook.com/dialog/oauth?client_id=631252926924840&redirect_uri=http://localhost:4567/5-oauth/callback',
           '_blank',
