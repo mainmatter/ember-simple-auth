@@ -1,15 +1,14 @@
-var testRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
-  invokedLogin: false,
-
+var TestRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
   send: function(name) {
     this.invokedLogin = (name === 'login');
   }
-}).create();
+});
 
 var attemptedTransitionMock = { abort: function() { this.aborted = true; } };
 
 module('Ember.SimpleAuth.AuthenticatedRouteMixin', {
   setup: function() {
+    testRoute                   = TestRoute.create();
     Ember.SimpleAuth.loginRoute = 'login.route';
     testRoute.set('session', Ember.SimpleAuth.Session.create());
   }
