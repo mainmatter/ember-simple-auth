@@ -19,6 +19,8 @@ var ajaxMock = function(url, options) {
   };
 };
 
+var attemptedTransitionMock = { retry: function() { this.retried = true; } };
+
 module('Ember.SimpleAuth.ApplicationRouteMixin', {
   originalAjax: Ember.$.ajax,
   setup: function() {
@@ -66,15 +68,14 @@ test('redirects to the correct route on loginSucceeded', function() {
 
   equal(testRoute.transitionedTo, 'some.route', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterLogin route on loginSucceeded when no attempted transition is saved.');
 
-  var retried = false;
-  testRoute.set('session.attemptedTransition', { retry: function() { retried = true; } });
+  testRoute.set('session.attemptedTransition', attemptedTransitionMock);
   testRoute._actions['loginSucceeded'].apply(testRoute);
 
-  ok(retried, 'Ember.SimpleAuth.ApplicationRouteMixin retries a saved attempted transition on loginSucceeded.');
+  ok(attemptedTransitionMock.retried, 'Ember.SimpleAuth.ApplicationRouteMixin retries a saved attempted transition on loginSucceeded.');
 });
 
 test('clears a saved attempted transition on loginSucceeded', function() {
-  testRoute.set('session.attemptedTransition', { retry: function() { retried = true; } });
+  testRoute.set('session.attemptedTransition', attemptedTransitionMock);
   testRoute._actions['loginSucceeded'].apply(testRoute);
 
   equal(testRoute.get('session.attemptedTransition'), undefined, 'Ember.SimpleAuth.ApplicationRouteMixin clears a saved attempted transition on loginSucceeded.');
