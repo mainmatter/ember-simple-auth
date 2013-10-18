@@ -15,8 +15,8 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
         }).then(function(response) {
           self.get('session').setup(response);
           self.send('loginSucceeded');
-        }, function() {
-          self.send('loginFailed', arguments);
+        }, function(xhr, status, error) {
+          self.send('loginFailed', xhr, status, error);
         });
       }
     }

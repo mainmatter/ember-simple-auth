@@ -4,8 +4,9 @@ var TestController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMix
     loginSucceeded: function() {
       this.invokedLoginSucceeded = true;
     },
-    loginFailed: function() {
-      this.invokedLoginFailed = true;
+    loginFailed: function(xhr, status, error) {
+      this.invokedLoginFailed   = true;
+      this.loginFailedArguments = [xhr, status, error];
     }
   }
 });
@@ -18,7 +19,7 @@ var AjaxMock = Ember.Object.extend({
     return {
       then: function(success, fail) {
         success({ session: { authToken: 'authToken' } });
-        fail('error!', 'and another one');
+        fail('xhr', 'status', 'error');
       }
     };
   }
@@ -97,5 +98,6 @@ test('invokes the login succeeded action when login is successful', function() {
 test('invokes the login failed action with the callback arguments', function() {
   testController.send('login');
 
-  ok(testController.invokedLoginFailed, 'Ember.SimpleAuth.LoginControllerMixin invokes the externalLoginSucceededCallback action with the callback arguments when the request fails.');
+  ok(testController.invokedLoginFailed, 'Ember.SimpleAuth.LoginControllerMixin invokes the loginFailed action when the request fails.');
+  deepEqual(testController.loginFailedArguments, ['xhr', 'status', 'error'], 'Ember.SimpleAuth.LoginControllerMixin invokes the loginFailed action with the callback arguments when the request fails.');
 });
