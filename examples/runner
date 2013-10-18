@@ -97,14 +97,13 @@ end
 
 # callback for Facebook OAuth
 get '/5-oauth/callback' do
-  if !!params[:error]
-    # in case of error simply render an error message
-    erb :oauth_callback_error, locals: { error_message: params[:error_description] }
-  else
-    # when login succeeded, verify/exchange the token from the response here
-    # the template sets up the client session with your app's own auth token (see below)
-    erb :oauth_callback_success, layout: false
-  end
+  success = !params[:error]
+
+  # when login succeeded, verify/exchange the token from the response here
+
+  # depending on whether the login succeeded, the template invokes the respective callbacks
+  # on its opening window with the respecitve data (session JSON or error object)
+  erb :oauth_callback_success, layout: false, locals: { success: success }
 end
 
 __END__
@@ -152,7 +151,7 @@ __END__
         </a>
         <a href="/4-custom-response" class="list-group-item">
           <h4 class="list-group-item-heading">Full-fledged example</h4>
-          <p class="list-group-item-text">Full-fledged example with error handling, session account and custom server responses.</p>
+          <p class="list-group-item-text">Full-fledged example with error handling, session account, ember-data integration and custom server responses.</p>
         </a>
         <a href="/5-oauth" class="list-group-item">
           <h4 class="list-group-item-heading">OAuth example</h4>
@@ -183,7 +182,11 @@ __END__
 <head></head>
 <body>
   <script>
-    window.opener.Ember.SimpleAuth.externalLoginCallback({ session: { authToken: 'secret token!' } });
+    <% if success %>
+      window.opener.Ember.SimpleAuth.externalLoginSucceededCallback({ session: { authToken: 'secret token!' } });
+    <% else %>
+      window.opener.Ember.SimpleAuth.externalLoginFailedCallback({ error: 'login failed!' });
+    <% end %>
     window.close();
   </script>
 </body>

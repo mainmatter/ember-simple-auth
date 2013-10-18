@@ -21,13 +21,18 @@
     </div>
   </nav>
   <div class="container">
+    {{#if loginErrorMessage}}
+      <div class="alert alert-danger">
+        <strong>Login failed:</strong> {{loginErrorMessage}}
+      </div>
+    {{/if}}
     {{outlet}}
   </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="index">
   <div class="page-header">
-    <h1>Simple example</h1>
+    <h1>OAuth example</h1>
   </div>
   {{#unless session.isAuthenticated}}
     <div class="alert alert-info">
@@ -70,6 +75,12 @@
           '_blank',
           'menubar=no,status=no,height=400,width=800'
         );
+      },
+      loginSucceeded: function() {
+        this.controllerFor('application').set('loginErrorMessage', undefined);
+      },
+      loginFailed: function(error) {
+        this.controllerFor('application').set('loginErrorMessage', 'The login failed!');
       }
     }
   });

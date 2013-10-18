@@ -153,10 +153,12 @@
     serializeCredentials: function(identification, password) {
       return { USER_NAME: identification, PASS: password };
     },
-    // display an error when loggign in fails
-    externalLoginSucceededCallback: function(xhr) {
-      var response = JSON.parse(xhr.responseText);
-      this.set('errorMessage', response.MSG);
+    actions: {
+      // display an error when loggign in fails
+      loginFailed: function(xhr, status, error) {
+        var response = JSON.parse(xhr.responseText);
+        this.set('errorMessage', response.MSG);
+      }
     }
   });
 
