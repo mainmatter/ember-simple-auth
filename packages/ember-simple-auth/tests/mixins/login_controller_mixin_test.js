@@ -1,37 +1,35 @@
-var testController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-  invokedLoginSucceeded: false,
-  invokedLoginFailed:    false,
-
+var TestController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
   send: function(name) {
     this.invokedLoginSucceeded = (name === 'loginSucceeded');
     this.invokedLoginFailed    = (name === 'loginFailed');
   }
-}).create();
+});
 
-var ajaxRequestUrl;
-var ajaxRequestOptions;
-var ajaxMock = function(url, options) {
-  ajaxRequestUrl     = url;
-  ajaxRequestOptions = options;
-  return {
-    then: function(success, fail) {
-      success({ session: { authToken: 'authToken' } });
-      fail('error!', 'and another one');
-    }
-  };
-};
+var ajaxMock;
+var AjaxMock = Ember.Object.extend({
+  ajaxCapture: function(url, options) {
+    this.requestUrl     = url;
+    this.requestOptions = options;
+    return {
+      then: function(success, fail) {
+        success({ session: { authToken: 'authToken' } });
+        fail('error!', 'and another one');
+      }
+    };
+  }
+});
 
 module('Ember.SimpleAuth.LoginControllerMixin', {
   originalAjax: Ember.$.ajax,
   setup: function() {
-    testController.set('session', Ember.SimpleAuth.Session.create());
+    testController                      = TestController.create();
+    ajaxMock                            = AjaxMock.create();
     Ember.SimpleAuth.serverSessionRoute = '/session/route';
-    testController.setProperties({ identification: 'identification', password: 'password' });
-    testController.session.destroy();
-    externalLoginSucceededCallbackError   = undefined;
-    ajaxRequestUrl     = undefined;
-    ajaxRequestOptions = undefined;
-    Ember.$.ajax       = ajaxMock;
+    Ember.$.ajax                        = ajaxMock.ajaxCapture.bind(ajaxMock);
+    testController.set('session', Ember.SimpleAuth.Session.create({
+      identification: 'identification',
+      password:       'password'
+    }));
   },
   teardown: function() {
     Ember.$.ajax = this.originalAjax;
