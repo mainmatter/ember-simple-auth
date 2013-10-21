@@ -13,12 +13,14 @@ var TestController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMix
 
 var ajaxMock;
 var AjaxMock = Ember.Object.extend({
+  response:    { access_token: 'authToken' },
   ajaxCapture: function(url, options) {
+    var self            = this;
     this.requestUrl     = url;
     this.requestOptions = options;
     return {
       then: function(success, fail) {
-        success({ access_token: 'authToken' });
+        success(self.response);
         fail('xhr', 'status', 'error');
       }
     };
