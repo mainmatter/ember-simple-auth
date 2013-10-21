@@ -59,7 +59,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
           self.setup(response);
           self.handleAuthTokenRefresh();
         });
-      }, this.get('authTokenExpiry') - 5000));
+      }, waitTime));
     }
   }
 });
