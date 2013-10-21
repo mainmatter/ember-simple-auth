@@ -1,7 +1,7 @@
 Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
-  refreshToken: function(refreshToken) {
+  refreshAuthToken: function() {
     var self     = this;
-    var postData = ['grant_type=refresh_token', 'refresh_token=' + refreshToken].join('&');
+    var postData = ['grant_type=refresh_token', 'refresh_token=' + this.refreshToken].join('&');
     Ember.$.ajax(Ember.SimpleAuth.serverTokenRoute, {
       type:        'POST',
       data:        postData,
@@ -15,8 +15,12 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
     response            = response || {};
     var tokenExpiration = response.expires_in || 0;
     if (!Ember.isEmpty(response.refresh_token) && tokenExpiration - 10 > 0) {
+      this.refreshToken    = response.refresh_token;
+      this.tokenExpiration = tokenExpiration;
+    }
+    if (!Ember.isEmpty(this.refreshToken) && !Ember.isEmpty(this.tokenExpiration)) {
       Ember.run.cancel(this.refreshTokenLater);
-      this.refreshTokenLater = Ember.run.later(this, response.refresh_token, tokenExpiration - 10);
+      this.refreshTokenLater = Ember.run.later(this, this.refreshAuthToken, (this.tokenExpiration - 10) * 1000);
     }
   },
   actions: {

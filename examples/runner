@@ -23,20 +23,29 @@ get '/ember-simple-auth.js' do
 end
 
 # serve the HTML files from the respective example directoy
-%w(1-simple 2-errors 3-authenticated-account 4-custom-response 5-oauth).each do |example|
+%w(1-simple 2-errors 3-token-refresh 4-authenticated-account 5-custom-response 6-oauth).each do |example|
   get "/#{example}" do
     erb File.read(File.join(base_dir, example, 'index.html'))
   end
 end
 
-# session creation endpoint; successfull if credentials are letme/in
+# token endpoint; successfull if credentials are letme/in
 post '/token' do
-  payload = request.body.read
-  json    = JSON.parse(payload)
-  if json['session']['identification'] == 'letme' && json['session']['password'] == 'in'
-    [200, { 'Content-Type' => 'application/json' }, ['{ "session": { "authToken": "secret token!" } }']]
+  if params[:grant_type] == 'password'
+    if params[:username] == 'letme' && params[:password] == 'in'
+      [200, { 'Content-Type' => 'application/json' }, ['{ "access_token": "secret token!", "refresh_token": "secret refresh token!", "expires_in": 15 }']]
+    else
+      [400, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid_grant" }']]
+    end
+  elsif params[:grant_type] == 'refresh_token'
+    if params[:refresh_token] == 'secret refresh token!'
+      token_counter = (env['HTTP_AUTHORIZATION'].match(/Bearer [^\d]*(\d+)/) || [])[1] || 0
+      [200, { 'Content-Type' => 'application/json' }, [%Q({ "access_token": "secret token!#{token_counter.to_i + 1}" })]]
+    else
+      [400, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid_grant" }']]
+    end
   else
-    [422, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid credentials" }']]
+    [400, { 'Content-Type' => 'application/json' }, ['{ "error": "unsupported_grant_type" }']]
   end
 end
 
@@ -81,7 +90,7 @@ post '/v3/token' do
 end
 
 # callback for Facebook OAuth
-get '/5-oauth/callback' do
+get '/6-oauth/callback' do
   success = !params[:error]
 
   # when login succeeded, verify/exchange the token from the response here
@@ -130,15 +139,19 @@ __END__
           <h4 class="list-group-item-heading">Example with error handling</h4>
           <p class="list-group-item-text">Simple example with error handling - still no data, no session account etc.</p>
         </a>
-        <a href="/3-authenticated-account" class="list-group-item">
+        <a href="/3-token-refresh" class="list-group-item">
+          <h4 class="list-group-item-heading">Example with token refresh</h4>
+          <p class="list-group-item-text">Simple example with error handling and automatic token refresh.</p>
+        </a>
+        <a href="/4-authenticated-account" class="list-group-item">
           <h4 class="list-group-item-heading">Example with session account</h4>
           <p class="list-group-item-text">Full-fledged example with error handling and handling of the authenticated account.</p>
         </a>
-        <a href="/4-custom-response" class="list-group-item">
+        <a href="/5-custom-response" class="list-group-item">
           <h4 class="list-group-item-heading">Full-fledged example</h4>
           <p class="list-group-item-text">Full-fledged example with error handling, session account, ember-data integration and custom server responses.</p>
         </a>
-        <a href="/5-oauth" class="list-group-item">
+        <a href="/6-oauth" class="list-group-item">
           <h4 class="list-group-item-heading">OAuth example</h4>
           <p class="list-group-item-text">Exampled where Facebook OAuth is used to authenticate users instead of credentials-based authentication.</p>
         </a>
