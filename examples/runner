@@ -33,6 +33,19 @@ end
 post '/token' do
   if params[:grant_type] == 'password'
     if params[:username] == 'letme' && params[:password] == 'in'
+      [200, { 'Content-Type' => 'application/json' }, ['{ "access_token": "secret token!" }']]
+    else
+      [400, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid_grant" }']]
+    end
+  else
+    [400, { 'Content-Type' => 'application/json' }, ['{ "error": "unsupported_grant_type" }']]
+  end
+end
+
+# token endpoint that also support token refresh
+post '/v2/token' do
+  if params[:grant_type] == 'password'
+    if params[:username] == 'letme' && params[:password] == 'in'
       [200, { 'Content-Type' => 'application/json' }, ['{ "access_token": "secret token!", "refresh_token": "secret refresh token!", "expires_in": 15 }']]
     else
       [400, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid_grant" }']]
