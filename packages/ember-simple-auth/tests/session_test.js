@@ -22,15 +22,13 @@ var AjaxMock = Ember.Object.extend({
 
 module('Ember.SimpleAuth.Session', {
   originalAjax: Ember.$.ajax,
-  originalRunLater: Ember.run.later,
   setup: function() {
     session      = Ember.SimpleAuth.Session.create();
     ajaxMock     = AjaxMock.create();
     Ember.$.ajax = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
   },
   teardown: function() {
-    Ember.$.ajax    = this.originalAjax;
-    Ember.run.later = this.originalRunLater;
+    Ember.$.ajax = this.originalAjax;
     Ember.run.cancel(session.get('refreshAuthTokenTimeout'));
   }
 });
@@ -90,6 +88,13 @@ test('assigns its properties correctly during setup', function() {
   equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session assigns refreshToken correctly during setup.');
   equal(session.get('authTokenExpiry'), 1000, 'Ember.SimpleAuth.Session assigns authTokenExpiry correctly during setup.');
 
+  session.setup({ access_token: authToken });
+
+  equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session keeps an existing refreshToken when the supplied session does not contain one.');
+  equal(session.get('authTokenExpiry'), 1000, 'Ember.SimpleAuth.Session keeps an existing authTokenExpiry when the supplied session does not contain one.');
+
+  session.destroy();
+  session = Ember.SimpleAuth.Session.create();
   session.setup({});
 
   equal(session.get('authToken'), undefined, 'Ember.SimpleAuth.Session assigns authToken as undefined during setup when the supplied session is empty.');
@@ -141,17 +146,4 @@ test('schedules a token refresh when the required properties are set', function(
   session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10 });
 
   notEqual(session.get('refreshAuthTokenTimeout'), undefined, 'Ember.SimpleAuth.Session schedules a token refresh when the refreshToken and authTokenExpiry are present.');
-});
-
-test('refreshes the auth token', function() {
-  Ember.run.later = Ember.run;
-  Ember.SimpleAuth.serverTokenRoute = '/token/route';
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10 });
-  var previousTimeout = 'timeout';
-  session.handleAuthTokenRefresh();
-
-  equal(ajaxMock.requestUrl, '/token/route', 'Ember.SimpleAuth.Session sends a request to the serverTokenRoute to refresh the token.');
-  equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.Session sends a POST request to refresh the token.');
-  equal(ajaxMock.requestOptions.data, 'grant_type=refresh_token&refresh_token=refreshToken', 'Ember.SimpleAuth.Session sends a request with the correct data to refresh the token.');
-  equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.Session sends a request with the content type "application/x-www-form-urlencoded" to refresh the token.');
 });
