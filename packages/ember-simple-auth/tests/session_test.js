@@ -30,6 +30,9 @@ module('Ember.SimpleAuth.Session', {
   teardown: function() {
     Ember.$.ajax = this.originalAjax;
     Ember.run.cancel(session.get('refreshAuthTokenTimeout'));
+    delete sessionStorage.authToken;
+    delete sessionStorage.refereshToken;
+    delete sessionStorage.authTokenExpiry;
   }
 });
 
