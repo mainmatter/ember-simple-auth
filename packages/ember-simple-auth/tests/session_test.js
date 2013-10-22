@@ -41,12 +41,13 @@ test('reads its properties from the session storage during initialization', func
   sessionStorage.authToken = authToken;
   var refreshToken = Math.random().toString(36);
   sessionStorage.refreshToken = refreshToken;
-  sessionStorage.authTokenExpiry = 1;
+  sessionStorage.authTokenExpiry = 10000;
   session = Ember.SimpleAuth.Session.create();
 
   equal(session.get('authToken'), authToken, 'Ember.SimpleAuth.Session reads authToken from sessionStorage during initialization.');
   equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session reads refreshToken from sessionStorage during initialization.');
-  equal(session.get('authTokenExpiry'), 1, 'Ember.SimpleAuth.Session reads authTokenExpiry from sessionStorage during initialization.');
+  equal(session.get('authTokenExpiry'), 10000, 'Ember.SimpleAuth.Session reads authTokenExpiry from sessionStorage during initialization.');
+  notEqual(session.get('refreshAuthTokenTimeout'), undefined, 'Ember.SimpleAuth.Session schedules a token refresh during initialization.');
 });
 
 test('persists its properties to the session storage when they change', function() {
