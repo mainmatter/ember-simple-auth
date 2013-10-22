@@ -88,7 +88,7 @@ test('assigns its properties correctly during setup', function() {
 
   equal(session.get('authToken'), authToken, 'Ember.SimpleAuth.Session assigns authToken correctly during setup.');
   equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session assigns refreshToken correctly during setup.');
-  equal(session.get('authTokenExpiry'), 1, 'Ember.SimpleAuth.Session assigns authTokenExpiry correctly during setup.');
+  equal(session.get('authTokenExpiry'), 1000, 'Ember.SimpleAuth.Session assigns authTokenExpiry correctly during setup.');
 
   session.setup({});
 
@@ -134,11 +134,11 @@ test('schedules a token refresh when the required properties are set', function(
 
   equal(session.get('refreshAuthTokenTimeout'), undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when no authTokenExpiry is present.');
 
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 5000 });
+  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 5 });
 
   equal(session.get('refreshAuthTokenTimeout'), undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when an authTokenExpiry less or equal 5000ms is present.');
 
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10000 });
+  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10 });
 
   notEqual(session.get('refreshAuthTokenTimeout'), undefined, 'Ember.SimpleAuth.Session schedules a token refresh when the refreshToken and authTokenExpiry are present.');
 });
@@ -146,7 +146,7 @@ test('schedules a token refresh when the required properties are set', function(
 test('refreshes the auth token', function() {
   Ember.run.later = Ember.run;
   Ember.SimpleAuth.serverTokenRoute = '/token/route';
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10000 });
+  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10 });
   var previousTimeout = 'timeout';
   session.handleAuthTokenRefresh();
 
