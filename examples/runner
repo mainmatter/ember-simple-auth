@@ -46,14 +46,14 @@ end
 post '/v2/token' do
   if params[:grant_type] == 'password'
     if params[:username] == 'letme' && params[:password] == 'in'
-      [200, { 'Content-Type' => 'application/json' }, ['{ "access_token": "secret token!", "refresh_token": "secret refresh token!", "expires_in": 15 }']]
+      [200, { 'Content-Type' => 'application/json' }, ['{ "access_token": "secret token - 1", "refresh_token": "secret refresh token!", "expires_in": 15 }']]
     else
       [400, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid_grant" }']]
     end
   elsif params[:grant_type] == 'refresh_token'
     if params[:refresh_token] == 'secret refresh token!'
-      token_counter = (env['HTTP_AUTHORIZATION'].match(/Bearer [^\d]*(\d+)/) || [])[1] || 0
-      [200, { 'Content-Type' => 'application/json' }, [%Q({ "access_token": "secret token!#{token_counter.to_i + 1}" })]]
+      token_counter = env['HTTP_AUTHORIZATION'].match(/Bearer [^\d]*(\d+)/)[1]
+      [200, { 'Content-Type' => 'application/json' }, [%Q({ "access_token": "secret token - #{token_counter.to_i + 1}" })]]
     else
       [400, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid_grant" }']]
     end

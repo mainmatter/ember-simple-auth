@@ -6,6 +6,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       refreshToken:    sessionStorage.refreshToken,
       authTokenExpiry: sessionStorage.authTokenExpiry
     });
+    this.handleAuthTokenRefresh();
   },
   setup: function(serverToken) {
     serverToken = serverToken || {};
