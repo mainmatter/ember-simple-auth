@@ -88,6 +88,16 @@ test('saves the route after logout when specified for setup', function() {
   equal(Ember.SimpleAuth.routeAfterLogout, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogout when specified for setup.');
 });
 
+test('saves the token-auto-refresh-flag when specified for setup', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { autoRefreshToken: false });
+
+  ok(!Ember.SimpleAuth.autoRefreshToken, 'Ember.SimpleAuth saves autoRefreshToken when specified for setup.');
+
+  Ember.SimpleAuth.setup(containerMock, applicationMock);
+
+  ok(Ember.SimpleAuth.autoRefreshToken, 'Ember.SimpleAuth defaults autoRefreshToken to true when not specified for setup.');
+});
+
 test('saves the login route when specified for setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { loginRoute: 'somewhere' });
 

@@ -139,6 +139,12 @@ test('is authenticated when the auth token is present, otherwise not', function(
 });
 
 test('schedules a token refresh when the required properties are set', function() {
+  Ember.SimpleAuth.autoRefreshToken = false;
+  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10 });
+
+  equal(session.get('refreshAuthTokenTimeout'), undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when an Ember.SimpleAuth.autoRefreshToken is false.');
+
+  Ember.SimpleAuth.autoRefreshToken = true;
   session.setup({ access_token: 'authToken', refresh_token: 'refreshToken' });
 
   equal(session.get('refreshAuthTokenTimeout'), undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when no authTokenExpiry is present.');
