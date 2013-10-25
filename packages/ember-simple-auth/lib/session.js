@@ -8,6 +8,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     });
     this.handleAuthTokenRefresh();
   },
+
   setup: function(serverToken) {
     serverToken = serverToken || {};
     this.setProperties({
@@ -16,6 +17,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       authTokenExpiry: (serverToken.expires_in > 0 ? serverToken.expires_in * 1000 : this.get('authTokenExpiry')) || 0
     });
   },
+
   destroy: function() {
     this.setProperties({
       authToken:       undefined,
@@ -23,9 +25,11 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       authTokenExpiry: undefined
     });
   },
+
   isAuthenticated: Ember.computed('authToken', function() {
     return !Ember.isEmpty(this.get('authToken'));
   }),
+
   handlePropertyChange: function(property) {
     var value = this.get(property);
     if (Ember.isEmpty(value)) {
@@ -34,17 +38,21 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       sessionStorage[property] = value;
     }
   },
+
   authTokenObserver: Ember.observer(function() {
     this.handlePropertyChange('authToken');
   }, 'authToken'),
+
   refreshTokenObserver: Ember.observer(function() {
     this.handlePropertyChange('refreshToken');
     this.handleAuthTokenRefresh();
   }, 'refreshToken'),
+
   authTokenExpiryObserver: Ember.observer(function() {
     this.handlePropertyChange('authTokenExpiry');
     this.handleAuthTokenRefresh();
   }, 'authTokenExpiry'),
+
   handleAuthTokenRefresh: function() {
     if (Ember.SimpleAuth.autoRefreshToken) {
       Ember.run.cancel(this.get('refreshAuthTokenTimeout'));
