@@ -90,13 +90,13 @@ post '/v3/token' do
 end
 
 # session creation endpoint with custom response
-post '/v4/token' do
+put '/v4/token' do
   payload = request.body.read
   json    = JSON.parse(payload)
-  if json['USER_NAME'] == 'letme' && json['PASS'] == 'in'
-    [200, { 'Content-Type' => 'application/json' }, ['{ "TOKEN": "secret token!", "AUTHENTICATED_USER": { "ID": 1 } }']]
+  if json['SESSION']['USER_NAME'] == 'letme' && json['SESSION']['PASS'] == 'in'
+    [200, { 'Content-Type' => 'application/json' }, ['{ "SESSION": { "TOKEN": "secret token!", "AUTHENTICATED_USER": { "ID": 1 } } }']]
   else
-    [422, { 'Content-Type' => 'application/json' }, ['{ "MSG": "invalid credentials" }']]
+    [422, { 'Content-Type' => 'application/json' }, ['{ "ERROR": { "MSG": "invalid credentials" } }']]
   end
 end
 

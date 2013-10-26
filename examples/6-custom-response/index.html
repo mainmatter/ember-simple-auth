@@ -11,9 +11,6 @@
         {{#link-to 'protected' tagName='li'}}
           <a style="cursor: pointer">Protected Page</a>
         {{/link-to}}
-        {{#link-to 'posts' tagName='li'}}
-          <a style="cursor: pointer">Recent Posts</a>
-        {{/link-to}}
       </ul>
       {{! display logout button when a session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
@@ -39,19 +36,6 @@
       You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
     </div>
   {{/unless}}
-</script>
-
-<script type="text/x-handlebars" data-template-name="posts">
-  <div class="page-header">
-    <h1>Recent Posts</h1>
-  </div>
-  {{#each}}
-    <article>
-      <h2>{{title}}</h2>
-      <p>{{body}}</p>
-    </article>
-  {{/each}}
-  </ul>
 </script>
 
 <script type="text/x-handlebars" data-template-name="login">
@@ -100,8 +84,8 @@
           this.set('accountId', sessionStorage.accountId);
         },
         setup: function(serverSession) {
-          this.set('authToken', serverSession.TOKEN);
-          this.set('accountId', serverSession.AUTHENTICATED_USER.ID);
+          this.set('authToken', serverSession.SESSION.TOKEN);
+          this.set('accountId', serverSession.SESSION.AUTHENTICATED_USER.ID);
         },
         destroy: function() {
           this._super();
@@ -128,12 +112,7 @@
 
   App.Account = DS.Model.extend({
     login: DS.attr(),
-    name: DS.attr()
-  });
-
-  App.Post = DS.Model.extend({
-    title: DS.attr(),
-    body: DS.attr()
+    name:  DS.attr()
   });
 
   App.Router.map(function() {
@@ -141,21 +120,21 @@
     this.route('login');
     //protected routes that are inaccessible without authentication
     this.route('protected');
-    this.route('posts');
   });
 
   // use the provided mixins in the application route and login controller
   App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
   App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-    // serialize the credentials from the view to what the server expects
-    serializeCredentials: function(identification, password) {
-      return { USER_NAME: identification, PASS: password };
+    // custom request options for the token request
+    tokenRequestOptions: function(username, password) {
+      var putData = '{ "SESSION": { "USER_NAME": "' + username + '", "PASS": "' + password + '" } }';
+      return { type: 'PUT', data: putData, contentType: 'application/json' };
     },
     actions: {
       // display an error when loggign in fails
       loginFailed: function(xhr, status, error) {
         var response = JSON.parse(xhr.responseText);
-        this.set('errorMessage', response.MSG);
+        this.set('errorMessage', response.ERROR.MSG);
       }
     }
   });
@@ -169,11 +148,6 @@
     }
   });
 
-  // make these routes protected
+  // make these route protected
   App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
-  App.PostsRoute     = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
-    model: function() {
-      return this.get('store').findAll('post');
-    }
-  });
 </script>
