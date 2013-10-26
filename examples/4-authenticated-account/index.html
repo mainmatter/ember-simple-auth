@@ -31,11 +31,15 @@
   <div class="page-header">
     <h1>Example with session account</h1>
   </div>
-  {{#unless session.isAuthenticated}}
+  {{#if session.isAuthenticated}}
+    <div class="alert alert-info">
+      You are currently authenticated as <em>"{{session.account.name}}"</em> (login <code>{{session.account.login}}</code>)
+    </div>
+  {{else}}
     <div class="alert alert-info">
       You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
     </div>
-  {{/unless}}
+  {{/if}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="login">
@@ -85,7 +89,7 @@
         },
         setup: function(serverSession) {
           this._super(serverSession);
-          this.set('accountId', serverSession.session.accountId);
+          this.set('accountId', serverSession.account_id);
         },
         destroy: function() {
           this._super();

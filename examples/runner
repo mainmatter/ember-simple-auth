@@ -81,18 +81,16 @@ get '/accounts/1' do
 end
 
 # session creation endpoint with additional authenticated user
-post '/v2/token' do
-  payload = request.body.read
-  json    = JSON.parse(payload)
-  if json['session']['identification'] == 'letme' && json['session']['password'] == 'in'
-    [200, { 'Content-Type' => 'application/json' }, ['{ "session": { "authToken": "secret token!", "accountId": 1 } }']]
+post '/v3/token' do
+  if params[:grant_type] == 'password' && params[:username] == 'letme' && params[:password] == 'in'
+    [200, { 'Content-Type' => 'application/json' }, ['{ "access_token": "secret token!", "account_id": 1 }']]
   else
-    [422, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid credentials" }']]
+    [422, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid_grant" }']]
   end
 end
 
 # session creation endpoint with custom response
-post '/v3/token' do
+post '/v4/token' do
   payload = request.body.read
   json    = JSON.parse(payload)
   if json['USER_NAME'] == 'letme' && json['PASS'] == 'in'
