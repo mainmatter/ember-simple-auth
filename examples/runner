@@ -196,9 +196,9 @@ __END__
 <body>
   <script>
     <% if success %>
-      window.opener.Ember.SimpleAuth.externalLoginSucceeded({ session: { authToken: 'secret token!' } });
+      window.opener.Ember.SimpleAuth.externalLoginSucceeded({ access_token: 'secret token!' });
     <% else %>
-      window.opener.Ember.SimpleAuth.externalLoginFailed({ error: 'login failed!' });
+      window.opener.Ember.SimpleAuth.externalLoginFailed({ error: 'invalid_grant' });
     <% end %>
     window.close();
   </script>
