@@ -14,7 +14,6 @@
       {{! display logout button when a session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
         <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
-        <p class="navbar-text pull-right">Signed in</p>
       {{else}}
         <a {{ action 'login' }} class="btn btn-success navbar-btn navbar-right">Login</a>
       {{/if}}
