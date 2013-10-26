@@ -311,6 +311,20 @@ Ember.SimpleAuth.Session.reopen({
 });
 ```
 
+### Middlewares supporting RFC 6749
+
+This is an incomplete list of middlewares supporting RFC 6749.
+
+Ruby
+
+Python
+
+Perl
+
+PHP
+
+Java
+
 ## Configuration
 
 Ember.SimpleAuth offers some configuration settings that allow to customize parts of the library
