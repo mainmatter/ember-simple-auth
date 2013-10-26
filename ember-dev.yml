@@ -1,4 +1,4 @@
-name: Simple Auth
+name: Ember.SimpleAuth
 assetfile: 'Assetfile'
 testing_suites:
   default:
