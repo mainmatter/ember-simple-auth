@@ -11,12 +11,13 @@
         {{#link-to 'protected' tagName='li'}}
           <a style="cursor: pointer">Protected Page</a>
         {{/link-to}}
+        {{#link-to 'posts' tagName='li'}}
+          <a style="cursor: pointer">Recent Posts</a>
+        {{/link-to}}
       </ul>
       {{! display logout button when a session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
         <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
-        {{! display name of signed in account }}
-        <p class="navbar-text pull-right">Signed in as {{session.account.name}}</p>
       {{else}}
         <a {{ action 'login' }} class="btn btn-success navbar-btn navbar-right">Login</a>
       {{/if}}
@@ -29,17 +30,26 @@
 
 <script type="text/x-handlebars" data-template-name="index">
   <div class="page-header">
-    <h1>Example with session account</h1>
+    <h1>Ember Data example</h1>
   </div>
-  {{#if session.isAuthenticated}}
-    <div class="alert alert-info">
-      You are currently authenticated as <em>"{{session.account.name}}"</em> (login <code>{{session.account.login}}</code>)
-    </div>
-  {{else}}
+  {{#unless session.isAuthenticated}}
     <div class="alert alert-info">
       You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
     </div>
-  {{/if}}
+  {{/unless}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="posts">
+  <div class="page-header">
+    <h1>Recent Posts</h1>
+  </div>
+  {{#each}}
+    <article>
+      <h2>{{title}}</h2>
+      <p>{{body}}</p>
+    </article>
+  {{/each}}
+  </ul>
 </script>
 
 <script type="text/x-handlebars" data-template-name="login">
@@ -58,11 +68,6 @@
     </div>
     <button type="submit" class="btn btn-default">Login</button>
   </form>
-  {{#if errorMessage}}
-    <div class="alert alert-danger">
-      <strong>Login failed:</strong> {{errorMessage}}
-    </div>
-  {{/if}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="protected">
@@ -79,44 +84,15 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      //customize the session so that it handles the additional authenticated account
-      Ember.SimpleAuth.Session.reopen({
-        init: function() {
-          this._super();
-          //initializer the accountId from data potentially already present in the
-          //sessionStorage (Ember.SimpleAuth.Session does this out of the box for authToken)
-          this.set('accountId', sessionStorage.accountId);
-        },
-        setup: function(serverSession) {
-          this._super(serverSession);
-          this.set('accountId', serverSession.account_id);
-        },
-        destroy: function() {
-          this._super();
-          this.set('accountId', undefined);
-        },
-        accountIdChanged: function() {
-          //save accountId in the sessionStorage so it survives a page reload (Ember.SimpleAuth.Session
-          //does this out of the box for authToken)
-          sessionStorage.accountId = this.get('accountId');
-        }.observes('accountId'),
-        account: function() {
-          var accountId = this.get('accountId');
-          if (!Ember.isEmpty(accountId)) {
-            this.set('account', container.lookup('store:main').find('account', accountId));
-          }
-        }.property('accountId')
-      });
-      //set a custom session endpoint
-      Ember.SimpleAuth.setup(container, application, { serverTokenRoute: '/v3/token' });
+      Ember.SimpleAuth.setup(container, application);
     }
   });
 
   App = Ember.Application.create({});
 
-  App.Account = DS.Model.extend({
-    login: DS.attr(),
-    name: DS.attr()
+  App.Post = DS.Model.extend({
+    title: DS.attr(),
+    body: DS.attr()
   });
 
   App.Router.map(function() {
@@ -124,29 +100,19 @@
     this.route('login');
     //protected routes that are inaccessible without authentication
     this.route('protected');
+    this.route('posts');
   });
 
   // use the provided mixins in the application route and login controller
   App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-  App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-    actions: {
-      // display an error when loggign in fails
-      loginFailed: function(xhr, status, error) {
-        var response = JSON.parse(xhr.responseText);
-        this.set('errorMessage', response.error);
-      }
-    }
-  });
-
-  // make sure the controller doesn't keep stale data
-  App.LoginRoute = Ember.Route.extend({
-    setupController: function(controller, model) {
-      controller.setProperties({
-        identification: undefined, password: undefined, errorMessage: undefined
-      });
-    }
-  });
+  App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
 
   // make these routes protected
   App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+  App.PostsRoute     = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    model: function() {
+      //Ember.SimpleAuth adds the "Authorization" header to this AJAX request automatically
+      return this.get('store').findAll('post');
+    }
+  });
 </script>

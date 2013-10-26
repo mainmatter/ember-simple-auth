@@ -158,6 +158,10 @@ __END__
           <h4 class="list-group-item-heading">Example with session account</h4>
           <p class="list-group-item-text">Full-fledged example with error handling and handling of the authenticated account.</p>
         </a>
+        <a href="/5-ember-data" class="list-group-item">
+          <h4 class="list-group-item-heading">Ember Data example</h4>
+          <p class="list-group-item-text">Example that uses ember-data.</p>
+        </a>
         <a href="/6-custom-response" class="list-group-item">
           <h4 class="list-group-item-heading">Custom Server example</h4>
           <p class="list-group-item-text">An example with a server that is not compliant to RFC 6749.</p>
