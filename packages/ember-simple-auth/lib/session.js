@@ -9,12 +9,12 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     this.handleAuthTokenRefresh();
   },
 
-  setup: function(serverToken) {
-    serverToken = serverToken || {};
+  setup: function(data) {
+    data = data || {};
     this.setProperties({
-      authToken:       serverToken.access_token,
-      refreshToken:    (serverToken.refresh_token || this.get('refreshToken')),
-      authTokenExpiry: (serverToken.expires_in > 0 ? serverToken.expires_in * 1000 : this.get('authTokenExpiry')) || 0
+      authToken:       data.access_token,
+      refreshToken:    (data.refresh_token || this.get('refreshToken')),
+      authTokenExpiry: (data.expires_in > 0 ? data.expires_in * 1000 : this.get('authTokenExpiry')) || 0
     });
   },
 
