@@ -53,7 +53,12 @@
   </form>
   {{#if errorMessage}}
     <div class="alert alert-danger">
-      <strong>Login failed:</strong> {{errorMessage}}
+      <p>
+        <strong>Login failed:</strong> <code>{{errorMessage}}</code>
+      </p>
+      <p>
+        Documentation of the error codes can be found in the <a href="http://tools.ietf.org/html/rfc6749#section-5.2" title="RFC 6749 - Error Response">Error Response section of RFC 6749</a>.
+      </p>
     </div>
   {{/if}}
 </script>
