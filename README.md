@@ -6,47 +6,44 @@ Ember.SimpleAuth is a lightweight library for implementing
 token based authentication with [Ember.js](http://emberjs.com) applications. It
 has minimal requirements with respect to the application structure, routes etc.
 
-While it follows the RFC 6749 specification (specifically the "Resource Owner Password Credentials Grant Type") it can support a wide range of different
-server APIs with very little customization effort.
+While it follows the [RFC 6749](http://tools.ietf.org/html/rfc6749) and [RFC 6750](http://tools.ietf.org/html/rfc6750) specifications it can support a wide range of different
+server APIs and also external OAuth/OpenID providers like Facebook, Google etc. with little customization effort.
 
 ## RFC 6749
 
 RFC 6749 is the IETF specification that defines the OAuth 2.0 Authorization
-framework. It defines a series of grant types of which the "Resource Owner
-Password Credentials Grant Type", the grant type that Ember.SimpleAuth supports, is the most simple. It's actually
-just a formalization of requesting an authorization token from the server in
-exchange for a valid set of user credentials.
+framework. It defines a series of grant types of which the _"[Resource Owner Password Credentials Grant Type](http://tools.ietf.org/html/rfc6749#section-4.3)"_ is used by Ember.SimpleAuth. It's actually
+just a formalization of the process acquiring an authorization token from a server in
+exchange for a valid set of user credentials (username and password).
 
-That token is then sent with every subsequent request in the standard HTTP `Authorization` header:
+That acquired token is then sent with every subsequent request in the standard HTTP `Authorization` header:
 
 ```
 Authorization: Bearer <secret token>
 ```
 
-For now, Ember.SimpleAuth only supports bearer tokens (see <a href="http://tools.ietf.org/html/rfc6750" title="RFC 6750">RFC 6750</a> for more information on this token type).
+For now, Ember.SimpleAuth only supports bearer tokens (see [RFC 6750](http://tools.ietf.org/html/rfc6750) for more information on this token type).
 
-NOTE!
-As the `Authorization` header is sent with every AJAX request the Ember.js application makes, Ember.SimpleAuth
-supports all kinds of data adapters etc. out of the box. As long as the request goes through the jQuery AJAX
-API (which every request in an Ember.js application does anyway), it will be authenticated.
+As the `Authorization` header is sent with every AJAX request the application makes (Ember.SimpleAuth uses a [jQuery AJAX prefilter](http://api.jquery.com/jQuery.ajaxPrefilter) to inject the header in the request),
+all kinds of data adapters etc. are supported out of the box.
 
-## External Authentication Providers
+## External OAuth/OpenID Providers
 
 Additionally to servers compliant to RFC 6749, Ember.SimpleAuth can also be used with external OpenID or OAuth providers like
 [Facebook](https://developers.facebook.com/docs/facebook-login/getting-started-web/),
 [Twitter](https://dev.twitter.com/docs/auth) or
 [Google](https://developers.google.com/accounts/docs/OpenID) which can easily
-be integrated.
+be integrated. For an example see the "External OAuth example" in the [examples list](#examples).
 
 ## Custom Server Protocols
 
-Ember.SimpleAuth can also be used with custom server protocols (e.g. JSON based etc.). This requires a little more
-integration work though (see the "Custom Server example" in the examples). Also, there is a wide range of middlewares available that
-support the OAuth 2.0 standard so you might want to consider using one of those instead of running your own incompatible version.
+Ember.SimpleAuth can also be used with your own custom server protocols. This requires a little more
+integration work though (see the _"Custom Server example"_ in the [examples list](#examples)). However, there is a wide range of middlewares available for different languages and frameworks that
+support the OAuth 2.0 standard so you might want to consider using one of those instead of running your own incompatible solution.
 
 ## Usage
 
-To enable Ember.SimpleAuth simply add a custom initializer:
+To enable Ember.SimpleAuth in your application, simply add a custom initializer:
 
 ```js
 Ember.Application.initializer({
@@ -57,16 +54,16 @@ Ember.Application.initializer({
 });
 ```
 
-The `App.ApplicationRoute` must implement the mixin provided by
+The application route must implement the mixin provided by
 Ember.SimpleAuth so that the `login` and `logout` actions are available:
 
 ```js
-App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.LogoutActionableMixin);
+App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
 ```
 
-The current session can be accessed as `session` in models, views, controllers and
+The current session that stores the authentication status, the access token etc. can be accessed as `session` in all models, views, controllers and
 routes. To e.g. display login/logout buttons depending on whether the user is
-currently authenticated or not, simple add something like this to the
+currently authenticated or not, simply add something like this to the
 respective template:
 
 ```html
@@ -92,13 +89,12 @@ App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin
 This will make the route redirect to `/login` (or a different URL if
 configured) when no user is authenticated.
 
-To actually authenticate the user so that the secret token is obtained from the
-server, there are two options: using a login form that sends a set of
-credentials to a server or to integrate an OAuth/OpenID provider.
+To actually authenticate the user there are two options: the one following RFC 6749 where a login form is used that sends a set of
+credentials to a server and in exchange receives the access token or to integrate an OAuth/OpenID provider.
 
 ### Login Form
 
-When using a server that is compliant to RFC 6749, a login route is needed. This
+When using a server that is compliant to RFC 6749, a login route is needed in the Ember.js application. This
 can be named anything you want:
 
 ```js
@@ -108,8 +104,7 @@ App.Router.map(function() {
 ```
 
 To wire this up with Ember.SimpleAuth, the login controller
-needs to implement the respective mixin provided by
-Ember.SimpleAuth:
+needs to implement the respective mixin:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
@@ -127,14 +122,12 @@ The last step is to add a template that renders the login form:
 </form>
 ```
 
-Ember.SimpleAuth will handle the process of exchanging the user's credentials, setting up the session etc.
-
 ### OAuth/OpenID
 
 When using an external authentication provider to authenticate the user, there is
 a little custom code necessary. Instead of implementing a login route that renders
 a form you need to override the `App.ApplicationRoute`'s `login` action so that
-it opens a new window that displays the external provider's UI for logging in.
+it opens a new window that displays the external provider's UI for logging in instead of displaying a login form inside your application.
 If you're using Facebook that would look something like this:
 
 ```js
@@ -149,7 +142,7 @@ App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin
 });
 ```
 
-When Facebook redirects to your callback URI, you server identifies the user by
+When Facebook redirects to your callback URI, your server identifies the user by
 the Facebook OAuth token and renders a response that invokes the
 `externalLoginSucceeded` callback on it's opener window:
 
@@ -194,12 +187,13 @@ App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin
 });
 ```
 
-For a more complete example see the _"OAuth example"_ in the [examples](#examples) list.
+For a more complete example see the _"External OAuth example"_ in the [examples](#examples) list.
 
-## The Server side
+## The Client/Server API
 
-The client/server interface as described for the "Resource Owner Password Credentials Grant" in RFC 6749 is
-quite simple. The client sends a request including the grant type as well as the user's username and password
+The client/server API as specified for the _"Resource Owner Password Credentials Grant"_ in RFC 6749 is
+actually quite simple.
+The client sends a request including the grant type as well as the user's username and password
 to the server's token endpoint:
 
 ```
@@ -237,7 +231,9 @@ Pragma: no-cache
 }
 ```
 
-For more documentation of the specified error codes, see <a href="http://tools.ietf.org/html/rfc6749#section-5.2" title="RFC 6749 - Error Response">RFC 6749</a>.
+For more documentation of the specified error codes, see [the respective section of RC 6749](http://tools.ietf.org/html/rfc6749#section-5.2).
+
+### Token Expiry and Refresh
 
 The server can also include an expiry as well as a refresh token in the successful response:
 
@@ -256,8 +252,11 @@ Pragma: no-cache
 ```
 
 Refresh tokens are usually valid for longer than access tokens and can be used to obtain fresh
-access tokens when these are expired. If the server supports refresh tokens, Ember.SimpleAuth will
-automatically refresh access tokens about 5 seconds before they expire:
+access tokens when these are expired or even before they expire. If the server supports refresh tokens, Ember.SimpleAuth will
+automatically refresh access tokens about 5 seconds before they expire. The request is similar to the initial
+request for acquiring the token but instead of using the grant type `password` and submitting the user's credentials
+it uses grant type `refresh_token` and only includes the refresh token. The response is the same as the success and error
+response described above.
 
 ```
 POST /token HTTP/1.1
@@ -297,10 +296,10 @@ App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerM
 });
 ```
 
-In this case the request that is sent to acquire the token will be a PUT request with JSON
-data instead of the standard POST with form-encoded data.
+In this case the request that is sent to acquire the token will be a `PUT` request with `JSON`
+data instead of the standard `POST` with form-encoded data.
 
-To customize the parsing of the server's token response, override the `setup` method of
+To customize the parsing of the server's response, override the `setup` method of
 Ember.SimpleAuth.Session, e.g.:
 
 ```js
@@ -332,9 +331,9 @@ without actually changing/overriding any code:
 
 ```js
 Ember.SimpleAuth.setup(container, application, {
-  routeAfterLogin: ...  // the route that Ember.SimpleAuth redirects the user to after successfully logging in - defaults to 'index'
-  routeAfterLogout: ... // the route that Ember.SimpleAuth redirects the user to after logging out - defaults to 'index'
-  loginRoute: ...       // the route that Ember.SimpleAuth redirects the user to when login is required - defaults to 'login'
+  routeAfterLogin: ...  // route to redirect the user to after successfully logging in - defaults to 'index'
+  routeAfterLogout: ... // route to redirect the user to after logging out - defaults to 'index'
+  loginRoute: ...       // route to redirect the user to when login is required - defaults to 'login'
   serverTokenRoute: ... // the server endpoint used to acquire the access token - defaults to '/token'
   autoRefreshToken: ... // enable/disable automatic token refreshing (if the server supports it) - defaults to true
 });
