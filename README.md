@@ -24,8 +24,8 @@ Authorization: Bearer <secret token>
 
 For now, Ember.SimpleAuth only supports bearer tokens (see [RFC 6750](http://tools.ietf.org/html/rfc6750) for more information on this token type).
 
-_As the `Authorization` header is sent with every AJAX request the application makes (Ember.SimpleAuth uses a [jQuery AJAX prefilter](http://api.jquery.com/jQuery.ajaxPrefilter) to inject the header in the request),
-all kinds of data adapters etc. are supported out of the box._
+__As the `Authorization` header is sent with every AJAX request the application makes (Ember.SimpleAuth uses a [jQuery AJAX prefilter](http://api.jquery.com/jQuery.ajaxPrefilter) to inject the header in the request),
+all kinds of data adapters etc. are supported out of the box.__
 
 ## External OAuth/OpenID Providers
 
