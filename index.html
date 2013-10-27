@@ -26,9 +26,9 @@
           <div id="main-content">
             <div class="sections">
               <section>
-								<h3>Library for<strong>token based authentication</strong> with Ember.js</h3>
+								<h3>Library for<strong>token based authentication and authorization</strong> with Ember.js</h3>
 								<p>
-									<a href="http://github.com/simplabs/ember-simple-auth" title="Ember.SimpleAuth @ github">Ember.SimpleAuth</a> is an unobtrusive and <strong>lightweight library for implementing token based authentication with <a href="http://emberjs.com" title="Ember.js">Ember.js</a></strong>. It provides a number of <strong>mixins that implement all that's necessary</strong> to authenticate users against a RESTful server and identify them via a token.
+                  <a href="http://github.com/simplabs/ember-simple-auth" title="Ember.SimpleAuth @ github">Ember.SimpleAuth</a> is a <strong>lightweight library for implementing token based authentication/authorization with <a href="http://emberjs.com" title="Ember.js">Ember.js</a> applications</strong>. It has minimal requirements with respect to the application structure, routes etc.
 								</p>
 							</section>
 							<section>
@@ -36,23 +36,27 @@
 								<p>
 									<strong>Enable Ember.SimpleAuth in a custom initializer</strong> first:
 								</p>
-								<script src="https://gist.github.com/marcoow/6903400.js"></script>
+								<script src="https://gist.github.com/marcoow/7185213.js"></script>
 								<p>
-									then <strong>setup routes</strong> for logging in and out:
+									then <strong>implement the respective mixin in the application route</strong>:
 								</p>
-								<script src="https://gist.github.com/marcoow/6903385.js"></script>
+								<script src="https://gist.github.com/marcoow/7185226.js"></script>
 								<p>
-									<strong>Implement Ember.SimpleAuth's mixins</strong> in the respective controller and route:
+									<strong>Render login/logout buttons</strong> in the template:
 								</p>
-								<script src="https://gist.github.com/marcoow/6903376.js"></script>
+								<script src="https://gist.github.com/marcoow/7185245.js"></script>
 								<p>
-									and setup the login form:
+									Setup the route for the login form and <strong>implement the Ember.SimpleAuth mixin in the login controller</strong>:
 								</p>
-								<script src="https://gist.github.com/marcoow/6903365.js"></script>
+                <script src="https://gist.github.com/marcoow/3eb4f470eac43b9905f0.js"></script>
+								<p>
+									Render the login form:
+								</p>
+                <script src="https://gist.github.com/marcoow/7185282.js"></script>
 								<p>
 									Now you can <strong>make routes protected by simply implementing the mixin</strong>:
 								</p>
-								<script src="https://gist.github.com/marcoow/6903350.js"></script>
+								<script src="https://gist.github.com/marcoow/7185289.js"></script>
                 <p>
                   <a href="http://github.com/simplabs/ember-simple-auth" title="Ember.SimpleAuth @ github">Find more documentation, examples and of course the source on github</a>.
                 </p>
