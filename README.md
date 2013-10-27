@@ -12,11 +12,11 @@ server APIs and also external OAuth/OpenID providers like Facebook, Google etc. 
 ## RFC 6749
 
 RFC 6749 is the IETF specification that defines the OAuth 2.0 Authorization
-framework. It defines a series of grant types of which the _"[Resource Owner Password Credentials Grant Type](http://tools.ietf.org/html/rfc6749#section-4.3)"_ is used by Ember.SimpleAuth. It's actually
-just a formalization of the process acquiring an authorization token from a server in
-exchange for a valid set of user credentials (username and password).
+framework. It defines a series of grant types of which the _"[Resource Owner Password Credentials Grant Type](http://tools.ietf.org/html/rfc6749#section-4.3)"_ is used by Ember.SimpleAuth.
+It defines the process of acquiring an authorization token from a server in
+exchange for a valid pair of credentials (username and password).
 
-That acquired token is then sent with every subsequent request in the standard HTTP `Authorization` header:
+That acquired token is then sent in the standard HTTP `Authorization` header along with every subsequent request:
 
 ```
 Authorization: Bearer <secret token>
@@ -24,8 +24,8 @@ Authorization: Bearer <secret token>
 
 For now, Ember.SimpleAuth only supports bearer tokens (see [RFC 6750](http://tools.ietf.org/html/rfc6750) for more information on this token type).
 
-As the `Authorization` header is sent with every AJAX request the application makes (Ember.SimpleAuth uses a [jQuery AJAX prefilter](http://api.jquery.com/jQuery.ajaxPrefilter) to inject the header in the request),
-all kinds of data adapters etc. are supported out of the box.
+_As the `Authorization` header is sent with every AJAX request the application makes (Ember.SimpleAuth uses a [jQuery AJAX prefilter](http://api.jquery.com/jQuery.ajaxPrefilter) to inject the header in the request),
+all kinds of data adapters etc. are supported out of the box._
 
 ## External OAuth/OpenID Providers
 
