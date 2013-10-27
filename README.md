@@ -21,8 +21,8 @@ Password Credentials Grant Type]
 It defines the process of acquiring an authorization token from a server in
 exchange for a valid pair of credentials (username and password).
 
-That acquired token is then sent in the standard HTTP `Authorization` header
-along with every subsequent request:
+The token is then sent in the standard HTTP `Authorization` header along with
+every subsequent request:
 
 ```
 Authorization: Bearer <access token>
@@ -107,7 +107,7 @@ App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin
 This will make the route redirect to `/login` (or a different URL if configured
 ) when no user is authenticated in the `beforeModel` hook.
 
-To actually authenticate the user and acquire the access token there are two
+To actually authenticate the user and obtain the access token there are two
 options: the one using a login form that sends a set of credentials to a server
 and in exchange receives the access token or to integrate an OAuth/OpenID
 provider.
@@ -301,7 +301,7 @@ described above.
 
 ### The `Authorization` header
 
-Once the access token has successfully been acquired from the server, all
+Once the access token has successfully been obtained from the server, all
 subsequent request the client sends will includes the `Authorization` header.
 The server uses that token to identify the user making the request:
 
@@ -316,7 +316,7 @@ make sure you're always using TLS/HTTPS for all client/server communication!**
 
 In order to use a custom server that is not compliant to RFC 6749, there are
 only two things that need to be customized: the construction of the request
-that is sent to the server to acquire the access token and the parsing of the
+that is sent to the server to obtain the access token and the parsing of the
 server's response. To customize the request, simply override the
 `tokenRequestOptions` method in the login controller, e.g.:
 
@@ -329,7 +329,7 @@ App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerM
 });
 ```
 
-In this case the request that is sent to acquire the token will be a `PUT`
+In this case the request that is sent to obtain the token will be a `PUT`
 request with JSON data instead of the standard `POST` with form-encoded data.
 
 To customize the parsing of the server's response, override the `setup` method
@@ -371,7 +371,7 @@ Ember.SimpleAuth.setup(container, application, {
   routeAfterLogin: ...  // route to redirect the user to after successfully logging in - defaults to 'index'
   routeAfterLogout: ... // route to redirect the user to after logging out - defaults to 'index'
   loginRoute: ...       // route to redirect the user to when login is required - defaults to 'login'
-  serverTokenRoute: ... // the server endpoint used to acquire the access token - defaults to '/token'
+  serverTokenRoute: ... // the server endpoint used to obtain the access token - defaults to '/token'
   autoRefreshToken: ... // enable/disable automatic token refreshing (if the server supports it) - defaults to true
 });
 ```
