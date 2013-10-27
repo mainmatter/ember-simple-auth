@@ -3,7 +3,7 @@
 #  Ember.SimpleAuth
 
 Ember.SimpleAuth is a lightweight library for implementing
-token based authentication with [Ember.js](http://emberjs.com) applications. It
+token based authentication/authorization with [Ember.js](http://emberjs.com) applications. It
 has minimal requirements with respect to the application structure, routes etc.
 
 While it follows the [RFC 6749](http://tools.ietf.org/html/rfc6749) and [RFC 6750](http://tools.ietf.org/html/rfc6750) specifications it can support a wide range of different
