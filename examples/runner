@@ -23,7 +23,7 @@ get '/ember-simple-auth.js' do
 end
 
 # serve the HTML files from the respective example directoy
-%w(1-simple 2-errors 3-token-refresh 4-authenticated-account 5-ember-data 6-custom-response 7-oauth).each do |example|
+%w(1-simple 2-errors 3-token-refresh 4-authenticated-account 5-ember-data 6-custom-response 7-external-oauth).each do |example|
   get "/#{example}" do
     erb File.read(File.join(base_dir, example, 'index.html'))
   end
@@ -101,7 +101,7 @@ put '/v4/token' do
 end
 
 # callback for Facebook OAuth
-get '/7-oauth/callback' do
+get '/7-external-oauth/callback' do
   success = !params[:error]
 
   # when login succeeded, verify/exchange the token from the response here
@@ -166,8 +166,8 @@ __END__
           <h4 class="list-group-item-heading">Custom Server example</h4>
           <p class="list-group-item-text">An example with a server that is not compliant to RFC 6749.</p>
         </a>
-        <a href="/7-oauth" class="list-group-item">
-          <h4 class="list-group-item-heading">OAuth example</h4>
+        <a href="/7-external-oauth" class="list-group-item">
+          <h4 class="list-group-item-heading">External OAuth example</h4>
           <p class="list-group-item-text">Exampled where Facebook OAuth is used to authenticate users instead of credentials-based authentication.</p>
         </a>
       </div>

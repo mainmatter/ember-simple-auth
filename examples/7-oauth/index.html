@@ -31,7 +31,7 @@
 
 <script type="text/x-handlebars" data-template-name="index">
   <div class="page-header">
-    <h1>OAuth example</h1>
+    <h1>External OAuth example</h1>
   </div>
   {{#unless session.isAuthenticated}}
     <div class="alert alert-info">
@@ -70,9 +70,9 @@
     actions: {
       login: function() {
         // open a new window that displays the Facebook login dialog; see the callback handler on the server side
-        // (get '/7-oauth/callback') in the runner file
+        // (get '/7-external-oauth/callback') in the runner file
         window.open(
-          'https://www.facebook.com/dialog/oauth?client_id=631252926924840&redirect_uri=http://localhost:4567/7-oauth/callback',
+          'https://www.facebook.com/dialog/oauth?client_id=631252926924840&redirect_uri=http://localhost:4567/7-external-oauth/callback',
           '_blank',
           'menubar=no,status=no,height=400,width=800'
         );
