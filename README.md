@@ -347,15 +347,19 @@ Ember.SimpleAuth.Session.reopen({
 
 This is an incomplete list of middlewares supporting RFC 6749.
 
-Ruby
+#### Ruby
 
-Python
+* rack-oauth2: https://github.com/nov/rack-oauth2
+* doorkeeper: https://github.com/applicake/doorkeeper
 
-Perl
+#### PHP
+* oauth2-server: https://github.com/php-loep/oauth2-server
 
-PHP
+#### Java
 
-Java
+* scribe-java: https://github.com/fernandezpablo85/scribe-java
+
+Please submit a pull request if you think an important library is missing here!
 
 ## Configuration
 
