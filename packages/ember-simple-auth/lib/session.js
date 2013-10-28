@@ -1,5 +1,5 @@
 /**
-  The `Session` class holds the current access token and other session data. There will always be a
+  This class holds the current access token and other session data. There will always be a
   session regardless of whether a user is currently authenticated or not. That (singleton) instance
   of this class is automatically injected into all models, controller, routes and views so you should
   never instantiate this class directly but always use the auto-injected instance.
@@ -22,7 +22,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
 
   /**
     Sets up the session from a plain JavaScript object. This does not create a new isntance but sets up
-    the instance with the data that is passed.
+    the instance with the data that is passed. Any data assigned here is also persisted in the browser's sessionStorage (see http://www.w3.org/TR/webstorage/#the-sessionstorage-attribute) so it survives a page reload.
 
     @method setup
     @param {Object} data The data to set the session up with

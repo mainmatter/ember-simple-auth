@@ -1,6 +1,6 @@
 /**
   The mixin for the login controller. This controller sends the user's credentials to the
-  server and with the response sets up the current session (see {{#crossLink "Ember.SimpleAuth.Session/setup:method"}}Session.setup{{/crossLink}}).
+  server and sets up the current session (see {{#crossLink "Ember.SimpleAuth.Session/setup:method"}}Session.setup{{/crossLink}}) from the reponse.
 
   @class LoginControllerMixin
   @namespace Ember.SimpleAuth
@@ -11,7 +11,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
   /**
     This method takes the user's credentials and builds the request options as they are passed
     Ember.$.ajax (see http://api.jquery.com/jQuery.ajax/). The default implementation follows
-    RFC 6749. In case you're using a custom server API you would want to override this method:
+    RFC 6749. In case you're using a custom server API you would want to override this method, e.g.:
 
     ```javascript
     App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
