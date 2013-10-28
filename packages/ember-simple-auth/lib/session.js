@@ -72,6 +72,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   }),
 
   /**
+    @method handlePropertyChange
     @private
   */
   handlePropertyChange: function(property) {
@@ -84,6 +85,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   },
 
   /**
+    @method authTokenObserver
     @private
   */
   authTokenObserver: Ember.observer(function() {
@@ -91,6 +93,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   }, 'authToken'),
 
   /**
+    @method refreshTokenObserver
     @private
   */
   refreshTokenObserver: Ember.observer(function() {
@@ -99,6 +102,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   }, 'refreshToken'),
 
   /**
+    @method authTokenExpiryObserver
     @private
   */
   authTokenExpiryObserver: Ember.observer(function() {
@@ -107,6 +111,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   }, 'authTokenExpiry'),
 
   /**
+    @method handleAuthTokenRefresh
     @private
   */
   handleAuthTokenRefresh: function() {

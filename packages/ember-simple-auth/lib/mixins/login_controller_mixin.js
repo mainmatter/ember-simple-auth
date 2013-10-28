@@ -33,6 +33,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
   },
   actions: {
     /**
+      @method login
       @private
     */
     login: function() {

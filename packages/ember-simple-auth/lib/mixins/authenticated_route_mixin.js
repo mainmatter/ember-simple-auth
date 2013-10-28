@@ -25,6 +25,7 @@ Ember.SimpleAuth.AuthenticatedRouteMixin = Ember.Mixin.create({
   },
 
   /**
+    @method triggerLogin
     @private
   */
   triggerLogin: function(transition) {
