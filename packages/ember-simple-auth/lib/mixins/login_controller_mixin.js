@@ -14,18 +14,18 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
     RFC 6749. In case you're using a custom server API you would want to override this method:
 
     ```js
-      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-        tokenRequestOptions: function(username, password) {
-          var putData = '{ "SESSION": { "USER_NAME": "' + username + '", "PASS": "' + password + '" } }';
-          return { type: 'PUT', data: putData, contentType: 'application/json' };
-        }
-      });
-
-      @method tokenRequestOptions
-      @param {String} The user's username (or Email address or whatever is used to identify the user)
-      @param {String} The user's password
-      @return {Object} The request options to be passed to Ember.$.ajax (see http://api.jquery.com/jQuery.ajax/ for detailed documentation)
+    App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+      tokenRequestOptions: function(username, password) {
+        var putData = '{ "SESSION": { "USER_NAME": "' + username + '", "PASS": "' + password + '" } }';
+        return { type: 'PUT', data: putData, contentType: 'application/json' };
+      }
+    });
     ```
+
+    @method tokenRequestOptions
+    @param {String} The user's username (or Email address or whatever is used to identify the user)
+    @param {String} The user's password
+    @return {Object} The request options to be passed to Ember.$.ajax (see http://api.jquery.com/jQuery.ajax/ for detailed documentation)
   */
   tokenRequestOptions: function(username, password) {
     var postData = ['grant_type=password', 'username=' + username, 'password=' + password].join('&');

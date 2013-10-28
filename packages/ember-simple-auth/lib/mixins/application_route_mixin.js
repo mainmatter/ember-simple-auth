@@ -3,11 +3,11 @@
   you can simply add buttons or links in every template you want:
 
   ```handlebars
-    {{#if session.isAuthenticated}}
-      <a {{ action 'logout' }}>Logout</a>
-    {{else}}
-      <a {{ action 'login' }}>Login</a>
-    {{/if}}
+  {{#if session.isAuthenticated}}
+    <a {{ action 'logout' }}>Logout</a>
+  {{else}}
+    <a {{ action 'login' }}>Login</a>
+  {{/if}}
   ```
 
   @class ApplicationRouteMixin
@@ -23,13 +23,13 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       in a new window:
 
       ```js
-        App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
-          actions: {
-            login: function() {
-              window.open('https://www.facebook.com/dialog/oauth...');
-            }
+      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+        actions: {
+          login: function() {
+            window.open('https://www.facebook.com/dialog/oauth...');
           }
-        });
+        }
+      });
       ```
 
       @method login
@@ -60,13 +60,13 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       provider you might want to override it to display the external provider's error message:
 
       ```js
-        App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
-          actions: {
-            loginFailed: function(error) {
-              this.controllerFor('application').set('loginErrorMessage', error.message);
-            }
+      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+        actions: {
+          loginFailed: function(error) {
+            this.controllerFor('application').set('loginErrorMessage', error.message);
           }
-        });
+        }
+      });
       ```
 
       @method loginFailed
