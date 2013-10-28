@@ -1,0 +1,12 @@
+{
+  "name": "The Ember.SimpleAuth API",
+  "description": "The Ember.SimpleAuth API: a lightweight library for implementing token based authentication/authorization with Ember.js applications",
+  "version": "0.4.0",
+  "url": "http://ember-simple-auth.simplabs.com/",
+  "options": {
+    "paths": [
+      "../packages/ember-simple-auth/lib"
+    ],
+    "outdir": "./build"
+  }
+}
