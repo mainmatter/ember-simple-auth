@@ -23,8 +23,8 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
     ```
 
     @method tokenRequestOptions
-    @param {String} The user's username (or Email address or whatever is used to identify the user)
-    @param {String} The user's password
+    @param {String} identification The user's identification (user name or email address or whatever is used to identify the user)
+    @param {String} password The user's password
     @return {Object} The request options to be passed to Ember.$.ajax (see http://api.jquery.com/jQuery.ajax/ for detailed documentation)
   */
   tokenRequestOptions: function(identification, password) {
