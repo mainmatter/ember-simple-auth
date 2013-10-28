@@ -12,21 +12,14 @@ Ember.SimpleAuth = {};
 
   @method setup
   @static
-  @param {Container} container
-    The Ember.js container, see http://git.io/ed4U7Q
-  @param {Ember.Application} application
-    The Ember.js application instance
+  @param {Container} container The Ember.js container, see http://git.io/ed4U7Q
+  @param {Ember.Application} application The Ember.js application instance
   @param {Object} [options]
-    @param {String} [options.routeAfterLogin]
-      route to redirect the user to after successfully logging in - defaults to 'index'
-    @param {String} [options.routeAfterLogout]
-      route to redirect the user to after logging out - defaults to 'index'
-    @param {String} [options.loginRoute]
-      route to redirect the user to when login is required - defaults to 'login'
-    @param {String} [options.serverTokenRoute]
-      the server endpoint used to obtain the access token - defaults to '/token'
-    @param {String} [options.autoRefreshToken]
-      enable/disable automatic token refreshing (if the server supports it) - defaults to true
+    @param {String} [options.routeAfterLogin] route to redirect the user to after successfully logging in - defaults to 'index'
+    @param {String} [options.routeAfterLogout] route to redirect the user to after logging out - defaults to 'index'
+    @param {String} [options.loginRoute] route to redirect the user to when login is required - defaults to 'login'
+    @param {String} [options.serverTokenRoute] the server endpoint used to obtain the access token - defaults to '/token'
+    @param {String} [options.autoRefreshToken] enable/disable automatic token refreshing (if the server supports it) - defaults to true
 
   @example
     Ember.Application.initializer({

@@ -25,14 +25,10 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     the instance with the data that is passed.
 
     @method setup
-    @param {Object} data
-      The data to set the session up with
-      @param {String} data.access_token
-        The access token that will be included in the `Authorization` header
-      @param {String} [data.refresh_token]
-        An optional refresh token that will be used for obtaining fresh tokens
-      @param {String} [data.expires_in]
-        An optional expiry for the access_token in seconds; if both expires_in and refresh_token are set,
+    @param {Object} data The data to set the session up with
+      @param {String} data.access_token The access token that will be included in the `Authorization` header
+      @param {String} [data.refresh_token] An optional refresh token that will be used for obtaining fresh tokens
+      @param {String} [data.expires_in] An optional expiry for the access_token in seconds; if both expires_in and refresh_token are set,
         Ember.SimpleAuth will automatically refresh access tokens before they expire
 
     @example
