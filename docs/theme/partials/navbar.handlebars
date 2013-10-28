@@ -1,0 +1,15 @@
+<nav class="navbar navbar-default" role="navigation">
+  <div class="navbar-header">
+    <a href="{{projectRoot}}index.html" class="navbar-brand">{{projectName}}</a>
+  </div>
+  <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Classes <b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        {{#classes}}
+          <li><a href="{{../projectRoot}}classes/{{name}}.html">{{displayName}}</a></li>
+        {{/classes}}
+      </ul>
+    </li>
+  </ul>
+</nav>
