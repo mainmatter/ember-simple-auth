@@ -8,7 +8,16 @@
 Ember.SimpleAuth = {};
 
 /**
-  Sets up Ember.SimpleAuth for your application; invoke this in a custom initializer.
+  Sets up Ember.SimpleAuth for your application; invoke this in a custom initializer:
+
+  ```javascript
+  Ember.Application.initializer({
+    name: 'authentication',
+    initialize: function(container, application) {
+      Ember.SimpleAuth.setup(container, application);
+    }
+  });
+  ```
 
   @method setup
   @static
@@ -20,14 +29,6 @@ Ember.SimpleAuth = {};
     @param {String} [options.loginRoute] route to redirect the user to when login is required - defaults to 'login'
     @param {String} [options.serverTokenRoute] the server endpoint used to obtain the access token - defaults to '/token'
     @param {String} [options.autoRefreshToken] enable/disable automatic token refreshing (if the server supports it) - defaults to true
-
-  @example
-    Ember.Application.initializer({
-      name: 'authentication',
-      initialize: function(container, application) {
-        Ember.SimpleAuth.setup(container, application);
-      }
-    });
 **/
 Ember.SimpleAuth.setup = function(container, application, options) {
   options = options || {};

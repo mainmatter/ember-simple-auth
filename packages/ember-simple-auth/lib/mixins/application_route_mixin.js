@@ -22,7 +22,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       authentication provider you would override this action to open the external provider's UI
       in a new window:
 
-      ```js
+      ```javascript
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
         actions: {
           login: function() {
@@ -40,7 +40,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
 
     /**
       This action is invoked when a user successfully logged in. By default this method will retry a potentially
-      intercepted transition (see Ember.SimpleAuth.AuthenticatedRouteMixin.beforeModel) or if none was intercepted
+      intercepted transition (see {{#crossLink "Ember.SimpleAuth.AuthenticatedRouteMixin/beforeModel:method"}}AuthenticatedRouteMixin.beforeModel{{/crossLink}}) or if none was intercepted
       redirect to the route defined as `routeAfterLogin` in Ember.SimpleAuth.setup (or `index` by default).
 
       @method loginSucceeded
@@ -59,7 +59,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       This action is invoked when login fails. This does nothing by default but if you're using an external authentication
       provider you might want to override it to display the external provider's error message:
 
-      ```js
+      ```javascript
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
         actions: {
           loginFailed: function(error) {
