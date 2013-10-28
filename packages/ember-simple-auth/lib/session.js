@@ -1,8 +1,8 @@
 /**
-  The `Session` class holds the current session information. There will always be a session regardless of whether a
-  user is authenticated or not. A (singleton) instance of this class is automatically injected into all
-  models, controller, routes and views. This singleton instance should always be used and this class
-  should never be instantiated directly.
+  The `Session` class holds the current access token and other session data. There will always be a
+  session regardless of whether a user is currently authenticated or not. That (singleton) instance
+  of this class is automatically injected into all models, controller, routes and views so you should
+  never instantiate this class directly but always use the auto-injected instance.
 
   @class Session
   @namespace Ember.SimpleAuth
@@ -21,18 +21,19 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   },
 
   /**
-    Sets up a new session from a plain JavaScript object.
+    Sets up the session from a plain JavaScript object. This does not create a new isntance but sets up
+    the instance with the data that is passed.
 
     @method setup
     @param {Object} data
-      The data to build the session from
+      The data to set the session up with
       @param {String} data.access_token
-        This is the actual access token that will be included in the `Authorization` header
+        The access token that will be included in the `Authorization` header
       @param {String} [data.refresh_token]
-        An optional refresh token that will be used to obtain fresh tokens
+        An optional refresh token that will be used for obtaining fresh tokens
       @param {String} [data.expires_in]
-        An optional expiry for the access_token in seconds; if both expires_in and refresh_token are set, Ember.SimpleAuth will automatically
-        refresh access tokens before they expire
+        An optional expiry for the access_token in seconds; if both expires_in and refresh_token are set,
+        Ember.SimpleAuth will automatically refresh access tokens before they expire
 
     @example
       this.get('session').setup({
@@ -51,8 +52,8 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   },
 
   /**
-    Destroys the session by setting all properties to undefined (see 'setup').
-    This also deletes any saved data from the sessionStorage.
+    Destroys the session by setting all properties to undefined (see 'setup'). This also deletes any
+    saved data from the sessionStorage and effectively logs the current user out.
 
     @method destroy
   */
