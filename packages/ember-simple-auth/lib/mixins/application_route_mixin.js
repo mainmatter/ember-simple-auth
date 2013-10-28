@@ -2,7 +2,7 @@
   The mixin for the application controller. This defines the `login` and `logout` actions so that
   you can simply add buttons or links in every template you want:
 
-  ```handlebars
+  ```html
   {{#if session.isAuthenticated}}
     <a {{ action 'logout' }}>Logout</a>
   {{else}}

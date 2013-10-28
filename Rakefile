@@ -9,5 +9,5 @@ task :test, [:suite] => 'ember:test'
 task :default        => [:dist, :test]
 
 task :docs do
-  `yuidoc -c docs/yuidoc.json -T simple -o docs/build packages`
+  `yuidoc -c docs/yuidoc.json -t docs/theme -o docs/build packages`
 end

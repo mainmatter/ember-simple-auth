@@ -1,0 +1,27 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{moduleName}}</h3>
+    <small>Class defined in: <a href="{{projectGithubUrl}}/blob/master/{{file}}#L{{line}}"><code>{{file}}:{{line}}</code></a></small>
+  </div>
+  <div class="panel-body">
+    {{#if extends}}
+      <p>
+        <span class="label label-info">extends</span> {{#crossLink extends}}{{/crossLink}}
+      </p>
+    {{/if}}
+    {{#if uses}}
+      <p>
+        <span class="label label-info">uses</span> {{#crossLink uses}}{{/crossLink}}
+      </p>
+    {{/if}}
+    <p>
+      {{{classDescription}}}
+    </p>
+  </div>
+</div>
+
+{{#if methods}}
+  {{#methods}}
+    {{>method}}
+  {{/methods}}
+{{/if}}

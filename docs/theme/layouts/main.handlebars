@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{htmlTitle}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{projectAssets}}/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="{{projectAssets}}/vendor/highlight.js/github.css">
+    <script src="{{projectAssets}}/vendor/highlight.js/highlight.pack.js"></script>
+    <style type="text/css" media="screen">
+      .method-private {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <dic class="container">
+      <div class="row">
+        <div id="sidebar" class="col-md-4">
+          {{>sidebar}}
+        </div>
+        <div id="main" class="col-md-8">
+          {{>layout_content}}
+        </div>
+      </div
+    </div>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
