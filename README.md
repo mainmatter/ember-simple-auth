@@ -146,7 +146,7 @@ The last step is to add a template that renders the login form:
 As the controller implements the mixin as described above, form submission,
 session setup etc. will be handled by Ember.SimpleAuth.
 
-### OAuth/OpenID
+### External OAuth/OpenID provider
 
 When using an external authentication provider to authenticate the user, there
 is a little custom code necessary. Instead of implementing a login route that
