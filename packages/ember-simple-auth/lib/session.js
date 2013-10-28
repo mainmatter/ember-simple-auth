@@ -32,11 +32,13 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
         Ember.SimpleAuth will automatically refresh access tokens before they expire
 
     @example
+      ```javascript
       this.get('session').setup({
         access_token:  'the secret token!',
         refresh_token: 'a secret refresh token!',
         expires_in:    3600 // 1 minute
       })
+      ```
   */
   setup: function(data) {
     data = data || {};
