@@ -70,10 +70,10 @@ module('Ember.SimpleAuth', {
   }
 });
 
-test('saves the server token route when specified for setup', function() {
-  Ember.SimpleAuth.setup(containerMock, applicationMock, { serverTokenRoute: '/route' });
+test('saves the server token endpoint when specified for setup', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { serverTokenEndpoint: '/route' });
 
-  equal(Ember.SimpleAuth.serverTokenRoute, '/route', 'Ember.SimpleAuth saves serverTokenRoute when specified for setup.');
+  equal(Ember.SimpleAuth.serverTokenEndpoint, '/endpoint', 'Ember.SimpleAuth saves serverTokenEndpoint when specified for setup.');
 });
 
 test('saves the route after login when specified for setup', function() {

@@ -9,8 +9,8 @@ var attemptedTransitionMock = { retry: function() { this.retried = true; } };
 
 module('Ember.SimpleAuth.ApplicationRouteMixin', {
   setup: function() {
-    testRoute                           = TestRoute.create();
-    Ember.SimpleAuth.serverTokenRoute = '/token/route';
+    testRoute                            = TestRoute.create();
+    Ember.SimpleAuth.serverTokenEndpoint = '/token';
     testRoute.set('session', Ember.SimpleAuth.Session.create());
   }
 });

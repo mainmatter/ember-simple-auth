@@ -368,11 +368,11 @@ parts of the library without actually changing/overriding any code:
 
 ```js
 Ember.SimpleAuth.setup(container, application, {
-  routeAfterLogin: ...  // route to redirect the user to after successfully logging in - defaults to 'index'
-  routeAfterLogout: ... // route to redirect the user to after logging out - defaults to 'index'
-  loginRoute: ...       // route to redirect the user to when login is required - defaults to 'login'
-  serverTokenRoute: ... // the server endpoint used to obtain the access token - defaults to '/token'
-  autoRefreshToken: ... // enable/disable automatic token refreshing (if the server supports it) - defaults to true
+  routeAfterLogin: ...     // route to redirect the user to after successfully logging in - defaults to 'index'
+  routeAfterLogout: ...    // route to redirect the user to after logging out - defaults to 'index'
+  loginRoute: ...          // route to redirect the user to when login is required - defaults to 'login'
+  serverTokenEndpoint: ... // the server endpoint used to obtain the access token - defaults to '/token'
+  autoRefreshToken: ...    // enable/disable automatic token refreshing (if the server supports it) - defaults to true
 });
 ```
 

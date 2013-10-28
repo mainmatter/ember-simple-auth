@@ -104,7 +104,7 @@
         }.property('accountId')
       });
       //set a custom session endpoint
-      Ember.SimpleAuth.setup(container, application, { serverTokenRoute: '/v4/token' });
+      Ember.SimpleAuth.setup(container, application, { serverTokenEndpoint: '/v4/token' });
     }
   });
 
