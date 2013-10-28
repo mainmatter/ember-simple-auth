@@ -86,10 +86,9 @@ template:
 
 ```html
 {{#if session.isAuthenticated}}
-  {{#link-to 'logout'}}Logout{{/link-to}}
-  <p class="navbar-text pull-right">Your are currently signed in</p>
+  <a {{ action 'logout' }}>Logout</a>
 {{else}}
-  {{#link-to 'login'}}Login{{/link-to}}
+  <a {{ action 'login' }}>Login</a>
 {{/if}}
 ```
 
