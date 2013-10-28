@@ -121,7 +121,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       if (!Ember.isEmpty(this.get('refreshToken')) && waitTime > 0) {
         this.set('refreshAuthTokenTimeout', Ember.run.later(this, function() {
           var self = this;
-          Ember.$.ajax(Ember.SimpleAuth.serverTokenRoute, {
+          Ember.$.ajax(Ember.SimpleAuth.serverTokenEndpoint, {
             type:        'POST',
             data:        'grant_type=refresh_token&refresh_token=' + this.get('refreshToken'),
             contentType: 'application/x-www-form-urlencoded'

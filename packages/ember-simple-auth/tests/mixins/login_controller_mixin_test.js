@@ -34,10 +34,10 @@ var AjaxMock = Ember.Object.extend({
 module('Ember.SimpleAuth.LoginControllerMixin', {
   originalAjax: Ember.$.ajax,
   setup: function() {
-    testController                      = TestController.create();
-    ajaxMock                            = AjaxMock.create();
-    Ember.SimpleAuth.serverTokenRoute = '/token/route';
-    Ember.$.ajax                        = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
+    testController                       = TestController.create();
+    ajaxMock                             = AjaxMock.create();
+    Ember.SimpleAuth.serverTokenEndpoint = '/token';
+    Ember.$.ajax                         = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
     testController.set('session', Ember.SimpleAuth.Session.create());
     testController.setProperties({ identification: 'identification', password: 'password' });
   },
@@ -50,7 +50,7 @@ module('Ember.SimpleAuth.LoginControllerMixin', {
 test('sends a request to the server token route on login', function() {
   testController.send('login');
 
-  equal(ajaxMock.requestUrl, '/token/route', 'Ember.SimpleAuth.LoginControllerMixin sends a request to the serverTokenRoute on login.');
+  equal(ajaxMock.requestUrl, '/token', 'Ember.SimpleAuth.LoginControllerMixin sends a request to the serverTokenEndpoint on login.');
   equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.LoginControllerMixin sends a POST request on login.');
   equal(ajaxMock.requestOptions.data, 'grant_type=password&username=identification&password=password', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct data on login.');
   equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the content type "application/x-www-form-urlencoded" on login.');

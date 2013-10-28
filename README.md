@@ -86,10 +86,9 @@ template:
 
 ```html
 {{#if session.isAuthenticated}}
-  {{#link-to 'logout'}}Logout{{/link-to}}
-  <p class="navbar-text pull-right">Your are currently signed in</p>
+  <a {{ action 'logout' }}>Logout</a>
 {{else}}
-  {{#link-to 'login'}}Login{{/link-to}}
+  <a {{ action 'login' }}>Login</a>
 {{/if}}
 ```
 
@@ -368,11 +367,11 @@ parts of the library without actually changing/overriding any code:
 
 ```js
 Ember.SimpleAuth.setup(container, application, {
-  routeAfterLogin: ...  // route to redirect the user to after successfully logging in - defaults to 'index'
-  routeAfterLogout: ... // route to redirect the user to after logging out - defaults to 'index'
-  loginRoute: ...       // route to redirect the user to when login is required - defaults to 'login'
-  serverTokenRoute: ... // the server endpoint used to obtain the access token - defaults to '/token'
-  autoRefreshToken: ... // enable/disable automatic token refreshing (if the server supports it) - defaults to true
+  routeAfterLogin: ...     // route to redirect the user to after successfully logging in - defaults to 'index'
+  routeAfterLogout: ...    // route to redirect the user to after logging out - defaults to 'index'
+  loginRoute: ...          // route to redirect the user to when login is required - defaults to 'login'
+  serverTokenEndpoint: ... // the server endpoint used to obtain the access token - defaults to '/token'
+  autoRefreshToken: ...    // enable/disable automatic token refreshing (if the server supports it) - defaults to true
 });
 ```
 

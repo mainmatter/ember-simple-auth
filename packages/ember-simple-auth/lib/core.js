@@ -38,11 +38,11 @@ Ember.SimpleAuth = {};
 **/
 Ember.SimpleAuth.setup = function(container, application, options) {
   options = options || {};
-  this.routeAfterLogin  = options.routeAfterLogin || 'index';
-  this.routeAfterLogout = options.routeAfterLogout || 'index';
-  this.loginRoute       = options.loginRoute || 'login';
-  this.serverTokenRoute = options.serverTokenRoute || '/token';
-  this.autoRefreshToken = Ember.isEmpty(options.autoRefreshToken) ? true : !!options.autoRefreshToken;
+  this.routeAfterLogin     = options.routeAfterLogin || 'index';
+  this.routeAfterLogout    = options.routeAfterLogout || 'index';
+  this.loginRoute          = options.loginRoute || 'login';
+  this.serverTokenEndpoint = options.serverTokenEndpoint || '/token';
+  this.autoRefreshToken    = Ember.isEmpty(options.autoRefreshToken) ? true : !!options.autoRefreshToken;
 
   var session = Ember.SimpleAuth.Session.create();
   application.register('simple_auth:session', session, { instantiate: false, singleton: true });
