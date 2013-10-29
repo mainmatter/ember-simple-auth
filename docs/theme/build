@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'erb'
+require 'fileutils'
+require 'ostruct'
+
+input_file = File.absolute_path(ARGV[0])
+output_dir = File.absolute_path(ARGV[1])
+
+unless File.exists?(input_file)
+  puts "#{input_file} does not exist, exiting!"
+end
+
+if File.exists?(output_dir)
+  FileUtils.rm_rf(output_dir)
+end
+FileUtils.mkdir_p(output_dir)
+
+main_layout = File.read(File.absolute_path('templates/main.html.erb', File.dirname(__FILE__)));
+
+template_data = OpenStruct.new({
+  data:   JSON.load(File.open(input_file)),
+  config: {
+    'asset_dir' => File.absolute_path('assets', File.dirname(__FILE__))
+  }
+})
+
+File.open("#{output_dir}/index.html", 'w') do |f|
+  f << ERB.new(main_layout).result(template_data.instance_eval { binding })
+end
