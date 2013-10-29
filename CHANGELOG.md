@@ -1,3 +1,7 @@
+# 0.0.5
+
+* fixed #21
+
 # 0.0.4
 
 * made the library compliant to RFC 6749
