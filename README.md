@@ -2,6 +2,9 @@
 
 #  Ember.SimpleAuth
 
+__It is recommended to run Ember.SimpleAuth with Ember.js 1.2 or greater (see
+issue #21)__
+
 Ember.SimpleAuth is a lightweight library for implementing token based
 authentication/authorization with [Ember.js](http://emberjs.com) applications.
 It has minimal requirements with respect to the application structure, routes
@@ -145,7 +148,7 @@ The last step is to add a template that renders the login form:
 As the controller implements the mixin as described above, form submission,
 session setup etc. will be handled by Ember.SimpleAuth.
 
-### OAuth/OpenID
+### External OAuth/OpenID provider
 
 When using an external authentication provider to authenticate the user, there
 is a little custom code necessary. Instead of implementing a login route that

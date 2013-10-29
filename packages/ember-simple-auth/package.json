@@ -4,7 +4,7 @@
   "description": "A lightweight and unobtrusive library for implementing token based authentication with Ember.js that only has minimal requirements on the server interface.",
   "homepage": "https://github.com/simplabs/ember-simple-auth",
   "authors": ["Marco Otte-Witte"],
-  "version": "0.0.4",
+  "version": "0.0.5",
 
   "directories": {
     "lib": "lib"
@@ -12,7 +12,7 @@
 
   "dependencies": {
     "spade":         "~> 1.0",
-    "ember-runtime": "1.0.0-rc.8"
+    "ember-runtime": "~>1.2"
   },
 
   "dependencies:development": {

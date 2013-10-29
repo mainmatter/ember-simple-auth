@@ -30,6 +30,10 @@ Ember.SimpleAuth.AuthenticatedRouteMixin = Ember.Mixin.create({
   */
   triggerLogin: function(transition) {
     this.set('session.attemptedTransition', transition);
-    this.send('login');
+    if (Ember.canInvoke(transition, 'send')) {
+      transition.send('login');
+    } else {
+      this.send('login');
+    }
   }
 });
