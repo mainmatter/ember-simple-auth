@@ -12,7 +12,7 @@
 
   "dependencies": {
     "spade":         "~> 1.0",
-    "ember-runtime": "1.0.0-rc.8"
+    "ember-runtime": "~>1.2"
   },
 
   "dependencies:development": {

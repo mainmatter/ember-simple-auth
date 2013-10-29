@@ -2,6 +2,9 @@
 
 #  Ember.SimpleAuth
 
+__It is recommended to run Ember.SimpleAuth with Ember.js 1.2 or greater (see
+issue #21)__
+
 Ember.SimpleAuth is a lightweight library for implementing token based
 authentication/authorization with [Ember.js](http://emberjs.com) applications.
 It has minimal requirements with respect to the application structure, routes
