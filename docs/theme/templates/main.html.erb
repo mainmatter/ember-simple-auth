@@ -50,7 +50,7 @@
         <div id="main-content" class="col-md-8">
           <div class="jumbotron">
             <h1><%= project['name'] %></h1>
-            <p><%= project['description'] %></p>
+            <%= markdown(project['description']) %>
           </div>
           <% classes.each do |class_data| %>
             <div class="page-header">
