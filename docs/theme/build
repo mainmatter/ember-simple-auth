@@ -46,7 +46,7 @@ class TemplateData
   end
 
   def markdown(content)
-    GitHub::Markdown.render_gfm(content)
+    GitHub::Markdown.render_gfm(content).gsub('<br>', '')
   end
 
   def get_binding
