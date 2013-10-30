@@ -1,5 +1,5 @@
 $(function() {
-  $('body').scrollspy({ target: '.nav-sidebar' });
+  $('body').scrollspy({ target: '#sidebar' });
   $('#sidebar').on('activate.bs.scrollspy', function(event) {
     console.log(event);
   });

@@ -12,23 +12,26 @@
     <script src="<%= config['asset_dir'] %>/js/main.js"></script>
   </head>
   <body>
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="navbar-header">
-        <span class="navbar-brand"><%= project['name'] %></span>
+    <header class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <span class="navbar-brand"><%= project['name'] %></span>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Classes <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <% classes.each do |class_data| %>
+                  <li><a href="#class_<%= class_data['name'] %>"><%= class_data['name'] %></a></li>
+                <% end %>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="collapse navbar-collapse navbar-ex1-collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Classes <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <% classes.each do |class_data| %>
-                <li><a href="#class_<%= class_data['name'] %>"><%= class_data['name'] %></a></li>
-              <% end %>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    </header>
+  </div>
     <div class="container">
       <div class="row">
         <div class="col-md-4">
