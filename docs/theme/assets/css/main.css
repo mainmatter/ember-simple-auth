@@ -1,16 +1,16 @@
+body {
+  position: relative;
+  padding-top: 70px;
+}
+
 .nav-sidebar {
   background-color: #f8f8f8;
   border: 1px solid #ddd;
-  position: fixed;
-  top: 50px;
+  border-radius: 4px;
 }
 
 .nav-sidebar li ul.nav li a {
   padding-left: 30px;
-}
-
-#main-content {
-  margin-top: 70px;
 }
 
 dl.params {

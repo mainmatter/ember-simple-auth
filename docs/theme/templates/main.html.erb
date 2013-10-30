@@ -31,12 +31,11 @@
         </div>
       </div>
     </header>
-  </div>
     <div class="container">
       <div class="row">
         <div class="col-md-4">
-          <div id="sidebar">
-            <ul class="nav nav-stacked nav-sidebar">
+          <div class="affix">
+            <ul class="nav nav-sidebar">
               <% classes.each do |class_data| %>
                 <li>
                   <a href="#class_<%= class_data['name'] %>"><%= class_data['name'] %></a>
