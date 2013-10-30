@@ -56,7 +56,7 @@
             <div class="page-header">
               <h1 id="class_<%= class_data['name'] %>" class="class"><%= class_data['name'] %></h1>
               <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', class_data['file'], '#L', class_data['line']].join %>"><code><%= [class_data['file'], '#', class_data['line']].join %></code></a></small></p>
-              <p class="lead"><%= markdown(class_data['description']) %></p>
+              <%= markdown(class_data['description']) %>
               <% methods(class_data['name']).each do |method_data| %>
                 <div class="panel panel-default panel-method">
                   <div class="panel-heading">
@@ -74,7 +74,7 @@
                     <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', method_data['file'], '#L', method_data['line']].join %>"><code><%= [method_data['file'], '#', method_data['line']].join %></code></a></small></p>
                   </div>
                   <div class="panel-body">
-                    <p><%= markdown(method_data['description']) %></p>
+                    <%= markdown(method_data['description']) %>
                   </div>
                   <ul class="list-group">
                     <% if !!method_data['params'] %>
