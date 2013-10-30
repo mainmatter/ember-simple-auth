@@ -3,7 +3,7 @@
   "description": "Ember.SimpleAuth is a lightweight library for implementing token based authentication/authorization with Ember.js applications. It has minimal requirements with respect to the application structure, routes etc. While it follows the RFC 6749 and RFC 6750 specifications it can support a wide range of different server APIs and also external OAuth/OpenID providers like Facebook, Google etc. with little customization effort.",
   "version":     "0.4.0",
   "url":         "http://ember-simple-auth.simplabs.com",
-  "githubUrl":   "https://github.com/simplabs/ember-simple-auth",
+  "github_url":  "https://github.com/simplabs/ember-simple-auth",
   "options": {
     "outdir": "./build",
     "paths":  [

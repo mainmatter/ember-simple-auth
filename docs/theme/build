@@ -34,7 +34,13 @@ class TemplateData
   end
 
   def methods(class_name = nil)
-    @data['classitems'].select { |item| item['itemtype'] == 'method' }.select { |item| !!class_name ? item['class'] == class_name : true }.sort { |a, b| a['name'] <=> b['name'] }
+    @data['classitems'].select do |item|
+      item['itemtype'] == 'method' && item['access'] != 'private'
+    end.select do |item|
+      !!class_name ? item['class'] == class_name : true
+    end.sort do |a, b|
+      a['name'] <=> b['name']
+    end
   end
 
   def config

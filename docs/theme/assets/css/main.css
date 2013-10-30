@@ -16,3 +16,20 @@
 #main-content {
   padding-top: 30px;
 }
+
+dl.params dd {
+  padding-bottom: 10px;
+}
+
+dl.props {
+  padding-left: 30px;
+  margin-top: -10px;
+}
+
+.panel-method h3 {
+  font-size: 24px !important;
+}
+
+h1.class {
+  margin-bottom: 5px;
+}
