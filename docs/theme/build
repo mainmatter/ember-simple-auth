@@ -4,6 +4,7 @@ require 'json'
 require 'erb'
 require 'fileutils'
 require 'ostruct'
+require 'github/markdown'
 
 input_file = File.absolute_path(ARGV[0])
 output_dir = File.absolute_path(ARGV[1])
@@ -47,6 +48,10 @@ class TemplateData
     {
       'asset_dir' => File.absolute_path('assets', File.dirname(__FILE__))
     }
+  end
+
+  def markdown(content)
+    GitHub::Markdown.render_gfm(content)
   end
 
   def get_binding

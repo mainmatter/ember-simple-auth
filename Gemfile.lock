@@ -38,6 +38,7 @@ GEM
       handlebars-source (= 1.0.12)
     execjs (2.0.2)
     ffi (1.9.0)
+    github-markdown (0.6.1)
     grit (2.5.0)
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
@@ -77,4 +78,5 @@ PLATFORMS
 DEPENDENCIES
   ember-dev!
   ember-source
+  github-markdown
   rake-pipeline!

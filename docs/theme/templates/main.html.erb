@@ -56,7 +56,7 @@
             <div class="page-header">
               <h1 id="class_<%= class_data['name'] %>" class="class"><%= class_data['name'] %></h1>
               <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', class_data['file'], '#L', class_data['line']].join %>"><code><%= [class_data['file'], '#', class_data['line']].join %></code></a></small></p>
-              <p class="lead"><%= class_data['description'] %></p>
+              <p class="lead"><%= markdown(class_data['description']) %></p>
               <% methods(class_data['name']).each do |method_data| %>
                 <div class="panel panel-default panel-method">
                   <div class="panel-heading">
@@ -74,7 +74,7 @@
                     <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', method_data['file'], '#L', method_data['line']].join %>"><code><%= [method_data['file'], '#', method_data['line']].join %></code></a></small></p>
                   </div>
                   <div class="panel-body">
-                    <p><%= method_data['description'] %></p>
+                    <p><%= markdown(method_data['description']) %></p>
                   </div>
                   <ul class="list-group">
                     <% if !!method_data['params'] %>
@@ -83,12 +83,12 @@
                         <dl class="params">
                           <% method_data['params'].each do |param_data| %>
                             <dt><%= param_data['optional'] ? "[#{param_data['name']}]" : param_data['name'] %>: <code><%= param_data['type'] %></code></dt>
-                            <dd><%= param_data['description'] %></dd>
+                            <dd><%= markdown(param_data['description']) %></dd>
                             <% if param_data['props'] %>
                               <dl class="props">
                                 <% param_data['props'].each do |prop_data| %>
                                   <dt><%= param_data['name'] %>.<%= prop_data['optional'] ? "[#{prop_data['name']}]" : prop_data['name'] %>: <code><%= prop_data['type'] %></code></dt>
-                                  <dd><%= prop_data['description'] %></dd>
+                                  <dd><%= markdown(prop_data['description']) %></dd>
                                 <% end %>
                               </dl>
                             <% end %>
@@ -101,7 +101,7 @@
                         <h4>Returns</h4>
                         <dl>
                           <dt><code><%= method_data['return']['type'] %></code></dt>
-                          <dd><%= method_data['return']['description'] %></dd>
+                          <dd><%= markdown(method_data['return']['description']) %></dd>
                         </dl>
                       </li>
                     <% end %>
