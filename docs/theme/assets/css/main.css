@@ -9,6 +9,10 @@ body {
   border-radius: 4px;
 }
 
+.nav-sidebar li {
+  line-height: 110%;
+}
+
 .nav-sidebar li ul.nav li a {
   padding-left: 30px;
 }
