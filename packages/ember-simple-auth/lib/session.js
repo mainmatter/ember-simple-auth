@@ -50,7 +50,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   },
 
   /**
-    Destroys the session by setting all properties to undefined (see {{#crossLink "Ember.SimpleAuth.Session/setup:method"}}Session.setup{{/crossLink}}). This also deletes any
+    Destroys the session by setting all properties to undefined (see `Ember.SimpleAuth.Session#setup`). This also deletes any
     saved data from the sessionStorage and effectively logs the current user out.
 
     @method destroy
