@@ -19,13 +19,36 @@ FileUtils.mkdir_p(output_dir)
 
 main_layout = File.read(File.absolute_path('templates/main.html.erb', File.dirname(__FILE__)));
 
-template_data = OpenStruct.new({
-  data:   JSON.load(File.open(input_file)),
-  config: {
-    'asset_dir' => File.absolute_path('assets', File.dirname(__FILE__))
-  }
-})
+class TemplateData
+
+  def initialize(input_file)
+    @data = JSON.load(File.open(input_file))
+  end
+
+  def project
+    @data['project']
+  end
+
+  def classes
+    @data['classes'].values.sort { |a, b| a['name'] <=> b['name'] }
+  end
+
+  def methods(class_name = nil)
+    @data['classitems'].select { |item| item['itemtype'] == 'method' }.select { |item| !!class_name ? item['class'] == class_name : true }.sort { |a, b| a['name'] <=> b['name'] }
+  end
+
+  def config
+    {
+      'asset_dir' => File.absolute_path('assets', File.dirname(__FILE__))
+    }
+  end
+
+  def get_binding
+    binding
+  end
+
+end
 
 File.open("#{output_dir}/index.html", 'w') do |f|
-  f << ERB.new(main_layout).result(template_data.instance_eval { binding })
+  f << ERB.new(main_layout).result(TemplateData.new(input_file).get_binding)
 end

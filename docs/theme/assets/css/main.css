@@ -1,0 +1,14 @@
+.nav-sidebar {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  position: fixed;
+  top: 50px;
+}
+
+.nav-sidebar li ul.nav {
+  display: none;
+}
+
+.nav-sidebar li ul.nav li a {
+  padding-left: 30px;
+}

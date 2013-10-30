@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= data['project']['name'] %></title>
+    <title><%= project['name'] %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<%= config['asset_dir'] %>/vendor/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="<%= config['asset_dir'] %>/vendor/highlight.js/github.css">
+    <link rel="stylesheet" href="<%= config['asset_dir'] %>/css/main.css">
     <script src="<%= config['asset_dir'] %>/vendor/jquery/jquery.min.js"></script>
     <script src="<%= config['asset_dir'] %>/vendor/highlight.js/highlight.pack.js"></script>
     <script src="<%= config['asset_dir'] %>/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="<%= config['asset_dir'] %>/js/main.js"></script>
   </head>
   <body>
-    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="navbar-header">
-        <span class="navbar-brand"><%= data['project']['name'] %></span>
+        <span class="navbar-brand"><%= project['name'] %></span>
       </div>
       <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Classes <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <% data['classes'].each do |name, class_data| %>
-                <li><a href="#class_<%= name %>"><%= name %></a></li>
+              <% classes.each do |class_data| %>
+                <li><a href="#class_<%= class_data['name'] %>"><%= class_data['name'] %></a></li>
               <% end %>
             </ul>
           </li>
@@ -28,10 +30,31 @@
       </div>
     </nav>
     <div class="row">
-      <div class="col-md-12">
-        <!-- main -- >
+      <div class="col-md-3">
+        <div id="sidebar">
+          <ul id="nav-sidebar" class="nav nav-stacked nav-sidebar">
+            <% classes.each do |class_data| %>
+              <li>
+                <a href="#class_<%= class_data['name'] %>"><%= class_data['name'] %></a>
+                <ul class="nav">
+                  <% methods(class_data['name']).each do |method_data| %>
+                    <li><a href="#method_<%= method_data['name'] %>"><%= method_data['name'] %></a></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+          </ul>
+        </div>
       </div>
-    </div
+      <div class="col-md-9">
+        <% classes.each do |class_data| %>
+          <div class="page-header">
+            <h1 id="class_<%= class_data['name'] %>"><%= class_data['name'] %></h1>
+            <p class="lead"><%= class_data['description'] %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
     <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>
