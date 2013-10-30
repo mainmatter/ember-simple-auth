@@ -48,6 +48,10 @@
           </div>
         </div>
         <div id="main-content" class="col-md-8">
+          <div class="jumbotron">
+            <h1><%= project['name'] %></h1>
+            <p><%= project['description'] %></p>
+          </div>
           <% classes.each do |class_data| %>
             <div class="page-header">
               <h1 id="class_<%= class_data['name'] %>" class="class"><%= class_data['name'] %></h1>
