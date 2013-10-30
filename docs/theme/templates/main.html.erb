@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/vendor/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="assets/vendor/highlight.js/github.css">
+    <link rel="stylesheet" href="assets/vendor/font-awesome/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/main.css">
     <script src="assets/vendor/jquery/jquery.min.js"></script>
     <script src="assets/vendor/highlight.js/highlight.pack.js"></script>
@@ -18,6 +19,9 @@
           <span class="navbar-brand"><%= project['name'] %></span>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="<%= project['github_url'] %>"><i class="fa fa-github"></i> Source Code</a></li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Classes <b class="caret"></b></a>
