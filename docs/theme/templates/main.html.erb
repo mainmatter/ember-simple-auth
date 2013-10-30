@@ -53,8 +53,9 @@
             <%= markdown(project['description']) %>
           </div>
           <% classes.each do |class_data| %>
+            <a id="class_<%= class_data['name'] %>" name="class_<%= class_data['name'] %>" style="margin-bottom: 40px;">&nbsp;</a>
             <div class="page-header">
-              <h1 id="class_<%= class_data['name'] %>" class="class"><%= class_data['name'] %></h1>
+              <h1 class="class"><%= class_data['name'] %></h1>
               <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', class_data['file'], '#L', class_data['line']].join %>"><code><%= [class_data['file'], '#', class_data['line']].join %></code></a></small></p>
               <%= markdown(class_data['description']) %>
               <% methods(class_data['name']).each do |method_data| %>
