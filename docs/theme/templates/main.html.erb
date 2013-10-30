@@ -32,7 +32,7 @@
     <div class="row">
       <div class="col-md-3">
         <div id="sidebar">
-          <ul id="nav-sidebar" class="nav nav-stacked nav-sidebar">
+          <ul class="nav nav-stacked nav-sidebar">
             <% classes.each do |class_data| %>
               <li>
                 <a href="#class_<%= class_data['name'] %>"><%= class_data['name'] %></a>
@@ -46,11 +46,19 @@
           </ul>
         </div>
       </div>
-      <div class="col-md-9">
+      <div id="main-content" class="col-md-9">
         <% classes.each do |class_data| %>
           <div class="page-header">
             <h1 id="class_<%= class_data['name'] %>"><%= class_data['name'] %></h1>
             <p class="lead"><%= class_data['description'] %></p>
+            <% methods(class_data['name']).each do |method_data| %>
+              <h4>
+                <%= method_data['name'] %>
+                <% if !!method_data['params'] %>
+                  <small>(<%= method_data['params'].map { |param| param['optional'] ? "[#{param['name']}]" : param['name'] }.join(', ') %>)</small>
+                <% end %>
+              </h4>
+            <% end %>
           </div>
         <% end %>
       </div>

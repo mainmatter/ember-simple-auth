@@ -12,3 +12,7 @@
 .nav-sidebar li ul.nav li a {
   padding-left: 30px;
 }
+
+#main-content {
+  padding-top: 30px;
+}
