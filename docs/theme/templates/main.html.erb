@@ -61,14 +61,14 @@
                   <div class="panel-heading">
                     <h3 class="panel-title">
                       <%= method_data['name'] %>
-                      <small>
+                      <span class="text-muted">
                         <% if method_data['static'] %>
                           <span class="label label-info pull-right">static</span>
                         <% end %>
                         <% if !!method_data['params'] %>
                           (<%= method_data['params'].map { |param| param['optional'] ? "[#{param['name']}]" : param['name'] }.join(', ') %>)
                         <% end %>
-                      </small>
+                      </span>
                     </h3>
                     <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', method_data['file'], '#L', method_data['line']].join %>"><code><%= [method_data['file'], '#', method_data['line']].join %></code></a></small></p>
                   </div>
