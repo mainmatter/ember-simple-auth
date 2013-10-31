@@ -33,10 +33,10 @@
             <ul class="nav nav-sidebar">
               <% classes.each do |class_data| %>
                 <li>
-                  <a href="#class_<%= class_data['name'] %>"><%= class_data['name'] %></a>
+                  <a href="#<%= class_data['name'] %>"><%= class_data['name'] %></a>
                   <ul class="nav">
                     <% methods(class_data['name']).each do |method_data| %>
-                      <li><a href="#method_<%= class_data['name'] %>_<%= method_data['name'] %>"><%= method_data['name'] %></a></li>
+                      <li><a href="#<%= class_data['name'] %>_<%= method_data['name'] %>"><%= method_data['name'] %></a></li>
                     <% end %>
                   </ul>
                 </li>
@@ -51,13 +51,13 @@
           </div>
           <% classes.each do |class_data| %>
             <div class="page-header">
-              <a id="class_<%= class_data['name'] %>" class="element-anchor"></a>
+              <a id="<%= class_data['name'] %>" class="element-anchor"></a>
               <h1 class="class"><%= class_data['name'] %></h1>
               <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', class_data['file'], '#L', class_data['line']].join %>"><code><%= [class_data['file'], '#', class_data['line']].join %></code></a></small></p>
               <%= markdown(class_data['description']) %>
               <% methods(class_data['name']).each do |method_data| %>
                 <div class="panel panel-default panel-method">
-                  <a id="method_<%= class_data['name'] %>_<%= method_data['name'] %>" class="element-anchor"></a>
+                  <a id="<%= class_data['name'] %>_<%= method_data['name'] %>" class="element-anchor"></a>
                   <div class="panel-heading">
                     <h3 class="panel-title">
                       <%= method_data['name'] %>
