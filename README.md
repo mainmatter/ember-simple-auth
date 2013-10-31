@@ -374,6 +374,7 @@ Ember.SimpleAuth.setup(container, application, {
   routeAfterLogout: ...    // route to redirect the user to after logging out - defaults to 'index'
   loginRoute: ...          // route to redirect the user to when login is required - defaults to 'login'
   serverTokenEndpoint: ... // the server endpoint used to obtain the access token - defaults to '/token'
+  serverHost: ...          // absolute server host if the api is on another domain - defaults to '' (relative request)
   autoRefreshToken: ...    // enable/disable automatic token refreshing (if the server supports it) - defaults to true
 });
 ```
