@@ -28,14 +28,14 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4">
-          <nav id="sidebar" class="affix">
-            <ul class="nav">
+          <nav id="sidebar">
+            <ul class="nav affix">
               <% classes.each do |class_data| %>
                 <li>
-                  <a href="#<%= class_data['name'] %>"><%= class_data['name'] %></a>
+                  <a href="#<%= class_data['name'].gsub('.', '-') %>"><%= class_data['name'] %></a>
                   <ul class="nav">
                     <% methods(class_data['name']).each do |method_data| %>
-                      <li><a href="#<%= class_data['name'] %>_<%= method_data['name'] %>"><%= method_data['name'] %></a></li>
+                      <li><a href="#<%= class_data['name'].gsub('.', '-') %>-<%= method_data['name'].gsub('.', '-') %>"><%= method_data['name'] %></a></li>
                     <% end %>
                   </ul>
                 </li>
@@ -49,7 +49,7 @@
             <%= markdown(project['description']) %>
           </div>
           <% classes.each do |class_data| %>
-            <a id="<%= class_data['name'] %>" class="element-anchor">&nbsp;</a>
+            <a id="<%= class_data['name'].gsub('.', '-') %>" class="element-anchor">&nbsp;</a>
             <div class="page-header">
               <h1 class="class"><%= class_data['name'] %></h1>
               <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', class_data['file'], '#L', class_data['line']].join %>"><code><%= [class_data['file'], '#', class_data['line']].join %></code></a></small></p>
@@ -57,7 +57,7 @@
             <%= markdown(class_data['description']) %>
             <% methods(class_data['name']).each do |method_data| %>
               <div class="panel panel-default panel-method">
-                <a id="<%= class_data['name'] %>_<%= method_data['name'] %>" class="element-anchor"></a>
+                <a id="<%= class_data['name'].gsub('.', '-') %>-<%= method_data['name'].gsub('.', '-') %>" class="element-anchor"></a>
                 <div class="panel-heading">
                   <h3 class="panel-title">
                     <%= method_data['name'] %>

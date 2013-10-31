@@ -1,7 +1,6 @@
 body {
   position: relative;
   padding-top: 70px;
-  height: 100%;
 }
 
 #sidebar .nav {
@@ -14,8 +13,14 @@ body {
   line-height: 110%;
 }
 
+#sidebar .nav li.active {
+  background-color: #eee;
+}
+
 #sidebar .nav li ul.nav {
   display: none;
+  border: none;
+  border-radius: 0;
 }
 
 #sidebar .nav li.active ul.nav {
