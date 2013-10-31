@@ -8,11 +8,10 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css">
     <link rel="stylesheet" href="assets/css/main.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="http://yandex.st/highlightjs/7.4/highlight.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="http://yandex.st/highlightjs/7.4/highlight.min.js"></script>
   </head>
-  <body>
+  <body data-spy="scroll" data-target="#sidebar">
     <header class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -29,8 +28,8 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4">
-          <div class="affix">
-            <ul class="nav nav-sidebar">
+          <nav id="sidebar" class="affix">
+            <ul class="nav">
               <% classes.each do |class_data| %>
                 <li>
                   <a href="#<%= class_data['name'] %>"><%= class_data['name'] %></a>
@@ -42,7 +41,7 @@
                 </li>
               <% end %>
             </ul>
-          </div>
+          </nav>
         </div>
         <div id="main-content" class="col-md-8">
           <div class="jumbotron">
@@ -50,64 +49,64 @@
             <%= markdown(project['description']) %>
           </div>
           <% classes.each do |class_data| %>
+            <a id="<%= class_data['name'] %>" class="element-anchor">&nbsp;</a>
             <div class="page-header">
-              <a id="<%= class_data['name'] %>" class="element-anchor"></a>
               <h1 class="class"><%= class_data['name'] %></h1>
               <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', class_data['file'], '#L', class_data['line']].join %>"><code><%= [class_data['file'], '#', class_data['line']].join %></code></a></small></p>
-              <%= markdown(class_data['description']) %>
-              <% methods(class_data['name']).each do |method_data| %>
-                <div class="panel panel-default panel-method">
-                  <a id="<%= class_data['name'] %>_<%= method_data['name'] %>" class="element-anchor"></a>
-                  <div class="panel-heading">
-                    <h3 class="panel-title">
-                      <%= method_data['name'] %>
-                      <span class="text-muted">
-                        <% if method_data['static'] %>
-                          <small><span class="label label-info pull-right">static</span></small>
-                        <% end %>
-                        <% if !!method_data['params'] %>
-                          (<%= method_data['params'].map { |param| param['optional'] ? "[#{param['name']}]" : param['name'] }.join(', ') %>)
-                        <% end %>
-                      </span>
-                    </h3>
-                    <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', method_data['file'], '#L', method_data['line']].join %>"><code><%= [method_data['file'], '#', method_data['line']].join %></code></a></small></p>
-                  </div>
-                  <div class="panel-body">
-                    <%= markdown(method_data['description']) %>
-                  </div>
-                  <ul class="list-group">
-                    <% if !!method_data['params'] %>
-                      <li class="list-group-item">
-                        <h4>Arguments</h4>
-                        <dl class="params">
-                          <% method_data['params'].each do |param_data| %>
-                            <dt><%= param_data['optional'] ? "[#{param_data['name']}]" : param_data['name'] %>: <code><%= param_data['type'] %></code></dt>
-                            <dd><%= markdown(param_data['description']) %></dd>
-                            <% if param_data['props'] %>
-                              <dl class="props">
-                                <% param_data['props'].each do |prop_data| %>
-                                  <dt><%= param_data['name'] %>.<%= prop_data['optional'] ? "[#{prop_data['name']}]" : prop_data['name'] %>: <code><%= prop_data['type'] %></code></dt>
-                                  <dd><%= markdown(prop_data['description']) %></dd>
-                                <% end %>
-                              </dl>
-                            <% end %>
-                          <% end %>
-                        </dl>
-                      </li>
-                    <% end %>
-                    <% if !!method_data['return'] %>
-                      <li class="list-group-item">
-                        <h4>Returns</h4>
-                        <dl>
-                          <dt><code><%= method_data['return']['type'] %></code></dt>
-                          <dd><%= markdown(method_data['return']['description']) %></dd>
-                        </dl>
-                      </li>
-                    <% end %>
-                  </ul>
-                </div>
-              <% end %>
             </div>
+            <%= markdown(class_data['description']) %>
+            <% methods(class_data['name']).each do |method_data| %>
+              <div class="panel panel-default panel-method">
+                <a id="<%= class_data['name'] %>_<%= method_data['name'] %>" class="element-anchor"></a>
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    <%= method_data['name'] %>
+                    <span class="text-muted">
+                      <% if method_data['static'] %>
+                        <small><span class="label label-info pull-right">static</span></small>
+                      <% end %>
+                      <% if !!method_data['params'] %>
+                        (<%= method_data['params'].map { |param| param['optional'] ? "[#{param['name']}]" : param['name'] }.join(', ') %>)
+                      <% end %>
+                    </span>
+                  </h3>
+                  <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', method_data['file'], '#L', method_data['line']].join %>"><code><%= [method_data['file'], '#', method_data['line']].join %></code></a></small></p>
+                </div>
+                <div class="panel-body">
+                  <%= markdown(method_data['description']) %>
+                </div>
+                <ul class="list-group">
+                  <% if !!method_data['params'] %>
+                    <li class="list-group-item">
+                      <h4>Arguments</h4>
+                      <dl class="params">
+                        <% method_data['params'].each do |param_data| %>
+                          <dt><%= param_data['optional'] ? "[#{param_data['name']}]" : param_data['name'] %>: <code><%= param_data['type'] %></code></dt>
+                          <dd><%= markdown(param_data['description']) %></dd>
+                          <% if param_data['props'] %>
+                            <dl class="props">
+                              <% param_data['props'].each do |prop_data| %>
+                                <dt><%= param_data['name'] %>.<%= prop_data['optional'] ? "[#{prop_data['name']}]" : prop_data['name'] %>: <code><%= prop_data['type'] %></code></dt>
+                                <dd><%= markdown(prop_data['description']) %></dd>
+                              <% end %>
+                            </dl>
+                          <% end %>
+                        <% end %>
+                      </dl>
+                    </li>
+                  <% end %>
+                  <% if !!method_data['return'] %>
+                    <li class="list-group-item">
+                      <h4>Returns</h4>
+                      <dl>
+                        <dt><code><%= method_data['return']['type'] %></code></dt>
+                        <dd><%= markdown(method_data['return']['description']) %></dd>
+                      </dl>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
           <% end %>
         </div>
       </div>

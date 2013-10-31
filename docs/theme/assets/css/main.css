@@ -1,20 +1,35 @@
 body {
   position: relative;
   padding-top: 70px;
+  height: 100%;
 }
 
-.nav-sidebar {
+#sidebar .nav {
   background-color: #f8f8f8;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.nav-sidebar li {
+#sidebar .nav li {
   line-height: 110%;
 }
 
-.nav-sidebar li ul.nav li a {
+#sidebar .nav li ul.nav {
+  display: none;
+}
+
+#sidebar .nav li.active ul.nav {
+  display: block;
+}
+
+#sidebar .nav li ul.nav li a {
   padding-left: 30px;
+}
+
+#main-content {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
 }
 
 dl.params {
@@ -41,6 +56,6 @@ h1.class {
 a.element-anchor {
   display: block;
   position: relative;
-  visibility: hidden;
-  top: -60px;
+  top: -20px;
+  height: 1px;
 }
