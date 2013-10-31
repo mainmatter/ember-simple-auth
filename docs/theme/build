@@ -49,6 +49,10 @@ class TemplateData
     GitHub::Markdown.render_gfm(content).gsub('<br>', '')
   end
 
+  def sanitize_id(id)
+    id.gsub('.', '-')
+  end
+
   def get_binding
     binding
   end
