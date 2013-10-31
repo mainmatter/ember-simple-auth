@@ -46,11 +46,14 @@ class TemplateData
   end
 
   def markdown(content)
+    content = content.gsub(/\(\#(.*)\)/) do
+      "(##{sanitize_id($1)})"
+    end
     GitHub::Markdown.render_gfm(content).gsub('<br>', '')
   end
 
   def sanitize_id(id)
-    id.gsub('.', '-')
+    id.gsub(/[\._]/, '-')
   end
 
   def get_binding
