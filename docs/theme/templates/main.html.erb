@@ -6,10 +6,64 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://yandex.st/highlightjs/7.4/styles/github.min.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css">
-    <link rel="stylesheet" href="assets/css/main.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
     <script src="http://yandex.st/highlightjs/7.4/highlight.min.js"></script>
+    <style type="text/css" media="screen">
+    body {
+      position: relative;
+      padding-top: 70px;
+    }
+    #sidebar .nav {
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    #sidebar .nav li {
+      line-height: 110%;
+    }
+    #sidebar .nav li.active {
+      background-color: #eee;
+    }
+    #sidebar .nav li ul.nav {
+      display: none;
+      border: none;
+      border-radius: 0;
+    }
+    #sidebar .nav li.active ul.nav {
+      display: block;
+    }
+    #sidebar .nav li ul.nav li a {
+      padding-left: 30px;
+    }
+    #main-content {
+      overflow-y: scroll;
+      overflow-x: hidden;
+      height: 100%;
+    }
+    dl.params {
+      margin-bottom: 10px;
+    }
+    dl.params dd {
+      margin-bottom: 10px;
+    }
+    dl.props {
+      padding-left: 30px;
+      margin-top: -10px;
+    }
+    .panel-method h3 {
+      font-size: 24px !important;
+    }
+    h1.class {
+      margin-bottom: 5px;
+    }
+    a.element-anchor {
+      display: block;
+      position: relative;
+      top: -20px;
+      height: 1px;
+    }
+    </style>
   </head>
   <body data-spy="scroll" data-target="#sidebar">
     <header class="navbar navbar-default navbar-fixed-top">

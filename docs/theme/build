@@ -17,7 +17,6 @@ if File.exists?(output_dir)
   FileUtils.rm_rf(output_dir)
 end
 FileUtils.mkdir_p(output_dir)
-FileUtils.cp_r(File.absolute_path('assets', File.dirname(__FILE__)), File.absolute_path('../build/html', File.dirname(__FILE__)))
 
 main_layout = File.read(File.absolute_path('templates/main.html.erb', File.dirname(__FILE__)));
 
