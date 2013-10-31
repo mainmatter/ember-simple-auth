@@ -19,18 +19,8 @@
           <span class="navbar-brand"><%= project['name'] %></span>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="<%= project['github_url'] %>"><i class="fa fa-github"></i> Source Code</a></li>
-          </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Classes <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <% classes.each do |class_data| %>
-                  <li><a href="#class_<%= class_data['name'] %>"><%= class_data['name'] %></a></li>
-                <% end %>
-              </ul>
-            </li>
+            <li><a href="<%= project['github_url'] %>"><i class="fa fa-github"></i> Source Code</a></li>
           </ul>
         </div>
       </div>
