@@ -40,8 +40,8 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
 
     /**
       This action is invoked when a user successfully logs in. By default this method will retry a potentially
-      intercepted transition (see `Ember.SimpleAuth.AuthenticatedRouteMixin#beforeModel`) or if none was intercepted
-      redirect to the route defined as `routeAfterLogin` in `Ember.SimpleAuth.setup` (or `index` by default).
+      intercepted transition (see {{#crossLink "Ember.SimpleAuth.AuthenticatedRouteMixin/beforeModel:method"}}AuthenticatedRouteMixin.beforeModel{{/crossLink}}) or if none was intercepted
+      redirect to the route defined as `routeAfterLogin` in {{#crossLink "Ember.SimpleAuth/setup:method"}}Ember.SimpleAuth.setup{{/crossLink}} (or `index` by default).
 
       @method loginSucceeded
     */
@@ -75,8 +75,8 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
     },
 
     /**
-      The logout action destroys the current session (see `Ember.SimpleAuth.Session#destroy`) and redirects to the route defined as `routeAfterLogout`
-      in `Ember.SimpleAuth.setup` (or `index` by default).
+      The logout action destroys the current session (see {{#crossLink "Ember.SimpleAuth.Session/destroy:method"}}Session.destroy{{/crossLink}}) and redirects to the route defined as `routeAfterLogout`
+      in {{#crossLink "Ember.SimpleAuth/setup:method"}}Ember.SimpleAuth.setup{{/crossLink}} (or `index` by default).
 
       @method logout
     */
