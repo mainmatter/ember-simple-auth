@@ -13,7 +13,7 @@ Ember.SimpleAuth.AuthenticatedRouteMixin = Ember.Mixin.create({
     This method implements the check for an authenticated user. In the case that no user is authenticated,
     it redirects to the route defined as `loginRoute` in [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup) (or `login` by default).
     It also intercepts the current transition so that it can be retried after the user
-    has authenticated (see [ApplicationRouteMixin.loginSucceeded](#Ember.SimpleAuth.ApplicationRouteMixin_loginSucceeded)).
+    has authenticated (see [ApplicationRouteMixin#loginSucceeded](#Ember.SimpleAuth.ApplicationRouteMixin_loginSucceeded)).
 
     @method beforeModel
   */

@@ -1,6 +1,6 @@
 /**
   The mixin for the login controller. This controller sends the user's credentials to the
-  server and sets up the current session (see [Session.setup](#Ember.SimpleAuth.Session_setup)) from the reponse.
+  server and sets up the current session (see [Session#setup](#Ember.SimpleAuth.Session_setup)) from the reponse.
 
   @class LoginControllerMixin
   @namespace Ember.SimpleAuth
