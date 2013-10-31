@@ -1,7 +1,7 @@
 /**
   The mixin for routes that require a user to be authenticated. When users hit a route that
   implements this mixin and have not authenticated before, they will be redirected to the route
-  defined as `loginRoute` in {{#crossLink "Ember.SimpleAuth/setup:method"}}Ember.SimpleAuth.setup{{/crossLink}} (or `login` by default).
+  defined as `loginRoute` in [Ember.SimpleAuth.setup](#method_Ember.SimpleAuth_setup) (or `login` by default).
 
   @class AuthenticatedRouteMixin
   @namespace Ember.SimpleAuth
@@ -11,9 +11,9 @@
 Ember.SimpleAuth.AuthenticatedRouteMixin = Ember.Mixin.create({
   /**
     This method implements the check for an authenticated user. In the case that no user is authenticated,
-    it redirects to the route defined as `loginRoute` in {{#crossLink "Ember.SimpleAuth/setup:method"}}Ember.SimpleAuth.setup{{/crossLink}} (or `login` by default).
+    it redirects to the route defined as `loginRoute` in [Ember.SimpleAuth.setup](#method_Ember.SimpleAuth_setup) (or `login` by default).
     It also intercepts the current transition so that it can be retried after the user
-    has authenticated (see {{#crossLink "Ember.SimpleAuth.ApplicationRouteMixin/loginSucceeded:method"}}ApplicationRouteMixin.loginSucceeded{{/crossLink}}).
+    has authenticated (see [ApplicationRouteMixin.loginSucceeded](#method_Ember.SimpleAuth.ApplicationRouteMixin_loginSucceeded)).
 
     @method beforeModel
   */

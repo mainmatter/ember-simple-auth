@@ -46,12 +46,6 @@ class TemplateData
   end
 
   def markdown(content)
-    content = content.gsub(/\{\{#crossLink \"(.*)\/(.*)\:method\"\}\}(.*)\{\{\/crossLink\}\}/) do
-      "[#{$3}](#method_#{$1}_#{$2})"
-    end
-    content = content.gsub(/\{\{#crossLink \"(.*)\"\}\}(.*)\{\{\/crossLink\}\}/) do
-      "[#{$2}](#class_#{$1})"
-    end
     GitHub::Markdown.render_gfm(content).gsub('<br>', '')
   end
 
