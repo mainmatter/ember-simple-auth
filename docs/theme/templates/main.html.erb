@@ -63,7 +63,7 @@
                       <%= method_data['name'] %>
                       <span class="text-muted">
                         <% if method_data['static'] %>
-                          <span class="label label-info pull-right">static</span>
+                          <small><span class="label label-info pull-right">static</span></small>
                         <% end %>
                         <% if !!method_data['params'] %>
                           (<%= method_data['params'].map { |param| param['optional'] ? "[#{param['name']}]" : param['name'] }.join(', ') %>)
