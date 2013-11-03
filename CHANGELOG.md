@@ -1,3 +1,7 @@
+# 0.0.6
+
+* added API docs
+
 # 0.0.5
 
 * fixed #21
