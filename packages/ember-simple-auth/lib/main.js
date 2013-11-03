@@ -1,6 +1,4 @@
 /**
-Ember.SimpleAuth is a lightweight library for implementing token based authentication/authorization with Ember.js applications.
-
 @module ember-simple-auth
 @requires ember-runtime
 */

@@ -8,7 +8,8 @@
 Ember.SimpleAuth = {};
 
 /**
-  Sets up Ember.SimpleAuth for your application; invoke this method in a custom initializer:
+  Sets up Ember.SimpleAuth for your application; invoke this method in a custom
+  initializer like this:
 
   ```javascript
   Ember.Application.initializer({
@@ -22,7 +23,7 @@ Ember.SimpleAuth = {};
   @method setup
   @static
   @param {Container} container The Ember.js container, see http://git.io/ed4U7Q
-  @param {Ember.Application} application The Ember.js application instance
+  @param {Ember.Application} application The Ember.js application i`stance
   @param {Object} [options]
     @param {String} [options.routeAfterLogin] route to redirect the user to after successfully logging in - defaults to `'index'`
     @param {String} [options.routeAfterLogout] route to redirect the user to after logging out - defaults to `'index'`
@@ -50,10 +51,60 @@ Ember.SimpleAuth.setup = function(container, application, options) {
     }
   });
 
+  /**
+    Call this method when an external login was successful. Typically you would
+    have a separate window in which the user is being presented with the
+    external provider's authentication UI and eventually being redirected back
+    to your application. When that redirect occured, the application needs to
+    call this method on its opener window, e.g.:
+
+    ```html
+      <html>
+        <head></head>
+        <body>
+          <script>
+            window.opener.Ember.SimpleAuth.externalLoginSucceeded({ access_token: 'secret token!' });
+            window.close();
+          </script>
+        </body>
+      </html>
+    ```
+
+    This method will then set up the session (see
+    [Session#setup](#Ember.SimpleAuth.Session_setup) and invoke the
+    [Ember.SimpleAuth.ApplicationRouteMixin#loginSucceeded](#Ember.SimpleAuth.ApplicationRouteMixin_loginSucceeded)
+    callback.
+
+    @method externalLoginSucceeded
+    @param {Object} sessionData The data to setup the session with (see [Session#setup](#Ember.SimpleAuth.Session_setup)))
+  */
   this.externalLoginSucceeded = function(sessionData) {
     session.setup(sessionData);
     container.lookup('route:application').send('loginSucceeded');
   };
+
+  /**
+    Call this method when an external login fails, e.g.:
+
+    ```html
+      <html>
+        <head></head>
+        <body>
+          <script>
+            window.opener.Ember.SimpleAuth.externalLoginFailed('something went wrong!');
+            window.close();
+          </script>
+        </body>
+      </html>
+    ```
+
+    The argument you pass here will be forwarded to the
+    [Ember.SimpleAuth.ApplicationRouteMixin#loginSucceeded](#Ember.SimpleAuth.ApplicationRouteMixin_loginFailed)
+    callback.
+
+    @method externalLoginFailed
+    @param {Object} error Any optional error that will be forwarded to the [Ember.SimpleAuth.ApplicationRouteMixin#loginSucceeded](#Ember.SimpleAuth.ApplicationRouteMixin_loginFailed) callback
+  */
   this.externalLoginFailed = function(error) {
     container.lookup('route:application').send('loginFailed', error);
   };
