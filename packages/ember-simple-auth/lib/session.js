@@ -1,3 +1,14 @@
+/**
+  This class holds the current access token and other session data. There will always be a
+  session regardless of whether a user is currently authenticated or not. That (singleton) instance
+  of this class is automatically injected into all models, controller, routes and views so you should
+  never instantiate this class directly but always use the auto-injected instance.
+
+  @class Session
+  @namespace Ember.SimpleAuth
+  @extends Ember.Object
+  @constructor
+*/
 Ember.SimpleAuth.Session = Ember.Object.extend({
   init: function() {
     this._super();
@@ -9,6 +20,26 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     this.handleAuthTokenRefresh();
   },
 
+  /**
+    Sets up the session from a plain JavaScript object. This does not create a new isntance but sets up
+    the instance with the data that is passed. Any data assigned here is also persisted in the browser's sessionStorage (see http://www.w3.org/TR/webstorage/#the-sessionstorage-attribute) so it survives a page reload.
+
+    @method setup
+    @param {Object} data The data to set the session up with
+      @param {String} data.access_token The access token that will be included in the `Authorization` header
+      @param {String} [data.refresh_token] An optional refresh token that will be used for obtaining fresh tokens
+      @param {String} [data.expires_in] An optional expiry for the access_token in seconds; if both expires_in and refresh_token are set,
+        Ember.SimpleAuth will automatically refresh access tokens before they expire
+
+    @example
+      ```javascript
+      this.get('session').setup({
+        access_token:  'the secret token!',
+        refresh_token: 'a secret refresh token!',
+        expires_in:    3600 // 1 minute
+      })
+      ```
+  */
   setup: function(data) {
     data = data || {};
     this.setProperties({
@@ -18,6 +49,12 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     });
   },
 
+  /**
+    Destroys the session by setting all properties to undefined (see [Session#setup](#Ember.SimpleAuth.Session_setup)). This also deletes any
+    saved data from the sessionStorage and effectively logs the current user out.
+
+    @method destroy
+  */
   destroy: function() {
     this.setProperties({
       authToken:       undefined,
@@ -26,10 +63,20 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     });
   },
 
+  /**
+    Returns whether a user is currently authenticated.
+
+    @method isAuthenticated
+    @return {Boolean} true if a user is authenticated, false otherwise
+  */
   isAuthenticated: Ember.computed('authToken', function() {
     return !Ember.isEmpty(this.get('authToken'));
   }),
 
+  /**
+    @method handlePropertyChange
+    @private
+  */
   handlePropertyChange: function(property) {
     var value = this.get(property);
     if (Ember.isEmpty(value)) {
@@ -39,20 +86,36 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     }
   },
 
+  /**
+    @method authTokenObserver
+    @private
+  */
   authTokenObserver: Ember.observer(function() {
     this.handlePropertyChange('authToken');
   }, 'authToken'),
 
+  /**
+    @method refreshTokenObserver
+    @private
+  */
   refreshTokenObserver: Ember.observer(function() {
     this.handlePropertyChange('refreshToken');
     this.handleAuthTokenRefresh();
   }, 'refreshToken'),
 
+  /**
+    @method authTokenExpiryObserver
+    @private
+  */
   authTokenExpiryObserver: Ember.observer(function() {
     this.handlePropertyChange('authTokenExpiry');
     this.handleAuthTokenRefresh();
   }, 'authTokenExpiry'),
 
+  /**
+    @method handleAuthTokenRefresh
+    @private
+  */
   handleAuthTokenRefresh: function() {
     if (Ember.SimpleAuth.autoRefreshToken) {
       Ember.run.cancel(this.get('refreshAuthTokenTimeout'));
