@@ -393,6 +393,10 @@ bundle
 
 Open [http://localhost:4567](http://localhost:4567) to access the examples.
 
+### Other Examples
+
+* Ember App Kit: https://github.com/erkarl/ember-app-kit-simple-auth
+
 ## Installation
 
 To install Ember.SimpleAuth in you Ember.js application you have several
