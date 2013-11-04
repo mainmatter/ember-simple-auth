@@ -396,6 +396,7 @@ Open [http://localhost:4567](http://localhost:4567) to access the examples.
 ### Other Examples
 
 * Ember App Kit: https://github.com/erkarl/ember-app-kit-simple-auth
+* Ember.SimpleAuth with Rails 4: https://github.com/ugisozols/ember-simple-auth-rails-demo
 
 ## Installation
 
