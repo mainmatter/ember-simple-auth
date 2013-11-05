@@ -59,11 +59,14 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
       var self = this;
       var data = this.getProperties('identification', 'password');
       if (!Ember.isEmpty(data.identification) && !Ember.isEmpty(data.password)) {
+        self.set('loggingIn', true);
         var requestOptions = this.tokenRequestOptions(data.identification, data.password);
         Ember.$.ajax(Ember.SimpleAuth.serverTokenEndpoint, requestOptions).then(function(response) {
+          self.set('loggingIn', false);
           self.get('session').setup(response);
           self.send('loginSucceeded');
         }, function(xhr, status, error) {
+          self.set('loggingIn', false);
           self.send('loginFailed', xhr, status, error);
         });
       }
