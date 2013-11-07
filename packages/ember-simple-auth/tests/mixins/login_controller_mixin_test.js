@@ -46,6 +46,7 @@ module('Ember.SimpleAuth.LoginControllerMixin', {
   teardown: function() {
     Ember.$.ajax = this.originalAjax;
     Ember.run.cancel(testController.refreshTokenLater);
+    Ember.run.cancel(Ember.SimpleAuth.Session._SYNC_PROPERTIES_TIMEOUT_);
   }
 });
 

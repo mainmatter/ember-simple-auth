@@ -14,6 +14,9 @@ module('Ember.SimpleAuth.ApplicationRouteMixin', {
     var session                          = Ember.SimpleAuth.Session.create();
     session.destroy();
     testRoute.set('session', session);
+  },
+  teardown: function() {
+    Ember.run.cancel(Ember.SimpleAuth.Session._SYNC_PROPERTIES_TIMEOUT_);
   }
 });
 

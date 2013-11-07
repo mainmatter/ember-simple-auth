@@ -30,11 +30,13 @@ module('Ember.SimpleAuth.Session', {
   teardown: function() {
     Ember.$.ajax = this.originalAjax;
     Ember.run.cancel(session.get('refreshAuthTokenTimeout'));
+    Ember.run.cancel(Ember.SimpleAuth.Session._SYNC_PROPERTIES_TIMEOUT_);
     session.destroy();
   }
 });
 
 test('reads its properties from session cookies during initialization', function() {
+  Ember.SimpleAuth.autoRefreshToken = true;
   var authToken = Math.random().toString(36);
   document.cookie = 'authToken=' + authToken;
   var refreshToken = Math.random().toString(36);

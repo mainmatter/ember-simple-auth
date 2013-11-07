@@ -10,13 +10,10 @@
   @constructor
 */
 Ember.SimpleAuth.Session = Ember.Object.extend({
+
   init: function() {
     this._super();
-    this.setProperties({
-      authToken:       this.load('authToken'),
-      refreshToken:    this.load('refreshToken'),
-      authTokenExpiry: this.load('authTokenExpiry')
-    });
+    this.syncProperties();
     this.handleAuthTokenRefresh();
   },
 
@@ -72,6 +69,20 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   isAuthenticated: Ember.computed('authToken', function() {
     return !Ember.isEmpty(this.get('authToken'));
   }),
+
+  /**
+    @method syncProperties
+    @private
+  */
+  syncProperties: function() {
+    this.setProperties({
+      authToken:       this.load('authToken'),
+      refreshToken:    this.load('refreshToken'),
+      authTokenExpiry: this.load('authTokenExpiry')
+    });
+    Ember.run.cancel(Ember.SimpleAuth.Session._SYNC_PROPERTIES_TIMEOUT_);
+    Ember.SimpleAuth.Session._SYNC_PROPERTIES_TIMEOUT_ = Ember.run.later(this, this.syncProperties, 500);
+  },
 
   /**
     @method load
