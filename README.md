@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/simplabs/ember-simple-auth.png?branch=master)](https://travis-ci.org/simplabs/ember-simple-auth)
-[API docs](http://ember-simple-auth.simplabs.com/api.html)
+
+__Read the [API docs](http://ember-simple-auth.simplabs.com/api.html)!__
 
 #  Ember.SimpleAuth
 
