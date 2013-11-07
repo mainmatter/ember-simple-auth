@@ -137,11 +137,11 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   */
   handleAuthTokenRefresh: function() {
     if (Ember.SimpleAuth.autoRefreshToken) {
-      Ember.run.cancel(this.get('refreshAuthTokenTimeout'));
-      this.set('refreshAuthTokenTimeout', undefined);
+      Ember.run.cancel(Ember.SimpleAuth.Session._REFRESH_TOKEN_TIMEOUT_);
+      Ember.SimpleAuth.Session._REFRESH_TOKEN_TIMEOUT_ = undefined;
       var waitTime = this.get('authTokenExpiry') - 5000;
       if (!Ember.isEmpty(this.get('refreshToken')) && waitTime > 0) {
-        this.set('refreshAuthTokenTimeout', Ember.run.later(this, function() {
+        Ember.SimpleAuth.Session._REFRESH_TOKEN_TIMEOUT_ = Ember.run.later(this, function() {
           var self = this;
           Ember.$.ajax(Ember.SimpleAuth.serverTokenEndpoint, {
             type:        'POST',
@@ -151,7 +151,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
             self.setup(response);
             self.handleAuthTokenRefresh();
           });
-        }, waitTime));
+        }, waitTime);
       }
     }
   }
