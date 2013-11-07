@@ -662,11 +662,11 @@ never instantiate this class directly but always use the auto-injected instance.
                       
                     </span>
                   </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L52"><code>packages/ember-simple-auth/lib/session.js#52</code></a></small></p>
+                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L49"><code>packages/ember-simple-auth/lib/session.js#49</code></a></small></p>
                 </div>
                 <div class="panel-body">
                   <p>Destroys the session by setting all properties to undefined (see <a href="#Ember-SimpleAuth-Session-setup">Session#setup</a>). This also deletes any
-saved data from the sessionStorage and effectively logs the current user out.</p>
+saved data from the session cookie and effectively logs the current user out.</p>
 
                 </div>
                 <ul class="list-group">
@@ -685,7 +685,7 @@ saved data from the sessionStorage and effectively logs the current user out.</p
                       
                     </span>
                   </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L66"><code>packages/ember-simple-auth/lib/session.js#66</code></a></small></p>
+                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L63"><code>packages/ember-simple-auth/lib/session.js#63</code></a></small></p>
                 </div>
                 <div class="panel-body">
                   <p>Returns whether a user is currently authenticated.</p>
@@ -718,11 +718,11 @@ saved data from the sessionStorage and effectively logs the current user out.</p
                       
                     </span>
                   </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L23"><code>packages/ember-simple-auth/lib/session.js#23</code></a></small></p>
+                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L20"><code>packages/ember-simple-auth/lib/session.js#20</code></a></small></p>
                 </div>
                 <div class="panel-body">
-                  <p>Sets up the session from a plain JavaScript object. This does not create a new isntance but sets up
-the instance with the data that is passed. Any data assigned here is also persisted in the browser&#39;s sessionStorage (see <a href="http://www.w3.org/TR/webstorage/#the-sessionstorage-attribute">http://www.w3.org/TR/webstorage/#the-sessionstorage-attribute</a>) so it survives a page reload.</p>
+                  <p>Sets up the session from a plain JavaScript object. This does not create a new instance but sets up
+the instance with the data that is passed. Any data assigned here is also persisted in a session cookie (see <a href="http://en.wikipedia.org/wiki/HTTP_cookie#Session_cookie">http://en.wikipedia.org/wiki/HTTP_cookie#Session_cookie</a>) so it survives a page reload.</p>
 
                 </div>
                 <ul class="list-group">
