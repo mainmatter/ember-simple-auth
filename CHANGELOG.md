@@ -1,3 +1,7 @@
+# 0.0.7
+
+* use session cookies to store the session properties (see #30)
+
 # 0.0.6
 
 * added API docs
