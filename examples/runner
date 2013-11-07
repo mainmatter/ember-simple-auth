@@ -175,8 +175,8 @@ __END__
   </div>
 </div>
 <script>
-  delete sessionStorage.authToken;
-  delete sessionStorage.account;
+  document.cookie = 'authToken=';
+  document.cookie = 'account=';
 </script>
 
 @@ oauth_callback_error

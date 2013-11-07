@@ -38,7 +38,9 @@ module('Ember.SimpleAuth.LoginControllerMixin', {
     ajaxMock                             = AjaxMock.create();
     Ember.SimpleAuth.serverTokenEndpoint = '/token';
     Ember.$.ajax                         = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
-    testController.set('session', Ember.SimpleAuth.Session.create());
+    var session                          = Ember.SimpleAuth.Session.create();
+    session.destroy();
+    testController.set('session', session);
     testController.setProperties({ identification: 'identification', password: 'password' });
   },
   teardown: function() {

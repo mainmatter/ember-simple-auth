@@ -59,6 +59,9 @@ var AjaxPrefilterMock = Ember.Object.extend({
 module('Ember.SimpleAuth', {
   originalAjaxPrefilter: Ember.$.ajaxPrefilter,
   setup: function() {
+    document.cookie       = 'authToken=';
+    document.cookie       = 'refreshToken=';
+    document.cookie       = 'authTokenExpiry=';
     applicationMock       = ApplicationMock.create();
     applicationRouteMock  = ApplicationRouteMock.create();
     ajaxPrefilterMock     = AjaxPrefilterMock.create();
@@ -119,7 +122,7 @@ test('injects a session object in models, views, controllers and routes during s
 
 test('registers an AJAX prefilter that adds the authToken for non-crossdomain requests during setup', function() {
   var token = Math.random().toString(36);
-  sessionStorage.authToken = token;
+  document.cookie = 'authToken=' + token;
   Ember.SimpleAuth.setup(containerMock, applicationMock);
 
   ajaxPrefilterMock.registeredAjaxPrefilter({}, {}, xhrMock);

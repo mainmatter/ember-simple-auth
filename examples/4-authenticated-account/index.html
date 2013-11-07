@@ -83,9 +83,10 @@
       Ember.SimpleAuth.Session.reopen({
         init: function() {
           this._super();
-          //initializer the accountId from data potentially already present in the
-          //sessionStorage (Ember.SimpleAuth.Session does this out of the box for authToken)
-          this.set('accountId', sessionStorage.accountId);
+          //initializer the accountId from data potentially already present in a
+          //session cookie (Ember.SimpleAuth.Session does this out of the box for authToken)
+          var accountId = (document.cookie.match(/accountId=([^;]+)/) || [])[1];
+          this.set('accountId', accountId);
         },
         setup: function(serverSession) {
           this._super(serverSession);
@@ -96,9 +97,9 @@
           this.set('accountId', undefined);
         },
         accountIdChanged: function() {
-          //save accountId in the sessionStorage so it survives a page reload (Ember.SimpleAuth.Session
+          //save accountId in a session cookie so it survives a page reload (Ember.SimpleAuth.Session
           //does this out of the box for authToken)
-          sessionStorage.accountId = this.get('accountId');
+          document.cookie = 'accountId=' + this.get('accountId');
         }.observes('accountId'),
         account: function() {
           var accountId = this.get('accountId');

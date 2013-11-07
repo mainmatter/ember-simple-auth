@@ -20,7 +20,9 @@ module('Ember.SimpleAuth.AuthenticatedRouteMixin', {
     testRoute                   = TestRoute.create();
     attemptedTransitionMock     = AttemptedTransitionMock.create();
     Ember.SimpleAuth.loginRoute = 'login.route';
-    testRoute.set('session', Ember.SimpleAuth.Session.create());
+    var session                 = Ember.SimpleAuth.Session.create();
+    session.destroy();
+    testRoute.set('session', session);
   }
 });
 

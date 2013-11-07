@@ -11,7 +11,9 @@ module('Ember.SimpleAuth.ApplicationRouteMixin', {
   setup: function() {
     testRoute                            = TestRoute.create();
     Ember.SimpleAuth.serverTokenEndpoint = '/token';
-    testRoute.set('session', Ember.SimpleAuth.Session.create());
+    var session                          = Ember.SimpleAuth.Session.create();
+    session.destroy();
+    testRoute.set('session', session);
   }
 });
 

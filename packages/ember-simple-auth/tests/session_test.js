@@ -30,57 +30,55 @@ module('Ember.SimpleAuth.Session', {
   teardown: function() {
     Ember.$.ajax = this.originalAjax;
     Ember.run.cancel(session.get('refreshAuthTokenTimeout'));
-    delete sessionStorage.authToken;
-    delete sessionStorage.refereshToken;
-    delete sessionStorage.authTokenExpiry;
+    session.destroy();
   }
 });
 
-test('reads its properties from the session storage during initialization', function() {
+test('reads its properties from session cookies during initialization', function() {
   var authToken = Math.random().toString(36);
-  sessionStorage.authToken = authToken;
+  document.cookie = 'authToken=' + authToken;
   var refreshToken = Math.random().toString(36);
-  sessionStorage.refreshToken = refreshToken;
-  sessionStorage.authTokenExpiry = 10000;
+  document.cookie = 'refreshToken=' + refreshToken;
+  document.cookie = 'authTokenExpiry=' + 10000;
   session = Ember.SimpleAuth.Session.create();
 
-  equal(session.get('authToken'), authToken, 'Ember.SimpleAuth.Session reads authToken from sessionStorage during initialization.');
-  equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session reads refreshToken from sessionStorage during initialization.');
-  equal(session.get('authTokenExpiry'), 10000, 'Ember.SimpleAuth.Session reads authTokenExpiry from sessionStorage during initialization.');
+  equal(session.get('authToken'), authToken, 'Ember.SimpleAuth.Session reads authToken from the session cookie during initialization.');
+  equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session reads refreshToken from the session cookie during initialization.');
+  equal(session.get('authTokenExpiry'), 10000, 'Ember.SimpleAuth.Session reads authTokenExpiry from the session cookie during initialization.');
   notEqual(session.get('refreshAuthTokenTimeout'), undefined, 'Ember.SimpleAuth.Session schedules a token refresh during initialization.');
 });
 
-test('persists its properties to the session storage when they change', function() {
+test('persists its properties to session cookies when they change', function() {
   var authToken = Math.random().toString(36);
   session.set('authToken', authToken);
 
-  equal(sessionStorage.authToken, authToken, 'Ember.SimpleAuth.Session persists authToken to sessionStorage when it changes.');
+  ok(document.cookie.match(new RegExp('authToken=' + authToken)), 'Ember.SimpleAuth.Session persists authToken to a session cookie when it changes.');
 
   var refreshToken = Math.random().toString(36);
   session.set('refreshToken', refreshToken);
 
-  equal(sessionStorage.refreshToken, refreshToken, 'Ember.SimpleAuth.Session persists refreshToken to sessionStorage when it changes.');
+  ok(document.cookie.match(new RegExp('refreshToken=' + refreshToken)), 'Ember.SimpleAuth.Session persists refreshToken to a session cookie when it changes.');
 
   session.set('authTokenExpiry', 1);
 
-  equal(sessionStorage.authTokenExpiry, 1, 'Ember.SimpleAuth.Session persists authTokenExpiry to sessionStorage when it changes.');
+  ok(document.cookie.match(new RegExp('authTokenExpiry=1')), 'Ember.SimpleAuth.Session persists authTokenExpiry to a session cookie when it changes.');
 });
 
-test('deletes its properties from the session storage when they become empty', function() {
+test('deletes its properties from session cookies when they become empty', function() {
   session.set('authToken', 'some token');
   session.set('authToken', undefined);
 
-  equal(sessionStorage.authToken, undefined, 'Ember.SimpleAuth.Session deletes authToken from sessionStorage when it becomes empty.');
+  ok(!document.cookie.match(new RegExp('authToken=[^;]+')), 'Ember.SimpleAuth.Session deletes authToken from the session cookie when it becomes empty.');
 
   session.set('refreshToken', 'some token');
   session.set('refreshToken', undefined);
 
-  equal(sessionStorage.refreshToken, undefined, 'Ember.SimpleAuth.Session deletes refreshToken from sessionStorage when it becomes empty.');
+  ok(!document.cookie.match(new RegExp('refreshToken=[^;]+')), 'Ember.SimpleAuth.Session deletes refreshToken from the session cookie when it becomes empty.');
 
   session.set('authTokenExpiry', 1);
   session.set('authTokenExpiry', undefined);
 
-  equal(sessionStorage.authTokenExpiry, undefined, 'Ember.SimpleAuth.Session deletes authTokenExpiry from sessionStorage when it becomes empty.');
+  ok(!document.cookie.match(new RegExp('authTokenExpiry=[^;]+')), 'Ember.SimpleAuth.Session deletes authTokenExpiry from the session cookie when it becomes empty.');
 });
 
 test('assigns its properties correctly during setup', function() {

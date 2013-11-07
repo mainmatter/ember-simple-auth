@@ -13,16 +13,16 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   init: function() {
     this._super();
     this.setProperties({
-      authToken:       sessionStorage.authToken,
-      refreshToken:    sessionStorage.refreshToken,
-      authTokenExpiry: sessionStorage.authTokenExpiry
+      authToken:       this.load('authToken'),
+      refreshToken:    this.load('refreshToken'),
+      authTokenExpiry: this.load('authTokenExpiry')
     });
     this.handleAuthTokenRefresh();
   },
 
   /**
-    Sets up the session from a plain JavaScript object. This does not create a new isntance but sets up
-    the instance with the data that is passed. Any data assigned here is also persisted in the browser's sessionStorage (see http://www.w3.org/TR/webstorage/#the-sessionstorage-attribute) so it survives a page reload.
+    Sets up the session from a plain JavaScript object. This does not create a new instance but sets up
+    the instance with the data that is passed. Any data assigned here is also persisted in a session cookie (see http://en.wikipedia.org/wiki/HTTP_cookie#Session_cookie) so it survives a page reload.
 
     @method setup
     @param {Object} data The data to set the session up with
@@ -51,7 +51,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
 
   /**
     Destroys the session by setting all properties to undefined (see [Session#setup](#Ember.SimpleAuth.Session_setup)). This also deletes any
-    saved data from the sessionStorage and effectively logs the current user out.
+    saved data from the session cookie and effectively logs the current user out.
 
     @method destroy
   */
@@ -74,16 +74,24 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   }),
 
   /**
-    @method handlePropertyChange
+    @method load
     @private
   */
-  handlePropertyChange: function(property) {
-    var value = this.get(property);
+  load: function(property) {
+    var value = document.cookie.match(new RegExp(property + '=([^;]+)')) || [];
     if (Ember.isEmpty(value)) {
-      delete sessionStorage[property];
+      return undefined;
     } else {
-      sessionStorage[property] = value;
+      return decodeURIComponent(value[1] || '');
     }
+  },
+
+  /**
+    @method store
+    @private
+  */
+  store: function(property) {
+    document.cookie = property + '=' + encodeURIComponent(this.get(property) || '');
   },
 
   /**
@@ -91,7 +99,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     @private
   */
   authTokenObserver: Ember.observer(function() {
-    this.handlePropertyChange('authToken');
+    this.store('authToken');
   }, 'authToken'),
 
   /**
@@ -99,7 +107,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     @private
   */
   refreshTokenObserver: Ember.observer(function() {
-    this.handlePropertyChange('refreshToken');
+    this.store('refreshToken');
     this.handleAuthTokenRefresh();
   }, 'refreshToken'),
 
@@ -108,7 +116,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     @private
   */
   authTokenExpiryObserver: Ember.observer(function() {
-    this.handlePropertyChange('authTokenExpiry');
+    this.store('authTokenExpiry');
     this.handleAuthTokenRefresh();
   }, 'authTokenExpiry'),
 
