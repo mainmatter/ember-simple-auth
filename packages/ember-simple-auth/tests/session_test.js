@@ -29,8 +29,8 @@ module('Ember.SimpleAuth.Session', {
   },
   teardown: function() {
     Ember.$.ajax = this.originalAjax;
-    Ember.run.cancel(Ember.SimpleAuth.Session._REFRESH_TOKEN_TIMEOUT_);
-    Ember.run.cancel(Ember.SimpleAuth.Session._SYNC_PROPERTIES_TIMEOUT_);
+    Ember.run.cancel(Ember.SimpleAuth.Session._refreshTokenTimeout_);
+    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout_);
     session.destroy();
   }
 });
@@ -47,7 +47,7 @@ test('reads its properties from session cookies during initialization', function
   equal(session.get('authToken'), authToken, 'Ember.SimpleAuth.Session reads authToken from the session cookie during initialization.');
   equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session reads refreshToken from the session cookie during initialization.');
   equal(session.get('authTokenExpiry'), 10000, 'Ember.SimpleAuth.Session reads authTokenExpiry from the session cookie during initialization.');
-  notEqual(Ember.SimpleAuth.Session._REFRESH_TOKEN_TIMEOUT_, undefined, 'Ember.SimpleAuth.Session schedules a token refresh during initialization.');
+  notEqual(Ember.SimpleAuth.Session._refreshTokenTimeout_, undefined, 'Ember.SimpleAuth.Session schedules a token refresh during initialization.');
 });
 
 test('persists its properties to session cookies when they change', function() {
@@ -142,18 +142,18 @@ test('schedules a token refresh when the required properties are set', function(
   Ember.SimpleAuth.autoRefreshToken = false;
   session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10 });
 
-  equal(Ember.SimpleAuth.Session._REFRESH_TOKEN_TIMEOUT_, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when an Ember.SimpleAuth.autoRefreshToken is false.');
+  equal(Ember.SimpleAuth.Session._refreshTokenTimeout_, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when an Ember.SimpleAuth.autoRefreshToken is false.');
 
   Ember.SimpleAuth.autoRefreshToken = true;
   session.setup({ access_token: 'authToken', refresh_token: 'refreshToken' });
 
-  equal(Ember.SimpleAuth.Session._REFRESH_TOKEN_TIMEOUT_, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when no authTokenExpiry is present.');
+  equal(Ember.SimpleAuth.Session._refreshTokenTimeout_, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when no authTokenExpiry is present.');
 
   session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 5 });
 
-  equal(Ember.SimpleAuth.Session._REFRESH_TOKEN_TIMEOUT_, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when an authTokenExpiry less or equal 5000ms is present.');
+  equal(Ember.SimpleAuth.Session._refreshTokenTimeout_, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when an authTokenExpiry less or equal 5000ms is present.');
 
   session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10 });
 
-  notEqual(Ember.SimpleAuth.Session._REFRESH_TOKEN_TIMEOUT_, undefined, 'Ember.SimpleAuth.Session schedules a token refresh when the refreshToken and authTokenExpiry are present.');
+  notEqual(Ember.SimpleAuth.Session._refreshTokenTimeout_, undefined, 'Ember.SimpleAuth.Session schedules a token refresh when the refreshToken and authTokenExpiry are present.');
 });

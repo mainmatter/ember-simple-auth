@@ -70,7 +70,7 @@ module('Ember.SimpleAuth', {
   },
   teardown: function() {
     Ember.$.ajaxPrefilter = this.originalAjaxPrefilter;
-    Ember.run.cancel(Ember.SimpleAuth.Session._SYNC_PROPERTIES_TIMEOUT_);
+    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout_);
   }
 });
 

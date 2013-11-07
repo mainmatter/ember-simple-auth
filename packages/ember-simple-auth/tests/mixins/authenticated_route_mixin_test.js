@@ -25,7 +25,7 @@ module('Ember.SimpleAuth.AuthenticatedRouteMixin', {
     testRoute.set('session', session);
   },
   teardown: function() {
-    Ember.run.cancel(Ember.SimpleAuth.Session._SYNC_PROPERTIES_TIMEOUT_);
+    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout_);
   }
 });
 
