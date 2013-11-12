@@ -38,6 +38,7 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   this.loginRoute          = options.loginRoute || 'login';
   this.serverTokenEndpoint = options.serverTokenEndpoint || '/token';
   this.autoRefreshToken    = Ember.isEmpty(options.autoRefreshToken) ? true : !!options.autoRefreshToken;
+  this.authTokenKey        = options.authTokenKey || 'access_token';
 
   var session = Ember.SimpleAuth.Session.create();
   application.register('simple_auth:session', session, { instantiate: false, singleton: true });

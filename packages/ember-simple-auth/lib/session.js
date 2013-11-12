@@ -40,7 +40,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   setup: function(data) {
     data = data || {};
     this.setProperties({
-      authToken:       data.access_token,
+      authToken:       data[Ember.SimpleAuth.authTokenKey],
       refreshToken:    (data.refresh_token || this.get('refreshToken')),
       authTokenExpiry: (data.expires_in > 0 ? data.expires_in * 1000 : this.get('authTokenExpiry')) || 0
     });
