@@ -48,10 +48,25 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   });
 
   Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    if (!jqXHR.crossDomain && !Ember.isEmpty(session.get('authToken'))) {
+    if (Ember.SimpleAuth.includeAuthorizationHeader(options.url) && !Ember.isEmpty(session.get('authToken'))) {
       jqXHR.setRequestHeader('Authorization', 'Bearer ' + session.get('authToken'));
     }
   });
+
+  /**
+    @method includeAuthorizationHeader
+    @private
+  */
+  this.includeAuthorizationHeader = function(url) {
+    this._origins = this._origins || {};
+    var origin = Ember.SimpleAuth._origins[url] || function() {
+      var link = document.createElement('a');
+      link.href = url;
+      Ember.SimpleAuth._origins[url] = link;
+      return link;
+    }();
+    return origin.origin === window.location.origin;
+  },
 
   /**
     Call this method when an external login was successful. Typically you would

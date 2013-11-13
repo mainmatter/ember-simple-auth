@@ -129,9 +129,8 @@ test('registers an AJAX prefilter that adds the authToken for non-crossdomain re
   ajaxPrefilterMock.registeredAjaxPrefilter({}, {}, xhrMock);
   equal(xhrMock.requestHeaders['Authorization'], 'Bearer ' + token, 'Ember.SimpleAuth registers an AJAX prefilter that adds the authToken for non-crossdomain requests during setup.');
 
-  xhrMock.crossDomain    = true;
   xhrMock.requestHeaders = {};
-  ajaxPrefilterMock.registeredAjaxPrefilter({}, {}, xhrMock);
+  ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, xhrMock);
   equal(xhrMock.requestHeaders['Authorization'], undefined, 'Ember.SimpleAuth registers an AJAX prefilter that does not add the authToken for crossdomain requests during setup.');
 });
 
