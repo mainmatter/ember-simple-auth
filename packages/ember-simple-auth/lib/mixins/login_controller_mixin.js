@@ -1,3 +1,5 @@
+'use strict';
+
 /**
   The mixin for the login controller (if you're using the default
   credentials-based login). This controller sends the user's credentials to the

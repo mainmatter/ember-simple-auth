@@ -1,3 +1,5 @@
+'use strict';
+
 /**
   The mixin for routes that you want to enforce an authenticated user. When
   users hit a route that implements this mixin and have not authenticated

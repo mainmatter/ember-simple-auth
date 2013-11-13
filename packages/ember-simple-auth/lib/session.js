@@ -1,3 +1,5 @@
+'use strict';
+
 /**
   This class holds the current access token and other session data. There will always be a
   session regardless of whether a user is currently authenticated or not. That (singleton) instance

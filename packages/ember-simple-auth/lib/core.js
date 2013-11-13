@@ -1,3 +1,5 @@
+'use strict';
+
 /**
   The main namespace for Ember.SimpleAuth
 
