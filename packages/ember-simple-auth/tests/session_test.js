@@ -110,6 +110,15 @@ test('assigns its properties correctly during setup', function() {
   equal(session.get('authToken'), undefined, 'Ember.SimpleAuth.Session assigns authToken as undefined during setup when the supplied session is null.');
   equal(session.get('refreshToken'), undefined, 'Ember.SimpleAuth.Session assigns refreshToken as undefined during setup when the supplied session is null.');
   equal(session.get('authTokenExpiry'), 0, 'Ember.SimpleAuth.Session assigns authTokenExpiry as 0 during setup when the supplied session is null.');
+
+  session.destroy();
+  Ember.SimpleAuth.authTokenKey = 'auth_token';
+  session = Ember.SimpleAuth.Session.create();
+  session.setup({ auth_token: authToken });
+
+  equal(session.get('authToken'), authToken, 'Ember.SimpleAuth.Session assigns the value of a custom token key to authToken.');
+
+  session.destroy();
 });
 
 test('clears its properties during destruction', function() {

@@ -108,6 +108,11 @@ test('saves the login route when specified for setup', function() {
   equal(Ember.SimpleAuth.loginRoute, 'somewhere', 'Ember.SimpleAuth saves loginRoute when specified for setup.');
 });
 
+test('saves the authToken response key name when specified for setup', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { authTokenKey: 'auth_token' });
+  equal(Ember.SimpleAuth.authTokenKey, 'auth_token', 'Ember.SimpleAuth saves authTokenKey when specified for setup.');
+});
+
 test('injects a session object in models, views, controllers and routes during setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
 
