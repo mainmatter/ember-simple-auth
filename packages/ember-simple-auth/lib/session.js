@@ -80,8 +80,8 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       refreshToken:    this.load('refreshToken'),
       authTokenExpiry: this.load('authTokenExpiry')
     });
-    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout_);
-    Ember.SimpleAuth.Session._syncPropertiesTimeout_ = Ember.run.later(this, this.syncProperties, 500);
+    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout);
+    Ember.SimpleAuth.Session._syncPropertiesTimeout = Ember.run.later(this, this.syncProperties, 500);
   },
 
   /**
@@ -137,19 +137,19 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   */
   handleAuthTokenRefresh: function() {
     if (Ember.SimpleAuth.autoRefreshToken) {
-      Ember.run.cancel(Ember.SimpleAuth.Session._refreshTokenTimeout_);
-      Ember.SimpleAuth.Session._refreshTokenTimeout_ = undefined;
+      Ember.run.cancel(Ember.SimpleAuth.Session._refreshTokenTimeout);
+      Ember.SimpleAuth.Session._refreshTokenTimeout = undefined;
       var waitTime = this.get('authTokenExpiry') - 5000;
       if (!Ember.isEmpty(this.get('refreshToken')) && waitTime > 0) {
-        Ember.SimpleAuth.Session._refreshTokenTimeout_ = Ember.run.later(this, function() {
-          var self = this;
+        Ember.SimpleAuth.Session._refreshTokenTimeout = Ember.run.later(this, function() {
+          var _this = this;
           Ember.$.ajax(Ember.SimpleAuth.serverTokenEndpoint, {
             type:        'POST',
             data:        'grant_type=refresh_token&refresh_token=' + this.get('refreshToken'),
             contentType: 'application/x-www-form-urlencoded'
           }).then(function(response) {
-            self.setup(response);
-            self.handleAuthTokenRefresh();
+            _this.setup(response);
+            _this.handleAuthTokenRefresh();
           });
         }, waitTime);
       }

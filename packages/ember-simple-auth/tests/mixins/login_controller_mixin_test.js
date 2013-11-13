@@ -15,13 +15,13 @@ var ajaxMock;
 var AjaxMock = Ember.Object.extend({
   response:    { access_token: 'authToken' },
   ajaxCapture: function(url, options) {
-    var self            = this;
+    var _this           = this;
     this.requestUrl     = url;
     this.requestOptions = options;
     return {
       then: function(success, fail) {
         if (!!success) {
-          success(self.response);
+          success(_this.response);
         }
         if (!!fail) {
           fail('xhr', 'status', 'error');
@@ -46,7 +46,7 @@ module('Ember.SimpleAuth.LoginControllerMixin', {
   teardown: function() {
     Ember.$.ajax = this.originalAjax;
     Ember.run.cancel(testController.refreshTokenLater);
-    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout_);
+    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout);
   }
 });
 
