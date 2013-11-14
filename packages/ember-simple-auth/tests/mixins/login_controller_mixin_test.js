@@ -57,6 +57,7 @@ test('sends a request to the server token route on login', function() {
   equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.LoginControllerMixin sends a POST request on login.');
   equal(ajaxMock.requestOptions.data, 'grant_type=password&username=identification&password=password', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct data on login.');
   equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the content type "application/x-www-form-urlencoded" on login.');
+  equal(testController.get('password'), undefined, 'Ember.SimpleAuth.LoginControllerMixin clears the password on login.');
 
   testController.reopen({
     tokenRequestOptions: function(username, password) {
@@ -64,6 +65,7 @@ test('sends a request to the server token route on login', function() {
       return { type: 'PUT', data: putData, contentType: 'application/json' };
     }
   });
+  testController.set('password', 'password');
   testController.send('login');
 
   equal(ajaxMock.requestOptions.type, 'PUT', 'Ember.SimpleAuth.LoginControllerMixin sends a PUT request on login when tokenRequestOptions is overridden.');
