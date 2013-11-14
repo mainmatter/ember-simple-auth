@@ -1,3 +1,9 @@
+# 0.0.8
+
+* clear password on login, see #29
+* fixed prevention of sending `Authorization` header with cross-origin requests
+* added Ember.SimpleAuth.crossOriginWhitelist to also sent `Authorization` header with configured cross-origin requests
+
 # 0.0.7
 
 * use session cookies to store the session properties (see #30)
