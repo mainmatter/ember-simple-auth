@@ -316,6 +316,32 @@ Authorization: Bearer <access token>
 **As the access token is sent without any further encryption etc. you should
 make sure you're always using TLS/HTTPS for all client/server communication!**
 
+#### Cross Origin Authorization
+
+By default Ember.SimpleAuth does not include the `Authorization` header for
+cross origin requests so the authentication token does not get exposed to 3rd
+parties. If you need to include it for cross origin requests as well (for
+example if your REST API runs on a different domain than the one you serve the
+Ember.js application from) you need to explicitly specify these origins during
+setup:
+
+```js
+Ember.Application.initializer({
+  name: 'authentication',
+  initialize: function(container, application) {
+    Ember.SimpleAuth.setup(container, application, { crossDomainWhitelist: ['http://some.other.domain:1234'] });
+  }
+});
+```
+
+Web origins consist of protocol, domain and port (see
+[RFC 6454](http://tools.ietf.org/html/rfc6454)). That means that also **if you
+serve the Ember.js application via HTTP and connect to the REST API via HTTPS**
+you would have to enable that explicitly. For more information on CORS see
+http://enable-cors.org. You also have to make sure your server responds to
+`OPTIONS` requests etc. including the correct response headers as described
+e.g. [here](http://www.html5rocks.com/en/tutorials/cors/).
+
 ### Custom Servers
 
 In order to use a custom server that is not compliant to RFC 6749, there are
