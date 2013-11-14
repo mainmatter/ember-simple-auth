@@ -108,14 +108,14 @@ test('assigns the login route during setup', function() {
   equal(Ember.SimpleAuth.loginRoute, 'somewhere', 'Ember.SimpleAuth saves loginRoute when specified for setup.');
 });
 
-test('assigns the cross domain whitelist during setup', function() {
-  Ember.SimpleAuth.setup(containerMock, applicationMock, { crossDomainWhitelist: ['http://domain1.com:1234'] });
+test('assigns the cross origin whitelist during setup', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { crossOriginWhitelist: ['http://domain1.com:1234'] });
 
-  deepEqual(Ember.SimpleAuth.crossDomainWhitelist, Ember.A(['http://domain1.com:1234']), 'Ember.SimpleAuth saves crossDomainWhitelist when specified for setup.');
+  deepEqual(Ember.SimpleAuth.crossOriginWhitelist, Ember.A(['http://domain1.com:1234']), 'Ember.SimpleAuth saves crossOriginWhitelist when specified for setup.');
 
   Ember.SimpleAuth.setup(containerMock, applicationMock);
 
-  deepEqual(Ember.SimpleAuth.crossDomainWhitelist, Ember.A([]), 'Ember.SimpleAuth defaults crossDomainWhitelist to an empty array when not specified for setup.');
+  deepEqual(Ember.SimpleAuth.crossOriginWhitelist, Ember.A([]), 'Ember.SimpleAuth defaults crossOriginWhitelist to an empty array when not specified for setup.');
 });
 
 test('injects a session object in models, views, controllers and routes during setup', function() {
@@ -131,22 +131,22 @@ test('injects a session object in models, views, controllers and routes during s
   });
 });
 
-test('registers an AJAX prefilter that adds the authToken for non-crossdomain requests during setup', function() {
+test('registers an AJAX prefilter that adds the authToken for same-origin requests during setup', function() {
   var token = Math.random().toString(36);
   document.cookie = 'authToken=' + token;
   Ember.SimpleAuth.setup(containerMock, applicationMock);
 
   ajaxPrefilterMock.registeredAjaxPrefilter({}, {}, xhrMock);
-  equal(xhrMock.requestHeaders['Authorization'], 'Bearer ' + token, 'Ember.SimpleAuth registers an AJAX prefilter that adds the authToken for non-crossdomain requests during setup.');
+  equal(xhrMock.requestHeaders['Authorization'], 'Bearer ' + token, 'Ember.SimpleAuth registers an AJAX prefilter that adds the authToken for same-origin requests during setup.');
 
   xhrMock.requestHeaders = {};
   ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, xhrMock);
-  equal(xhrMock.requestHeaders['Authorization'], undefined, 'Ember.SimpleAuth registers an AJAX prefilter that does not add the authToken for crossdomain requests during setup.');
+  equal(xhrMock.requestHeaders['Authorization'], undefined, 'Ember.SimpleAuth registers an AJAX prefilter that does not add the authToken for cross-origin requests during setup.');
 
   xhrMock.requestHeaders = {};
-  Ember.SimpleAuth.setup(containerMock, applicationMock, { crossDomainWhitelist: ['https://a.different.domain:1234'] });
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { crossOriginWhitelist: ['https://a.different.domain:1234'] });
   ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, xhrMock);
-  equal(xhrMock.requestHeaders['Authorization'], 'Bearer ' + token, 'Ember.SimpleAuth registers an AJAX prefilter that adds the authToken for crossdomain requests when the origin is in the crossDomainWhitelist during setup.');
+  equal(xhrMock.requestHeaders['Authorization'], 'Bearer ' + token, 'Ember.SimpleAuth registers an AJAX prefilter that adds the authToken for cross-origin requests when the origin is in the crossOriginWhitelist during setup.');
 });
 
 test('sets up the session correctly in the external login succeeded callback', function() {

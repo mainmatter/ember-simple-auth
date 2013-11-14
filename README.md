@@ -329,7 +329,7 @@ setup:
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(container, application, { crossDomainWhitelist: ['http://some.other.domain:1234'] });
+    Ember.SimpleAuth.setup(container, application, { crossOriginWhitelist: ['http://some.other.domain:1234'] });
   }
 });
 ```
