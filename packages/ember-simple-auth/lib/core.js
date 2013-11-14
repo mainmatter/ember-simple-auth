@@ -33,6 +33,7 @@ Ember.SimpleAuth = {};
     @param {String} [options.serverTokenRoute] the server endpoint used to obtain the access token - defaults to `'/token'`
     @param {String} [options.autoRefreshToken] enable/disable automatic token refreshing (if the server supports it) - defaults to `true`
     @param {Array[String]} [options.crossOriginWhitelist] list of origins that (besides the origin of the Ember.js application) send the authentication token to - defaults to `[]`
+    @param {Object} [options.authorizer] The authorizer to use; must implement `function(jqXHR, requestOptions)` - defaults to an instance of `Ember.SimpleAuth.Authorizers.OAuth2`
 **/
 Ember.SimpleAuth.setup = function(container, application, options) {
   options = options || {};
@@ -43,8 +44,9 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   this.autoRefreshToken     = Ember.isEmpty(options.autoRefreshToken) ? true : !!options.autoRefreshToken;
   this.crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
 
-  var session      = Ember.SimpleAuth.Session.create();
-  this._authorizer = Ember.SimpleAuth.Authorizers.OAuth2.create({ session: session });
+  var session    = Ember.SimpleAuth.Session.create();
+  var authorizer = options.authorizer || Ember.SimpleAuth.Authorizers.OAuth2.create({});
+  authorizer.set('session', session);
 
   application.register('simple_auth:session', session, { instantiate: false, singleton: true });
   Ember.$.each(['model', 'controller', 'view', 'route'], function(i, component) {
@@ -53,7 +55,7 @@ Ember.SimpleAuth.setup = function(container, application, options) {
 
   Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
     if (Ember.SimpleAuth.includeAuthorizationHeader(options.url)) {
-      Ember.SimpleAuth._authorizer.authorize(jqXHR, options);
+      authorizer.authorize(jqXHR, options);
     }
   });
 

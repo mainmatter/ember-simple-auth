@@ -131,7 +131,7 @@ test('injects a session object in models, views, controllers and routes during s
 test('registers an AJAX prefilter that authorizes requests during setup', function() {
   var token = Math.random().toString(36);
   document.cookie = 'authToken=' + token;
-  Ember.SimpleAuth.setup(containerMock, applicationMock);
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { authorizer: authorizerMock });
   Ember.SimpleAuth._authorizer = authorizerMock;
 
   ajaxPrefilterMock.registeredAjaxPrefilter({}, {}, {});
@@ -141,8 +141,7 @@ test('registers an AJAX prefilter that authorizes requests during setup', functi
   ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, {});
   ok(!authorizerMock.authorized, 'Ember.SimpleAuth registers an AJAX prefilter that does not authorize cross-origin requests during setup.');
 
-  Ember.SimpleAuth.setup(containerMock, applicationMock, { crossOriginWhitelist: ['https://a.different.domain:1234'] });
-  Ember.SimpleAuth._authorizer = authorizerMock;
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { crossOriginWhitelist: ['https://a.different.domain:1234'], authorizer: authorizerMock });
   ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, {});
   ok(authorizerMock.authorized, 'Ember.SimpleAuth registers an AJAX prefilter that authorizes cross-origin requests when the origin is in the crossOriginWhitelist during setup.');
 });
