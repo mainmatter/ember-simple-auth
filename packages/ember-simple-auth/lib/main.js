@@ -8,5 +8,5 @@ require('ember-simple-auth/session');
 require('ember-simple-auth/mixins/authenticated_route_mixin');
 require('ember-simple-auth/mixins/login_controller_mixin');
 require('ember-simple-auth/mixins/application_route_mixin');
-require('ember-simple-auth/strategies/authorizers');
-require('ember-simple-auth/strategies/authorizers/oauth2');
+require('ember-simple-auth/authorizers');
+require('ember-simple-auth/authorizers/oauth2');
