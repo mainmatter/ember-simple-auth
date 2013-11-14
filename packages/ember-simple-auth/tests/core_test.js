@@ -74,25 +74,25 @@ module('Ember.SimpleAuth', {
   }
 });
 
-test('saves the server token endpoint when specified for setup', function() {
+test('assigns the server token endpoint during setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { serverTokenEndpoint: '/endpoint' });
 
   equal(Ember.SimpleAuth.serverTokenEndpoint, '/endpoint', 'Ember.SimpleAuth saves serverTokenEndpoint when specified for setup.');
 });
 
-test('saves the route after login when specified for setup', function() {
+test('assigns the route after login during setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { routeAfterLogin: 'somewhere' });
 
   equal(Ember.SimpleAuth.routeAfterLogin, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogin when specified for setup.');
 });
 
-test('saves the route after logout when specified for setup', function() {
+test('assigns the route after logout during setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { routeAfterLogout: 'somewhere' });
 
   equal(Ember.SimpleAuth.routeAfterLogout, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogout when specified for setup.');
 });
 
-test('saves the token-auto-refresh-flag when specified for setup', function() {
+test('assigns the token-auto-refresh-flag during setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { autoRefreshToken: false });
 
   ok(!Ember.SimpleAuth.autoRefreshToken, 'Ember.SimpleAuth saves autoRefreshToken when specified for setup.');
@@ -102,13 +102,13 @@ test('saves the token-auto-refresh-flag when specified for setup', function() {
   ok(Ember.SimpleAuth.autoRefreshToken, 'Ember.SimpleAuth defaults autoRefreshToken to true when not specified for setup.');
 });
 
-test('saves the login route when specified for setup', function() {
+test('assigns the login route during setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { loginRoute: 'somewhere' });
 
   equal(Ember.SimpleAuth.loginRoute, 'somewhere', 'Ember.SimpleAuth saves loginRoute when specified for setup.');
 });
 
-test('saves the cross domain whitelist when specified for setup', function() {
+test('assigns the cross domain whitelist during setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { crossDomainWhitelist: ['http://domain1.com:1234'] });
 
   deepEqual(Ember.SimpleAuth.crossDomainWhitelist, Ember.A(['http://domain1.com:1234']), 'Ember.SimpleAuth saves crossDomainWhitelist when specified for setup.');
