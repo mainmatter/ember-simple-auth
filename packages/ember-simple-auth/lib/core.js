@@ -58,14 +58,14 @@ Ember.SimpleAuth.setup = function(container, application, options) {
     @private
   */
   this.includeAuthorizationHeader = function(url) {
-    this._origins = this._origins || {};
-    var origin = Ember.SimpleAuth._origins[url] || function() {
+    this._links = this._links || {};
+    var link = Ember.SimpleAuth._links[url] || function() {
       var link = document.createElement('a');
       link.href = url;
-      Ember.SimpleAuth._origins[url] = link;
+      Ember.SimpleAuth._links[url] = link;
       return link;
     }();
-    return origin.origin === window.location.origin;
+    return link.origin === window.location.origin;
   },
 
   /**
