@@ -25,7 +25,7 @@ Ember.SimpleAuth = {};
   @method setup
   @static
   @param {Container} container The Ember.js container, see http://git.io/ed4U7Q
-  @param {Ember.Application} application The Ember.js application i`stance
+  @param {Ember.Application} application The Ember.js application instance
   @param {Object} [options]
     @param {String} [options.routeAfterLogin] route to redirect the user to after successfully logging in - defaults to `'index'`
     @param {String} [options.routeAfterLogout] route to redirect the user to after logging out - defaults to `'index'`
