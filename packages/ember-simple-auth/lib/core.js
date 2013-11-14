@@ -43,15 +43,17 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   this.autoRefreshToken     = Ember.isEmpty(options.autoRefreshToken) ? true : !!options.autoRefreshToken;
   this.crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
 
-  var session = Ember.SimpleAuth.Session.create();
+  var session      = Ember.SimpleAuth.Session.create();
+  this._authorizer = Ember.SimpleAuth.Authorizers.OAuth2.create({ session: session });
+
   application.register('simple_auth:session', session, { instantiate: false, singleton: true });
   Ember.$.each(['model', 'controller', 'view', 'route'], function(i, component) {
     application.inject(component, 'session', 'simple_auth:session');
   });
 
   Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    if (!Ember.isEmpty(session.get('authToken')) && Ember.SimpleAuth.includeAuthorizationHeader(options.url)) {
-      jqXHR.setRequestHeader('Authorization', 'Bearer ' + session.get('authToken'));
+    if (Ember.SimpleAuth.includeAuthorizationHeader(options.url)) {
+      Ember.SimpleAuth._authorizer.authorize(jqXHR, options);
     }
   });
 

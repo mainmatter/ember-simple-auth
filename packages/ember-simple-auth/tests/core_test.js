@@ -39,13 +39,10 @@ var containerMock = {
   }
 };
 
-var xhrMock;
-var XhrMock = Ember.Object.extend({
-  init: function() {
-    this.requestHeaders = {};
-  },
-  setRequestHeader: function(name, value) {
-    this.requestHeaders[name] = value;
+var authorizerMock;
+var AuthorizerMock = Ember.Object.extend({
+  authorize: function() {
+    this.authorized = true;
   }
 });
 
@@ -65,7 +62,7 @@ module('Ember.SimpleAuth', {
     applicationMock       = ApplicationMock.create();
     applicationRouteMock  = ApplicationRouteMock.create();
     ajaxPrefilterMock     = AjaxPrefilterMock.create();
-    xhrMock               = XhrMock.create();
+    authorizerMock        = AuthorizerMock.create();
     Ember.$.ajaxPrefilter = Ember.$.proxy(ajaxPrefilterMock.ajaxPrefilterCapture, ajaxPrefilterMock);
   },
   teardown: function() {
@@ -131,22 +128,23 @@ test('injects a session object in models, views, controllers and routes during s
   });
 });
 
-test('registers an AJAX prefilter that adds the authToken for same-origin requests during setup', function() {
+test('registers an AJAX prefilter that authorizes requests during setup', function() {
   var token = Math.random().toString(36);
   document.cookie = 'authToken=' + token;
   Ember.SimpleAuth.setup(containerMock, applicationMock);
+  Ember.SimpleAuth._authorizer = authorizerMock;
 
-  ajaxPrefilterMock.registeredAjaxPrefilter({}, {}, xhrMock);
-  equal(xhrMock.requestHeaders['Authorization'], 'Bearer ' + token, 'Ember.SimpleAuth registers an AJAX prefilter that adds the authToken for same-origin requests during setup.');
+  ajaxPrefilterMock.registeredAjaxPrefilter({}, {}, {});
+  ok(authorizerMock.authorized, 'Ember.SimpleAuth registers an AJAX prefilter that authorizes same-origin requests during setup.');
 
-  xhrMock.requestHeaders = {};
-  ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, xhrMock);
-  equal(xhrMock.requestHeaders['Authorization'], undefined, 'Ember.SimpleAuth registers an AJAX prefilter that does not add the authToken for cross-origin requests during setup.');
+  authorizerMock.authorized = false;
+  ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, {});
+  ok(!authorizerMock.authorized, 'Ember.SimpleAuth registers an AJAX prefilter that does not authorize cross-origin requests during setup.');
 
-  xhrMock.requestHeaders = {};
   Ember.SimpleAuth.setup(containerMock, applicationMock, { crossOriginWhitelist: ['https://a.different.domain:1234'] });
-  ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, xhrMock);
-  equal(xhrMock.requestHeaders['Authorization'], 'Bearer ' + token, 'Ember.SimpleAuth registers an AJAX prefilter that adds the authToken for cross-origin requests when the origin is in the crossOriginWhitelist during setup.');
+  Ember.SimpleAuth._authorizer = authorizerMock;
+  ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, {});
+  ok(authorizerMock.authorized, 'Ember.SimpleAuth registers an AJAX prefilter that authorizes cross-origin requests when the origin is in the crossOriginWhitelist during setup.');
 });
 
 test('sets up the session correctly in the external login succeeded callback', function() {
