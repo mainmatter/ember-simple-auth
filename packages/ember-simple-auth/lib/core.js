@@ -54,16 +54,16 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   });
 
   Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    if (Ember.SimpleAuth.includeAuthorizationHeader(options.url)) {
+    if (Ember.SimpleAuth.authorizeRequest(options.url)) {
       authorizer.authorize(jqXHR, options);
     }
   });
 
   /**
-    @method includeAuthorizationHeader
+    @method authorizeRequest
     @private
   */
-  this.includeAuthorizationHeader = function(url) {
+  this.authorizeRequest = function(url) {
     this._links = this._links || {};
     var link = Ember.SimpleAuth._links[url] || function() {
       var link = document.createElement('a');
