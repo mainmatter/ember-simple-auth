@@ -86,13 +86,13 @@ test('deletes its properties from session cookies when they become empty', funct
 test('assigns its properties correctly during setup', function() {
   var authToken = Math.random().toString(36);
   var refreshToken = Math.random().toString(36);
-  session.setup({ access_token: authToken, refresh_token: refreshToken, expires_in: 1 });
+  session.setup({ authToken: authToken, refreshToken: refreshToken, authTokenExpiry: 1 });
 
   equal(session.get('authToken'), authToken, 'Ember.SimpleAuth.Session assigns authToken correctly during setup.');
   equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session assigns refreshToken correctly during setup.');
   equal(session.get('authTokenExpiry'), 1000, 'Ember.SimpleAuth.Session assigns authTokenExpiry correctly during setup.');
 
-  session.setup({ access_token: authToken });
+  session.setup({ authToken: authToken });
 
   equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session keeps an existing refreshToken when the supplied session does not contain one.');
   equal(session.get('authTokenExpiry'), 1000, 'Ember.SimpleAuth.Session keeps an existing authTokenExpiry when the supplied session does not contain one.');
@@ -140,20 +140,20 @@ test('is authenticated when the auth token is present, otherwise not', function(
 
 test('schedules a token refresh when the required properties are set', function() {
   Ember.SimpleAuth.autoRefreshToken = false;
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10 });
+  session.setup({ authToken: 'authToken', refreshToken: 'refreshToken', authTokenExpiry: 10 });
 
   equal(Ember.SimpleAuth.Session._refreshTokenTimeout, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when an Ember.SimpleAuth.autoRefreshToken is false.');
 
   Ember.SimpleAuth.autoRefreshToken = true;
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken' });
+  session.setup({ authToken: 'authToken', refreshToken: 'refreshToken' });
 
   equal(Ember.SimpleAuth.Session._refreshTokenTimeout, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when no authTokenExpiry is present.');
 
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 5 });
+  session.setup({ authToken: 'authToken', refreshToken: 'refreshToken', authTokenExpiry: 5 });
 
   equal(Ember.SimpleAuth.Session._refreshTokenTimeout, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when an authTokenExpiry less or equal 5000ms is present.');
 
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10 });
+  session.setup({ authToken: 'authToken', refreshToken: 'refreshToken', authTokenExpiry: 10 });
 
   notEqual(Ember.SimpleAuth.Session._refreshTokenTimeout, undefined, 'Ember.SimpleAuth.Session schedules a token refresh when the refreshToken and authTokenExpiry are present.');
 });

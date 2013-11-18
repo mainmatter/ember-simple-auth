@@ -152,7 +152,7 @@ test('registers an AJAX prefilter that authorizes requests during setup', functi
 test('sets up the session correctly in the external login succeeded callback', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
   var token = Math.random().toString(36);
-  Ember.SimpleAuth.externalLoginSucceeded({ access_token: token });
+  Ember.SimpleAuth.externalLoginSucceeded({ authToken: token });
 
   equal(applicationMock.registrations['simple_auth:session'].factory.get('authToken'), token, 'Ember.SimpleAuth sets up the session with the auth token in externalLoginSucceeded.');
 });

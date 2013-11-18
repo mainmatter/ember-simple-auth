@@ -64,7 +64,8 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
         this.set('password', undefined);
         var requestOptions = this.tokenRequestOptions(data.identification, data.password);
         Ember.$.ajax(Ember.SimpleAuth.serverTokenEndpoint, requestOptions).then(function(response) {
-          _this.get('session').setup(response);
+          var sessionData = { authToken: response.access_token, refreshToken: response.refresh_token, authTokenExpiry: response.expires_in };
+          _this.get('session').setup(sessionData);
           _this.send('loginSucceeded');
         }, function(xhr, status, error) {
           _this.send('loginFailed', xhr, status, error);

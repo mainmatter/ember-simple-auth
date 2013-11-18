@@ -25,26 +25,26 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
 
     @method setup
     @param {Object} data The data to set the session up with
-      @param {String} data.access_token The access token that will be included in the `Authorization` header
-      @param {String} [data.refresh_token] An optional refresh token that will be used for obtaining fresh tokens
-      @param {String} [data.expires_in] An optional expiry for the access_token in seconds; if both expires_in and refresh_token are set,
+      @param {String} data.authToken The access token that will be included in the `Authorization` header
+      @param {String} [data.refreshToken] An optional refresh token that will be used for obtaining fresh tokens
+      @param {String} [data.authTokenExpiry] An optional expiry for the `authToken` in seconds; if both `authTokenExpiry` and `refreshToken` are set,
         Ember.SimpleAuth will automatically refresh access tokens before they expire
 
     @example
       ```javascript
       this.get('session').setup({
-        access_token:  'the secret token!',
-        refresh_token: 'a secret refresh token!',
-        expires_in:    3600 // 1 minute
+        authToken:       'the secret token!',
+        refreshToken:    'a secret refresh token!',
+        authTokenExpiry: 3600 // 1 minute
       })
       ```
   */
   setup: function(data) {
     data = data || {};
     this.setProperties({
-      authToken:       data.access_token,
-      refreshToken:    (data.refresh_token || this.get('refreshToken')),
-      authTokenExpiry: (data.expires_in > 0 ? data.expires_in * 1000 : this.get('authTokenExpiry')) || 0
+      authToken:       data.authToken,
+      refreshToken:    (data.refreshToken || this.get('refreshToken')),
+      authTokenExpiry: (data.authTokenExpiry > 0 ? data.authTokenExpiry * 1000 : this.get('authTokenExpiry')) || 0
     });
   },
 

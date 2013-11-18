@@ -85,7 +85,7 @@ Ember.SimpleAuth.setup = function(container, application, options) {
         <head></head>
         <body>
           <script>
-            window.opener.Ember.SimpleAuth.externalLoginSucceeded({ access_token: 'secret token!' });
+            window.opener.Ember.SimpleAuth.externalLoginSucceeded({ authToken: 'secret token!' });
             window.close();
           </script>
         </body>
