@@ -48,8 +48,16 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
     @param {String} password The user's password
     @return {Object} The request options to be passed to Ember.$.ajax (see http://api.jquery.com/jQuery.ajax/ for detailed documentation)
   */
-  tokenRequestOptions: function(identification, password) {
-    var postData = ['grant_type=password', 'username=' + identification, 'password=' + password].join('&');
+  tokenRequestOptions: function(identification, password, client_id, client_secret) {
+    var postData = ['grant_type=password', 'username=' + identification, 'password=' + password];
+    if (client_id !== undefined) {
+      postData.push('client_id=' + client_id);
+      if (client_secret !== undefined) {
+        postData.push('client_secret=' + client_secret);
+      }
+    }
+
+    postData = postData.join('&');
     return { type: 'POST', data: postData, contentType: 'application/x-www-form-urlencoded' };
   },
   actions: {
@@ -59,10 +67,10 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
     */
     login: function() {
       var _this = this;
-      var data = this.getProperties('identification', 'password');
+      var data = this.getProperties('identification', 'password', 'client_id', 'client_secret');
       if (!Ember.isEmpty(data.identification) && !Ember.isEmpty(data.password)) {
         this.set('password', undefined);
-        var requestOptions = this.tokenRequestOptions(data.identification, data.password);
+        var requestOptions = this.tokenRequestOptions(data.identification, data.password, data.client_id, data.client_secret);
         Ember.$.ajax(Ember.SimpleAuth.serverTokenEndpoint, requestOptions).then(function(response) {
           _this.get('session').setup(response);
           _this.send('loginSucceeded');
