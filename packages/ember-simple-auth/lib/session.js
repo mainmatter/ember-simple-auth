@@ -82,8 +82,10 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       refreshToken:    this.load('refreshToken'),
       authTokenExpiry: this.load('authTokenExpiry')
     });
-    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout);
-    Ember.SimpleAuth.Session._syncPropertiesTimeout = Ember.run.later(this, this.syncProperties, 500);
+    if (!Ember.testing) {
+      Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout);
+      Ember.SimpleAuth.Session._syncPropertiesTimeout = Ember.run.later(this, this.syncProperties, 500);
+    }
   },
 
   /**
