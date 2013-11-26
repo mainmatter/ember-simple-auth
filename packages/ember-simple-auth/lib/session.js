@@ -1,7 +1,7 @@
 'use strict';
 
 /**
-  This class holds the current access token and other session data. There will always be a
+  This class holds the current authentication state and data the authenticator sets. There will always be a
   session regardless of whether a user is currently authenticated or not. That (singleton) instance
   of this class is automatically injected into all models, controller, routes and views so you should
   never instantiate this class directly but always use the auto-injected instance.
@@ -12,11 +12,21 @@
   @constructor
 */
 Ember.SimpleAuth.Session = Ember.Object.extend({
-
+  /**
+    @method init
+    @private
+  */
   init: function() {
-    this._super();
-    this.syncProperties();
-    this.handleAuthTokenRefresh();
+    var _this = this;
+    this.set('isAuthenticated', false);
+    if (!!this.get('authenticator')) {
+      this.get('store').restore().then(function(properties) {
+        _this.get('authenticator').restore(properties).then(function(properties) {
+          _this.set('isAuthenticated', true);
+          _this._updateSessionProperties(properties);
+        });
+      });
+    }
   },
 
   /**
@@ -33,18 +43,27 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     @example
       ```javascript
       this.get('session').setup({
-        authToken:       'the secret token!',
-        refreshToken:    'a secret refresh token!',
-        authTokenExpiry: 3600 // 1 minute
+        authToken: 'the secret token!'
       })
       ```
   */
-  setup: function(data) {
-    data = data || {};
-    this.setProperties({
-      authToken:       data.authToken,
-      refreshToken:    (data.refreshToken || this.get('refreshToken')),
-      authTokenExpiry: (data.authTokenExpiry > 0 ? data.authTokenExpiry * 1000 : this.get('authTokenExpiry')) || 0
+  setup: function(authenticator, options) {
+    var _this = this;
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      authenticator.authenticate(options).then(function(properties) {
+        _this.set('isAuthenticated', true);
+        _this.set('authenticator', authenticator);
+        _this._updateSessionProperties(properties);
+        resolve();
+      }, function(args) {
+        var args = Ember.makeArray(args);
+        var properties = args[0];
+        var error      = args[1];
+        _this.set('isAuthenticated', false);
+        _this.set('authenticator', undefined);
+        _this._updateSessionProperties(properties);
+        reject(error);
+      });
     });
   },
 
@@ -55,106 +74,39 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     @method destroy
   */
   destroy: function() {
-    this.setProperties({
-      authToken:       undefined,
-      refreshToken:    undefined,
-      authTokenExpiry: undefined
+    var _this         = this;
+    var authenticator = this.get('authenticator');
+    authenticator.unauthenticate().then(function(properties) {
+      _this.set('isAuthenticated', false);
+      authenticator.off('updated_session_data');
+      _this.set('authenticator', undefined);
+      _this._updateSessionProperties(properties);
     });
   },
 
   /**
-    Returns whether a user is currently authenticated.
-
-    @method isAuthenticated
-    @return {Boolean} true if a user is authenticated, false otherwise
-  */
-  isAuthenticated: Ember.computed('authToken', function() {
-    return !Ember.isEmpty(this.get('authToken'));
-  }),
-
-  /**
-    @method syncProperties
+    @method updateSessionProperties
     @private
   */
-  syncProperties: function() {
-    this.setProperties({
-      authToken:       this.load('authToken'),
-      refreshToken:    this.load('refreshToken'),
-      authTokenExpiry: this.load('authTokenExpiry')
-    });
-    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout);
-    Ember.SimpleAuth.Session._syncPropertiesTimeout = Ember.run.later(this, this.syncProperties, 500);
+  updateSessionProperties: function(properties) {
+    this.setProperties(properties);
+    this.get('store').save(properties);
   },
 
   /**
-    @method load
+    @method authenticatorObserver
     @private
   */
-  load: function(property) {
-    var value = document.cookie.match(new RegExp(property + '=([^;]+)')) || [];
-    if (Ember.isEmpty(value)) {
-      return undefined;
+  authenticatorObserver: Ember.observer(function() {
+    var _this         = this;
+    var authenticator = this.get('authenticator');
+    if (!!authenticator) {
+      this.get('store').save({ authenticator: authenticator });
+      authenticator.on('updated_session_data', function(properties) {
+        _this._updateSessionProperties(properties);
+      });
     } else {
-      return decodeURIComponent(value[1] || '');
+      this.get('store').save({ authenticator: undefined });
     }
-  },
-
-  /**
-    @method store
-    @private
-  */
-  store: function(property) {
-    document.cookie = property + '=' + encodeURIComponent(this.get(property) || '');
-  },
-
-  /**
-    @method authTokenObserver
-    @private
-  */
-  authTokenObserver: Ember.observer(function() {
-    this.store('authToken');
-  }, 'authToken'),
-
-  /**
-    @method refreshTokenObserver
-    @private
-  */
-  refreshTokenObserver: Ember.observer(function() {
-    this.store('refreshToken');
-    this.handleAuthTokenRefresh();
-  }, 'refreshToken'),
-
-  /**
-    @method authTokenExpiryObserver
-    @private
-  */
-  authTokenExpiryObserver: Ember.observer(function() {
-    this.store('authTokenExpiry');
-    this.handleAuthTokenRefresh();
-  }, 'authTokenExpiry'),
-
-  /**
-    @method handleAuthTokenRefresh
-    @private
-  */
-  handleAuthTokenRefresh: function() {
-    if (Ember.SimpleAuth.autoRefreshToken) {
-      Ember.run.cancel(Ember.SimpleAuth.Session._refreshTokenTimeout);
-      Ember.SimpleAuth.Session._refreshTokenTimeout = undefined;
-      var waitTime = this.get('authTokenExpiry') - 5000;
-      if (!Ember.isEmpty(this.get('refreshToken')) && waitTime > 0) {
-        Ember.SimpleAuth.Session._refreshTokenTimeout = Ember.run.later(this, function() {
-          var _this = this;
-          Ember.$.ajax(Ember.SimpleAuth.serverTokenEndpoint, {
-            type:        'POST',
-            data:        'grant_type=refresh_token&refresh_token=' + this.get('refreshToken'),
-            contentType: 'application/x-www-form-urlencoded'
-          }).then(function(response) {
-            _this.setup(response);
-            _this.handleAuthTokenRefresh();
-          });
-        }, waitTime);
-      }
-    }
-  }
+  }, 'authenticator')
 });

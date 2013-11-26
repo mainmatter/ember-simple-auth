@@ -26,32 +26,6 @@
   @static
 */
 Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
-  /**
-    This method takes the user's credentials and builds the request options as
-    they are passed Ember.$.ajax (see http://api.jquery.com/jQuery.ajax/).
-
-    The default implementation follows RFC 6749. In case you're using a custom
-    server API you can override this method to return options as they fit your
-    server API, e.g.:
-
-    ```javascript
-    App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-      tokenRequestOptions: function(username, password) {
-        var putData = '{ "SESSION": { "USER_NAME": "' + username + '", "PASS": "' + password + '" } }';
-        return { type: 'PUT', data: putData, contentType: 'application/json' };
-      }
-    });
-    ```
-
-    @method tokenRequestOptions
-    @param {String} identification The user's identification (user name or email address or whatever is used to identify the user)
-    @param {String} password The user's password
-    @return {Object} The request options to be passed to Ember.$.ajax (see http://api.jquery.com/jQuery.ajax/ for detailed documentation)
-  */
-  tokenRequestOptions: function(identification, password) {
-    var postData = ['grant_type=password', 'username=' + identification, 'password=' + password].join('&');
-    return { type: 'POST', data: postData, contentType: 'application/x-www-form-urlencoded' };
-  },
   actions: {
     /**
       @method login
@@ -62,13 +36,11 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
       var data = this.getProperties('identification', 'password');
       if (!Ember.isEmpty(data.identification) && !Ember.isEmpty(data.password)) {
         this.set('password', undefined);
-        var requestOptions = this.tokenRequestOptions(data.identification, data.password);
-        Ember.$.ajax(Ember.SimpleAuth.serverTokenEndpoint, requestOptions).then(function(response) {
-          var sessionData = { authToken: response.access_token, refreshToken: response.refresh_token, authTokenExpiry: response.expires_in };
-          _this.get('session').setup(sessionData);
+        this.get('session').setup(Ember.SimpleAuth.Authenticators.OAuth2.create(), data).then(function() {
           _this.send('loginSucceeded');
-        }, function(xhr, status, error) {
-          _this.send('loginFailed', xhr, status, error);
+        }, function() {
+          console.log(arguments);
+          _this.send('loginFailed', arguments);
         });
       }
     }
