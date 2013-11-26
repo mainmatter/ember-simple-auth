@@ -1,3 +1,8 @@
+# 0.0.9
+
+* don't periodically refresh data stored in cookie in testing mode, see #35
+* support for client id and client secret, see, #36
+
 # 0.0.8
 
 * clear password on login, see #29
