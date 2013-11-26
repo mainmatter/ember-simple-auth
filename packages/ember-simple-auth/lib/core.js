@@ -63,10 +63,10 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   });
 
   /**
-    @method _shouldAuthorizeRequest
+    @method shouldAuthorizeRequest
     @private
   */
-  this._shouldAuthorizeRequest = function(url) {
+  this.shouldAuthorizeRequest = function(url) {
     this._links = this._links || {};
     var link = Ember.SimpleAuth._links[url] || function() {
       var link = document.createElement('a');

@@ -2,7 +2,7 @@
 
 Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   init: function() {
-    this._syncProperties();
+    this.syncProperties();
   },
   restore: function() {
     //TODO: load all properties of ember-simple-auth (for cooke store use prefix, for sessionStorage/localStorage use dedicated property etc.)
@@ -22,10 +22,10 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     }
   },
   /**
-    @method _syncProperties
+    @method syncProperties
     @private
   */
-  _syncProperties: function() {
+  syncProperties: function() {
     var properties = {};
     var _this      = this;
     this._knownProperties.forEach(function(property) {
