@@ -5,7 +5,9 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     this.syncProperties();
   },
   restore: function() {
-    //TODO: load all properties of ember-simple-auth (for cooke store use prefix, for sessionStorage/localStorage use dedicated property etc.)
+    return this.knownCookies.map(function(property) {
+      return this.load(property);
+    });
   },
   load: function(property) {
     var value = document.cookie.match(new RegExp(property + '=([^;]+)')) || [];
@@ -18,9 +20,16 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   save: function(properties) {
     //TODO: set cookie to secure if page served from HTTPS
     for (var property in properties) {
-      document.cookie = property + '=' + encodeURIComponent(properties[property] || '');
+      document.cookie = 'ember_simple_auth:' + property + '=' + encodeURIComponent(properties[property] || '');
     }
   },
+  knownCookies: function() {
+    return document.cookie.split(/[=;\s]+/).filter(function(element) {
+      return /^ember_simple_auth:/.test(element)
+    }).map(function(cookie) {
+      return cookie.replace('ember_simple_auth:', '');
+    });
+  }
   /**
     @method syncProperties
     @private
