@@ -24,7 +24,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     }
   },
   knownCookies: function() {
-    return document.cookie.split(/[=;\s]+/).filter(function(element) {
+    return Ember.A(document.cookie.split(/[=;\s]+/)).filter(function(element) {
       return /^ember_simple_auth:/.test(element)
     }).map(function(cookie) {
       return cookie.replace('ember_simple_auth:', '');
