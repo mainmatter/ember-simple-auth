@@ -23,7 +23,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       this.get('store').restore().then(function(properties) {
         _this.get('authenticator').restore(properties).then(function(properties) {
           _this.set('isAuthenticated', true);
-          _this._updateSessionProperties(properties);
+          _this.updateSessionProperties(properties);
         });
       });
     }
@@ -49,19 +49,16 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   */
   setup: function(authenticator, options) {
     var _this = this;
+    //TODO: fail if authenticated
     return new Ember.RSVP.Promise(function(resolve, reject) {
       authenticator.authenticate(options).then(function(properties) {
         _this.set('isAuthenticated', true);
         _this.set('authenticator', authenticator);
-        _this._updateSessionProperties(properties);
+        _this.updateSessionProperties(properties);
         resolve();
-      }, function(args) {
-        var args = Ember.makeArray(args);
-        var properties = args[0];
-        var error      = args[1];
+      }, function(error) {
         _this.set('isAuthenticated', false);
         _this.set('authenticator', undefined);
-        _this._updateSessionProperties(properties);
         reject(error);
       });
     });
@@ -80,7 +77,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       _this.set('isAuthenticated', false);
       authenticator.off('updated_session_data');
       _this.set('authenticator', undefined);
-      _this._updateSessionProperties(properties);
+      _this.updateSessionProperties(properties);
     });
   },
 
@@ -103,7 +100,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     if (!!authenticator) {
       this.get('store').save({ authenticator: authenticator });
       authenticator.on('updated_session_data', function(properties) {
-        _this._updateSessionProperties(properties);
+        _this.updateSessionProperties(properties);
       });
     } else {
       this.get('store').save({ authenticator: undefined });

@@ -2,34 +2,49 @@
 
 Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   init: function() {
+    this._cookiePrefix = 'ember_simple_auth:'
     this.syncProperties();
   },
+
   restore: function() {
     return this.knownCookies.map(function(property) {
       return this.load(property);
     });
   },
+
   load: function(property) {
-    var value = document.cookie.match(new RegExp(property + '=([^;]+)')) || [];
+    var value = document.cookie.match(new RegExp(this._cookiePrefix + property + '=([^;]+)')) || [];
     if (Ember.isEmpty(value)) {
       return undefined;
     } else {
       return decodeURIComponent(value[1] || '');
     }
   },
+
   save: function(properties) {
     //TODO: set cookie to secure if page served from HTTPS
     for (var property in properties) {
-      document.cookie = 'ember_simple_auth:' + property + '=' + encodeURIComponent(properties[property] || '');
+      var value = properties[property];
+      if (Ember.isEmpty(value)) {
+        document.cookie = this._cookiePrefix + property + '=; expires=' + (new Date(0)).toGMTString() + ';';
+      } else {
+        document.cookie = this._cookiePrefix + property + '=' + encodeURIComponent(value || '');
+      }
     }
   },
+
+  /**
+    @method knownCookies
+    @private
+  */
   knownCookies: function() {
     return Ember.A(document.cookie.split(/[=;\s]+/)).filter(function(element) {
-      return /^ember_simple_auth:/.test(element)
+      return new Regexp('^' + this._cookiePrefix).test(element)
     }).map(function(cookie) {
-      return cookie.replace('ember_simple_auth:', '');
+      return cookie.replace(this._cookiePrefix, '');
     });
   }
+
   /**
     @method syncProperties
     @private
@@ -37,7 +52,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   syncProperties: function() {
     var properties = {};
     var _this      = this;
-    this._knownProperties.forEach(function(property) {
+    this.knownCookies.forEach(function(property) {
       properties[property] = _this.load(property);
     });
     this.trigger('updated_session_data', properties);

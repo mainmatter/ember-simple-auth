@@ -13,7 +13,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
         _this._handleAuthTokenRefresh(response.expiry, response.refresh_token);
         resolve({ authToken: response.access_token });
       }, function(xhr, status, error) {
-        reject([{ authToken: undefined }, xhr.responseText]);
+        reject(xhr.responseText]);
       });
     });
   },
