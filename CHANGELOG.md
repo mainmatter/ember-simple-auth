@@ -1,3 +1,7 @@
+# 0.0.10
+
+* fixed problem that broke integration tests, see #38 and #39
+
 # 0.0.9
 
 * don't periodically refresh data stored in cookie in testing mode, see #35
