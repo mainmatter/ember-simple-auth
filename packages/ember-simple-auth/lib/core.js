@@ -67,7 +67,7 @@ Ember.SimpleAuth.setup = function(container, application, options) {
       Ember.SimpleAuth._links[url] = link;
       return link;
     }();
-    return this.crossOriginWhitelist.indexOf(link.origin) > -1 || link.origin === window.location.origin;
+    return this.crossOriginWhitelist.indexOf(link.host) > -1 || link.host === window.location.host;
   },
 
   /**

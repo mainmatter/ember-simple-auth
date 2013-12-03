@@ -144,7 +144,7 @@ test('registers an AJAX prefilter that adds the authToken for same-origin reques
   equal(xhrMock.requestHeaders['Authorization'], undefined, 'Ember.SimpleAuth registers an AJAX prefilter that does not add the authToken for cross-origin requests during setup.');
 
   xhrMock.requestHeaders = {};
-  Ember.SimpleAuth.setup(containerMock, applicationMock, { crossOriginWhitelist: ['https://a.different.domain:1234'] });
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { crossOriginWhitelist: ['a.different.domain:1234'] });
   ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, xhrMock);
   equal(xhrMock.requestHeaders['Authorization'], 'Bearer ' + token, 'Ember.SimpleAuth registers an AJAX prefilter that adds the authToken for cross-origin requests when the origin is in the crossOriginWhitelist during setup.');
 });
