@@ -7,5 +7,5 @@ rvm:
 install:
 - "bundle install --deployment"
 before_script:
-  - "sudo apt-get update && sudo apt-get install git"
-script:rake test\[all]
+- "sudo apt-get update && sudo apt-get install git"
+script: rake test\[all]
