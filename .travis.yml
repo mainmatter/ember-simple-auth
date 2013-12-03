@@ -6,4 +6,6 @@ rvm:
 - 1.9.3
 install:
 - "bundle install --deployment"
-script: rake test\[all]
+before_script:
+  - "sudo apt-get update && sudo apt-get install git"
+script:rake test\[all]
