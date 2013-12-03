@@ -67,9 +67,10 @@ Ember.SimpleAuth.setup = function(container, application, options) {
       Ember.SimpleAuth._links[url] = link;
       return link;
     }();
-    var linkUrl = link.protocol+'//'+link.hostname+(link.port !== '' ? ':'+link.port : '');
-    var windowLocationUrl = window.location.protocol+'//'+window.location.hostname+(window.location.port !== '' ? ':'+window.location.port : '');
-    return this.crossOriginWhitelist.indexOf(linkUrl) > -1 || linkUrl === windowLocationUrl;
+    function formatLocation(location) { return location.protocol + '//' + location.hostname + (location.port !== '' ? ':' + location.port : ''); }
+    var linkOrigin       = formatLocation(link);
+    this._locationOrigin = formatLocation(window.location);
+    return this.crossOriginWhitelist.indexOf(linkOrigin) > -1 || linkOrigin === this._locationOrigin;
   },
 
   /**
