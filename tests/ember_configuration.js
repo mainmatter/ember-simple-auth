@@ -17,7 +17,7 @@
   }
 
   EmberDev.distros = {
-    spade: 'ember-spade.js'
+    spade: 'ember.simpleauth-spade.js'
   };
 
 })();
