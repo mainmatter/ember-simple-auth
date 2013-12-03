@@ -93,12 +93,12 @@
   // use the provided mixins in the application route and login controller
   App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
   App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+    authenticator: Ember.SimpleAuth.Authenticators.OAuth2.create(),
     actions: {
       // display an error when loggign in fails
-      loginFailed: function() {
-        console.log(arguments);
-        var response = JSON.parse(xhr.responseText);
-        this.set('errorMessage', response.error);
+      loginFailed: function(error) {
+        var message = JSON.parse(error).error;
+        this.set('errorMessage', message);
       }
     }
   });

@@ -1,5 +1,9 @@
 'use strict';
 
+function classifyString(className) {
+  return Ember.A((className || '').split('.')).reduce(function(acc, klass) { return (acc || {})[klass]; }, window);
+}
+
 /**
   This class holds the current authentication state and data the authenticator sets. There will always be a
   session regardless of whether a user is currently authenticated or not. That (singleton) instance
@@ -18,9 +22,12 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
   */
   init: function() {
     var _this = this;
+    var store = this.get('store');
+    var authenticatorClass = classifyString(store.load('authenticator'));
     this.set('isAuthenticated', false);
+    this.set('authenticator', Ember.tryInvoke(authenticatorClass, 'create'));
     if (!!this.get('authenticator')) {
-      this.get('store').restore().then(function(properties) {
+      store.restore().then(function(properties) {
         _this.get('authenticator').restore(properties).then(function(properties) {
           _this.set('isAuthenticated', true);
           _this.updateSessionProperties(properties);
@@ -105,5 +112,17 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     } else {
       this.get('store').save({ authenticator: undefined });
     }
-  }, 'authenticator')
+  }, 'authenticator'),
+
+  /**
+    @method storeObserver
+    @private
+  */
+  storeObserver: Ember.observer(function() {
+    var _this = this;
+    var stote = this.get('store');
+    store.on('updated_session_data', function(properties) {
+      _this.updateSessionProperties(properties);
+    });
+  }, 'store')
 });

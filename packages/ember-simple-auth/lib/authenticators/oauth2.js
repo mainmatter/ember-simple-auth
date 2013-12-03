@@ -1,19 +1,35 @@
 'use strict';
 
-Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
+Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
+  restore: function(properties) {
+    var _this = this;
+    return new Ember.RSVP.Promise(function(resolve) {
+      if (!Ember.isEmpty(properties.authToken)) {
+        _this.handleAuthTokenRefresh(properties.authTokenExpiry, properties.refreshToken);
+        resolve(properties);
+      } else {
+        reject();
+      }
+    });
+  },
   authenticate: function(credentials) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var postData = ['grant_type=password', 'username=' + credentials.identification, 'password=' + credentials.password].join('&');
-      Ember.$.ajax(Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint, {
+      Ember.$.ajax({
+        url:         Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint,
         type:        'POST',
         data:        postData,
         contentType: 'application/x-www-form-urlencoded'
       }).then(function(response) {
-        _this._handleAuthTokenRefresh(response.expiry, response.refresh_token);
-        resolve({ authToken: response.access_token });
+        Ember.run(function() {
+          _this.handleAuthTokenRefresh(response.expires_in, response.refresh_token);
+          resolve({ authToken: response.access_token, authTokenExpiry: response.expires_in, refreshToken: response.refresh_token });
+        });
       }, function(xhr, status, error) {
-        reject(xhr.responseText]);
+        Ember.run(function() {
+          reject(xhr.responseText);
+        });
       });
     });
   },
@@ -32,11 +48,13 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
           var _this = this;
           Ember.$.ajax(Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint, {
             type:        'POST',
-            data:        'grant_type=refresh_token&refresh_token=' + this.get(refreshToken),
+            data:        'grant_type=refresh_token&refresh_token=' + refreshToken,
             contentType: 'application/x-www-form-urlencoded'
           }).then(function(response) {
-            _this._handleAuthTokenRefresh(response.expiry, response.refresh_token);
-            _this.trigger('updated_session_data', { authToken: response.access_token });
+            Ember.run(function() {
+              _this.handleAuthTokenRefresh(response.expires_in || authTokenExpiry, response.refresh_token || refreshToken);
+              _this.trigger('updated_session_data', { authToken: response.access_token });
+            });
           });
         }, waitTime);
       }

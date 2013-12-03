@@ -75,10 +75,10 @@ module('Ember.SimpleAuth', {
   }
 });
 
-test('assigns the server token endpoint during setup', function() {
-  Ember.SimpleAuth.setup(containerMock, applicationMock, { serverTokenEndpoint: '/endpoint' });
+test('assigns the login route during setup', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { loginRoute: 'somewhere' });
 
-  equal(Ember.SimpleAuth.serverTokenEndpoint, '/endpoint', 'Ember.SimpleAuth saves serverTokenEndpoint when specified for setup.');
+  equal(Ember.SimpleAuth.loginRoute, 'somewhere', 'Ember.SimpleAuth saves loginRoute when specified for setup.');
 });
 
 test('assigns the route after login during setup', function() {
@@ -91,22 +91,6 @@ test('assigns the route after logout during setup', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { routeAfterLogout: 'somewhere' });
 
   equal(Ember.SimpleAuth.routeAfterLogout, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogout when specified for setup.');
-});
-
-test('assigns the token-auto-refresh-flag during setup', function() {
-  Ember.SimpleAuth.setup(containerMock, applicationMock, { autoRefreshToken: false });
-
-  ok(!Ember.SimpleAuth.autoRefreshToken, 'Ember.SimpleAuth saves autoRefreshToken when specified for setup.');
-
-  Ember.SimpleAuth.setup(containerMock, applicationMock);
-
-  ok(Ember.SimpleAuth.autoRefreshToken, 'Ember.SimpleAuth defaults autoRefreshToken to true when not specified for setup.');
-});
-
-test('assigns the login route during setup', function() {
-  Ember.SimpleAuth.setup(containerMock, applicationMock, { loginRoute: 'somewhere' });
-
-  equal(Ember.SimpleAuth.loginRoute, 'somewhere', 'Ember.SimpleAuth saves loginRoute when specified for setup.');
 });
 
 test('assigns the cross origin whitelist during setup', function() {
@@ -147,27 +131,4 @@ test('registers an AJAX prefilter that authorizes requests during setup', functi
   Ember.SimpleAuth.setup(containerMock, applicationMock, { crossOriginWhitelist: ['https://a.different.domain:1234'], authorizer: AuthorizerMock });
   ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, {});
   ok(authorizerMock.authorized, 'Ember.SimpleAuth registers an AJAX prefilter that authorizes cross-origin requests when the origin is in the crossOriginWhitelist during setup.');
-});
-
-test('sets up the session correctly in the external login succeeded callback', function() {
-  Ember.SimpleAuth.setup(containerMock, applicationMock);
-  var token = Math.random().toString(36);
-  Ember.SimpleAuth.externalLoginSucceeded({ authToken: token });
-
-  equal(applicationMock.registrations['simple_auth:session'].factory.get('authToken'), token, 'Ember.SimpleAuth sets up the session with the auth token in externalLoginSucceeded.');
-});
-
-test('invokes the correct action in the external login succeeded callback', function() {
-  Ember.SimpleAuth.setup(containerMock, applicationMock);
-  Ember.SimpleAuth.externalLoginSucceeded();
-
-  ok(applicationRouteMock.invokedLoginSucceeded, 'Ember.SimpleAuth invokes the loginSucceeded action on the application route in externalLoginSucceeded.');
-});
-
-test('invokes the correct action in the external login failed callback', function() {
-  Ember.SimpleAuth.setup(containerMock, applicationMock);
-  Ember.SimpleAuth.externalLoginFailed({ error: 'error!' });
-
-  ok(applicationRouteMock.invokedLoginFailed, 'Ember.SimpleAuth invokes the loginFailed action on the application route in externalLoginFailed.');
-  deepEqual(applicationRouteMock.loginFailedArguments[1], { error: 'error!' }, 'Ember.SimpleAuth invokes the loginFailed action on the application route with the correct arguments in externalLoginSucceeded.');
 });

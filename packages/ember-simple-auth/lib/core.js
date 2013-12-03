@@ -1,9 +1,5 @@
 'use strict';
 
-function classifyString(className) {
-  return Ember.A((className || '').split('.')).reduce(function(acc, klass) { return (acc || {})[klass]; }, window);
-}
-
 /**
   The main namespace for Ember.SimpleAuth
 
@@ -45,11 +41,9 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   this.loginRoute            = options.loginRoute || 'login';
   this._crossOriginWhitelist = Ember.A(options._crossOriginWhitelist || []);
 
-  var store              = (options.store || Ember.SimpleAuth.Stores.Cookie).create();
-  var authenticatorClass = classifyString(store.load('simple_auth:authenticator'));
-  var authenticator      = Ember.tryInvoke(authenticatorClass, 'create');
-  var session            = Ember.SimpleAuth.Session.create({ authenticator: authenticator, store: store });
-  var authorizer         = (options.authorizer || Ember.SimpleAuth.Authorizers.OAuth2).create({ session: session });
+  var store      = (options.store || Ember.SimpleAuth.Stores.Cookie).create();
+  var session    = Ember.SimpleAuth.Session.create({ store: store });
+  var authorizer = (options.authorizer || Ember.SimpleAuth.Authorizers.OAuth2).create({ session: session });
 
   application.register('simple_auth:session', session, { instantiate: false, singleton: true });
   Ember.$.each(['model', 'controller', 'view', 'route'], function(i, component) {
@@ -57,7 +51,7 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   });
 
   Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    if (Ember.SimpleAuth._shouldAuthorizeRequest(options.url)) {
+    if (Ember.SimpleAuth.shouldAuthorizeRequest(options.url)) {
       authorizer.authorize(jqXHR, options);
     }
   });

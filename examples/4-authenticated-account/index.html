@@ -79,37 +79,18 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
+      //set a custom session endpoint
+      Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint = '/v3/token';
       //customize the session so that it handles the additional authenticated account
       Ember.SimpleAuth.Session.reopen({
-        init: function() {
-          this._super();
-          //initializer the accountId from data potentially already present in a
-          //session cookie (Ember.SimpleAuth.Session does this out of the box for authToken)
-          var accountId = (document.cookie.match(/accountId=([^;]+)/) || [])[1];
-          this.set('accountId', accountId);
-        },
-        setup: function(serverSession) {
-          this._super(serverSession);
-          this.set('accountId', serverSession.account_id);
-        },
-        destroy: function() {
-          this._super();
-          this.set('accountId', undefined);
-        },
-        accountIdChanged: function() {
-          //save accountId in a session cookie so it survives a page reload (Ember.SimpleAuth.Session
-          //does this out of the box for authToken)
-          document.cookie = 'accountId=' + this.get('accountId');
-        }.observes('accountId'),
         account: function() {
           var accountId = this.get('accountId');
           if (!Ember.isEmpty(accountId)) {
-            this.set('account', container.lookup('store:main').find('account', accountId));
+            return container.lookup('store:main').find('account', accountId);
           }
         }.property('accountId')
       });
-      //set a custom session endpoint
-      Ember.SimpleAuth.setup(container, application, { serverTokenEndpoint: '/v3/token' });
+      Ember.SimpleAuth.setup(container, application);
     }
   });
 
@@ -130,6 +111,7 @@
   // use the provided mixins in the application route and login controller
   App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
   App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+    authenticator: Ember.SimpleAuth.Authenticators.OAuth2.create(),
     actions: {
       // display an error when loggign in fails
       loginFailed: function(xhr, status, error) {

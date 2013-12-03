@@ -2,12 +2,12 @@
 
 Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   init: function() {
-    this._cookiePrefix = 'ember_simple_auth:'
+    this._cookiePrefix = 'ember_simple_auth:';
     this.syncProperties();
   },
 
   restore: function() {
-    return this.knownCookies.map(function(property) {
+    return this.knownCookies().map(function(property) {
       return this.load(property);
     });
   },
@@ -38,12 +38,13 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     @private
   */
   knownCookies: function() {
+    var _this = this;
     return Ember.A(document.cookie.split(/[=;\s]+/)).filter(function(element) {
-      return new Regexp('^' + this._cookiePrefix).test(element)
+      return new RegExp('^' + _this._cookiePrefix).test(element)
     }).map(function(cookie) {
-      return cookie.replace(this._cookiePrefix, '');
+      return cookie.replace(_this._cookiePrefix, '');
     });
-  }
+  },
 
   /**
     @method syncProperties
@@ -52,13 +53,13 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   syncProperties: function() {
     var properties = {};
     var _this      = this;
-    this.knownCookies.forEach(function(property) {
+    this.knownCookies().forEach(function(property) {
       properties[property] = _this.load(property);
     });
     this.trigger('updated_session_data', properties);
     if (!Ember.testing) {
       Ember.run.cancel(Ember.SimpleAuth.Stores.Cookie.__syncPropertiesTimeout);
-      Ember.SimpleAuth.Stores.Cookie.__syncPropertiesTimeout = Ember.run.later(this, this._syncProperties, 500);
+      Ember.SimpleAuth.Stores.Cookie.__syncPropertiesTimeout = Ember.run.later(this, this.syncProperties, 500);
     }
   }
 });

@@ -11,7 +11,6 @@ require('ember-simple-auth/mixins/application_route_mixin');
 require('ember-simple-auth/authorizers');
 require('ember-simple-auth/authorizers/oauth2');
 require('ember-simple-auth/authenticators');
-require('ember-simple-auth/authenticators/base');
 require('ember-simple-auth/authenticators/oauth2');
 require('ember-simple-auth/stores');
 require('ember-simple-auth/stores/cookie');

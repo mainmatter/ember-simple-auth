@@ -10,6 +10,14 @@ function mockPromise(resolveWith, rejectWith) {
   });
 }
 
+var storeMock;
+var StoreMock = Ember.Object.extend(Ember.Evented, {
+  restore: function() {
+    this.restoreInvoked = true;
+    return mockPromise(this.get('resolveRestoreWith'));
+  }
+});
+
 var authenticatorMock;
 var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
   restore: function() {
@@ -24,21 +32,16 @@ var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
   unauthenticate: function() {
     this.unauthenticateInvoked = true;
     return mockPromise(this.get('resolveUnauthenticateWith'));
-  },
-  remember: function() {
-    this.rememberInvoked = true;
-  },
-  forget: function() {
-    this.forgetInvoked = true;
   }
 });
 
 module('Ember.SimpleAuth.Session', {
   setup: function() {
     authenticatorMock = AuthenticatorMock.create();
+    storeMock         = StoreMock.create();
     Ember.run(function() {
-      session = Ember.SimpleAuth.Session.create({ authenticator: authenticatorMock });
-    })
+      session = Ember.SimpleAuth.Session.create({ authenticator: authenticatorMock, store: storeMock });
+    });
   }
 });
 
@@ -50,14 +53,14 @@ test('is not authenticated when just created', function() {
 
 test('restores its previus state during initialization', function() {
   Ember.run(function() {
-    session = Ember.SimpleAuth.Session.create({ authenticator: authenticatorMock });
+    session = Ember.SimpleAuth.Session.create({ authenticator: authenticatorMock, store: storeMock });
   });
 
-  ok(authenticatorMock.restoreInvoked, 'Ember.Session restores its previous during initialization when the authenticator is set.');
+  ok(storeMock.restoreInvoked, 'Ember.Session restores its previous properties from the store during initialization.');
 
   Ember.run(function() {
     var resolvingAuthenticatorMock = AuthenticatorMock.create({ resolveRestoreWith: { key: 'value' } });
-    session = Ember.SimpleAuth.Session.create({ authenticator: resolvingAuthenticatorMock });
+    session = Ember.SimpleAuth.Session.create({ authenticator: resolvingAuthenticatorMock, store: storeMock });
   });
 
   ok(session.get('isAuthenticated'), 'Ember.Session is authenticated after initialization when the restore through the authenticator resolves.');
@@ -104,7 +107,6 @@ test('destroys itself', function() {
   });
 
   ok(resolvingAuthenticatorMock.unauthenticateInvoked, 'Ember.Session unauthenticates with the passed authenticator on destruction.');
-  ok(resolvingAuthenticatorMock.forgetInvoked, 'Ember.Session forgets the authenticator on destruction when the authenticator resolves.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after destruction when the authenticator resolves.');
   equal(session.get('aurhenticator'), undefined, 'Ember.Session unsets the authenticator after destruction when the authenticator resolves.');
   equal(session.get('key'), 'value', 'Ember.Session sets all properties that the authenticator resolves with on destruction.');
@@ -122,7 +124,6 @@ test('destroys itself', function() {
     session.destroy();
   })
 
-  ok(!authenticatorMock.forgetInvoked, 'Ember.Session does not forget the authenticator on destruction when the authenticator rejects.');
   ok(session.get('isAuthenticated'), 'Ember.Session remains authenticated after destruction when the authenticator rejects.');
   equal(session.get('authenticator'), authenticatorMock, 'Ember.Session does not unset the authenticator after destruction when the authenticator rejects.');
 });
@@ -132,6 +133,5 @@ test('observes changes of the observer', function() {
   session.set('authenticator', otherAuthenticatorMock);
   otherAuthenticatorMock.trigger('updated_session_data', { key: 'value' })
 
-  ok(otherAuthenticatorMock.rememberInvoked, 'Ember.Session remembers the authenticator when it is assigned.');
   equal(session.get('key'), 'value', 'Ember.Session subscribes to the "updated_session_data" of the authenticator when it is assigned.');
 });
