@@ -16,8 +16,10 @@ Ember.SimpleAuth.Stores.Ephemeral = Ember.Object.extend(Ember.Evented, {
   save: function(properties) {
     for (var property in properties) {
       var value = properties[property];
-      if (Ember.isEmpty(value)) {
+      if (!Ember.isEmpty(value)) {
         this._data[property] = value;
+      } else {
+        delete this._data[property];
       }
     }
   }
