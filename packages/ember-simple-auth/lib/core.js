@@ -39,7 +39,6 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   this.routeAfterLogin       = options.routeAfterLogin || 'index';
   this.routeAfterLogout      = options.routeAfterLogout || 'index';
   this.loginRoute            = options.loginRoute || 'login';
-  this._crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
 
   var store      = (options.store || Ember.SimpleAuth.Stores.Cookie).create();
   var session    = Ember.SimpleAuth.Session.create({ store: store });
@@ -51,23 +50,20 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   });
 
   Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    if (Ember.SimpleAuth.shouldAuthorizeRequest(options.url)) {
+    if (shouldAuthorizeRequest(options.url)) {
       authorizer.authorize(jqXHR, options);
     }
   });
 
-  /**
-    @method shouldAuthorizeRequest
-    @private
-  */
-  this.shouldAuthorizeRequest = function(url) {
-    this._links = this._links || {};
-    var link = Ember.SimpleAuth._links[url] || function() {
+  var _crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
+  var _links                = {};
+  function shouldAuthorizeRequest(url) {
+    var link = _links[url] || function() {
       var link = document.createElement('a');
       link.href = url;
-      Ember.SimpleAuth._links[url] = link;
+      _links[url] = link;
       return link;
     }();
-    return this._crossOriginWhitelist.indexOf(link.origin) > -1 || link.origin === window.location.origin;
+    return _crossOriginWhitelist.indexOf(link.origin) > -1 || link.origin === window.location.origin;
   }
 };
