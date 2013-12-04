@@ -1,5 +1,7 @@
 var authorizer;
 
+var sessionMock;
+
 var xhrMock;
 var XhrMock = Ember.Object.extend({
   init: function() {
@@ -12,11 +14,9 @@ var XhrMock = Ember.Object.extend({
 
 module('Ember.SimpleAuth.Authorizers.OAuth2', {
   setup: function() {
-    xhrMock    = XhrMock.create();
-    authorizer = Ember.SimpleAuth.Authorizers.OAuth2.create({ session: Ember.SimpleAuth.Session.create() });
-  },
-  teardown: function() {
-    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout);
+    xhrMock     = XhrMock.create();
+    sessionMock = Ember.Object.create();
+    authorizer  = Ember.SimpleAuth.Authorizers.OAuth2.create({ session: sessionMock });
   }
 });
 
