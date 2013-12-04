@@ -1,5 +1,9 @@
 'use strict';
 
+function locationOrigin(location) {
+  return location.protocol + '//' + location.hostname + (location.port !== '' ? ':' + location.port : '');
+}
+
 /**
   The main namespace for Ember.SimpleAuth
 
@@ -55,15 +59,16 @@ Ember.SimpleAuth.setup = function(container, application, options) {
     }
   });
 
-  var _crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
-  var _links                = {};
+  var crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
+  var linkOrigins          = {};
+  var documentOrigin       = locationOrigin(window.location);
   function shouldAuthorizeRequest(url) {
-    var link = _links[url] || function() {
+    var link = linkOrigins[url] || function() {
       var link = document.createElement('a');
       link.href = url;
-      _links[url] = link;
-      return link;
+      return (linkOrigins[url] = link);
     }();
-    return _crossOriginWhitelist.indexOf(link.origin) > -1 || link.origin === window.location.origin;
+    var linkOrigin = locationOrigin(link);
+    return crossOriginWhitelist.indexOf(linkOrigin) > -1 || linkOrigin === documentOrigin;
   }
 };
