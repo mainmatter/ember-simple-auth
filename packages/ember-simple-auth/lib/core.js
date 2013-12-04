@@ -39,7 +39,7 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   this.routeAfterLogin       = options.routeAfterLogin || 'index';
   this.routeAfterLogout      = options.routeAfterLogout || 'index';
   this.loginRoute            = options.loginRoute || 'login';
-  this._crossOriginWhitelist = Ember.A(options._crossOriginWhitelist || []);
+  this._crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
 
   var store      = (options.store || Ember.SimpleAuth.Stores.Cookie).create();
   var session    = Ember.SimpleAuth.Session.create({ store: store });
