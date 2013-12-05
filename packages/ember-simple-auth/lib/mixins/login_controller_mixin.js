@@ -54,7 +54,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
     var postData = ['grant_type=password', 'username=' + identification, 'password=' + password];
     if (!Ember.isEmpty(client_id)) {
       postData.push('client_id=' + client_id);
-      if (!Ember.isEmpty(client_id)) {
+      if (!Ember.isEmpty(client_secret)) {
         postData.push('client_secret=' + client_secret);
       }
     }
