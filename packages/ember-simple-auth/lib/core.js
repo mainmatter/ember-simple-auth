@@ -20,15 +20,14 @@ Ember.SimpleAuth = {};
   ```javascript
   Ember.Application.initializer({
     name: 'authentication',
-    initialize: function(container, application) {
-      Ember.SimpleAuth.setup(container, application);
+    initialize: function(application) {
+      Ember.SimpleAuth.setup(application);
     }
   });
   ```
 
   @method setup
   @static
-  @param {Container} container The Ember.js container, see http://git.io/ed4U7Q
   @param {Ember.Application} application The Ember.js application instance
   @param {Object} [options]
     @param {String} [options.routeAfterLogin] route to redirect the user to after successfully logging in - defaults to `'index'`
@@ -38,7 +37,7 @@ Ember.SimpleAuth = {};
     @param {Object} [options.authorizer] The authorizer "class" to use; must extend `Ember.Object` and also implement `function(jqXHR, requestOptions)` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
     @param {Object} [options.store] The store "class" to use; must extend `Ember.Object` and also implement `function(jqXHR, requestOptions)` - defaults to `Ember.SimpleAuth.Stores.Cookie`
 **/
-Ember.SimpleAuth.setup = function(container, application, options) {
+Ember.SimpleAuth.setup = function(application, options) {
   options = options || {};
   this.routeAfterLogin       = options.routeAfterLogin || 'index';
   this.routeAfterLogout      = options.routeAfterLogout || 'index';
