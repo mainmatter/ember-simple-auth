@@ -6,18 +6,16 @@ Ember.SimpleAuth.Stores.Ephemeral = Ember.Object.extend(Ember.Evented, {
   },
 
   restore: function() {
-    var properties = jQuery.extend({}, this._data);
-    return Ember.RSVP.resolve(properties);
+    return jQuery.extend({}, this._data);
   },
 
   clear: function() {
     delete this._data;
     this._data = {};
-    return Ember.RSVP.resolve();
   },
 
   load: function(property) {
-    return Ember.RSVP.resolve(this._data[property]);
+    return this._data[property];
   },
 
   save: function(properties) {
@@ -29,6 +27,5 @@ Ember.SimpleAuth.Stores.Ephemeral = Ember.Object.extend(Ember.Evented, {
         delete this._data[property];
       }
     }
-    return Ember.RSVP.resolve();
   }
 });
