@@ -16,23 +16,29 @@ function classifyString(className) {
   @constructor
 */
 Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
+  authenticator:   null,
+  isAuthenticated: false,
+  content:         null,
   /**
     @method init
     @private
   */
   init: function() {
-    var _this = this;
-    var store = this.get('store');
+    var _this              = this;
+    var store              = this.get('store');
     var authenticatorClass = classifyString(store.load('authenticator'));
-    this.set('isAuthenticated', false);
-    this.set('authenticator', Ember.tryInvoke(authenticatorClass, 'create'));
-    if (!!this.get('authenticator')) {
-      store.restore().then(function(properties) {
-        _this.get('authenticator').restore(properties).then(function(properties) {
-          _this.set('isAuthenticated', true);
-          _this.updateSessionContent(properties);
+    var authenticator      = Ember.tryInvoke(authenticatorClass, 'create');
+    if (!!authenticator) {
+      var restoredContent = store.restore();
+      authenticator.restore(restoredContent).then(function(content) {
+        _this.setProperties({
+          isAuthenticated: true,
+          authenticator:   authenticator,
+          content:         content
         });
       });
+    } else {
+      store.clear();
     }
   },
 
@@ -56,16 +62,15 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   */
   setup: function(authenticator, options) {
     var _this = this;
-    //TODO: fail if authenticated
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      authenticator.authenticate(options).then(function(properties) {
-        _this.set('isAuthenticated', true);
-        _this.set('authenticator', authenticator);
-        _this.updateSessionContent(properties);
+      authenticator.authenticate(options).then(function(content) {
+        _this.setProperties({
+          isAuthenticated: true,
+          authenticator:   authenticator,
+          content:         content
+        });
         resolve();
       }, function(error) {
-        _this.set('isAuthenticated', false);
-        _this.set('authenticator', undefined);
         reject(error);
       });
     });
@@ -80,23 +85,20 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   destroy: function() {
     var _this         = this;
     var authenticator = this.get('authenticator');
-    authenticator.unauthenticate().then(function(properties) {
+    authenticator.unauthenticate().then(function() {
       _this.set('isAuthenticated', false);
       authenticator.off('updated_session_data');
       _this.set('authenticator', undefined);
-      _this.clearSessionContent();
+      _this.set('content', undefined);
     });
   },
 
-  /**
-    @method updateSessionContent
-    @private
-  */
-  updateSessionContent: function(properties) {
+  contentObserver: Ember.observer(function() {
     this.get('store').clear();
-    this.set('content', properties);
-    this.get('store').save(properties);
-  },
+    if (!Ember.isEmpty(content)) {
+      this.get('store').save(content);
+    }
+  }, 'content'),
 
   /**
     @method authenticatorObserver
@@ -107,8 +109,8 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var authenticator = this.get('authenticator');
     if (!!authenticator) {
       this.get('store').save({ authenticator: authenticator });
-      authenticator.on('updated_session_data', function(properties) {
-        _this.updateSessionContent(properties);
+      authenticator.on('updated_session_data', function(content) {
+        _this.set('content', content);
       });
     } else {
       this.get('store').save({ authenticator: undefined });
@@ -121,9 +123,9 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   */
   storeObserver: Ember.observer(function() {
     var _this = this;
-    var stote = this.get('store');
-    store.on('updated_session_data', function(properties) {
-      _this.updateSessionContent(properties);
+    var store = this.get('store');
+    store.on('updated_session_data', function(content) {
+      _this.set('content', content);
     });
   }, 'store')
 });
