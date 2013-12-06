@@ -34,7 +34,7 @@ Ember.SimpleAuth = {};
     @param {String} [options.routeAfterLogin] route to redirect the user to after successfully logging in - defaults to `'index'`
     @param {String} [options.routeAfterLogout] route to redirect the user to after logging out - defaults to `'index'`
     @param {String} [options.loginRoute] route to redirect the user to when login is required - defaults to `'login'`
-    @param {Array[String]} [options.crossOriginWhitelist] list of origins that (besides the origin of the Ember.js application) send the authentication token to - defaults to `[]`
+    @param {Array[String]} [options.crossOriginWhitelist] list of origins that (besides the origin of the Ember.js application) send the authentication token to - defaults to `[]` (beware that origins consist of protocol, host and port (you can leave port out when it is 80))
     @param {Object} [options.authorizer] The authorizer "class" to use; must extend `Ember.Object` and also implement `function(jqXHR, requestOptions)` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
     @param {Object} [options.store] The store "class" to use; must extend `Ember.Object` and also implement `function(jqXHR, requestOptions)` - defaults to `Ember.SimpleAuth.Stores.Cookie`
 **/
