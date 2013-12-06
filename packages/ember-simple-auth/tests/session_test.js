@@ -68,6 +68,7 @@ test('restores its state during initialization', function() {
   deepEqual(session.get('content'), { some: 'content' }, 'Ember.Session sets its content when the restored authenticator resolves during initialization.');
 
   AuthenticatorMock._resolve = false;
+  storeMock.save({ key1: 'value1', key2: 'value2' });
   Ember.run(function() {
     session = Ember.SimpleAuth.Session.create({ store: storeMock });
   });
@@ -75,6 +76,8 @@ test('restores its state during initialization', function() {
   equal(session.get('authenticator'), undefined, 'Ember.Session does not assign the authenticator during initialization when the authenticator rejects.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when the restored authenticator rejects during initialization.');
   equal(session.get('content'), undefined, 'Ember.Session does not set its content when the restored authenticator rejects during initialization.');
+  equal(storeMock.load('key1'), undefined, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
+  equal(storeMock.load('key2'), undefined, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
 });
 
 test('sets itself up with an authenticator', function() {
