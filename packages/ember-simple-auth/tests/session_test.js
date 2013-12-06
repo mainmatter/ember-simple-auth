@@ -11,7 +11,7 @@ function mockPromise(resolveWith, rejectWith) {
 }
 
 var storeMock;
-var StoreMock = Ember.Object.extend(Ember.Evented, {
+var StoreMock = Ember.SimpleAuth.Stores.Ephemeral.extend({
   restore: function() {
     this.restoreInvoked = true;
     return mockPromise(this.get('resolveRestoreWith'));
@@ -46,7 +46,7 @@ module('Ember.SimpleAuth.Session', {
 });
 
 test('is not authenticated when just created', function() {
-  session = Ember.SimpleAuth.Session.create();
+  session = Ember.SimpleAuth.Session.create({ store: storeMock });
 
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when just created.');
 });
