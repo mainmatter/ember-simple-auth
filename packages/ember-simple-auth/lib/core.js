@@ -49,7 +49,7 @@ Ember.SimpleAuth.setup = function(container, application, options) {
   var authorizer = (options.authorizer || Ember.SimpleAuth.Authorizers.OAuth2).create({ session: session });
 
   application.register('simple_auth:session', session, { instantiate: false, singleton: true });
-  Ember.$.each(['model', 'controller', 'view', 'route'], function(i, component) {
+  Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {
     application.inject(component, 'session', 'simple_auth:session');
   });
 
