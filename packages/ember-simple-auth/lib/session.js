@@ -60,7 +60,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
       })
       ```
   */
-  setup: function(authenticator, options) {
+  authenticate: function(authenticator, options) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       authenticator.authenticate(options).then(function(content) {

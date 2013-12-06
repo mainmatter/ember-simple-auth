@@ -12,6 +12,10 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     });
   },
 
+  clear: function() {
+
+  },
+
   load: function(property) {
     var value = document.cookie.match(new RegExp(this._cookiePrefix + property + '=([^;]+)')) || [];
     if (Ember.isEmpty(value)) {
