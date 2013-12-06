@@ -30,7 +30,6 @@ Ember.SimpleAuth.Session = Ember.ProxyObject.extend({
       store.restore().then(function(properties) {
         _this.get('authenticator').restore(properties).then(function(properties) {
           _this.set('isAuthenticated', true);
-          _this.clearSessionContent();
           _this.updateSessionContent(properties);
         });
       });
@@ -90,19 +89,11 @@ Ember.SimpleAuth.Session = Ember.ProxyObject.extend({
   },
 
   /**
-    @method clearSessionContent
-    @private
-  */
-  clearSessionContent: function() {
-    this.set('content', undefined);
-    this.get('store').clear();
-  },
-
-  /**
     @method updateSessionContent
     @private
   */
   updateSessionContent: function(properties) {
+    this.get('store').clear();
     this.set('content', properties);
     this.get('store').save(properties);
   },
