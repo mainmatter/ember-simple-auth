@@ -55,25 +55,25 @@ module('Ember.SimpleAuth', {
 });
 
 test('assigns the login route during setup', function() {
-  Ember.SimpleAuth.setup(applicationMock, { loginRoute: 'somewhere' });
+  Ember.SimpleAuth.setup(applicationMock, { loginRoute: 'somewhere', store: Ember.SimpleAuth.Stores.Ephemeral });
 
   equal(Ember.SimpleAuth.loginRoute, 'somewhere', 'Ember.SimpleAuth saves loginRoute when specified for setup.');
 });
 
 test('assigns the route after login during setup', function() {
-  Ember.SimpleAuth.setup(applicationMock, { routeAfterLogin: 'somewhere' });
+  Ember.SimpleAuth.setup(applicationMock, { routeAfterLogin: 'somewhere', store: Ember.SimpleAuth.Stores.Ephemeral });
 
   equal(Ember.SimpleAuth.routeAfterLogin, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogin when specified for setup.');
 });
 
 test('assigns the route after logout during setup', function() {
-  Ember.SimpleAuth.setup(applicationMock, { routeAfterLogout: 'somewhere' });
+  Ember.SimpleAuth.setup(applicationMock, { routeAfterLogout: 'somewhere', store: Ember.SimpleAuth.Stores.Ephemeral });
 
   equal(Ember.SimpleAuth.routeAfterLogout, 'somewhere', 'Ember.SimpleAuth saves routeAfterLogout when specified for setup.');
 });
 
 test('injects a session object in models, views, controllers and routes during setup', function() {
-  Ember.SimpleAuth.setup(applicationMock);
+  Ember.SimpleAuth.setup(applicationMock, { store: Ember.SimpleAuth.Stores.Ephemeral });
 
   Ember.$.each(['model', 'view', 'controller', 'view'], function(i, component) {
     var injection = Ember.$.grep(applicationMock.injections, function(injection) {
@@ -95,7 +95,7 @@ test('registers an AJAX prefilter that authorizes requests during setup', functi
   ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, {});
   ok(!authorizerMock.authorized, 'Ember.SimpleAuth registers an AJAX prefilter that does not authorize cross-origin requests during setup.');
 
-  Ember.SimpleAuth.setup(applicationMock, { crossOriginWhitelist: ['https://a.different.domain:1234'], authorizer: AuthorizerMock });
+  Ember.SimpleAuth.setup(applicationMock, { crossOriginWhitelist: ['https://a.different.domain:1234'], authorizer: AuthorizerMock, store: Ember.SimpleAuth.Stores.Ephemeral });
   ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, {});
   ok(authorizerMock.authorized, 'Ember.SimpleAuth registers an AJAX prefilter that authorizes cross-origin requests when the origin is in the crossOriginWhitelist during setup.');
 });
