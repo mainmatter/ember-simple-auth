@@ -28,6 +28,16 @@ module('Ember.SimpleAuth.Stores.Ephemeral', {
   }
 });
 
+test('clears itself', function() {
+  save({ key1: 'value1', key2: 'value2' });
+  Ember.run(function() {
+    store.clear();
+  });
+
+  equal(load('key1'), undefined, 'Ember.SimpleAuth.Stores.Ephemeral deletes all properties when cleared.');
+  equal(load('key2'), undefined, 'Ember.SimpleAuth.Stores.Ephemeral deletes all properties when cleared.');
+});
+
 test('restores properties', function() {
   deepEqual(restore(), {}, 'Ember.SimpleAuth.Stores.Ephemeral returns an empty plain object when no properties are stored.');
 

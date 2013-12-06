@@ -36,7 +36,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   unauthenticate: function() {
     Ember.run.cancel(Ember.SimpleAuth.Authenticators.OAuth2.autoRefreshToken._refreshTokenTimeout);
     delete Ember.SimpleAuth.Authenticators.OAuth2.autoRefreshToken._refreshTokenTimeout;
-    return Ember.RSVP.resolve({ authToken: undefined });
+    return Ember.RSVP.resolve();
   },
   handleAuthTokenRefresh: function(authTokenExpiry, refreshToken) {
     if (Ember.SimpleAuth.Authenticators.OAuth2.autoRefreshToken) {

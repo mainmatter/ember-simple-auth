@@ -15,7 +15,7 @@ function classifyString(className) {
   @extends Ember.Object
   @constructor
 */
-Ember.SimpleAuth.Session = Ember.Object.extend({
+Ember.SimpleAuth.Session = Ember.ProxyObject.extend({
   /**
     @method init
     @private
@@ -30,7 +30,8 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       store.restore().then(function(properties) {
         _this.get('authenticator').restore(properties).then(function(properties) {
           _this.set('isAuthenticated', true);
-          _this.updateSessionProperties(properties);
+          _this.clearSessionContent();
+          _this.updateSessionContent(properties);
         });
       });
     }
@@ -61,7 +62,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       authenticator.authenticate(options).then(function(properties) {
         _this.set('isAuthenticated', true);
         _this.set('authenticator', authenticator);
-        _this.updateSessionProperties(properties);
+        _this.updateSessionContent(properties);
         resolve();
       }, function(error) {
         _this.set('isAuthenticated', false);
@@ -84,16 +85,25 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
       _this.set('isAuthenticated', false);
       authenticator.off('updated_session_data');
       _this.set('authenticator', undefined);
-      _this.updateSessionProperties(properties);
+      _this.clearSessionContent();
     });
   },
 
   /**
-    @method updateSessionProperties
+    @method clearSessionContent
     @private
   */
-  updateSessionProperties: function(properties) {
-    this.setProperties(properties);
+  clearSessionContent: function() {
+    this.set('content', undefined);
+    this.get('store').clear();
+  },
+
+  /**
+    @method updateSessionContent
+    @private
+  */
+  updateSessionContent: function(properties) {
+    this.set('content', properties);
     this.get('store').save(properties);
   },
 
@@ -107,7 +117,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     if (!!authenticator) {
       this.get('store').save({ authenticator: authenticator });
       authenticator.on('updated_session_data', function(properties) {
-        _this.updateSessionProperties(properties);
+        _this.updateSessionContent(properties);
       });
     } else {
       this.get('store').save({ authenticator: undefined });
@@ -122,7 +132,7 @@ Ember.SimpleAuth.Session = Ember.Object.extend({
     var _this = this;
     var stote = this.get('store');
     store.on('updated_session_data', function(properties) {
-      _this.updateSessionProperties(properties);
+      _this.updateSessionContent(properties);
     });
   }, 'store')
 });
