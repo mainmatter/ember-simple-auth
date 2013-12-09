@@ -45,7 +45,8 @@ module('Ember.SimpleAuth.Session', {
   },
   teardown: function() {
     delete window.AuthenticatorMock;
-    delete AuthenticatorMock._resolveWith;
+    delete AuthenticatorMock._resolve;
+    delete AuthenticatorMock._reject;
   }
 });
 
@@ -113,33 +114,36 @@ test('authenticates itself with an authenticator', function() {
   deepEqual(rejectedWith, { error: 'message'}, 'Ember.Session returns a promise that rejects with the error from the authenticator on setup when the authenticator rejects.');
 });
 
-test('destroys itself', function() {
-  var resolvingAuthenticatorMock = AuthenticatorMock.create({ resolveUnauthenticateWith: { key: 'value' } });
-  session.set('authenticator', resolvingAuthenticatorMock);
+test('unauthenticates itself', function() {
+  AuthenticatorMock._resolve = true;
   Ember.run(function() {
-    session.destroy();
+    session.authenticate(authenticatorMock);
   });
-
-  ok(resolvingAuthenticatorMock.unauthenticateInvoked, 'Ember.Session unauthenticates with the passed authenticator on destruction.');
-  ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after destruction when the authenticator resolves.');
-  equal(session.get('aurhenticator'), undefined, 'Ember.Session unsets the authenticator after destruction when the authenticator resolves.');
-  equal(session.get('key'), 'value', 'Ember.Session sets all properties that the authenticator resolves with on destruction.');
-
-  Ember.run(function() {
-    resolvingAuthenticatorMock.trigger('updated_session_data', { key: 'other value' })
-  });
-
-  equal(session.get('key'), 'value', 'Ember.Session stops listening to the "updated_session_data" of the authenticator on destruction when the authenticator resolves.');
-
-  session.set('authenticator', authenticatorMock);
+  AuthenticatorMock._resolve = false;
+  AuthenticatorMock._reject = { error: 'message' };
   session.set('isAuthenticated', true);
-  session.set('key', undefined);
   Ember.run(function() {
-    session.destroy();
+    session.unauthenticate();
   })
 
-  ok(session.get('isAuthenticated'), 'Ember.Session remains authenticated after destruction when the authenticator rejects.');
-  equal(session.get('authenticator'), authenticatorMock, 'Ember.Session does not unset the authenticator after destruction when the authenticator rejects.');
+  ok(session.get('isAuthenticated'), 'Ember.Session remains authenticated after unauthentication when the authenticator rejects.');
+  equal(session.get('authenticator'), authenticatorMock, 'Ember.Session does not unset the authenticator after unauthentication when the authenticator rejects.');
+
+  AuthenticatorMock._resolve = true;
+  Ember.run(function() {
+    session.unauthenticate();
+  });
+
+  ok(authenticatorMock.unauthenticateInvoked, 'Ember.Session unauthenticates with the authenticator on destruction.');
+  ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after unauthentication when the authenticator resolves.');
+  equal(session.get('aurhenticator'), undefined, 'Ember.Session unsets the authenticator after unauthentication when the authenticator resolves.');
+  equal(session.get('content'), undefined, 'Ember.Session unsets its content object after unauthentication when the authenticator resolves.');
+
+  Ember.run(function() {
+    authenticatorMock.trigger('updated_session_data', { key: 'other value' })
+  });
+
+  equal(session.get('key'), undefined, 'Ember.Session stops listening to the "updated_session_data" of the authenticator after unauthentication when the authenticator resolves.');
 });
 
 test('observes changes of the observer', function() {

@@ -83,14 +83,16 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
 
     @method destroy
   */
-  destroy: function() {
+  unauthenticate: function() {
     var _this         = this;
     var authenticator = this.get('authenticator');
     authenticator.unauthenticate().then(function() {
-      _this.set('isAuthenticated', false);
       authenticator.off('updated_session_data');
-      _this.set('authenticator', undefined);
-      _this.set('content', undefined);
+      _this.setProperties({
+        isAuthenticated: false,
+        authenticator:   undefined,
+        content:         undefined
+      });
     });
   },
 
