@@ -45,6 +45,7 @@ module('Ember.SimpleAuth.Session', {
   },
   teardown: function() {
     delete window.AuthenticatorMock;
+    delete window.Authenticators;
     delete AuthenticatorMock._resolve;
     delete AuthenticatorMock._reject;
   }
@@ -147,9 +148,14 @@ test('unauthenticates itself', function() {
 });
 
 test('observes changes of the observer', function() {
-  var otherAuthenticatorMock = AuthenticatorMock.create();
-  session.set('authenticator', otherAuthenticatorMock);
-  otherAuthenticatorMock.trigger('updated_session_data', { key: 'value' })
+  window.Authenticators                 = Ember.Namespace.create();
+  Authenticators.OtherAuthenticatorMock = AuthenticatorMock.extend();
+  var otherAuthenticatorMock            = Authenticators.OtherAuthenticatorMock.create();
+  Ember.run(function() {
+    session.set('authenticator', otherAuthenticatorMock);
+    otherAuthenticatorMock.trigger('updated_session_data', { key: 'value' })
+  });
 
   equal(session.get('key'), 'value', 'Ember.Session subscribes to the "updated_session_data" of the authenticator when it is assigned.');
+  equal(storeMock.load('authenticator'), 'Authenticators.OtherAuthenticatorMock', "Ember.Session saves the authenticator's prototype to the store when it is assigned.");
 });

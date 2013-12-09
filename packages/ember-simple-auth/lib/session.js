@@ -99,6 +99,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   contentObserver: Ember.observer(function() {
     this.get('store').clear();
     this.get('store').save(this.get('content'));
+    this.get('store').save({ authenticator: this.get('authenticator').constructor.toString() });
   }, 'content'),
 
   /**
@@ -109,7 +110,8 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var _this         = this;
     var authenticator = this.get('authenticator');
     if (!!authenticator) {
-      this.get('store').save({ authenticator: authenticator });
+      console.log(authenticator.constructor.toString());
+      this.get('store').save({ authenticator: authenticator.constructor.toString() });
       authenticator.on('updated_session_data', function(content) {
         _this.set('content', content);
       });

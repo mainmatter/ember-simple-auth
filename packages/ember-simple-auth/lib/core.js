@@ -11,7 +11,7 @@ function locationOrigin(location) {
   @namespace Ember
   @static
 **/
-Ember.SimpleAuth = {};
+Ember.SimpleAuth = Ember.Namespace.create();
 
 /**
   Sets up Ember.SimpleAuth for your application; invoke this method in a custom
