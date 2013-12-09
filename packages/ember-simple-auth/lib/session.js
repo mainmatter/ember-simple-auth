@@ -17,6 +17,7 @@ function classifyString(className) {
 */
 Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   authenticator:   null,
+  store:           null,
   isAuthenticated: false,
   content:         null,
   /**
@@ -95,9 +96,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
 
   contentObserver: Ember.observer(function() {
     this.get('store').clear();
-    if (!Ember.isEmpty(content)) {
-      this.get('store').save(content);
-    }
+    this.get('store').save(this.get('content'));
   }, 'content'),
 
   /**

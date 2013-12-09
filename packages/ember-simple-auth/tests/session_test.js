@@ -2,7 +2,7 @@ var session;
 
 function mockPromise(resolveWith, rejectWith) {
   return new Ember.RSVP.Promise(function(resolve, reject) {
-    if (!Ember.isEmpty(resolveWith)) {
+    if (!Ember.isEmpty(resolveWith) && !!resolveWith) {
       resolve(resolveWith);
     } else {
       reject.call(undefined, rejectWith);
@@ -26,11 +26,11 @@ var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
   authenticate: function(options) {
     this.authenticateInvoked     = true;
     this.authenticateInvokedWith = options;
-    return mockPromise(this.get('resolveAuthenticateWith'), this.get('rejectAuthenticateWith'));
+    return mockPromise(AuthenticatorMock._resolve, AuthenticatorMock._reject);
   },
   unauthenticate: function() {
     this.unauthenticateInvoked = true;
-    return mockPromise(this.get('resolveUnauthenticateWith'));
+    return mockPromise(AuthenticatorMock._resolve);
   }
 });
 
@@ -80,33 +80,34 @@ test('restores its state during initialization', function() {
   equal(storeMock.load('key2'), undefined, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
 });
 
-test('sets itself up with an authenticator', function() {
+test('authenticates itself with an authenticator', function() {
   var resolved;
-  var resolvingAuthenticatorMock = AuthenticatorMock.create({ resolveAuthenticateWith: { key: 'value' } });
+  AuthenticatorMock._resolve = { key: 'value' };
   Ember.run(function() {
-    session.setup(resolvingAuthenticatorMock).then(function() {
+    session.authenticate(authenticatorMock).then(function() {
       resolved = true;
     });
   });
 
-  ok(resolvingAuthenticatorMock.authenticateInvoked, 'Ember.Session authenticates with the passed authenticator on setup.');
+  ok(authenticatorMock.authenticateInvoked, 'Ember.Session authenticates with the passed authenticator on setup.');
   ok(session.get('isAuthenticated'), 'Ember.Session is authenticated after setup when the authenticator resolves.');
   equal(session.get('key'), 'value', 'Ember.Session sets all properties that the authenticator resolves with during setup.');
-  equal(session.get('authenticator'), resolvingAuthenticatorMock, 'Ember.Session saves the authenticator during setup when the authenticator resolves.');
+  equal(session.get('authenticator'), authenticatorMock, 'Ember.Session saves the authenticator during setup when the authenticator resolves.');
   ok(resolved, 'Ember.Session returns a resolving promise on setup when the authenticator resolves.');
 
-  var rejected;
+  var resolved;
   var rejectedWith;
-  var rejectingAuthenticatorMock = AuthenticatorMock.create({ rejectAuthenticateWith: [{ key: 'other value' }, { error: 'message' }] });
+  AuthenticatorMock._resolve = false;
+  AuthenticatorMock._reject = { error: 'message' };
   Ember.run(function() {
-    session.setup(rejectingAuthenticatorMock).then(function() {}, function(error) {
+    session = Ember.SimpleAuth.Session.create({ store: storeMock });
+    session.authenticate(authenticatorMock).then(function() {}, function(error) {
       rejected     = true;
       rejectedWith = error;
     });
   });
 
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after setup when the authenticator rejects.');
-  equal(session.get('key'), 'other value', 'Ember.Session sets all properties that the authenticator rejects with during setup.');
   equal(session.get('authenticator'), undefined, 'Ember.Session does not save the authenticator during setup when the authenticator rejects.');
   ok(rejected, 'Ember.Session returns a rejecting promise on setup when the authenticator rejects.');
   deepEqual(rejectedWith, { error: 'message'}, 'Ember.Session returns a promise that rejects with the error from the authenticator on setup when the authenticator rejects.');
