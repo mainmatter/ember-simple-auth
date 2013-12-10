@@ -2,17 +2,14 @@ var authenticator;
 
 var ajaxMock;
 var AjaxMock = Ember.Object.extend({
-  response:    { access_token: 'authToken' },
   ajaxCapture: function(options) {
-    var _this           = this;
     this.requestOptions = options;
     return {
       then: function(success, fail) {
-        if (!!success) {
-          success(_this.response);
-        }
-        if (!!fail) {
-          fail('xhr', 'status', 'error');
+        if (AjaxMock._resolve) {
+          success(AjaxMock._resolve);
+        } else if (AjaxMock._reject) {
+          fail(AjaxMock._reject);
         }
       }
     };
@@ -82,4 +79,33 @@ test('sends a request to the server token route on authentication', function() {
   });
 
   equal(ajaxMock.requestOptions.data, 'grant_type=password&username=identification&password=password&client_id=clientId&client_secret=clientSecret', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with client_id and client_secret on authentication when these are set.');
+});
+
+test('returns a promise on authentication', function() {
+  AjaxMock._resolve = { access_token: 'authToken' };
+  var resolved;
+  var resolvedWith;
+  Ember.run(function() {
+    authenticator.authenticate({}).then(function(properties) {
+      resolved     = true;
+      resolvedWith = properties;
+    });
+  });
+
+  ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise on authentication when the AJAX request is successful.');
+  deepEqual(resolvedWith, { authToken: 'authToken', authTokenExpiry: undefined, refreshToken: undefined }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with authToken, authTokenExpiry and refreshToken on authentication when the AJAX request is successful.');
+
+  AjaxMock._resolve = false;
+  AjaxMock._reject  = { responseText: 'error' };
+  var rejected;
+  var rejectedWith;
+  Ember.run(function() {
+    authenticator.authenticate({}).then(function() {}, function(error) {
+      rejected     = true;
+      rejectedWith = error;
+    });
+  });
+
+  ok(rejected, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a rejecting promise on authentication when the AJAX request is not successful.');
+  deepEqual(rejectedWith, 'error', 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that rejects with the error message from the XHR response on authentication when the AJAX request is not successful.')
 });
