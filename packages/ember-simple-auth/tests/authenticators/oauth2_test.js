@@ -8,13 +8,16 @@ module('Ember.SimpleAuth.Authenticators.OAuth2', {
 
 test('it restores the session', function() {
   var resolved;
+  var resolvedWith;
   Ember.run(function() {
-    authenticator.restore({ authToken: 'authToken' }).then(function() {
-      resolved = true;
+    authenticator.restore({ authToken: 'authToken', key: 'value' }).then(function(properties) {
+      resolved     = true;
+      resolvedWith = properties;
     });
   });
 
   ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise when the properties include an authToken on restore.');
+  deepEqual(resolvedWith, { authToken: 'authToken', key: 'value' }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with the passed properties when the properties include an authToken on restore.')
 
   var rejected;
   Ember.run(function() {
