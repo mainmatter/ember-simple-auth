@@ -19,11 +19,11 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   authenticate: function(credentials) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var postData = ['grant_type=password', 'username=' + credentials.identification, 'password=' + credentials.password].join('&');
+      var data = this.buildRequestData('password', ['username=' + credentials.identification, 'password=' + credentials.password]);
       Ember.$.ajax({
         url:         _this.get('serverTokenEndpoint'),
         type:        'POST',
-        data:        postData,
+        data:        data,
         contentType: 'application/x-www-form-urlencoded'
       }).then(function(response) {
         Ember.run(function() {
@@ -44,6 +44,17 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
     return Ember.RSVP.resolve();
   },
 
+  buildRequestData: function(grantType, data) {
+    var requestData = data.concat(['grant_type=' + grantType]);
+    if (!Ember.isEmpty(client_id)) {
+      requestData.push('client_id=' + client_id);
+      if (!Ember.isEmpty(client_secret)) {
+        requestData.push('client_secret=' + client_secret);
+      }
+    }
+    return requestData.join('&');
+  },
+
   /**
     @method handleAuthTokenRefresh
     @private
@@ -56,10 +67,11 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
       if (!Ember.isEmpty(refreshToken) && waitTime > 0) {
         Ember.SimpleAuth.Authenticators.OAuth2._refreshTokenTimeout = Ember.run.later(this, function() {
           var _this = this;
+          var data  = this.buildRequestData('refresh_token', ['refresh_token=' + refreshToken]);
           Ember.$.ajax({
             url:         this.get('serverTokenEndpoint'),
             type:        'POST',
-            data:        'grant_type=refresh_token&refresh_token=' + refreshToken,
+            data:        data,
             contentType: 'application/x-www-form-urlencoded'
           }).then(function(response) {
             Ember.run(function() {
