@@ -19,7 +19,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   authenticate: function(credentials) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var data = this.buildRequestData('password', ['username=' + credentials.identification, 'password=' + credentials.password]);
+      var data = _this.buildRequestData('password', ['username=' + credentials.identification, 'password=' + credentials.password]);
       Ember.$.ajax({
         url:         _this.get('serverTokenEndpoint'),
         type:        'POST',
@@ -45,11 +45,11 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   },
 
   buildRequestData: function(grantType, data) {
-    var requestData = data.concat(['grant_type=' + grantType]);
-    if (!Ember.isEmpty(client_id)) {
-      requestData.push('client_id=' + client_id);
-      if (!Ember.isEmpty(client_secret)) {
-        requestData.push('client_secret=' + client_secret);
+    var requestData = ['grant_type=' + grantType].concat(data);
+    if (!Ember.isEmpty(this.get('clientId'))) {
+      requestData.push('client_id=' + this.get('clientId'));
+      if (!Ember.isEmpty(this.get('clientSecret'))) {
+        requestData.push('client_secret=' + this.get('clientSecret'));
       }
     }
     return requestData.join('&');
