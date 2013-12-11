@@ -1,23 +1,33 @@
 'use strict';
 
 Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
+  cookiePrefix:          'ember_simple_auth:',
+  secureCookies:         window.location.protocol === 'https:',
+  syncPropertiesTimeout: null,
+
   init: function() {
-    this._cookiePrefix = 'ember_simple_auth:';
     this.syncProperties();
   },
 
   restore: function() {
-    return this.knownCookies().map(function(property) {
-      return this.load(property);
+    var _this      = this;
+    var properties = {};
+    this.knownCookies().forEach(function(cookie) {
+      properties[cookie] = _this.load(cookie);
     });
+    return properties;
   },
 
   clear: function() {
-
+    var nullifiedProperties = {};
+    this.knownCookies().forEach(function(cookie) {
+      nullifiedProperties[cookie] = undefined;
+    });
+    this.save(nullifiedProperties);
   },
 
   load: function(property) {
-    var value = document.cookie.match(new RegExp(this._cookiePrefix + property + '=([^;]+)')) || [];
+    var value = document.cookie.match(new RegExp(this.get('cookiePrefix') + property + '=([^;]+)')) || [];
     if (Ember.isEmpty(value)) {
       return undefined;
     } else {
@@ -26,13 +36,13 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   },
 
   save: function(properties) {
-    //TODO: set cookie to secure if page served from HTTPS
+    var secure = !!this.get('secureCookies') ? ';secure' : ''
     for (var property in properties) {
       var value = properties[property];
       if (Ember.isEmpty(value)) {
-        document.cookie = this._cookiePrefix + property + '=; expires=' + (new Date(0)).toGMTString() + ';';
+        document.cookie = this.get('cookiePrefix') + property + '=; expires=' + (new Date(0)).toGMTString() + secure;
       } else {
-        document.cookie = this._cookiePrefix + property + '=' + encodeURIComponent(value || '');
+        document.cookie = this.get('cookiePrefix') + property + '=' + encodeURIComponent(value || '') + secure;
       }
     }
   },
@@ -44,9 +54,9 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   knownCookies: function() {
     var _this = this;
     return Ember.A(document.cookie.split(/[=;\s]+/)).filter(function(element) {
-      return new RegExp('^' + _this._cookiePrefix).test(element)
+      return new RegExp('^' + _this.get('cookiePrefix')).test(element)
     }).map(function(cookie) {
-      return cookie.replace(_this._cookiePrefix, '');
+      return cookie.replace(_this.get('cookiePrefix'), '');
     });
   },
 
@@ -62,8 +72,8 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     });
     this.trigger('updated_session_data', properties);
     if (!Ember.testing) {
-      Ember.run.cancel(Ember.SimpleAuth.Stores.Cookie.__syncPropertiesTimeout);
-      Ember.SimpleAuth.Stores.Cookie.__syncPropertiesTimeout = Ember.run.later(this, this.syncProperties, 500);
+      Ember.run.cancel(this.get('syncPropertiesTimeout'));
+      this.set('syncPropertiesTimeout', Ember.run.later(this, this.syncProperties, 500));
     }
   }
 });
