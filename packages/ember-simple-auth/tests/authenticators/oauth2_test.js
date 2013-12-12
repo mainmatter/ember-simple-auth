@@ -93,7 +93,7 @@ test('returns a promise on authentication', function() {
   });
 
   ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise on authentication when the AJAX request is successful.');
-  deepEqual(resolvedWith, { authToken: 'authToken', authTokenExpiry: undefined, refreshToken: undefined }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with authToken, authTokenExpiry and refreshToken on authentication when the AJAX request is successful.');
+  deepEqual(resolvedWith, { authToken: 'authToken', authTokenExpiry: null, refreshToken: null }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with authToken, authTokenExpiry and refreshToken on authentication when the AJAX request is successful.');
 
   AjaxMock._resolve = false;
   AjaxMock._reject  = { responseText: 'error' };

@@ -90,5 +90,5 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
 
 Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint = '/token';
 Ember.SimpleAuth.Authenticators.OAuth2.refreshAuthTokens   = true;
-Ember.SimpleAuth.Authenticators.OAuth2.cliendId            = undefined;
-Ember.SimpleAuth.Authenticators.OAuth2.cliendSecret        = undefined;
+Ember.SimpleAuth.Authenticators.OAuth2.cliendId            = null;
+Ember.SimpleAuth.Authenticators.OAuth2.cliendSecret        = null;

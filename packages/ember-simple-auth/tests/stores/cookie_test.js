@@ -13,8 +13,8 @@ test('clears itself', function() {
   store.save({ key1: 'value1', key2: 'value2' });
   store.clear();
 
-  equal(store.load('key1'), undefined, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when cleared.');
-  equal(store.load('key2'), undefined, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when cleared.');
+  equal(store.load('key1'), null, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when cleared.');
+  equal(store.load('key2'), null, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when cleared.');
 });
 
 test('loads all properties', function() {
@@ -34,7 +34,7 @@ test('saves properties', function() {
   equal(store.load('key'), 'value', 'Ember.SimpleAuth.Stores.Cookie does not destroy previously stored properties when save is called again.');
 
   store.save({ key: '' });
-  equal(store.load('key'), undefined, 'Ember.SimpleAuth.Stores.Cookie deletes empty properties when saving.');
+  equal(store.load('key'), null, 'Ember.SimpleAuth.Stores.Cookie deletes empty properties when saving.');
   ok(!document.cookie.match(/key=/), 'Ember.SimpleAuth.Stores.Cookie clears the cookies for empty properties when saving.');
 });
 

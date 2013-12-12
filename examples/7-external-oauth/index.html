@@ -86,7 +86,7 @@
       // transition is retried etc.)
       loginSucceeded: function() {
         this._super();
-        this.controllerFor('application').set('loginErrorMessage', undefined);
+        this.controllerFor('application').set('loginErrorMessage', null);
       }
     }
   });

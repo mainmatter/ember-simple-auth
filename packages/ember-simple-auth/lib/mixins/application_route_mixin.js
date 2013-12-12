@@ -56,7 +56,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       var attemptedTransition = this.get('session.attemptedTransition');
       if (attemptedTransition) {
         attemptedTransition.retry();
-        this.set('session.attemptedTransition', undefined);
+        this.set('session.attemptedTransition', null);
       } else {
         this.transitionTo(Ember.SimpleAuth.routeAfterLogin);
       }

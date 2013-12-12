@@ -57,7 +57,7 @@ test('sends a request to the server token route on login', function() {
   equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.LoginControllerMixin sends a POST request on login.');
   equal(ajaxMock.requestOptions.data, 'grant_type=password&username=identification&password=password&client_id=client_id&client_secret=client_secret', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct data on login.');
   equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the content type "application/x-www-form-urlencoded" on login.');
-  equal(testController.get('password'), undefined, 'Ember.SimpleAuth.LoginControllerMixin clears the password on login.');
+  equal(testController.get('password'), null, 'Ember.SimpleAuth.LoginControllerMixin clears the password on login.');
 
   testController.reopen({
     tokenRequestOptions: function(username, password) {
@@ -77,17 +77,17 @@ test('does not send a request on login when identification or password are empty
   testController.setProperties({ identification: '', password: 'password' });
   testController.send('login');
 
-  equal(ajaxMock.requestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on login when identification is empty.');
+  equal(ajaxMock.requestUrl, null, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on login when identification is empty.');
 
   testController.setProperties({ identification: 'identification', password: '' });
   testController.send('login');
 
-  equal(ajaxMock.requestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on login when password is empty.');
+  equal(ajaxMock.requestUrl, null, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on login when password is empty.');
 
   testController.setProperties({ identification: '', password: '' });
   testController.send('login');
 
-  equal(ajaxMock.requestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on login when identification and password are empty.');
+  equal(ajaxMock.requestUrl, null, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on login when identification and password are empty.');
 });
 
 test('updates the current session with the server response on login', function() {

@@ -21,9 +21,9 @@ module('Ember.SimpleAuth.Authorizers.OAuth2', {
 });
 
 test('authorizes an AJAX request', function() {
-  authorizer.set('session.authToken', undefined);
+  authorizer.set('session.authToken', null);
   authorizer.authorize(xhrMock, {});
-  equal(xhrMock.requestHeaders['Authorization'], undefined, 'Ember.SimpleAuth.Authorizers.OAuth2 does not add the authToken to an AJAX request when the token is not empty.');
+  equal(xhrMock.requestHeaders['Authorization'], null, 'Ember.SimpleAuth.Authorizers.OAuth2 does not add the authToken to an AJAX request when the token is not empty.');
 
   var token = Math.random().toString(36);
   authorizer.set('session.authToken', token);

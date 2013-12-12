@@ -5,7 +5,7 @@ function mockPromise(resolveWith, rejectWith) {
     if (!Ember.isEmpty(resolveWith) && !!resolveWith) {
       resolve(resolveWith);
     } else {
-      reject.call(undefined, rejectWith);
+      reject.call(null, rejectWith);
     }
   });
 }
@@ -75,11 +75,11 @@ test('restores its state during initialization', function() {
     session = Ember.SimpleAuth.Session.create({ store: storeMock });
   });
 
-  equal(session.get('authenticator'), undefined, 'Ember.Session does not assign the authenticator during initialization when the authenticator rejects.');
+  equal(session.get('authenticator'), null, 'Ember.Session does not assign the authenticator during initialization when the authenticator rejects.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when the restored authenticator rejects during initialization.');
   equal(session.get('content'), null, 'Ember.Session does not set its content when the restored authenticator rejects during initialization.');
-  equal(storeMock.load('key1'), undefined, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
-  equal(storeMock.load('key2'), undefined, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
+  equal(storeMock.load('key1'), null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
+  equal(storeMock.load('key2'), null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
 });
 
 test('authenticates itself with an authenticator', function() {
@@ -110,7 +110,7 @@ test('authenticates itself with an authenticator', function() {
   });
 
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after setup when the authenticator rejects.');
-  equal(session.get('authenticator'), undefined, 'Ember.Session does not save the authenticator during setup when the authenticator rejects.');
+  equal(session.get('authenticator'), null, 'Ember.Session does not save the authenticator during setup when the authenticator rejects.');
   ok(rejected, 'Ember.Session returns a rejecting promise on setup when the authenticator rejects.');
   deepEqual(rejectedWith, { error: 'message'}, 'Ember.Session returns a promise that rejects with the error from the authenticator on setup when the authenticator rejects.');
 });
@@ -137,14 +137,14 @@ test('unauthenticates itself', function() {
 
   ok(authenticatorMock.unauthenticateInvoked, 'Ember.Session unauthenticates with the authenticator on destruction.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after unauthentication when the authenticator resolves.');
-  equal(session.get('aurhenticator'), undefined, 'Ember.Session unsets the authenticator after unauthentication when the authenticator resolves.');
+  equal(session.get('aurhenticator'), null, 'Ember.Session unsets the authenticator after unauthentication when the authenticator resolves.');
   equal(session.get('content'), null, 'Ember.Session unsets its content object after unauthentication when the authenticator resolves.');
 
   Ember.run(function() {
     authenticatorMock.trigger('updated_session_data', { key: 'other value' })
   });
 
-  equal(session.get('key'), undefined, 'Ember.Session stops listening to the "updated_session_data" of the authenticator after unauthentication when the authenticator resolves.');
+  equal(session.get('key'), null, 'Ember.Session stops listening to the "updated_session_data" of the authenticator after unauthentication when the authenticator resolves.');
 });
 
 test('observes changes of the observer', function() {

@@ -36,7 +36,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
       var _this = this;
       var data = this.getProperties('identification', 'password');
       if (!Ember.isEmpty(data.identification) && !Ember.isEmpty(data.password)) {
-        this.set('password', undefined);
+        this.set('password', null);
         this.get('session').authenticate(this.get('authenticator'), data).then(function() {
           _this.send('loginSucceeded');
         }, function(error) {

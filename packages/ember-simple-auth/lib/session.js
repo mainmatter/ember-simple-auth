@@ -111,7 +111,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   setUnauthenticated: function() {
     this.setProperties({
       isAuthenticated: false,
-      authenticator:   undefined,
+      authenticator:   null,
       content:         null
     });
     this.get('store').clear();
@@ -156,7 +156,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
         _this.setAuthenticated(authenticator, content);
       });
     } else {
-      this.get('store').save({ authenticator: undefined });
+      this.get('store').save({ authenticator: null });
     }
   }, 'authenticator'),
 });

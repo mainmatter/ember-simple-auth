@@ -60,5 +60,5 @@ test('clears a saved attempted transition on loginSucceeded', function() {
   testRoute.set('session.attemptedTransition', attemptedTransitionMock);
   testRoute._actions['loginSucceeded'].apply(testRoute);
 
-  equal(testRoute.get('session.attemptedTransition'), undefined, 'Ember.SimpleAuth.ApplicationRouteMixin clears a saved attempted transition on loginSucceeded.');
+  equal(testRoute.get('session.attemptedTransition'), null, 'Ember.SimpleAuth.ApplicationRouteMixin clears a saved attempted transition on loginSucceeded.');
 });

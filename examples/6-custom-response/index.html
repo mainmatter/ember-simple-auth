@@ -90,7 +90,7 @@
         },
         destroy: function() {
           this._super();
-          this.set('accountId', undefined);
+          this.set('accountId', null);
         },
         accountIdChanged: function() {
           //save accountId in a session cookie so it survives a page reload (Ember.SimpleAuth.Session
@@ -144,7 +144,7 @@
   App.LoginRoute = Ember.Route.extend({
     setupController: function(controller, model) {
       controller.setProperties({
-        identification: undefined, password: undefined, errorMessage: undefined
+        identification: null, password: null, errorMessage: null
       });
     }
   });
