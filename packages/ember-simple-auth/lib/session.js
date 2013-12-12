@@ -30,6 +30,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var store              = this.get('store');
     var authenticatorClass = classifyString(store.load('authenticator'));
     var authenticator      = Ember.tryInvoke(authenticatorClass, 'create');
+    this.listenToStoreUpdates();
     if (!!authenticator) {
       var restoredContent = store.restore();
       authenticator.restore(restoredContent).then(function(content) {
@@ -100,7 +101,10 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   contentObserver: Ember.observer(function() {
     this.get('store').clear();
     this.get('store').save(this.get('content'));
-    this.get('store').save({ authenticator: this.get('authenticator').constructor.toString() });
+    var authenticator = this.get('authenticator');
+    if (!!authenticator) {
+      this.get('store').save({ authenticator: authenticator.constructor.toString() });
+    }
   }, 'content'),
 
   /**
@@ -121,14 +125,44 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   }, 'authenticator'),
 
   /**
+    @method listenToStoreUpdates
+    @private
+  */
+  listenToStoreUpdates: function() {
+    var _this = this;
+    var store = this.get('store');
+    store.on('updated_session_data', function(content) {
+      var authenticatorClass = classifyString(content.authenticator);
+      var authenticator      = Ember.tryInvoke(authenticatorClass, 'create');
+      if (!!authenticator) {
+        authenticator.restore(content).then(function(content) {
+          _this.setProperties({
+            isAuthenticated: true,
+            authenticator:   authenticator,
+            content:         content
+          });
+        }, function() {
+          _this.setProperties({
+            isAuthenticated: false,
+            authenticator:   undefined,
+            content:         {}
+          });
+        });
+      } else {
+        _this.setProperties({
+          isAuthenticated: false,
+          authenticator:   undefined,
+          content:         {}
+        });
+      }
+    });
+  },
+
+  /**
     @method storeObserver
     @private
   */
   storeObserver: Ember.observer(function() {
-    var _this = this;
-    var store = this.get('store');
-    store.on('updated_session_data', function(content) {
-      _this.set('content', content);
-    });
+    this.listenToStoreUpdates();
   }, 'store')
 });
