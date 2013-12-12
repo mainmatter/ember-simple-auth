@@ -4,7 +4,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
   storageKeyPrefix: 'ember_simple_auth:',
 
   init: function() {
-    this.listenToStorageEvents();
+    this.bindToStorageEvents();
   },
 
   restore: function() {
@@ -23,7 +23,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
 
   save: function(properties) {
     for (var property in properties) {
-      var key = this.buildStorageKey(property);
+      var key   = this.buildStorageKey(property);
       var value = properties[property];
       if (Ember.isEmpty(value)) {
         localStorage.removeItem(key);
@@ -66,7 +66,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
     return properties;
   },
 
-  listenToStorageEvents: function() {
+  bindToStorageEvents: function() {
     var _this = this;
     Ember.$(window).bind('storage', function() {
       var properties = _this.loadAll();

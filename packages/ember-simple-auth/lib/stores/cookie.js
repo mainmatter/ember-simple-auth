@@ -42,6 +42,10 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     }
   },
 
+  /**
+    @method loadAll
+    @private
+  */
   loadAll: function() {
     var properties = {};
     var _this      = this;
