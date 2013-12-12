@@ -12,6 +12,7 @@ require('ember-simple-auth/authenticators/oauth2');
 require('ember-simple-auth/stores');
 require('ember-simple-auth/stores/cookie');
 require('ember-simple-auth/stores/ephemeral');
+require('ember-simple-auth/stores/local_storage');
 require('ember-simple-auth/mixins/authenticated_route_mixin');
 require('ember-simple-auth/mixins/login_controller_mixin');
 require('ember-simple-auth/mixins/application_route_mixin');
