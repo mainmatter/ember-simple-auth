@@ -148,7 +148,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var _this = this;
     var store = this.get('store');
     store.on('updated_session_data', function(content) {
-      var authenticator = this.createAuthenticator(content.authenticator);
+      var authenticator = _this.createAuthenticator(content.authenticator);
       if (!!authenticator) {
         authenticator.restore(content).then(function(content) {
           _this.setAuthenticated(authenticator, content);
