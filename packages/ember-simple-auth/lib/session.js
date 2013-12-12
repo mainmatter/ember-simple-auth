@@ -1,5 +1,11 @@
 'use strict';
 
+function classifyString(className) {
+  return Ember.A((className || '').split('.')).reduce(function(acc, klass) {
+    return (acc || {})[klass];
+  }, window);
+}
+
 /**
   This class holds the current authentication state and data the authenticator sets. There will always be a
   session regardless of whether a user is currently authenticated or not. That (singleton) instance
@@ -104,9 +110,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   },
 
   createAuthenticator: function(className) {
-    var authenticatorClass = Ember.A((className || '').split('.')).reduce(function(acc, klass) {
-      return (acc || {})[klass];
-    }, window);
+    var authenticatorClass = classifyString(className);
     return Ember.tryInvoke(authenticatorClass, 'create');
   },
 
