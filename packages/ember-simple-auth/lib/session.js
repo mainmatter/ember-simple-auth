@@ -1,9 +1,5 @@
 'use strict';
 
-function classifyString(className) {
-  return Ember.A((className || '').split('.')).reduce(function(acc, klass) { return (acc || {})[klass]; }, window);
-}
-
 /**
   This class holds the current authentication state and data the authenticator sets. There will always be a
   session regardless of whether a user is currently authenticated or not. That (singleton) instance
@@ -21,24 +17,20 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   isAuthenticated:     false,
   attemptedTransition: null,
   content:             {},
+
   /**
     @method init
     @private
   */
   init: function() {
-    var _this              = this;
-    var store              = this.get('store');
-    var authenticatorClass = classifyString(store.load('authenticator'));
-    var authenticator      = Ember.tryInvoke(authenticatorClass, 'create');
+    var _this         = this;
+    var store         = this.get('store');
+    var authenticator = this.createAuthenticator(store.load('authenticator'));
     this.listenToStoreUpdates();
     if (!!authenticator) {
       var restoredContent = store.restore();
       authenticator.restore(restoredContent).then(function(content) {
-        _this.setProperties({
-          isAuthenticated: true,
-          authenticator:   authenticator,
-          content:         content
-        });
+        _this.setup(authenticator, content);
       });
     } else {
       store.clear();
@@ -67,11 +59,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       authenticator.authenticate(options).then(function(content) {
-        _this.setProperties({
-          isAuthenticated: true,
-          authenticator:   authenticator,
-          content:         content
-        });
+        _this.setup(authenticator, content);
         resolve();
       }, function(error) {
         reject(error);
@@ -90,11 +78,51 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var authenticator = this.get('authenticator');
     authenticator.unauthenticate().then(function() {
       authenticator.off('updated_session_data');
-      _this.setProperties({
-        isAuthenticated: false,
-        authenticator:   undefined,
-        content:         {}
-      });
+      _this.destroy();
+    });
+  },
+
+  setup: function(authenticator, content) {
+    this.setProperties({
+      isAuthenticated: true,
+      authenticator:   authenticator,
+      content:         content
+    });
+  },
+
+  destroy: function(authenticator, content) {
+    this.setProperties({
+      isAuthenticated: false,
+      authenticator:   undefined,
+      content:         {}
+    });
+  },
+
+  createAuthenticator: function(className) {
+    var authenticatorClass = Ember.A((className || '').split('.')).reduce(function(acc, klass) {
+      return (acc || {})[klass];
+    }, window);
+    return Ember.tryInvoke(authenticatorClass, 'create');
+  },
+
+  /**
+    @method listenToStoreUpdates
+    @private
+  */
+  listenToStoreUpdates: function() {
+    var _this = this;
+    var store = this.get('store');
+    store.on('updated_session_data', function(content) {
+      var authenticator = this.createAuthenticator(content.authenticator);
+      if (!!authenticator) {
+        authenticator.restore(content).then(function(content) {
+          _this.setup(authenticator, content);
+        }, function() {
+          _this.destroy();
+        });
+      } else {
+        _this.destroy();
+      }
     });
   },
 
@@ -123,40 +151,6 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
       this.get('store').save({ authenticator: undefined });
     }
   }, 'authenticator'),
-
-  /**
-    @method listenToStoreUpdates
-    @private
-  */
-  listenToStoreUpdates: function() {
-    var _this = this;
-    var store = this.get('store');
-    store.on('updated_session_data', function(content) {
-      var authenticatorClass = classifyString(content.authenticator);
-      var authenticator      = Ember.tryInvoke(authenticatorClass, 'create');
-      if (!!authenticator) {
-        authenticator.restore(content).then(function(content) {
-          _this.setProperties({
-            isAuthenticated: true,
-            authenticator:   authenticator,
-            content:         content
-          });
-        }, function() {
-          _this.setProperties({
-            isAuthenticated: false,
-            authenticator:   undefined,
-            content:         {}
-          });
-        });
-      } else {
-        _this.setProperties({
-          isAuthenticated: false,
-          authenticator:   undefined,
-          content:         {}
-        });
-      }
-    });
-  },
 
   /**
     @method storeObserver
