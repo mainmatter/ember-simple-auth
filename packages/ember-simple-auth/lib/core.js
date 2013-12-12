@@ -39,9 +39,9 @@ Ember.SimpleAuth = Ember.Namespace.create();
 **/
 Ember.SimpleAuth.setup = function(application, options) {
   options = options || {};
-  this.routeAfterLogin       = options.routeAfterLogin || 'index';
-  this.routeAfterLogout      = options.routeAfterLogout || 'index';
-  this.loginRoute            = options.loginRoute || 'login';
+  this.routeAfterLogin  = options.routeAfterLogin || 'index';
+  this.routeAfterLogout = options.routeAfterLogout || 'index';
+  this.loginRoute       = options.loginRoute || 'login';
 
   var store      = (options.store || Ember.SimpleAuth.Stores.Cookie).create();
   var session    = Ember.SimpleAuth.Session.create({ store: store });
