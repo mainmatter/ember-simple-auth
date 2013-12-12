@@ -26,7 +26,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var _this         = this;
     var store         = this.get('store');
     var authenticator = this.createAuthenticator(store.load('authenticator'));
-    this.listenToStoreUpdates();
+    this.storeObserver();
     if (!!authenticator) {
       var restoredContent = store.restore();
       authenticator.restore(restoredContent).then(function(content) {
@@ -95,7 +95,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     });
   },
 
-  destroy: function(authenticator, content) {
+  destroy: function() {
     this.setProperties({
       isAuthenticated: false,
       authenticator:   undefined,
@@ -108,27 +108,6 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
       return (acc || {})[klass];
     }, window);
     return Ember.tryInvoke(authenticatorClass, 'create');
-  },
-
-  /**
-    @method listenToStoreUpdates
-    @private
-  */
-  listenToStoreUpdates: function() {
-    var _this = this;
-    var store = this.get('store');
-    store.on('updated_session_data', function(content) {
-      var authenticator = this.createAuthenticator(content.authenticator);
-      if (!!authenticator) {
-        authenticator.restore(content).then(function(content) {
-          _this.setup(authenticator, content);
-        }, function() {
-          _this.destroy();
-        });
-      } else {
-        _this.destroy();
-      }
-    });
   },
 
   contentObserver: Ember.observer(function() {
@@ -162,6 +141,19 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     @private
   */
   storeObserver: Ember.observer(function() {
-    this.listenToStoreUpdates();
+    var _this = this;
+    var store = this.get('store');
+    store.on('updated_session_data', function(content) {
+      var authenticator = this.createAuthenticator(content.authenticator);
+      if (!!authenticator) {
+        authenticator.restore(content).then(function(content) {
+          _this.setup(authenticator, content);
+        }, function() {
+          _this.destroy();
+        });
+      } else {
+        _this.destroy();
+      }
+    });
   }, 'store')
 });
