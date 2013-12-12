@@ -10,12 +10,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   },
 
   restore: function() {
-    var _this      = this;
-    var properties = {};
-    this.knownCookies().forEach(function(cookie) {
-      properties[cookie] = _this.load(cookie);
-    });
-    return properties;
+    return this.loadAll();
   },
 
   clear: function() {
@@ -47,6 +42,15 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     }
   },
 
+  loadAll: function() {
+    var properties = {};
+    var _this      = this;
+    this.knownCookies().forEach(function(property) {
+      properties[property] = _this.load(property);
+    });
+    return properties;
+  },
+
   /**
     @method knownCookies
     @private
@@ -65,11 +69,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     @private
   */
   syncProperties: function() {
-    var properties = {};
-    var _this      = this;
-    this.knownCookies().forEach(function(property) {
-      properties[property] = _this.load(property);
-    });
+    var properties = this.loadAll();
     this.trigger('updated_session_data', properties);
     if (!Ember.testing) {
       Ember.run.cancel(this.get('syncPropertiesTimeout'));
