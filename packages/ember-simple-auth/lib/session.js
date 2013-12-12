@@ -29,10 +29,10 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     @private
   */
   init: function() {
-    var _this         = this;
-    var store         = this.get('store');
+    var _this = this;
+    var store = this.get('store');
+    this.bindToStoreEvents();
     var authenticator = this.createAuthenticator(store.load('authenticator'));
-    this.storeObserver();
     if (!!authenticator) {
       var restoredContent = store.restore();
       authenticator.restore(restoredContent).then(function(content) {
@@ -68,6 +68,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
         _this.setAuthenticated(authenticator, content);
         resolve();
       }, function(error) {
+        _this.setUnauthenticated();
         reject(error);
       });
     });
@@ -87,8 +88,8 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
         authenticator.off('updated_session_data');
         _this.setUnauthenticated();
         resolve();
-      }, function() {
-        reject();
+      }, function(error) {
+        reject(error);
       });
     });
   },
@@ -99,6 +100,12 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
       authenticator:   authenticator,
       content:         content
     });
+    this.get('store').clear();
+    this.get('store').save(this.get('content'));
+    var authenticator = this.get('authenticator');
+    if (!!authenticator) {
+      this.get('store').save({ authenticator: authenticator.constructor.toString() });
+    }
   },
 
   setUnauthenticated: function() {
@@ -107,6 +114,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
       authenticator:   undefined,
       content:         {}
     });
+    this.get('store').clear();
   },
 
   createAuthenticator: function(className) {
@@ -114,37 +122,11 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     return Ember.tryInvoke(authenticatorClass, 'create');
   },
 
-  contentObserver: Ember.observer(function() {
-    this.get('store').clear();
-    this.get('store').save(this.get('content'));
-    var authenticator = this.get('authenticator');
-    if (!!authenticator) {
-      this.get('store').save({ authenticator: authenticator.constructor.toString() });
-    }
-  }, 'content'),
-
-  /**
-    @method authenticatorObserver
-    @private
-  */
-  authenticatorObserver: Ember.observer(function() {
-    var _this         = this;
-    var authenticator = this.get('authenticator');
-    if (!!authenticator) {
-      this.get('store').save({ authenticator: authenticator.constructor.toString() });
-      authenticator.on('updated_session_data', function(content) {
-        _this.set('content', content);
-      });
-    } else {
-      this.get('store').save({ authenticator: undefined });
-    }
-  }, 'authenticator'),
-
   /**
     @method storeObserver
     @private
   */
-  storeObserver: Ember.observer(function() {
+  bindToStoreEvents: function() {
     var _this = this;
     var store = this.get('store');
     store.on('updated_session_data', function(content) {
@@ -159,5 +141,22 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
         _this.setUnauthenticated();
       }
     });
-  }, 'store')
+  }
+
+  /**
+    @method authenticatorObserver
+    @private
+  */
+  authenticatorObserver: Ember.observer(function() {
+    var _this         = this;
+    var authenticator = this.get('authenticator');
+    if (!!authenticator) {
+      this.get('store').save({ authenticator: authenticator.constructor.toString() });
+      authenticator.on('updated_session_data', function(content) {
+        _this.setAuthenticated(authenticator, content);
+      });
+    } else {
+      this.get('store').save({ authenticator: undefined });
+    }
+  }, 'authenticator'),
 });
