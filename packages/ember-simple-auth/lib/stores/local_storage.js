@@ -48,8 +48,8 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
   knownKeys: function(callback) {
     var keys = [];
     for (var i = 0, l = localStorage.length; i < l; i++) {
-    	var key = localStorage.key(i);
-      if (key.indexOf(this.get('storageKeyPrefix')) == 0) {
+      var key = localStorage.key(i);
+      if (key.indexOf(this.get('storageKeyPrefix')) === 0) {
         keys.push(key);
       }
     }

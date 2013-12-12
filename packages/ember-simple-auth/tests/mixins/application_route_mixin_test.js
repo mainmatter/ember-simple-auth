@@ -11,8 +11,7 @@ module('Ember.SimpleAuth.ApplicationRouteMixin', {
   setup: function() {
     testRoute                            = TestRoute.create();
     Ember.SimpleAuth.serverTokenEndpoint = '/token';
-    var session                          = Ember.SimpleAuth.Session.create();
-    session.destroy();
+    var session                          = Ember.SimpleAuth.Session.create({ store: Ember.SimpleAuth.Stores.Ephemeral.create() });
     testRoute.set('session', session);
   },
   teardown: function() {
@@ -22,14 +21,18 @@ module('Ember.SimpleAuth.ApplicationRouteMixin', {
 
 test('redirects to the correct route on login', function() {
   Ember.SimpleAuth.loginRoute = 'some.route';
-  testRoute._actions['login'].apply(testRoute);
+  Ember.run(function() {
+    testRoute._actions['login'].apply(testRoute);
+  });
 
   equal(testRoute.transitionedTo, 'some.route', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route on login.');
 });
 
 test('destroys the current session on logout', function() {
   testRoute.set('session.authToken', 'some token');
-  testRoute._actions['logout'].apply(testRoute);
+  Ember.run(function() {
+    testRoute._actions['logout'].apply(testRoute);
+  });
 
   equal(testRoute.get('session.isAuthenticated'), false, 'Ember.SimpleAuth.ApplicationRouteMixin destroys the current session on logout.');
 });

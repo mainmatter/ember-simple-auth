@@ -19,7 +19,7 @@ var AjaxMock = Ember.Object.extend({
 module('Ember.SimpleAuth.Authenticators.OAuth2', {
   originalAjax: Ember.$.ajax,
   setup: function() {
-    authenticator = Ember.SimpleAuth.Authenticators.OAuth2.create()
+    authenticator = Ember.SimpleAuth.Authenticators.OAuth2.create();
     ajaxMock      = AjaxMock.create();
     Ember.$.ajax  = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
   },
@@ -39,7 +39,7 @@ test('it restores the session', function() {
   });
 
   ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise when the properties include an authToken on restore.');
-  deepEqual(resolvedWith, { authToken: 'authToken', key: 'value' }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with the passed properties when the properties include an authToken on restore.')
+  deepEqual(resolvedWith, { authToken: 'authToken', key: 'value' }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with the passed properties when the properties include an authToken on restore.');
 
   var rejected;
   Ember.run(function() {
@@ -107,7 +107,7 @@ test('returns a promise on authentication', function() {
   });
 
   ok(rejected, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a rejecting promise on authentication when the AJAX request is not successful.');
-  deepEqual(rejectedWith, 'error', 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that rejects with the error message from the XHR response on authentication when the AJAX request is not successful.')
+  deepEqual(rejectedWith, 'error', 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that rejects with the error message from the XHR response on authentication when the AJAX request is not successful.');
 });
 
 test('unauthenticates the session', function() {

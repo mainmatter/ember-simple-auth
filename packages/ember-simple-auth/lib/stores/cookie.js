@@ -31,7 +31,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   },
 
   save: function(properties) {
-    var secure = !!this.get('secureCookies') ? ';secure' : ''
+    var secure = !!this.get('secureCookies') ? ';secure' : '';
     for (var property in properties) {
       var value = properties[property];
       if (Ember.isEmpty(value)) {
@@ -58,7 +58,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   knownCookies: function() {
     var _this = this;
     return Ember.A(document.cookie.split(/[=;\s]+/)).filter(function(element) {
-      return new RegExp('^' + _this.get('cookiePrefix')).test(element)
+      return new RegExp('^' + _this.get('cookiePrefix')).test(element);
     }).map(function(cookie) {
       return cookie.replace(_this.get('cookiePrefix'), '');
     });
