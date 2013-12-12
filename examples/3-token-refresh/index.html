@@ -76,9 +76,8 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      //set a custom session endpoint
-      Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint = '/v2/token';
-      Ember.SimpleAuth.setup(container, application);
+      Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint = '/v2/token'
+      Ember.SimpleAuth.setup(application);
     }
   });
 
