@@ -36,7 +36,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     if (!!authenticator) {
       var restoredContent = store.restore();
       authenticator.restore(restoredContent).then(function(content) {
-        _this.setup(authenticator, content);
+        _this.setAuthenticated(authenticator, content);
       });
     } else {
       store.clear();
@@ -65,7 +65,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       authenticator.authenticate(options).then(function(content) {
-        _this.setup(authenticator, content);
+        _this.setAuthenticated(authenticator, content);
         resolve();
       }, function(error) {
         reject(error);
@@ -85,7 +85,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     return new Ember.RSVP.Promise(function(resolve, reject) {
       authenticator.unauthenticate().then(function() {
         authenticator.off('updated_session_data');
-        _this.destroy();
+        _this.setUnauthenticated();
         resolve();
       }, function() {
         reject();
@@ -93,7 +93,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     });
   },
 
-  setup: function(authenticator, content) {
+  setAuthenticated: function(authenticator, content) {
     this.setProperties({
       isAuthenticated: true,
       authenticator:   authenticator,
@@ -101,7 +101,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     });
   },
 
-  destroy: function() {
+  setUnauthenticated: function() {
     this.setProperties({
       isAuthenticated: false,
       authenticator:   undefined,
@@ -151,12 +151,12 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
       var authenticator = this.createAuthenticator(content.authenticator);
       if (!!authenticator) {
         authenticator.restore(content).then(function(content) {
-          _this.setup(authenticator, content);
+          _this.setAuthenticated(authenticator, content);
         }, function() {
-          _this.destroy();
+          _this.setUnauthenticated();
         });
       } else {
-        _this.destroy();
+        _this.setUnauthenticated();
       }
     });
   }, 'store')
