@@ -47,6 +47,14 @@ test('recognizes when the cookies change', function() {
   });
   store.syncProperties();
 
-  equal(store.load('key'), 'other value', 'Ember.SimpleAuth.Stores.Cookie recognizes when the cookies change.');
-  ok(triggered, 'Ember.SimpleAuth.Stores.Cookie triggers the "updated_session_data" when the cookies change.');
+  equal(store.load('key'), 'other value', 'Ember.SimpleAuth.Stores.Cookie recognizes when the cookies changes.');
+  ok(triggered, 'Ember.SimpleAuth.Stores.Cookie triggers the "updated_session_data" when the cookies changes.');
+
+  triggered = false;
+  store.one('updated_session_data', function() {
+    triggered = true;
+  });
+  store.syncProperties();
+
+  ok(!triggered, 'Ember.SimpleAuth.Stores.Cookie does not trigger the "updated_session_data" when nothing actually cookies changed.');
 });
