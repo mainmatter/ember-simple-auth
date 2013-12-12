@@ -20,7 +20,7 @@ test('loads all properties', function() {
   store.save({ key1: 'value1', key2: 'value2' });
   deepEqual(store.loadAll(), { key1: 'value1', key2: 'value2' }, 'Ember.SimpleAuth.Stores.Ephemeral loads all stored properties.');
 
-  var loadedProperties = store.loadAll()
+  var loadedProperties = store.loadAll();
   loadedProperties.key1 = 'another value';
   deepEqual(store.loadAll(), { key1: 'value1', key2: 'value2' }, 'Ember.SimpleAuth.Stores.Ephemeral returns a copy of the stored properties when all properties are loaded.');
 });

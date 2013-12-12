@@ -97,7 +97,7 @@ test('authenticates itself with an authenticator', function() {
   equal(session.get('authenticator'), authenticatorMock, 'Ember.Session saves the authenticator during setup when the authenticator resolves.');
   ok(resolved, 'Ember.Session returns a resolving promise on setup when the authenticator resolves.');
 
-  var resolved;
+  var rejected;
   var rejectedWith;
   AuthenticatorMock._resolve = false;
   AuthenticatorMock._reject = { error: 'message' };
@@ -125,7 +125,7 @@ test('unauthenticates itself', function() {
   session.set('isAuthenticated', true);
   Ember.run(function() {
     session.unauthenticate();
-  })
+  });
 
   ok(session.get('isAuthenticated'), 'Ember.Session remains authenticated after unauthentication when the authenticator rejects.');
   equal(session.get('authenticator'), authenticatorMock, 'Ember.Session does not unset the authenticator after unauthentication when the authenticator rejects.');
@@ -141,19 +141,19 @@ test('unauthenticates itself', function() {
   equal(session.get('content'), null, 'Ember.Session unsets its content object after unauthentication when the authenticator resolves.');
 
   Ember.run(function() {
-    authenticatorMock.trigger('updated_session_data', { key: 'other value' })
+    authenticatorMock.trigger('updated_session_data', { key: 'other value' });
   });
 
   equal(session.get('key'), null, 'Ember.Session stops listening to the "updated_session_data" of the authenticator after unauthentication when the authenticator resolves.');
 });
 
 test('observes changes of the observer', function() {
-  window.Authenticators                 = Ember.Namespace.create();
-  Authenticators.OtherAuthenticatorMock = AuthenticatorMock.extend();
-  var otherAuthenticatorMock            = Authenticators.OtherAuthenticatorMock.create();
+  window.Authenticators                        = Ember.Namespace.create();
+  window.Authenticators.OtherAuthenticatorMock = AuthenticatorMock.extend();
+  var otherAuthenticatorMock                   = window.Authenticators.OtherAuthenticatorMock.create();
   Ember.run(function() {
     session.set('authenticator', otherAuthenticatorMock);
-    otherAuthenticatorMock.trigger('updated_session_data', { key: 'value' })
+    otherAuthenticatorMock.trigger('updated_session_data', { key: 'value' });
   });
 
   equal(session.get('key'), 'value', 'Ember.Session subscribes to the "updated_session_data" of the authenticator when it is assigned.');

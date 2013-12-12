@@ -70,13 +70,13 @@ test('sends a request to the server token route on authentication', function() {
   equal(ajaxMock.requestOptions.data, 'grant_type=password&username=identification&password=password', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the correct data on authentication.');
   equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" on authentication.');
 
-  authenticator.setProperties({
-    clientId:     'clientId',
-    clientSecret: 'clientSecret'
-  });
+  Ember.SimpleAuth.Authenticators.OAuth2.cliendId     = 'clientId';
+  Ember.SimpleAuth.Authenticators.OAuth2.cliendSecret = 'clientSecret';
   Ember.run(function() {
     authenticator.authenticate({ identification: 'identification', password: 'password' });
   });
+  Ember.SimpleAuth.Authenticators.OAuth2.cliendId     = null;
+  Ember.SimpleAuth.Authenticators.OAuth2.cliendSecret = null;
 
   equal(ajaxMock.requestOptions.data, 'grant_type=password&username=identification&password=password&client_id=clientId&client_secret=clientSecret', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with client_id and client_secret on authentication when these are set.');
 });
@@ -93,7 +93,7 @@ test('returns a promise on authentication', function() {
   });
 
   ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise on authentication when the AJAX request is successful.');
-  deepEqual(resolvedWith, { authToken: 'authToken', authTokenExpiry: null, refreshToken: null }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with authToken, authTokenExpiry and refreshToken on authentication when the AJAX request is successful.');
+  deepEqual(resolvedWith, { authToken: 'authToken', authTokenExpiry: undefined, refreshToken: undefined }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with authToken, authTokenExpiry and refreshToken on authentication when the AJAX request is successful.');
 
   AjaxMock._resolve = false;
   AjaxMock._reject  = { responseText: 'error' };

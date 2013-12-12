@@ -102,7 +102,6 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     });
     this.get('store').clear();
     this.get('store').save(this.get('content'));
-    var authenticator = this.get('authenticator');
     if (!!authenticator) {
       this.get('store').save({ authenticator: authenticator.constructor.toString() });
     }
@@ -158,5 +157,5 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     } else {
       this.get('store').save({ authenticator: null });
     }
-  }, 'authenticator'),
+  }, 'authenticator')
 });
