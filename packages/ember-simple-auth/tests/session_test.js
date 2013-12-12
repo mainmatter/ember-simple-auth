@@ -12,8 +12,8 @@ function mockPromise(resolveWith, rejectWith) {
 
 var storeMock;
 var StoreMock = Ember.SimpleAuth.Stores.Ephemeral.extend({
-  restore: function() {
-    this.restoreInvoked = true;
+  loadAll: function() {
+    this.loadAllInvoked = true;
     return {};
   }
 });
@@ -64,7 +64,7 @@ test('restores its state during initialization', function() {
     session = Ember.SimpleAuth.Session.create({ store: storeMock });
   });
 
-  ok(storeMock.restoreInvoked, 'Ember.Session restores its content from the store during initialization.');
+  ok(storeMock.loadAllInvoked, 'Ember.Session restores its content from the store during initialization.');
   ok(session.get('authenticator') instanceof AuthenticatorMock, 'Ember.Session restores the authenticator as a new instance of the class read from the store during initialization.');
   ok(session.get('isAuthenticated'), 'Ember.Session is authenticated when the restored authenticator resolves during initialization.');
   deepEqual(session.get('content'), { some: 'content' }, 'Ember.Session sets its content when the restored authenticator resolves during initialization.');

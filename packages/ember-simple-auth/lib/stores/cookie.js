@@ -9,8 +9,13 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     this.syncProperties();
   },
 
-  restore: function() {
-    return this.loadAll();
+  loadAll: function() {
+    var properties = {};
+    var _this      = this;
+    this.knownCookies().forEach(function(property) {
+      properties[property] = _this.load(property);
+    });
+    return properties;
   },
 
   clear: function() {
@@ -40,19 +45,6 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
         document.cookie = this.get('cookiePrefix') + property + '=' + encodeURIComponent(value || '') + secure;
       }
     }
-  },
-
-  /**
-    @method loadAll
-    @private
-  */
-  loadAll: function() {
-    var properties = {};
-    var _this      = this;
-    this.knownCookies().forEach(function(property) {
-      properties[property] = _this.load(property);
-    });
-    return properties;
   },
 
   /**

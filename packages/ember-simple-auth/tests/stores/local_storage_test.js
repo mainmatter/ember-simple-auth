@@ -17,11 +17,11 @@ test('clears itself', function() {
   equal(store.load('key2'), undefined, 'Ember.SimpleAuth.Stores.LocalStorage deletes all properties when cleared.');
 });
 
-test('restores properties', function() {
-  deepEqual(store.restore(), {}, 'Ember.SimpleAuth.Stores.LocalStorage returns an empty plain object on restore when no properties are stored.');
+test('loads all properties', function() {
+  deepEqual(store.loadAll(), {}, 'Ember.SimpleAuth.Stores.LocalStorage returns an empty plain object when all properties are loaded but the store is empty');
 
   store.save({ key1: 'value1', key2: 'value2' });
-  deepEqual(store.restore(), { key1: 'value1', key2: 'value2' }, 'Ember.SimpleAuth.Stores.LocalStorage returns all stored properties on restore.');
+  deepEqual(store.loadAll(), { key1: 'value1', key2: 'value2' }, 'Ember.SimpleAuth.Stores.LocalStorage loads all stored properties.');
 });
 
 test('saves properties', function() {

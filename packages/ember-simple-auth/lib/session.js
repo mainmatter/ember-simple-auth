@@ -34,7 +34,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     this.bindToStoreEvents();
     var authenticator = this.createAuthenticator(store.load('authenticator'));
     if (!!authenticator) {
-      var restoredContent = store.restore();
+      var restoredContent = store.loadAll();
       authenticator.restore(restoredContent).then(function(content) {
         _this.setAuthenticated(authenticator, content);
       });
@@ -141,7 +141,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
         _this.setUnauthenticated();
       }
     });
-  }
+  },
 
   /**
     @method authenticatorObserver
