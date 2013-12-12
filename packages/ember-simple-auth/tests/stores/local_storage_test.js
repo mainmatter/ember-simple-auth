@@ -12,10 +12,9 @@ module('Ember.SimpleAuth.Stores.LocalStorage', {
 test('clears itself', function() {
   store.save({ key1: 'value1', key2: 'value2' });
   store.clear();
-  console.log('before assert');
+
   equal(store.load('key1'), undefined, 'Ember.SimpleAuth.Stores.LocalStorage deletes all properties when cleared.');
   equal(store.load('key2'), undefined, 'Ember.SimpleAuth.Stores.LocalStorage deletes all properties when cleared.');
-  console.log('after assert');
 });
 
 test('restores properties', function() {

@@ -16,10 +16,11 @@ function classifyString(className) {
   @constructor
 */
 Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
-  authenticator:   null,
-  store:           null,
-  isAuthenticated: false,
-  content:         null,
+  authenticator:       null,
+  store:               null,
+  isAuthenticated:     false,
+  attemptedTransition: null,
+  content:             {},
   /**
     @method init
     @private
@@ -91,7 +92,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
       _this.setProperties({
         isAuthenticated: false,
         authenticator:   undefined,
-        content:         undefined
+        content:         {}
       });
     });
   },
@@ -110,7 +111,6 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var _this         = this;
     var authenticator = this.get('authenticator');
     if (!!authenticator) {
-      console.log(authenticator.constructor.toString());
       this.get('store').save({ authenticator: authenticator.constructor.toString() });
       authenticator.on('updated_session_data', function(content) {
         _this.set('content', content);
