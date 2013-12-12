@@ -22,7 +22,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   store:               null,
   isAuthenticated:     false,
   attemptedTransition: null,
-  content:             {},
+  content:             null,
 
   /**
     @method init
@@ -112,7 +112,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     this.setProperties({
       isAuthenticated: false,
       authenticator:   undefined,
-      content:         {}
+      content:         null
     });
     this.get('store').clear();
   },

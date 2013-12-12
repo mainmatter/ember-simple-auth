@@ -77,7 +77,7 @@ test('restores its state during initialization', function() {
 
   equal(session.get('authenticator'), undefined, 'Ember.Session does not assign the authenticator during initialization when the authenticator rejects.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when the restored authenticator rejects during initialization.');
-  equal(session.get('content'), undefined, 'Ember.Session does not set its content when the restored authenticator rejects during initialization.');
+  equal(session.get('content'), null, 'Ember.Session does not set its content when the restored authenticator rejects during initialization.');
   equal(storeMock.load('key1'), undefined, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
   equal(storeMock.load('key2'), undefined, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
 });
@@ -138,7 +138,7 @@ test('unauthenticates itself', function() {
   ok(authenticatorMock.unauthenticateInvoked, 'Ember.Session unauthenticates with the authenticator on destruction.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after unauthentication when the authenticator resolves.');
   equal(session.get('aurhenticator'), undefined, 'Ember.Session unsets the authenticator after unauthentication when the authenticator resolves.');
-  equal(session.get('content'), undefined, 'Ember.Session unsets its content object after unauthentication when the authenticator resolves.');
+  equal(session.get('content'), null, 'Ember.Session unsets its content object after unauthentication when the authenticator resolves.');
 
   Ember.run(function() {
     authenticatorMock.trigger('updated_session_data', { key: 'other value' })
