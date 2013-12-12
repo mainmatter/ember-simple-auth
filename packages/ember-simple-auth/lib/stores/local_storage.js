@@ -4,17 +4,11 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
   storageKeyPrefix: 'ember_simple_auth:',
 
   init: function() {
-    this.syncProperties();
+    this.listenToStorageEvents();
   },
 
   restore: function() {
-    var _this = this;
-    var properties = {};
-    this.knownKeys().forEach(function(key) {
-      var originalKey = key.replace(_this.get('storageKeyPrefix'), '');
-      properties[originalKey] = localStorage.getItem(key);
-    });
-    return properties;
+    return this.loadAll();
   },
 
   clear: function() {
@@ -62,17 +56,21 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
     return Ember.A(keys);
   },
 
-  syncProperties: function() {
+  loadAll: function() {
     var _this = this;
     var properties = {};
     this.knownKeys().forEach(function(key) {
       var originalKey = key.replace(_this.get('storageKeyPrefix'), '');
       properties[originalKey] = localStorage.getItem(key);
     });
-    this.trigger('updated_session_data', properties);
-    if (!Ember.testing) {
-      Ember.run.cancel(this.get('syncPropertiesTimeout'));
-      this.set('syncPropertiesTimeout', Ember.run.later(this, this.syncProperties, 500));
-    }
+    return properties;
+  },
+
+  listenToStorageEvents: function() {
+    var _this = this;
+    Ember.$(window).bind('storage', function() {
+      var properties = _this.loadAll();
+      this.trigger('updated_session_data', properties);
+    });
   }
 });

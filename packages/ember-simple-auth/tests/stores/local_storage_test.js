@@ -38,15 +38,3 @@ test('saves properties', function() {
   equal(store.load('key'), undefined, 'Ember.SimpleAuth.Stores.LocalStorage deletes empty properties when saving.');
   equal(localStorage.getItem('ember_simple_auth:key'), null, 'Ember.SimpleAuth.Stores.LocalStorage clears the localStorage object for empty properties when saving.');
 });
-
-test('triggers an event when the localStorage cahnges', function() {
-  var triggered;
-  store.save({ key: 'value' });
-  localStorage.setItem('ember_simple_auth:key', 'other value')
-  store.one('updated_session_data', function() {
-    triggered = true;
-  });
-  store.syncProperties();
-
-  ok(triggered, 'Ember.SimpleAuth.Stores.LocalStorage triggers the "updated_session_data" event when the localStorage change.');
-});
