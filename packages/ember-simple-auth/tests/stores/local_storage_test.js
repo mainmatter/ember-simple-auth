@@ -36,19 +36,17 @@ test('saves properties', function() {
 
   store.save({ key: '' });
   equal(store.load('key'), undefined, 'Ember.SimpleAuth.Stores.LocalStorage deletes empty properties when saving.');
-  equal(localStorage.getItem('emberSimpleAuth:key'), null, 'Ember.SimpleAuth.Stores.LocalStorage clears the localStorage object for empty properties when saving.');
+  equal(localStorage.getItem('ember_simple_auth:key'), null, 'Ember.SimpleAuth.Stores.LocalStorage clears the localStorage object for empty properties when saving.');
 });
-/*
-test('recognizes when the cookies change', function() {
+
+test('triggers an event when the localStorage cahnges', function() {
   var triggered;
   store.save({ key: 'value' });
-  document.cookie = 'ember_simple_auth:key=other value;';
+  localStorage.setItem('ember_simple_auth:key', 'other value')
   store.one('updated_session_data', function() {
     triggered = true;
   });
   store.syncProperties();
 
-  equal(store.load('key'), 'other value', 'Ember.SimpleAuth.Stores.Cookie recognizes when the cookies change.');
-  ok(triggered, 'Ember.SimpleAuth.Stores.Cookie triggers the "updated_session_data" when the cookies change.');
+  ok(triggered, 'Ember.SimpleAuth.Stores.LocalStorage triggers the "updated_session_data" event when the localStorage change.');
 });
-*/
