@@ -14,7 +14,7 @@ var storeMock;
 var StoreMock = Ember.SimpleAuth.Stores.Ephemeral.extend({
   loadAll: function() {
     this.loadAllInvoked = true;
-    return {};
+    return this._super();
   }
 });
 
