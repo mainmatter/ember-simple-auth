@@ -13,8 +13,8 @@ test('clears itself', function() {
   store.save({ key1: 'value1', key2: 'value2' });
   store.clear();
 
-  equal(store.load('key1'), null, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when cleared.');
-  equal(store.load('key2'), null, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when cleared.');
+  equal(store.loadAll().key1, null, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when cleared.');
+  equal(store.loadAll().key2, null, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when cleared.');
 });
 
 test('loads all properties', function() {
@@ -26,15 +26,15 @@ test('loads all properties', function() {
 
 test('saves properties', function() {
   store.save({ key: 'value' });
-  equal(store.load('key'), 'value', 'Ember.SimpleAuth.Stores.Cookie saves a property and loads it again.');
+  equal(store.loadAll().key, 'value', 'Ember.SimpleAuth.Stores.Cookie saves a property and loads it again.');
 
   store.save({ key1: 'value1', key2: 'value2' });
-  equal(store.load('key1'), 'value1', 'Ember.SimpleAuth.Stores.Cookie saves multiple properties.');
-  equal(store.load('key2'), 'value2', 'Ember.SimpleAuth.Stores.Cookie saves multiple properties.');
-  equal(store.load('key'), 'value', 'Ember.SimpleAuth.Stores.Cookie does not destroy previously stored properties when save is called again.');
+  equal(store.loadAll().key1, 'value1', 'Ember.SimpleAuth.Stores.Cookie saves multiple properties.');
+  equal(store.loadAll().key2, 'value2', 'Ember.SimpleAuth.Stores.Cookie saves multiple properties.');
+  equal(store.loadAll().key, 'value', 'Ember.SimpleAuth.Stores.Cookie does not destroy previously stored properties when save is called again.');
 
   store.save({ key: '' });
-  equal(store.load('key'), null, 'Ember.SimpleAuth.Stores.Cookie deletes empty properties when saving.');
+  equal(store.loadAll().key, null, 'Ember.SimpleAuth.Stores.Cookie deletes empty properties when saving.');
   ok(!document.cookie.match(/key=/), 'Ember.SimpleAuth.Stores.Cookie clears the cookies for empty properties when saving.');
 });
 
@@ -47,7 +47,7 @@ test('recognizes when the cookies change', function() {
   });
   store.syncProperties();
 
-  equal(store.load('key'), 'other value', 'Ember.SimpleAuth.Stores.Cookie recognizes when the cookies changes.');
+  equal(store.loadAll().key, 'other value', 'Ember.SimpleAuth.Stores.Cookie recognizes when the cookies changes.');
   ok(triggered, 'Ember.SimpleAuth.Stores.Cookie triggers the "updated_session_data" when the cookies changes.');
 
   triggered = false;

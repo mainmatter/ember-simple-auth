@@ -78,8 +78,8 @@ test('restores its state during initialization', function() {
   equal(session.get('authenticator'), null, 'Ember.Session does not assign the authenticator during initialization when the authenticator rejects.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when the restored authenticator rejects during initialization.');
   equal(session.get('content'), null, 'Ember.Session does not set its content when the restored authenticator rejects during initialization.');
-  equal(storeMock.load('key1'), null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
-  equal(storeMock.load('key2'), null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
+  equal(storeMock.loadAll().key1, null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
+  equal(storeMock.loadAll().key2, null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
 });
 
 test('authenticates itself with an authenticator', function() {
@@ -157,5 +157,5 @@ test('observes changes of the observer', function() {
   });
 
   equal(session.get('key'), 'value', 'Ember.Session subscribes to the "updated_session_data" of the authenticator when it is assigned.');
-  equal(storeMock.load('authenticator'), 'Authenticators.OtherAuthenticatorMock', "Ember.Session saves the authenticator's prototype to the store when it is assigned.");
+  equal(storeMock.loadAll().authenticator, 'Authenticators.OtherAuthenticatorMock', "Ember.Session saves the authenticator's prototype to the store when it is assigned.");
 });
