@@ -23,7 +23,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
     });
   },
 
-  save: function(properties) {
+  persist: function(properties) {
     for (var property in properties) {
       var key   = this.buildStorageKey(property);
       var value = properties[property];

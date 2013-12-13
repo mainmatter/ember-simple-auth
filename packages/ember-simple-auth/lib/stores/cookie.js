@@ -24,10 +24,10 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     this.knownCookies().forEach(function(cookie) {
       nullifiedProperties[cookie] = null;
     });
-    this.save(nullifiedProperties);
+    this.persist(nullifiedProperties);
   },
 
-  save: function(properties) {
+  persist: function(properties) {
     var secure = !!this.get('secureCookies') ? ';secure' : '';
     for (var property in properties) {
       var value = properties[property];

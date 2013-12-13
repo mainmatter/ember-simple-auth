@@ -7,7 +7,7 @@ module('Ember.SimpleAuth.Stores.Ephemeral', {
 });
 
 test('clears itself', function() {
-  store.save({ key1: 'value1', key2: 'value2' });
+  store.persist({ key1: 'value1', key2: 'value2' });
   store.clear();
 
   equal(store.restore().key1, null, 'Ember.SimpleAuth.Stores.Ephemeral deletes all properties when cleared.');
@@ -17,7 +17,7 @@ test('clears itself', function() {
 test('loads all properties', function() {
   deepEqual(store.restore(), {}, 'Ember.SimpleAuth.Stores.Ephemeral returns an empty plain object when all properties are loaded but the store is empty');
 
-  store.save({ key1: 'value1', key2: 'value2' });
+  store.persist({ key1: 'value1', key2: 'value2' });
   deepEqual(store.restore(), { key1: 'value1', key2: 'value2' }, 'Ember.SimpleAuth.Stores.Ephemeral loads all stored properties.');
 
   var loadedProperties = store.restore();
@@ -26,14 +26,14 @@ test('loads all properties', function() {
 });
 
 test('saves properties', function() {
-  store.save({ key: 'value' });
+  store.persist({ key: 'value' });
   equal(store.restore().key, 'value', 'Ember.SimpleAuth.Stores.Ephemeral saves a property and loads it again.');
 
-  store.save({ key1: 'value1', key2: 'value2' });
+  store.persist({ key1: 'value1', key2: 'value2' });
   equal(store.restore().key1, 'value1', 'Ember.SimpleAuth.Stores.Ephemeral saves multiple properties.');
   equal(store.restore().key2, 'value2', 'Ember.SimpleAuth.Stores.Ephemeral saves multiple properties.');
   equal(store.restore().key, 'value', 'Ember.SimpleAuth.Stores.Ephemeral does not destroy previously stored properties when save is called again.');
 
-  store.save({ key: '' });
+  store.persist({ key: '' });
   equal(store.restore().key, null, 'Ember.SimpleAuth.Stores.Ephemeral deletes empty properties when saving.');
 });
