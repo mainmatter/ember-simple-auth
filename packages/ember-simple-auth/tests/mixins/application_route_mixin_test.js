@@ -5,50 +5,52 @@ var TestRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
   }
 });
 
+var authenticatorMock;
+var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
+  unauthenticate: function() {
+    return new Ember.RSVP.Promise(function(resolve, reject) { resolve(); });
+  }
+});
+
 var attemptedTransitionMock = { retry: function() { this.retried = true; } };
 
 module('Ember.SimpleAuth.ApplicationRouteMixin', {
   setup: function() {
     testRoute                            = TestRoute.create();
+    authenticatorMock                    = AuthenticatorMock.create();
     Ember.SimpleAuth.serverTokenEndpoint = '/token';
-    var session                          = Ember.SimpleAuth.Session.create({ store: Ember.SimpleAuth.Stores.Ephemeral.create() });
+    var session                          = Ember.SimpleAuth.Session.create({ store: Ember.SimpleAuth.Stores.Ephemeral.create(), authenticator: authenticatorMock });
     testRoute.set('session', session);
-  },
-  teardown: function() {
-    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout);
   }
 });
 
 test('redirects to the correct route on login', function() {
-  Ember.SimpleAuth.loginRoute = 'some.route';
-  Ember.run(function() {
-    testRoute._actions['login'].apply(testRoute);
-  });
+  testRoute._actions['login'].apply(testRoute);
 
-  equal(testRoute.transitionedTo, 'some.route', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route on login.');
+  equal(testRoute.transitionedTo, Ember.SimpleAuth.loginRoute, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route on login.');
 });
 
-test('destroys the current session on logout', function() {
-  testRoute.set('session.authToken', 'some token');
+test('unauthenticates the current session on logout', function() {
+  testRoute.set('session.isAuthenticated', true);
   Ember.run(function() {
     testRoute._actions['logout'].apply(testRoute);
   });
 
-  equal(testRoute.get('session.isAuthenticated'), false, 'Ember.SimpleAuth.ApplicationRouteMixin destroys the current session on logout.');
+  equal(testRoute.get('session.isAuthenticated'), false, 'Ember.SimpleAuth.ApplicationRouteMixin unauthenticates the current session on logout.');
 });
 
 test('redirects to the correct route on logout', function() {
-  Ember.SimpleAuth.routeAfterLogout = 'some.route';
-  testRoute._actions['logout'].apply(testRoute);
+  Ember.run(function() {
+    testRoute._actions['logout'].apply(testRoute);
+  });
 
-  equal(testRoute.transitionedTo, 'some.route', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterLogout on logout.');
+  equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterLogout, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterLogout on logout.');
 });
 
 test('redirects to the correct route on loginSucceeded', function() {
-  Ember.SimpleAuth.routeAfterLogin = 'some.route';
   testRoute._actions['loginSucceeded'].apply(testRoute);
 
-  equal(testRoute.transitionedTo, 'some.route', 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterLogin route on loginSucceeded when no attempted transition is saved.');
+  equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterLogin, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterLogin route on loginSucceeded when no attempted transition is saved.');
 
   testRoute.set('session.attemptedTransition', attemptedTransitionMock);
   testRoute._actions['loginSucceeded'].apply(testRoute);
