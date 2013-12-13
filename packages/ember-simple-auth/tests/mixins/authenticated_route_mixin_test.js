@@ -17,15 +17,10 @@ var AttemptedTransitionMock = Ember.Object.extend({
 
 module('Ember.SimpleAuth.AuthenticatedRouteMixin', {
   setup: function() {
-    testRoute                   = TestRoute.create();
-    attemptedTransitionMock     = AttemptedTransitionMock.create();
-    Ember.SimpleAuth.loginRoute = 'login.route';
-    var session                 = Ember.SimpleAuth.Session.create();
-    session.destroy();
+    testRoute               = TestRoute.create();
+    attemptedTransitionMock = AttemptedTransitionMock.create();
+    var session             = Ember.SimpleAuth.Session.create({ store: Ember.SimpleAuth.Stores.Ephemeral.create() });
     testRoute.set('session', session);
-  },
-  teardown: function() {
-    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout);
   }
 });
 
@@ -42,12 +37,12 @@ test('triggers the login correctly', function() {
 });
 
 test('triggers the login before model when the session is not authenticated', function() {
-  testRoute.set('session.authToken', '');
+  testRoute.set('session.isAuthenticated', false);
   testRoute.beforeModel(attemptedTransitionMock);
 
   ok(attemptedTransitionMock.invokedLogin, 'Ember.SimpleAuth.AuthenticatedRouteMixin triggers login before model when the session is not authenticated.');
 
-  testRoute.set('session.authToken', 'token');
+  testRoute.set('session.isAuthenticated', true);
   attemptedTransitionMock.invokedLogin = false;
   testRoute.beforeModel(attemptedTransitionMock);
 
@@ -55,12 +50,12 @@ test('triggers the login before model when the session is not authenticated', fu
 });
 
 test('aborts the attempted transaction before model when the session is not authenticated', function() {
-  testRoute.set('session.authToken', '');
+  testRoute.set('session.isAuthenticated', false);
   testRoute.beforeModel(attemptedTransitionMock);
 
   ok(attemptedTransitionMock.aborted, 'Ember.SimpleAuth.AuthenticatedRouteMixin aborts the attempted transition before model when the session is not authenticated.');
 
-  testRoute.set('session.authToken', 'token');
+  testRoute.set('session.isAuthenticated', true);
   attemptedTransitionMock.aborted = false;
   testRoute.beforeModel(attemptedTransitionMock);
 
