@@ -102,9 +102,8 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     });
     this.get('store').clear();
     this.get('store').save(this.get('content'));
-    if (!!authenticator) {
-      this.get('store').save({ authenticator: authenticator.constructor.toString() });
-    }
+    var authenticatorClass = !!authenticator ? authenticator.constructor.toString() : null;
+    this.get('store').save({ authenticator: authenticatorClass });
   },
 
   clear: function() {
@@ -150,12 +149,9 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var _this         = this;
     var authenticator = this.get('authenticator');
     if (!!authenticator) {
-      this.get('store').save({ authenticator: authenticator.constructor.toString() });
       authenticator.on('updated_session_data', function(content) {
         _this.setup(authenticator, content);
       });
-    } else {
-      this.get('store').save({ authenticator: null });
     }
   }, 'authenticator')
 });
