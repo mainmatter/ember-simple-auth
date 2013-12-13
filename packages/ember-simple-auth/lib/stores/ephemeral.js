@@ -5,15 +5,6 @@ Ember.SimpleAuth.Stores.Ephemeral = Ember.Object.extend(Ember.Evented, {
     this.clear();
   },
 
-  restore: function() {
-    return Ember.$.extend({}, this._data);
-  },
-
-  clear: function() {
-    delete this._data;
-    this._data = {};
-  },
-
   persist: function(properties) {
     for (var property in properties) {
       var value = properties[property];
@@ -23,5 +14,14 @@ Ember.SimpleAuth.Stores.Ephemeral = Ember.Object.extend(Ember.Evented, {
         delete this._data[property];
       }
     }
+  },
+
+  restore: function() {
+    return Ember.$.extend({}, this._data);
+  },
+
+  clear: function() {
+    delete this._data;
+    this._data = {};
   }
 });
