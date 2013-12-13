@@ -94,6 +94,10 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     });
   },
 
+  /**
+    @method setup
+    @private
+  */
   setup: function(authenticator, content) {
     this.setProperties({
       isAuthenticated: true,
@@ -106,6 +110,10 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     this.get('store').save({ authenticator: authenticatorClass });
   },
 
+  /**
+    @method clear
+    @private
+  */
   clear: function() {
     this.setProperties({
       isAuthenticated: false,
@@ -115,6 +123,10 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     this.get('store').clear();
   },
 
+  /**
+    @method createAuthenticator
+    @private
+  */
   createAuthenticator: function(className) {
     var authenticatorClass = classifyString(className);
     return Ember.tryInvoke(authenticatorClass, 'create');
