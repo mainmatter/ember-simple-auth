@@ -36,7 +36,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     if (!!authenticator) {
       var restoredContent = store.loadAll();
       authenticator.restore(restoredContent).then(function(content) {
-        _this.setAuthenticated(authenticator, content);
+        _this.setup(authenticator, content);
       });
     } else {
       store.clear();
@@ -65,7 +65,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       authenticator.authenticate(options).then(function(content) {
-        _this.setAuthenticated(authenticator, content);
+        _this.setup(authenticator, content);
         resolve();
       }, function(error) {
         _this.clear();
@@ -94,7 +94,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     });
   },
 
-  setAuthenticated: function(authenticator, content) {
+  setup: function(authenticator, content) {
     this.setProperties({
       isAuthenticated: true,
       authenticator:   authenticator,
@@ -132,7 +132,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
       var authenticator = _this.createAuthenticator(content.authenticator);
       if (!!authenticator) {
         authenticator.restore(content).then(function(content) {
-          _this.setAuthenticated(authenticator, content);
+          _this.setup(authenticator, content);
         }, function() {
           _this.clear();
         });
@@ -152,7 +152,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     if (!!authenticator) {
       this.get('store').save({ authenticator: authenticator.constructor.toString() });
       authenticator.on('updated_session_data', function(content) {
-        _this.setAuthenticated(authenticator, content);
+        _this.setup(authenticator, content);
       });
     } else {
       this.get('store').save({ authenticator: null });
