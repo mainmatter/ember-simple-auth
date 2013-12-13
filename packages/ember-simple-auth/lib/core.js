@@ -71,3 +71,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
     }
   }
 });
+
+Ember.SimpleAuth.Authenticators = Ember.Namespace.create();
+Ember.SimpleAuth.Authorizers    = Ember.Namespace.create();
+Ember.SimpleAuth.Stores         = {};
