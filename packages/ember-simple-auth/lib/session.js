@@ -68,7 +68,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
         _this.setAuthenticated(authenticator, content);
         resolve();
       }, function(error) {
-        _this.setUnauthenticated();
+        _this.clear();
         reject(error);
       });
     });
@@ -86,7 +86,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     return new Ember.RSVP.Promise(function(resolve, reject) {
       authenticator.unauthenticate().then(function() {
         authenticator.off('updated_session_data');
-        _this.setUnauthenticated();
+        _this.clear();
         resolve();
       }, function(error) {
         reject(error);
@@ -107,7 +107,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     }
   },
 
-  setUnauthenticated: function() {
+  clear: function() {
     this.setProperties({
       isAuthenticated: false,
       authenticator:   null,
@@ -134,10 +134,10 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
         authenticator.restore(content).then(function(content) {
           _this.setAuthenticated(authenticator, content);
         }, function() {
-          _this.setUnauthenticated();
+          _this.clear();
         });
       } else {
-        _this.setUnauthenticated();
+        _this.clear();
       }
     });
   },
