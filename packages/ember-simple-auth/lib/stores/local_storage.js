@@ -7,7 +7,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
     this.bindToStorageEvents();
   },
 
-  loadAll: function() {
+  restore: function() {
     var _this = this;
     var properties = {};
     this.knownKeys().forEach(function(key) {
@@ -61,7 +61,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
   bindToStorageEvents: function() {
     var _this = this;
     Ember.$(window).bind('storage', function() {
-      var properties = _this.loadAll();
+      var properties = _this.restore();
       this.trigger('updated_session_data', properties);
     });
   }

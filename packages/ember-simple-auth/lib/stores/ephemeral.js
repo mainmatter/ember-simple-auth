@@ -5,7 +5,7 @@ Ember.SimpleAuth.Stores.Ephemeral = Ember.Object.extend(Ember.Evented, {
     this.clear();
   },
 
-  loadAll: function() {
+  restore: function() {
     return Ember.$.extend({}, this._data);
   },
 

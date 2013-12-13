@@ -12,8 +12,8 @@ function mockPromise(resolveWith, rejectWith) {
 
 var storeMock;
 var StoreMock = Ember.SimpleAuth.Stores.Ephemeral.extend({
-  loadAll: function() {
-    this.loadAllInvoked = true;
+  restore: function() {
+    this.restoreInvoked = true;
     return this._super();
   }
 });
@@ -64,7 +64,7 @@ test('restores its state during initialization', function() {
     session = Ember.SimpleAuth.Session.create({ store: storeMock });
   });
 
-  ok(storeMock.loadAllInvoked, 'Ember.Session restores its content from the store during initialization.');
+  ok(storeMock.restoreInvoked, 'Ember.Session restores its content from the store during initialization.');
   ok(session.get('authenticator') instanceof AuthenticatorMock, 'Ember.Session restores the authenticator as a new instance of the class read from the store during initialization.');
   ok(session.get('isAuthenticated'), 'Ember.Session is authenticated when the restored authenticator resolves during initialization.');
   deepEqual(session.get('content'), { some: 'content' }, 'Ember.Session sets its content when the restored authenticator resolves during initialization.');
@@ -78,8 +78,8 @@ test('restores its state during initialization', function() {
   equal(session.get('authenticator'), null, 'Ember.Session does not assign the authenticator during initialization when the authenticator rejects.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when the restored authenticator rejects during initialization.');
   equal(session.get('content'), null, 'Ember.Session does not set its content when the restored authenticator rejects during initialization.');
-  equal(storeMock.loadAll().key1, null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
-  equal(storeMock.loadAll().key2, null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
+  equal(storeMock.restore().key1, null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
+  equal(storeMock.restore().key2, null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
 });
 
 test('authenticates itself with an authenticator', function() {
@@ -157,5 +157,5 @@ test('observes changes of the observer', function() {
   });
 
   equal(session.get('key'), 'value', 'Ember.Session subscribes to the "updated_session_data" of the authenticator when it is assigned.');
-  equal(storeMock.loadAll().authenticator, 'Authenticators.OtherAuthenticatorMock', "Ember.Session saves the authenticator's prototype to the store when it is assigned.");
+  equal(storeMock.restore().authenticator, 'Authenticators.OtherAuthenticatorMock', "Ember.Session saves the authenticator's prototype to the store when it is assigned.");
 });

@@ -9,7 +9,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     this.syncProperties();
   },
 
-  loadAll: function() {
+  restore: function() {
     var properties = {};
     var _this      = this;
     this.knownCookies().forEach(function(property) {
@@ -57,7 +57,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     @private
   */
   syncProperties: function() {
-    var properties        = this.loadAll();
+    var properties        = this.restore();
     var encodedProperties = JSON.stringify(properties);
     if (encodedProperties !== this._lastProperties) {
       this._lastProperties = encodedProperties;
