@@ -389,6 +389,10 @@ This is an incomplete list of middlewares supporting RFC 6749.
 
 * scribe-java: https://github.com/fernandezpablo85/scribe-java
 
+#### Node.js
+
+* oauth2orize: https://github.com/jaredhanson/oauth2orize
+
 Please submit a pull request if you think an important library is missing here!
 
 ## Configuration
