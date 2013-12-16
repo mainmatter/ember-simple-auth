@@ -38,7 +38,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   invaldiate: function() {
     Ember.run.cancel(Ember.SimpleAuth.Authenticators.OAuth2._refreshTokenTimeout);
     delete Ember.SimpleAuth.Authenticators.OAuth2._refreshTokenTimeout;
-    return Ember.RSVP.resolve();
+    return new Ember.RSVP.Promise(function(resolve) { resolve(); });
   },
 
   /**
