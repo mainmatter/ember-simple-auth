@@ -30,10 +30,6 @@ test('triggers the login correctly', function() {
   equal(testRoute.get('session.attemptedTransition'), attemptedTransitionMock, 'Ember.SimpleAuth.AuthenticatedRouteMixin saves the attempted transition in the session when login is triggered.');
   ok(attemptedTransitionMock.invokedLogin, 'Ember.SimpleAuth.AuthenticatedRouteMixin invokes the login action on the attempted transition when login is triggered.');
   ok(!testRoute.invokedLogin, 'Ember.SimpleAuth.AuthenticatedRouteMixin does not invoke the login action on the route if the attempted transition supports it when login is triggered.');
-
-  testRoute.triggerLogin({});
-
-  ok(testRoute.invokedLogin, 'Ember.SimpleAuth.AuthenticatedRouteMixin invokes the login action on the route if the attempted transition does not support it when login is triggered.');
 });
 
 test('triggers the login before model when the session is not authenticated', function() {
