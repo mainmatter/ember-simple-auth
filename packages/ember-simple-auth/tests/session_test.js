@@ -28,8 +28,8 @@ var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
     this.authenticateInvokedWith = options;
     return mockPromise(AuthenticatorMock._resolve, AuthenticatorMock._reject);
   },
-  unauthenticate: function() {
-    this.unauthenticateInvoked = true;
+  invaldiate: function() {
+    this.invaldiateInvoked = true;
     return mockPromise(AuthenticatorMock._resolve);
   }
 });
@@ -115,7 +115,7 @@ test('authenticates itself with an authenticator', function() {
   deepEqual(rejectedWith, { error: 'message'}, 'Ember.Session returns a promise that rejects with the error from the authenticator on setup when the authenticator rejects.');
 });
 
-test('unauthenticates itself', function() {
+test('invaldiates itself', function() {
   AuthenticatorMock._resolve = true;
   Ember.run(function() {
     session.authenticate(authenticatorMock);
@@ -124,7 +124,7 @@ test('unauthenticates itself', function() {
   AuthenticatorMock._reject = { error: 'message' };
   session.set('isAuthenticated', true);
   Ember.run(function() {
-    session.unauthenticate();
+    session.invaldiate();
   });
 
   ok(session.get('isAuthenticated'), 'Ember.Session remains authenticated after unauthentication when the authenticator rejects.');
@@ -132,10 +132,10 @@ test('unauthenticates itself', function() {
 
   AuthenticatorMock._resolve = true;
   Ember.run(function() {
-    session.unauthenticate();
+    session.invaldiate();
   });
 
-  ok(authenticatorMock.unauthenticateInvoked, 'Ember.Session unauthenticates with the authenticator on destruction.');
+  ok(authenticatorMock.invaldiateInvoked, 'Ember.Session invaldiates with the authenticator on invalidation.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after unauthentication when the authenticator resolves.');
   equal(session.get('aurhenticator'), null, 'Ember.Session unsets the authenticator after unauthentication when the authenticator resolves.');
   equal(session.get('content'), null, 'Ember.Session unsets its content object after unauthentication when the authenticator resolves.');

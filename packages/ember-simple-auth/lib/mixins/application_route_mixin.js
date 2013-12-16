@@ -95,7 +95,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       @method logout
     */
     logout: function() {
-      this.get('session').unauthenticate();
+      this.get('session').invaldiate();
       this.transitionTo(Ember.SimpleAuth.routeAfterLogout);
     }
   }

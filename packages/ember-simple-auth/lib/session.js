@@ -79,10 +79,10 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
 
     @method destroy
   */
-  unauthenticate: function() {
+  invaldiate: function() {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      _this.authenticator.unauthenticate().then(function() {
+      _this.authenticator.invaldiate().then(function() {
         _this.authenticator.off('updated_session_data');
         _this.clear();
         resolve();
