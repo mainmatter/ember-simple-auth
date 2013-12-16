@@ -23,7 +23,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
     var _this = this;
     var properties = {};
     this.knownKeys().forEach(function(key) {
-      var originalKey = key.replace(_this.get('storageKeyPrefix'), '');
+      var originalKey = key.replace(_this.storageKeyPrefix, '');
       properties[originalKey] = localStorage.getItem(key);
     });
     return properties;
@@ -40,7 +40,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
     @private
   */
   buildStorageKey: function(property) {
-    return this.get('storageKeyPrefix') + property;
+    return this.storageKeyPrefix + property;
   },
 
   /**
@@ -51,7 +51,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
     var keys = [];
     for (var i = 0, l = localStorage.length; i < l; i++) {
       var key = localStorage.key(i);
-      if (key.indexOf(this.get('storageKeyPrefix')) === 0) {
+      if (key.indexOf(this.storageKeyPrefix) === 0) {
         keys.push(key);
       }
     }
