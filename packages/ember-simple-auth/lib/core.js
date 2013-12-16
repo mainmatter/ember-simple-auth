@@ -1,6 +1,6 @@
 'use strict';
 
-function locationOrigin(location) {
+function extractLocationOrigin(location) {
   return location.protocol + '//' + location.hostname + (location.port !== '' ? ':' + location.port : '');
 }
 
@@ -59,14 +59,14 @@ Ember.SimpleAuth = Ember.Namespace.create({
 
     var crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
     var linkOrigins          = {};
-    var documentOrigin       = locationOrigin(window.location);
+    var documentOrigin       = extractLocationOrigin(window.location);
     function shouldAuthorizeRequest(url) {
       var link = linkOrigins[url] || function() {
         var link = document.createElement('a');
         link.href = url;
         return (linkOrigins[url] = link);
       }();
-      var linkOrigin = locationOrigin(link);
+      var linkOrigin = extractLocationOrigin(link);
       return crossOriginWhitelist.indexOf(linkOrigin) > -1 || linkOrigin === documentOrigin;
     }
   }
