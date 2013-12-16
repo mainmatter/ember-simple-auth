@@ -27,6 +27,7 @@
 */
 Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
   authenticator: Ember.SimpleAuth.Authenticators.OAuth2.create(),
+
   actions: {
     /**
       @method login
