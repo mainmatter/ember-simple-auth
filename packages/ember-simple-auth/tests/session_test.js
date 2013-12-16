@@ -151,9 +151,11 @@ test('observes changes of the observer', function() {
   window.Authenticators                        = Ember.Namespace.create();
   window.Authenticators.OtherAuthenticatorMock = AuthenticatorMock.extend();
   var otherAuthenticatorMock                   = window.Authenticators.OtherAuthenticatorMock.create();
+  AuthenticatorMock._resolve = true;
   Ember.run(function() {
-    session.set('authenticator', otherAuthenticatorMock);
-    otherAuthenticatorMock.trigger('updated_session_data', { key: 'value' });
+    session.authenticate(otherAuthenticatorMock).then(function() {
+      otherAuthenticatorMock.trigger('updated_session_data', { key: 'value' });
+    });
   });
 
   equal(session.get('key'), 'value', 'Ember.Session subscribes to the "updated_session_data" of the authenticator when it is assigned.');
