@@ -105,7 +105,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     this.bindToAuthenticatorEvents();
     var data = Ember.$.extend({
       authenticator: this.authenticator.constructor.toString()
-    }, this.get('content'));
+    }, this.content);
     this.store.clear();
     this.store.persist(data);
   },
