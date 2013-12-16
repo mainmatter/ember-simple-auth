@@ -12,6 +12,9 @@ function extractLocationOrigin(location) {
   @static
 **/
 Ember.SimpleAuth = Ember.Namespace.create({
+  Authenticators: Ember.Namespace.create(),
+  Authorizers:    Ember.Namespace.create(),
+  Stores:         Ember.Namespace.create(),
   /**
     Sets up Ember.SimpleAuth for your application; invoke this method in a custom
     initializer like this:
@@ -71,7 +74,3 @@ Ember.SimpleAuth = Ember.Namespace.create({
     }
   }
 });
-
-Ember.SimpleAuth.Authenticators = Ember.Namespace.create();
-Ember.SimpleAuth.Authorizers    = Ember.Namespace.create();
-Ember.SimpleAuth.Stores         = {};
