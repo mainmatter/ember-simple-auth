@@ -23,13 +23,14 @@ var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
   restore: function(content) {
     return mockPromise(AuthenticatorMock._resolve);
   },
-  authenticate: function(options) {
+  authenticate: function(properties) {
     this.authenticateInvoked     = true;
-    this.authenticateInvokedWith = options;
+    this.authenticateInvokedWith = properties;
     return mockPromise(AuthenticatorMock._resolve, AuthenticatorMock._reject);
   },
-  invaldiate: function() {
-    this.invaldiateInvoked = true;
+  invaldiate: function(properties) {
+    this.invaldiateInvoked     = true;
+    this.invaldiateInvokedWith = properties;
     return mockPromise(AuthenticatorMock._resolve);
   }
 });
@@ -132,10 +133,12 @@ test('invaldiates itself', function() {
 
   AuthenticatorMock._resolve = true;
   Ember.run(function() {
+    session.set('content', { key: 'value' });
     session.invaldiate();
   });
 
   ok(authenticatorMock.invaldiateInvoked, 'Ember.Session invaldiates with the authenticator on invalidation.');
+  deepEqual(authenticatorMock.invaldiateInvokedWith, { key: 'value' }, 'Ember.Session passes its content to the authenticator on invalidation.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after unauthentication when the authenticator resolves.');
   equal(session.get('aurhenticator'), null, 'Ember.Session unsets the authenticator after unauthentication when the authenticator resolves.');
   equal(session.get('content'), null, 'Ember.Session unsets its content object after unauthentication when the authenticator resolves.');
