@@ -26,7 +26,7 @@
   @static
 */
 Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
-  authenticator: Ember.SimpleAuth.Authenticators.OAuth2.create(),
+  authenticator: Ember.SimpleAuth.Authenticators.OAuth2,
 
   actions: {
     /**
@@ -38,7 +38,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
       var data = this.getProperties('identification', 'password');
       if (!Ember.isEmpty(data.identification) && !Ember.isEmpty(data.password)) {
         this.set('password', null);
-        this.get('session').authenticate(this.get('authenticator'), data).then(function() {
+        this.get('session').authenticate(this.get('authenticator').create(), data).then(function() {
           _this.send('loginSucceeded');
         }, function(error) {
           _this.send('loginFailed', error);
