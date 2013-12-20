@@ -2,13 +2,23 @@ var testRoute;
 var TestRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
   transitionTo: function(targetRoute) {
     this.transitionedTo = targetRoute;
+  },
+  send: function(action) {
+    this.invokedLogoutSucceeded = this.invokedLogoutSucceeded || (action === 'logoutSucceeded');
+    this.invokedLogoutFailed    = this.invokedLogoutFailed || (action === 'logoutFailed');
   }
 });
 
 var authenticatorMock;
 var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
   invaldiate: function() {
-    return new Ember.RSVP.Promise(function(resolve, reject) { resolve(); });
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      if (AuthenticatorMock._resolve) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
   }
 });
 
@@ -31,6 +41,7 @@ test('redirects to the correct route on login', function() {
 });
 
 test('invaldiates the current session on logout', function() {
+  AuthenticatorMock._resolve = true;
   testRoute.set('session.isAuthenticated', true);
   Ember.run(function() {
     testRoute._actions['logout'].apply(testRoute);
@@ -40,11 +51,24 @@ test('invaldiates the current session on logout', function() {
 });
 
 test('redirects to the correct route on logout', function() {
+  AuthenticatorMock._resolve = true;
   Ember.run(function() {
     testRoute._actions['logout'].apply(testRoute);
   });
 
   equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterLogout, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterLogout on logout.');
+  ok(testRoute.invokedLogoutSucceeded, 'Ember.SimpleAuth.ApplicationRouteMixin invokes the logoutSucceeded action when logout is successful.');
+
+  delete testRoute.transitionedTo;
+  testRoute.invokedLogoutSucceeded = false;
+  AuthenticatorMock._resolve       = false;
+  Ember.run(function() {
+    testRoute._actions['logout'].apply(testRoute);
+  });
+
+  notEqual(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterLogout, 'Ember.SimpleAuth.ApplicationRouteMixin does not redirect to the routeAfterLogout on logout when session invalidation fails.');
+  ok(!testRoute.invokedLogoutSucceeded, 'Ember.SimpleAuth.ApplicationRouteMixin does not invoke the logoutSucceeded action when logout fails.');
+  ok(testRoute.invokedLogoutFailed, 'Ember.SimpleAuth.ApplicationRouteMixin invokes the logoutFailed action when logout fails.');
 });
 
 test('redirects to the correct route on loginSucceeded', function() {
