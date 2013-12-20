@@ -59,11 +59,11 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
 
     if (!Ember.isEmpty(client_id)) {
       postData.client_id = client_id;
-      if (!Ember.isEmpty(client_id)) {
+      if (!Ember.isEmpty(client_secret)) {
         postData.client_secret = client_secret;
       }
     }
-    
+
     return { type: 'POST', data: postData, contentType: 'application/x-www-form-urlencoded' };
   },
   actions: {
