@@ -73,9 +73,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
       delete this._refreshTokenTimeout;
       var waitTime = (authTokenExpiry || 0) * 1000 - 5000; //refresh token 5 seconds before it expires
       if (!Ember.isEmpty(refreshToken) && waitTime > 0) {
-        this._refreshTokenTimeout = Ember.run.later(this, function() {
-          this.refreshAuthToken(authTokenExpiry, refreshToken);
-        }, waitTime);
+        this._refreshTokenTimeout = Ember.run.later(this, this.refreshAuthToken, authTokenExpiry, refreshToken, waitTime);
       }
     }
   },
