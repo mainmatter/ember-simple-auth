@@ -79,6 +79,10 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
     }
   },
 
+  /**
+    @method refreshAuthToken
+    @private
+  */
   refreshAuthToken: function(authTokenExpiry, refreshToken) {
     var _this = this;
     var data  = this.buildRequestData('refresh_token', { refresh_token: refreshToken });
