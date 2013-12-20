@@ -105,7 +105,10 @@
         }.property('accountId')
       });
       //set a custom session endpoint
-      Ember.SimpleAuth.setup(container, application, { serverTokenEndpoint: '/v4/token' });
+      Ember.SimpleAuth.Authenticators.OAuth2.reopen({
+        serverTokenEndpoint: '/v4/token'
+      });
+      Ember.SimpleAuth.setup(container, application);
     }
   });
 

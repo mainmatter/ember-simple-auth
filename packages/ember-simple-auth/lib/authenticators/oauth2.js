@@ -1,6 +1,11 @@
 'use strict';
 
 Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
+  serverTokenEndpoint: '/token',
+  refreshAuthTokens:   true,
+  cliendId:            null,
+  cliendSecret:        null,
+
   restore: function(properties) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -18,7 +23,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var data = _this.buildRequestData('password', { username: credentials.identification, password: credentials.password });
       Ember.$.ajax({
-        url:         Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint,
+        url:         _this.serverTokenEndpoint,
         type:        'POST',
         data:        data,
         contentType: 'application/x-www-form-urlencoded'
@@ -47,10 +52,10 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   */
   buildRequestData: function(grantType, data) {
     var requestData = Ember.$.extend({ grant_type: grantType }, data);
-    if (!Ember.isEmpty(Ember.SimpleAuth.Authenticators.OAuth2.cliendId)) {
-      requestData.client_id = Ember.SimpleAuth.Authenticators.OAuth2.cliendId;
-      if (!Ember.isEmpty(Ember.SimpleAuth.Authenticators.OAuth2.cliendSecret)) {
-        requestData.client_secret = Ember.SimpleAuth.Authenticators.OAuth2.cliendSecret;
+    if (!Ember.isEmpty(this.cliendId)) {
+      requestData.client_id = this.cliendId;
+      if (!Ember.isEmpty(this.cliendSecret)) {
+        requestData.client_secret = this.cliendSecret;
       }
     }
     return requestData;
@@ -62,7 +67,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   */
   handleAuthTokenRefresh: function(authTokenExpiry, refreshToken) {
     var _this = this;
-    if (Ember.SimpleAuth.Authenticators.OAuth2.refreshAuthTokens) {
+    if (this.refreshAuthTokens) {
       Ember.run.cancel(Ember.SimpleAuth.Authenticators.OAuth2._refreshTokenTimeout);
       delete Ember.SimpleAuth.Authenticators.OAuth2._refreshTokenTimeout;
       var waitTime = (authTokenExpiry || 0) * 1000 - 5000; //refresh token 5 seconds before it expires
@@ -70,7 +75,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
         Ember.SimpleAuth.Authenticators.OAuth2._refreshTokenTimeout = Ember.run.later(this, function() {
           var data  = this.buildRequestData('refresh_token', { refresh_token: refreshToken });
           Ember.$.ajax({
-            url:         Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint,
+            url:         this.serverTokenEndpoint,
             type:        'POST',
             data:        data,
             contentType: 'application/x-www-form-urlencoded'
@@ -89,8 +94,3 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
     }
   }
 });
-
-Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint = '/token';
-Ember.SimpleAuth.Authenticators.OAuth2.refreshAuthTokens   = true;
-Ember.SimpleAuth.Authenticators.OAuth2.cliendId            = null;
-Ember.SimpleAuth.Authenticators.OAuth2.cliendSecret        = null;

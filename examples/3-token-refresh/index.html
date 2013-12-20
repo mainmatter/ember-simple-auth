@@ -76,7 +76,9 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint = '/v2/token'
+      Ember.SimpleAuth.Authenticators.OAuth2.reopen({
+        serverTokenEndpoint: '/v2/token'
+      });
       Ember.SimpleAuth.setup(application);
     }
   });

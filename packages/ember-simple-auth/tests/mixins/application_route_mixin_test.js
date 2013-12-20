@@ -26,10 +26,9 @@ var attemptedTransitionMock = { retry: function() { this.retried = true; } };
 
 module('Ember.SimpleAuth.ApplicationRouteMixin', {
   setup: function() {
-    testRoute                            = TestRoute.create();
-    authenticatorMock                    = AuthenticatorMock.create();
-    Ember.SimpleAuth.serverTokenEndpoint = '/token';
-    var session                          = Ember.SimpleAuth.Session.create({ store: Ember.SimpleAuth.Stores.Ephemeral.create(), authenticator: authenticatorMock });
+    testRoute         = TestRoute.create();
+    authenticatorMock = AuthenticatorMock.create();
+    var session       = Ember.SimpleAuth.Session.create({ store: Ember.SimpleAuth.Stores.Ephemeral.create(), authenticator: authenticatorMock });
     testRoute.set('session', session);
   }
 });

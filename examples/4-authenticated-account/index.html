@@ -80,7 +80,9 @@
     name: 'authentication',
     initialize: function(container, application) {
       //set a custom session endpoint
-      Ember.SimpleAuth.Authenticators.OAuth2.serverTokenEndpoint = '/v3/token';
+      Ember.SimpleAuth.Authenticators.OAuth2.reopen({
+        serverTokenEndpoint: '/v3/token'
+      });
       //customize the session so that it handles the additional authenticated account
       Ember.SimpleAuth.Session.reopen({
         account: function() {
