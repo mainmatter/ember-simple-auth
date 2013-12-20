@@ -1,10 +1,11 @@
 'use strict';
 
 Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
-  serverTokenEndpoint: '/token',
-  refreshAuthTokens:   true,
-  cliendId:            null,
-  cliendSecret:        null,
+  serverTokenEndpoint:  '/token',
+  refreshAuthTokens:    true,
+  cliendId:             null,
+  cliendSecret:         null,
+  _refreshTokenTimeout: null,
 
   restore: function(properties) {
     var _this = this;
@@ -41,8 +42,8 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   },
 
   invaldiate: function() {
-    Ember.run.cancel(Ember.SimpleAuth.Authenticators.OAuth2._refreshTokenTimeout);
-    delete Ember.SimpleAuth.Authenticators.OAuth2._refreshTokenTimeout;
+    Ember.run.cancel(this._refreshTokenTimeout);
+    delete this._refreshTokenTimeout;
     return new Ember.RSVP.Promise(function(resolve) { resolve(); });
   },
 
@@ -68,11 +69,11 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   scheduleAuthTokenRefresh: function(authTokenExpiry, refreshToken) {
     var _this = this;
     if (this.refreshAuthTokens) {
-      Ember.run.cancel(Ember.SimpleAuth.Authenticators.OAuth2._refreshTokenTimeout);
-      delete Ember.SimpleAuth.Authenticators.OAuth2._refreshTokenTimeout;
+      Ember.run.cancel(this._refreshTokenTimeout);
+      delete this._refreshTokenTimeout;
       var waitTime = (authTokenExpiry || 0) * 1000 - 5000; //refresh token 5 seconds before it expires
       if (!Ember.isEmpty(refreshToken) && waitTime > 0) {
-        Ember.SimpleAuth.Authenticators.OAuth2._refreshTokenTimeout = Ember.run.later(this, function() {
+        this._refreshTokenTimeout = Ember.run.later(this, function() {
           this.refreshAuthToken(authTokenExpiry, refreshToken);
         }, waitTime);
       }
