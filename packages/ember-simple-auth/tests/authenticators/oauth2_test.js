@@ -111,10 +111,10 @@ test('returns a promise on authentication', function() {
   deepEqual(rejectedWith, 'error', 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that rejects with the error message from the XHR response on authentication when the AJAX request is not successful.');
 });
 
-test('invaldiates the session', function() {
+test('invalidates the session', function() {
   var resolved;
   Ember.run(function() {
-    authenticator.invaldiate().then(function(error) {
+    authenticator.invalidate().then(function(error) {
       resolved = true;
     });
   });

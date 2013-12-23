@@ -28,9 +28,9 @@ var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
     this.authenticateInvokedWith = properties;
     return mockPromise(AuthenticatorMock._resolve, AuthenticatorMock._reject);
   },
-  invaldiate: function(properties) {
-    this.invaldiateInvoked     = true;
-    this.invaldiateInvokedWith = properties;
+  invalidate: function(properties) {
+    this.invalidateInvoked     = true;
+    this.invalidateInvokedWith = properties;
     return mockPromise(AuthenticatorMock._resolve);
   }
 });
@@ -116,7 +116,7 @@ test('authenticates itself with an authenticator', function() {
   deepEqual(rejectedWith, { error: 'message'}, 'Ember.Session returns a promise that rejects with the error from the authenticator on setup when the authenticator rejects.');
 });
 
-test('invaldiates itself', function() {
+test('invalidates itself', function() {
   AuthenticatorMock._resolve = true;
   Ember.run(function() {
     session.authenticate(authenticatorMock);
@@ -125,7 +125,7 @@ test('invaldiates itself', function() {
   AuthenticatorMock._reject = { error: 'message' };
   session.set('isAuthenticated', true);
   Ember.run(function() {
-    session.invaldiate();
+    session.invalidate();
   });
 
   ok(session.get('isAuthenticated'), 'Ember.Session remains authenticated after unauthentication when the authenticator rejects.');
@@ -134,11 +134,11 @@ test('invaldiates itself', function() {
   AuthenticatorMock._resolve = true;
   Ember.run(function() {
     session.set('content', { key: 'value' });
-    session.invaldiate();
+    session.invalidate();
   });
 
-  ok(authenticatorMock.invaldiateInvoked, 'Ember.Session invaldiates with the authenticator on invalidation.');
-  deepEqual(authenticatorMock.invaldiateInvokedWith, { key: 'value' }, 'Ember.Session passes its content to the authenticator on invalidation.');
+  ok(authenticatorMock.invalidateInvoked, 'Ember.Session invalidates with the authenticator on invalidation.');
+  deepEqual(authenticatorMock.invalidateInvokedWith, { key: 'value' }, 'Ember.Session passes its content to the authenticator on invalidation.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after unauthentication when the authenticator resolves.');
   equal(session.get('aurhenticator'), null, 'Ember.Session unsets the authenticator after unauthentication when the authenticator resolves.');
   equal(session.get('content'), null, 'Ember.Session unsets its content object after unauthentication when the authenticator resolves.');
