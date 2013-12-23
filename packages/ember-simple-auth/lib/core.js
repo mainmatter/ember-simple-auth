@@ -16,6 +16,10 @@ Ember.SimpleAuth = Ember.Namespace.create({
   Authorizers:    Ember.Namespace.create(),
   Stores:         Ember.Namespace.create(),
 
+  routeAfterLogin:  null,
+  routeAfterLogout: null,
+  loginRoute:       null,
+
   /**
     Sets up Ember.SimpleAuth for your application; invoke this method in a custom
     initializer like this:
