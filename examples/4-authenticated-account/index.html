@@ -79,20 +79,16 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      //set a custom session endpoint
-      Ember.SimpleAuth.Authenticators.OAuth2.reopen({
-        serverTokenEndpoint: '/v3/token'
-      });
       //customize the session so that it handles the additional authenticated account
       Ember.SimpleAuth.Session.reopen({
         account: function() {
-          var accountId = this.get('accountId');
-          if (!Ember.isEmpty(accountId)) {
-            return container.lookup('store:main').find('account', accountId);
+          var authAccountId = this.get('authAccountId');
+          if (!Ember.isEmpty(authAccountId)) {
+            return container.lookup('store:main').find('account', authAccountId);
           }
-        }.property('accountId')
+        }.property('authAccountId')
       });
-      Ember.SimpleAuth.setup(container, application);
+      Ember.SimpleAuth.setup(application);
     }
   });
 
@@ -110,9 +106,52 @@
     this.route('protected');
   });
 
+  // the custom authenticator that handles the authenticated account (make sure to mix in
+  // Ember.Evented as the session will subscribe to the authenticator's "'ember-simple-auth:session-updated'" event)
+  App.CustomAuthenticator = Ember.Object.extend(Ember.Evented, {
+    restore: function(properties) {
+      var _this = this;
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        //when there's a non-empty authToken in the session data, the session is authenticated
+        if (!Ember.isEmpty(properties.authToken)) {
+          resolve(properties);
+        } else {
+          reject();
+        }
+      });
+    },
+
+    authenticate: function(credentials) {
+      var _this = this;
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        //make the request to authenticate the user at endoint /v3/token
+        Ember.$.ajax({
+          url:  '/v3/token',
+          type: 'POST',
+          data: { grant_type: 'password', username: credentials.identification, password: credentials.password }
+        }).then(function(response) {
+          Ember.run(function() {
+            //resolve (including the account id) as the AJAX request was successful
+            resolve({ authToken: response.access_token, authAccountId: response.account_id });
+          });
+        }, function(xhr, status, error) {
+          Ember.run(function() {
+            reject(xhr.responseText);
+          });
+        });
+      });
+    },
+
+    invalidate: function() {
+      // there is no DELETE /session endpoint so nothing needs to be done here
+      return new Ember.RSVP.Promise(function(resolve) { resolve(); });
+    },
+  });
+
   // use the provided mixins in the application route and login controller
   App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
   App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+    authenticator: App.CustomAuthenticator,
     actions: {
       // display an error when loggign in fails
       loginFailed: function(xhr, status, error) {
