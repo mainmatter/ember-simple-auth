@@ -61,7 +61,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     var encodedProperties = JSON.stringify(properties);
     if (encodedProperties !== this._lastProperties) {
       this._lastProperties = encodedProperties;
-      this.trigger('updated_session_data', properties);
+      this.trigger('ember-simple-auth:session_updated', properties);
     }
     if (!Ember.testing) {
       Ember.run.cancel(this._syncPropertiesTimeout);

@@ -84,7 +84,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       _this.authenticator.invalidate(_this.content).then(function() {
-        _this.authenticator.off('updated_session_data');
+        _this.authenticator.off('ember-simple-auth:session_updated');
         _this.clear();
         resolve();
       }, function(error) {
@@ -139,7 +139,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   */
   bindToAuthenticatorEvents: function() {
     var _this = this;
-    this.authenticator.on('updated_session_data', function(content) {
+    this.authenticator.on('ember-simple-auth:session_updated', function(content) {
       _this.setup(_this.authenticator, content);
     });
   },
@@ -150,7 +150,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   */
   bindToStoreEvents: function() {
     var _this = this;
-    this.store.on('updated_session_data', function(content) {
+    this.store.on('ember-simple-auth:session_updated', function(content) {
       var authenticator = _this.createAuthenticator(content.authenticator);
       if (!!authenticator) {
         delete content.authenticator;

@@ -95,7 +95,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
         authTokenExpiry = response.expires_in || authTokenExpiry;
         refreshToken    = response.refresh_token || refreshToken;
         _this.scheduleAuthTokenRefresh(authTokenExpiry, refreshToken);
-        _this.trigger('updated_session_data', { authToken: response.access_token, authTokenExpiry: authTokenExpiry, refreshToken: refreshToken });
+        _this.trigger('ember-simple-auth:session_updated', { authToken: response.access_token, authTokenExpiry: authTokenExpiry, refreshToken: refreshToken });
       });
     }, function(xhr, status, error) {
       Ember.Logger.warn('Access token could not be refreshed - server responded with ' + error + '.');

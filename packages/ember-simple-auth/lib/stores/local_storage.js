@@ -62,7 +62,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
     var _this = this;
     Ember.$(window).bind('storage', function() {
       var properties = _this.restore();
-      this.trigger('updated_session_data', properties);
+      this.trigger('ember-simple-auth:session_updated', properties);
     });
   }
 });
