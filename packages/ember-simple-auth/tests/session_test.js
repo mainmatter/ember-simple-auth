@@ -144,7 +144,7 @@ test('invalidates itself', function() {
   equal(session.get('content'), null, 'Ember.Session unsets its content object after unauthentication when the authenticator resolves.');
 
   Ember.run(function() {
-    authenticatorMock.trigger('ember-simple-auth:session_updated', { key: 'other value' });
+    authenticatorMock.trigger('ember-simple-auth:session-updated', { key: 'other value' });
   });
 
   equal(session.get('key'), null, 'Ember.Session stops listening to the "updated_session_data" of the authenticator after unauthentication when the authenticator resolves.');
@@ -157,7 +157,7 @@ test('observes changes of the observer', function() {
   AuthenticatorMock._resolve = true;
   Ember.run(function() {
     session.authenticate(otherAuthenticatorMock).then(function() {
-      otherAuthenticatorMock.trigger('ember-simple-auth:session_updated', { key: 'value' });
+      otherAuthenticatorMock.trigger('ember-simple-auth:session-updated', { key: 'value' });
     });
   });
 

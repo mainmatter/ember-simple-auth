@@ -42,7 +42,7 @@ test('recognizes when the cookies change', function() {
   var triggered;
   store.persist({ key: 'value' });
   document.cookie = 'ember_simple_auth:key=other value;';
-  store.one('ember-simple-auth:session_updated', function() {
+  store.one('ember-simple-auth:session-updated', function() {
     triggered = true;
   });
   store.syncProperties();
@@ -51,7 +51,7 @@ test('recognizes when the cookies change', function() {
   ok(triggered, 'Ember.SimpleAuth.Stores.Cookie triggers the "updated_session_data" when the cookies changes.');
 
   triggered = false;
-  store.one('ember-simple-auth:session_updated', function() {
+  store.one('ember-simple-auth:session-updated', function() {
     triggered = true;
   });
   store.syncProperties();
