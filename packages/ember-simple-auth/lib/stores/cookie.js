@@ -13,6 +13,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     for (var property in properties) {
       this.write(property, properties[property], null);
     }
+    this._lastProperties = JSON.stringify(this.restore());
   },
 
   restore: function() {

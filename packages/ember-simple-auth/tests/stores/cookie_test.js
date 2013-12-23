@@ -32,6 +32,15 @@ test('saves properties', function() {
   equal(store.restore().key1, 'value1', 'Ember.SimpleAuth.Stores.Cookie saves multiple properties.');
   equal(store.restore().key2, 'value2', 'Ember.SimpleAuth.Stores.Cookie saves multiple properties.');
   equal(store.restore().key, 'value', 'Ember.SimpleAuth.Stores.Cookie does not destroy previously stored properties when save is called again.');
+
+  var triggered;
+  store.persist({ key3: 'value' });
+  store.one('ember-simple-auth:session-updated', function() {
+    triggered = true;
+  });
+  store.syncProperties();
+
+  ok(!triggered, 'Ember.SimpleAuth.Stores.Cookie does not trigger the "updated_session_data" when the change was made by itself.');
 });
 
 test('recognizes when the cookies change', function() {
