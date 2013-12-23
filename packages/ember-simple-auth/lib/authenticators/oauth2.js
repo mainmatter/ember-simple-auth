@@ -23,12 +23,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var data = _this.buildRequestData('password', { username: credentials.identification, password: credentials.password });
-      Ember.$.ajax({
-        url:         _this.serverTokenEndpoint,
-        type:        'POST',
-        data:        data,
-        contentType: 'application/x-www-form-urlencoded'
-      }).then(function(response) {
+      _this.makeRequest(data).then(function(response) {
         Ember.run(function() {
           _this.scheduleAuthTokenRefresh(response.expires_in, response.refresh_token);
           resolve({ authToken: response.access_token, authTokenExpiry: response.expires_in, refreshToken: response.refresh_token });
@@ -85,12 +80,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   refreshAuthToken: function(authTokenExpiry, refreshToken) {
     var _this = this;
     var data  = this.buildRequestData('refresh_token', { refresh_token: refreshToken });
-    Ember.$.ajax({
-      url:         this.serverTokenEndpoint,
-      type:        'POST',
-      data:        data,
-      contentType: 'application/x-www-form-urlencoded'
-    }).then(function(response) {
+    this.makeRequest(data).then(function(response) {
       Ember.run(function() {
         authTokenExpiry = response.expires_in || authTokenExpiry;
         refreshToken    = response.refresh_token || refreshToken;
@@ -99,6 +89,15 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
       });
     }, function(xhr, status, error) {
       Ember.Logger.warn('Access token could not be refreshed - server responded with ' + error + '.');
+    });
+  },
+
+  makeRequest: function(data) {
+    return Ember.$.ajax({
+      url:         this.serverTokenEndpoint,
+      type:        'POST',
+      data:        data,
+      contentType: 'application/x-www-form-urlencoded'
     });
   }
 });
