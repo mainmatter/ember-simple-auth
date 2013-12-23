@@ -41,10 +41,11 @@ Ember.SimpleAuth = Ember.Namespace.create({
       @param {Object} [options.store] The store "class" to use; must extend `Ember.Object` and also implement `function(jqXHR, requestOptions)` - defaults to `Ember.SimpleAuth.Stores.Cookie`
   **/
   setup: function(application, options) {
-    options = options || {};
-    this.routeAfterLogin  = options.routeAfterLogin || 'index';
-    this.routeAfterLogout = options.routeAfterLogout || 'index';
-    this.loginRoute       = options.loginRoute || 'login';
+    options                    = options || {};
+    this.routeAfterLogin       = options.routeAfterLogin || 'index';
+    this.routeAfterLogout      = options.routeAfterLogout || 'index';
+    this.loginRoute            = options.loginRoute || 'login';
+    this._crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
 
     var store      = (options.store || Ember.SimpleAuth.Stores.Cookie).create();
     var session    = Ember.SimpleAuth.Session.create({ store: store });
@@ -56,22 +57,26 @@ Ember.SimpleAuth = Ember.Namespace.create({
     });
 
     Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-      if (shouldAuthorizeRequest(options.url)) {
+      if (Ember.SimpleAuth.shouldAuthorizeRequest(options.url)) {
         authorizer.authorize(jqXHR, options);
       }
     });
+  },
 
-    var crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
-    var linkOrigins          = {};
-    var documentOrigin       = extractLocationOrigin(window.location);
-    function shouldAuthorizeRequest(url) {
-      var link = linkOrigins[url] || function() {
-        var link = document.createElement('a');
-        link.href = url;
-        return (linkOrigins[url] = link);
-      }();
-      var linkOrigin = extractLocationOrigin(link);
-      return crossOriginWhitelist.indexOf(linkOrigin) > -1 || linkOrigin === documentOrigin;
-    }
+  /**
+    @method shouldAuthorizeRequest
+    @private
+    @static
+  */
+  shouldAuthorizeRequest: function(url) {
+    this._linkOrigins    = this._linkOrigins || {};
+    this._documentOrigin = this._documentOrigin || extractLocationOrigin(window.location);
+    var link = this._linkOrigins[url] || function() {
+      var link = document.createElement('a');
+      link.href = url;
+      return (this._linkOrigins[url] = link);
+    }.apply(this);
+    var linkOrigin = extractLocationOrigin(link);
+    return this._crossOriginWhitelist.indexOf(linkOrigin) > -1 || linkOrigin === this._documentOrigin;
   }
 });
