@@ -71,20 +71,14 @@ test('sends a request to the server token route on authentication', function() {
   equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" on authentication.');
 
   authenticator.setProperties({
-    cliendId:     'clientId',
-    cliendSecret: 'clientSecret'
+    cliendId:     'client_id',
+    cliendSecret: 'client_secret'
   });
   Ember.run(function() {
     authenticator.authenticate({ identification: 'identification', password: 'password' });
   });
-  authenticator.setProperties({
-    cliendId:     'clientId',
-    cliendSecret: 'clientSecret'
-  });
-  Ember.SimpleAuth.Authenticators.OAuth2.cliendId     = null;
-  Ember.SimpleAuth.Authenticators.OAuth2.cliendSecret = null;
 
-  deepEqual(ajaxMock.requestOptions.data, { client_id: 'clientId', client_secret: 'clientSecret', grant_type: 'password', password: 'password', username: 'identification' }, 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with client_id and client_secret on authentication when these are set.');
+  deepEqual(ajaxMock.requestOptions.data, { client_id: 'client_id', client_secret: 'client_secret', grant_type: 'password', password: 'password', username: 'identification' }, 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with client_id and client_secret on authentication when these are set.');
 });
 
 test('returns a promise on authentication', function() {
