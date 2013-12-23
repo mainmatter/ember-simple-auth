@@ -13,11 +13,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
     var secure = !!this.secureCookies ? ';secure' : '';
     for (var property in properties) {
       var value = properties[property];
-      if (Ember.isEmpty(value)) {
-        document.cookie = this.cookiePrefix + property + '=; expires=' + (new Date(0)).toGMTString() + secure;
-      } else {
-        document.cookie = this.cookiePrefix + property + '=' + encodeURIComponent(value || '') + secure;
-      }
+      document.cookie = this.cookiePrefix + property + '=' + encodeURIComponent(value || '') + secure;
     }
   },
 
@@ -32,11 +28,11 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   },
 
   clear: function() {
-    var nullifiedProperties = {};
+    var _this = this;
+    var secure = !!this.secureCookies ? ';secure' : '';
     this.knownCookies().forEach(function(cookie) {
-      nullifiedProperties[cookie] = null;
+      document.cookie = _this.cookiePrefix + cookie + '=; expires=' + (new Date(0)).toGMTString() + secure;
     });
-    this.persist(nullifiedProperties);
   },
 
   /**

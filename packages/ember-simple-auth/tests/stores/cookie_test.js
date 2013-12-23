@@ -32,10 +32,6 @@ test('saves properties', function() {
   equal(store.restore().key1, 'value1', 'Ember.SimpleAuth.Stores.Cookie saves multiple properties.');
   equal(store.restore().key2, 'value2', 'Ember.SimpleAuth.Stores.Cookie saves multiple properties.');
   equal(store.restore().key, 'value', 'Ember.SimpleAuth.Stores.Cookie does not destroy previously stored properties when save is called again.');
-
-  store.persist({ key: '' });
-  equal(store.restore().key, null, 'Ember.SimpleAuth.Stores.Cookie deletes empty properties when saving.');
-  ok(!document.cookie.match(/key=/), 'Ember.SimpleAuth.Stores.Cookie clears the cookies for empty properties when saving.');
 });
 
 test('recognizes when the cookies change', function() {
