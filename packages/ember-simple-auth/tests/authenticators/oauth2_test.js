@@ -24,6 +24,7 @@ module('Ember.SimpleAuth.Authenticators.OAuth2', {
     Ember.$.ajax  = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
   },
   teardown: function() {
+    Ember.run.cancel(authenticator._refreshTokenTimeout);
     Ember.$.ajax = this.originalAjax;
   }
 });
@@ -122,11 +123,12 @@ test('invaldiates the session', function() {
 });
 
 test('refreshes the auth token', function() {
-  authenticator.setProperties({
-    cliendId:     'client_id',
-    cliendSecret: 'client_secret'
-  });
+  AjaxMock._resolve = false;
   Ember.run(function() {
+    authenticator.setProperties({
+      cliendId:     'client_id',
+      cliendSecret: 'client_secret'
+    });
     authenticator.refreshAuthToken(1, 'refresh token!');
   });
 
@@ -134,4 +136,13 @@ test('refreshes the auth token', function() {
   equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a POST request to refresh the auth token.');
   deepEqual(ajaxMock.requestOptions.data, { grant_type: 'refresh_token', refresh_token: 'refresh token!', client_id: 'client_id', client_secret: 'client_secret' }, 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the correct data to refresh the auth token.');
   equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" to refresh the token.');
+
+  ok(Ember.isEmpty(authenticator._refreshTokenTimeout), 'Ember.SimpleAuth.Authenticators.OAuth2 does not schedule another refresh when refreshing the auth token failed.');
+
+  AjaxMock._resolve = true;
+  Ember.run(function() {
+    authenticator.refreshAuthToken(10, 'refresh token!');
+  });
+
+  ok(!Ember.isEmpty(authenticator._refreshTokenTimeout), 'Ember.SimpleAuth.Authenticators.OAuth2 schedules another refresh when it successfully refreshed the auth token.');
 });
