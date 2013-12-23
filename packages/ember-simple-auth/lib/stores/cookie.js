@@ -10,34 +10,35 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   },
 
   persist: function(properties) {
-    var secure = !!this.secureCookies ? ';secure' : '';
     for (var property in properties) {
-      var value = properties[property];
-      this.write(property, value, null);
+      this.write(property, properties[property], null);
     }
   },
 
   restore: function() {
-    var properties = {};
     var _this      = this;
-    this.knownCookies().forEach(function(property) {
-      var value = document.cookie.match(new RegExp(_this.cookiePrefix + property + '=([^;]+)')) || [];
-      properties[property] = Ember.isEmpty(value) ? null : decodeURIComponent(value[1] || '');
+    var properties = {};
+    this.knownCookies().forEach(function(cookie) {
+      properties[cookie] = _this.read(cookie);
     });
     return properties;
   },
 
   clear: function() {
     var _this = this;
-    var secure = !!this.secureCookies ? ';secure' : '';
     this.knownCookies().forEach(function(cookie) {
       _this.write(cookie, null, (new Date(0)).toGMTString());
     });
   },
 
+  read: function(name) {
+    var value = document.cookie.match(new RegExp(this.cookiePrefix + name + '=([^;]+)')) || [];
+    return decodeURIComponent(value[1] || '');
+  },
+
   write: function(name, value, expiration) {
     var secure = !!this.secureCookies ? ';secure' : '';
-    document.cookie = this.cookiePrefix + name + '=' + value + '; expires=' + expiration + secure;
+    document.cookie = this.cookiePrefix + name + '=' + encodeURIComponent(value) + '; expires=' + expiration + secure;
   },
 
   /**
