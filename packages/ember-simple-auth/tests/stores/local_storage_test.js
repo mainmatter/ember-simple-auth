@@ -32,8 +32,4 @@ test('saves properties', function() {
   equal(store.restore().key1, 'value1', 'Ember.SimpleAuth.Stores.LocalStorage saves multiple properties.');
   equal(store.restore().key2, 'value2', 'Ember.SimpleAuth.Stores.LocalStorage saves multiple properties.');
   equal(store.restore().key, 'value', 'Ember.SimpleAuth.Stores.LocalStorage does not destroy previously stored properties when save is called again.');
-
-  store.persist({ key: '' });
-  equal(store.restore().key, null, 'Ember.SimpleAuth.Stores.LocalStorage deletes empty properties when saving.');
-  equal(localStorage.getItem('ember_simple_auth:key'), null, 'Ember.SimpleAuth.Stores.LocalStorage clears the localStorage object for empty properties when saving.');
 });
