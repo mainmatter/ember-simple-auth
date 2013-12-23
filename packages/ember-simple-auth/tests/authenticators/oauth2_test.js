@@ -77,6 +77,10 @@ test('sends a request to the server token route on authentication', function() {
   Ember.run(function() {
     authenticator.authenticate({ identification: 'identification', password: 'password' });
   });
+  authenticator.setProperties({
+    cliendId:     'clientId',
+    cliendSecret: 'clientSecret'
+  });
   Ember.SimpleAuth.Authenticators.OAuth2.cliendId     = null;
   Ember.SimpleAuth.Authenticators.OAuth2.cliendSecret = null;
 
@@ -121,4 +125,19 @@ test('invaldiates the session', function() {
   });
 
   ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise on unauthentication.');
+});
+
+test('refreshes the auth token', function() {
+  authenticator.setProperties({
+    cliendId:     'client_id',
+    cliendSecret: 'client_secret'
+  });
+  Ember.run(function() {
+    authenticator.refreshAuthToken(1, 'refresh token!');
+  });
+
+  equal(ajaxMock.requestOptions.url, '/token', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request to the serverTokenEndpoint to refresh the auth token.');
+  equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a POST request to refresh the auth token.');
+  deepEqual(ajaxMock.requestOptions.data, { grant_type: 'refresh_token', refresh_token: 'refresh token!', client_id: 'client_id', client_secret: 'client_secret' }, 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the correct data to refresh the auth token.');
+  equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" to refresh the token.');
 });
