@@ -175,8 +175,10 @@ __END__
   </div>
 </div>
 <script>
-  document.cookie = 'authToken=';
-  document.cookie = 'account=';
+  Ember.$(document).ready(function() {
+    Ember.SimpleAuth.Stores.Cookie.create().clear();
+    Ember.SimpleAuth.Stores.LocalStorage.create().clear();
+  });
 </script>
 
 @@ oauth_callback_error
