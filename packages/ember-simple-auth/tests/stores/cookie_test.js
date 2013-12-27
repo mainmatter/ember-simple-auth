@@ -13,8 +13,8 @@ test('clears itself', function() {
   store.persist({ key1: 'value1', key2: 'value2' });
   store.clear();
 
-  equal(store.restore().key1, null, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when cleared.');
-  equal(store.restore().key2, null, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when cleared.');
+  equal(store.restore().key1, null, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when it is cleared.');
+  equal(store.restore().key2, null, 'Ember.SimpleAuth.Stores.Cookie deletes all properties when it is cleared.');
 });
 
 test('loads all properties', function() {
@@ -31,8 +31,10 @@ test('saves properties', function() {
   store.persist({ key1: 'value1', key2: 'value2' });
   equal(store.restore().key1, 'value1', 'Ember.SimpleAuth.Stores.Cookie saves multiple properties.');
   equal(store.restore().key2, 'value2', 'Ember.SimpleAuth.Stores.Cookie saves multiple properties.');
-  equal(store.restore().key, 'value', 'Ember.SimpleAuth.Stores.Cookie does not destroy previously stored properties when save is called again.');
+  equal(store.restore().key, 'value', 'Ember.SimpleAuth.Stores.Cookie does not destroy previously stored properties when it saves others.');
+});
 
+test('does not trigger an event for changes through its API', function() {
   var triggered;
   store.persist({ key3: 'value' });
   store.one('ember-simple-auth:session-updated', function() {
@@ -40,7 +42,7 @@ test('saves properties', function() {
   });
   store.syncProperties();
 
-  ok(!triggered, 'Ember.SimpleAuth.Stores.Cookie does not trigger the "updated_session_data" when the change was made by itself.');
+  ok(!triggered, 'Ember.SimpleAuth.Stores.Cookie does not trigger the "ember-simple-auth:session-updated" event when the change was made through its API.');
 });
 
 test('recognizes when the cookies change', function() {
@@ -53,7 +55,7 @@ test('recognizes when the cookies change', function() {
   store.syncProperties();
 
   equal(store.restore().key, 'other value', 'Ember.SimpleAuth.Stores.Cookie recognizes when the cookies changes.');
-  ok(triggered, 'Ember.SimpleAuth.Stores.Cookie triggers the "updated_session_data" when the cookies changes.');
+  ok(triggered, 'Ember.SimpleAuth.Stores.Cookie triggers the "ember-simple-auth:session-updated" event when the cookies changes.');
 
   triggered = false;
   store.one('ember-simple-auth:session-updated', function() {
@@ -61,5 +63,5 @@ test('recognizes when the cookies change', function() {
   });
   store.syncProperties();
 
-  ok(!triggered, 'Ember.SimpleAuth.Stores.Cookie does not trigger the "updated_session_data" when nothing actually cookies changed.');
+  ok(!triggered, 'Ember.SimpleAuth.Stores.Cookie does not trigger the "ember-simple-auth:session-updated" event when no cookies actually changed.');
 });
