@@ -11,11 +11,15 @@ authentication/authorization with [Ember.js](http://emberjs.com) applications.
 It has minimal requirements with respect to the application structure, routes
 etc.
 
-It can support any kind of authentication mechanism and all sorts of tokens
-etc. while by default it uses the _"[Resource Owner Password Credentials Grant
+Via its strategies based approach it can support all kinds of authentication and authorization mechanisms.
+The default mechanisms included are based on
+the _"[Resource Owner Password Credentials Grant
 Type](http://tools.ietf.org/html/rfc6749#section-4.3)"_ as specified in the
 [RFC 6749](http://tools.ietf.org/html/rfc6749) and
-[RFC 6750](http://tools.ietf.org/html/rfc6750) specifications.
+[RFC 6750](http://tools.ietf.org/html/rfc6750) specifications. Adding custom strategies is
+trivial however (contributions for your favorite server API are welcome of course!)
+
+## How does it work?
 
 ## RFC 6749
 
