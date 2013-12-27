@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/simplabs/ember-simple-auth.png?branch=master)](https://travis-ci.org/simplabs/ember-simple-auth)
 
-__Read the [API docs](http://ember-simple-auth.simplabs.com/api.html)!__
+__API docs are [available here](http://ember-simple-auth.simplabs.com/api.html)__
 
 #  Ember.SimpleAuth
 
@@ -11,10 +11,11 @@ authentication/authorization with [Ember.js](http://emberjs.com) applications.
 It has minimal requirements with respect to the application structure, routes
 etc.
 
-While it follows the [RFC 6749](http://tools.ietf.org/html/rfc6749) and
-[RFC 6750](http://tools.ietf.org/html/rfc6750) specifications it can support a
-wide range of different server APIs and also external OAuth/OpenID providers
-like Facebook, Google etc. with little customization effort.
+It can support any kind of authentication mechanism and all sorts of tokens
+etc. while by default it uses the _"[Resource Owner Password Credentials Grant
+Type](http://tools.ietf.org/html/rfc6749#section-4.3)"_ as specified in the
+[RFC 6749](http://tools.ietf.org/html/rfc6749) and
+[RFC 6750](http://tools.ietf.org/html/rfc6750) specifications.
 
 ## RFC 6749
 
@@ -317,9 +318,9 @@ make sure you're always using TLS/HTTPS for all client/server communication!**
 
 #### Cross Origin Authorization
 
-By default Ember.SimpleAuth does not include the `Authorization` header for
-cross origin requests so the authentication token does not get exposed to 3rd
-parties. If you need to include it for cross origin requests as well (for
+Ember.SimpleAuth ensures that the authorization token does not get exposed to 3rd parties by exluding it
+from all requests that go to a different origin than the Ember.js application's. If you need
+to include it for cross origin requests as well (for
 example if your REST API runs on a different domain than the one you serve the
 Ember.js application from) you need to explicitly specify these origins during
 setup:
@@ -400,8 +401,6 @@ Ember.SimpleAuth.setup(container, application, {
   routeAfterLogin: ...     // route to redirect the user to after successfully logging in - defaults to 'index'
   routeAfterLogout: ...    // route to redirect the user to after logging out - defaults to 'index'
   loginRoute: ...          // route to redirect the user to when login is required - defaults to 'login'
-  serverTokenEndpoint: ... // the server endpoint used to obtain the access token - defaults to '/token'
-  autoRefreshToken: ...    // enable/disable automatic token refreshing (if the server supports it) - defaults to true
 });
 ```
 
