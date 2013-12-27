@@ -33,30 +33,30 @@ module('Ember.SimpleAuth.ApplicationRouteMixin', {
   }
 });
 
-test('redirects to the correct route on login', function() {
+test('redirects to the correct route when login is triggered', function() {
   testRoute._actions['login'].apply(testRoute);
 
-  equal(testRoute.transitionedTo, Ember.SimpleAuth.loginRoute, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route on login.');
+  equal(testRoute.transitionedTo, Ember.SimpleAuth.loginRoute, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route when login is triggered.');
 });
 
-test('invalidates the current session on logout', function() {
+test('invalidates the current session whne logout is triggered', function() {
   AuthenticatorMock._resolve = true;
   testRoute.set('session.isAuthenticated', true);
   Ember.run(function() {
     testRoute._actions['logout'].apply(testRoute);
   });
 
-  equal(testRoute.get('session.isAuthenticated'), false, 'Ember.SimpleAuth.ApplicationRouteMixin invalidates the current session on logout.');
+  equal(testRoute.get('session.isAuthenticated'), false, 'Ember.SimpleAuth.ApplicationRouteMixin invalidates the current session when logout is triggered.');
 });
 
-test('redirects to the correct route on logout', function() {
+test('redirects to the correct route when logout is triggered', function() {
   AuthenticatorMock._resolve = true;
   Ember.run(function() {
     testRoute._actions['logout'].apply(testRoute);
   });
 
-  equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterLogout, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterLogout on logout.');
-  ok(testRoute.invokedLogoutSucceeded, 'Ember.SimpleAuth.ApplicationRouteMixin invokes the logoutSucceeded action when logout is successful.');
+  equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterLogout, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterLogout when logout is triggered.');
+  ok(testRoute.invokedLogoutSucceeded, 'Ember.SimpleAuth.ApplicationRouteMixin triggers the logoutSucceeded action when logout is successful.');
 
   delete testRoute.transitionedTo;
   testRoute.invokedLogoutSucceeded = false;
