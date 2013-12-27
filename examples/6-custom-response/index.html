@@ -75,7 +75,7 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      //customize the session so that it handles the additional authenticated account
+      // customize the session so that it handles the additional authenticated account
       Ember.SimpleAuth.Session.reopen({
         account: function() {
           var authAccountId = this.get('authAccountId');
@@ -98,7 +98,7 @@
   App.Router.map(function() {
     // login route
     this.route('login');
-    //protected routes that are inaccessible without authentication
+    // protected routes that are inaccessible without authentication
     this.route('protected');
   });
 
@@ -109,7 +109,7 @@
 
     restore: function(properties) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
-        //when there's a non-empty authToken in the session data, the session is authenticated
+        // when there's a non-empty authToken in the session data, the session is authenticated
         if (!Ember.isEmpty(properties.authToken)) {
           resolve(properties);
         } else {
@@ -128,7 +128,7 @@
           contentType: 'application/json'
         }).then(function(response) {
           Ember.run(function() {
-            //resolve (including the account id) as the AJAX request was successful
+            // resolve (including the account id) as the AJAX request was successful
             resolve({ authToken: response.SESSION.TOKEN, authAccountId: response.SESSION.AUTHENTICATED_USER.ID });
           });
         }, function(xhr, status, error) {

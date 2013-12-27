@@ -98,7 +98,7 @@
   App.Router.map(function() {
     // login route
     this.route('login');
-    //protected routes that are inaccessible without authentication
+    // protected routes that are inaccessible without authentication
     this.route('protected');
     this.route('posts');
   });
@@ -111,7 +111,7 @@
   App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
   App.PostsRoute     = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     model: function() {
-      //Ember.SimpleAuth adds the "Authorization" header to this AJAX request automatically
+      // Ember.SimpleAuth adds the "Authorization" header to this AJAX request automatically
       return this.get('store').findAll('post');
     }
   });

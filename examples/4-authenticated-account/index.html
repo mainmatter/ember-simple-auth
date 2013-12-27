@@ -79,7 +79,7 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      //customize the session so that it handles the additional authenticated account
+      // customize the session so that it allows access to the account object
       Ember.SimpleAuth.Session.reopen({
         account: function() {
           var authAccountId = this.get('authAccountId');
@@ -102,16 +102,16 @@
   App.Router.map(function() {
     // login route
     this.route('login');
-    //protected routes that are inaccessible without authentication
+    // protected routes that are inaccessible without authentication
     this.route('protected');
   });
 
-  // the custom authenticator that handles the authenticated account (make sure to mix in
-  // Ember.Evented as the session will subscribe to the authenticator's "'ember-simple-auth:session-updated'" event)
+  // the custom authenticator that handles the authenticated account (make sure to mix in Ember.Evented as
+  // the session will subscribe to the authenticator's "'ember-simple-auth:session-updated'" event)
   App.CustomAuthenticator = Ember.Object.extend(Ember.Evented, {
     restore: function(properties) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
-        //when there's a non-empty authToken in the session data, the session is authenticated
+        // when there's a non-empty authToken in the session data, the session is authenticated
         if (!Ember.isEmpty(properties.authToken)) {
           resolve(properties);
         } else {
@@ -122,14 +122,15 @@
 
     authenticate: function(credentials) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
-        //make the request to authenticate the user at endoint /v3/token
+        // make the request to authenticate the user at endoint /v3/token
         Ember.$.ajax({
           url:  '/v3/token',
           type: 'POST',
           data: { grant_type: 'password', username: credentials.identification, password: credentials.password }
         }).then(function(response) {
           Ember.run(function() {
-            //resolve (including the account id) as the AJAX request was successful
+            // resolve (including the account id) as the AJAX request was successful; all properties this promise resolves
+            // with will be available through the session
             resolve({ authToken: response.access_token, authAccountId: response.account_id });
           });
         }, function(xhr, status, error) {
@@ -141,7 +142,7 @@
     },
 
     invalidate: function() {
-      // there is no DELETE /session endpoint so nothing needs to be done here
+      // there is nothing to be done here; when this resolves the session will unset all of its data automatically
       return new Ember.RSVP.Promise(function(resolve) { resolve(); });
     },
   });
@@ -151,7 +152,7 @@
   App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
     authenticator: App.CustomAuthenticator,
     actions: {
-      // display an error when loggign in fails
+      // display an error when logging in fails
       loginFailed: function(xhr, status, error) {
         var response = JSON.parse(xhr.responseText);
         this.set('errorMessage', response.error);
