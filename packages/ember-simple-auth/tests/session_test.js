@@ -47,8 +47,6 @@ module('Ember.SimpleAuth.Session', {
   teardown: function() {
     delete window.AuthenticatorMock;
     delete window.Authenticators;
-    delete AuthenticatorMock._resolve;
-    delete AuthenticatorMock._reject;
   }
 });
 
