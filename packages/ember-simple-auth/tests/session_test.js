@@ -5,7 +5,7 @@ function mockPromise(resolveWith, rejectWith) {
     if (!Ember.isEmpty(resolveWith) && !!resolveWith) {
       resolve(resolveWith);
     } else {
-      reject.call(null, rejectWith);
+      reject(rejectWith);
     }
   });
 }
