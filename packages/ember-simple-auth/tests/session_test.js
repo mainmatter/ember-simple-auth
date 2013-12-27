@@ -89,11 +89,11 @@ test('authenticates itself with an authenticator', function() {
     });
   });
 
-  ok(authenticatorMock.authenticateInvoked, 'Ember.Session authenticates with the passed authenticator on setup.');
-  ok(session.get('isAuthenticated'), 'Ember.Session is authenticated after setup when the authenticator resolves.');
-  equal(session.get('key'), 'value', 'Ember.Session sets all properties that the authenticator resolves with during setup.');
-  equal(session.get('authenticator'), authenticatorMock, 'Ember.Session saves the authenticator during setup when the authenticator resolves.');
-  ok(resolved, 'Ember.Session returns a resolving promise on setup when the authenticator resolves.');
+  ok(authenticatorMock.authenticateInvoked, 'Ember.Session authenticates itself with the passed authenticator.');
+  ok(session.get('isAuthenticated'), 'Ember.Session is authenticated when the authenticator resolves.');
+  equal(session.get('key'), 'value', 'Ember.Session sets all properties that the authenticator resolves with.');
+  equal(session.get('authenticator'), authenticatorMock, 'Ember.Session saves the authenticator when the authenticator resolves.');
+  ok(resolved, 'Ember.Session returns a resolving promise when the authenticator resolves.');
 
   var rejected;
   var rejectedWith;
@@ -107,10 +107,10 @@ test('authenticates itself with an authenticator', function() {
     });
   });
 
-  ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after setup when the authenticator rejects.');
-  equal(session.get('authenticator'), null, 'Ember.Session does not save the authenticator during setup when the authenticator rejects.');
-  ok(rejected, 'Ember.Session returns a rejecting promise on setup when the authenticator rejects.');
-  deepEqual(rejectedWith, { error: 'message'}, 'Ember.Session returns a promise that rejects with the error from the authenticator on setup when the authenticator rejects.');
+  ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when the authenticator rejects.');
+  equal(session.get('authenticator'), null, 'Ember.Session does not save the authenticator when the authenticator rejects.');
+  ok(rejected, 'Ember.Session returns a rejecting promise when the authenticator rejects.');
+  deepEqual(rejectedWith, { error: 'message'}, 'Ember.Session returns a promise that rejects with the error that the authenticator rejects with.');
 });
 
 test('invalidates itself', function() {
@@ -122,29 +122,29 @@ test('invalidates itself', function() {
   AuthenticatorMock._reject = { error: 'message' };
   session.set('isAuthenticated', true);
   Ember.run(function() {
-    session.invalidate();
-  });
-
-  ok(session.get('isAuthenticated'), 'Ember.Session remains authenticated after unauthentication when the authenticator rejects.');
-  equal(session.get('authenticator'), authenticatorMock, 'Ember.Session does not unset the authenticator after unauthentication when the authenticator rejects.');
-
-  AuthenticatorMock._resolve = true;
-  Ember.run(function() {
     session.set('content', { key: 'value' });
     session.invalidate();
   });
 
-  ok(authenticatorMock.invalidateInvoked, 'Ember.Session invalidates with the authenticator on invalidation.');
-  deepEqual(authenticatorMock.invalidateInvokedWith, { key: 'value' }, 'Ember.Session passes its content to the authenticator on invalidation.');
-  ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated after unauthentication when the authenticator resolves.');
-  equal(session.get('aurhenticator'), null, 'Ember.Session unsets the authenticator after unauthentication when the authenticator resolves.');
-  equal(session.get('content'), null, 'Ember.Session unsets its content object after unauthentication when the authenticator resolves.');
+  ok(authenticatorMock.invalidateInvoked, 'Ember.Session invalidates with the passed authenticator.');
+  deepEqual(authenticatorMock.invalidateInvokedWith, { key: 'value' }, 'Ember.Session passes its content to the authenticator to invalidation.');
+  ok(session.get('isAuthenticated'), 'Ember.Session remains authenticated when the authenticator rejects invalidation.');
+  equal(session.get('authenticator'), authenticatorMock, 'Ember.Session does not unset the authenticator when the authenticator rejects invalidation.');
+
+  AuthenticatorMock._resolve = true;
+  Ember.run(function() {
+    session.invalidate();
+  });
+
+  ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when invalidation with the authenticator resolves.');
+  equal(session.get('aurhenticator'), null, 'Ember.Session unsets the authenticator when invalidation with the authenticator resolves.');
+  equal(session.get('content'), null, 'Ember.Session unsets its content when invalidation with the authenticator resolves.');
 
   Ember.run(function() {
     authenticatorMock.trigger('ember-simple-auth:session-updated', { key: 'other value' });
   });
 
-  equal(session.get('key'), null, 'Ember.Session stops listening to the "updated_session_data" of the authenticator after unauthentication when the authenticator resolves.');
+  equal(session.get('key'), null, 'Ember.Session stops listening to the "ember-simple-auth:session-updated" event of the authenticator when invalidation with the authenticator resolves.');
 });
 
 test('observes changes of the observer', function() {
@@ -158,6 +158,6 @@ test('observes changes of the observer', function() {
     });
   });
 
-  equal(session.get('key'), 'value', 'Ember.Session subscribes to the "updated_session_data" of the authenticator when it is assigned.');
+  equal(session.get('key'), 'value', 'Ember.Session subscribes to the "ember-simple-auth:session-updated" of the authenticator when it is assigned.');
   equal(storeMock.restore().authenticator, 'Authenticators.OtherAuthenticatorMock', "Ember.Session saves the authenticator's prototype to the store when it is assigned.");
 });
