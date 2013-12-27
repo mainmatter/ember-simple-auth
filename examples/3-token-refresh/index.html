@@ -11,7 +11,7 @@
           <a style="cursor: pointer">Protected Page</a>
         {{/link-to}}
       </ul>
-      {{! display logout button when a session is authenticated, login button otherwise }}
+      {{! display logout button when the session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
         <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
       {{else}}
@@ -71,7 +71,7 @@
   </div>
 </script>
 
-<script>
+<script type="text/javascript">
   // setup Ember.SimpleAuth in an initializer
   Ember.Application.initializer({
     name: 'authentication',
