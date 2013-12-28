@@ -72,8 +72,8 @@ test('sends a request to the server token route on authentication', function() {
   equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" on authentication.');
 
   authenticator.setProperties({
-    cliendId:     'client_id',
-    cliendSecret: 'client_secret'
+    clientId:     'client_id',
+    clientSecret: 'client_secret'
   });
   Ember.run(function() {
     authenticator.authenticate({ identification: 'identification', password: 'password' });
@@ -125,8 +125,8 @@ test('invalidates the session', function() {
 test('refreshes the auth token', function() {
   Ember.run(function() {
     authenticator.setProperties({
-      cliendId:     'client_id',
-      cliendSecret: 'client_secret'
+      clientId:     'client_id',
+      clientSecret: 'client_secret'
     });
     authenticator.refreshAuthToken(1, 'refresh token!');
   });
