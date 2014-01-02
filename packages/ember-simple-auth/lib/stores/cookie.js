@@ -38,8 +38,9 @@ Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
   },
 
   write: function(name, value, expiration) {
-    var secure = !!this.secureCookies ? ';secure' : '';
-    document.cookie = this.cookiePrefix + name + '=' + encodeURIComponent(value) + '; expires=' + expiration + secure;
+    var expires = Ember.isEmpty(expiration) ? '' : '; expires=' + expiration;
+    var secure  = !!this.secureCookies ? ';secure' : '';
+    document.cookie = this.cookiePrefix + name + '=' + encodeURIComponent(value) + expires + secure;
   },
 
   /**
