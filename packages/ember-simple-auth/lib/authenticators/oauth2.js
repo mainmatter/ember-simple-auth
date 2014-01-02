@@ -3,8 +3,6 @@
 Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   serverTokenEndpoint:  '/token',
   refreshAuthTokens:    true,
-  clientId:             null,
-  clientSecret:         null,
   _refreshTokenTimeout: null,
 
   restore: function(properties) {
@@ -22,7 +20,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   authenticate: function(credentials) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var data = _this.buildRequestData('password', { username: credentials.identification, password: credentials.password });
+      var data = { grant_type: 'password', username: credentials.identification, password: credentials.password };
       _this.makeRequest(data).then(function(response) {
         Ember.run(function() {
           _this.scheduleAuthTokenRefresh(response.expires_in, response.refresh_token);
@@ -40,21 +38,6 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
     Ember.run.cancel(this._refreshTokenTimeout);
     delete this._refreshTokenTimeout;
     return new Ember.RSVP.Promise(function(resolve) { resolve(); });
-  },
-
-  /**
-    @method buildRequestData
-    @private
-  */
-  buildRequestData: function(grantType, data) {
-    var requestData = Ember.$.extend({ grant_type: grantType }, data);
-    if (!Ember.isEmpty(this.clientId)) {
-      requestData.client_id = this.clientId;
-      if (!Ember.isEmpty(this.clientSecret)) {
-        requestData.client_secret = this.clientSecret;
-      }
-    }
-    return requestData;
   },
 
   /**
@@ -79,7 +62,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   */
   refreshAuthToken: function(authTokenExpiry, refreshToken) {
     var _this = this;
-    var data  = this.buildRequestData('refresh_token', { refresh_token: refreshToken });
+    var data  = { grant_type: 'refresh_token', refresh_token: refreshToken };
     this.makeRequest(data).then(function(response) {
       Ember.run(function() {
         authTokenExpiry = response.expires_in || authTokenExpiry;

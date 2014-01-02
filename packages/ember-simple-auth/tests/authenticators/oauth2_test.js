@@ -70,16 +70,6 @@ test('issues an AJAX request to authenticate', function() {
   equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a POST request to authenticate.');
   deepEqual(ajaxMock.requestOptions.data, { grant_type: 'password', password: 'password', username: 'identification' }, 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the correct data to authenticate.');
   equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" to authenticate.');
-
-  authenticator.setProperties({
-    clientId:     'client_id',
-    clientSecret: 'client_secret'
-  });
-  Ember.run(function() {
-    authenticator.authenticate({ identification: 'identification', password: 'password' });
-  });
-
-  deepEqual(ajaxMock.requestOptions.data, { client_id: 'client_id', client_secret: 'client_secret', grant_type: 'password', password: 'password', username: 'identification' }, 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with client_id and client_secret to authenticate when these are set.');
 });
 
 test('returns a promise on authentication', function() {
@@ -124,16 +114,12 @@ test('invalidates the session', function() {
 
 test('refreshes the auth token', function() {
   Ember.run(function() {
-    authenticator.setProperties({
-      clientId:     'client_id',
-      clientSecret: 'client_secret'
-    });
     authenticator.refreshAuthToken(1, 'refresh token!');
   });
 
   equal(ajaxMock.requestOptions.url, '/token', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request to the serverTokenEndpoint to refresh the auth token.');
   equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a POST request to refresh the auth token.');
-  deepEqual(ajaxMock.requestOptions.data, { grant_type: 'refresh_token', refresh_token: 'refresh token!', client_id: 'client_id', client_secret: 'client_secret' }, 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the correct data to refresh the auth token.');
+  deepEqual(ajaxMock.requestOptions.data, { grant_type: 'refresh_token', refresh_token: 'refresh token!' }, 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the correct data to refresh the auth token.');
   equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" to refresh the auth token.');
 });
 
