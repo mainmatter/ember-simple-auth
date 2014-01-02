@@ -3,8 +3,8 @@
 Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   serverTokenEndpoint:  '/token',
   refreshAuthTokens:    true,
-  cliendId:             null,
-  cliendSecret:         null,
+  clientId:             null,
+  clientSecret:         null,
   _refreshTokenTimeout: null,
 
   restore: function(properties) {
