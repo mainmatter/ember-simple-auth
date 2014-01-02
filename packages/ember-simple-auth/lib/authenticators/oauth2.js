@@ -48,10 +48,10 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   */
   buildRequestData: function(grantType, data) {
     var requestData = Ember.$.extend({ grant_type: grantType }, data);
-    if (!Ember.isEmpty(this.cliendId)) {
-      requestData.client_id = this.cliendId;
-      if (!Ember.isEmpty(this.cliendSecret)) {
-        requestData.client_secret = this.cliendSecret;
+    if (!Ember.isEmpty(this.clientId)) {
+      requestData.client_id = this.clientId;
+      if (!Ember.isEmpty(this.clientSecret)) {
+        requestData.client_secret = this.clientSecret;
       }
     }
     return requestData;
