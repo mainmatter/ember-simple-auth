@@ -3,7 +3,7 @@ notifications:
   email:
     on_success: never
 rvm:
-- 1.9.3
+- "1.9.3"
 install:
 - "bundle install --deployment"
 before_script:
