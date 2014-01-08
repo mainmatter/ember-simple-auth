@@ -198,13 +198,14 @@ __END__
 
 @@ oauth_callback_success
 <html>
-<head></head>
+<head>
+</head>
 <body>
   <script>
     <% if success %>
-      window.opener.Ember.SimpleAuth.externalLoginSucceeded({ access_token: 'secret token!' });
+      window.opener.App.ExternalConnector.trigger('externalAuthenticationSucceeded', { authToken: 'secret token!' });
     <% else %>
-      window.opener.Ember.SimpleAuth.externalLoginFailed({ error: 'invalid_grant' });
+      window.opener.App.ExternalConnector.trigger('externalAuthenticationFailed', 'access not granted!');
     <% end %>
     window.close();
   </script>
