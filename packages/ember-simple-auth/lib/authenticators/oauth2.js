@@ -1,6 +1,6 @@
 'use strict';
 
-Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend(Ember.Evented, {
+Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
   serverTokenEndpoint:  '/token',
   refreshAuthTokens:    true,
   _refreshTokenTimeout: null,
