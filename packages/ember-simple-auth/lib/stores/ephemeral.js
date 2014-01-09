@@ -1,6 +1,6 @@
 'use strict';
 
-Ember.SimpleAuth.Stores.Ephemeral = Ember.Object.extend(Ember.Evented, {
+Ember.SimpleAuth.Stores.Ephemeral = Ember.SimpleAuth.Stores.Base.extend({
   init: function() {
     this.clear();
   },

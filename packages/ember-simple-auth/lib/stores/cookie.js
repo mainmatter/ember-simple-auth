@@ -1,6 +1,6 @@
 'use strict';
 
-Ember.SimpleAuth.Stores.Cookie = Ember.Object.extend(Ember.Evented, {
+Ember.SimpleAuth.Stores.Cookie = Ember.SimpleAuth.Stores.Base.extend({
   cookiePrefix:           'ember_simple_auth:',
   secureCookies:          window.location.protocol === 'https:',
   _syncPropertiesTimeout: null,

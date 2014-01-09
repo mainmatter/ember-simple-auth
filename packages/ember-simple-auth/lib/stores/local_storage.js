@@ -1,6 +1,6 @@
 'use strict';
 
-Ember.SimpleAuth.Stores.LocalStorage = Ember.Object.extend(Ember.Evented, {
+Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
   storageKeyPrefix: 'ember_simple_auth:',
 
   init: function() {
