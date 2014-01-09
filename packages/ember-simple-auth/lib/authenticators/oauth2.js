@@ -14,19 +14,22 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
     The endpoint on the server the authenticator acquires the access token from.
 
     @property serverTokenEndpoint
+    @type String
     @default '/token'
   */
-  serverTokenEndpoint:  '/token',
+  serverTokenEndpoint: '/token',
   /**
     Sets whether the authenticator should automatically refresh access tokens
     before they expire.
 
     @property refreshAuthTokens
+    @type Boolean
     @default true
   */
-  refreshAuthTokens:    true,
+  refreshAuthTokens: true,
   /**
     @property _refreshTokenTimeout
+    @type Number
     @default null
     @private
   */
