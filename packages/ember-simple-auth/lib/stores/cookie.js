@@ -1,14 +1,59 @@
 'use strict';
 
+/**
+  Store that saves its data in session cookies.
+
+  In order to keep multiple tabs/windows of your application in sync, this
+  store has to periodically (every 500ms) check the cookies for changes as
+  there are no events that notify of changes in cookies. As an alternative that
+  works without such polling you might want to look at
+  `Ember.SimpleAuth.Stores.LocalStorage` if you don't have to support older
+  browsers that don't implement the `localStorage` API.
+
+  @class Cookie
+  @namespace Ember.SimpleAuth.Stores
+  @extends Ember.SimpleAuth.Stores.Base
+  @constructor
+*/
 Ember.SimpleAuth.Stores.Cookie = Ember.SimpleAuth.Stores.Base.extend({
-  cookiePrefix:           'ember_simple_auth:',
-  secureCookies:          window.location.protocol === 'https:',
+  /**
+    The prefix to use for the store's cookies so they can be distinguished from
+    other cookies.
+
+    @property cookiePrefix
+    @type String
+    @default 'ember_simple_auth:'
+  */
+  cookiePrefix: 'ember_simple_auth:',
+  /**
+    @property _secureCookies
+    @type Boolean
+    @default true if the application is served via HTTPS, false otherwise
+    @private
+  */
+  _secureCookies:         window.location.protocol === 'https:',
+  /**
+    @property _syncPropertiesTimeout
+    @type Number
+    @default null
+    @private
+  */
   _syncPropertiesTimeout: null,
 
+  /**
+    @method
+    @private
+  */
   init: function() {
     this.syncProperties();
   },
 
+  /**
+    Persists the `properties` in session cookies.
+
+    @method persist
+    @param {Object} properties The properties to persist
+  */
   persist: function(properties) {
     for (var property in properties) {
       this.write(property, properties[property], null);
@@ -16,6 +61,13 @@ Ember.SimpleAuth.Stores.Cookie = Ember.SimpleAuth.Stores.Base.extend({
     this._lastProperties = JSON.stringify(this.restore());
   },
 
+  /**
+    Restores all properties currently saved in the session cookies identified
+    by the `cookiePrefix`.
+
+    @method restore
+    @return {Object} All properties currently persisted in the session cookies.
+  */
   restore: function() {
     var _this      = this;
     var properties = {};
@@ -25,6 +77,12 @@ Ember.SimpleAuth.Stores.Cookie = Ember.SimpleAuth.Stores.Base.extend({
     return properties;
   },
 
+  /**
+    Clears the store by deleting all session cookies prefixed with the
+    `cookiePrefix`.
+
+    @method clear
+  */
   clear: function() {
     var _this = this;
     this.knownCookies().forEach(function(cookie) {
@@ -32,14 +90,22 @@ Ember.SimpleAuth.Stores.Cookie = Ember.SimpleAuth.Stores.Base.extend({
     });
   },
 
+  /**
+    @method read
+    @private
+  */
   read: function(name) {
     var value = document.cookie.match(new RegExp(this.cookiePrefix + name + '=([^;]+)')) || [];
     return decodeURIComponent(value[1] || '');
   },
 
+  /**
+    @method write
+    @private
+  */
   write: function(name, value, expiration) {
     var expires = Ember.isEmpty(expiration) ? '' : '; expires=' + expiration;
-    var secure  = !!this.secureCookies ? ';secure' : '';
+    var secure  = !!this._secureCookies ? ';secure' : '';
     document.cookie = this.cookiePrefix + name + '=' + encodeURIComponent(value) + expires + secure;
   },
 
