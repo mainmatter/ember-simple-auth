@@ -5,6 +5,7 @@
 
 require('ember-simple-auth/core');
 require('ember-simple-auth/session');
+require('ember-simple-auth/authorizers/base');
 require('ember-simple-auth/authorizers/oauth2');
 require('ember-simple-auth/authenticators/base');
 require('ember-simple-auth/authenticators/oauth2');
