@@ -4,6 +4,10 @@
   The base for all authenticators. This serves as a starting point for
   implementing custom authenticators and must not be used directly.
 
+  Authenticators may trigger the 'ember-simple-auth:session-updated' event when
+  any of the session properties change. The session listens to that event and
+  will handle the change accordingly.
+
   @class Base
   @namespace Ember.SimpleAuth.Authenticators
   @extends Ember.Object

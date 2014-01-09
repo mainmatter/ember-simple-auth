@@ -4,6 +4,10 @@
   Authenticator that conforms to OAuth 2 (RFC 6749), specifically the
   _"Resource Owner Password Credentials Grant Type"_.
 
+  This authenticator supports refreshing the access token automatically and
+  will trigger the 'ember-simple-auth:session-updated' event each time the
+  token was refreshed.
+
   @class OAuth2
   @namespace Ember.SimpleAuth.Authenticators
   @extends Ember.SimpleAuth.Authenticators.Base
