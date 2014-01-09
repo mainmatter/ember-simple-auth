@@ -1,6 +1,6 @@
 'use strict';
 
-Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
+Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend(Ember.Evented, {
   serverTokenEndpoint:  '/token',
   refreshAuthTokens:    true,
   _refreshTokenTimeout: null,
@@ -8,12 +8,12 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.Object.extend(Ember.Evented, {
   restore: function(properties) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(properties.authToken)) {
+      _this._super(properties).then(function(properties) {
         _this.scheduleAuthTokenRefresh(properties.authTokenExpiry, properties.refreshToken);
         resolve(properties);
-      } else {
+      }, function() {
         reject();
-      }
+      });
     });
   },
 

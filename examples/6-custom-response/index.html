@@ -104,19 +104,8 @@
 
   // the custom authenticator that handles the authenticated account (make sure to mix in
   // Ember.Evented as the session will subscribe to the authenticator's "'ember-simple-auth:session-updated'" event)
-  App.CustomAuthenticator = Ember.Object.extend(Ember.Evented, {
+  App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend(Ember.Evented, {
     tokenEndpoint: '/v4/token',
-
-    restore: function(properties) {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        // when there's a non-empty authToken in the session data, the session is authenticated
-        if (!Ember.isEmpty(properties.authToken)) {
-          resolve(properties);
-        } else {
-          reject();
-        }
-      });
-    },
 
     authenticate: function(credentials) {
       var _this = this;

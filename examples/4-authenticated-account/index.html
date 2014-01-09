@@ -108,18 +108,7 @@
 
   // the custom authenticator that handles the authenticated account (make sure to mix in Ember.Evented as
   // the session will subscribe to the authenticator's "'ember-simple-auth:session-updated'" event)
-  App.CustomAuthenticator = Ember.Object.extend(Ember.Evented, {
-    restore: function(properties) {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        // when there's a non-empty authToken in the session data, the session is authenticated
-        if (!Ember.isEmpty(properties.authToken)) {
-          resolve(properties);
-        } else {
-          reject();
-        }
-      });
-    },
-
+  App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend(Ember.Evented, {
     authenticate: function(credentials) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         // make the request to authenticate the user at endoint /v3/token
@@ -139,12 +128,7 @@
           });
         });
       });
-    },
-
-    invalidate: function() {
-      // there is nothing to be done here; when this resolves the session will unset all of its data automatically
-      return new Ember.RSVP.Promise(function(resolve) { resolve(); });
-    },
+    }
   });
 
   // use the provided mixins in the application route and login controller
