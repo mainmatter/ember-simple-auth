@@ -1,8 +1,8 @@
 'use strict';
 
 /**
-  The base for all authenticator strategies. This serves as a starting point
-  for implementing custom authenticators and must not be used directly.
+  The base for all authenticators. This serves as a starting point for
+  implementing custom authenticators and must not be used directly.
 
   @class Base
   @namespace Ember.SimpleAuth.Authenticators
@@ -56,8 +56,8 @@ Ember.SimpleAuth.Authenticators.Base = Ember.Object.extend(Ember.Evented, {
 
     `Ember.SimpleAuth.Authenticators.Base`'s implementation always returns a
     rejecting promise and thus never authenticates the session as there's no
-    reasonable default behavior (for Ember.SimpleAuth's default authentication
-    strategy see Ember.SimpleAuth.Authenticators.OAuth2).
+    reasonable default behavior (for Ember.SimpleAuth's default authenticator
+    see Ember.SimpleAuth.Authenticators.OAuth2).
 
     @method authenticate
     @param {Object} options The options to authenticate the session with
