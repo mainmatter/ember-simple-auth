@@ -70,17 +70,7 @@
   });
 
   // the stucom authenticator to use
-  App.ExternalAuthenticator = Ember.Object.extend(Ember.Evented, {
-    restore: function(properties) {
-      var _this = this;
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        if (!Ember.isEmpty(properties.authToken)) {
-          resolve(properties);
-        } else {
-          reject();
-        }
-      });
-    },
+  App.ExternalAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend(Ember.Evented, {
     authenticate: function() {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         App.ExternalConnector.one('externalAuthenticationSucceeded', function(properties) {
@@ -99,10 +89,6 @@
           'menubar=no,status=no,height=400,width=800'
         );
       });
-    },
-    // no need to do anything here...
-    invalidate: function() {
-      return new Ember.RSVP.Promise(function(resolve) { resolve(); });
     }
   });
   App.ExternalConnector = Ember.Object.createWithMixins(Ember.Evented);
