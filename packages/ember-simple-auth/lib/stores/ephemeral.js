@@ -6,9 +6,7 @@ Ember.SimpleAuth.Stores.Ephemeral = Ember.SimpleAuth.Stores.Base.extend({
   },
 
   persist: function(properties) {
-    for (var property in properties) {
-      this._data[property] = properties[property];
-    }
+    this._data = Ember.$.extend(properties, this._data);
   },
 
   restore: function() {
