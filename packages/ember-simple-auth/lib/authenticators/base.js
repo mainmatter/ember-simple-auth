@@ -1,7 +1,8 @@
 'use strict';
 
 /**
-  This base authenticator strategy serves as a starting point for implementing custom authenticators.
+  The base for all authenticator strategies. This serves as a starting point
+  for implementing custom authenticators and must not be used directly.
 
   @class Base
   @namespace Ember.SimpleAuth.Authenticators
@@ -11,17 +12,24 @@
 */
 Ember.SimpleAuth.Authenticators.Base = Ember.Object.extend(Ember.Evented, {
   /**
-    The restore method is invoked by the session when the Ember.js app is loaded and the session properties
-    where (potentially) restored from the store (in the case when the user logs in and reloads tha page). This method
-    returns a promise. When this promise resolves the session will regard itself as being authenticated with the
-    properties the promise resolves with. When the promise rejects the session will remain unauthenticated.
+    Restores the session from a set of session properties. This method is
+    invoked by the session either after the applciation starts up and session
+    properties where restored from the store or when properties in the store
+    have changed due to external actions (e.g. in another tab).
 
-    `Ember.SimpleAuth.Authenticators.Base`'s implementation checks whether there's a non-empty `authToken` in the
-    properties and if there is resolves, otherwise rejects.
+    This method returns a promise. A resolving promise will result in the
+    session being authenticated. Any properties the promise resolves with will
+    be saved in the session. In most cases the `properties` argument will
+    simply be forwarded to the promise. A rejecting promise indicates that
+    authentication failed and the session will remain unchanged.
+
+    `Ember.SimpleAuth.Authenticators.Base`'s implementation returns a resolving
+    promise if there's a non-empty `authToken` in the `properties` and rejects
+    otherwise.
 
     @method restore
     @param {Object} properties The properties to restore the session from
-    @return {Ember.RSVP.Promise} A promise that resolves when the session should be authenticated
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(properties) {
     var _this = this;
@@ -35,28 +43,47 @@ Ember.SimpleAuth.Authenticators.Base = Ember.Object.extend(Ember.Evented, {
   },
 
   /**
-    This method authenticates the session with the specified `options`. These options might vary depending on the actual
-    method of authentication the authenticator uses. This method returns a promise. When this promise resolves the session will regard itself as being authenticated with the
-    properties the promise resolves with. When the promise rejects the session will remain unauthenticated.
+    Authenticates the session with the specified `options`. These options vary
+    depending on the actual authentication mechanism the authenticator uses
+    (e.g. a set of credentials or a Facebook account id etc.). The session will
+    invoke this method when some action in the appliaction triggers
+    authentication (see LoginControllerMixin.actions.login).
 
-    `Ember.SimpleAuth.Authenticators.Base`'s implementation always returns a rejecting promise.
+    This method returns a promise. A resolving promise will result in the
+    session being authenticated. Any properties the promise resolves with will
+    be saved in the session. A rejecting promise indicates that authentication
+    failed and the session will remain unchanged.
+
+    `Ember.SimpleAuth.Authenticators.Base`'s implementation always returns a
+    rejecting promise and thus never authenticates the session as there's no
+    reasonable default behavior (for Ember.SimpleAuth's default authentication
+    strategy see Ember.SimpleAuth.Authenticators.OAuth2).
 
     @method authenticate
     @param {Object} options The options to authenticate the session with
-    @return {Ember.RSVP.Promise} A promise that resolves when the session should be authenticated
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   authenticate: function(options) {
     return new Ember.RSVP.Promise(function(resolve, reject) { reject(); });
   },
 
   /**
-    This method invalidates the session. This is used as an entry point for authenticators that e.g. need to invalidate
-    the auth token on the server side by e.g. issuing a `DELETE` request or so. This method returns a promise. When this promise resolves the session will regard itself as being invalidate and not authenticated anymore. When the promise rejects the session will remain authenticated.
+    Invalidation callback that is invoked when the session is invalidated.
+    While the session will invalidate itself and clear all session properties,
+    it might be necessary for some authenticators to perform additional tasks
+    (e.g. invalidating an access token on the server), which should be done in
+    this method.
 
-    `Ember.SimpleAuth.Authenticators.Base`'s implementation always returns a resolving promise and thus always invalidates the session without doing anything.
+    This method returns a promise. A resolving promise will result in the
+    session being invalidated. A rejecting promise will result in the session
+    invalidation being intercepted and the session being left authenticated.
+
+    `Ember.SimpleAuth.Authenticators.Base`'s implementation always returns a
+    resolving promise and thus always invalidates the session without doing
+    anything.
 
     @method invalidate
-    @return {Ember.RSVP.Promise} A promise that resolves when the session should be invalidate
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
   */
   invalidate: function() {
     return new Ember.RSVP.Promise(function(resolve) { resolve(); });

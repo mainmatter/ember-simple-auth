@@ -5,7 +5,7 @@ function extractLocationOrigin(location) {
 }
 
 /**
-  The main namespace for Ember.SimpleAuth
+  The main namespace for Ember.SimpleAuth.
 
   @class SimpleAuth
   @namespace Ember
@@ -21,13 +21,13 @@ Ember.SimpleAuth = Ember.Namespace.create({
   loginRoute:       null,
 
   /**
-    Sets up Ember.SimpleAuth for your application; invoke this method in a custom
+    Sets up Ember.SimpleAuth for the application; this method should be invoked in a custom
     initializer like this:
 
     ```javascript
     Ember.Application.initializer({
       name: 'authentication',
-      initialize: function(application) {
+      initialize: function(container, application) {
         Ember.SimpleAuth.setup(application);
       }
     });
@@ -40,9 +40,9 @@ Ember.SimpleAuth = Ember.Namespace.create({
       @param {String} [options.routeAfterLogin] route to redirect the user to after successfully logging in - defaults to `'index'`
       @param {String} [options.routeAfterLogout] route to redirect the user to after logging out - defaults to `'index'`
       @param {String} [options.loginRoute] route to redirect the user to when login is required - defaults to `'login'`
-      @param {Array[String]} [options.crossOriginWhitelist] list of origins that (besides the origin of the Ember.js application) send the authentication token to - defaults to `[]` (beware that origins consist of protocol, host and port (you can leave port out when it is 80))
-      @param {Object} [options.authorizer] The authorizer "class" to use; must extend `Ember.Object` and also implement `function(jqXHR, requestOptions)` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
-      @param {Object} [options.store] The store "class" to use; must extend `Ember.Object` and also implement `function(jqXHR, requestOptions)` - defaults to `Ember.SimpleAuth.Stores.Cookie`
+      @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js app was loaded from; to explicitely enabled authorization for additional origins, whitelist those origins - defaults to `[]` (beware that origins consist of protocol, host and port (port can be left out when it is 80))
+      @param {Object} [options.authorizer] The authorizer "class" to use; must extend `Ember.SimpleAuth.Authorizers.Base` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
+      @param {Object} [options.store] The store "class" to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.Cookie`
   **/
   setup: function(application, options) {
     options                    = options || {};
