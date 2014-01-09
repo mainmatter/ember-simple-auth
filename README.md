@@ -298,7 +298,6 @@ uses grant type `refresh_token` and only includes the refresh token:
 ```
 POST /token HTTP/1.1
 Host: server.example.com
-Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 Content-Type: application/x-www-form-urlencoded
 
 grant_type=refresh_token&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA
@@ -392,6 +391,10 @@ This is an incomplete list of middlewares supporting RFC 6749.
 #### Java
 
 * scribe-java: https://github.com/fernandezpablo85/scribe-java
+
+#### Node.js
+
+* oauth2orize: https://github.com/jaredhanson/oauth2orize
 
 Please submit a pull request if you think an important library is missing here!
 
