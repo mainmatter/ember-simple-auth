@@ -13,11 +13,11 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
     The prefix to use for the store's keys so they can be distinguished from
     other keys.
 
-    @property storageKeyPrefix
+    @property keyPrefix
     @type String
     @default 'ember_simple_auth:'
   */
-  storageKeyPrefix: 'ember_simple_auth:',
+  keyPrefix: 'ember_simple_auth:',
 
   /**
     @method init
@@ -42,7 +42,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
 
   /**
     Restores all properties currently saved in the `localStorage` identified by
-    the `storageKeyPrefix`.
+    the `keyPrefix`.
 
     @method restore
     @return {Object} All properties currently persisted in the session cookies
@@ -51,7 +51,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
     var _this = this;
     var properties = {};
     this.knownKeys().forEach(function(key) {
-      var originalKey = key.replace(_this.storageKeyPrefix, '');
+      var originalKey = key.replace(_this.keyPrefix, '');
       properties[originalKey] = localStorage.getItem(key);
     });
     return properties;
@@ -59,7 +59,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
 
   /**
     Clears the store by deleting all `localStorage` keys prefixed with the
-    `storageKeyPrefix`.
+    `keyPrefix`.
 
     @method clear
   */
@@ -74,7 +74,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
     @private
   */
   buildStorageKey: function(property) {
-    return this.storageKeyPrefix + property;
+    return this.keyPrefix + property;
   },
 
   /**
@@ -85,7 +85,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
     var keys = Ember.A([]);
     for (var i = 0, l = localStorage.length; i < l; i++) {
       var key = localStorage.key(i);
-      if (key.indexOf(this.storageKeyPrefix) === 0) {
+      if (key.indexOf(this.keyPrefix) === 0) {
         keys.push(key);
       }
     }
