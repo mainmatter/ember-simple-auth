@@ -92,6 +92,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     indicates that authentication failed and the session remains
     unauthenticated.
 
+    @method authenticate
     @param {Ember.SimpleAuth.Authenticators.Base} authToken The authenticator to authenticate with
     @param {Object} options The options to pass to the authenticator; depending on the type of authenticator these might be a set of credentials etc.
     @return {Ember.RSVP.Promise} A promise that resolves when the session was authenticated successfully
@@ -119,6 +120,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     indicates that the promise returned by the `authenticator` rejected and
     thus invalidation was cancelled.
 
+    @method invalidate
     @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully
   */
   invalidate: function() {

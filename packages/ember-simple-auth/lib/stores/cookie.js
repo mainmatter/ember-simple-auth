@@ -44,7 +44,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.SimpleAuth.Stores.Base.extend({
   _syncPropertiesTimeout: null,
 
   /**
-    @method
+    @method init
     @private
   */
   init: function() {
