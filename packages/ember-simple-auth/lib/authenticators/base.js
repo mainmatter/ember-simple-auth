@@ -27,23 +27,15 @@ Ember.SimpleAuth.Authenticators.Base = Ember.Object.extend(Ember.Evented, {
     simply be forwarded to the promise. A rejecting promise indicates that
     authentication failed and the session will remain unchanged.
 
-    `Ember.SimpleAuth.Authenticators.Base`'s implementation returns a resolving
-    promise if there's a non-empty `authToken` in the `properties` and rejects
-    otherwise.
+    `Ember.SimpleAuth.Authenticators.Base`'s always rejects as there's no
+    reasonable default implementation.
 
     @method restore
     @param {Object} properties The properties to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(properties) {
-    var _this = this;
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(properties.authToken)) {
-        resolve(properties);
-      } else {
-        reject();
-      }
-    });
+    return new Ember.RSVP.Promise(function(resolve, reject) { reject(); });
   },
 
   /**
