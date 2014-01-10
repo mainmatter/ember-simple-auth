@@ -114,7 +114,7 @@ test('invalidates the session', function() {
 
 test('refreshes the auth token', function() {
   Ember.run(function() {
-    authenticator.refreshAuthToken(1, 'refresh token!');
+    authenticator.refreshAccessToken(1, 'refresh token!');
   });
 
   equal(ajaxMock.requestOptions.url, '/token', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request to the serverTokenEndpoint to refresh the auth token.');
@@ -126,20 +126,20 @@ test('refreshes the auth token', function() {
 test('keeps the token fresh', function() {
   AjaxMock._resolve = false;
   Ember.run(function() {
-    authenticator.refreshAuthToken(1, 'refresh token!');
+    authenticator.refreshAccessToken(1, 'refresh token!');
   });
 
   ok(Ember.isEmpty(authenticator._refreshTokenTimeout), 'Ember.SimpleAuth.Authenticators.OAuth2 does not schedule another refresh when refreshing the auth token failed.');
 
   AjaxMock._resolve = true;
   Ember.run(function() {
-    authenticator.refreshAuthToken(5, 'refresh token!');
+    authenticator.refreshAccessToken(5, 'refresh token!');
   });
 
   ok(Ember.isEmpty(authenticator._refreshTokenTimeout), 'Ember.SimpleAuth.Authenticators.OAuth2 does not schedule another refresh when the auth token expiration time is 5 seconds or less.');
 
   Ember.run(function() {
-    authenticator.refreshAuthToken(10, 'refresh token!');
+    authenticator.refreshAccessToken(10, 'refresh token!');
   });
 
   ok(!Ember.isEmpty(authenticator._refreshTokenTimeout), 'Ember.SimpleAuth.Authenticators.OAuth2 schedules another refresh when it successfully refreshed the auth token.');

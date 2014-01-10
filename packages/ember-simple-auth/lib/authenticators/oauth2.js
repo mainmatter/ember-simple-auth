@@ -26,11 +26,11 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
     Sets whether the authenticator should automatically refresh access tokens
     before they expire.
 
-    @property refreshAuthTokens
+    @property refreshAccessTokens
     @type Boolean
     @default true
   */
-  refreshAuthTokens: true,
+  refreshAccessTokens: true,
   /**
     @property _refreshTokenTimeout
     @type Number
@@ -41,12 +41,12 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
 
   /**
     Restores the session from a set of session properties; will return a
-    resolving promise when there's a non-empty `authToken` in the `properties`
-    and a rejecting promise otherwise.
+    resolving promise when there's a non-empty `access_token` in the
+    `properties` and a rejecting promise otherwise.
 
     This method will also schedules automatic token refreshing when there are a
     refresh token and a token expiration time in the `properties` and automatic
-    token refreshing isn't disabled (see `refreshAuthTokens`).
+    token refreshing isn't disabled (see `refreshAccessTokens`).
 
     @method restore
     @param {Object} properties The properties to restore the session from
@@ -56,7 +56,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       if (!Ember.isEmpty(properties.access_token)) {
-        _this.scheduleAuthTokenRefresh(properties.authTokenExpiry, properties.refreshToken);
+        _this.scheduleAccessTokenRefresh(properties.expires_in, properties.refresh_token);
         resolve(properties);
       } else {
         reject();
@@ -75,7 +75,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
 
     This method will also schedule automatic token refreshing when there are a
     refresh token and a token expiration time in the server's response and
-    automatic token refreshing isn't diabled (see `refreshAuthTokens`).
+    automatic token refreshing isn't diabled (see `refreshAccessTokens`).
 
     @method authenticate
     @param {Object} options The credentials to authenticate the session with
@@ -87,7 +87,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
       var data = { grant_type: 'password', username: credentials.identification, password: credentials.password };
       _this.makeRequest(data).then(function(response) {
         Ember.run(function() {
-          _this.scheduleAuthTokenRefresh(response.expires_in, response.refresh_token);
+          _this.scheduleAccessTokenRefresh(response.expires_in, response.refresh_token);
           resolve(response);
         });
       }, function(xhr, status, error) {
@@ -111,33 +111,33 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
   },
 
   /**
-    @method scheduleAuthTokenRefresh
+    @method scheduleAccessTokenRefresh
     @private
   */
-  scheduleAuthTokenRefresh: function(authTokenExpiry, refreshToken) {
+  scheduleAccessTokenRefresh: function(expiry, refreshToken) {
     var _this = this;
-    if (this.refreshAuthTokens) {
+    if (this.refreshAccessTokens) {
       Ember.run.cancel(this._refreshTokenTimeout);
       delete this._refreshTokenTimeout;
-      var waitTime = (authTokenExpiry || 0) * 1000 - 5000; //refresh token 5 seconds before it expires
+      var waitTime = (expiry || 0) * 1000 - 5000; //refresh token 5 seconds before it expires
       if (!Ember.isEmpty(refreshToken) && waitTime > 0) {
-        this._refreshTokenTimeout = Ember.run.later(this, this.refreshAuthToken, authTokenExpiry, refreshToken, waitTime);
+        this._refreshTokenTimeout = Ember.run.later(this, this.refreshAccessToken, expiry, refreshToken, waitTime);
       }
     }
   },
 
   /**
-    @method refreshAuthToken
+    @method refreshAccessToken
     @private
   */
-  refreshAuthToken: function(authTokenExpiry, refreshToken) {
+  refreshAccessToken: function(expiry, refreshToken) {
     var _this = this;
     var data  = { grant_type: 'refresh_token', refresh_token: refreshToken };
     this.makeRequest(data).then(function(response) {
       Ember.run(function() {
-        authTokenExpiry = response.expires_in || authTokenExpiry;
-        refreshToken    = response.refresh_token || refreshToken;
-        _this.scheduleAuthTokenRefresh(authTokenExpiry, refreshToken);
+        expiry       = response.expires_in || expiry;
+        refreshToken = response.refresh_token || refreshToken;
+        _this.scheduleAccessTokenRefresh(expiry, refreshToken);
         _this.trigger('ember-simple-auth:session-updated', response);
       });
     }, function(xhr, status, error) {
