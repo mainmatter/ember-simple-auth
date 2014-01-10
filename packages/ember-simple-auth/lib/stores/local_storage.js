@@ -3,6 +3,9 @@
 /**
   Store that saves its data in the browser's `localStorage`.
 
+  This store will trigger the 'ember-simple-auth:session-updated' event when
+  any of its keys is changed from another tab or window.
+
   @class LocalStorage
   @namespace Ember.SimpleAuth.Stores
   @extends Ember.SimpleAuth.Stores.Base

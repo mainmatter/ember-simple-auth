@@ -10,6 +10,9 @@
   `Ember.SimpleAuth.Stores.LocalStorage` if you don't have to support older
   browsers that don't implement the `localStorage` API.
 
+  This store will trigger the 'ember-simple-auth:session-updated' event when
+  any of its cookies is changed from another tab or window.
+
   @class Cookie
   @namespace Ember.SimpleAuth.Stores
   @extends Ember.SimpleAuth.Stores.Base
