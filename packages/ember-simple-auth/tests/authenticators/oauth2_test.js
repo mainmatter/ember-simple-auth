@@ -33,14 +33,14 @@ test('it restores the session', function() {
   var resolved;
   var resolvedWith;
   Ember.run(function() {
-    authenticator.restore({ authToken: 'authToken', key: 'value' }).then(function(properties) {
+    authenticator.restore({ access_token: 'access_token', key: 'value' }).then(function(properties) {
       resolved     = true;
       resolvedWith = properties;
     });
   });
 
-  ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise when the properties it restores from include an authToken.');
-  deepEqual(resolvedWith, { authToken: 'authToken', key: 'value' }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with the passed properties when the passed properties it restores from include an authToken.');
+  ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise when the properties it restores from include an access_token.');
+  deepEqual(resolvedWith, { access_token: 'access_token', key: 'value' }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with the passed properties when the passed properties it restores from include an access_token.');
 
   var rejected;
   Ember.run(function() {
@@ -49,16 +49,16 @@ test('it restores the session', function() {
     });
   });
 
-  ok(rejected, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a rejecting promise when the properties it restores from do not include an authToken.');
+  ok(rejected, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a rejecting promise when the properties it restores from do not include an access_token.');
 
   rejected = false;
   Ember.run(function() {
-    authenticator.restore({ authToken: '' }).then(function() {}, function() {
+    authenticator.restore({ access_token: '' }).then(function() {}, function() {
       rejected = true;
     });
   });
 
-  ok(rejected, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a rejecting promise when the properties it restores from include an empty authToken.');
+  ok(rejected, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a rejecting promise when the properties it restores from include an empty access_token.');
 });
 
 test('issues an AJAX request to authenticate', function() {
@@ -73,7 +73,7 @@ test('issues an AJAX request to authenticate', function() {
 });
 
 test('returns a promise on authentication', function() {
-  AjaxMock._resolve = { access_token: 'authToken' };
+  AjaxMock._resolve = { access_token: 'access_token' };
   var resolved;
   var resolvedWith;
   Ember.run(function() {
@@ -84,7 +84,7 @@ test('returns a promise on authentication', function() {
   });
 
   ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise on authentication when the AJAX request is successful.');
-  deepEqual(resolvedWith, { authToken: 'authToken', authTokenExpiry: undefined, refreshToken: undefined }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with authToken, authTokenExpiry and refreshToken on authentication when the AJAX request is successful.');
+  deepEqual(resolvedWith, { access_token: 'access_token' }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with access_token, access_tokenExpiry and refreshToken on authentication when the AJAX request is successful.');
 
   AjaxMock._resolve = false;
   AjaxMock._reject  = { responseText: 'error' };

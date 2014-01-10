@@ -55,12 +55,12 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
   restore: function(properties) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      _this._super(properties).then(function(properties) {
+      if (!Ember.isEmpty(properties.access_token)) {
         _this.scheduleAuthTokenRefresh(properties.authTokenExpiry, properties.refreshToken);
         resolve(properties);
-      }, function() {
+      } else {
         reject();
-      });
+      }
     });
   },
 
@@ -88,7 +88,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
       _this.makeRequest(data).then(function(response) {
         Ember.run(function() {
           _this.scheduleAuthTokenRefresh(response.expires_in, response.refresh_token);
-          resolve({ authToken: response.access_token, authTokenExpiry: response.expires_in, refreshToken: response.refresh_token });
+          resolve(response);
         });
       }, function(xhr, status, error) {
         Ember.run(function() {
@@ -138,7 +138,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
         authTokenExpiry = response.expires_in || authTokenExpiry;
         refreshToken    = response.refresh_token || refreshToken;
         _this.scheduleAuthTokenRefresh(authTokenExpiry, refreshToken);
-        _this.trigger('ember-simple-auth:session-updated', { authToken: response.access_token, authTokenExpiry: authTokenExpiry, refreshToken: refreshToken });
+        _this.trigger('ember-simple-auth:session-updated', response);
       });
     }, function(xhr, status, error) {
       Ember.Logger.warn('Access token could not be refreshed - server responded with ' + error + '.');

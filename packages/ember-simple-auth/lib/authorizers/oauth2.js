@@ -11,7 +11,7 @@
 */
 Ember.SimpleAuth.Authorizers.OAuth2 = Ember.SimpleAuth.Authorizers.Base.extend({
   /**
-    Authorizes an XHR request by adding the `authToken` property from the
+    Authorizes an XHR request by adding the `access_token` property from the
     session as a bearer token in the `Authorization` header:
 
     ```
@@ -23,8 +23,8 @@ Ember.SimpleAuth.Authorizers.OAuth2 = Ember.SimpleAuth.Authorizers.Base.extend({
     @param {Object} requestOptions The options as provided to the `$.ajax` method (see http://api.jquery.com/jQuery.ajaxPrefilter/)
   */
   authorize: function(jqXHR, requestOptions) {
-    if (!Ember.isEmpty(this.get('session.authToken'))) {
-      jqXHR.setRequestHeader('Authorization', 'Bearer ' + this.get('session.authToken'));
+    if (!Ember.isEmpty(this.get('session.access_token'))) {
+      jqXHR.setRequestHeader('Authorization', 'Bearer ' + this.get('session.access_token'));
     }
   }
 });
