@@ -203,7 +203,7 @@ __END__
 <body>
   <script>
     <% if success %>
-      window.opener.App.ExternalConnector.trigger('externalAuthenticationSucceeded', { authToken: 'secret token!' });
+      window.opener.App.ExternalConnector.trigger('externalAuthenticationSucceeded', { access_token: 'secret token!' });
     <% else %>
       window.opener.App.ExternalConnector.trigger('externalAuthenticationFailed', 'access not granted!');
     <% end %>
