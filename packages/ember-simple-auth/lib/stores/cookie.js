@@ -66,7 +66,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.SimpleAuth.Stores.Base.extend({
     by the `cookiePrefix`.
 
     @method restore
-    @return {Object} All properties currently persisted in the session cookies.
+    @return {Object} All properties currently persisted in the session cookies
   */
   restore: function() {
     var _this      = this;
