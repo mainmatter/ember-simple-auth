@@ -39,7 +39,7 @@ test('redirects to the correct route when login is triggered', function() {
   equal(testRoute.transitionedTo, Ember.SimpleAuth.loginRoute, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route when login is triggered.');
 });
 
-test('invalidates the current session whne logout is triggered', function() {
+test('invalidates the current session when logout is triggered', function() {
   AuthenticatorMock._resolve = true;
   testRoute.set('session.isAuthenticated', true);
   Ember.run(function() {
