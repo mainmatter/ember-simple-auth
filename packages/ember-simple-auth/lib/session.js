@@ -7,10 +7,13 @@ function classifyString(className) {
 }
 
 /**
-  This class holds the current authentication state and data the authenticator sets. There will always be a
-  session regardless of whether a user is currently authenticated or not. That (singleton) instance
-  of this class is automatically injected into all models, controller, routes and views so you should
-  never instantiate this class directly but always use the auto-injected instance.
+  The session holds the current authentication state as well as any properties
+  resolved by the authenticator
+  (see Ember.SimpleAuth.Authenticators.Base#authenticate). It is created when
+  Ember.SimpleAuth is set up and injected into all models, controllers, routes
+  and views so that all parts of the application can always access the current
+  authentication state and potentially other properties, depending on the used
+  authenticator.
 
   @class Session
   @namespace Ember.SimpleAuth
@@ -18,11 +21,46 @@ function classifyString(className) {
   @constructor
 */
 Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
-  authenticator:       null,
-  store:               null,
-  isAuthenticated:     false,
+  /**
+    The authenticator used to authenticate this session. This is only set when
+    the session is currently authenticated.
+
+    @property authenticator
+    @type Ember.SimpleAuth.Authenticators.Base
+    @readOnly
+    @default null
+  */
+  authenticator: null,
+  /**
+    The store used to persist session properties. This is assigned during
+    Ember.SimpleAuth's setup and can be soecified there
+    (see Ember.SimpleAuth#setup).
+
+    @property store
+    @type Ember.SimpleAuth.Stores.Base
+    @readOnly
+    @default null
+  */
+  store: null,
+  /**
+    Holds whether the session is currently authenticated.
+
+    @property authenticated
+    @type Boolean
+    @readOnly
+    @default false
+  */
+  isAuthenticated: false,
+  /**
+    @property attemptedTransition
+    @private
+  */
   attemptedTransition: null,
-  content:             null,
+  /**
+    @property content
+    @private
+  */
+  content: null,
 
   /**
     @method init
@@ -44,22 +82,19 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   },
 
   /**
-    Sets up the session from a plain JavaScript object. This does not create a new instance but sets up
-    the instance with the data that is passed. Any data assigned here is also persisted in a session cookie (see http://en.wikipedia.org/wiki/HTTP_cookie#Session_cookie) so it survives a page reload.
+    Authentices the session with an `authenticator` and appropriate `options`.
+    This delegates the actual authentication work (e.g. making server requests
+    etc.) to the specified `authenticator` and handles the returned promise
+    accordingly (see Ember.SimpleAuth.Authenticators.Base#authenticate).
 
-    @method setup
-    @param {Object} data The data to set the session up with
-      @param {String} data.authToken The access token that will be included in the `Authorization` header
-      @param {String} [data.refreshToken] An optional refresh token that will be used for obtaining fresh tokens
-      @param {String} [data.authTokenExpiry] An optional expiry for the `authToken` in seconds; if both `authTokenExpiry` and `refreshToken` are set,
-        Ember.SimpleAuth will automatically refresh access tokens before they expire
+    This method returns a promise itself. A resolving promise indicates that
+    the session was successfully authenticated while a rejecting promise
+    indicates that authentication failed and the session remains
+    unauthenticated.
 
-    @example
-      ```javascript
-      this.get('session').setup({
-        authToken: 'the secret token!'
-      })
-      ```
+    @param {Ember.SimpleAuth.Authenticators.Base} authToken The authenticator to authenticate with
+    @param {Object} options The options to pass to the authenticator; depending on the type of authenticator these might be a set of credentials etc.
+    @return {Ember.RSVP.Promise} A promise that resolves when the session was authenticated successfully
   */
   authenticate: function(authenticator, options) {
     var _this = this;
@@ -75,10 +110,16 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   },
 
   /**
-    Destroys the session by setting all properties to undefined (see [Session#setup](#Ember.SimpleAuth.Session_setup)). This also deletes any
-    saved data from the session cookie and effectively logs the current user out.
+    Invalidates the session with the current `authenticator`. This will invoke
+    the `authenticators` `invalidate` hook and handles the returned promise
+    accordingly (see Ember.SimpleAuth.Authenticators.Base#invalidate).
 
-    @method destroy
+    This method returns a promise itself. A resolving promise indicates that
+    the session was successfully invalidated while a rejecting promise
+    indicates that the promise returned by the `authenticator` rejected and
+    thus invalidation was cancelled.
+
+    @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully
   */
   invalidate: function() {
     var _this = this;
