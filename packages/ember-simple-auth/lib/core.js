@@ -13,21 +13,21 @@ function extractLocationOrigin(location) {
 **/
 Ember.SimpleAuth = Ember.Namespace.create({
   /**
-    The namespace for Ember.SimpleAuth's authenticators.
+    The namespace for Ember.SimpleAuth's authenticator strategies.
 
     @namespace Ember.SimpleAuth.Authenticators
     @static
   **/
   Authenticators: Ember.Namespace.create(),
   /**
-    The namespace for Ember.SimpleAuth's authorizers.
+    The namespace for Ember.SimpleAuth's authorizer strategies.
 
     @namespace Ember.SimpleAuth.Authorizers
     @static
   **/
   Authorizers: Ember.Namespace.create(),
   /**
-    The namespace for Ember.SimpleAuth's stores.
+    The namespace for Ember.SimpleAuth's store strategies.
 
     @namespace Ember.SimpleAuth.Stores
     @static
@@ -35,11 +35,12 @@ Ember.SimpleAuth = Ember.Namespace.create({
   Stores: Ember.Namespace.create(),
 
   /**
-    The route to redirect the user to after successfully logging in. This is
-    set by Ember.SimpleAuth#setup.
+    The route to redirect the user to after successfully authenticating. This
+    is set by Ember.SimpleAuth#setup.
 
     @property routeAfterLogin
     @readOnly
+    @static
     @type String
     @default 'index'
   */
@@ -50,6 +51,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
 
     @property routeAfterLogout
     @readOnly
+    @static
     @type String
     @default 'index'
   */
@@ -60,6 +62,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
 
     @property loginRoute
     @readOnly
+    @static
     @type String
     @default 'login'
   */
