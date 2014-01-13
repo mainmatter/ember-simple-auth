@@ -4,13 +4,23 @@
   The base for all authorizers. This serves as a starting point for
   implementing custom authorizers and must not be used directly.
 
+  The authorizer preprocesses any XHR requests (expect ones to 3rd party
+  origins, see Ember.SimpleAuth#setup) and makes sure it has the required data
+  attached that allows the server to identify the user making the request. This
+  data might be a specific header, data in the query part of the URL, cookies
+  etc. The authorizer has to fit the authenticator
+  (see Ember.SimpleAuth.Authenticators.Base) as it relies on data that the
+  authenticator retrieves from the authentication server and that it makes
+  available through the session.
+
   @class Base
   @namespace Ember.SimpleAuth.Authorizers
   @extends Ember.Object
 */
 Ember.SimpleAuth.Authorizers.Base = Ember.Object.extend({
   /**
-    The application session the authorizer get access tokens etc. from.
+    The session the authorizer gets the data it needs to authorize requests
+    from (see Ember.SimpleAuth.Session).
 
     @property session
     @readOnly
