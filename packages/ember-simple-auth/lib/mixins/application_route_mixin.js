@@ -50,9 +50,9 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       or if none was intercepted redirect to the route configured as
       `routeAfterAuthentication` in [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup).
 
-      @method loginSucceeded
+      @method sessionAuthenticationSucceeded
     */
-    loginSucceeded: function() {
+    sessionAuthenticationSucceeded: function() {
       var attemptedTransition = this.get('session.attemptedTransition');
       if (attemptedTransition) {
         attemptedTransition.retry();
@@ -68,22 +68,22 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       you're using an external authentication provider you might also want to
       override it to display the external provider's error message (any
       arguments you pass to
-      [Ember.SimpleAuth#externalLoginSucceeded](#Ember.SimpleAuth_externalLoginSucceeded)
+      [Ember.SimpleAuth#externalsessionAuthenticationSucceeded](#Ember.SimpleAuth_externalsessionAuthenticationSucceeded)
       will be forwarded to this action), e.g.:
 
       ```javascript
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
         actions: {
-          loginFailed: function(error) {
+          sessionAuthenticationFailed: function(error) {
             this.controllerFor('application').set('loginErrorMessage', error.message);
           }
         }
       });
       ```
 
-      @method loginFailed
+      @method sessionAuthenticationFailed
     */
-    loginFailed: function() {
+    sessionAuthenticationFailed: function() {
     },
 
     /**
@@ -97,17 +97,17 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
     logout: function() {
       var _this = this;
       this.get('session').invalidate().then(function() {
-        _this.send('logoutSucceeded');
+        _this.send('sessionInvalidationSucceeded');
       }, function(error) {
-        _this.send('logoutFailed', error);
+        _this.send('sessionInvalidationFailed', error);
       });
     },
 
-    logoutSucceeded: function() {
+    sessionInvalidationSucceeded: function() {
       this.transitionTo(Ember.SimpleAuth.routeAfterInvalidation);
     },
 
-    logoutFailed: function(error) {
+    sessionInvalidationFailed: function(error) {
     }
   }
 });

@@ -24,7 +24,7 @@ Ember.SimpleAuth.AuthenticatedRouteMixin = Ember.Mixin.create({
     in [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup). It also intercepts the
     current transition so that it can be retried after the user has
     authenticated (see
-    [ApplicationRouteMixin#loginSucceeded](#Ember.SimpleAuth.ApplicationRouteMixin_loginSucceeded)).
+    [ApplicationRouteMixin#sessionAuthenticationSucceeded](#Ember.SimpleAuth.ApplicationRouteMixin_sessionAuthenticationSucceeded)).
 
     @method beforeModel
     @param {Transition} transition The transition that leat to this route

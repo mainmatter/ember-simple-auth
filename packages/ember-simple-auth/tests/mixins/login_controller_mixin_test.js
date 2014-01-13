@@ -1,12 +1,12 @@
 var testController;
 var TestController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
   actions: {
-    loginSucceeded: function() {
-      this.invokedLoginSucceeded = true;
+    sessionAuthenticationSucceeded: function() {
+      this.invokedsessionAuthenticationSucceeded = true;
     },
-    loginFailed: function(error) {
-      this.invokedLoginFailed     = true;
-      this.invokedLoginFailedWith = error;
+    sessionAuthenticationFailed: function(error) {
+      this.invokedsessionAuthenticationFailed     = true;
+      this.invokedsessionAuthenticationFailedWith = error;
     }
   }
 });
@@ -69,7 +69,7 @@ test('triggers the login succeeded action when login is successful', function() 
     testController.send('login');
   });
 
-  ok(testController.invokedLoginSucceeded, 'Ember.SimpleAuth.LoginControllerMixin triggers the loginSucceeded action when login was successful.');
+  ok(testController.invokedsessionAuthenticationSucceeded, 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationSucceeded action when login was successful.');
 });
 
 test('triggers the login failed action with the callback arguments', function() {
@@ -79,6 +79,6 @@ test('triggers the login failed action with the callback arguments', function() 
     testController.send('login');
   });
 
-  ok(testController.invokedLoginFailed, 'Ember.SimpleAuth.LoginControllerMixin triggers the loginFailed action when login fails.');
-  equal(testController.invokedLoginFailedWith, 'error!', 'Ember.SimpleAuth.LoginControllerMixin triggers the loginFailed action with the rejection value of the session.');
+  ok(testController.invokedsessionAuthenticationFailed, 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationFailed action when login fails.');
+  equal(testController.invokedsessionAuthenticationFailedWith, 'error!', 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationFailed action with the rejection value of the session.');
 });

@@ -4,8 +4,8 @@ var TestRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
     this.transitionedTo = targetRoute;
   },
   send: function(action) {
-    this.invokedLogoutSucceeded = (action === 'logoutSucceeded');
-    this.invokedLogoutFailed    = (action === 'logoutFailed');
+    this.invokedsessionInvalidationSucceeded = (action === 'sessionInvalidationSucceeded');
+    this.invokedsessionInvalidationFailed    = (action === 'sessionInvalidationFailed');
     this._actions[action].apply(this);
   }
 });
@@ -57,34 +57,34 @@ test('redirects to the correct route when logout is triggered', function() {
   });
 
   equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterInvalidation, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterInvalidation when logout is triggered.');
-  ok(testRoute.invokedLogoutSucceeded, 'Ember.SimpleAuth.ApplicationRouteMixin triggers the logoutSucceeded action when logout is successful.');
+  ok(testRoute.invokedsessionInvalidationSucceeded, 'Ember.SimpleAuth.ApplicationRouteMixin triggers the sessionInvalidationSucceeded action when logout is successful.');
 
   testRoute.transitionedTo         = null;
-  testRoute.invokedLogoutSucceeded = false;
+  testRoute.invokedsessionInvalidationSucceeded = false;
   AuthenticatorMock._resolve       = false;
   Ember.run(function() {
     testRoute._actions['logout'].apply(testRoute);
   });
 
-  ok(!testRoute.invokedLogoutSucceeded, 'Ember.SimpleAuth.ApplicationRouteMixin does not invoke the logoutSucceeded action when logout fails.');
+  ok(!testRoute.invokedsessionInvalidationSucceeded, 'Ember.SimpleAuth.ApplicationRouteMixin does not invoke the sessionInvalidationSucceeded action when logout fails.');
   equal(testRoute.transitionedTo, null, 'Ember.SimpleAuth.ApplicationRouteMixin does not redirect to the routeAfterInvalidation on logout when session invalidation fails.');
-  ok(testRoute.invokedLogoutFailed, 'Ember.SimpleAuth.ApplicationRouteMixin invokes the logoutFailed action when logout fails.');
+  ok(testRoute.invokedsessionInvalidationFailed, 'Ember.SimpleAuth.ApplicationRouteMixin invokes the sessionInvalidationFailed action when logout fails.');
 });
 
-test('redirects to the correct route on loginSucceeded', function() {
-  testRoute._actions['loginSucceeded'].apply(testRoute);
+test('redirects to the correct route on sessionAuthenticationSucceeded', function() {
+  testRoute._actions['sessionAuthenticationSucceeded'].apply(testRoute);
 
-  equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterAuthentication, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterAuthentication route on loginSucceeded when no attempted transition is saved.');
+  equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterAuthentication, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterAuthentication route on sessionAuthenticationSucceeded when no attempted transition is saved.');
 
   testRoute.set('session.attemptedTransition', attemptedTransitionMock);
-  testRoute._actions['loginSucceeded'].apply(testRoute);
+  testRoute._actions['sessionAuthenticationSucceeded'].apply(testRoute);
 
-  ok(attemptedTransitionMock.retried, 'Ember.SimpleAuth.ApplicationRouteMixin retries a saved attempted transition on loginSucceeded.');
+  ok(attemptedTransitionMock.retried, 'Ember.SimpleAuth.ApplicationRouteMixin retries a saved attempted transition on sessionAuthenticationSucceeded.');
 });
 
-test('clears a saved attempted transition on loginSucceeded', function() {
+test('clears a saved attempted transition on sessionAuthenticationSucceeded', function() {
   testRoute.set('session.attemptedTransition', attemptedTransitionMock);
-  testRoute._actions['loginSucceeded'].apply(testRoute);
+  testRoute._actions['sessionAuthenticationSucceeded'].apply(testRoute);
 
-  equal(testRoute.get('session.attemptedTransition'), null, 'Ember.SimpleAuth.ApplicationRouteMixin clears a saved attempted transition on loginSucceeded.');
+  equal(testRoute.get('session.attemptedTransition'), null, 'Ember.SimpleAuth.ApplicationRouteMixin clears a saved attempted transition on sessionAuthenticationSucceeded.');
 });
