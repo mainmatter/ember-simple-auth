@@ -154,6 +154,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
       url:         this.serverTokenEndpoint,
       type:        'POST',
       data:        data,
+      dataType:    'json',
       contentType: 'application/x-www-form-urlencoded'
     });
   }
