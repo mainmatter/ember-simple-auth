@@ -60,13 +60,13 @@ Ember.SimpleAuth = Ember.Namespace.create({
     The route to redirect the user to to log in. This is set by
     Ember.SimpleAuth#setup.
 
-    @property loginRoute
+    @property authenticationRoute
     @readOnly
     @static
     @type String
     @default 'login'
   */
-  loginRoute: null,
+  authenticationRoute: null,
 
   /**
     Sets up Ember.SimpleAuth for the application; this method should be invoked in a custom
@@ -85,9 +85,9 @@ Ember.SimpleAuth = Ember.Namespace.create({
     @static
     @param {Ember.Application} application The Ember.js application instance
     @param {Object} [options]
-      @param {String} [options.routeAfterAuthentication] route to redirect the user to after successfully logging in - defaults to `'index'`
-      @param {String} [options.routeAfterInvalidation] route to redirect the user to after logging out - defaults to `'index'`
-      @param {String} [options.loginRoute] route to redirect the user to when login is required - defaults to `'login'`
+      @param {String} [options.routeAfterAuthentication] route to redirect the user to after successfully authenticating - defaults to `'index'`
+      @param {String} [options.routeAfterInvalidation] route to redirect the user to after session invalidation - defaults to `'index'`
+      @param {String} [options.authenticationRoute] route to redirect the user to when login is required - defaults to `'login'`
       @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js app was loaded from; to explicitely enabled authorization for additional origins, whitelist those origins - defaults to `[]` (beware that origins consist of protocol, host and port (port can be left out when it is 80))
       @param {Object} [options.authorizer] The authorizer "class" to use; must extend `Ember.SimpleAuth.Authorizers.Base` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
       @param {Object} [options.store] The store "class" to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.Cookie`
@@ -96,7 +96,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
     options                    = options || {};
     this.routeAfterAuthentication       = options.routeAfterAuthentication || 'index';
     this.routeAfterInvalidation      = options.routeAfterInvalidation || 'index';
-    this.loginRoute            = options.loginRoute || 'login';
+    this.authenticationRoute            = options.authenticationRoute || 'login';
     this._crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
 
     var store      = (options.store || Ember.SimpleAuth.Stores.Cookie).create();

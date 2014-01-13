@@ -22,7 +22,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
   actions: {
     /**
       The login action by default redirects to the login route (or any other
-      route defined as `loginRoute` in
+      route defined as `authenticationRoute` in
       [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup)). When integrating with
       an external authentication provider, this action should be overridden so
       that it opens the external provider's UI in a new window, e.g.:
@@ -40,7 +40,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       @method login
     */
     login: function() {
-      this.transitionTo(Ember.SimpleAuth.loginRoute);
+      this.transitionTo(Ember.SimpleAuth.authenticationRoute);
     },
 
     /**

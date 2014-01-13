@@ -37,7 +37,7 @@ module('Ember.SimpleAuth.ApplicationRouteMixin', {
 test('redirects to the correct route when login is triggered', function() {
   testRoute._actions['login'].apply(testRoute);
 
-  equal(testRoute.transitionedTo, Ember.SimpleAuth.loginRoute, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route when login is triggered.');
+  equal(testRoute.transitionedTo, Ember.SimpleAuth.authenticationRoute, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the login route when login is triggered.');
 });
 
 test('invalidates the current session when logout is triggered', function() {
