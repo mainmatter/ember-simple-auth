@@ -127,30 +127,7 @@
   // that window
   App.ExternalConnector = Ember.Object.createWithMixins(Ember.Evented);
 
-  // use the provided mixin in the application route
-  /*App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
-    actions: {
-      authenticateSession: function() {
-        var _this = this;
-        this.get('session').authenticate(App.ExternalAuthenticator.create(), {}).then(function() {
-          _this.send('sessionAuthenticationSucceeded');
-        }, function(error) {
-          _this.send('sessionAuthenticationFailed', error);
-        });
-      },
-      // clear the error message when the login succeeds (must call _super here to make sure an aborted
-      // transition is retried etc.)
-      sessionAuthenticationSucceeded: function() {
-        this._super();
-        this.controllerFor('application').set('loginErrorMessage', null);
-      },
-      // set the application controller's error messages when the login fails so it gets displayed
-      // in the application template (see tempate above)
-      sessionAuthenticationFailed: function(error) {
-        this.controllerFor('application').set('loginErrorMessage', error);
-      }
-    }
-  });*/
+  // use the provided mixin in the application route and login controller
   App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
   App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationControllerMixin, {
     actions: {
