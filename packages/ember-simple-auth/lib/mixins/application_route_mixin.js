@@ -39,7 +39,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
 
       @method login
     */
-    login: function() {
+    authenticateSession: function() {
       this.transitionTo(Ember.SimpleAuth.authenticationRoute);
     },
 
