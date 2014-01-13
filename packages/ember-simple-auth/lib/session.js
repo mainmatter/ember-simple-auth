@@ -7,13 +7,18 @@ function classifyString(className) {
 }
 
 /**
-  The session holds the current authentication state as well as any properties
-  resolved by the authenticator
+  The session provides access to the current authentication state as well as
+  any properties resolved by the authenticator
   (see Ember.SimpleAuth.Authenticators.Base#authenticate). It is created when
   Ember.SimpleAuth is set up and injected into all models, controllers, routes
   and views so that all parts of the application can always access the current
-  authentication state and potentially other properties, depending on the used
+  authentication state and other properties, depending on the used
   authenticator.
+
+  The session also provides methods to authenticate the user and to invalidate
+  itself (see Ember.SimpleAuth.Session#authenticate,
+  Ember.SimpleAuth.Session#invaldiate). These methods are usually invoked
+  throught actions from routes or controllers.
 
   @class Session
   @namespace Ember.SimpleAuth
@@ -22,7 +27,7 @@ function classifyString(className) {
 */
 Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   /**
-    The authenticator used to authenticate this session. This is only set when
+    The authenticator used to authenticate the session. This is only set when
     the session is currently authenticated.
 
     @property authenticator
@@ -33,7 +38,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   authenticator: null,
   /**
     The store used to persist session properties. This is assigned during
-    Ember.SimpleAuth's setup and can be soecified there
+    Ember.SimpleAuth's setup and can be specified there
     (see Ember.SimpleAuth#setup).
 
     @property store
@@ -112,13 +117,14 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
 
   /**
     Invalidates the session with the current `authenticator`. This will invoke
-    the `authenticators` `invalidate` hook and handles the returned promise
+    the `authenticator`'s `invalidate` hook and handles the returned promise
     accordingly (see Ember.SimpleAuth.Authenticators.Base#invalidate).
 
     This method returns a promise itself. A resolving promise indicates that
     the session was successfully invalidated while a rejecting promise
     indicates that the promise returned by the `authenticator` rejected and
-    thus invalidation was cancelled.
+    thus invalidation was cancelled. In that case the session remains
+    authenticated.
 
     @method invalidate
     @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully
