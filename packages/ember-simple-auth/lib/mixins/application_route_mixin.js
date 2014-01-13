@@ -92,9 +92,9 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       route defined as `routeAfterInvalidation` in
       [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup).
 
-      @method logout
+      @method invalidateSession
     */
-    logout: function() {
+    invalidateSession: function() {
       var _this = this;
       this.get('session').invalidate().then(function() {
         _this.send('sessionInvalidationSucceeded');

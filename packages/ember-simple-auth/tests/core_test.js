@@ -54,19 +54,19 @@ module('Ember.SimpleAuth', {
   }
 });
 
-test('assigns the login route', function() {
+test('assigns the authentication route', function() {
   Ember.SimpleAuth.setup(applicationMock, { authenticationRoute: 'somewhere' });
 
   equal(Ember.SimpleAuth.authenticationRoute, 'somewhere', 'Ember.SimpleAuth assigns authenticationRoute when specified for setup.');
 });
 
-test('assigns the route after login', function() {
+test('assigns the route after authentication', function() {
   Ember.SimpleAuth.setup(applicationMock, { routeAfterAuthentication: 'somewhere' });
 
   equal(Ember.SimpleAuth.routeAfterAuthentication, 'somewhere', 'Ember.SimpleAuth assigns routeAfterAuthentication when specified for setup.');
 });
 
-test('assigns the route after logout', function() {
+test('assigns the route after session invalidation', function() {
   Ember.SimpleAuth.setup(applicationMock, { routeAfterInvalidation: 'somewhere' });
 
   equal(Ember.SimpleAuth.routeAfterInvalidation, 'somewhere', 'Ember.SimpleAuth assigns routeAfterInvalidation when specified for setup.');
