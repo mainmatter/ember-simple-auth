@@ -7,13 +7,14 @@
   Stores may trigger the 'ember-simple-auth:session-updated' event when
   any of the stored properties change (and the change wasn't triggered by the
   `persist` method). The session listens to that event and will handle the
-  change accordingly.
+  change accordingly. Whenever the event is triggered by the store, the session
+  will forward all properties to its authenticator which might lead to the
+  session being invalidated (see Ember.SimpleAuth.Authenticators.Base#restore).
 
   @class Base
   @namespace Ember.SimpleAuth.Stores
   @extends Ember.Object
   @uses Ember.Evented
-  @constructor
 */
 Ember.SimpleAuth.Stores.Base = Ember.Object.extend(Ember.Evented, {
   /**
@@ -43,7 +44,7 @@ Ember.SimpleAuth.Stores.Base = Ember.Object.extend(Ember.Evented, {
   /**
     Clears the store.
 
-  `Ember.SimpleAuth.Stores.Base`'s implementation does nothing.
+    `Ember.SimpleAuth.Stores.Base`'s implementation does nothing.
 
     @method clear
   */

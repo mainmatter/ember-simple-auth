@@ -23,7 +23,6 @@ function classifyString(className) {
   @class Session
   @namespace Ember.SimpleAuth
   @extends Ember.ObjectProxy
-  @constructor
 */
 Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   /**

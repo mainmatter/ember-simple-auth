@@ -11,7 +11,6 @@
   @class OAuth2
   @namespace Ember.SimpleAuth.Authenticators
   @extends Ember.SimpleAuth.Authenticators.Base
-  @constructor
 */
 Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
   /**

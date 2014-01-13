@@ -9,7 +9,6 @@
   @class LocalStorage
   @namespace Ember.SimpleAuth.Stores
   @extends Ember.SimpleAuth.Stores.Base
-  @constructor
 */
 Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
   /**

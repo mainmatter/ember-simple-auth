@@ -12,7 +12,6 @@
   @namespace Ember.SimpleAuth.Authenticators
   @extends Ember.Object
   @uses Ember.Evented
-  @constructor
 */
 Ember.SimpleAuth.Authenticators.Base = Ember.Object.extend(Ember.Evented, {
   /**

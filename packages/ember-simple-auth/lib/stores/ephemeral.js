@@ -6,7 +6,6 @@
   @class Ephemeral
   @namespace Ember.SimpleAuth.Stores
   @extends Ember.SimpleAuth.Stores.Base
-  @constructor
 */
 Ember.SimpleAuth.Stores.Ephemeral = Ember.SimpleAuth.Stores.Base.extend({
   /**

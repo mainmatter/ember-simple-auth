@@ -7,7 +7,6 @@
   @class Base
   @namespace Ember.SimpleAuth.Authorizers
   @extends Ember.Object
-  @constructor
 */
 Ember.SimpleAuth.Authorizers.Base = Ember.Object.extend({
   /**

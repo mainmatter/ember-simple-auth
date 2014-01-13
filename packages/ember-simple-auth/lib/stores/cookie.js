@@ -5,10 +5,10 @@
 
   In order to keep multiple tabs/windows of your application in sync, this
   store has to periodically (every 500ms) check the cookies for changes as
-  there are no events that notify of changes in cookies. As an alternative that
-  works without such polling you might want to look at
-  `Ember.SimpleAuth.Stores.LocalStorage` if you don't have to support older
-  browsers that don't implement the `localStorage` API.
+  there are no events that notify of changes in cookies. The recommended
+  alternative is
+  `Ember.SimpleAuth.Stores.LocalStorage` that also persistently stores data but
+  instead of cookies relies on the `localStorage` API.
 
   This store will trigger the 'ember-simple-auth:session-updated' event when
   any of its cookies is changed from another tab or window.
@@ -16,7 +16,6 @@
   @class Cookie
   @namespace Ember.SimpleAuth.Stores
   @extends Ember.SimpleAuth.Stores.Base
-  @constructor
 */
 Ember.SimpleAuth.Stores.Cookie = Ember.SimpleAuth.Stores.Base.extend({
   /**
