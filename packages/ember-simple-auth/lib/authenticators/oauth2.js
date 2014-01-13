@@ -14,7 +14,8 @@
 */
 Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
   /**
-    The endpoint on the server the authenticator acquires the access token from.
+    The endpoint on the server the authenticator acquires the access token
+    from.
 
     @property serverTokenEndpoint
     @type String
@@ -41,7 +42,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
     resolving promise when there's a non-empty `access_token` in the
     `properties` and a rejecting promise otherwise.
 
-    This method will also schedules automatic token refreshing when there are a
+    This method also schedule automatic token refreshing when there are a
     refresh token and a token expiration time in the `properties` and automatic
     token refreshing isn't disabled (see `refreshAccessTokens`).
 

@@ -4,9 +4,17 @@
   The base for all authenticators. This serves as a starting point for
   implementing custom authenticators and must not be used directly.
 
+  The authenticator authenticates the user and acquires all data that makes up
+  the session. The actual mechanism used to do this might e.g. be posting a set
+  of credentials to a server and in exchange retrieving an access token,
+  initiating authentication against an external provider like Facebook etc. and
+  depends on the specific authenticator. Any data that the authenticator
+  receives upon successful user authentication is stored in the session and can
+  then be used by the authorizer (see Ember.SimpleAuth.Authorizers.Base).
+
   Authenticators may trigger the 'ember-simple-auth:session-updated' event when
   any of the session properties change. The session listens to that event and
-  will handle the change accordingly.
+  will handle the changes accordingly.
 
   @class Base
   @namespace Ember.SimpleAuth.Authenticators
@@ -18,7 +26,7 @@ Ember.SimpleAuth.Authenticators.Base = Ember.Object.extend(Ember.Evented, {
     Restores the session from a set of session properties. This method is
     invoked by the session either after the applciation starts up and session
     properties where restored from the store or when properties in the store
-    have changed due to external actions (e.g. in another tab).
+    have changed due to external events (e.g. in another tab).
 
     This method returns a promise. A resolving promise will result in the
     session being authenticated. Any properties the promise resolves with will
