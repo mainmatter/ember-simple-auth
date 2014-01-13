@@ -14,11 +14,11 @@
       </ul>
       {{! display logout button when the session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
-        <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
+        <a {{ action 'invalidateSession' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
         {{! display name of signed in account }}
         <p class="navbar-text pull-right">Signed in as {{session.account.name}}</p>
       {{else}}
-        <a {{ action 'login' }} class="btn btn-success navbar-btn navbar-right">Login</a>
+        <a {{ action 'authenticateSession' }} class="btn btn-success navbar-btn navbar-right">Login</a>
       {{/if}}
     </div>
   </nav>
@@ -46,8 +46,8 @@
   <div class="page-header">
     <h1>Login</h1>
   </div>
-  {{! login form; the fields must be named "identification" and "password"; the controller action is "login" }}
-  <form {{action login on='submit'}}>
+  {{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
+  <form {{action authenticate on='submit'}}>
     <div class="form-group">
       <label for="identification">Login</label>
       {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login' class='form-control'}}
@@ -106,9 +106,8 @@
     this.route('protected');
   });
 
-  // the custom authenticator that handles the authenticated account (make sure to mix in Ember.Evented as
-  // the session will subscribe to the authenticator's "'ember-simple-auth:session-updated'" event)
-  App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.OAuth2.extend(Ember.Evented, {
+  // the custom authenticator that handles the authenticated account
+  App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.OAuth2.extend({
     authenticate: function(credentials) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         // make the request to authenticate the user at endoint /v3/token
@@ -133,15 +132,8 @@
 
   // use the provided mixins in the application route and login controller
   App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-  App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-    authenticator: App.CustomAuthenticator,
-    actions: {
-      // display an error when logging in fails
-      loginFailed: function(xhr, status, error) {
-        var response = JSON.parse(xhr.responseText);
-        this.set('errorMessage', response.error);
-      }
-    }
+  App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationControllerMixin, {
+    authenticator: App.CustomAuthenticator
   });
 
   // clear a potentially stale error message from previous login attempts

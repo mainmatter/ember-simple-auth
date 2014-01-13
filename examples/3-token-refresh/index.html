@@ -13,9 +13,9 @@
       </ul>
       {{! display logout button when the session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
-        <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
+        <a {{ action 'invalidateSession' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
       {{else}}
-        <a {{ action 'login' }} class="btn btn-success navbar-btn navbar-right">Login</a>
+        <a {{ action 'authenticateSession' }} class="btn btn-success navbar-btn navbar-right">Login</a>
       {{/if}}
     </div>
   </nav>
@@ -43,8 +43,8 @@
   <div class="page-header">
     <h1>Login</h1>
   </div>
-  {{! login form; the fields must be named "identification" and "password"; the controller action is "login" }}
-  <form {{action login on='submit'}}>
+  {{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
+  <form {{action authenticate on='submit'}}>
     <div class="form-group">
       <label for="identification">Login</label>
       {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login' class='form-control'}}
@@ -94,15 +94,7 @@
 
   // use the provided mixins in the application route and login controller
   App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-  App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-    actions: {
-      // display an error when loggign in fails
-      loginFailed: function(error) {
-        var message = JSON.parse(error).error;
-        this.set('errorMessage', message);
-      }
-    }
-  });
+  App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationControllerMixin);
 
   // clear a potentially stale error message from previous login attempts
   App.authenticationRoute = Ember.Route.extend({
