@@ -85,10 +85,10 @@ Ember.SimpleAuth = Ember.Namespace.create({
     @static
     @param {Ember.Application} application The Ember.js application instance
     @param {Object} [options]
-      @param {String} [options.routeAfterAuthentication] route to redirect the user to after successfully authenticating - defaults to `'index'`
+      @param {String} [options.routeAfterAuthentication] route to redirect the user to after successful authentication - defaults to `'index'`
       @param {String} [options.routeAfterInvalidation] route to redirect the user to after session invalidation - defaults to `'index'`
-      @param {String} [options.authenticationRoute] route to redirect the user for authentication - defaults to `'login'`
-      @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js app was loaded from; to explicitely enabled authorization for additional origins, whitelist those origins - defaults to `[]` (beware that origins consist of protocol, host and port (port can be left out when it is 80))
+      @param {String} [options.authenticationRoute] route to redirect the user to for authentication - defaults to `'login'`
+      @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js application was loaded from; to explicitely enable authorization for additional origins, whitelist those origins - defaults to `[]` (beware that origins consist of protocol, host and port (port can be left out when it is 80))
       @param {Object} [options.authorizer] The authorizer "class" to use; must extend `Ember.SimpleAuth.Authorizers.Base` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
       @param {Object} [options.store] The store "class" to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.Cookie`
   **/
