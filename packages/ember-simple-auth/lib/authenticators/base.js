@@ -43,7 +43,7 @@ Ember.SimpleAuth.Authenticators.Base = Ember.Object.extend(Ember.Evented, {
     depending on the actual authentication mechanism the authenticator uses
     (e.g. a set of credentials or a Facebook account id etc.). The session will
     invoke this method when some action in the appliaction triggers
-    authentication (see LoginControllerMixin.actions.login).
+    authentication (see AuthenticationControllerMixin.actions.login).
 
     This method returns a promise. A resolving promise will result in the
     session being authenticated. Any properties the promise resolves with will
