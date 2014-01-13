@@ -406,7 +406,7 @@ parts of the library without actually changing/overriding any code:
 ```js
 Ember.SimpleAuth.setup(container, application, {
   routeAfterAuthentication: ...     // route to redirect the user to after successfully logging in - defaults to 'index'
-  routeAfterLogout: ...    // route to redirect the user to after logging out - defaults to 'index'
+  routeAfterInvalidation: ...    // route to redirect the user to after logging out - defaults to 'index'
   loginRoute: ...          // route to redirect the user to when login is required - defaults to 'login'
 });
 ```

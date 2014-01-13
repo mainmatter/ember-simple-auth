@@ -67,9 +67,9 @@ test('assigns the route after login', function() {
 });
 
 test('assigns the route after logout', function() {
-  Ember.SimpleAuth.setup(applicationMock, { routeAfterLogout: 'somewhere' });
+  Ember.SimpleAuth.setup(applicationMock, { routeAfterInvalidation: 'somewhere' });
 
-  equal(Ember.SimpleAuth.routeAfterLogout, 'somewhere', 'Ember.SimpleAuth assigns routeAfterLogout when specified for setup.');
+  equal(Ember.SimpleAuth.routeAfterInvalidation, 'somewhere', 'Ember.SimpleAuth assigns routeAfterInvalidation when specified for setup.');
 });
 
 test('injects the session in models, views, controllers and routes', function() {

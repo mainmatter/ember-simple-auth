@@ -49,13 +49,13 @@ Ember.SimpleAuth = Ember.Namespace.create({
     The route to redirect the user to after successfully logging out. This is
     set by Ember.SimpleAuth#setup.
 
-    @property routeAfterLogout
+    @property routeAfterInvalidation
     @readOnly
     @static
     @type String
     @default 'index'
   */
-  routeAfterLogout: null,
+  routeAfterInvalidation: null,
   /**
     The route to redirect the user to to log in. This is set by
     Ember.SimpleAuth#setup.
@@ -86,7 +86,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
     @param {Ember.Application} application The Ember.js application instance
     @param {Object} [options]
       @param {String} [options.routeAfterAuthentication] route to redirect the user to after successfully logging in - defaults to `'index'`
-      @param {String} [options.routeAfterLogout] route to redirect the user to after logging out - defaults to `'index'`
+      @param {String} [options.routeAfterInvalidation] route to redirect the user to after logging out - defaults to `'index'`
       @param {String} [options.loginRoute] route to redirect the user to when login is required - defaults to `'login'`
       @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js app was loaded from; to explicitely enabled authorization for additional origins, whitelist those origins - defaults to `[]` (beware that origins consist of protocol, host and port (port can be left out when it is 80))
       @param {Object} [options.authorizer] The authorizer "class" to use; must extend `Ember.SimpleAuth.Authorizers.Base` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
@@ -95,7 +95,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
   setup: function(application, options) {
     options                    = options || {};
     this.routeAfterAuthentication       = options.routeAfterAuthentication || 'index';
-    this.routeAfterLogout      = options.routeAfterLogout || 'index';
+    this.routeAfterInvalidation      = options.routeAfterInvalidation || 'index';
     this.loginRoute            = options.loginRoute || 'login';
     this._crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
 

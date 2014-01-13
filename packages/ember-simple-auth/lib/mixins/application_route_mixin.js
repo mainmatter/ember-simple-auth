@@ -89,7 +89,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
     /**
       The logout action destroys the current session (see
       [Session#destroy](#Ember.SimpleAuth.Session_destroy)) and redirects to the
-      route defined as `routeAfterLogout` in
+      route defined as `routeAfterInvalidation` in
       [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup).
 
       @method logout
@@ -104,7 +104,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
     },
 
     logoutSucceeded: function() {
-      this.transitionTo(Ember.SimpleAuth.routeAfterLogout);
+      this.transitionTo(Ember.SimpleAuth.routeAfterInvalidation);
     },
 
     logoutFailed: function(error) {
