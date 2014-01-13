@@ -33,8 +33,6 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
   refreshAccessTokens: true,
   /**
     @property _refreshTokenTimeout
-    @type Number
-    @default null
     @private
   */
   _refreshTokenTimeout: null,

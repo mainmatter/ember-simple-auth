@@ -30,15 +30,11 @@ Ember.SimpleAuth.Stores.Cookie = Ember.SimpleAuth.Stores.Base.extend({
   cookieNamePrefix: 'ember_simple_auth:',
   /**
     @property _secureCookies
-    @type Boolean
-    @default true if the application is served via HTTPS, false otherwise
     @private
   */
-  _secureCookies:         window.location.protocol === 'https:',
+  _secureCookies: window.location.protocol === 'https:',
   /**
     @property _syncPropertiesTimeout
-    @type Number
-    @default null
     @private
   */
   _syncPropertiesTimeout: null,

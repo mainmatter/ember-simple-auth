@@ -14,6 +14,7 @@ Ember.SimpleAuth.Authorizers.Base = Ember.Object.extend({
     The application session the authorizer get access tokens etc. from.
 
     @property session
+    @readOnly
     @type Ember.SimpleAuth.Session
     @default null
   */
