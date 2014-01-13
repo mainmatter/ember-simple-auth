@@ -35,9 +35,35 @@
   </div>
   {{#unless session.isAuthenticated}}
     <div class="alert alert-info">
-      You can <a {{ action 'login' }} class="alert-link" style="cursor: pointer;">log in</a> with login <code>letme</code> and password <code>in</code>.
+      You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code> or {{#link-to 'login' classNames='alert-link'}}use Facebook as an external identity provider{{/link-to}}.
     </div>
   {{/unless}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="login">
+  <div class="page-header">
+    <h1>Login</h1>
+  </div>
+  <p>
+    <a {{ action 'authenticateWithFacebook' }} class="btn btn-primary">Log in via Facebook</a> or use the form below.
+  </p>
+  {{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
+  <form {{action authenticate on='submit'}}>
+    <div class="form-group">
+      <label for="identification">Login</label>
+      {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login' class='form-control'}}
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      {{view Ember.TextField id='password' type='password' valueBinding='password' placeholder='Enter Password' class='form-control'}}
+    </div>
+    <button type="submit" class="btn btn-default">Login</button>
+  </form>
+  {{#if errorMessage}}
+    <div class="alert alert-danger">
+      <strong>Login failed:</strong> {{errorMessage}}
+    </div>
+  {{/if}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="protected">
@@ -61,12 +87,24 @@
   App = Ember.Application.create();
 
   App.Router.map(function() {
+    // login route
+    this.route('login');
     // protected route that's inaccessible without authentication
     this.route('protected');
   });
 
   // the custom authenticator that initiates the authentication process with Facebook
   App.ExternalAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+    restore: function(properties) {
+      var _this = this;
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        if (!Ember.isEmpty(properties.access_token)) {
+          resolve(properties);
+        } else {
+          reject();
+        }
+      });
+    },
     authenticate: function() {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         App.ExternalConnector.one('externalAuthenticationSucceeded', function(properties) {
@@ -90,7 +128,7 @@
   App.ExternalConnector = Ember.Object.createWithMixins(Ember.Evented);
 
   // use the provided mixin in the application route
-  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+  /*App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
     actions: {
       authenticateSession: function() {
         var _this = this;
@@ -110,6 +148,19 @@
       // in the application template (see tempate above)
       sessionAuthenticationFailed: function(error) {
         this.controllerFor('application').set('loginErrorMessage', error);
+      }
+    }
+  });*/
+  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
+  App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationControllerMixin, {
+    actions: {
+      authenticateWithFacebook:  function() {
+        var _this = this;
+        this.get('session').authenticate(App.ExternalAuthenticator.create(), {}).then(function() {
+          _this.send('sessionAuthenticationSucceeded');
+        }, function(error) {
+          _this.send('sessionAuthenticationFailed', error);
+        });
       }
     }
   });
