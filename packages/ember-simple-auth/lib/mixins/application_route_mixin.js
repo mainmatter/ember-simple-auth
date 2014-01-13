@@ -48,7 +48,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       will retry a potentially intercepted transition
       (see [AuthenticatedRouteMixin#beforeModel](#Ember.SimpleAuth.AuthenticatedRouteMixin_beforeModel))
       or if none was intercepted redirect to the route configured as
-      `routeAfterLogin` in [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup).
+      `routeAfterAuthentication` in [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup).
 
       @method loginSucceeded
     */
@@ -58,7 +58,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
         attemptedTransition.retry();
         this.set('session.attemptedTransition', null);
       } else {
-        this.transitionTo(Ember.SimpleAuth.routeAfterLogin);
+        this.transitionTo(Ember.SimpleAuth.routeAfterAuthentication);
       }
     },
 

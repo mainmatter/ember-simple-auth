@@ -61,9 +61,9 @@ test('assigns the login route', function() {
 });
 
 test('assigns the route after login', function() {
-  Ember.SimpleAuth.setup(applicationMock, { routeAfterLogin: 'somewhere' });
+  Ember.SimpleAuth.setup(applicationMock, { routeAfterAuthentication: 'somewhere' });
 
-  equal(Ember.SimpleAuth.routeAfterLogin, 'somewhere', 'Ember.SimpleAuth assigns routeAfterLogin when specified for setup.');
+  equal(Ember.SimpleAuth.routeAfterAuthentication, 'somewhere', 'Ember.SimpleAuth assigns routeAfterAuthentication when specified for setup.');
 });
 
 test('assigns the route after logout', function() {

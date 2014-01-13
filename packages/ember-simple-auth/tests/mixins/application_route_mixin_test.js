@@ -74,7 +74,7 @@ test('redirects to the correct route when logout is triggered', function() {
 test('redirects to the correct route on loginSucceeded', function() {
   testRoute._actions['loginSucceeded'].apply(testRoute);
 
-  equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterLogin, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterLogin route on loginSucceeded when no attempted transition is saved.');
+  equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterAuthentication, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterAuthentication route on loginSucceeded when no attempted transition is saved.');
 
   testRoute.set('session.attemptedTransition', attemptedTransitionMock);
   testRoute._actions['loginSucceeded'].apply(testRoute);

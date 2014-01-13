@@ -38,13 +38,13 @@ Ember.SimpleAuth = Ember.Namespace.create({
     The route to redirect the user to after successfully authenticating. This
     is set by Ember.SimpleAuth#setup.
 
-    @property routeAfterLogin
+    @property routeAfterAuthentication
     @readOnly
     @static
     @type String
     @default 'index'
   */
-  routeAfterLogin: null,
+  routeAfterAuthentication: null,
   /**
     The route to redirect the user to after successfully logging out. This is
     set by Ember.SimpleAuth#setup.
@@ -85,7 +85,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
     @static
     @param {Ember.Application} application The Ember.js application instance
     @param {Object} [options]
-      @param {String} [options.routeAfterLogin] route to redirect the user to after successfully logging in - defaults to `'index'`
+      @param {String} [options.routeAfterAuthentication] route to redirect the user to after successfully logging in - defaults to `'index'`
       @param {String} [options.routeAfterLogout] route to redirect the user to after logging out - defaults to `'index'`
       @param {String} [options.loginRoute] route to redirect the user to when login is required - defaults to `'login'`
       @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js app was loaded from; to explicitely enabled authorization for additional origins, whitelist those origins - defaults to `[]` (beware that origins consist of protocol, host and port (port can be left out when it is 80))
@@ -94,7 +94,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
   **/
   setup: function(application, options) {
     options                    = options || {};
-    this.routeAfterLogin       = options.routeAfterLogin || 'index';
+    this.routeAfterAuthentication       = options.routeAfterAuthentication || 'index';
     this.routeAfterLogout      = options.routeAfterLogout || 'index';
     this.loginRoute            = options.loginRoute || 'login';
     this._crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
