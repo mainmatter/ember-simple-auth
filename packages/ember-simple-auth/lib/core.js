@@ -15,7 +15,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
     The namespace for Ember.SimpleAuth's authenticator strategies.
 
     @class Authenticators
-    @namespace Ember.SimpleAuth.Authenticators
+    @namespace Ember.SimpleAuth
     @static
   **/
   Authenticators: Ember.Namespace.create(),
@@ -23,7 +23,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
     The namespace for Ember.SimpleAuth's authorizer strategies.
 
     @class Authorizers
-    @namespace Ember.SimpleAuth.Authorizers
+    @namespace Ember.SimpleAuth
     @static
   **/
   Authorizers: Ember.Namespace.create(),
@@ -31,7 +31,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
     The namespace for Ember.SimpleAuth's store strategies.
 
     @class Stores
-    @namespace Ember.SimpleAuth.Stores
+    @namespace Ember.SimpleAuth
     @static
   **/
   Stores: Ember.Namespace.create(),
