@@ -1,17 +1,21 @@
 'use strict';
 
 /**
-  The mixin for the application controller. This defines the `login` and
-  `logout` actions so that you can simply add buttons or links in every template
-  like this:
+  The mixin for the application controller. This defines actions to
+  authenticate the session as well as to invalidate it. These actions can be
+  used in all templates e.g. like this:
 
   ```handlebars
   {{#if session.isAuthenticated}}
-    <a {{ action 'logout' }}>Logout</a>
+    <a {{ action 'invalidateSession' }}>Logout</a>
   {{else}}
-    <a {{ action 'login' }}>Login</a>
+    <a {{ action 'authenticateSession' }}>Login</a>
   {{/if}}
   ```
+
+  This mixin also defines actions that are triggered whenever the session is
+  successfully authenticated or invalidated and whenever authentication or
+  invalidation fail as well.
 
   @class ApplicationRouteMixin
   @namespace Ember.SimpleAuth
@@ -21,36 +25,28 @@
 Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
   actions: {
     /**
-      The login action by default redirects to the login route (or any other
-      route defined as `authenticationRoute` in
-      [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup)). When integrating with
-      an external authentication provider, this action should be overridden so
-      that it opens the external provider's UI in a new window, e.g.:
+      This action redirects to the `authenticationRoute` specified in
+      [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup). It is invoked
+      automatically by Ember.SimpleAuth.AuthenticatedRouteMixin whenever a user
+      tries to access a page that requries an authenticated session but can
+      also be invoked manually.
 
-      ```javascript
-      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
-        actions: {
-          login: function() {
-            window.open('https://www.facebook.com/dialog/oauth...');
-          }
-        }
-      });
-      ```
-
-      @method login
+      @method actions.login
     */
     authenticateSession: function() {
       this.transitionTo(Ember.SimpleAuth.authenticationRoute);
     },
 
     /**
-      This action is invoked when a user successfully logs in. By default it
-      will retry a potentially intercepted transition
-      (see [AuthenticatedRouteMixin#beforeModel](#Ember.SimpleAuth.AuthenticatedRouteMixin_beforeModel))
-      or if none was intercepted redirect to the route configured as
-      `routeAfterAuthentication` in [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup).
+      This action is invoked whenever a session is successfully authenticated.
+      By default it will simply retry a transition that was previously
+      intercepted in
+      [AuthenticatedRouteMixin#beforeModel](#Ember.SimpleAuth.AuthenticatedRouteMixin_beforeModel).
+      If there is not intercepted transition, this action redirects to the
+      `routeAfterAuthentication` specified in
+      [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup).
 
-      @method sessionAuthenticationSucceeded
+      @method actions.sessionAuthenticationSucceeded
     */
     sessionAuthenticationSucceeded: function() {
       var attemptedTransition = this.get('session.attemptedTransition');
@@ -63,13 +59,11 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
     },
 
     /**
-      This action is invoked when login fails. This does nothing by default but
-      can be overridden and used to display generic error messages etc. If
-      you're using an external authentication provider you might also want to
-      override it to display the external provider's error message (any
-      arguments you pass to
-      [Ember.SimpleAuth#externalsessionAuthenticationSucceeded](#Ember.SimpleAuth_externalsessionAuthenticationSucceeded)
-      will be forwarded to this action), e.g.:
+      This action in invoked whenever session authentication fails. The
+      arguments the action in invoked with depend on the used authenticator
+      (see [Ember.SimpleAuth.Authenticators.Base](#Ember.SimpleAuth.Authenticators.Base)).
+
+      It can be overridden to display error messages, e.g.:
 
       ```javascript
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
@@ -81,18 +75,18 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       });
       ```
 
-      @method sessionAuthenticationFailed
+      @method actions.sessionAuthenticationFailed
     */
     sessionAuthenticationFailed: function() {
     },
 
     /**
-      The logout action destroys the current session (see
-      [Session#destroy](#Ember.SimpleAuth.Session_destroy)) and redirects to the
-      route defined as `routeAfterInvalidation` in
+      This action invalidates the current session (see
+      [Session#destroy](#Ember.SimpleAuth.Session_destroy)). If that succeeds,
+      it will redirect to `routeAfterInvalidation` specified in
       [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup).
 
-      @method invalidateSession
+      @method actions.invalidateSession
     */
     invalidateSession: function() {
       var _this = this;
@@ -103,10 +97,22 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       });
     },
 
+    /**
+      This action is invoked whenever the session is successfully invalidated.
+      The default implementation does nothing.
+
+      @method actions.sessionInvalidationSucceeded
+    */
     sessionInvalidationSucceeded: function() {
       this.transitionTo(Ember.SimpleAuth.routeAfterInvalidation);
     },
 
+    /**
+      This action is invoked whenever session invalidation fails. The default
+      implementation does nothing.
+
+      @method actions.sessionInvalidationFailed
+    */
     sessionInvalidationFailed: function(error) {
     }
   }
