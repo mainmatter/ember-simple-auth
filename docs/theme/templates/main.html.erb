@@ -22,7 +22,7 @@
       .navbar .navbar-collapse {
         padding-left: 0;
       }
-      h1.class, h3.property, h3.method, dl.params dt {
+      h1.class, h3.property, h3.method, dl.params dt, span.type {
         font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
         font-weight: bold;
       }
@@ -66,6 +66,9 @@
         top: -55px;
         height: 1px;
       }
+      p.uses {
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
@@ -104,6 +107,9 @@
         </div>
         <div class="row">
           <div class="col-md-9" id="main-content">
+            <% if class_data['uses'] %>
+              <p class="uses">Uses <%= class_data['uses'].map { |uses| %Q{<span class="type">#{uses}</span>} }.join(', ') %></p>
+            <% end %>
             <%= markdown(class_data['description']) %>
             <% if properties(class_data['name']).any? %>
             <h3 class="section">Properties</h3>
