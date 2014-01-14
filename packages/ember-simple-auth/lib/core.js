@@ -9,12 +9,12 @@ function extractLocationOrigin(location) {
 
   @class SimpleAuth
   @namespace Ember
-  @static
 **/
 Ember.SimpleAuth = Ember.Namespace.create({
   /**
     The namespace for Ember.SimpleAuth's authenticator strategies.
 
+    @class Authenticators
     @namespace Ember.SimpleAuth.Authenticators
     @static
   **/
@@ -22,6 +22,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
   /**
     The namespace for Ember.SimpleAuth's authorizer strategies.
 
+    @class Authorizers
     @namespace Ember.SimpleAuth.Authorizers
     @static
   **/
@@ -29,6 +30,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
   /**
     The namespace for Ember.SimpleAuth's store strategies.
 
+    @class Stores
     @namespace Ember.SimpleAuth.Stores
     @static
   **/
