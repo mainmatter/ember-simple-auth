@@ -50,7 +50,7 @@ module('Ember.SimpleAuth.Session', {
   }
 });
 
-test('is not authenticated when just created', function() {
+test('it is not authenticated when just created', function() {
   session = Ember.SimpleAuth.Session.create({ store: storeMock });
 
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when just created.');
@@ -91,7 +91,7 @@ test('authenticates itself with an authenticator', function() {
 
   ok(authenticatorMock.authenticateInvoked, 'Ember.Session authenticates itself with the passed authenticator.');
   ok(session.get('isAuthenticated'), 'Ember.Session is authenticated when the authenticator resolves.');
-  equal(session.get('key'), 'value', 'Ember.Session sets all properties that the authenticator resolves with.');
+  equal(session.get('key'), 'value', 'Ember.Session saves all properties that the authenticator resolves with.');
   equal(session.get('authenticator'), authenticatorMock, 'Ember.Session saves the authenticator when the authenticator resolves.');
   ok(resolved, 'Ember.Session returns a resolving promise when the authenticator resolves.');
 

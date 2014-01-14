@@ -6,7 +6,7 @@ module('Ember.SimpleAuth.Authenticators.Base', {
   }
 });
 
-test('it restores the session', function() {
+test('does not restore the session', function() {
   var rejected;
   Ember.run(function() {
     authenticator.restore({}).then(function() {}, function() {
@@ -14,7 +14,7 @@ test('it restores the session', function() {
     });
   });
 
-  ok(rejected, 'Ember.SimpleAuth.Authenticators.Base returns a rejecting promise when it restores.');
+  ok(rejected, 'Ember.SimpleAuth.Authenticators.Base returns a rejecting promise for session restoration.');
 });
 
 test('invalidates the session', function() {
@@ -25,5 +25,5 @@ test('invalidates the session', function() {
     });
   });
 
-  ok(resolved, 'Ember.SimpleAuth.Authenticators.Base returns a resolving promise on invalidation.');
+  ok(resolved, 'Ember.SimpleAuth.Authenticators.Base returns a resolving promise for session invalidation.');
 });

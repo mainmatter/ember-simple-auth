@@ -80,8 +80,8 @@ test('injects the session in models, views, controllers and routes', function() 
       return injection.target === component;
     })[0];
 
-    equal(injection.property, 'session', 'Ember.SimpleAuth makes the session available as "session" in ' + component + '.');
     equal(injection.object.constructor, Ember.SimpleAuth.Session, 'Ember.SimpleAuth injects the session into ' + component + '.');
+    equal(injection.property, 'session', 'Ember.SimpleAuth makes the session available as "session" in ' + component + '.');
   });
 });
 
@@ -89,7 +89,7 @@ test('registers an AJAX prefilter that authorizes requests', function() {
   Ember.SimpleAuth.setup(applicationMock, { authorizer: AuthorizerMock });
 
   ajaxPrefilterMock.registeredAjaxPrefilter({}, {}, {});
-  ok(authorizerMock.authorized, 'Ember.SimpleAuth registers an AJAX prefilter that authorizes same-origin requests.');
+  ok(authorizerMock.authorized, "Ember.SimpleAuth registers an AJAX prefilter that authorizes requests that fo the the application's origin.");
 
   authorizerMock.authorized = false;
   ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, {});
