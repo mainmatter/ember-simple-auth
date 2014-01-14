@@ -28,6 +28,9 @@
       span.type {
         color: #999;
       }
+      span.type.return {
+        font-weight:bold
+      }
       .overview h4:first-child {
         margin-top: 0;
       }
@@ -52,6 +55,15 @@
       pre, code {
         color: #333;
         background: #f8f8ff;
+      }
+      a.symbol-anchor {
+        display: block;
+        position: relative;
+        top: -40px;
+        height: 1px;
+      }
+      .panel a.symbol-anchor {
+        top: -55px;
       }
     </style>
   </head>
@@ -79,108 +91,110 @@
       </div>
     </header>
     <div class="container">
+      <% classes.each do |class_data| %>
       <div class="row">
-        <div class="col-md-12">
-          <% classes.each do |class_data| %>
-            <div class="row">
-              <div class="col-md-12">
-                <a id="<%= sanitize_id(class_data['name']) %>" class="element-anchor">&nbsp;</a>
-                <div class="page-header">
-                  <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', class_data['file'], '#L', class_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-                  <h1 class="class"><%= class_data['name'] %></h1>
-                </div>
-              </div>
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="<%= sanitize_id(class_data['name']) %>" class="symbol-anchor"></a>
+              <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', class_data['file'], '#L', class_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+              <h1 class="class"><%= class_data['name'] %></h1>
             </div>
-            <div class="row">
-              <div class="col-md-9">
-                <%= markdown(class_data['description']) %>
-                <% if properties(class_data['name']).any? %>
-                  <h3 class="section">Properties</h3>
-                  <% properties(class_data['name']).each do |property_data| %>
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', property_data['file'], '#L', property_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-                        <% if property_data.key?('readonly') %>
-                          <span class="label label-danger pull-right">read only</span>
-                        <% end %>
-                        <h3 class="panel-title property"><%= property_data['name'] %> <span class="type">{<%= property_data['type'] %>}</span></h3>
-                      </div>
-                      <div class="panel-body">
-                        <%= markdown(property_data['description']) %>
-                        <% if property_data['default'] %>
-                          Defaults to <code><%= property_data['default'] %></code>
-                        <% end %>
-                      </div>
-                    </div>
-                  <% end %>
-                <% end %>
-                <% if methods(class_data['name']).any? %>
-                  <h3 class="section">Methods</h3>
-                  <% methods(class_data['name']).each do |method_data| %>
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', method_data['file'], '#L', method_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-                        <% if method_data['static'] %>
-                          <span class="label label-info pull-right">static</span>
-                        <% end %>
-                        <h3 class="panel-title method">
-                          <%= method_data['name'] %><%= params_signature(method_data['params']) %>
-                          <% if !!(method_data['return'] || {})['type'] %>
-                            <span class="type">&rarr; <%= method_data['return']['type'] %></span>
-                          <% end %>
-                        </h3>
-                      </div>
-                      <div class="panel-body">
-                        <%= markdown(method_data['description']) %>
-                        <% if !!method_data['params'] %>
-                          <h4 class="subsection">Arguments</h4>
-                          <dl class="params">
-                            <% method_data['params'].each do |param_data| %>
-                              <dt><%= param_data['optional'] ? "[#{param_data['name']}]" : param_data['name'] %> <span class="type">{<%= param_data['type'] %>}</span></dt>
-                              <dd><%= markdown(param_data['description']) %></dd>
-                              <% if param_data['props'] %>
-                                <dl class="props">
-                                  <% param_data['props'].each do |prop_data| %>
-                                    <dt><%= param_data['name'] %>.<%= prop_data['optional'] ? "[#{prop_data['name']}]" : prop_data['name'] %> <span class="type">{<%= prop_data['type'] %>}</span></dt>
-                                    <dd><%= markdown(prop_data['description']) %></dd>
-                                  <% end %>
-                                </dl>
-                              <% end %>
-                            <% end %>
-                          </dl>
-                        <% end %>
-                        <% if !!method_data['return'] %>
-                          <h4 class="subsection">Returns</h4>
-                          <p><span class="type">&rarr; <%= method_data['return']['type'] %></span></p>
-                          <%= markdown(method_data['return']['description']) %>
-                        <% end %>
-                      </div>
-                    </div>
-                  <% end %>
-                <% end %>
-              </div>
-              <div class="col-md-3 overview">
-                <% if properties(class_data['name']).any? %>
-                  <h4>Properties</h4>
-                  <ul class="list-unstyled">
-                    <% properties(class_data['name']).each do |property_data| %>
-                      <li><%= property_data['name'] %></li>
-                    <% end %>
-                  </ul>
-                <% end %>
-                <% if methods(class_data['name']).any? %>
-                  <h4>Methods</h4>
-                  <ul class="list-unstyled">
-                    <% methods(class_data['name']).each do |method_data| %>
-                      <li><%= method_data['name'] %></li>
-                    <% end %>
-                  </ul>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
+          </div>
         </div>
-      </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <%= markdown(class_data['description']) %>
+            <% if properties(class_data['name']).any? %>
+            <h3 class="section">Properties</h3>
+              <% properties(class_data['name']).each do |property_data| %>
+                <div class="panel panel-default">
+                  <a id="<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(property_data['name']) %>" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', property_data['file'], '#L', property_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <% if property_data.key?('readonly') %>
+                      <span class="label label-danger pull-right">read only</span>
+                    <% end %>
+                    <h3 class="panel-title property"><%= property_data['name'] %> <span class="type">{<%= property_data['type'] %>}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <%= markdown(property_data['description']) %>
+                    <% if property_data['default'] %>
+                      Defaults to <code><%= property_data['default'] %></code>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+            <% if methods(class_data['name']).any? %>
+              <h3 class="section">Methods</h3>
+              <% methods(class_data['name']).each do |method_data| %>
+                <div class="panel panel-default">
+                  <a id="<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(method_data['name']) %>" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', method_data['file'], '#L', method_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <% if method_data['static'] %>
+                      <span class="label label-info pull-right">static</span>
+                    <% end %>
+                    <h3 class="panel-title method">
+                      <%= method_data['name'] %><%= params_signature(method_data['params']) %>
+                      <% if !!(method_data['return'] || {})['type'] %>
+                        <span class="type">&rarr; <%= method_data['return']['type'] %></span>
+                      <% end %>
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <%= markdown(method_data['description']) %>
+                    <% if !!method_data['params'] %>
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        <% method_data['params'].each do |param_data| %>
+                          <dt><%= param_data['optional'] ? "[#{param_data['name']}]" : param_data['name'] %> <span class="type">{<%= param_data['type'] %>}</span></dt>
+                          <dd><%= markdown(param_data['description']) %></dd>
+                          <% if param_data['props'] %>
+                            <dl class="props">
+                              <% param_data['props'].each do |prop_data| %>
+                                <dt><%= param_data['name'] %>.<%= prop_data['optional'] ? "[#{prop_data['name']}]" : prop_data['name'] %> <span class="type">{<%= prop_data['type'] %>}</span></dt>
+                                <dd><%= markdown(prop_data['description']) %></dd>
+                              <% end %>
+                            </dl>
+                          <% end %>
+                        <% end %>
+                      </dl>
+                    <% end %>
+                    <% if !!method_data['return'] %>
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; <%= method_data['return']['type'] %></span></p>
+                      <%= markdown(method_data['return']['description']) %>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+          <div class="col-md-3 overview">
+            <% if properties(class_data['name']).any? %>
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                <% properties(class_data['name']).each do |property_data| %>
+                  <li>
+                    <a href="#<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(property_data['name']) %>"><%= property_data['name'] %></a>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+            <% if methods(class_data['name']).any? %>
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                <% methods(class_data['name']).each do |method_data| %>
+                  <li>
+                    <a href="#<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(method_data['name']) %>"><%= method_data['name'] %></a>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
     <script type="text/javascript" charset="utf-8">
       $(function() {
