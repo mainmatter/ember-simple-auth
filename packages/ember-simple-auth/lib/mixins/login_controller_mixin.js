@@ -25,15 +25,15 @@
   @namespace Ember.SimpleAuth
   @extends Ember.Mixin
 */
-Ember.SimpleAuth.AuthenticationControllerMixin = Ember.Mixin.create({
+Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create(Ember.SimpleAuth.AuthenticationControllerMixin, {
   /**
     The authenticator class used to authenticate the session.
 
     @property authenticator
     @type Ember.SimpleAuth.Authenticators.Base
-    @default null
+    @default Ember.SimpleAuth.Authenticators.OAuth2
   */
-  authenticator: null,
+  authenticator: Ember.SimpleAuth.Authenticators.OAuth2,
 
   actions: {
     /**
@@ -44,13 +44,12 @@ Ember.SimpleAuth.AuthenticationControllerMixin = Ember.Mixin.create({
       @method actions.authenticate
       @private
     */
-    authenticate: function(options) {
-      var _this = this;
-      this.get('session').authenticate(this.get('authenticator').create(), options).then(function() {
-        _this.send('sessionAuthenticationSucceeded');
-      }, function(error) {
-        _this.send('sessionAuthenticationFailed', error);
-      });
+    authenticate: function() {
+      var data = this.getProperties('identification', 'password');
+      if (!Ember.isEmpty(data.identification) && !Ember.isEmpty(data.password)) {
+        this.set('password', null);
+        this._super(data);
+      }
     }
   }
 });
