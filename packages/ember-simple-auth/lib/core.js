@@ -11,30 +11,9 @@ function extractLocationOrigin(location) {
   @namespace Ember
 **/
 Ember.SimpleAuth = Ember.Namespace.create({
-  /**
-    The namespace for Ember.SimpleAuth's authenticator strategies.
-
-    @class Authenticators
-    @namespace Ember.SimpleAuth
-    @static
-  **/
   Authenticators: Ember.Namespace.create(),
-  /**
-    The namespace for Ember.SimpleAuth's authorizer strategies.
-
-    @class Authorizers
-    @namespace Ember.SimpleAuth
-    @static
-  **/
-  Authorizers: Ember.Namespace.create(),
-  /**
-    The namespace for Ember.SimpleAuth's store strategies.
-
-    @class Stores
-    @namespace Ember.SimpleAuth
-    @static
-  **/
-  Stores: Ember.Namespace.create(),
+  Authorizers:    Ember.Namespace.create(),
+  Stores:         Ember.Namespace.create(),
 
   /**
     The route to redirect the user to after successfully authenticating. This

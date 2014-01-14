@@ -44,6 +44,21 @@ class TemplateData
     end
   end
 
+  def properties(class_name = nil)
+    @data['classitems'].select do |item|
+      item['itemtype'] == 'property' && item['access'] != 'private'
+    end.select do |item|
+      !!class_name ? item['class'] == class_name : true
+    end.sort do |a, b|
+      a['name'] <=> b['name']
+    end
+  end
+
+  def params_signature(params)
+    params = (params || []).map { |param| param['optional'] ? "[#{param['name']}]" : param['name'] }
+    "(#{params.join(', ')})"
+  end
+
   def markdown(content)
     content = content.gsub(/\(\#(.*)\)/) do
       "(##{sanitize_id($1)})"

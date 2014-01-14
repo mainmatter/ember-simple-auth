@@ -49,7 +49,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   /**
     Holds whether the session is currently authenticated.
 
-    @property authenticated
+    @property isAuthenticated
     @type Boolean
     @readOnly
     @default false
