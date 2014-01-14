@@ -66,9 +66,6 @@
         top: -55px;
         height: 1px;
       }
-      p.uses {
-        font-weight: bold;
-      }
     </style>
   </head>
   <body>
@@ -107,9 +104,6 @@
         </div>
         <div class="row">
           <div class="col-md-9" id="main-content">
-            <% if class_data['uses'] %>
-              <p class="uses">Uses <%= class_data['uses'].map { |uses| %Q{<span class="type">#{uses}</span>} }.join(', ') %></p>
-            <% end %>
             <%= markdown(class_data['description']) %>
             <% if properties(class_data['name']).any? %>
             <h3 class="section">Properties</h3>
@@ -182,6 +176,20 @@
             <% end %>
           </div>
           <div class="col-md-3 overview">
+            <% if !!class_data['extends'] %>
+              <h4>Extends</h4>
+              <p><span class="type"><%= class_data['extends'] %></span></p>
+            <% end %>
+            <% if !!class_data['uses'] %>
+              <h4>Uses</h4>
+              <ul class="list-unstyled">
+                <% class_data['uses'].each do |uses| %>
+                  <li>
+                    <span class="type"><%= uses %></span>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
             <% if properties(class_data['name']).any? %>
               <h4>Properties</h4>
               <ul class="list-unstyled">
