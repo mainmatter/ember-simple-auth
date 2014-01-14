@@ -38,7 +38,7 @@
         padding-bottom: 5px;
         border-bottom: 1px dotted #eee;
       }
-      .panel-heading a.pull-right, .panel-heading a.pull-right {
+      .panel-heading span.pull-right {
         margin-left: 5px;
       }
       dl.params dl.props {
@@ -113,6 +113,9 @@
                     <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', property_data['file'], '#L', property_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     <% if property_data.key?('readonly') %>
                       <span class="label label-danger pull-right">read only</span>
+                    <% end %>
+                    <% if property_data['static'] %>
+                      <span class="label label-info pull-right">static</span>
                     <% end %>
                     <h3 class="panel-title property"><%= property_data['name'] %> <span class="type">{<%= property_data['type'] %>}</span></h3>
                   </div>
