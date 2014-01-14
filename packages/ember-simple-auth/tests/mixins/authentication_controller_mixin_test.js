@@ -35,15 +35,15 @@ module('Ember.SimpleAuth.AuthenticationControllerMixin', {
   }
 });
 
-test('authenticates the session when authentication is triggered', function() {
+test('authenticates the session', function() {
   Ember.run(function() {
     testController.setProperties({ identification: 'identification', password: 'password' });
     testController.send('authenticate');
   });
 
   ok(sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session when authentication is triggered.');
-  ok(sessionMock.invokedAuthenticateWith.authenticator instanceof Ember.SimpleAuth.Authenticators.OAuth2, 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session with the correct authenticator when authentication is triggered.');
-  deepEqual(sessionMock.invokedAuthenticateWith.options, { identification: 'identification', password: 'password' }, 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session with identification and password when authentication is triggered.');
+  ok(sessionMock.invokedAuthenticateWith.authenticator instanceof Ember.SimpleAuth.Authenticators.OAuth2, 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session with the correct authenticator.');
+  deepEqual(sessionMock.invokedAuthenticateWith.options, { identification: 'identification', password: 'password' }, 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session with identification and password.');
 });
 
 test('does not authenticate the session when identification or password are empty', function() {
@@ -72,7 +72,7 @@ test('triggers the authenticationSucceeded action when authentication is success
   ok(testController.invokedSessionAuthenticationSucceeded, 'Ember.SimpleAuth.AuthenticationControllerMixin triggers the sessionAuthenticationSucceeded action when authentication was successful.');
 });
 
-test('triggers the authenticationFailed action with the callback arguments', function() {
+test('triggers the authenticationFailed action when authentication fails', function() {
   SessionMock._resolve = false;
   SessionMock._reject = 'error!';
   Ember.run(function() {

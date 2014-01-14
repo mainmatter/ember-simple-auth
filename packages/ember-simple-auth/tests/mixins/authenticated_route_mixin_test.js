@@ -20,14 +20,14 @@ module('Ember.SimpleAuth.AuthenticatedRouteMixin', {
   }
 });
 
-test('triggers authentication correctly', function() {
+test('triggers authentication', function() {
   testRoute.triggerSessionAuthentication(attemptedTransitionMock);
 
   equal(testRoute.get('session.attemptedTransition'), attemptedTransitionMock, 'Ember.SimpleAuth.AuthenticatedRouteMixin saves the attempted transition in the session when session authentication is triggered.');
   ok(attemptedTransitionMock.invokedAuthenticateSession, 'Ember.SimpleAuth.AuthenticatedRouteMixin invokes the authenticateSession action on the attempted transition when session authentication is triggered.');
 });
 
-test('triggers authentication in beforeModel when the session is not authenticated', function() {
+test('triggers authentication when the session is not authenticated', function() {
   testRoute.set('session.isAuthenticated', false);
   testRoute.beforeModel(attemptedTransitionMock);
 
@@ -40,7 +40,7 @@ test('triggers authentication in beforeModel when the session is not authenticat
   ok(!attemptedTransitionMock.invokedAuthenticateSession, 'Ember.SimpleAuth.AuthenticatedRouteMixin does not trigger authenticateSession in beforeModel when the session is authenticated.');
 });
 
-test('aborts the attempted transaction in beforeModel when the session is not authenticated', function() {
+test('aborts the attempted transaction when the session is not authenticated', function() {
   testRoute.set('session.isAuthenticated', false);
   testRoute.beforeModel(attemptedTransitionMock);
 
