@@ -18,7 +18,7 @@
         {{! display name of signed in account }}
         <p class="navbar-text pull-right">Signed in as {{session.account.name}}</p>
       {{else}}
-        <a {{ action 'authenticateSession' }} class="btn btn-success navbar-btn navbar-right">Login</a>
+        {{#link-to 'login' class="btn btn-success navbar-btn navbar-right"}}Login{{/link-to}}
       {{/if}}
     </div>
   </nav>
