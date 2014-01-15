@@ -23,6 +23,13 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
   */
   serverTokenEndpoint: '/token',
   /**
+   * The hostname on the server
+   * 
+   * @property serverHostname
+   * @type String
+   */
+  serverTokenHostname: null,
+  /**
     Sets whether the authenticator should automatically refresh access tokens
     before they expire.
 
@@ -148,8 +155,13 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
     @private
   */
   makeRequest: function(data) {
+    var requestUrl = this.serverTokenEndpoint;
+    if (this.serverTokenHostname) {
+      requestUrl = this.serverTokenHostname + requestUrl;
+    }
+    
     return Ember.$.ajax({
-      url:         this.serverTokenEndpoint,
+      url:         requestUrl,
       type:        'POST',
       data:        data,
       dataType:    'json',
