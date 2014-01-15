@@ -383,6 +383,8 @@ This is an incomplete list of middlewares supporting RFC 6749.
 
 #### PHP
 * oauth2-server: https://github.com/php-loep/oauth2-server
+* zfr-oauth2-server: https://github.com/zf-fr/zfr-oauth2-server
+* zfr-oauth2-server-module (for ZF2): https://github.com/zf-fr/zfr-oauth2-server-module
 
 #### Java
 
