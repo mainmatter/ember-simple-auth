@@ -17,7 +17,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
 
   /**
     The route to transition to for authentication; can be set through
-    [Ember.SimpleAuth#setup](#Ember-SimpleAuth-setup).
+    [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
 
     @property authenticationRoute
     @readOnly
@@ -28,7 +28,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
   authenticationRoute: 'login',
   /**
     The route to transition to after successful authentication; can be set
-    through [Ember.SimpleAuth#setup](#Ember-SimpleAuth-setup).
+    through [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
 
     @property routeAfterAuthentication
     @readOnly
@@ -39,7 +39,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
   routeAfterAuthentication: 'index',
   /**
     The route to transition to after session invalidation; can be set through
-    [Ember.SimpleAuth#setup](#Ember-SimpleAuth-setup).
+    [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
 
     @property routeAfterInvalidation
     @readOnly

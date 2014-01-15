@@ -1,7 +1,7 @@
 'use strict';
 
 /**
-  Store that saves its data in memory and thus is not actually persistent.
+  Store that saves its data in memory and thus __is not actually persistent__.
 
   @class Ephemeral
   @namespace Ember.SimpleAuth.Stores

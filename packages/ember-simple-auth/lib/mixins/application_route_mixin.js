@@ -46,7 +46,22 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
 
       __For an application that works without an authentication route (e.g.
       because it opens a new window to handle authentication there), this is
-      the method to override.__
+      the method to override, e.g.:__
+
+      ```javascript
+      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+        actions: {
+          authenticateSession: function() {
+            var _this = this;
+            this.get('session').authenticate(App.MyCustomAuthenticator.create(), {}).then(function() {
+              _this.send('sessionAuthenticationSucceeded');
+            }, function(error) {
+              _this.send('sessionAuthenticationFailed', error);
+            });
+          }
+        }
+      });
+      ```
 
       @method actions.authenticateSession
     */

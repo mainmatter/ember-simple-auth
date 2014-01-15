@@ -2,7 +2,7 @@
 
 /**
   The mixin for the controller that handles the `authenticationRoute` specified
-  in [Ember.SimpleAuth#setup](#Ember.SimpleAuth#setup)). It provides the
+  in [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)). It provides the
   `authenticate` action that will authenticate the session with the configured
   authenticator when invoked.
 
@@ -27,13 +27,13 @@ Ember.SimpleAuth.AuthenticationControllerMixin = Ember.Mixin.create({
 
       If authentication succeeds, this method triggers the
       `sessionAuthenticationSucceeded` action (see
-      Ember.SimpleAuth.ApplicationRouteMixin#sessionAuthenticationSucceeded).
+      [Ember.SimpleAuth.ApplicationRouteMixin#sessionAuthenticationSucceeded](#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationSucceeded)).
       If authentication fails it triggers the `sessionAuthenticationFailed`
       action (see
-      Ember.SimpleAuth.ApplicationRouteMixin#sessionAuthenticationFailed).
+      [Ember.SimpleAuth.ApplicationRouteMixin#sessionAuthenticationFailed](#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationFailed)).
 
       @method actions.authenticate
-      @private
+      @param {Object} options Any options the auhtenticator needs to authenticate the session
     */
     authenticate: function(options) {
       var _this = this;

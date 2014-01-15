@@ -1,11 +1,12 @@
 'use strict';
 
 /**
-  Authenticator that conforms to OAuth 2 (RFC 6749), specifically the
-  _"Resource Owner Password Credentials Grant Type"_.
+  Authenticator that conforms to OAuth 2
+  ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Resource
+  Owner Password Credentials Grant Type"_.
 
   This authenticator supports refreshing the access token automatically and
-  will trigger the 'ember-simple-auth:session-updated' event each time the
+  will trigger the `'ember-simple-auth:session-updated'` event each time the
   token was refreshed.
 
   @class OAuth2
@@ -23,8 +24,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
   */
   serverTokenEndpoint: '/token',
   /**
-    Sets whether the authenticator should automatically refresh access tokens
-    before they expire.
+    Sets whether the authenticator automatically refreshes access tokens.
 
     @property refreshAccessTokens
     @type Boolean
@@ -38,13 +38,14 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
   _refreshTokenTimeout: null,
 
   /**
-    Restores the session from a set of session properties; will return a
+    Restores the session from a set of session properties; __will return a
     resolving promise when there's a non-empty `access_token` in the
-    `properties` and a rejecting promise otherwise.
+    `properties`__ and a rejecting promise otherwise.
 
-    This method also schedule automatic token refreshing when there are a
-    refresh token and a token expiration time in the `properties` and automatic
-    token refreshing isn't disabled (see `refreshAccessTokens`).
+    This method also schedules automatic token refreshing when there are values
+    for `refresh_token` and `expires_in` in the `properties` and automatic
+    token refreshing isn't disabled (see
+    [Ember.SimpleAuth.Authenticators.OAuth2#refreshAccessTokens](#Ember-SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
 
     @method restore
     @param {Object} properties The properties to restore the session from
@@ -64,16 +65,17 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
 
   /**
     Authenticates the session with the specified `credentials`; the credentials
-    are `POST`ed to the `serverTokenEndpoint` and in response the server
-    returns an access token if the credentials are valid (see
-    http://tools.ietf.org/html/rfc6749#section-4.3). If the credentials are
+    are `POST`ed to the `serverTokenEndpoint` and if they are valid the server
+    returns an access token in response (see
+    http://tools.ietf.org/html/rfc6749#section-4.3). __If the credentials are
     valid and authentication succeeds, a promise that resolves with the
-    server's response is returned, otherwise a promise that rejects with the
+    server's response is returned__, otherwise a promise that rejects with the
     error is returned.
 
-    This method will also schedule automatic token refreshing when there are a
-    refresh token and a token expiration time in the server's response and
-    automatic token refreshing isn't diabled (see `refreshAccessTokens`).
+    This method also schedules automatic token refreshing when there are values
+    for `refresh_token` and `expires_in` in the server response and automatic
+    token refreshing isn't disabled (see
+    [Ember.SimpleAuth.Authenticators.OAuth2#refreshAccessTokens](#Ember-SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
 
     @method authenticate
     @param {Object} options The credentials to authenticate the session with

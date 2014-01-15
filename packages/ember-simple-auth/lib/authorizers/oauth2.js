@@ -1,8 +1,9 @@
 'use strict';
 
 /**
-  Authorizer that conforms to OAuth 2 (RFC 6749) by adding bearer tokens
-  (RFC 6750).
+  Authorizer that conforms to OAuth 2
+  ([RFC 6749](http://tools.ietf.org/html/rfc6749)) by adding bearer tokens
+  ([RFC 6749](http://tools.ietf.org/html/rfc6750)).
 
   @class OAuth2
   @namespace Ember.SimpleAuth.Authorizers

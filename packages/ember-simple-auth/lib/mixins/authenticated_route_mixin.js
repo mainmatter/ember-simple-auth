@@ -1,17 +1,17 @@
 'use strict';
 
 /**
-  The mixin for routes that should require an authenticated session in order to
-  be accessible to users. Including this mixin in a route will automatically
-  add hooks that enforce the session to be authenticated and redirect to
-  `authenticationRoute` specified in
-  [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup) if not.
+  The mixin for routes that require the session to be authenticated in order to
+  be accessible. Including this mixin in a route will automatically add hooks
+  that enforce the session to be authenticated and redirect to
+  the `authenticationRoute` specified in
+  [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup) if not.
 
   `Ember.SimpleAuth.AuthenticatedRouteMixin` performs the redirect in the
-  `beforeModel` method so that in all methods executed after that an
-  authenticated session can be assumed. If `beforeModel` is overridden, ensure
-  that the custom implementation calls `this._super(transition)` so that the
-  session enforcement code is executed.
+  `beforeModel` method so that in all methods executed after that the session
+  is guaranteed to be authenticated. __If `beforeModel` is overridden, ensure
+  that the custom implementation calls `this._super(transition)`__ so that the
+  session enforcement code is actually executed.
 
   @class AuthenticatedRouteMixin
   @namespace Ember.SimpleAuth
@@ -20,16 +20,16 @@
 */
 Ember.SimpleAuth.AuthenticatedRouteMixin = Ember.Mixin.create({
   /**
-    This method implements the enforcement of an authenticated session. If the
-    session is not authenticated, the current transition will be aborted and a
-     redirect will be triggered to `authenticationRoute` specified in
-    [Ember.SimpleAuth.setup](#Ember.SimpleAuth_setup). The method also saves
+    This method implements the enforcement of the session being authenticated.
+    If the session is not authenticated, the current transition will be aborted
+    and a redirect will be triggered to the `authenticationRoute` specified in
+    [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup). The method also saves
     the intercepted transition so that it can be retried after the session has
     been authenticated (see
-    [ApplicationRouteMixin#sessionAuthenticationSucceeded](#Ember.SimpleAuth.ApplicationRouteMixin_sessionAuthenticationSucceeded)).
+    [Ember.SimpleAuth.ApplicationRouteMixin#sessionAuthenticationSucceeded](#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationSucceeded)).
 
     @method beforeModel
-    @param {Transition} transition The transition that leat to this route
+    @param {Transition} transition The transition that lead to this route
   */
   beforeModel: function(transition) {
     if (!this.get('session.isAuthenticated')) {

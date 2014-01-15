@@ -1,15 +1,16 @@
 'use strict';
 
 /**
-  The base for all store types. This serves as a starting point for
-  implementing custom stores and must not be used directly.
+  The base for all store types. __This serves as a starting point for
+  implementing custom stores and must not be used directly.__
 
-  Stores may trigger the 'ember-simple-auth:session-updated' event when
-  any of the stored properties change (and the change wasn't triggered by the
-  `persist` method). The session listens to that event and will handle the
-  change accordingly. Whenever the event is triggered by the store, the session
-  will forward all properties to its authenticator which might lead to the
-  session being invalidated (see Ember.SimpleAuth.Authenticators.Base#restore).
+  Stores may trigger the `'ember-simple-auth:session-updated'` event when
+  any of the stored properties changes due to external actions (e.g. from
+  another tab). The session listens to that event and will handle the changes
+  accordingly. Whenever the event is triggered by the store, the session will
+  forward all properties to its authenticator which might lead to the session
+  being invalidated (see
+  [Ember.SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)).
 
   @class Base
   @namespace Ember.SimpleAuth.Stores

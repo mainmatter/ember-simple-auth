@@ -3,14 +3,15 @@
 /**
   Store that saves its data in session cookies.
 
-  In order to keep multiple tabs/windows of your application in sync, this
-  store has to periodically (every 500ms) check the cookies for changes as
+  __In order to keep multiple tabs/windows of your application in sync, this
+  store has to periodically (every 500ms) check the cookies__ for changes as
   there are no events that notify of changes in cookies. The recommended
   alternative is
-  `Ember.SimpleAuth.Stores.LocalStorage` that also persistently stores data but
-  instead of cookies relies on the `localStorage` API.
+  [Ember.SimpleAuth.Stores.LocalStorage](#Ember-SimpleAuth-Stores-LocalStorage)
+  that also persistently stores data but instead of cookies relies on the
+  `localStorage` API and does not need to poll for external changes.
 
-  This store will trigger the 'ember-simple-auth:session-updated' event when
+  This store will trigger the `'ember-simple-auth:session-updated'` event when
   any of its cookies is changed from another tab or window.
 
   @class Cookie
