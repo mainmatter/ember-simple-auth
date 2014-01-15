@@ -39,8 +39,6 @@ class TemplateData
       item['itemtype'] == 'method' && item['access'] != 'private'
     end.select do |item|
       !!class_name ? item['class'] == class_name : true
-    end.sort do |a, b|
-      a['name'] <=> b['name']
     end
   end
 
@@ -49,8 +47,6 @@ class TemplateData
       item['itemtype'] == 'property' && item['access'] != 'private'
     end.select do |item|
       !!class_name ? item['class'] == class_name : true
-    end.sort do |a, b|
-      a['name'] <=> b['name']
     end
   end
 
