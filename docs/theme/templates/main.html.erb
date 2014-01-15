@@ -173,6 +173,40 @@
                 </div>
               <% end %>
             <% end %>
+            <% if actions(class_data['name']).any? %>
+              <h3 class="section">Actions</h3>
+              <% actions(class_data['name']).each do |action_data| %>
+                <div class="panel panel-default">
+                  <a id="<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(action_data['name']) %>" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', action_data['file'], '#L', action_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      <%= action_data['name'] %><%= params_signature(action_data['params']) %>
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <%= markdown(action_data['description']) %>
+                    <% if !!action_data['params'] %>
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        <% action_data['params'].each do |param_data| %>
+                          <dt><%= param_data['optional'] ? "[#{param_data['name']}]" : param_data['name'] %> <span class="type">{<%= param_data['type'] %>}</span></dt>
+                          <dd><%= markdown(param_data['description']) %></dd>
+                          <% if param_data['props'] %>
+                            <dl class="props">
+                              <% param_data['props'].each do |prop_data| %>
+                                <dt><%= param_data['name'] %>.<%= prop_data['optional'] ? "[#{prop_data['name']}]" : prop_data['name'] %> <span class="type">{<%= prop_data['type'] %>}</span></dt>
+                                <dd><%= markdown(prop_data['description']) %></dd>
+                              <% end %>
+                            </dl>
+                          <% end %>
+                        <% end %>
+                      </dl>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
           </div>
           <div class="col-md-3 overview">
             <% if !!class_data['extends'] %>
@@ -205,6 +239,16 @@
                 <% methods(class_data['name']).each do |method_data| %>
                   <li>
                     <a href="#<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(method_data['name']) %>"><%= method_data['name'] %></a>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+            <% if actions(class_data['name']).any? %>
+              <h4>Actions</h4>
+              <ul class="list-unstyled">
+                <% actions(class_data['name']).each do |action_data| %>
+                  <li>
+                    <a href="#<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(action_data['name']) %>"><%= action_data['name'] %></a>
                   </li>
                 <% end %>
               </ul>

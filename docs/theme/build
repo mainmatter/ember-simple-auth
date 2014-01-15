@@ -36,9 +36,19 @@ class TemplateData
 
   def methods(class_name = nil)
     @data['classitems'].select do |item|
-      item['itemtype'] == 'method' && item['access'] != 'private'
+      item['itemtype'] == 'method' && item['access'] != 'private' && !(item['name'] =~ /^actions\./)
     end.select do |item|
       !!class_name ? item['class'] == class_name : true
+    end
+  end
+
+  def actions(class_name = nil)
+    @data['classitems'].select do |item|
+      item['itemtype'] == 'method' && item['access'] != 'private' && item['name'] =~ /^actions\./
+    end.select do |item|
+      !!class_name ? item['class'] == class_name : true
+    end.map do |item|
+      item.dup.merge('name' => item['name'].gsub(/^actions\./, ''))
     end
   end
 
