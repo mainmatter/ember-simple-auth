@@ -16,8 +16,19 @@ Ember.SimpleAuth = Ember.Namespace.create({
   Stores:         Ember.Namespace.create(),
 
   /**
-    The route to redirect the user to after successfully authenticating. This
-    is set by Ember.SimpleAuth#setup.
+    The route to transition to for authentication; can be set through
+    [Ember.SimpleAuth#setup](#Ember-SimpleAuth-setup).
+
+    @property authenticationRoute
+    @readOnly
+    @static
+    @type String
+    @default 'login'
+  */
+  authenticationRoute: 'login',
+  /**
+    The route to transition to after successful authentication; can be set
+    through [Ember.SimpleAuth#setup](#Ember-SimpleAuth-setup).
 
     @property routeAfterAuthentication
     @readOnly
@@ -27,8 +38,8 @@ Ember.SimpleAuth = Ember.Namespace.create({
   */
   routeAfterAuthentication: 'index',
   /**
-    The route to redirect the user to after session invalidation. This is set
-    by Ember.SimpleAuth#setup.
+    The route to transition to after session invalidation; can be set through
+    [Ember.SimpleAuth#setup](#Ember-SimpleAuth-setup).
 
     @property routeAfterInvalidation
     @readOnly
@@ -37,21 +48,10 @@ Ember.SimpleAuth = Ember.Namespace.create({
     @default 'index'
   */
   routeAfterInvalidation: 'index',
-  /**
-    The route to redirect the user to for authentication. This is set by
-    Ember.SimpleAuth#setup.
-
-    @property authenticationRoute
-    @readOnly
-    @static
-    @type String
-    @default 'login'
-  */
-  authenticationRoute: 'login',
 
   /**
-    Sets up Ember.SimpleAuth for the application; this method should be invoked in a custom
-    initializer like this:
+    Sets up Ember.SimpleAuth for the application; this method __should be invoked in a custom
+    initializer__ like this:
 
     ```javascript
     Ember.Application.initializer({
@@ -66,12 +66,12 @@ Ember.SimpleAuth = Ember.Namespace.create({
     @static
     @param {Ember.Application} application The Ember.js application instance
     @param {Object} [options]
-      @param {String} [options.routeAfterAuthentication] route to redirect the user to after successful authentication - defaults to `'index'`
-      @param {String} [options.routeAfterInvalidation] route to redirect the user to after session invalidation - defaults to `'index'`
-      @param {String} [options.authenticationRoute] route to redirect the user to for authentication - defaults to `'login'`
-      @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js application was loaded from; to explicitely enable authorization for additional origins, whitelist those origins - defaults to `[]` (beware that origins consist of protocol, host and port (port can be left out when it is 80))
-      @param {Object} [options.authorizer] The authorizer "class" to use; must extend `Ember.SimpleAuth.Authorizers.Base` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
-      @param {Object} [options.store] The store "class" to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.Cookie`
+      @param {String} [options.authenticationRoute] route to transition to for authentication - defaults to `'login'`
+      @param {String} [options.routeAfterAuthentication] route to transition to after successful authentication - defaults to `'index'`
+      @param {String} [options.routeAfterInvalidation] route to transition to after session invalidation - defaults to `'index'`
+      @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js application was loaded from; to explicitely enable authorization for additional origins, whitelist those origins - defaults to `[]` _(beware that origins consist of protocol, host and port (port can be left out when it is 80))_
+      @param {Object} [options.authorizer] The authorizer _class_ to use; must extend `Ember.SimpleAuth.Authorizers.Base` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
+      @param {Object} [options.store] The store _class_ to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.Cookie`
   **/
   setup: function(application, options) {
     options                       = options || {};
