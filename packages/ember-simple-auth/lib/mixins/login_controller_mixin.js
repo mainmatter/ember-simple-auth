@@ -39,7 +39,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create(Ember.SimpleAuth.Auth
     /**
       This action will authenticate the session with an instance of the
       configured `authenticator` class. It will pass the `identification` and
-      `password` properties to the a
+      `password` properties to the athenticator.
 
       @method actions.authenticate
       @private
