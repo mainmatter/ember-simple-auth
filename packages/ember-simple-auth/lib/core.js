@@ -7,6 +7,9 @@ function extractLocationOrigin(location) {
 /**
   The main namespace for Ember.SimpleAuth.
 
+  __For a general overview of how Ember.SimpleAuth works, see the
+  [README](https://github.com/simplabs/ember-simple-auth#readme).__
+
   @class SimpleAuth
   @namespace Ember
 **/
