@@ -288,3 +288,12 @@ If you want to run the tests as well you also need
 ```bash
 bundle exec rake test
 ```
+
+You can also start a development server by running
+
+```bash
+bundle exec rackup
+```
+
+and then run the tests in the browser at
+[http://localhost:4567](http://localhost:9292).
