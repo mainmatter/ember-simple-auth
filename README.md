@@ -220,7 +220,7 @@ App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationCon
   authenticator: App.MyCustomAuthenticator,
   actions: {
     authenticate: function() {
-      var options = // some options that authenticator uses
+      var options = …// some options that the authenticator uses
       this._super(options);
     }
   }
