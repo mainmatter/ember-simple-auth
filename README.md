@@ -4,22 +4,134 @@ __API docs are [available here](http://ember-simple-auth.simplabs.com/api.html)_
 
 #  Ember.SimpleAuth
 
-__Ember.SimpleAuth requires Ember.js 1.2 or greater__
-
-Ember.SimpleAuth is a lightweight library for implementing token based
-authentication/authorization with [Ember.js](http://emberjs.com) applications.
-It has minimal requirements with respect to the application structure, routes
-etc.
-
-Via its strategies based approach it can support all kinds of authentication and authorization mechanisms.
-The default mechanisms included are based on
-the _"[Resource Owner Password Credentials Grant
-Type](http://tools.ietf.org/html/rfc6749#section-4.3)"_ as specified in the
-[RFC 6749](http://tools.ietf.org/html/rfc6749) and
-[RFC 6750](http://tools.ietf.org/html/rfc6750) specifications. Adding custom strategies is
-trivial however (contributions for your favorite server API are welcome of course!)
+Ember.SimpleAuth is a __lightweight library for implementing authentication/
+authorization with [Ember.js](http://emberjs.com) applications__. It has
+minimal requirements with respect to the application structure, routes etc.
+Due to its strategies based approach it can support all kinds of authentication
+and authorization mechanisms.
 
 ## How does it work?
+
+Ember.SimpleAuth is based on the idea that __there is always an application
+session in whose context a user is using the application. This session can
+either be authenticated or not.__ Ember.SimpleAuth provides a number of classes
+and mixins that create that session, make it available throughout the
+application, provide methods for authenticating and invalidating it etc.
+
+To enable Ember.SimpleAuth in your application, simply add a custom
+initializer (also see the
+[API docs for the setup method](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-setup)):
+
+```js
+Ember.Application.initializer({
+  name: 'authentication',
+  initialize: function(container, application) {
+    Ember.SimpleAuth.setup(application);
+  }
+});
+```
+
+This initializer sets up the session (see the
+[API docs for the Session class](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Session)
+and __makes it available as `session` in all routes, controllers, views and
+models__). It also sets up an
+[`$.ajaxPrefilter`](http://api.jquery.com/jQuery.ajaxPrefilter/) that is used
+to authorize AJAX requests with the information stored in the session when it
+is authenticated (see below (TODO)).
+
+The application route of the application must implement the mixin provided by
+Ember.SimpleAuth:
+
+```js
+App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
+```
+
+This adds some actions to the `App.ApplicationRoute` like `authenticateSession`
+and `invalidateSession` as well as callback actions that are triggered when the
+session's authentication state changes like `sessionAuthenticationSucceeded` or
+`sessionInvalidationSucceeded` (see the
+[API docs for the ApplicationRouteMixin class](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-ApplicationRouteMixin)).
+
+__Rendering login/logout buttons in the UI depending on the authentication
+state__ then is as easy as:
+
+```handlebars
+{{#if session.isAuthenticated}}
+  <a {{ action 'invalidateSession' }}>Logout</a>
+{{else}}
+  <a {{ action 'authenticateSession' }}>Login</a>
+{{/if}}
+```
+
+or when the application uses a dedicated route for logging in (which is usually
+the case):
+
+```handlebars
+{{#if session.isAuthenticated}}
+  <a {{ action 'invalidateSession' }}>Logout</a>
+{{else}}
+  {{#link-to 'login'}}Login{{/link-to}}
+{{/if}}
+```
+
+__To make a route in the application require the session to be authenticated,
+there is another mixin__ that Ember.SimpleAuth provides and that is simply
+included in the respective route (see the
+[API docs for the AuthenticatedRouteMixin class](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-AuthenticatedRouteMixin)):
+
+```js
+App.Router.map(function() {
+  this.route('protected');
+});
+App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+```
+
+This will make the route redirect to `/login` (or a different URL if
+configured) when the session is not authenticated in the `beforeModel` method.
+
+### Authenticators
+
+General concept
+
+#### The RFC 6749 Authenticator
+
+RFC 6749 (client/server protocol etc.)
+token refreshing
+LoginControllerMixin/Login Form
+Middlewares
+
+#### Implementing a custom Authenticator
+
+Authenticators.Base
+AuthenticationControllerMixin
+
+### Authorizers
+
+General concept
+Cross Origin authorization
+
+#### The RFC 6749 Authorizer
+
+RFC 6750
+
+#### Implementing a custom Authorizer
+
+Authenticators.Base
+
+### Stores
+
+General concept
+Session restore
+Store events
+Stores.Cookie
+Stores.LocalStorage
+Stores.Ephemeral
+
+#### Implementing a custom Store
+
+Stores.Base
+
+== remove later below here! ==
 
 ## RFC 6749
 
@@ -65,60 +177,6 @@ example"_ in the [examples list](#examples)). However, there is a wide range of
 middlewares available for different languages and frameworks that support the
 OAuth 2.0 standard so you might want to consider using one of those instead of
 running your own incompatible solution.
-
-## Usage
-
-To enable Ember.SimpleAuth in your application, simply add a custom
-initializer:
-
-```js
-Ember.Application.initializer({
-  name: 'authentication',
-  initialize: function(container, application) {
-    Ember.SimpleAuth.setup(container, application);
-  }
-});
-```
-
-The application route must implement the mixin provided by Ember.SimpleAuth so
-that the `login` and `logout` actions are available:
-
-```js
-App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-```
-
-The current session that stores the authentication status, the access token
-etc. can be accessed as `session` in all models, views, controllers and routes.
-To e.g. display login/logout buttons depending on whether the user is currently
-authenticated or not, simply add something like this to the respective
-template:
-
-```html
-{{#if session.isAuthenticated}}
-  <a {{ action 'logout' }}>Logout</a>
-{{else}}
-  <a {{ action 'login' }}>Login</a>
-{{/if}}
-```
-
-To actually make a route in the application protected and inaccessible when no
-user is authenticated, simply implement the
-`Ember.SimpleAuth.AuthenticatedRouteMixin` in the respective route:
-
-```js
-App.Router.map(function() {
-  this.route('protected');
-});
-App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
-```
-
-This will make the route redirect to `/login` (or a different URL if configured
-) when no user is authenticated in the `beforeModel` hook.
-
-To actually authenticate the user and obtain the access token there are two
-options: the one using a login form that sends a set of credentials to a server
-and in exchange receives the access token or to integrate an OAuth/OpenID
-provider.
 
 ### Login Form
 
@@ -400,18 +458,7 @@ This is an incomplete list of middlewares supporting RFC 6749.
 
 Please submit a pull request if you think an important library is missing here!
 
-## Configuration
-
-Ember.SimpleAuth offers some configuration settings that allow to customize
-parts of the library without actually changing/overriding any code:
-
-```js
-Ember.SimpleAuth.setup(container, application, {
-  routeAfterAuthentication: ...     // route to redirect the user to after successfully logging in - defaults to 'index'
-  routeAfterInvalidation: ...    // route to redirect the user to after logging out - defaults to 'index'
-  authenticationRoute: ...          // route to redirect the user to when login is required - defaults to 'login'
-});
-```
+== remove later below here! ==
 
 ## Examples
 
