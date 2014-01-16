@@ -328,7 +328,7 @@ stores its data in session cookies; __this is the default store__.
 
 ##### `Stores.LocalStorage`
 
-The `localStorage` store (see the
+The local storage store (see the
 [API docs for Stores.LocalStorage](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-LocalStorage))
 stores its data in the browser's `localStorage`.
 
