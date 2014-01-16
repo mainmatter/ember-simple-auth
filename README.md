@@ -91,16 +91,109 @@ configured) when the session is not authenticated in the `beforeModel` method.
 
 ### Authenticators
 
-General concept
+__The authenticator implements the steps needed to authenticate the session.__
+An app can have several authenticators for different kinds of authentication
+providers (e.g. the application's own backend server, external authentication
+providers like Facebook etc.) while the session can only be authenticated with
+one at a time  (see the
+[API docs for Session#authenticate](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Session-authenticate).
 
-#### The RFC 6749 Authenticator
+#### The RFC 6749 (OAuth 2.0) Authenticator
 
-RFC 6749 (client/server protocol etc.)
-token refreshing
-LoginControllerMixin/Login Form
-Middlewares
+Ember.SimpleAuth's default authenticator (see the
+[API docs for Authenticators.OAuth2](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authenticators-OAuth2))
+is compliant with [RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically
+the _"Resource Owner Password Credentials Grant Type"_. This grant type
+basically specifies that the client `POST`s a set of credentials to a server:
+
+```
+POST /token HTTP/1.1
+Host: server.example.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&username=johndoe&password=A3ddj3w
+```
+
+and in exchange receives an access token that is then later used to identify
+the user:
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+  "access_token":"2YotnFZFEjr1zCsicMWpAA",
+  "token_type":"bearer"
+}
+```
+
+__Ember.SimpleAuth's OAuth 2.0 authenticator also supports automatic token
+refreshing__ which is explained in more detail in
+[section 6 of RFC 6749](http://tools.ietf.org/html/rfc6749#section-6).
+
+##### Using the RFC 6749 (OAuth 2.0) Authenticator
+
+In order to use the OAuth 2.0 authenticator the application needs to have a
+login route:
+
+```js
+App.Router.map(function() {
+  this.route('login');
+});
+```
+
+This route would display the login form with fields for `identification` and
+`password`:
+
+```html
+<form {{action authenticate on='submit'}}>
+  <label for="identification">Login</label>
+  {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login'}}
+  <label for="password">Password</label>
+  {{view Ember.TextField id='password' type='password' valueBinding='password' placeholder='Enter Password'}}
+  <button type="submit">Login</button>
+</form>
+```
+
+The `authenticate` action that is triggered by submitting the form is provided
+by the `LoginControllerMixin` that the respective controller in the application
+needs to include:
+
+```js
+App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
+```
+
+The mixin will by default use the OAuth 2.0 authenticator to authenticate the
+session.
+
+##### Compatible Middlewares
+
+There is a quantity of middlewares for different languages and servers that
+implement OAuth 2.0 and can be used with Ember.SimpleAuth's OAuth 2.0
+authenticator.
+
+###### Ruby
+
+* rack-oauth2: https://github.com/nov/rack-oauth2
+* doorkeeper: https://github.com/applicake/doorkeeper
+
+###### PHP
+* oauth2-server: https://github.com/php-loep/oauth2-server
+* zfr-oauth2-server: https://github.com/zf-fr/zfr-oauth2-server
+* zfr-oauth2-server-module (for ZF2): https://github.com/zf-fr/zfr-oauth2-server-module
+
+###### Java
+
+* scribe-java: https://github.com/fernandezpablo85/scribe-java
+
+###### Node.js
+
+* oauth2orize: https://github.com/jaredhanson/oauth2orize
 
 #### Implementing a custom Authenticator
+
 
 Authenticators.Base
 AuthenticationControllerMixin
@@ -110,7 +203,7 @@ AuthenticationControllerMixin
 General concept
 Cross Origin authorization
 
-#### The RFC 6749 Authorizer
+#### The RFC 6750 Authorizer
 
 RFC 6750
 
