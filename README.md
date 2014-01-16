@@ -233,11 +233,11 @@ While the authenticator acquires some sort of secret information from the
 authentication provider when it authenticates the session (e.g. the
 `access_token` in the case of the
 [OAuth 2.0 authenticator](#the-rfc-6749-oauth-20-authenticator)), __the
-authorizer uses that secret information to identify the user in any AJAX
-requests__ made later on. Thus, as the authorizer depends on the information
-provided by the authenticator, the 2 have to fit together.
+authorizer uses that secret information to identify the user in requests__ made
+later on. Thus, as the authorizer depends on the information provided by the
+authenticator, the 2 have to fit together.
 
-There is always only one authorizer in an application which is set when
+There is always only one authorizer in an application which can be set when
 Ember.SimpleAuth is set up (see the
 [API docs for Ember.SimpleAuth.setup](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-setup)).
 
@@ -277,19 +277,21 @@ Ember.Application.initializer({
 #### Cross Origin Authorization
 
 Ember.SimpleAuth __will never authorize cross origin requests__ so that no
-secret information gets exposed to 3rd parties. To explicitly enable
-authorization for additional origins (for example if the REST API of the
-application runs on a different domain than the one the Ember.js application is
-served from) __these origins can be whitelisted__ when Ember.SimpleAuth is set up
-_(beware that origins consist of protocol, host and port (port can be left out
-when it is 80))_:
+secret information gets exposed to 3rd parties. To enable authorization for
+additional origins (for example if the REST API of the application runs on a
+different domain than the one the Ember.js application is served from) __these
+origins can be whitelisted__ when Ember.SimpleAuth is set up _(beware that
+origins consist of protocol, host and port (port can be left out when it is
+80))_:
 
+```js
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
     Ember.SimpleAuth.setup(application, { crossOriginWhitelist: ['http://some.other.domain:1234'] });
   }
 });
+```
 
 ### Stores
 
