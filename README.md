@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/simplabs/ember-simple-auth.png?branch=master)](https://travis-ci.org/simplabs/ember-simple-auth)
 
-__API docs are [available here](http://ember-simple-auth.simplabs.com/api.html)__
+__[Ember.SimpleAuth's API docs are available here](http://ember-simple-auth.simplabs.com/api.html)__
 
 #  Ember.SimpleAuth
 
@@ -20,7 +20,7 @@ application, provide methods for authenticating and invalidating it etc.
 
 To enable Ember.SimpleAuth in an application, simply add a custom initializer
 (also see the
-[API docs for the setup method](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-setup)):
+[API docs for `Ember.SimpleAuth.setup`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-setup)):
 
 ```js
 Ember.Application.initializer({
@@ -32,7 +32,7 @@ Ember.Application.initializer({
 ```
 
 This initializer sets up the session (see the
-[API docs for the Session class](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Session)
+[API docs for `Ember.SimpleAuthSession`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Session)
 and __makes it available as `session` in all routes, controllers, views and
 models__). It also sets up an
 [`$.ajaxPrefilter`](http://api.jquery.com/jQuery.ajaxPrefilter/) that is used
@@ -50,7 +50,7 @@ This adds some actions to `App.ApplicationRoute` like `authenticateSession` and
 `invalidateSession` as well as callback actions that are triggered when the
 session's authentication state changes like `sessionAuthenticationSucceeded` or
 `sessionInvalidationSucceeded` (see the
-[API docs for the ApplicationRouteMixin class](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-ApplicationRouteMixin)).
+[API docs for `ApplicationRouteMixin`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-ApplicationRouteMixin)).
 
 __Rendering login/logout buttons in the UI depending on the authentication
 state__ then is as easy as:
@@ -77,7 +77,7 @@ the case):
 __To make a route in the application require the session to be authenticated,
 there is another mixin__ that Ember.SimpleAuth provides and that is simply
 included in the respective route (see the
-[API docs for the AuthenticatedRouteMixin class](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-AuthenticatedRouteMixin)):
+[API docs for `AuthenticatedRouteMixin`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-AuthenticatedRouteMixin)):
 
 ```js
 App.Router.map(function() {
@@ -96,12 +96,12 @@ have several authenticators for different kinds of authentication providers
 (e.g. the application's own backend server, external authentication providers
 like Facebook etc.) while the session can only be authenticated with one at a
 time (see the
-[API docs for Session#authenticate](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Session-authenticate).
+[API docs for `Session#authenticate`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Session-authenticate).
 
 #### The RFC 6749 (OAuth 2.0) Authenticator
 
 Ember.SimpleAuth's default authenticator (see the
-[API docs for Authenticators.OAuth2](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authenticators-OAuth2))
+[API docs for `Authenticators.OAuth2`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authenticators-OAuth2))
 is compliant with [RFC 6749 (OAuth 2.0)](http://tools.ietf.org/html/rfc6749),
 specifically the _"Resource Owner Password Credentials Grant Type"_. This grant
 type basically specifies that the client `POST`s a set of credentials to a
@@ -198,7 +198,7 @@ authenticator.
 While Ember.SimpleAuth only comes with the OAuth 2.0 authenticator, it is
 easy to implement authenticators for other strategies as well. All that needs
 to be done is to extend `Authenticators.Base` and implement 3 methods (see the
-[API docs for Authenticators.Base](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authenticators-Base)).
+[API docs for `Authenticators.Base`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authenticators-Base)).
 
 To use that authenticator, simply specify it in the controller handling the
 login route of the application:
@@ -212,7 +212,7 @@ App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMi
 or in the case that the authenticator does not use a login form with
 `identification` and `password`, include the more generic
 `AuthenticationControllerMixin` (see the
-[API docs for AuthenticationControllerMixin](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-AuthenticationControllerMixin))
+[API docs for `AuthenticationControllerMixin`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-AuthenticationControllerMixin))
 to implement a custom solution:
 
 ```js
@@ -239,12 +239,12 @@ authenticator, the 2 have to fit together.
 
 There is always only one authorizer in an application which can be set when
 Ember.SimpleAuth is set up (see the
-[API docs for Ember.SimpleAuth.setup](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-setup)).
+[API docs for `Ember.SimpleAuth.setup`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-setup)).
 
 #### The RFC 6750 Authorizer
 
 Ember.SimpleAuth's default authorizer (see the
-[API docs for Authorizers.OAuth2](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authorizers-OAuth2))
+[API docs for `Authorizers.OAuth2`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authorizers-OAuth2))
 is compliant with [RFC 6750 (OAuth 2.0 Bearer Tokens)](http://tools.ietf.org/html/rfc6750)
 and thus fits the default OAuth 2.0 authenticator. It simply injects an
 `Authorization` header with the `access_token` that the authenticator acquired
@@ -259,7 +259,7 @@ Authorization: Bearer <access_token>
 While Ember.SimpleAuth only comes with the OAuth 2.0 authorizer, it is easy to
 implement authorizers for other strategies as well. All that needs to be done
 is to extend `Authorizers.Base` and implement 1 method (see the
-[API docs for Authorizers.Base](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authorizers-Base)).
+[API docs for `Authorizers.Base`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authorizers-Base)).
 
 To use that authorizer, simply configure it in the initializer:
 
@@ -303,7 +303,7 @@ tries to restore any previously persisted state and properties and if that
 succeeds, is authenticated immediately. While Ember.SimpleAuth comes with
 several store types there is only one store per application that can be
 configured during setup (see the
-[API docs for Ember.SimpleAuth.setup](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-setup)):
+[API docs for `Ember.SimpleAuth.setup`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-setup)):
 
 ```js
 Ember.Application.initializer({
@@ -323,19 +323,19 @@ Ember.SimpleAuth comes with 3 stores:
 ##### `Stores.Cookie`
 
 The cookie store (see the
-[API docs for Stores.Cookie](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Cookie))
+[API docs for `Stores.Cookie`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Cookie))
 stores its data in session cookies; __this is the default store__.
 
 ##### `Stores.LocalStorage`
 
 The local storage store (see the
-[API docs for Stores.LocalStorage](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-LocalStorage))
+[API docs for `Stores.LocalStorage`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-LocalStorage))
 stores its data in the browser's `localStorage`.
 
 ##### `Stores.Ephemeral`
 
 The ephemeral store (see the
-[API docs for Stores.Ephemeral](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Ephemeral))
+[API docs for `Stores.Ephemeral`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Ephemeral))
 stores its data in memory and thus __is not actually persistent__. This store
 is mainly useful for testing.
 
@@ -344,7 +344,7 @@ is mainly useful for testing.
 Implementing a custom store is as easy as implementing custom authenticators or
 authorizers. All that needs to be done is to extend `Stores.Base` and implement
 3 methods (see the
-[API docs for Stores.Base](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Base)).
+[API docs for `Stores.Base`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Base)).
 
 ## Examples
 
