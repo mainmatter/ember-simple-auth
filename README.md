@@ -299,10 +299,10 @@ Ember.Application.initializer({
 
 Ember.SimpleAuth __persists the session state and its properties so it survives
 a page reload__. When the session is created in the application initializer it
-tries to restore its previous state and properties and if that succeeds, it is
-authenticated immediately. While Ember.SimpleAuth comes with several store
-types there is only one store per application that can be configured during
-setup (see the
+tries to restore any previously persisted state and properties and if that
+succeeds, is authenticated immediately. While Ember.SimpleAuth comes with
+several store types there is only one store per application that can be
+configured during setup (see the
 [API docs for Ember.SimpleAuth.setup](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-setup)):
 
 ```js
@@ -316,17 +316,19 @@ Ember.Application.initializer({
 });
 ```
 
+#### Store Types
+
 Ember.SimpleAuth comes with 3 stores:
 
-* [Stores.Cookie](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Cookie): stores its data in session cookies; __this is the default store__
-* [Stores.LocalStorage](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-LocalStorage): stores its data in the browser's `localStorage`
-* [Stores.Ephemeral](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Ephemeral): stores its data in memory and thus is not actually persistent; this is mainly useful for testing
+* Stores.Cookie: stores its data in session cookies; __this is the default store__; [API docs for Stores.Cookie](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Cookie)
+* Stores.LocalStorage: stores its data in the browser's `localStorage`; [API docs for Stores.LocalStorage](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-LocalStorage)
+* Stores.Ephemeral: stores its data in memory and thus is not actually persistent; this is mainly useful for testing; [API docs for Stores.Ephemeral](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Ephemeral)
 
 #### Implementing a custom Store
 
-While Ember.SimpleAuth only comes with the 3 store types listed above, it is
-easy to implement custom stores as well. All that needs to be done is to extend
-`Stores.Base` and implement 3 methods (see the
+Implementing a custom store is as easy as implementing custom authenticators or
+authorizers. All that needs to be done is to extend `Stores.Base` and implement
+3 methods (see the
 [API docs for Stores.Base](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Base)).
 
 ## Examples
