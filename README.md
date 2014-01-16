@@ -320,9 +320,9 @@ Ember.Application.initializer({
 
 Ember.SimpleAuth comes with 3 stores:
 
-* __Stores.Cookie__: stores its data in session cookies; __this is the default store__; [API docs for Stores.Cookie](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Cookie)
-* __Stores.LocalStorage__: stores its data in the browser's `localStorage`; [API docs for Stores.LocalStorage](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-LocalStorage)
-* __Stores.Ephemeral__: stores its data in memory and thus is not actually persistent; this is mainly useful for testing; [API docs for Stores.Ephemeral](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Ephemeral)
+* __`Stores.Cookie`__: stores its data in session cookies; __this is the default store__; [API docs for Stores.Cookie](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Cookie)
+* __`Stores.LocalStorage`__: stores its data in the browser's `localStorage`; [API docs for Stores.LocalStorage](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-LocalStorage)
+* __`Stores.Ephemeral`__: stores its data in memory and thus is not actually persistent; this is mainly useful for testing; [API docs for Stores.Ephemeral](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Ephemeral)
 
 #### Implementing a custom Store
 
