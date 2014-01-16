@@ -288,23 +288,46 @@ origins consist of protocol, host and port (port can be left out when it is
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(application, { crossOriginWhitelist: ['http://some.other.domain:1234'] });
+    Ember.SimpleAuth.setup(application, {
+      crossOriginWhitelist: ['http://some.other.domain:1234']
+    });
   }
 });
 ```
 
 ### Stores
 
-General concept
-Session restore
-Store events
-Stores.Cookie
-Stores.LocalStorage
-Stores.Ephemeral
+Ember.SimpleAuth __persists the session state and its properties so it survives
+a page reload__. When the session is created in the application initializer it
+tries to restore its previous state and properties and if that succeeds, it is
+authenticated immediately. While Ember.SimpleAuth comes with several store
+types there is only one store per application that can be configured during
+setup (see the
+[API docs for Ember.SimpleAuth.setup](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-setup)):
+
+```js
+Ember.Application.initializer({
+  name: 'authentication',
+  initialize: function(container, application) {
+    Ember.SimpleAuth.setup(application, {
+      store: Ember.SimpleAuth.Stores.Cookie
+    });
+  }
+});
+```
+
+Ember.SimpleAuth comes with 3 stores:
+
+* [Stores.Cookie](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Cookie): stores its data in session cookies; __this is the default store__
+* [Stores.LocalStorage](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-LocalStorage): stores its data in the browser's `localStorage`
+* [Stores.Ephemeral](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Ephemeral): stores its data in memory and thus is not actually persistent; this is mainly useful for testing
 
 #### Implementing a custom Store
 
-Stores.Base
+While Ember.SimpleAuth only comes with the 3 store types listed above, it is
+easy to implement custom stores as well. All that needs to be done is to extend
+`Stores.Base` and implement 3 methods (see the
+[API docs for Stores.Base](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Base)).
 
 ## Examples
 
