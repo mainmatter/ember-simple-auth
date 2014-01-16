@@ -200,8 +200,8 @@ easy to implement authenticators for other strategies as well. All that needs
 to be done is to extend `Authenticators.Base` and implement 3 methods (see the
 [API docs for Authenticators.Base](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authenticators-Base)).
 
-Then to use that authenticator, simply specify it in the controller handling
-the login route of the application:
+To use that authenticator, simply specify it in the controller handling the
+login route of the application:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
@@ -229,17 +229,67 @@ App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationCon
 
 ### Authorizers
 
-While the authenticator acquires the data that aur
+While the authenticator acquires some sort of secret information from the
+authentication provider when it authenticates the session (e.g. the
+`access_token` in the case of the
+[OAuth 2.0 authenticator](#the-rfc-6749-oauth-20-authenticator)), __the
+authorizer uses that secret information to identify the user in any AJAX
+requests__ made later on. Thus, as the authorizer depends on the information
+provided by the authenticator, the 2 have to fit together.
 
-Cross Origin authorization
+There is always only one authorizer in an application which is set when
+Ember.SimpleAuth is set up (see the
+[API docs for Ember.SimpleAuth.setup](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-setup)).
 
 #### The RFC 6750 Authorizer
 
-RFC 6750
+Ember.SimpleAuth's default authorizer (see the
+[API docs for Authorizers.OAuth2](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authorizers-OAuth2))
+is compliant with [RFC 6750 (OAuth 2.0 Bearer Tokens)](http://tools.ietf.org/html/rfc6750)
+and thus fits the default OAuth 2.0 authenticator. It simply injects an
+`Authorization` header with the `access_token` that the authenticator acquired
+into all requests:
+
+```
+Authorization: Bearer <access_token>
+```
 
 #### Implementing a custom Authorizer
 
-Authenticators.Base
+While Ember.SimpleAuth only comes with the OAuth 2.0 authorizer, it is easy to
+implement authorizers for other strategies as well. All that needs to be done
+is to extend `Authorizers.Base` and implement 1 method (see the
+[API docs for Authorizers.Base](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authorizers-Base)).
+
+To use that authorizer, simply configure it in the initializer:
+
+```js
+Ember.Application.initializer({
+  name: 'authentication',
+  initialize: function(container, application) {
+    Ember.SimpleAuth.setup(application, {
+      authorizer: App.MyCustomAuthorizer
+    });
+  }
+});
+```
+
+#### Cross Origin Authorization
+
+Ember.SimpleAuth __will never authorize cross origin requests__ so that no
+secret information gets exposed to 3rd parties. To explicitly enable
+authorization for additional origins (for example if the REST API of the
+application runs on a different domain than the one the Ember.js application is
+served from) __these origins can be whitelisted__ when Ember.SimpleAuth is set up
+_(beware that origins consist of protocol, host and port (port can be left out
+when it is 80))_:
+
+Ember.Application.initializer({
+  name: 'authentication',
+  initialize: function(container, application) {
+    Ember.SimpleAuth.setup(application, { crossOriginWhitelist: ['http://some.other.domain:1234'] });
+  }
+});
 
 ### Stores
 
