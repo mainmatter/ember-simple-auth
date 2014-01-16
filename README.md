@@ -55,7 +55,7 @@ session's authentication state changes like `sessionAuthenticationSucceeded` or
 __Rendering login/logout buttons in the UI depending on the authentication
 state__ then is as easy as:
 
-```handlebars
+```html
 {{#if session.isAuthenticated}}
   <a {{ action 'invalidateSession' }}>Logout</a>
 {{else}}
@@ -66,7 +66,7 @@ state__ then is as easy as:
 or when the application uses a dedicated route for logging in (which is usually
 the case):
 
-```handlebars
+```html
 {{#if session.isAuthenticated}}
   <a {{ action 'invalidateSession' }}>Logout</a>
 {{else}}
