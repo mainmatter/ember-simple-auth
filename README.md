@@ -195,10 +195,37 @@ authenticator.
 
 #### Implementing a custom Authenticator
 
-To support custom authentication providers
+While Ember.SimpleAuth only comes with the OAuth 2.0 authenticator, it is
+easy to implement authenticators for other strategies as well. All that needs
+to be done is to extend `Authenticators.Base` and implement 3 methods (see the
+[API docs for Authenticators.Base](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authenticators-Base)).
 
-Authenticators.Base
-AuthenticationControllerMixin
+Then to use that authenticator, simply specify it in the controller handling
+the login route of the application:
+
+```js
+App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+  authenticator: App.MyCustomAuthenticator
+});
+```
+
+or in the case that the authenticator does not use a login form with
+`identification` and `password`, include the more generic
+`AuthenticationControllerMixin` (see the
+[API docs for AuthenticationControllerMixin](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-AuthenticationControllerMixin))
+to implement a custom solution:
+
+```js
+App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationControllerMixin, {
+  authenticator: App.MyCustomAuthenticator,
+  actions: {
+    authenticate: function() {
+      var options = // some options that authenticator uses
+      this._super(options);
+    }
+  }
+});
+```
 
 ### Authorizers
 
