@@ -10,6 +10,9 @@
         {{#link-to 'protected' tagName='li'}}
           <a style="cursor: pointer">Protected Page</a>
         {{/link-to}}
+        {{#link-to 'erroneous' tagName='li'}}
+          <a style="cursor: pointer">Erroneous Page</a>
+        {{/link-to}}
       </ul>
       {{! display logout button when the session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
@@ -31,6 +34,10 @@
   {{#unless session.isAuthenticated}}
     <div class="alert alert-info">
       You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
+    </div>
+  {{else}}
+    <div class="alert alert-warning">
+      Going to the <em>"Erroneous Page"</em> will trigger an authorization error and log you out.
     </div>
   {{/unless}}
 </script>
@@ -72,6 +79,15 @@
   </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="erroneous">
+  <div class="page-header">
+    <h1>Erroneous Page</h1>
+  </div>
+  <div class="alert alert-warning">
+    This is an erroneous page that invalidates the session!
+  </div>
+</script>
+
 <script type="text/javascript">
   // setup Ember.SimpleAuth in an initializer
   Ember.Application.initializer({
@@ -88,6 +104,8 @@
     this.route('login');
     // protected route that's inaccessible without authentication
     this.route('protected');
+    // route that will generate an authorization error
+    this.route('erroneous');
   });
 
   // use the provided mixins in the application route and login controller
@@ -109,6 +127,11 @@
     }
   });
 
-  // make this route protected
+  // make these routes protected
   App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+  App.ErroneousRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    model: function() {
+      return Ember.$.get('/auth-error');
+    }
+  });
 </script>

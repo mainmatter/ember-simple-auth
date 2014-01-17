@@ -19,7 +19,7 @@ end
 
 # serve the JS file from the /dist directory
 get '/ember-simple-auth.js' do
-  File.read(File.join(base_dir, '..', 'dist', 'ember-simple-auth.js'))
+  [200, { 'Content-Type' => 'text/javascript' }, File.read(File.join(base_dir, '..', 'dist', 'ember-simple-auth.js'))]
 end
 
 # serve the HTML files from the respective example directoy
@@ -40,6 +40,10 @@ post '/token' do
   else
     [400, { 'Content-Type' => 'application/json' }, ['{ "error": "unsupported_grant_type" }']]
   end
+end
+
+get '/auth-error' do
+  [401, { 'Content-Type' => 'application/json' }, ['{ "error": "your token has expired" }']]
 end
 
 # token endpoint that also support token refresh

@@ -51,9 +51,9 @@ test('invalidates the current session', function() {
   equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterInvalidation, 'Ember.SimpleAuth.ApplicationRouteMixin redirects to the routeAfterInvalidation when session invalidation is successful.');
   ok(testRoute.invokedsessionInvalidationSucceeded, 'Ember.SimpleAuth.ApplicationRouteMixin triggers the sessionInvalidationSucceeded action when session invalidation is successful.');
 
-  testRoute.transitionedTo         = null;
+  testRoute.transitionedTo                      = null;
   testRoute.invokedsessionInvalidationSucceeded = false;
-  AuthenticatorMock._resolve       = false;
+  AuthenticatorMock._resolve                    = false;
   Ember.run(function() {
     testRoute._actions['invalidateSession'].apply(testRoute);
   });
@@ -79,4 +79,22 @@ test('clears a saved attempted transition when session authentication succeeds',
   testRoute._actions['sessionAuthenticationSucceeded'].apply(testRoute);
 
   equal(testRoute.get('session.attemptedTransition'), null, 'Ember.SimpleAuth.ApplicationRouteMixin clears a saved attempted transition on sessionAuthenticationSucceeded.');
+});
+
+test('invalidates the session when an authorization error occurs', function() {
+  AuthenticatorMock._resolve = true;
+  testRoute.set('session.isAuthenticated', true);
+  Ember.run(function() {
+    testRoute._actions['error'].apply(testRoute, [{ status: 500 }]);
+  });
+
+  ok(testRoute.get('session.isAuthenticated'), 'Ember.SimpleAuth.ApplicationRouteMixin does not invalidate the current session when a non-authorization related error occurs.');
+  equal(testRoute.transitionedTo, null, 'Ember.SimpleAuth.ApplicationRouteMixin does not transition to the routeAfterInvalidation when a non-authorization related error occurs.');
+
+  Ember.run(function() {
+    testRoute._actions['error'].apply(testRoute, [{ status: 401 }]);
+  });
+
+  equal(testRoute.get('session.isAuthenticated'), false, 'Ember.SimpleAuth.ApplicationRouteMixin invalidates the current session when an authorization error occurs.');
+  equal(testRoute.transitionedTo, Ember.SimpleAuth.routeAfterInvalidation, 'Ember.SimpleAuth.ApplicationRouteMixin transitions to the routeAfterInvalidation when an authorization error occurs.');
 });
