@@ -1,6 +1,6 @@
 # 0.1.0
 
-The Big Rewrite™
+The Big Rewrite™, see the [README](https://github.com/simplabs/ember-simple-auth#readme) and the [release notes](https://github.com/simplabs/ember-simple-auth/releases/tag/0.1.0).
 
 # 0.0.11
 
