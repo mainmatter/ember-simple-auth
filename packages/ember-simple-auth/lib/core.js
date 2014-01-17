@@ -74,7 +74,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
       @param {String} [options.routeAfterInvalidation] route to transition to after session invalidation - defaults to `'index'`
       @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js application was loaded from; to explicitely enable authorization for additional origins, whitelist those origins - defaults to `[]` _(beware that origins consist of protocol, host and port (port can be left out when it is 80))_
       @param {Object} [options.authorizer] The authorizer _class_ to use; must extend `Ember.SimpleAuth.Authorizers.Base` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
-      @param {Object} [options.store] The store _class_ to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.Cookie`
+      @param {Object} [options.store] The store _class_ to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.LocalStorage`
   **/
   setup: function(application, options) {
     options                       = options || {};
@@ -83,7 +83,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
     this.authenticationRoute      = options.authenticationRoute || this.authenticationRoute;
     this._crossOriginWhitelist    = Ember.A(options.crossOriginWhitelist || []);
 
-    var store      = (options.store || Ember.SimpleAuth.Stores.Cookie).create();
+    var store      = (options.store || Ember.SimpleAuth.Stores.LocalStorage).create();
     var session    = Ember.SimpleAuth.Session.create({ store: store });
     var authorizer = (options.authorizer || Ember.SimpleAuth.Authorizers.OAuth2).create({ session: session });
 

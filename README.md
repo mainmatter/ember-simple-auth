@@ -324,13 +324,13 @@ Ember.SimpleAuth comes with 3 stores:
 
 The cookie store (see the
 [API docs for `Stores.Cookie`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-Cookie))
-stores its data in session cookies; __this is the default store__.
+stores its data in session cookies.
 
 ##### `Stores.LocalStorage`
 
 The local storage store (see the
 [API docs for `Stores.LocalStorage`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Stores-LocalStorage))
-stores its data in the browser's `localStorage`.
+stores its data in the browser's `localStorage`; __this is the default store__.
 
 ##### `Stores.Ephemeral`
 
