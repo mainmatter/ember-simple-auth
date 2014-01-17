@@ -30,7 +30,7 @@ Ember.SimpleAuth = {};
     @param {String} [options.routeAfterLogin] route to redirect the user to after successfully logging in - defaults to `'index'`
     @param {String} [options.routeAfterLogout] route to redirect the user to after logging out - defaults to `'index'`
     @param {String} [options.loginRoute] route to redirect the user to when login is required - defaults to `'login'`
-    @param {String} [options.serverTokenRoute] the server endpoint used to obtain the access token - defaults to `'/token'`
+    @param {String} [options.serverTokenEndpoint] the server endpoint used to obtain the access token - defaults to `'/token'`
     @param {String} [options.autoRefreshToken] enable/disable automatic token refreshing (if the server supports it) - defaults to `true`
     @param {Array[String]} [options.crossOriginWhitelist] list of origins that (besides the origin of the Ember.js application) send the authentication token to - defaults to `[]`
 **/
