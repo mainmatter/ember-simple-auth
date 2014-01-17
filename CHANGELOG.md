@@ -1,3 +1,7 @@
+# 0.1.0
+
+The Big Rewrite™
+
 # 0.0.11
 
 * fixed cross origin check for Firefox (which doesn't implement location.origin), see #41
