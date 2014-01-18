@@ -151,7 +151,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
 
     /**
       This action is invoked when an authorization error occurs (which is
-      __when a server responds with HTTP status 401__). This will invalidate
+      __when a server responds with HTTP status 401 or 403__). This will invalidate
       the session and transitions to the `routeAfterInvalidation` specified in
       [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
 
@@ -169,7 +169,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       @private
     */
     error: function(reason) {
-      if (reason.status === 401) {
+      if (reason.status === 401 || reason.status === 403) {
         this.send('authorizationFailed');
       }
     }
