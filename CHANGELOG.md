@@ -8,6 +8,7 @@ The main changes are:
 * instead of persisting the session in cookies, the default store is now `localStorage`
 * Ember.SimpleAuth.setup does not expect the container as first argument anymore, now takes only the application object
 * the terms login/logout were replaced by session authentication/session invalidation
+* OAuth 2.0 client authentication was removed from the default library as it does not really work for public clients
 
 # 0.0.11
 
