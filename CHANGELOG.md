@@ -2,6 +2,13 @@
 
 The Big Rewrite™, see the [README](https://github.com/simplabs/ember-simple-auth#readme) and the [release notes](https://github.com/simplabs/ember-simple-auth/releases/tag/0.1.0).
 
+The main changes are:
+
+* all code that is specific to concrete authentication/authorization mechanisms was moved into strategy classes (see e.g. Authenticators.OAuth2, Authorizers.OAuth2)
+* instead of persisting the session in cookies, the default store is now `localStorage`
+* Ember.SimpleAuth.setup does not expect the container as first argument anymore, now takes only the application object
+* the terms login/logout were replaced by session authentication/session invalidation
+
 # 0.0.11
 
 * fixed cross origin check for Firefox (which doesn't implement location.origin), see #41
