@@ -40,6 +40,7 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
       var key = this.buildStorageKey(property);
       localStorage.setItem(key, properties[property]);
     }
+    this._lastProperties = JSON.stringify(this.restore());
   },
 
   /**
@@ -100,9 +101,14 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
   */
   bindToStorageEvents: function() {
     var _this = this;
-    Ember.$(window).bind('storage', function() {
-      var properties = _this.restore();
-      _this.trigger('ember-simple-auth:session-updated', properties);
+    Ember.$(window).bind('storage', function(e) {
+      var properties        = _this.restore();
+      var encodedProperties = JSON.stringify(properties);
+      if (encodedProperties !== _this._lastProperties) {
+        console.log('triggering change');
+        _this._lastProperties = encodedProperties;
+        _this.trigger('ember-simple-auth:session-updated', properties);
+      }
     });
   }
 });
