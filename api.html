@@ -10,566 +10,1430 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
     <script src="http://yandex.st/highlightjs/7.4/highlight.min.js"></script>
     <style type="text/css" media="screen">
-    body {
-      position: relative;
-      padding-top: 70px;
-    }
-    #sidebar .nav {
-      background-color: #f8f8f8;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-    #sidebar .nav li {
-      line-height: 110%;
-    }
-    #sidebar .nav li.active {
-      background-color: #eee;
-    }
-    #sidebar .nav li ul.nav {
-      display: none;
-      border: none;
-      border-radius: 0;
-    }
-    #sidebar .nav li.active ul.nav {
-      display: block;
-    }
-    #sidebar .nav li ul.nav li a {
-      padding-left: 30px;
-    }
-    #main-content {
-      overflow-y: scroll;
-      overflow-x: hidden;
-      height: 100%;
-    }
-    dl.params {
-      margin-bottom: 10px;
-    }
-    dl.params dd {
-      margin-bottom: 10px;
-    }
-    dl.props {
-      padding-left: 30px;
-      margin-top: -10px;
-    }
-    .panel-method h3 {
-      font-size: 24px !important;
-    }
-    .panel-method p {
-      text-align: justify;
-    }
-    h1.class {
-      margin-bottom: 5px;
-    }
-    a.element-anchor {
-      display: block;
-      position: relative;
-      top: -20px;
-      height: 1px;
-    }
+      body {
+        text-align: justify;
+      }
+      .navbar-nav > .active > a {
+        background: transparent !important;
+      }
+      .navbar .dropdown > a {
+        padding: 15px 10px 15px 0;
+      }
+      .navbar .navbar-collapse {
+        padding-left: 0;
+      }
+      h1.class, h3.property, h3.method, dl.params dt, span.type {
+        font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+        font-weight: bold;
+      }
+      span.type {
+        color: #999;
+      }
+      span.type.return {
+        font-weight:bold
+      }
+      .overview h4:first-child {
+        margin-top: 0;
+      }
+      h3.section, h4.subsection {
+        padding-bottom: 5px;
+        border-bottom: 1px dotted #eee;
+      }
+      .panel-heading span.pull-right {
+        margin-left: 5px;
+      }
+      dl.params dl.props {
+        margin-left: 3em;
+        margin-top: 5px;
+      }
+      strong {
+        background-color: #fffebb;
+        font-weight: normal;
+        padding: 2px;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+      }
+      pre, code {
+        color: #333;
+        background: #f8f8ff;
+      }
+      body .container .page-header:first-child {
+        margin-top: 55px;
+      }
+      a.symbol-anchor {
+        display: block;
+        position: relative;
+        top: -55px;
+        height: 1px;
+      }
     </style>
   </head>
-  <body data-spy="scroll" data-target="#sidebar">
+  <body>
     <header class="navbar navbar-default navbar-fixed-top">
       <div class="container">
-        <div class="navbar-header">
-          <span class="navbar-brand">Ember.SimpleAuth API</span>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown" id="classesDropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption">Ember.SimpleAuth</span></a>
+              <ul class="dropdown-menu">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth">Ember.SimpleAuth</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-ApplicationRouteMixin">Ember.SimpleAuth.ApplicationRouteMixin</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-AuthenticatedRouteMixin">Ember.SimpleAuth.AuthenticatedRouteMixin</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-AuthenticationControllerMixin">Ember.SimpleAuth.AuthenticationControllerMixin</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authenticators-Base">Ember.SimpleAuth.Authenticators.Base</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authenticators-OAuth2">Ember.SimpleAuth.Authenticators.OAuth2</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authorizers-Base">Ember.SimpleAuth.Authorizers.Base</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authorizers-OAuth2">Ember.SimpleAuth.Authorizers.OAuth2</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-LoginControllerMixin">Ember.SimpleAuth.LoginControllerMixin</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Session">Ember.SimpleAuth.Session</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Base">Ember.SimpleAuth.Stores.Base</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Cookie">Ember.SimpleAuth.Stores.Cookie</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Ephemeral">Ember.SimpleAuth.Stores.Ephemeral</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-LocalStorage">Ember.SimpleAuth.Stores.LocalStorage</a>
+                  </li>
+                
+              </ul>
+            </li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text"><span class="label label-primary">0.0.9</span></p></li>
+            <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.0.11"><span class="label label-primary">0.0.11</span></a></p></li>
           </ul>
         </div>
       </div>
     </header>
     <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <nav id="sidebar">
-            <ul class="nav affix">
-              
-                <li>
-                  <a href="#Ember-SimpleAuth">Ember.SimpleAuth</a>
-                  <ul class="nav">
-                    
-                      <li><a href="#Ember-SimpleAuth-externalLoginFailed">externalLoginFailed</a></li>
-                    
-                      <li><a href="#Ember-SimpleAuth-externalLoginSucceeded">externalLoginSucceeded</a></li>
-                    
-                      <li><a href="#Ember-SimpleAuth-setup">setup</a></li>
-                    
-                  </ul>
-                </li>
-              
-                <li>
-                  <a href="#Ember-SimpleAuth-ApplicationRouteMixin">Ember.SimpleAuth.ApplicationRouteMixin</a>
-                  <ul class="nav">
-                    
-                      <li><a href="#Ember-SimpleAuth-ApplicationRouteMixin-login">login</a></li>
-                    
-                      <li><a href="#Ember-SimpleAuth-ApplicationRouteMixin-loginFailed">loginFailed</a></li>
-                    
-                      <li><a href="#Ember-SimpleAuth-ApplicationRouteMixin-loginSucceeded">loginSucceeded</a></li>
-                    
-                      <li><a href="#Ember-SimpleAuth-ApplicationRouteMixin-logout">logout</a></li>
-                    
-                  </ul>
-                </li>
-              
-                <li>
-                  <a href="#Ember-SimpleAuth-AuthenticatedRouteMixin">Ember.SimpleAuth.AuthenticatedRouteMixin</a>
-                  <ul class="nav">
-                    
-                      <li><a href="#Ember-SimpleAuth-AuthenticatedRouteMixin-beforeModel">beforeModel</a></li>
-                    
-                  </ul>
-                </li>
-              
-                <li>
-                  <a href="#Ember-SimpleAuth-LoginControllerMixin">Ember.SimpleAuth.LoginControllerMixin</a>
-                  <ul class="nav">
-                    
-                      <li><a href="#Ember-SimpleAuth-LoginControllerMixin-tokenRequestOptions">tokenRequestOptions</a></li>
-                    
-                  </ul>
-                </li>
-              
-                <li>
-                  <a href="#Ember-SimpleAuth-Session">Ember.SimpleAuth.Session</a>
-                  <ul class="nav">
-                    
-                      <li><a href="#Ember-SimpleAuth-Session-destroy">destroy</a></li>
-                    
-                      <li><a href="#Ember-SimpleAuth-Session-isAuthenticated">isAuthenticated</a></li>
-                    
-                      <li><a href="#Ember-SimpleAuth-Session-setup">setup</a></li>
-                    
-                  </ul>
-                </li>
-              
-            </ul>
-          </nav>
-        </div>
-        <div id="main-content" class="col-md-8">
-          <div class="jumbotron">
-            <h1>Ember.SimpleAuth API</h1>
-            <p>Ember.SimpleAuth is a <strong>lightweight library for implementing token based authentication/authorization</strong> with Ember.js applications. It has minimal requirements with respect to the application structure, routes etc. While <strong>it follows the RFC 6749 and RFC 6750 specifications</strong> it can support a wide range of different server APIs and also external OAuth/OpenID providers like Facebook, Google etc. with little customization effort.</p>
-
-          </div>
-          
-            <a id="Ember-SimpleAuth" class="element-anchor">&nbsp;</a>
+      
+        <div class="row">
+          <div class="col-md-12">
             <div class="page-header">
+              <a id="Ember-SimpleAuth" class="symbol-anchor"></a>
               <h1 class="class">Ember.SimpleAuth</h1>
-              <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L3"><code>packages/ember-simple-auth/lib/core.js#3</code></a></small></p>
             </div>
-            <p>The main namespace for Ember.SimpleAuth</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>The main namespace for Ember.SimpleAuth.</p>
+
+<p><strong>For a general overview of how Ember.SimpleAuth works, see the
+<a href="https://github.com/simplabs/ember-simple-auth#readme">README</a>.</strong></p>
 
             
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-externalLoginFailed" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    externalLoginFailed
-                    <span class="text-muted">
-                      
-                      
-                        (error)
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L105"><code>packages/ember-simple-auth/lib/core.js#105</code></a></small></p>
+            <h3 class="section">Properties</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-authenticationRoute" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L21"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                      <span class="label label-danger pull-right">read only</span>
+                    
+                    
+                      <span class="label label-info pull-right">static</span>
+                    
+                    <h3 class="panel-title property">authenticationRoute <span class="type">{String}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>The route to transition to for authentication; can be set through
+<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
+
+                    
+                      Defaults to <code>'login'</code>
+                    
+                  </div>
                 </div>
-                <div class="panel-body">
-                  <p>Call this method when an external login fails, e.g.:</p>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-routeAfterAuthentication" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L32"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                      <span class="label label-danger pull-right">read only</span>
+                    
+                    
+                      <span class="label label-info pull-right">static</span>
+                    
+                    <h3 class="panel-title property">routeAfterAuthentication <span class="type">{String}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>The route to transition to after successful authentication; can be set
+through <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
 
-<pre lang="html"><code>  &lt;html&gt;
-    &lt;head&gt;&lt;/head&gt;
-    &lt;body&gt;
-      &lt;script&gt;
-        window.opener.Ember.SimpleAuth.externalLoginFailed(&#39;something went wrong!&#39;);
-        window.close();
-      &lt;/script&gt;
-    &lt;/body&gt;
-  &lt;/html&gt;
-</code></pre>
-
-<p>The argument you pass here will be forwarded to the
-<a href="#Ember-SimpleAuth-ApplicationRouteMixin-loginFailed">Ember.SimpleAuth.ApplicationRouteMixin#loginSucceeded</a>
-callback.</p>
-
+                    
+                      Defaults to <code>'index'</code>
+                    
+                  </div>
                 </div>
-                <ul class="list-group">
-                  
-                    <li class="list-group-item">
-                      <h4>Arguments</h4>
-                      <dl class="params">
-                        
-                          <dt>error: <code>Object</code></dt>
-                          <dd><p>Any optional error that will be forwarded to the <a href="#Ember-SimpleAuth-ApplicationRouteMixin-loginFailed">Ember.SimpleAuth.ApplicationRouteMixin#loginSucceeded</a> callback</p>
-</dd>
-                          
-                        
-                      </dl>
-                    </li>
-                  
-                  
-                </ul>
-              </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-routeAfterInvalidation" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L43"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                      <span class="label label-danger pull-right">read only</span>
+                    
+                    
+                      <span class="label label-info pull-right">static</span>
+                    
+                    <h3 class="panel-title property">routeAfterInvalidation <span class="type">{String}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>The route to transition to after session invalidation; can be set through
+<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
+
+                    
+                      Defaults to <code>'index'</code>
+                    
+                  </div>
+                </div>
+              
             
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-externalLoginSucceeded" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    externalLoginSucceeded
-                    <span class="text-muted">
-                      
-                      
-                        (sessionData)
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L73"><code>packages/ember-simple-auth/lib/core.js#73</code></a></small></p>
-                </div>
-                <div class="panel-body">
-                  <p>Call this method when an external login was successful. Typically you would
-have a separate window in which the user is being presented with the
-external provider&#39;s authentication UI and eventually being redirected back
-to your application. When that redirect occured, the application needs to
-call this method on its opener window, e.g.:</p>
-
-<pre lang="html"><code>  &lt;html&gt;
-    &lt;head&gt;&lt;/head&gt;
-    &lt;body&gt;
-      &lt;script&gt;
-        window.opener.Ember.SimpleAuth.externalLoginSucceeded({ access_token: &#39;secret token!&#39; });
-        window.close();
-      &lt;/script&gt;
-    &lt;/body&gt;
-  &lt;/html&gt;
-</code></pre>
-
-<p>This method will then set up the session (see
-<a href="#Ember-SimpleAuth-Session-setup">Session#setup</a> and invoke the
-<a href="#Ember-SimpleAuth-ApplicationRouteMixin-loginSucceeded">Ember.SimpleAuth.ApplicationRouteMixin#loginSucceeded</a>
-callback.</p>
-
-                </div>
-                <ul class="list-group">
-                  
-                    <li class="list-group-item">
-                      <h4>Arguments</h4>
-                      <dl class="params">
-                        
-                          <dt>sessionData: <code>Object</code></dt>
-                          <dd><p>The data to setup the session with (see <a href="#Ember-SimpleAuth-Session-setup">Session#setup</a>))</p>
-</dd>
-                          
-                        
-                      </dl>
-                    </li>
-                  
-                  
-                </ul>
-              </div>
             
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-setup" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    setup
-                    <span class="text-muted">
+              <h3 class="section">Methods</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-setup" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L55"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                      <span class="label label-info pull-right">static</span>
+                    
+                    <h3 class="panel-title method">
+                      setup(application, [options])
                       
-                        <small><span class="label label-info pull-right">static</span></small>
-                      
-                      
-                        (container, application, [options])
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L12"><code>packages/ember-simple-auth/lib/core.js#12</code></a></small></p>
-                </div>
-                <div class="panel-body">
-                  <p>Sets up Ember.SimpleAuth for your application; invoke this method in a custom
-initializer like this:</p>
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Sets up Ember.SimpleAuth for the application; this method <strong>should be invoked in a custom
+initializer</strong> like this:</p>
 
 <pre lang="javascript"><code>Ember.Application.initializer({
   name: &#39;authentication&#39;,
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(container, application);
+    Ember.SimpleAuth.setup(application);
   }
 });
 </code></pre>
 
-                </div>
-                <ul class="list-group">
-                  
-                    <li class="list-group-item">
-                      <h4>Arguments</h4>
+                    
+                      <h4 class="subsection">Arguments</h4>
                       <dl class="params">
                         
-                          <dt>container: <code>Container</code></dt>
-                          <dd><p>The Ember.js container, see <a href="http://git.io/ed4U7Q">http://git.io/ed4U7Q</a></p>
-</dd>
-                          
-                        
-                          <dt>application: <code>Ember.Application</code></dt>
+                          <dt>application <span class="type">{Ember.Application}</span></dt>
                           <dd><p>The Ember.js application instance</p>
 </dd>
                           
                         
-                          <dt>[options]: <code>Object</code></dt>
+                          <dt>[options] <span class="type">{Object}</span></dt>
                           <dd></dd>
                           
                             <dl class="props">
                               
-                                <dt>options.[routeAfterLogin]: <code>String</code></dt>
-                                <dd><p>route to redirect the user to after successfully logging in - defaults to <code>&#39;index&#39;</code></p>
+                                <dt>options.[authenticationRoute] <span class="type">{String}</span></dt>
+                                <dd><p>route to transition to for authentication - defaults to <code>&#39;login&#39;</code></p>
 </dd>
                               
-                                <dt>options.[routeAfterLogout]: <code>String</code></dt>
-                                <dd><p>route to redirect the user to after logging out - defaults to <code>&#39;index&#39;</code></p>
+                                <dt>options.[routeAfterAuthentication] <span class="type">{String}</span></dt>
+                                <dd><p>route to transition to after successful authentication - defaults to <code>&#39;index&#39;</code></p>
 </dd>
                               
-                                <dt>options.[loginRoute]: <code>String</code></dt>
-                                <dd><p>route to redirect the user to when login is required - defaults to <code>&#39;login&#39;</code></p>
+                                <dt>options.[routeAfterInvalidation] <span class="type">{String}</span></dt>
+                                <dd><p>route to transition to after session invalidation - defaults to <code>&#39;index&#39;</code></p>
 </dd>
                               
-                                <dt>options.[serverTokenRoute]: <code>String</code></dt>
-                                <dd><p>the server endpoint used to obtain the access token - defaults to <code>&#39;/token&#39;</code></p>
+                                <dt>options.[crossOriginWhitelist] <span class="type">{Array[String]}</span></dt>
+                                <dd><p>Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js application was loaded from; to explicitely enable authorization for additional origins, whitelist those origins - defaults to <code>[]</code> <em>(beware that origins consist of protocol, host and port (port can be left out when it is 80))</em></p>
 </dd>
                               
-                                <dt>options.[autoRefreshToken]: <code>String</code></dt>
-                                <dd><p>enable/disable automatic token refreshing (if the server supports it) - defaults to <code>true</code></p>
+                                <dt>options.[authorizer] <span class="type">{Object}</span></dt>
+                                <dd><p>The authorizer <em>class</em> to use; must extend <code>Ember.SimpleAuth.Authorizers.Base</code> - defaults to <code>Ember.SimpleAuth.Authorizers.OAuth2</code></p>
 </dd>
                               
-                                <dt>options.[crossOriginWhitelist]: <code>Array[String]</code></dt>
-                                <dd><p>list of origins that (besides the origin of the Ember.js application) send the authentication token to - defaults to <code>[]</code></p>
+                                <dt>options.[store] <span class="type">{Object}</span></dt>
+                                <dd><p>The store <em>class</em> to use; must extend <code>Ember.SimpleAuth.Stores.Base</code> - defaults to <code>Ember.SimpleAuth.Stores.LocalStorage</code></p>
 </dd>
                               
                             </dl>
                           
                         
                       </dl>
-                    </li>
-                  
-                  
-                </ul>
-              </div>
+                    
+                    
+                  </div>
+                </div>
+              
             
-          
-            <a id="Ember-SimpleAuth-ApplicationRouteMixin" class="element-anchor">&nbsp;</a>
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+            
+            
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-authenticationRoute">authenticationRoute</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-routeAfterAuthentication">routeAfterAuthentication</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-routeAfterInvalidation">routeAfterInvalidation</a>
+                  </li>
+                
+              </ul>
+            
+            
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-setup">setup</a>
+                  </li>
+                
+              </ul>
+            
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
             <div class="page-header">
+              <a id="Ember-SimpleAuth-ApplicationRouteMixin" class="symbol-anchor"></a>
               <h1 class="class">Ember.SimpleAuth.ApplicationRouteMixin</h1>
-              <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L3"><code>packages/ember-simple-auth/lib/mixins/application_route_mixin.js#3</code></a></small></p>
             </div>
-            <p>The mixin for the application controller. This defines the <code>login</code> and
-<code>logout</code> actions so that you can simply add buttons or links in every template
-like this:</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>The mixin for the application route. This defines actions to authenticate the
+session as well as to invalidate it. These actions can be used in all
+templates like this:</p>
 
 <pre lang="handlebars"><code>{{#if session.isAuthenticated}}
-  &lt;a {{ action &#39;logout&#39; }}&gt;Logout&lt;/a&gt;
+  &lt;a {{ action &#39;invalidateSession&#39; }}&gt;Logout&lt;/a&gt;
 {{else}}
-  &lt;a {{ action &#39;login&#39; }}&gt;Login&lt;/a&gt;
+  &lt;a {{ action &#39;authenticateSession&#39; }}&gt;Login&lt;/a&gt;
 {{/if}}
 </code></pre>
 
+<p>While this code works it is <strong>preferrable to use the regular <code>link-to</code> helper
+for the <em>&#39;login&#39;</em> link</strong> as that will add the <code>&#39;active&#39;</code> class to the link.
+For the <em>&#39;logout&#39;</em> actions of course there is no route.</p>
+
+<pre lang="handlebars"><code>{{#if session.isAuthenticated}}
+  &lt;a {{ action &#39;invalidateSession&#39; }}&gt;Logout&lt;/a&gt;
+{{else}}
+  {{#link-to &#39;login&#39;}}Login{{/link-to}}
+{{/if}}
+</code></pre>
+
+<p>This mixin also defines actions that are triggered whenever the session is
+successfully authenticated or invalidated and whenever authentication or
+invalidation fails.</p>
+
             
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-ApplicationRouteMixin-login" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    login
-                    <span class="text-muted">
-                      
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L23"><code>packages/ember-simple-auth/lib/mixins/application_route_mixin.js#23</code></a></small></p>
-                </div>
-                <div class="panel-body">
-                  <p>The login action by default redirects to the login route (or any other
-route defined as <code>loginRoute</code> in
-<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>). When integrating with
-an external authentication provider, this action should be overridden so
-that it opens the external provider&#39;s UI in a new window, e.g.:</p>
+            
+            
+              <h3 class="section">Actions</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-ApplicationRouteMixin-authenticateSession" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L39"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      authenticateSession()
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>This action triggers transition to the <code>authenticationRoute</code> specified in
+<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>. It can be used in
+templates as shown above. It is also triggered automatically by
+<a href="#Ember-SimpleAuth-AuthenticatedRouteMixin">Ember.SimpleAuth.AuthenticatedRouteMixin</a>
+whenever a route that requries authentication is accessed but the session
+is not currently authenticated.</p>
+
+<p><strong>For an application that works without an authentication route (e.g.
+because it opens a new window to handle authentication there), this is
+the method to override, e.g.:</strong></p>
 
 <pre lang="javascript"><code>App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
   actions: {
-    login: function() {
-      window.open(&#39;https://www.facebook.com/dialog/oauth...&#39;);
+    authenticateSession: function() {
+      var _this = this;
+      this.get(&#39;session&#39;).authenticate(App.MyCustomAuthenticator.create(), {}).then(function() {
+        _this.send(&#39;sessionAuthenticationSucceeded&#39;);
+      }, function(error) {
+        _this.send(&#39;sessionAuthenticationFailed&#39;, error);
+      });
     }
   }
 });
 </code></pre>
 
+                    
+                  </div>
                 </div>
-                <ul class="list-group">
-                  
-                  
-                </ul>
-              </div>
-            
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-ApplicationRouteMixin-loginFailed" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    loginFailed
-                    <span class="text-muted">
-                      
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L65"><code>packages/ember-simple-auth/lib/mixins/application_route_mixin.js#65</code></a></small></p>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationSucceeded" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L72"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      sessionAuthenticationSucceeded()
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>This action is triggered whenever the session is successfully
+authenticated. It retries a transition that was previously intercepted in
+<a href="#Ember-SimpleAuth-AuthenticatedRouteMixin-beforeModel">AuthenticatedRouteMixin#beforeModel</a>.
+If there is no intercepted transition, this action redirects to the
+<code>routeAfterAuthentication</code> specified in
+<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
+
+                    
+                  </div>
                 </div>
-                <div class="panel-body">
-                  <p>This action is invoked when login fails. This does nothing by default but
-can be overridden and used to display generic error messages etc. If
-you&#39;re using an external authentication provider you might also want to
-override it to display the external provider&#39;s error message (any
-arguments you pass to
-<a href="#Ember-SimpleAuth-externalLoginSucceeded">Ember.SimpleAuth#externalLoginSucceeded</a>
-will be forwarded to this action), e.g.:</p>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationFailed" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L92"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      sessionAuthenticationFailed(arguments)
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>This action in triggered whenever session authentication fails. The
+arguments the action is invoked with depend on the used authenticator
+(see
+<a href="#Ember-SimpleAuth-Authenticators-Base">Ember.SimpleAuth.Authenticators.Base</a>).</p>
+
+<p>It can be overridden to display error messages etc.:</p>
 
 <pre lang="javascript"><code>App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
   actions: {
-    loginFailed: function(error) {
+    sessionAuthenticationFailed: function(error) {
       this.controllerFor(&#39;application&#39;).set(&#39;loginErrorMessage&#39;, error.message);
     }
   }
 });
 </code></pre>
 
-                </div>
-                <ul class="list-group">
-                  
-                  
-                </ul>
-              </div>
-            
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-ApplicationRouteMixin-loginSucceeded" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    loginSucceeded
-                    <span class="text-muted">
-                      
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L46"><code>packages/ember-simple-auth/lib/mixins/application_route_mixin.js#46</code></a></small></p>
-                </div>
-                <div class="panel-body">
-                  <p>This action is invoked when a user successfully logs in. By default it
-will retry a potentially intercepted transition
-(see <a href="#Ember-SimpleAuth-AuthenticatedRouteMixin-beforeModel">AuthenticatedRouteMixin#beforeModel</a>)
-or if none was intercepted redirect to the route configured as
-<code>routeAfterLogin</code> in <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
-
-                </div>
-                <ul class="list-group">
-                  
-                  
-                </ul>
-              </div>
-            
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-ApplicationRouteMixin-logout" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    logout
-                    <span class="text-muted">
-                      
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L89"><code>packages/ember-simple-auth/lib/mixins/application_route_mixin.js#89</code></a></small></p>
-                </div>
-                <div class="panel-body">
-                  <p>The logout action destroys the current session (see
-<a href="#Ember-SimpleAuth-Session-destroy">Session#destroy</a>) and redirects to the
-route defined as <code>routeAfterLogout</code> in
-<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
-
-                </div>
-                <ul class="list-group">
-                  
-                  
-                </ul>
-              </div>
-            
-          
-            <a id="Ember-SimpleAuth-AuthenticatedRouteMixin" class="element-anchor">&nbsp;</a>
-            <div class="page-header">
-              <h1 class="class">Ember.SimpleAuth.AuthenticatedRouteMixin</h1>
-              <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/authenticated_route_mixin.js#L3"><code>packages/ember-simple-auth/lib/mixins/authenticated_route_mixin.js#3</code></a></small></p>
-            </div>
-            <p>The mixin for routes that you want to enforce an authenticated user. When
-users hit a route that implements this mixin and have not authenticated
-before, they will be redirected to the route configured as <code>loginRoute</code> in
-<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
-
-<p>Ember.SimpleAuth.AuthenticatedRouteMixin performs the redirect to the login
-route in the <code>beforeModel</code> method so that you can assume a user to be
-authenticated in the <code>model</code> method so that server requests you make there
-will be authenticated. Also, if you implement your own <code>beforeModel</code> method,
-you have to make sure you&#39;re calling <code>this._super(transition)</code>;</p>
-
-            
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-AuthenticatedRouteMixin-beforeModel" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    beforeModel
-                    <span class="text-muted">
-                      
-                      
-                        (transition)
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/authenticated_route_mixin.js#L21"><code>packages/ember-simple-auth/lib/mixins/authenticated_route_mixin.js#21</code></a></small></p>
-                </div>
-                <div class="panel-body">
-                  <p>This method implements the check for an authenticated user. In the case that
-no user is authenticated, it redirects to the route defined as <code>loginRoute</code>
-in <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>. It also intercepts the
-current transition so that it can be retried after the user has
-authenticated (see
-<a href="#Ember-SimpleAuth-ApplicationRouteMixin-loginSucceeded">ApplicationRouteMixin#loginSucceeded</a>).</p>
-
-                </div>
-                <ul class="list-group">
-                  
-                    <li class="list-group-item">
-                      <h4>Arguments</h4>
+                    
+                      <h4 class="subsection">Arguments</h4>
                       <dl class="params">
                         
-                          <dt>transition: <code>Transition</code></dt>
-                          <dd><p>The transition that leat to this route</p>
+                          <dt>arguments <span class="type">{Any}</span></dt>
+                          <dd><p>Any error argument the promise returned by the authenticator rejects with, see <a href="#Ember-SimpleAuth-Authenticators-Base-authenticate">Ember.SimpleAuth.Authenticators.Base#authenticate</a></p>
 </dd>
                           
                         
                       </dl>
-                    </li>
-                  
-                  
-                </ul>
-              </div>
-            
-          
-            <a id="Ember-SimpleAuth-LoginControllerMixin" class="element-anchor">&nbsp;</a>
-            <div class="page-header">
-              <h1 class="class">Ember.SimpleAuth.LoginControllerMixin</h1>
-              <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/login_controller_mixin.js#L3"><code>packages/ember-simple-auth/lib/mixins/login_controller_mixin.js#3</code></a></small></p>
-            </div>
-            <p>The mixin for the login controller (if you&#39;re using the default
-credentials-based login). This controller sends the user&#39;s credentials to the
-server and sets up the session (see
-<a href="#Ember-SimpleAuth-Session-setup">Session#setup</a>) from the reponse.</p>
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-ApplicationRouteMixin-invalidateSession" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L116"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      invalidateSession()
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>This action invalidates the session (see
+<a href="#Ember-SimpleAuth-Session-invalidate">Ember.SimpleAuth.Session#invalidate</a>).
+If invalidation succeeds, it transitions to <code>routeAfterInvalidation</code>
+specified in <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
 
-<p>Accompanying the login controller your application needs to have a <code>login</code>
-template with the fields <code>indentification</code> and <code>password</code> as well as an
-actionable button or link that triggers the <code>login</code> action, e.g.:</p>
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L133"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      sessionInvalidationSucceeded()
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>This action is invoked whenever the session is successfully invalidated.
+It transitions to <code>routeAfterInvalidation</code> specified in
+<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationFailed" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L144"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      sessionInvalidationFailed()
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>This action is invoked whenever session invalidation fails.</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-ApplicationRouteMixin-authorizationFailed" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/application_route_mixin.js#L152"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      authorizationFailed()
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>This action is invoked when an authorization error occurs (which is
+<strong>when a server responds with HTTP status 401</strong>). This will invalidate
+the session and transitions to the <code>routeAfterInvalidation</code> specified in
+<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
+
+                    
+                  </div>
+                </div>
+              
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.Mixin</span></p>
+            
+            
+            
+            
+            
+              <h4>Actions</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-ApplicationRouteMixin-authenticateSession">authenticateSession</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationSucceeded">sessionAuthenticationSucceeded</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationFailed">sessionAuthenticationFailed</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-ApplicationRouteMixin-invalidateSession">invalidateSession</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded">sessionInvalidationSucceeded</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationFailed">sessionInvalidationFailed</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-ApplicationRouteMixin-authorizationFailed">authorizationFailed</a>
+                  </li>
+                
+              </ul>
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-AuthenticatedRouteMixin" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.AuthenticatedRouteMixin</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>The mixin for routes that require the session to be authenticated in order to
+be accessible. Including this mixin in a route will automatically add hooks
+that enforce the session to be authenticated and redirect to
+the <code>authenticationRoute</code> specified in
+<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a> if not.</p>
+
+<p><code>Ember.SimpleAuth.AuthenticatedRouteMixin</code> performs the redirect in the
+<code>beforeModel</code> method so that in all methods executed after that the session
+is guaranteed to be authenticated. <strong>If <code>beforeModel</code> is overridden, ensure
+that the custom implementation calls <code>this._super(transition)</code></strong> so that the
+session enforcement code is actually executed.</p>
+
+            
+            
+              <h3 class="section">Methods</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-AuthenticatedRouteMixin-beforeModel" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/authenticated_route_mixin.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      beforeModel(transition)
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>This method implements the enforcement of the session being authenticated.
+If the session is not authenticated, the current transition will be aborted
+and a redirect will be triggered to the <code>authenticationRoute</code> specified in
+<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>. The method also saves
+the intercepted transition so that it can be retried after the session has
+been authenticated (see
+<a href="#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationSucceeded">Ember.SimpleAuth.ApplicationRouteMixin#sessionAuthenticationSucceeded</a>).</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>transition <span class="type">{Transition}</span></dt>
+                          <dd><p>The transition that lead to this route</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                  </div>
+                </div>
+              
+            
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.Mixin</span></p>
+            
+            
+            
+            
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-AuthenticatedRouteMixin-beforeModel">beforeModel</a>
+                  </li>
+                
+              </ul>
+            
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-AuthenticationControllerMixin" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.AuthenticationControllerMixin</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>The mixin for the controller that handles the <code>authenticationRoute</code> specified
+in <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>). It provides the
+<code>authenticate</code> action that will authenticate the session with the configured
+authenticator when invoked.</p>
+
+            
+            <h3 class="section">Properties</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-AuthenticationControllerMixin-authenticator" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/authentication_controller_mixin.js#L14"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    
+                    <h3 class="panel-title property">authenticator <span class="type">{Ember.SimpleAuth.Authenticators.Base}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>The authenticator class used to authenticate the session.</p>
+
+                    
+                      Defaults to <code>null</code>
+                    
+                  </div>
+                </div>
+              
+            
+            
+            
+              <h3 class="section">Actions</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-AuthenticationControllerMixin-authenticate" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/authentication_controller_mixin.js#L24"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      authenticate(options)
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>This action will authenticate the session with an instance of the
+configured <code>authenticator</code> class.</p>
+
+<p>If authentication succeeds, this method triggers the
+<code>sessionAuthenticationSucceeded</code> action (see
+<a href="#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationSucceeded">Ember.SimpleAuth.ApplicationRouteMixin#sessionAuthenticationSucceeded</a>).
+If authentication fails it triggers the <code>sessionAuthenticationFailed</code>
+action (see
+<a href="#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationFailed">Ember.SimpleAuth.ApplicationRouteMixin#sessionAuthenticationFailed</a>).</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>options <span class="type">{Object}</span></dt>
+                          <dd><p>Any options the auhtenticator needs to authenticate the session</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                  </div>
+                </div>
+              
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.Mixin</span></p>
+            
+            
+            
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-AuthenticationControllerMixin-authenticator">authenticator</a>
+                  </li>
+                
+              </ul>
+            
+            
+            
+              <h4>Actions</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-AuthenticationControllerMixin-authenticate">authenticate</a>
+                  </li>
+                
+              </ul>
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-Authenticators-Base" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.Authenticators.Base</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>The base for all authenticators. <strong>This serves as a starting point for
+implementing custom authenticators and must not be used directly.</strong></p>
+
+<p>The authenticator acquires all data that makes up the session. The actual
+mechanism used to do this might e.g. be posting a set of credentials to a
+server and in exchange retrieving an access token, initiating authentication
+against an external provider like Facebook etc. and depends on the specific
+authenticator. Any data that the authenticator receives upon successful
+authentication is stored in the session and can then be used by the
+authorizer (see
+<a href="#Ember-SimpleAuth-Authorizers-Base">Ember.SimpleAuth.Authorizers.Base</a>).</p>
+
+<p>Authenticators may trigger the <code>&#39;ember-simple-auth:session-updated&#39;</code> event
+when any of the session properties change. The session listens to that event
+and will handle the changes accordingly.</p>
+
+            
+            
+              <h3 class="section">Methods</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authenticators-Base-restore" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L26"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      restore(properties)
+                      
+                        <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Restores the session from a set of properties. <strong>This method is invoked by
+the session either after the applciation starts up and session properties
+where restored from the store</strong> or when properties in the store have
+changed due to external events (e.g. in another tab).</p>
+
+<p><strong>This method returns a promise. A resolving promise will result in the
+session being authenticated.</strong> Any properties the promise resolves with
+will be saved by and accessible via the session. In most cases the
+<code>properties</code> argument will simply be forwarded through the promise. A
+rejecting promise indicates that authentication failed and the session
+will remain unchanged.</p>
+
+<p><code>Ember.SimpleAuth.Authenticators.Base</code>&#39;s always rejects as there&#39;s no
+reasonable default implementation.</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>properties <span class="type">{Object}</span></dt>
+                          <dd><p>The properties to restore the session from</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                      <p>A promise that when it resolves results in the session being authenticated</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authenticators-Base-authenticate" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L50"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      authenticate(options)
+                      
+                        <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Authenticates the session with the specified <code>options</code>. These options vary
+depending on the actual authentication mechanism the authenticator uses
+(e.g. a set of credentials or a Facebook account id etc.). <strong>The session
+will invoke this method when an action in the appliaction triggers
+authentication</strong> (see
+<a href="#Ember-SimpleAuth-AuthenticationControllerMixin-authenticate">Ember.SimpleAuth.AuthenticationControllerMixin.actions#authenticate</a>).</p>
+
+<p><strong>This method returns a promise. A resolving promise will result in the
+session being authenticated.</strong> Any properties the promise resolves with
+will be saved by and accessible via the session. A rejecting promise
+indicates that authentication failed and the session will remain unchanged.</p>
+
+<p><code>Ember.SimpleAuth.Authenticators.Base</code>&#39;s implementation always returns a
+rejecting promise and thus never authenticates the session as there&#39;s no
+reasonable default behavior (for Ember.SimpleAuth&#39;s default authenticator
+see
+<a href="#Ember-SimpleAuth-Authenticators-OAuth2">Ember.SimpleAuth.Authenticators.OAuth2</a>).</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>options <span class="type">{Object}</span></dt>
+                          <dd><p>The options to authenticate the session with</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                      <p>A promise that when it resolves results in the session being authenticated</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authenticators-Base-invalidate" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L77"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      invalidate()
+                      
+                        <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Invalidation callback that is invoked when the session is invalidated.
+While the session will invalidate itself and clear all session properties,
+it might be necessary for some authenticators to perform additional tasks
+(e.g. invalidating an access token on the server), which should be done in
+this method.</p>
+
+<p><strong>This method returns a promise. A resolving promise will result in the
+session being invalidated.</strong> A rejecting promise will result in the session
+invalidation being intercepted and the session being left authenticated.</p>
+
+<p><code>Ember.SimpleAuth.Authenticators.Base</code>&#39;s implementation always returns a
+resolving promise and thus always invalidates the session without doing
+anything.</p>
+
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                      <p>A promise that when it resolves results in the session being invalidated</p>
+
+                    
+                  </div>
+                </div>
+              
+            
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.Object</span></p>
+            
+            
+              <h4>Uses</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <span class="type">Ember.Evented</span>
+                  </li>
+                
+              </ul>
+            
+            
+            
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authenticators-Base-restore">restore</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authenticators-Base-authenticate">authenticate</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authenticators-Base-invalidate">invalidate</a>
+                  </li>
+                
+              </ul>
+            
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-Authenticators-OAuth2" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.Authenticators.OAuth2</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>Authenticator that conforms to OAuth 2
+(<a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>), specifically the <em>&quot;Resource
+Owner Password Credentials Grant Type&quot;</em>.</p>
+
+<p>This authenticator supports refreshing the access token automatically and
+will trigger the <code>&#39;ember-simple-auth:session-updated&#39;</code> event each time the
+token was refreshed.</p>
+
+            
+            <h3 class="section">Properties</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/oauth2.js#L17"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    
+                    <h3 class="panel-title property">serverTokenEndpoint <span class="type">{String}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>The endpoint on the server the authenticator acquires the access token
+from.</p>
+
+                    
+                      Defaults to <code>'/token'</code>
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authenticators-OAuth2-refreshAccessTokens" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/oauth2.js#L26"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    
+                    <h3 class="panel-title property">refreshAccessTokens <span class="type">{Boolean}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Sets whether the authenticator automatically refreshes access tokens.</p>
+
+                    
+                      Defaults to <code>true</code>
+                    
+                  </div>
+                </div>
+              
+            
+            
+              <h3 class="section">Methods</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authenticators-OAuth2-restore" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/oauth2.js#L40"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      restore(properties)
+                      
+                        <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Restores the session from a set of session properties; <strong>will return a
+resolving promise when there&#39;s a non-empty <code>access_token</code> in the
+<code>properties</code></strong> and a rejecting promise otherwise.</p>
+
+<p>This method also schedules automatic token refreshing when there are values
+for <code>refresh_token</code> and <code>expires_in</code> in the <code>properties</code> and automatic
+token refreshing isn&#39;t disabled (see
+<a href="#Ember-SimpleAuth-Authenticators-OAuth2-refreshAccessTokens">Ember.SimpleAuth.Authenticators.OAuth2#refreshAccessTokens</a>).</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>properties <span class="type">{Object}</span></dt>
+                          <dd><p>The properties to restore the session from</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                      <p>A promise that when it resolves results in the session being authenticated</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authenticators-OAuth2-authenticate" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/oauth2.js#L66"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      authenticate(options)
+                      
+                        <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Authenticates the session with the specified <code>credentials</code>; the credentials
+are <code>POST</code>ed to the <code>serverTokenEndpoint</code> and if they are valid the server
+returns an access token in response (see
+<a href="http://tools.ietf.org/html/rfc6749#section-4.3">http://tools.ietf.org/html/rfc6749#section-4.3</a>). <strong>If the credentials are
+valid and authentication succeeds, a promise that resolves with the
+server&#39;s response is returned</strong>, otherwise a promise that rejects with the
+error is returned.</p>
+
+<p>This method also schedules automatic token refreshing when there are values
+for <code>refresh_token</code> and <code>expires_in</code> in the server response and automatic
+token refreshing isn&#39;t disabled (see
+<a href="#Ember-SimpleAuth-Authenticators-OAuth2-refreshAccessTokens">Ember.SimpleAuth.Authenticators.OAuth2#refreshAccessTokens</a>).</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>options <span class="type">{Object}</span></dt>
+                          <dd><p>The credentials to authenticate the session with</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                      <p>A promise that resolves when an access token is successfully acquired from the server and rejects otherwise</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authenticators-OAuth2-invalidate" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/oauth2.js#L101"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      invalidate()
+                      
+                        <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Cancels any outstanding automatic token refreshes.</p>
+
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                      <p>A resolving promise</p>
+
+                    
+                  </div>
+                </div>
+              
+            
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.SimpleAuth.Authenticators.Base</span></p>
+            
+            
+            
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint">serverTokenEndpoint</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authenticators-OAuth2-refreshAccessTokens">refreshAccessTokens</a>
+                  </li>
+                
+              </ul>
+            
+            
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authenticators-OAuth2-restore">restore</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authenticators-OAuth2-authenticate">authenticate</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authenticators-OAuth2-invalidate">invalidate</a>
+                  </li>
+                
+              </ul>
+            
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-Authorizers-Base" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.Authorizers.Base</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>The base for all authorizers. <strong>This serves as a starting point for
+implementing custom authorizers and must not be used directly.</strong></p>
+
+<p><strong>The authorizer preprocesses all XHR requests</strong> (expect ones to 3rd party
+origins, see <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>) and makes
+sure they have the required data attached that allows the server to identify
+the user making the request. This data might be a specific header, data in
+the query part of the URL, cookies etc. <strong>The authorizer has to fit the
+authenticator</strong> (see
+<a href="#Ember-SimpleAuth-Authenticators-Base">Ember.SimpleAuth.Authenticators.Base</a>)
+as it usually relies on data that the authenticator retrieves during
+authentication and that it makes available through the session.</p>
+
+            
+            <h3 class="section">Properties</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authorizers-Base-session" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authorizers/base.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                      <span class="label label-danger pull-right">read only</span>
+                    
+                    
+                    <h3 class="panel-title property">session <span class="type">{Ember.SimpleAuth.Session}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>The session the authorizer gets the data it needs to authorize requests
+from (see <a href="#Ember-SimpleAuth-Session">Ember.SimpleAuth.Session</a>).</p>
+
+                    
+                      Defaults to <code>null</code>
+                    
+                  </div>
+                </div>
+              
+            
+            
+              <h3 class="section">Methods</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authorizers-Base-authorize" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authorizers/base.js#L33"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      authorize(jqXHR, requestOptions)
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Authorizes an XHR request by adding some sort of secret information that
+allows the server to identify the user making the request (e.g. a token in
+the <code>Authorization</code> header or some other secret in the query string etc.).</p>
+
+<p><code>Ember.SimpleAuth.Authorizers.Base</code>&#39;s implementation does nothing as
+there&#39;s no reasonable default behavior (for Ember.SimpleAuth&#39;s default
+authorizer see
+<a href="#Ember-SimpleAuth-Authorizers-OAuth2">Ember.SimpleAuth.Authorizers.OAuth2</a>).</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>jqXHR <span class="type">{JqXHR}</span></dt>
+                          <dd><p>The XHR request to authorize (see <a href="http://api.jquery.com/jQuery.ajax/#jqXHR">http://api.jquery.com/jQuery.ajax/#jqXHR</a>)</p>
+</dd>
+                          
+                        
+                          <dt>requestOptions <span class="type">{Object}</span></dt>
+                          <dd><p>The options as provided to the <code>$.ajax</code> method (see <a href="http://api.jquery.com/jQuery.ajaxPrefilter/">http://api.jquery.com/jQuery.ajaxPrefilter/</a>)</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                  </div>
+                </div>
+              
+            
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.Object</span></p>
+            
+            
+            
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authorizers-Base-session">session</a>
+                  </li>
+                
+              </ul>
+            
+            
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authorizers-Base-authorize">authorize</a>
+                  </li>
+                
+              </ul>
+            
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-Authorizers-OAuth2" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.Authorizers.OAuth2</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>Authorizer that conforms to OAuth 2
+(<a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>) by adding bearer tokens
+(<a href="http://tools.ietf.org/html/rfc6750">RFC 6749</a>).</p>
+
+            
+            
+              <h3 class="section">Methods</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authorizers-OAuth2-authorize" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authorizers/oauth2.js#L13"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      authorize(jqXHR, requestOptions)
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Authorizes an XHR request by adding the <code>access_token</code> property from the
+session as a bearer token in the <code>Authorization</code> header:</p>
+
+<pre><code>Authorization: Bearer &lt;token&gt;
+</code></pre>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>jqXHR <span class="type">{JqXHR}</span></dt>
+                          <dd><p>The XHR request to authorize (see <a href="http://api.jquery.com/jQuery.ajax/#jqXHR">http://api.jquery.com/jQuery.ajax/#jqXHR</a>)</p>
+</dd>
+                          
+                        
+                          <dt>requestOptions <span class="type">{Object}</span></dt>
+                          <dd><p>The options as provided to the <code>$.ajax</code> method (see <a href="http://api.jquery.com/jQuery.ajaxPrefilter/">http://api.jquery.com/jQuery.ajaxPrefilter/</a>)</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                  </div>
+                </div>
+              
+            
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.SimpleAuth.Authorizers.Base</span></p>
+            
+            
+            
+            
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authorizers-OAuth2-authorize">authorize</a>
+                  </li>
+                
+              </ul>
+            
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-LoginControllerMixin" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.LoginControllerMixin</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>The mixin for the authentication controller that handles the
+<code>authenticationRoute</code> specified in
+<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>). It provides the
+<code>authenticate</code> action that will authenticate the session with the configured
+authenticator when invoked. <strong>This is a specialization of
+<a href="#Ember-SimpleAuth-AuthenticationControllerMixin">Ember.SimpleAuth.AuthenticationControllerMixin</a>
+for authentication mechanisms that work like a regular login with
+credentials.</strong></p>
+
+<p>Accompanying the controller that this mixin is mixed in the application needs
+to have a <code>login</code> template with the fields <code>indentification</code> and <code>password</code>
+as well as an actionable button or link that triggers the <code>authenticate</code>
+action, e.g.:</p>
 
 <pre lang="handlebars"><code>&lt;form {{action login on=&#39;submit&#39;}}&gt;
   &lt;label for=&quot;identification&quot;&gt;Login&lt;/label&gt;
@@ -581,203 +1445,899 @@ actionable button or link that triggers the <code>login</code> action, e.g.:</p>
 </code></pre>
 
             
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-LoginControllerMixin-tokenRequestOptions" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    tokenRequestOptions
-                    <span class="text-muted">
-                      
-                      
-                        (identification, password, client_id, client_secret)
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/login_controller_mixin.js#L29"><code>packages/ember-simple-auth/lib/mixins/login_controller_mixin.js#29</code></a></small></p>
+            <h3 class="section">Properties</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-LoginControllerMixin-authenticator" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/login_controller_mixin.js#L33"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    
+                    <h3 class="panel-title property">authenticator <span class="type">{Ember.SimpleAuth.Authenticators.Base}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>The authenticator class used to authenticate the session.</p>
+
+                    
+                      Defaults to <code>Ember.SimpleAuth.Authenticators.OAuth2</code>
+                    
+                  </div>
                 </div>
-                <div class="panel-body">
-                  <p>This method takes the user&#39;s credentials and builds the request options as
-they are passed Ember.$.ajax (see <a href="http://api.jquery.com/jQuery.ajax/">http://api.jquery.com/jQuery.ajax/</a>).</p>
-
-<p>The default implementation follows RFC 6749. In case you&#39;re using a custom
-server API you can override this method to return options as they fit your
-server API, e.g.:</p>
-
-<pre lang="javascript"><code>App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-  tokenRequestOptions: function(username, password) {
-    var putData = &#39;{ &quot;SESSION&quot;: { &quot;USER_NAME&quot;: &quot;&#39; + username + &#39;&quot;, &quot;PASS&quot;: &quot;&#39; + password + &#39;&quot; } }&#39;;
-    return { type: &#39;PUT&#39;, data: putData, contentType: &#39;application/json&#39; };
-  }
-});
-</code></pre>
-
-                </div>
-                <ul class="list-group">
-                  
-                    <li class="list-group-item">
-                      <h4>Arguments</h4>
-                      <dl class="params">
-                        
-                          <dt>identification: <code>String</code></dt>
-                          <dd><p>The user&#39;s identification (user name or email address or whatever is used to identify the user)</p>
-</dd>
-                          
-                        
-                          <dt>password: <code>String</code></dt>
-                          <dd><p>The user&#39;s password</p>
-</dd>
-                          
-                        
-                          <dt>client_id: <code>String</code></dt>
-                          <dd><p>The (optional) client id (see <a href="http://tools.ietf.org/html/rfc6749#section-3.2.1">http://tools.ietf.org/html/rfc6749#section-3.2.1</a>)</p>
-</dd>
-                          
-                        
-                          <dt>client_secret: <code>String</code></dt>
-                          <dd><p>The (optional) client secret (see <a href="http://tools.ietf.org/html/rfc6749#section-3.2.1">http://tools.ietf.org/html/rfc6749#section-3.2.1</a>)</p>
-</dd>
-                          
-                        
-                      </dl>
-                    </li>
-                  
-                  
-                    <li class="list-group-item">
-                      <h4>Returns</h4>
-                      <dl>
-                        <dt><code>Object</code></dt>
-                        <dd><p>The request options to be passed to Ember.$.ajax (see <a href="http://api.jquery.com/jQuery.ajax/">http://api.jquery.com/jQuery.ajax/</a> for detailed documentation)</p>
-</dd>
-                      </dl>
-                    </li>
-                  
-                </ul>
-              </div>
+              
             
-          
-            <a id="Ember-SimpleAuth-Session" class="element-anchor">&nbsp;</a>
-            <div class="page-header">
-              <h1 class="class">Ember.SimpleAuth.Session</h1>
-              <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L3"><code>packages/ember-simple-auth/lib/session.js#3</code></a></small></p>
-            </div>
-            <p>This class holds the current access token and other session data. There will always be a
-session regardless of whether a user is currently authenticated or not. That (singleton) instance
-of this class is automatically injected into all models, controller, routes and views so you should
-never instantiate this class directly but always use the auto-injected instance.</p>
-
             
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-Session-destroy" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    destroy
-                    <span class="text-muted">
-                      
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L51"><code>packages/ember-simple-auth/lib/session.js#51</code></a></small></p>
-                </div>
-                <div class="panel-body">
-                  <p>Destroys the session by setting all properties to undefined (see <a href="#Ember-SimpleAuth-Session-setup">Session#setup</a>). This also deletes any
-saved data from the session cookie and effectively logs the current user out.</p>
-
-                </div>
-                <ul class="list-group">
-                  
-                  
-                </ul>
-              </div>
             
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-Session-isAuthenticated" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    isAuthenticated
-                    <span class="text-muted">
-                      
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L65"><code>packages/ember-simple-auth/lib/session.js#65</code></a></small></p>
-                </div>
-                <div class="panel-body">
-                  <p>Returns whether a user is currently authenticated.</p>
+              <h3 class="section">Actions</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-LoginControllerMixin-authenticate" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/login_controller_mixin.js#L43"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      authenticate()
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>This action will authenticate the session with an instance of the
+configured <code>authenticator</code> class if both <code>identification</code> and <code>password</code>
+are non-empty. It passes both values to the authenticator.</p>
 
-                </div>
-                <ul class="list-group">
-                  
-                  
-                    <li class="list-group-item">
-                      <h4>Returns</h4>
-                      <dl>
-                        <dt><code>Boolean</code></dt>
-                        <dd><p>true if a user is authenticated, false otherwise</p>
-</dd>
-                      </dl>
-                    </li>
-                  
-                </ul>
-              </div>
-            
-              <div class="panel panel-default panel-method">
-                <a id="Ember-SimpleAuth-Session-setup" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    setup
-                    <span class="text-muted">
-                      
-                      
-                        (data)
-                      
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L22"><code>packages/ember-simple-auth/lib/session.js#22</code></a></small></p>
-                </div>
-                <div class="panel-body">
-                  <p>Sets up the session from a plain JavaScript object. This does not create a new instance but sets up
-the instance with the data that is passed. Any data assigned here is also persisted in a session cookie (see <a href="http://en.wikipedia.org/wiki/HTTP_cookie#Session_cookie">http://en.wikipedia.org/wiki/HTTP_cookie#Session_cookie</a>) so it survives a page reload.</p>
+<p><em>The action also resets the <code>password</code> property so sensitive data is not
+stored anywhere for longer than necessary.</em></p>
 
+                    
+                  </div>
                 </div>
-                <ul class="list-group">
-                  
-                    <li class="list-group-item">
-                      <h4>Arguments</h4>
-                      <dl class="params">
-                        
-                          <dt>data: <code>Object</code></dt>
-                          <dd><p>The data to set the session up with</p>
-</dd>
-                          
-                            <dl class="props">
-                              
-                                <dt>data.access_token: <code>String</code></dt>
-                                <dd><p>The access token that will be included in the <code>Authorization</code> header</p>
-</dd>
-                              
-                                <dt>data.[refresh_token]: <code>String</code></dt>
-                                <dd><p>An optional refresh token that will be used for obtaining fresh tokens</p>
-</dd>
-                              
-                                <dt>data.[expires_in]: <code>String</code></dt>
-                                <dd><p>An optional expiry for the access_token in seconds; if both expires_in and refresh_token are set,
-    Ember.SimpleAuth will automatically refresh access tokens before they expire</p>
-</dd>
-                              
-                            </dl>
-                          
-                        
-                      </dl>
-                    </li>
-                  
-                  
-                </ul>
-              </div>
+              
             
-          
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.SimpleAuth.AuthenticationControllerMixin</span></p>
+            
+            
+            
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-LoginControllerMixin-authenticator">authenticator</a>
+                  </li>
+                
+              </ul>
+            
+            
+            
+              <h4>Actions</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-LoginControllerMixin-authenticate">authenticate</a>
+                  </li>
+                
+              </ul>
+            
+          </div>
         </div>
-      </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-Session" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.Session</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p><strong>The session provides access to the current authentication state as well as
+any properties resolved by the authenticator</strong> (see
+<a href="#Ember-SimpleAuth-Authenticators-Base-authenticate">Ember.SimpleAuth.Authenticators.Base#authenticate</a>).
+It is created when Ember.SimpleAuth is set up (see
+<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>) and <strong>injected into all
+models, controllers, routes and views so that all parts of the application
+can always access the current authentication state and other properties</strong>,
+depending on the used authenticator (see
+<a href="#Ember-SimpleAuth-Authenticators-Base">Ember.SimpleAuth.Authenticators.Base</a>)).</p>
+
+<p>The session also provides methods to authenticate the user and to invalidate
+itself (see
+<a href="#Ember-SimpleAuth-Session-authenticate">Ember.SimpleAuth.Session#authenticate</a>,
+<a href="#Ember-SimpleAuth-Session-invaldiate">Ember.SimpleAuth.Session#invaldiate</a>
+These methods are usually invoked through actions from routes or controllers.</p>
+
+            
+            <h3 class="section">Properties</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Session-authenticator" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L31"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                      <span class="label label-danger pull-right">read only</span>
+                    
+                    
+                    <h3 class="panel-title property">authenticator <span class="type">{Ember.SimpleAuth.Authenticators.Base}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>The authenticator used to authenticate the session. This is only set when
+the session is currently authenticated.</p>
+
+                    
+                      Defaults to <code>null</code>
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Session-store" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L41"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                      <span class="label label-danger pull-right">read only</span>
+                    
+                    
+                    <h3 class="panel-title property">store <span class="type">{Ember.SimpleAuth.Stores.Base}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>The store used to persist session properties. This is assigned during
+Ember.SimpleAuth&#39;s setup and can be specified there
+(see <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>).</p>
+
+                    
+                      Defaults to <code>null</code>
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Session-isAuthenticated" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L52"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                      <span class="label label-danger pull-right">read only</span>
+                    
+                    
+                    <h3 class="panel-title property">isAuthenticated <span class="type">{Boolean}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Returns whether the session is currently authenticated.</p>
+
+                    
+                      Defaults to <code>false</code>
+                    
+                  </div>
+                </div>
+              
+            
+            
+              <h3 class="section">Methods</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Session-authenticate" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L91"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      authenticate(authenticator, options)
+                      
+                        <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Authentices the session with an <code>authenticator</code> and appropriate <code>options</code>.
+<strong>This delegates the actual authentication work to the <code>authenticator</code></strong>
+and handles the returned promise accordingly (see
+<a href="#Ember-SimpleAuth-Authenticators-Base-authenticate">Ember.SimpleAuth.Authenticators.Base#authenticate</a>).</p>
+
+<p><strong>This method returns a promise itself. A resolving promise indicates that
+the session was successfully authenticated</strong> while a rejecting promise
+indicates that authentication failed and the session remains
+unauthenticated.</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>authenticator <span class="type">{Ember.SimpleAuth.Authenticators.Base}</span></dt>
+                          <dd><p>The authenticator to authenticate with</p>
+</dd>
+                          
+                        
+                          <dt>options <span class="type">{Object}</span></dt>
+                          <dd><p>The options to pass to the authenticator; depending on the type of authenticator these might be a set of credentials etc.</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                      <p>A promise that resolves when the session was authenticated successfully</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Session-invalidate" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L120"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      invalidate()
+                      
+                        <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Invalidates the session with the current <code>authenticator</code>. <strong>This invokes
+the <code>authenticator</code>&#39;s <code>invalidate</code> hook and handles the returned promise
+accordingly</strong> (see
+<a href="#Ember-SimpleAuth-Authenticators-Base-invalidate">Ember.SimpleAuth.Authenticators.Base#invalidate</a>).</p>
+
+<p><strong>This method returns a promise itself. A resolving promise indicates that
+the session was successfully invalidated</strong> while a rejecting promise
+indicates that the promise returned by the <code>authenticator</code> rejected and
+thus invalidation was cancelled. In that case the session remains
+authenticated.</p>
+
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                      <p>A promise that resolves when the session was invalidated successfully</p>
+
+                    
+                  </div>
+                </div>
+              
+            
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.ObjectProxy</span></p>
+            
+            
+            
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Session-authenticator">authenticator</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Session-store">store</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Session-isAuthenticated">isAuthenticated</a>
+                  </li>
+                
+              </ul>
+            
+            
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Session-authenticate">authenticate</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Session-invalidate">invalidate</a>
+                  </li>
+                
+              </ul>
+            
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-Stores-Base" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.Stores.Base</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>The base for all store types. <strong>This serves as a starting point for
+implementing custom stores and must not be used directly.</strong></p>
+
+<p>Stores may trigger the <code>&#39;ember-simple-auth:session-updated&#39;</code> event when
+any of the stored properties changes due to external actions (e.g. from
+another tab). The session listens to that event and will handle the changes
+accordingly. Whenever the event is triggered by the store, the session will
+forward all properties to its authenticator which might lead to the session
+being invalidated (see
+<a href="#Ember-SimpleAuth-Authenticators-Base-restore">Ember.SimpleAuth.Authenticators.Base#restore</a>).</p>
+
+            
+            
+              <h3 class="section">Methods</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-Base-persist" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/base.js#L21"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      persist(properties)
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Persists the <code>properties</code> in the store.</p>
+
+<p><code>Ember.SimpleAuth.Stores.Base</code>&#39;s implementation does nothing.</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>properties <span class="type">{Object}</span></dt>
+                          <dd><p>The properties to persist</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-Base-restore" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/base.js#L32"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      restore()
+                      
+                        <span class="type">&rarr; Object</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Restores all properties currently saved in the store.</p>
+
+<p><code>Ember.SimpleAuth.Stores.Base</code>&#39;s implementation always returns an empty
+plain Object.</p>
+
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Object</span></p>
+                      <p>All properties currently persisted in the store.</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-Base-clear" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/base.js#L45"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      clear()
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Clears the store.</p>
+
+<p><code>Ember.SimpleAuth.Stores.Base</code>&#39;s implementation does nothing.</p>
+
+                    
+                    
+                  </div>
+                </div>
+              
+            
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.Object</span></p>
+            
+            
+              <h4>Uses</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <span class="type">Ember.Evented</span>
+                  </li>
+                
+              </ul>
+            
+            
+            
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Base-persist">persist</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Base-restore">restore</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Base-clear">clear</a>
+                  </li>
+                
+              </ul>
+            
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-Stores-Cookie" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.Stores.Cookie</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>Store that saves its data in session cookies.</p>
+
+<p><strong>In order to keep multiple tabs/windows of your application in sync, this
+store has to periodically (every 500ms) check the cookies</strong> for changes as
+there are no events that notify of changes in cookies. The recommended
+alternative is
+<a href="#Ember-SimpleAuth-Stores-LocalStorage">Ember.SimpleAuth.Stores.LocalStorage</a>
+that also persistently stores data but instead of cookies relies on the
+<code>localStorage</code> API and does not need to poll for external changes.</p>
+
+<p>This store will trigger the <code>&#39;ember-simple-auth:session-updated&#39;</code> event when
+any of its cookies is changed from another tab or window.</p>
+
+            
+            <h3 class="section">Properties</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-Cookie-cookieNamePrefix" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/cookie.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    
+                    <h3 class="panel-title property">cookieNamePrefix <span class="type">{String}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>The prefix to use for the store&#39;s cookie names so they can be distinguished
+from other cookies.</p>
+
+                    
+                      Defaults to <code>'ember_simple_auth:'</code>
+                    
+                  </div>
+                </div>
+              
+            
+            
+              <h3 class="section">Methods</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-Cookie-persist" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/cookie.js#L50"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      persist(properties)
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Persists the <code>properties</code> in session cookies.</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>properties <span class="type">{Object}</span></dt>
+                          <dd><p>The properties to persist</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-Cookie-restore" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/cookie.js#L63"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      restore()
+                      
+                        <span class="type">&rarr; Object</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Restores all properties currently saved in the session cookies identified
+by the <code>cookieNamePrefix</code>.</p>
+
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Object</span></p>
+                      <p>All properties currently persisted in the session cookies</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-Cookie-clear" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/cookie.js#L79"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      clear()
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Clears the store by deleting all session cookies prefixed with the
+<code>cookieNamePrefix</code>.</p>
+
+                    
+                    
+                  </div>
+                </div>
+              
+            
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.SimpleAuth.Stores.Base</span></p>
+            
+            
+            
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Cookie-cookieNamePrefix">cookieNamePrefix</a>
+                  </li>
+                
+              </ul>
+            
+            
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Cookie-persist">persist</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Cookie-restore">restore</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Cookie-clear">clear</a>
+                  </li>
+                
+              </ul>
+            
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-Stores-Ephemeral" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.Stores.Ephemeral</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>Store that saves its data in memory and thus <strong>is not actually persistent</strong>.</p>
+
+            
+            
+              <h3 class="section">Methods</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-Ephemeral-persist" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/ephemeral.js#L19"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      persist(properties)
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Persists the <code>properties</code>.</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>properties <span class="type">{Object}</span></dt>
+                          <dd><p>The properties to persist</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-Ephemeral-restore" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/ephemeral.js#L29"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      restore()
+                      
+                        <span class="type">&rarr; Object</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Restores all properties currently saved.</p>
+
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Object</span></p>
+                      <p>All properties currently persisted</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-Ephemeral-clear" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/ephemeral.js#L39"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      clear()
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Clears the store.</p>
+
+                    
+                    
+                  </div>
+                </div>
+              
+            
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.SimpleAuth.Stores.Base</span></p>
+            
+            
+            
+            
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Ephemeral-persist">persist</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Ephemeral-restore">restore</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-Ephemeral-clear">clear</a>
+                  </li>
+                
+              </ul>
+            
+            
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="Ember-SimpleAuth-Stores-LocalStorage" class="symbol-anchor"></a>
+              <h1 class="class">Ember.SimpleAuth.Stores.LocalStorage</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            <p>Store that saves its data in the browser&#39;s <code>localStorage</code>.</p>
+
+<p>This store will trigger the <code>&#39;ember-simple-auth:session-updated&#39;</code> event when
+any of its keys is changed from another tab or window.</p>
+
+            
+            <h3 class="section">Properties</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-LocalStorage-keyPrefix" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/local_storage.js#L14"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    
+                    <h3 class="panel-title property">keyPrefix <span class="type">{String}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>The prefix to use for the store&#39;s keys so they can be distinguished from
+other keys.</p>
+
+                    
+                      Defaults to <code>'ember_simple_auth:'</code>
+                    
+                  </div>
+                </div>
+              
+            
+            
+              <h3 class="section">Methods</h3>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-LocalStorage-persist" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/local_storage.js#L32"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      persist(properties)
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Persists the <code>properties</code> in the <code>localStorage</code>.</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>properties <span class="type">{Object}</span></dt>
+                          <dd><p>The properties to persist</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-LocalStorage-restore" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/local_storage.js#L46"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      restore()
+                      
+                        <span class="type">&rarr; Object</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Restores all properties currently saved in the <code>localStorage</code> identified by
+the <code>keyPrefix</code>.</p>
+
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Object</span></p>
+                      <p>All properties currently persisted in the session cookies</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Stores-LocalStorage-clear" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/local_storage.js#L63"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    <h3 class="panel-title method">
+                      clear()
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Clears the store by deleting all <code>localStorage</code> keys prefixed with the
+<code>keyPrefix</code>.</p>
+
+                    
+                    
+                  </div>
+                </div>
+              
+            
+            
+          </div>
+          <div class="col-md-3 overview">
+            
+              <h4>Extends</h4>
+              <p><span class="type">Ember.SimpleAuth.Stores.Base</span></p>
+            
+            
+            
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-LocalStorage-keyPrefix">keyPrefix</a>
+                  </li>
+                
+              </ul>
+            
+            
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-LocalStorage-persist">persist</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-LocalStorage-restore">restore</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Stores-LocalStorage-clear">clear</a>
+                  </li>
+                
+              </ul>
+            
+            
+          </div>
+        </div>
+      
     </div>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript" charset="utf-8">
+      $(function() {
+        hljs.initHighlightingOnLoad();
+        function updateDropdownCaption(text) {
+          if (!!text) {
+            $('.navbar .dropdown .dropdown-toggle .caption').text(text);
+          }
+        }
+        $('.navbar .dropdown a[class!="dropdown-toggle"]').on('click', function() {
+          updateDropdownCaption($(this).text());
+        });
+        updateDropdownCaption($('.navbar .dropdown a[href="' + document.location.hash + '"]').text());
+        $('body').scrollspy({ target: '.navbar' }).on('activate.bs.scrollspy', function(e) {
+          var link = $(e.target).find('.dropdown-menu li.active a');
+          updateDropdownCaption(link.text());
+        })
+      });
+    </script>
   </body>
 </html>
