@@ -1,133 +1,118 @@
 'use strict';
 
+function extractLocationOrigin(location) {
+  return location.protocol + '//' + location.hostname + (location.port !== '' ? ':' + location.port : '');
+}
+
 /**
-  The main namespace for Ember.SimpleAuth
+  The main namespace for Ember.SimpleAuth.
+
+  __For a general overview of how Ember.SimpleAuth works, see the
+  [README](https://github.com/simplabs/ember-simple-auth#readme).__
 
   @class SimpleAuth
   @namespace Ember
-  @static
 **/
-Ember.SimpleAuth = {};
-
-/**
-  Sets up Ember.SimpleAuth for your application; invoke this method in a custom
-  initializer like this:
-
-  ```javascript
-  Ember.Application.initializer({
-    name: 'authentication',
-    initialize: function(container, application) {
-      Ember.SimpleAuth.setup(container, application);
-    }
-  });
-  ```
-
-  @method setup
-  @static
-  @param {Container} container The Ember.js container, see http://git.io/ed4U7Q
-  @param {Ember.Application} application The Ember.js application instance
-  @param {Object} [options]
-    @param {String} [options.routeAfterLogin] route to redirect the user to after successfully logging in - defaults to `'index'`
-    @param {String} [options.routeAfterLogout] route to redirect the user to after logging out - defaults to `'index'`
-    @param {String} [options.loginRoute] route to redirect the user to when login is required - defaults to `'login'`
-    @param {String} [options.serverTokenEndpoint] the server endpoint used to obtain the access token - defaults to `'/token'`
-    @param {String} [options.autoRefreshToken] enable/disable automatic token refreshing (if the server supports it) - defaults to `true`
-    @param {Array[String]} [options.crossOriginWhitelist] list of origins that (besides the origin of the Ember.js application) send the authentication token to - defaults to `[]`
-**/
-Ember.SimpleAuth.setup = function(container, application, options) {
-  options = options || {};
-  this.routeAfterLogin      = options.routeAfterLogin || 'index';
-  this.routeAfterLogout     = options.routeAfterLogout || 'index';
-  this.loginRoute           = options.loginRoute || 'login';
-  this.serverTokenEndpoint  = options.serverTokenEndpoint || '/token';
-  this.autoRefreshToken     = Ember.isEmpty(options.autoRefreshToken) ? true : !!options.autoRefreshToken;
-  this.crossOriginWhitelist = Ember.A(options.crossOriginWhitelist || []);
-
-  var session = Ember.SimpleAuth.Session.create();
-  application.register('simple_auth:session', session, { instantiate: false, singleton: true });
-  Ember.$.each(['model', 'controller', 'view', 'route'], function(i, component) {
-    application.inject(component, 'session', 'simple_auth:session');
-  });
-
-  Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    if (!Ember.isEmpty(session.get('authToken')) && Ember.SimpleAuth.includeAuthorizationHeader(options.url)) {
-      jqXHR.setRequestHeader('Authorization', 'Bearer ' + session.get('authToken'));
-    }
-  });
+Ember.SimpleAuth = Ember.Namespace.create({
+  Authenticators: Ember.Namespace.create(),
+  Authorizers:    Ember.Namespace.create(),
+  Stores:         Ember.Namespace.create(),
 
   /**
-    @method includeAuthorizationHeader
-    @private
+    The route to transition to for authentication; can be set through
+    [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
+
+    @property authenticationRoute
+    @readOnly
+    @static
+    @type String
+    @default 'login'
   */
-  this.includeAuthorizationHeader = function(url) {
-    this._links = this._links || {};
-    var link = Ember.SimpleAuth._links[url] || function() {
-      var link = document.createElement('a');
-      link.href = url;
-      Ember.SimpleAuth._links[url] = link;
-      return link;
-    }();
-    function formatLocation(location) { return location.protocol + '//' + location.hostname + (location.port !== '' ? ':' + location.port : ''); }
-    var linkOrigin       = formatLocation(link);
-    this._locationOrigin = formatLocation(window.location);
-    return this.crossOriginWhitelist.indexOf(linkOrigin) > -1 || linkOrigin === this._locationOrigin;
+  authenticationRoute: 'login',
+  /**
+    The route to transition to after successful authentication; can be set
+    through [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
+
+    @property routeAfterAuthentication
+    @readOnly
+    @static
+    @type String
+    @default 'index'
+  */
+  routeAfterAuthentication: 'index',
+  /**
+    The route to transition to after session invalidation; can be set through
+    [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
+
+    @property routeAfterInvalidation
+    @readOnly
+    @static
+    @type String
+    @default 'index'
+  */
+  routeAfterInvalidation: 'index',
+
+  /**
+    Sets up Ember.SimpleAuth for the application; this method __should be invoked in a custom
+    initializer__ like this:
+
+    ```javascript
+    Ember.Application.initializer({
+      name: 'authentication',
+      initialize: function(container, application) {
+        Ember.SimpleAuth.setup(application);
+      }
+    });
+    ```
+
+    @method setup
+    @static
+    @param {Ember.Application} application The Ember.js application instance
+    @param {Object} [options]
+      @param {String} [options.authenticationRoute] route to transition to for authentication - defaults to `'login'`
+      @param {String} [options.routeAfterAuthentication] route to transition to after successful authentication - defaults to `'index'`
+      @param {String} [options.routeAfterInvalidation] route to transition to after session invalidation - defaults to `'index'`
+      @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js application was loaded from; to explicitely enable authorization for additional origins, whitelist those origins - defaults to `[]` _(beware that origins consist of protocol, host and port (port can be left out when it is 80))_
+      @param {Object} [options.authorizer] The authorizer _class_ to use; must extend `Ember.SimpleAuth.Authorizers.Base` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
+      @param {Object} [options.store] The store _class_ to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.LocalStorage`
+  **/
+  setup: function(application, options) {
+    options                       = options || {};
+    this.routeAfterAuthentication = options.routeAfterAuthentication || this.routeAfterAuthentication;
+    this.routeAfterInvalidation   = options.routeAfterInvalidation || this.routeAfterInvalidation;
+    this.authenticationRoute      = options.authenticationRoute || this.authenticationRoute;
+    this._crossOriginWhitelist    = Ember.A(options.crossOriginWhitelist || []);
+
+    var store      = (options.store || Ember.SimpleAuth.Stores.LocalStorage).create();
+    var session    = Ember.SimpleAuth.Session.create({ store: store });
+    var authorizer = (options.authorizer || Ember.SimpleAuth.Authorizers.OAuth2).create({ session: session });
+
+    application.register('ember-simple-auth:session:current', session, { instantiate: false, singleton: true });
+    Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {
+      application.inject(component, 'session', 'ember-simple-auth:session:current');
+    });
+
+    Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+      if (Ember.SimpleAuth.shouldAuthorizeRequest(options.url)) {
+        authorizer.authorize(jqXHR, options);
+      }
+    });
   },
 
   /**
-    Call this method when an external login was successful. Typically you would
-    have a separate window in which the user is being presented with the
-    external provider's authentication UI and eventually being redirected back
-    to your application. When that redirect occured, the application needs to
-    call this method on its opener window, e.g.:
-
-    ```html
-      <html>
-        <head></head>
-        <body>
-          <script>
-            window.opener.Ember.SimpleAuth.externalLoginSucceeded({ access_token: 'secret token!' });
-            window.close();
-          </script>
-        </body>
-      </html>
-    ```
-
-    This method will then set up the session (see
-    [Session#setup](#Ember.SimpleAuth.Session_setup) and invoke the
-    [Ember.SimpleAuth.ApplicationRouteMixin#loginSucceeded](#Ember.SimpleAuth.ApplicationRouteMixin_loginSucceeded)
-    callback.
-
-    @method externalLoginSucceeded
-    @param {Object} sessionData The data to setup the session with (see [Session#setup](#Ember.SimpleAuth.Session_setup)))
+    @method shouldAuthorizeRequest
+    @private
+    @static
   */
-  this.externalLoginSucceeded = function(sessionData) {
-    session.setup(sessionData);
-    container.lookup('route:application').send('loginSucceeded');
-  };
-
-  /**
-    Call this method when an external login fails, e.g.:
-
-    ```html
-      <html>
-        <head></head>
-        <body>
-          <script>
-            window.opener.Ember.SimpleAuth.externalLoginFailed('something went wrong!');
-            window.close();
-          </script>
-        </body>
-      </html>
-    ```
-
-    The argument you pass here will be forwarded to the
-    [Ember.SimpleAuth.ApplicationRouteMixin#loginSucceeded](#Ember.SimpleAuth.ApplicationRouteMixin_loginFailed)
-    callback.
-
-    @method externalLoginFailed
-    @param {Object} error Any optional error that will be forwarded to the [Ember.SimpleAuth.ApplicationRouteMixin#loginSucceeded](#Ember.SimpleAuth.ApplicationRouteMixin_loginFailed) callback
-  */
-  this.externalLoginFailed = function(error) {
-    container.lookup('route:application').send('loginFailed', error);
-  };
-};
+  shouldAuthorizeRequest: function(url) {
+    this._linkOrigins    = this._linkOrigins || {};
+    this._documentOrigin = this._documentOrigin || extractLocationOrigin(window.location);
+    var link = this._linkOrigins[url] || function() {
+      var link = document.createElement('a');
+      link.href = url;
+      return (this._linkOrigins[url] = link);
+    }.apply(this);
+    var linkOrigin = extractLocationOrigin(link);
+    return this._crossOriginWhitelist.indexOf(linkOrigin) > -1 || linkOrigin === this._documentOrigin;
+  }
+});

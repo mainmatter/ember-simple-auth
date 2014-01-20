@@ -11,11 +11,11 @@
           <a style="cursor: pointer">Protected Page</a>
         {{/link-to}}
       </ul>
-      {{! display logout button when a session is authenticated, login button otherwise }}
+      {{! display logout button when the session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
-        <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
+        <a {{ action 'invalidateSession' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
       {{else}}
-        <a {{ action 'login' }} class="btn btn-success navbar-btn navbar-right">Login</a>
+        {{#link-to 'login' class="btn btn-success navbar-btn navbar-right"}}Login{{/link-to}}
       {{/if}}
     </div>
   </nav>
@@ -30,7 +30,7 @@
   </div>
   {{#if session.isAuthenticated}}
   <div class="alert alert-info">
-    The token is automatically refreshed every 10 seconds, it currently is: <code>{{ session.authToken }}</code>.
+    The token is automatically refreshed every 10 seconds, it currently is: <code>{{ session.access_token }}</code>.
   </div>
   {{else}}
     <div class="alert alert-info">
@@ -43,8 +43,8 @@
   <div class="page-header">
     <h1>Login</h1>
   </div>
-  {{! login form; the fields must be named "identification" and "password"; the controller action is "login" }}
-  <form {{action login on='submit'}}>
+  {{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
+  <form {{action authenticate on='submit'}}>
     <div class="form-group">
       <label for="identification">Login</label>
       {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login' class='form-control'}}
@@ -71,12 +71,15 @@
   </div>
 </script>
 
-<script>
+<script type="text/javascript">
   // setup Ember.SimpleAuth in an initializer
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      Ember.SimpleAuth.setup(container, application, { serverTokenEndpoint: '/v2/token' });
+      Ember.SimpleAuth.Authenticators.OAuth2.reopen({
+        serverTokenEndpoint: '/v2/token'
+      });
+      Ember.SimpleAuth.setup(application);
     }
   });
 
@@ -85,28 +88,18 @@
   App.Router.map(function() {
     // login route
     this.route('login');
-    //protected route that's inaccessible without authentication
+    // protected route that's inaccessible without authentication
     this.route('protected');
   });
 
   // use the provided mixins in the application route and login controller
   App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-  App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-    actions: {
-      // display an error when loggign in fails
-      loginFailed: function(xhr, status, error) {
-        var response = JSON.parse(xhr.responseText);
-        this.set('errorMessage', response.error);
-      }
-    }
-  });
+  App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
 
-  // make sure the controller doesn't keep stale data
-  App.LoginRoute = Ember.Route.extend({
+  // clear a potentially stale error message from previous login attempts
+  App.authenticationRoute = Ember.Route.extend({
     setupController: function(controller, model) {
-      controller.setProperties({
-        identification: undefined, password: undefined, errorMessage: undefined
-      });
+      controller.set('errorMessage', null);
     }
   });
 

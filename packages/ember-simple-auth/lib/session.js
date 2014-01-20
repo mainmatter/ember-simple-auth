@@ -1,162 +1,219 @@
 'use strict';
 
+function classifyString(className) {
+  return Ember.A((className || '').split('.')).reduce(function(acc, klass) {
+    return (acc || {})[klass];
+  }, window);
+}
+
 /**
-  This class holds the current access token and other session data. There will always be a
-  session regardless of whether a user is currently authenticated or not. That (singleton) instance
-  of this class is automatically injected into all models, controller, routes and views so you should
-  never instantiate this class directly but always use the auto-injected instance.
+  __The session provides access to the current authentication state as well as
+  any properties resolved by the authenticator__ (see
+  [Ember.SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)).
+  It is created when Ember.SimpleAuth is set up (see
+  [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)) and __injected into all
+  models, controllers, routes and views so that all parts of the application
+  can always access the current authentication state and other properties__,
+  depending on the used authenticator (see
+  [Ember.SimpleAuth.Authenticators.Base](#Ember-SimpleAuth-Authenticators-Base))).
+
+  The session also provides methods to authenticate the user and to invalidate
+  itself (see
+  [Ember.SimpleAuth.Session#authenticate](#Ember-SimpleAuth-Session-authenticate),
+  [Ember.SimpleAuth.Session#invaldiate](#Ember-SimpleAuth-Session-invaldiate)
+  These methods are usually invoked through actions from routes or controllers.
 
   @class Session
   @namespace Ember.SimpleAuth
-  @extends Ember.Object
-  @constructor
+  @extends Ember.ObjectProxy
 */
-Ember.SimpleAuth.Session = Ember.Object.extend({
+Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
+  /**
+    The authenticator used to authenticate the session. This is only set when
+    the session is currently authenticated.
 
+    @property authenticator
+    @type Ember.SimpleAuth.Authenticators.Base
+    @readOnly
+    @default null
+  */
+  authenticator: null,
+  /**
+    The store used to persist session properties. This is assigned during
+    Ember.SimpleAuth's setup and can be specified there
+    (see [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)).
+
+    @property store
+    @type Ember.SimpleAuth.Stores.Base
+    @readOnly
+    @default null
+  */
+  store: null,
+  /**
+    Returns whether the session is currently authenticated.
+
+    @property isAuthenticated
+    @type Boolean
+    @readOnly
+    @default false
+  */
+  isAuthenticated: false,
+  /**
+    @property attemptedTransition
+    @private
+  */
+  attemptedTransition: null,
+  /**
+    @property content
+    @private
+  */
+  content: null,
+
+  /**
+    @method init
+    @private
+  */
   init: function() {
-    this._super();
-    this.syncProperties();
-    this.handleAuthTokenRefresh();
-  },
-
-  /**
-    Sets up the session from a plain JavaScript object. This does not create a new instance but sets up
-    the instance with the data that is passed. Any data assigned here is also persisted in a session cookie (see http://en.wikipedia.org/wiki/HTTP_cookie#Session_cookie) so it survives a page reload.
-
-    @method setup
-    @param {Object} data The data to set the session up with
-      @param {String} data.access_token The access token that will be included in the `Authorization` header
-      @param {String} [data.refresh_token] An optional refresh token that will be used for obtaining fresh tokens
-      @param {String} [data.expires_in] An optional expiry for the access_token in seconds; if both expires_in and refresh_token are set,
-        Ember.SimpleAuth will automatically refresh access tokens before they expire
-
-    @example
-      ```javascript
-      this.get('session').setup({
-        access_token:  'the secret token!',
-        refresh_token: 'a secret refresh token!',
-        expires_in:    3600 // 1 minute
-      })
-      ```
-  */
-  setup: function(data) {
-    data = data || {};
-    this.setProperties({
-      authToken:       data.access_token,
-      refreshToken:    (data.refresh_token || this.get('refreshToken')),
-      authTokenExpiry: (data.expires_in > 0 ? data.expires_in * 1000 : this.get('authTokenExpiry')) || 0
-    });
-  },
-
-  /**
-    Destroys the session by setting all properties to undefined (see [Session#setup](#Ember.SimpleAuth.Session_setup)). This also deletes any
-    saved data from the session cookie and effectively logs the current user out.
-
-    @method destroy
-  */
-  destroy: function() {
-    this.setProperties({
-      authToken:       undefined,
-      refreshToken:    undefined,
-      authTokenExpiry: undefined
-    });
-  },
-
-  /**
-    Returns whether a user is currently authenticated.
-
-    @method isAuthenticated
-    @return {Boolean} true if a user is authenticated, false otherwise
-  */
-  isAuthenticated: Ember.computed('authToken', function() {
-    return !Ember.isEmpty(this.get('authToken'));
-  }),
-
-  /**
-    @method syncProperties
-    @private
-  */
-  syncProperties: function() {
-    this.setProperties({
-      authToken:       this.load('authToken'),
-      refreshToken:    this.load('refreshToken'),
-      authTokenExpiry: this.load('authTokenExpiry')
-    });
-    if (!Ember.testing) {
-      Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout);
-      Ember.SimpleAuth.Session._syncPropertiesTimeout = Ember.run.later(this, this.syncProperties, 500);
-    }
-  },
-
-  /**
-    @method load
-    @private
-  */
-  load: function(property) {
-    var value = document.cookie.match(new RegExp(property + '=([^;]+)')) || [];
-    if (Ember.isEmpty(value)) {
-      return undefined;
+    var _this = this;
+    this.bindToStoreEvents();
+    var restoredContent = this.store.restore();
+    var authenticator   = this.createAuthenticator(restoredContent.authenticator);
+    if (!!authenticator) {
+      delete restoredContent.authenticator;
+      authenticator.restore(restoredContent).then(function(content) {
+        _this.setup(authenticator, content);
+      });
     } else {
-      return decodeURIComponent(value[1] || '');
+      this.store.clear();
     }
   },
 
   /**
-    @method store
-    @private
+    Authentices the session with an `authenticator` and appropriate `options`.
+    __This delegates the actual authentication work to the `authenticator`__
+    and handles the returned promise accordingly (see
+    [Ember.SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)).
+
+    __This method returns a promise itself. A resolving promise indicates that
+    the session was successfully authenticated__ while a rejecting promise
+    indicates that authentication failed and the session remains
+    unauthenticated.
+
+    @method authenticate
+    @param {Ember.SimpleAuth.Authenticators.Base} authenticator The authenticator to authenticate with
+    @param {Object} options The options to pass to the authenticator; depending on the type of authenticator these might be a set of credentials etc.
+    @return {Ember.RSVP.Promise} A promise that resolves when the session was authenticated successfully
   */
-  store: function(property) {
-    document.cookie = property + '=' + encodeURIComponent(this.get(property) || '');
+  authenticate: function(authenticator, options) {
+    var _this = this;
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      authenticator.authenticate(options).then(function(content) {
+        _this.setup(authenticator, content);
+        resolve();
+      }, function(error) {
+        _this.clear();
+        reject(error);
+      });
+    });
   },
 
   /**
-    @method authTokenObserver
-    @private
+    Invalidates the session with the current `authenticator`. __This invokes
+    the `authenticator`'s `invalidate` hook and handles the returned promise
+    accordingly__ (see
+    [Ember.SimpleAuth.Authenticators.Base#invalidate](#Ember-SimpleAuth-Authenticators-Base-invalidate)).
+
+    __This method returns a promise itself. A resolving promise indicates that
+    the session was successfully invalidated__ while a rejecting promise
+    indicates that the promise returned by the `authenticator` rejected and
+    thus invalidation was cancelled. In that case the session remains
+    authenticated.
+
+    @method invalidate
+    @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully
   */
-  authTokenObserver: Ember.observer(function() {
-    this.store('authToken');
-  }, 'authToken'),
+  invalidate: function() {
+    var _this = this;
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      _this.authenticator.invalidate(_this.content).then(function() {
+        _this.authenticator.off('ember-simple-auth:session-updated');
+        _this.clear();
+        resolve();
+      }, function(error) {
+        reject(error);
+      });
+    });
+  },
 
   /**
-    @method refreshTokenObserver
+    @method setup
     @private
   */
-  refreshTokenObserver: Ember.observer(function() {
-    this.store('refreshToken');
-    this.handleAuthTokenRefresh();
-  }, 'refreshToken'),
+  setup: function(authenticator, content) {
+    this.setProperties({
+      isAuthenticated: true,
+      authenticator:   authenticator,
+      content:         content
+    });
+    this.bindToAuthenticatorEvents();
+    var data = Ember.$.extend({
+      authenticator: this.authenticator.constructor.toString()
+    }, this.content);
+    this.store.clear();
+    this.store.persist(data);
+  },
 
   /**
-    @method authTokenExpiryObserver
+    @method clear
     @private
   */
-  authTokenExpiryObserver: Ember.observer(function() {
-    this.store('authTokenExpiry');
-    this.handleAuthTokenRefresh();
-  }, 'authTokenExpiry'),
+  clear: function() {
+    this.setProperties({
+      isAuthenticated: false,
+      authenticator:   null,
+      content:         null
+    });
+    this.store.clear();
+  },
 
   /**
-    @method handleAuthTokenRefresh
+    @method createAuthenticator
     @private
   */
-  handleAuthTokenRefresh: function() {
-    if (Ember.SimpleAuth.autoRefreshToken) {
-      Ember.run.cancel(Ember.SimpleAuth.Session._refreshTokenTimeout);
-      Ember.SimpleAuth.Session._refreshTokenTimeout = undefined;
-      var waitTime = this.get('authTokenExpiry') - 5000;
-      if (!Ember.isEmpty(this.get('refreshToken')) && waitTime > 0) {
-        Ember.SimpleAuth.Session._refreshTokenTimeout = Ember.run.later(this, function() {
-          var _this = this;
-          Ember.$.ajax(Ember.SimpleAuth.serverTokenEndpoint, {
-            type:        'POST',
-            data:        'grant_type=refresh_token&refresh_token=' + this.get('refreshToken'),
-            contentType: 'application/x-www-form-urlencoded'
-          }).then(function(response) {
-            _this.setup(response);
-            _this.handleAuthTokenRefresh();
-          });
-        }, waitTime);
+  createAuthenticator: function(className) {
+    var authenticatorClass = classifyString(className);
+    return Ember.tryInvoke(authenticatorClass, 'create');
+  },
+
+  /**
+    @method bindToAuthenticatorEvents
+    @private
+  */
+  bindToAuthenticatorEvents: function() {
+    var _this = this;
+    this.authenticator.on('ember-simple-auth:session-updated', function(content) {
+      _this.setup(_this.authenticator, content);
+    });
+  },
+
+  /**
+    @method bindToStoreEvents
+    @private
+  */
+  bindToStoreEvents: function() {
+    var _this = this;
+    this.store.on('ember-simple-auth:session-updated', function(content) {
+      var authenticator = _this.createAuthenticator(content.authenticator);
+      if (!!authenticator) {
+        delete content.authenticator;
+        authenticator.restore(content).then(function(content) {
+          _this.setup(authenticator, content);
+        }, function() {
+          _this.clear();
+        });
+      } else {
+        _this.clear();
       }
-    }
+    });
   }
 });

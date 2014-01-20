@@ -1,158 +1,163 @@
 var session;
 
-var ajaxMock;
-var AjaxMock = Ember.Object.extend({
-  response:    { access_token: 'authToken' },
-  ajaxCapture: function(url, options) {
-    var _this           = this;
-    this.requestUrl     = url;
-    this.requestOptions = options;
-    return {
-      then: function(success, fail) {
-        if (!!success) {
-          success(_this.response);
-        }
-        if (!!fail) {
-          fail('xhr', 'status', 'error');
-        }
-      }
-    };
+function mockPromise(resolveWith, rejectWith) {
+  return new Ember.RSVP.Promise(function(resolve, reject) {
+    if (!Ember.isEmpty(resolveWith) && !!resolveWith) {
+      resolve(resolveWith);
+    } else {
+      reject(rejectWith);
+    }
+  });
+}
+
+var storeMock;
+var StoreMock = Ember.SimpleAuth.Stores.Ephemeral.extend({
+  restore: function() {
+    this.restoreInvoked = true;
+    return this._super();
+  }
+});
+
+var authenticatorMock;
+var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
+  restore: function(content) {
+    return mockPromise(AuthenticatorMock._resolve);
+  },
+  authenticate: function(properties) {
+    this.authenticateInvoked     = true;
+    this.authenticateInvokedWith = properties;
+    return mockPromise(AuthenticatorMock._resolve, AuthenticatorMock._reject);
+  },
+  invalidate: function(properties) {
+    this.invalidateInvoked     = true;
+    this.invalidateInvokedWith = properties;
+    return mockPromise(AuthenticatorMock._resolve);
   }
 });
 
 module('Ember.SimpleAuth.Session', {
-  originalAjax: Ember.$.ajax,
   setup: function() {
-    session      = Ember.SimpleAuth.Session.create();
-    ajaxMock     = AjaxMock.create();
-    Ember.$.ajax = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
+    window.AuthenticatorMock = AuthenticatorMock;
+    authenticatorMock        = AuthenticatorMock.create();
+    storeMock                = StoreMock.create();
+    Ember.run(function() {
+      session = Ember.SimpleAuth.Session.create({ authenticator: authenticatorMock, store: storeMock });
+    });
   },
   teardown: function() {
-    Ember.$.ajax = this.originalAjax;
-    Ember.run.cancel(Ember.SimpleAuth.Session._refreshTokenTimeout);
-    session.destroy();
+    delete window.AuthenticatorMock;
+    delete window.Authenticators;
   }
 });
 
-test('reads its properties from session cookies during initialization', function() {
-  Ember.SimpleAuth.autoRefreshToken = true;
-  var authToken = Math.random().toString(36);
-  document.cookie = 'authToken=' + authToken;
-  var refreshToken = Math.random().toString(36);
-  document.cookie = 'refreshToken=' + refreshToken;
-  document.cookie = 'authTokenExpiry=' + 10000;
-  session = Ember.SimpleAuth.Session.create();
+test('it is not authenticated when just created', function() {
+  session = Ember.SimpleAuth.Session.create({ store: storeMock });
 
-  equal(session.get('authToken'), authToken, 'Ember.SimpleAuth.Session reads authToken from the session cookie during initialization.');
-  equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session reads refreshToken from the session cookie during initialization.');
-  equal(session.get('authTokenExpiry'), 10000, 'Ember.SimpleAuth.Session reads authTokenExpiry from the session cookie during initialization.');
-  notEqual(Ember.SimpleAuth.Session._refreshTokenTimeout, undefined, 'Ember.SimpleAuth.Session schedules a token refresh during initialization.');
+  ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when just created.');
 });
 
-test('persists its properties to session cookies when they change', function() {
-  var authToken = Math.random().toString(36);
-  session.set('authToken', authToken);
+test('restores its state during initialization', function() {
+  storeMock.persist({ authenticator: 'AuthenticatorMock' });
+  AuthenticatorMock._resolve = { some: 'content' };
+  Ember.run(function() {
+    session = Ember.SimpleAuth.Session.create({ store: storeMock });
+  });
 
-  ok(document.cookie.match(new RegExp('authToken=' + authToken)), 'Ember.SimpleAuth.Session persists authToken to a session cookie when it changes.');
+  ok(storeMock.restoreInvoked, 'Ember.Session restores its content from the store during initialization.');
+  ok(session.get('authenticator') instanceof AuthenticatorMock, 'Ember.Session restores the authenticator as a new instance of the class read from the store during initialization.');
+  ok(session.get('isAuthenticated'), 'Ember.Session is authenticated when the restored authenticator resolves during initialization.');
+  deepEqual(session.get('content'), { some: 'content' }, 'Ember.Session sets its content when the restored authenticator resolves during initialization.');
 
-  var refreshToken = Math.random().toString(36);
-  session.set('refreshToken', refreshToken);
+  AuthenticatorMock._resolve = false;
+  storeMock.persist({ key1: 'value1' });
+  Ember.run(function() {
+    session = Ember.SimpleAuth.Session.create({ store: storeMock });
+  });
 
-  ok(document.cookie.match(new RegExp('refreshToken=' + refreshToken)), 'Ember.SimpleAuth.Session persists refreshToken to a session cookie when it changes.');
-
-  session.set('authTokenExpiry', 1);
-
-  ok(document.cookie.match(new RegExp('authTokenExpiry=1')), 'Ember.SimpleAuth.Session persists authTokenExpiry to a session cookie when it changes.');
+  equal(session.get('authenticator'), null, 'Ember.Session does not assign the authenticator during initialization when the authenticator rejects.');
+  ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when the restored authenticator rejects during initialization.');
+  equal(session.get('content'), null, 'Ember.Session does not set its content when the restored authenticator rejects during initialization.');
+  equal(storeMock.restore().key1, null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
 });
 
-test('deletes its properties from session cookies when they become empty', function() {
-  session.set('authToken', 'some token');
-  session.set('authToken', undefined);
+test('authenticates itself with an authenticator', function() {
+  var resolved;
+  AuthenticatorMock._resolve = { key: 'value' };
+  Ember.run(function() {
+    session.authenticate(authenticatorMock).then(function() {
+      resolved = true;
+    });
+  });
 
-  ok(!document.cookie.match(new RegExp('authToken=[^;]+')), 'Ember.SimpleAuth.Session deletes authToken from the session cookie when it becomes empty.');
+  ok(authenticatorMock.authenticateInvoked, 'Ember.Session authenticates itself with the passed authenticator.');
+  ok(session.get('isAuthenticated'), 'Ember.Session is authenticated when the authenticator resolves.');
+  equal(session.get('key'), 'value', 'Ember.Session saves all properties that the authenticator resolves with.');
+  equal(session.get('authenticator'), authenticatorMock, 'Ember.Session saves the authenticator when the authenticator resolves.');
+  ok(resolved, 'Ember.Session returns a resolving promise when the authenticator resolves.');
 
-  session.set('refreshToken', 'some token');
-  session.set('refreshToken', undefined);
+  var rejected;
+  var rejectedWith;
+  AuthenticatorMock._resolve = false;
+  AuthenticatorMock._reject = { error: 'message' };
+  Ember.run(function() {
+    session = Ember.SimpleAuth.Session.create({ store: storeMock });
+    session.authenticate(authenticatorMock).then(function() {}, function(error) {
+      rejected     = true;
+      rejectedWith = error;
+    });
+  });
 
-  ok(!document.cookie.match(new RegExp('refreshToken=[^;]+')), 'Ember.SimpleAuth.Session deletes refreshToken from the session cookie when it becomes empty.');
-
-  session.set('authTokenExpiry', 1);
-  session.set('authTokenExpiry', undefined);
-
-  ok(!document.cookie.match(new RegExp('authTokenExpiry=[^;]+')), 'Ember.SimpleAuth.Session deletes authTokenExpiry from the session cookie when it becomes empty.');
+  ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when the authenticator rejects.');
+  equal(session.get('authenticator'), null, 'Ember.Session does not save the authenticator when the authenticator rejects.');
+  ok(rejected, 'Ember.Session returns a rejecting promise when the authenticator rejects.');
+  deepEqual(rejectedWith, { error: 'message'}, 'Ember.Session returns a promise that rejects with the error that the authenticator rejects with.');
 });
 
-test('assigns its properties correctly during setup', function() {
-  var authToken = Math.random().toString(36);
-  var refreshToken = Math.random().toString(36);
-  session.setup({ access_token: authToken, refresh_token: refreshToken, expires_in: 1 });
+test('invalidates itself', function() {
+  AuthenticatorMock._resolve = true;
+  Ember.run(function() {
+    session.authenticate(authenticatorMock);
+  });
+  AuthenticatorMock._resolve = false;
+  AuthenticatorMock._reject = { error: 'message' };
+  session.set('isAuthenticated', true);
+  Ember.run(function() {
+    session.set('content', { key: 'value' });
+    session.invalidate();
+  });
 
-  equal(session.get('authToken'), authToken, 'Ember.SimpleAuth.Session assigns authToken correctly during setup.');
-  equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session assigns refreshToken correctly during setup.');
-  equal(session.get('authTokenExpiry'), 1000, 'Ember.SimpleAuth.Session assigns authTokenExpiry correctly during setup.');
+  ok(authenticatorMock.invalidateInvoked, 'Ember.Session invalidates with the passed authenticator.');
+  deepEqual(authenticatorMock.invalidateInvokedWith, { key: 'value' }, 'Ember.Session passes its content to the authenticator to invalidation.');
+  ok(session.get('isAuthenticated'), 'Ember.Session remains authenticated when the authenticator rejects invalidation.');
+  equal(session.get('authenticator'), authenticatorMock, 'Ember.Session does not unset the authenticator when the authenticator rejects invalidation.');
 
-  session.setup({ access_token: authToken });
+  AuthenticatorMock._resolve = true;
+  Ember.run(function() {
+    session.invalidate();
+  });
 
-  equal(session.get('refreshToken'), refreshToken, 'Ember.SimpleAuth.Session keeps an existing refreshToken when the supplied session does not contain one.');
-  equal(session.get('authTokenExpiry'), 1000, 'Ember.SimpleAuth.Session keeps an existing authTokenExpiry when the supplied session does not contain one.');
+  ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when invalidation with the authenticator resolves.');
+  equal(session.get('aurhenticator'), null, 'Ember.Session unsets the authenticator when invalidation with the authenticator resolves.');
+  equal(session.get('content'), null, 'Ember.Session unsets its content when invalidation with the authenticator resolves.');
 
-  session.destroy();
-  session = Ember.SimpleAuth.Session.create();
-  session.setup({});
+  Ember.run(function() {
+    authenticatorMock.trigger('ember-simple-auth:session-updated', { key: 'other value' });
+  });
 
-  equal(session.get('authToken'), undefined, 'Ember.SimpleAuth.Session assigns authToken as undefined during setup when the supplied session is empty.');
-  equal(session.get('refreshToken'), undefined, 'Ember.SimpleAuth.Session assigns refreshToken as undefined during setup when the supplied session is empty.');
-  equal(session.get('authTokenExpiry'), 0, 'Ember.SimpleAuth.Session assigns authTokenExpiry as 0 during setup when the supplied session is empty.');
-
-  session.setup(null);
-
-  equal(session.get('authToken'), undefined, 'Ember.SimpleAuth.Session assigns authToken as undefined during setup when the supplied session is null.');
-  equal(session.get('refreshToken'), undefined, 'Ember.SimpleAuth.Session assigns refreshToken as undefined during setup when the supplied session is null.');
-  equal(session.get('authTokenExpiry'), 0, 'Ember.SimpleAuth.Session assigns authTokenExpiry as 0 during setup when the supplied session is null.');
+  equal(session.get('key'), null, 'Ember.Session stops listening to the "ember-simple-auth:session-updated" event of the authenticator when invalidation with the authenticator resolves.');
 });
 
-test('clears its properties during destruction', function() {
-  session.set('authToken', 'some Token');
-  session.set('refreshToken', 'some Token');
-  session.set('authTokenExpiry', 1);
-  session.destroy();
+test('observes changes of the observer', function() {
+  window.Authenticators                        = Ember.Namespace.create();
+  window.Authenticators.OtherAuthenticatorMock = AuthenticatorMock.extend();
+  var otherAuthenticatorMock                   = window.Authenticators.OtherAuthenticatorMock.create();
+  AuthenticatorMock._resolve = true;
+  Ember.run(function() {
+    session.authenticate(otherAuthenticatorMock).then(function() {
+      otherAuthenticatorMock.trigger('ember-simple-auth:session-updated', { key: 'value' });
+    });
+  });
 
-  equal(session.get('authToken'), undefined, 'Ember.SimpleAuth.Session clears authToken during destruction.');
-  equal(session.get('refreshToken'), undefined, 'Ember.SimpleAuth.Session clears refreshToken during destruction.');
-  equal(session.get('authTokenExpiry'), undefined, 'Ember.SimpleAuth.Session clears authTokenExpiry during destruction.');
-});
-
-test('is authenticated when the auth token is present, otherwise not', function() {
-  session.set('authToken', Math.random().toString(36));
-
-  ok(session.get('isAuthenticated'), 'Ember.SimpleAuth.Session is authenticated when authToken is present.');
-
-  session.set('authToken', '');
-  ok(!session.get('isAuthenticated'), 'Ember.SimpleAuth.Session is not authenticated when authToken is empty.');
-
-  session.set('authToken', null);
-  ok(!session.get('isAuthenticated'), 'Ember.SimpleAuth.Session is not authenticated when authToken is null.');
-
-  session.set('authToken', undefined);
-  ok(!session.get('isAuthenticated'), 'Ember.SimpleAuth.Session is not authenticated when authToken is undefined.');
-});
-
-test('schedules a token refresh when the required properties are set', function() {
-  Ember.SimpleAuth.autoRefreshToken = false;
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10 });
-
-  equal(Ember.SimpleAuth.Session._refreshTokenTimeout, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when an Ember.SimpleAuth.autoRefreshToken is false.');
-
-  Ember.SimpleAuth.autoRefreshToken = true;
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken' });
-
-  equal(Ember.SimpleAuth.Session._refreshTokenTimeout, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when no authTokenExpiry is present.');
-
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 5 });
-
-  equal(Ember.SimpleAuth.Session._refreshTokenTimeout, undefined, 'Ember.SimpleAuth.Session does not schedule a token refresh when an authTokenExpiry less or equal 5000ms is present.');
-
-  session.setup({ access_token: 'authToken', refresh_token: 'refreshToken', expires_in: 10 });
-
-  notEqual(Ember.SimpleAuth.Session._refreshTokenTimeout, undefined, 'Ember.SimpleAuth.Session schedules a token refresh when the refreshToken and authTokenExpiry are present.');
+  equal(session.get('key'), 'value', 'Ember.Session subscribes to the "ember-simple-auth:session-updated" of the authenticator when it is assigned.');
+  equal(storeMock.restore().authenticator, 'Authenticators.OtherAuthenticatorMock', "Ember.Session saves the authenticator's prototype to the store when it is assigned.");
 });

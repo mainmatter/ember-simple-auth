@@ -36,12 +36,33 @@ class TemplateData
 
   def methods(class_name = nil)
     @data['classitems'].select do |item|
-      item['itemtype'] == 'method' && item['access'] != 'private'
+      item['itemtype'] == 'method' && item['access'] != 'private' && !(item['name'] =~ /^actions\./)
     end.select do |item|
       !!class_name ? item['class'] == class_name : true
-    end.sort do |a, b|
-      a['name'] <=> b['name']
     end
+  end
+
+  def actions(class_name = nil)
+    @data['classitems'].select do |item|
+      item['itemtype'] == 'method' && item['access'] != 'private' && item['name'] =~ /^actions\./
+    end.select do |item|
+      !!class_name ? item['class'] == class_name : true
+    end.map do |item|
+      item.dup.merge('name' => item['name'].gsub(/^actions\./, ''))
+    end
+  end
+
+  def properties(class_name = nil)
+    @data['classitems'].select do |item|
+      item['itemtype'] == 'property' && item['access'] != 'private'
+    end.select do |item|
+      !!class_name ? item['class'] == class_name : true
+    end
+  end
+
+  def params_signature(params)
+    params = (params || []).map { |param| param['optional'] ? "[#{param['name']}]" : param['name'] }
+    "(#{params.join(', ')})"
   end
 
   def markdown(content)

@@ -1,14 +1,19 @@
 'use strict';
 
 /**
-  The mixin for the login controller (if you're using the default
-  credentials-based login). This controller sends the user's credentials to the
-  server and sets up the session (see
-  [Session#setup](#Ember.SimpleAuth.Session_setup)) from the reponse.
+  The mixin for the authentication controller that handles the
+  `authenticationRoute` specified in
+  [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)). It provides the
+  `authenticate` action that will authenticate the session with the configured
+  authenticator when invoked. __This is a specialization of
+  [Ember.SimpleAuth.AuthenticationControllerMixin](#Ember-SimpleAuth-AuthenticationControllerMixin)
+  for authentication mechanisms that work like a regular login with
+  credentials.__
 
-  Accompanying the login controller your application needs to have a `login`
-  template with the fields `indentification` and `password` as well as an
-  actionable button or link that triggers the `login` action, e.g.:
+  Accompanying the controller that this mixin is mixed in the application needs
+  to have a `login` template with the fields `indentification` and `password`
+  as well as an actionable button or link that triggers the `authenticate`
+  action, e.g.:
 
   ```handlebars
   <form {{action login on='submit'}}>
@@ -22,71 +27,34 @@
 
   @class LoginControllerMixin
   @namespace Ember.SimpleAuth
-  @extends Ember.Mixin
-  @static
+  @extends Ember.SimpleAuth.AuthenticationControllerMixin
 */
-Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create({
+Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create(Ember.SimpleAuth.AuthenticationControllerMixin, {
   /**
-    This method takes the user's credentials and builds the request options as
-    they are passed Ember.$.ajax (see http://api.jquery.com/jQuery.ajax/).
+    The authenticator class used to authenticate the session.
 
-    The default implementation follows RFC 6749. In case you're using a custom
-    server API you can override this method to return options as they fit your
-    server API, e.g.:
-
-    ```javascript
-    App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-      tokenRequestOptions: function(username, password) {
-        var putData = '{ "SESSION": { "USER_NAME": "' + username + '", "PASS": "' + password + '" } }';
-        return { type: 'PUT', data: putData, contentType: 'application/json' };
-      }
-    });
-    ```
-
-    @method tokenRequestOptions
-    @param {String} identification The user's identification (user name or email address or whatever is used to identify the user)
-    @param {String} password The user's password
-    @param {String} client_id The (optional) client id (see http://tools.ietf.org/html/rfc6749#section-3.2.1)
-    @param {String} client_secret The (optional) client secret (see http://tools.ietf.org/html/rfc6749#section-3.2.1)
-    @return {Object} The request options to be passed to Ember.$.ajax (see http://api.jquery.com/jQuery.ajax/ for detailed documentation)
+    @property authenticator
+    @type Ember.SimpleAuth.Authenticators.Base
+    @default Ember.SimpleAuth.Authenticators.OAuth2
   */
-  tokenRequestOptions: function(identification, password, client_id, client_secret) {
-    var postData = {
-        'grant_type':   'password',
-        'username':     identification,
-        'password':     password
-    };
+  authenticator: Ember.SimpleAuth.Authenticators.OAuth2,
 
-    if (!Ember.isEmpty(client_id)) {
-      postData.client_id = client_id;
-      if (!Ember.isEmpty(client_secret)) {
-        postData.client_secret = client_secret;
-      }
-    }
-
-    return { type: 'POST', data: postData, contentType: 'application/x-www-form-urlencoded' };
-  },
   actions: {
     /**
-      @method login
-      @private
+      This action will authenticate the session with an instance of the
+      configured `authenticator` class if both `identification` and `password`
+      are non-empty. It passes both values to the authenticator.
+
+      _The action also resets the `password` property so sensitive data is not
+      stored anywhere for longer than necessary._
+
+      @method actions.authenticate
     */
-    login: function() {
-      var _this = this;
-      var data = this.getProperties('identification', 'password', 'client_id', 'client_secret');
+    authenticate: function() {
+      var data = this.getProperties('identification', 'password');
       if (!Ember.isEmpty(data.identification) && !Ember.isEmpty(data.password)) {
-        this.set('password', undefined);
-        var requestOptions = this.tokenRequestOptions(data.identification, data.password, data.client_id, data.client_secret);
-        Ember.$.ajax(Ember.SimpleAuth.serverTokenEndpoint, requestOptions).then(function(response) {
-          Ember.run(function() {
-            _this.get('session').setup(response);
-            _this.send('loginSucceeded');
-          });
-        }, function(xhr, status, error) {
-          Ember.run(function() {
-            _this.send('loginFailed', xhr, status, error);
-          });
-        });
+        this.set('password', null);
+        this._super(data);
       }
     }
   }

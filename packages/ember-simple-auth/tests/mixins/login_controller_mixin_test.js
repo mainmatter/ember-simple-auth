@@ -1,110 +1,84 @@
 var testController;
 var TestController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
   actions: {
-    loginSucceeded: function() {
-      this.invokedLoginSucceeded = true;
+    sessionAuthenticationSucceeded: function() {
+      this.invokedSessionAuthenticationSucceeded = true;
     },
-    loginFailed: function(xhr, status, error) {
-      this.invokedLoginFailed   = true;
-      this.loginFailedArguments = [xhr, status, error];
+    sessionAuthenticationFailed: function(error) {
+      this.invokedSessionAuthenticationFailed     = true;
+      this.invokedSessionAuthenticationFailedWith = error;
     }
   }
 });
 
-var ajaxMock;
-var AjaxMock = Ember.Object.extend({
-  response:    { access_token: 'authToken' },
-  ajaxCapture: function(url, options) {
-    var _this           = this;
-    this.requestUrl     = url;
-    this.requestOptions = options;
-    return {
-      then: function(success, fail) {
-        if (!!success) {
-          success(_this.response);
-        }
-        if (!!fail) {
-          fail('xhr', 'status', 'error');
-        }
+var sessionMock;
+var SessionMock = Ember.Object.extend({
+  authenticate: function(authenticator, options) {
+    this.invokedAuthenticate     = true;
+    this.invokedAuthenticateWith = { authenticator: authenticator, options: options };
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      if (!!SessionMock._resolve) {
+        resolve(SessionMock._resolve);
+      } else {
+        reject(SessionMock._reject);
       }
-    };
+    });
   }
 });
 
 module('Ember.SimpleAuth.LoginControllerMixin', {
-  originalAjax: Ember.$.ajax,
   setup: function() {
-    testController                       = TestController.create();
-    ajaxMock                             = AjaxMock.create();
-    Ember.SimpleAuth.serverTokenEndpoint = '/token';
-    Ember.$.ajax                         = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
-    var session                          = Ember.SimpleAuth.Session.create();
-    session.destroy();
-    testController.set('session', session);
-    testController.setProperties({ identification: 'identification', password: 'password', client_id: 'client_id', client_secret: 'client_secret' });
-  },
-  teardown: function() {
-    Ember.$.ajax = this.originalAjax;
-    Ember.run.cancel(testController.refreshTokenLater);
-    Ember.run.cancel(Ember.SimpleAuth.Session._syncPropertiesTimeout);
+    testController = TestController.create();
+    sessionMock    = SessionMock.create();
+    testController.set('session', sessionMock);
+    testController.setProperties({ identification: 'identification', password: 'password' });
   }
 });
 
-test('sends a request to the server token route on login', function() {
-  testController.send('login');
-
-  equal(ajaxMock.requestUrl, '/token', 'Ember.SimpleAuth.LoginControllerMixin sends a request to the serverTokenEndpoint on login.');
-  equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.LoginControllerMixin sends a POST request on login.');
-  deepEqual(ajaxMock.requestOptions.data, { grant_type: 'password', username: 'identification', password: 'password', client_id: 'client_id', client_secret: 'client_secret' }, 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct data on login.');
-  equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the content type "application/x-www-form-urlencoded" on login.');
-  equal(testController.get('password'), undefined, 'Ember.SimpleAuth.LoginControllerMixin clears the password on login.');
-
-  testController.reopen({
-    tokenRequestOptions: function(username, password) {
-      var putData = '{ "session": { "login": "' + username + '", "password": "' + password + '" } }';
-      return { type: 'PUT', data: putData, contentType: 'application/json' };
-    }
+test('authenticates the session', function() {
+  Ember.run(function() {
+    testController.setProperties({ identification: 'identification', password: 'password' });
+    testController.send('authenticate');
   });
-  testController.set('password', 'password');
-  testController.send('login');
 
-  equal(ajaxMock.requestOptions.type, 'PUT', 'Ember.SimpleAuth.LoginControllerMixin sends a PUT request on login when tokenRequestOptions is overridden.');
-  equal(ajaxMock.requestOptions.data, '{ "session": { "login": "identification", "password": "password" } }', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the correct data on login when tokenRequestOptions is overridden.');
-  equal(ajaxMock.requestOptions.contentType, 'application/json', 'Ember.SimpleAuth.LoginControllerMixin sends a request with the content type "application/json" on login when tokenRequestOptions is overridden.');
+  ok(sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.LoginControllerMixin authenticates the session when authentication is triggered.');
+  ok(sessionMock.invokedAuthenticateWith.authenticator instanceof Ember.SimpleAuth.Authenticators.OAuth2, 'Ember.SimpleAuth.LoginControllerMixin authenticates the session with the correct authenticator.');
+  deepEqual(sessionMock.invokedAuthenticateWith.options, { identification: 'identification', password: 'password' }, 'Ember.SimpleAuth.LoginControllerMixin authenticates the session with identification and password.');
 });
 
-test('does not send a request on login when identification or password are empty', function() {
+test('does not authenticate the session when identification or password are empty', function() {
   testController.setProperties({ identification: '', password: 'password' });
-  testController.send('login');
+  testController.send('authenticate');
 
-  equal(ajaxMock.requestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on login when identification is empty.');
+  ok(!sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.LoginControllerMixin does not authenticate the session when authentication is triggered but identification is empty.');
 
   testController.setProperties({ identification: 'identification', password: '' });
-  testController.send('login');
+  testController.send('authenticate');
 
-  equal(ajaxMock.requestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on login when password is empty.');
+  ok(!sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.LoginControllerMixin does not authenticate the session when authentication is triggered but password is empty.');
 
   testController.setProperties({ identification: '', password: '' });
-  testController.send('login');
+  testController.send('authenticate');
 
-  equal(ajaxMock.requestUrl, undefined, 'Ember.SimpleAuth.LoginControllerMixin does not send a request on login when identification and password are empty.');
+  ok(!sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.LoginControllerMixin does not authenticate the session when authentication is triggered but identification and password are empty.');
 });
 
-test('updates the current session with the server response on login', function() {
-  testController.send('login');
+test('triggers the authenticationSucceeded action when authentication is successful', function() {
+  SessionMock._resolve = true;
+  Ember.run(function() {
+    testController.send('authenticate');
+  });
 
-  equal(testController.session.get('authToken'), 'authToken', 'Ember.SimpleAuth.LoginControllerMixin updates the current session with the server response on login.');
+  ok(testController.invokedSessionAuthenticationSucceeded, 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationSucceeded action when authentication was successful.');
 });
 
-test('invokes the login succeeded action when login is successful', function() {
-  testController.send('login');
+test('triggers the authenticationFailed action when authentication fails', function() {
+  SessionMock._resolve = false;
+  SessionMock._reject = 'error!';
+  Ember.run(function() {
+    testController.send('authenticate');
+  });
 
-  ok(testController.invokedLoginSucceeded, 'Ember.SimpleAuth.LoginControllerMixin invokes the loginSucceeded action when login is successful.');
-});
-
-test('invokes the login failed action with the callback arguments', function() {
-  testController.send('login');
-
-  ok(testController.invokedLoginFailed, 'Ember.SimpleAuth.LoginControllerMixin invokes the loginFailed action when the request fails.');
-  deepEqual(testController.loginFailedArguments, ['xhr', 'status', 'error'], 'Ember.SimpleAuth.LoginControllerMixin invokes the loginFailed action with the callback arguments when the request fails.');
+  ok(testController.invokedSessionAuthenticationFailed, 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationFailed action when authentication fails.');
+  equal(testController.invokedSessionAuthenticationFailedWith, 'error!', 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationFailed action with the rejection value of the session.');
 });

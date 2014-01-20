@@ -11,20 +11,15 @@
           <a style="cursor: pointer">Protected Page</a>
         {{/link-to}}
       </ul>
-      {{! display logout button when a session is authenticated, login button otherwise }}
+      {{! display logout button when the session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
-        <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
+        <a {{ action 'invalidateSession' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
       {{else}}
-        <a {{ action 'login' }} class="btn btn-success navbar-btn navbar-right">Login</a>
+        <a {{ action 'authenticateSession' }} class="btn btn-success navbar-btn navbar-right">Login</a>
       {{/if}}
     </div>
   </nav>
   <div class="container">
-    {{#if loginErrorMessage}}
-      <div class="alert alert-danger">
-        <strong>Login failed:</strong> {{loginErrorMessage}}
-      </div>
-    {{/if}}
     {{outlet}}
   </div>
 </script>
@@ -35,7 +30,7 @@
   </div>
   {{#unless session.isAuthenticated}}
     <div class="alert alert-info">
-      You can <a {{ action 'login' }} class="alert-link" style="cursor: pointer;">log in</a> with login <code>letme</code> and password <code>in</code>.
+      You can <a {{ action 'authenticateSession' }} class="alert-link" style="cursor: pointer;">log in</a> with your Facebook account.
     </div>
   {{/unless}}
 </script>
@@ -49,44 +44,67 @@
   </div>
 </script>
 
-<script>
+<script type="text/javascript">
   // setup Ember.SimpleAuth in an initializer
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      Ember.SimpleAuth.setup(container, application);
+      Ember.SimpleAuth.setup(application);
     }
   });
 
-  App = Ember.Application.create({});
+  App = Ember.Application.create();
 
   App.Router.map(function() {
-    //protected route that's inaccessible without authentication
+    // protected route that's inaccessible without authentication
     this.route('protected');
   });
 
-  // use the provided mixin in the application route
-  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
-    actions: {
-      login: function() {
+  // the custom authenticator that initiates the authentication process with Facebook
+  App.ExternalAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+    restore: function(properties) {
+      var _this = this;
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        if (!Ember.isEmpty(properties.access_token)) {
+          resolve(properties);
+        } else {
+          reject();
+        }
+      });
+    },
+    authenticate: function() {
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        App.ExternalConnector.one('externalAuthenticationSucceeded', function(properties) {
+          Ember.run(function() { resolve(properties); });
+        });
+        App.ExternalConnector.one('externalAuthenticationFailed', function(error) {
+          Ember.run(function() { reject(error); });
+        });
         // open a new window that displays the Facebook login dialog; see the callback handler on the server side
         // (get '/7-external-oauth/callback') in the runner file
-        window.open(
+        var authWindow = window.open(
           'https://www.facebook.com/dialog/oauth?client_id=631252926924840&redirect_uri=http://localhost:4567/7-external-oauth/callback',
           '_blank',
           'menubar=no,status=no,height=400,width=800'
         );
-      },
-      // set the application controller's error messages when the login fails so it gets displayed
-      // in the application template (see tempate above)
-      loginFailed: function(error) {
-        this.controllerFor('application').set('loginErrorMessage', 'The login failed!');
-      },
-      // clear the error message when the login succeeds (must call _super here to make sure an aborted
-      // transition is retried etc.)
-      loginSucceeded: function() {
-        this._super();
-        this.controllerFor('application').set('loginErrorMessage', undefined);
+      });
+    }
+  });
+  // this is used as an interface to the external window and will receive any events triggered from
+  // that window
+  App.ExternalConnector = Ember.Object.createWithMixins(Ember.Evented);
+
+  // use the provided mixin in the application route
+  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+    actions: {
+      // override authenticateSession to instead of transitioning to a login route start authentication directly
+      authenticateSession: function() {
+        var _this = this;
+        this.get('session').authenticate(App.ExternalAuthenticator.create(), {}).then(function() {
+          _this.send('sessionAuthenticationSucceeded');
+        }, function(error) {
+          _this.send('sessionAuthenticationFailed', error);
+        });
       }
     }
   });

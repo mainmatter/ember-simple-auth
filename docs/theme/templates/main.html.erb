@@ -10,164 +10,270 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
     <script src="http://yandex.st/highlightjs/7.4/highlight.min.js"></script>
     <style type="text/css" media="screen">
-    body {
-      position: relative;
-      padding-top: 70px;
-    }
-    #sidebar .nav {
-      background-color: #f8f8f8;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-    #sidebar .nav li {
-      line-height: 110%;
-    }
-    #sidebar .nav li.active {
-      background-color: #eee;
-    }
-    #sidebar .nav li ul.nav {
-      display: none;
-      border: none;
-      border-radius: 0;
-    }
-    #sidebar .nav li.active ul.nav {
-      display: block;
-    }
-    #sidebar .nav li ul.nav li a {
-      padding-left: 30px;
-    }
-    #main-content {
-      overflow-y: scroll;
-      overflow-x: hidden;
-      height: 100%;
-    }
-    dl.params {
-      margin-bottom: 10px;
-    }
-    dl.params dd {
-      margin-bottom: 10px;
-    }
-    dl.props {
-      padding-left: 30px;
-      margin-top: -10px;
-    }
-    .panel-method h3 {
-      font-size: 24px !important;
-    }
-    .panel-method p {
-      text-align: justify;
-    }
-    h1.class {
-      margin-bottom: 5px;
-    }
-    a.element-anchor {
-      display: block;
-      position: relative;
-      top: -20px;
-      height: 1px;
-    }
+      body {
+        text-align: justify;
+      }
+      .navbar-nav > .active > a {
+        background: transparent !important;
+      }
+      .navbar .dropdown > a {
+        padding: 15px 10px 15px 0;
+      }
+      .navbar .navbar-collapse {
+        padding-left: 0;
+      }
+      h1.class, h3.property, h3.method, dl.params dt, span.type {
+        font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+        font-weight: bold;
+      }
+      span.type {
+        color: #999;
+      }
+      span.type.return {
+        font-weight:bold
+      }
+      .overview h4:first-child {
+        margin-top: 0;
+      }
+      h3.section, h4.subsection {
+        padding-bottom: 5px;
+        border-bottom: 1px dotted #eee;
+      }
+      .panel-heading span.pull-right {
+        margin-left: 5px;
+      }
+      dl.params dl.props {
+        margin-left: 3em;
+        margin-top: 5px;
+      }
+      strong {
+        background-color: #fffebb;
+        font-weight: normal;
+        padding: 2px;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+      }
+      pre, code {
+        color: #333;
+        background: #f8f8ff;
+      }
+      body .container .page-header:first-child {
+        margin-top: 55px;
+      }
+      a.symbol-anchor {
+        display: block;
+        position: relative;
+        top: -55px;
+        height: 1px;
+      }
     </style>
   </head>
-  <body data-spy="scroll" data-target="#sidebar">
+  <body>
     <header class="navbar navbar-default navbar-fixed-top">
       <div class="container">
-        <div class="navbar-header">
-          <span class="navbar-brand"><%= project['name'] %></span>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown" id="classesDropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption"><%= classes.first['name'] %></span></a>
+              <ul class="dropdown-menu">
+                <% classes.each do |class_data| %>
+                  <li>
+                    <a href="#<%= sanitize_id(class_data['name']) %>"><%= class_data['name'] %></a>
+                  </li>
+                <% end %>
+              </ul>
+            </li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="<%= project['github_url'] %>"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text"><span class="label label-primary"><%= project['version'] %></span></p></li>
+            <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/<%= project['version'] %>"><span class="label label-primary"><%= project['version'] %></span></a></p></li>
           </ul>
         </div>
       </div>
     </header>
     <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <nav id="sidebar">
-            <ul class="nav affix">
-              <% classes.each do |class_data| %>
-                <li>
-                  <a href="#<%= sanitize_id(class_data['name']) %>"><%= class_data['name'] %></a>
-                  <ul class="nav">
-                    <% methods(class_data['name']).each do |method_data| %>
-                      <li><a href="#<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(method_data['name']) %>"><%= method_data['name'] %></a></li>
-                    <% end %>
-                  </ul>
-                </li>
-              <% end %>
-            </ul>
-          </nav>
-        </div>
-        <div id="main-content" class="col-md-8">
-          <div class="jumbotron">
-            <h1><%= project['name'] %></h1>
-            <%= markdown(project['description']) %>
-          </div>
-          <% classes.each do |class_data| %>
-            <a id="<%= sanitize_id(class_data['name']) %>" class="element-anchor">&nbsp;</a>
+      <% classes.each do |class_data| %>
+        <div class="row">
+          <div class="col-md-12">
             <div class="page-header">
+              <a id="<%= sanitize_id(class_data['name']) %>" class="symbol-anchor"></a>
               <h1 class="class"><%= class_data['name'] %></h1>
-              <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', class_data['file'], '#L', class_data['line']].join %>"><code><%= [class_data['file'], '#', class_data['line']].join %></code></a></small></p>
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
             <%= markdown(class_data['description']) %>
-            <% methods(class_data['name']).each do |method_data| %>
-              <div class="panel panel-default panel-method">
-                <a id="<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(method_data['name']) %>" class="element-anchor"></a>
-                <div class="panel-heading">
-                  <h3 class="panel-title">
-                    <%= method_data['name'] %>
-                    <span class="text-muted">
-                      <% if method_data['static'] %>
-                        <small><span class="label label-info pull-right">static</span></small>
-                      <% end %>
-                      <% if !!method_data['params'] %>
-                        (<%= method_data['params'].map { |param| param['optional'] ? "[#{param['name']}]" : param['name'] }.join(', ') %>)
-                      <% end %>
-                    </span>
-                  </h3>
-                  <p><small>Defined in: <a href="<%= [project['github_url'], '/blob/master/', method_data['file'], '#L', method_data['line']].join %>"><code><%= [method_data['file'], '#', method_data['line']].join %></code></a></small></p>
+            <% if properties(class_data['name']).any? %>
+            <h3 class="section">Properties</h3>
+              <% properties(class_data['name']).each do |property_data| %>
+                <div class="panel panel-default">
+                  <a id="<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(property_data['name']) %>" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', property_data['file'], '#L', property_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <% if property_data.key?('readonly') %>
+                      <span class="label label-danger pull-right">read only</span>
+                    <% end %>
+                    <% if property_data['static'] %>
+                      <span class="label label-info pull-right">static</span>
+                    <% end %>
+                    <h3 class="panel-title property"><%= property_data['name'] %> <span class="type">{<%= property_data['type'] %>}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    <%= markdown(property_data['description']) %>
+                    <% if property_data['default'] %>
+                      Defaults to <code><%= property_data['default'] %></code>
+                    <% end %>
+                  </div>
                 </div>
-                <div class="panel-body">
-                  <%= markdown(method_data['description']) %>
-                </div>
-                <ul class="list-group">
-                  <% if !!method_data['params'] %>
-                    <li class="list-group-item">
-                      <h4>Arguments</h4>
+              <% end %>
+            <% end %>
+            <% if methods(class_data['name']).any? %>
+              <h3 class="section">Methods</h3>
+              <% methods(class_data['name']).each do |method_data| %>
+                <div class="panel panel-default">
+                  <a id="<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(method_data['name']) %>" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', method_data['file'], '#L', method_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <% if method_data['static'] %>
+                      <span class="label label-info pull-right">static</span>
+                    <% end %>
+                    <h3 class="panel-title method">
+                      <%= method_data['name'] %><%= params_signature(method_data['params']) %>
+                      <% if !!(method_data['return'] || {})['type'] %>
+                        <span class="type">&rarr; <%= method_data['return']['type'] %></span>
+                      <% end %>
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <%= markdown(method_data['description']) %>
+                    <% if !!method_data['params'] %>
+                      <h4 class="subsection">Arguments</h4>
                       <dl class="params">
                         <% method_data['params'].each do |param_data| %>
-                          <dt><%= param_data['optional'] ? "[#{param_data['name']}]" : param_data['name'] %>: <code><%= param_data['type'] %></code></dt>
+                          <dt><%= param_data['optional'] ? "[#{param_data['name']}]" : param_data['name'] %> <span class="type">{<%= param_data['type'] %>}</span></dt>
                           <dd><%= markdown(param_data['description']) %></dd>
                           <% if param_data['props'] %>
                             <dl class="props">
                               <% param_data['props'].each do |prop_data| %>
-                                <dt><%= param_data['name'] %>.<%= prop_data['optional'] ? "[#{prop_data['name']}]" : prop_data['name'] %>: <code><%= prop_data['type'] %></code></dt>
+                                <dt><%= param_data['name'] %>.<%= prop_data['optional'] ? "[#{prop_data['name']}]" : prop_data['name'] %> <span class="type">{<%= prop_data['type'] %>}</span></dt>
                                 <dd><%= markdown(prop_data['description']) %></dd>
                               <% end %>
                             </dl>
                           <% end %>
                         <% end %>
                       </dl>
-                    </li>
-                  <% end %>
-                  <% if !!method_data['return'] %>
-                    <li class="list-group-item">
-                      <h4>Returns</h4>
-                      <dl>
-                        <dt><code><%= method_data['return']['type'] %></code></dt>
-                        <dd><%= markdown(method_data['return']['description']) %></dd>
-                      </dl>
-                    </li>
-                  <% end %>
-                </ul>
-              </div>
+                    <% end %>
+                    <% if !!method_data['return'] %>
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; <%= method_data['return']['type'] %></span></p>
+                      <%= markdown(method_data['return']['description']) %>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
             <% end %>
-          <% end %>
+            <% if actions(class_data['name']).any? %>
+              <h3 class="section">Actions</h3>
+              <% actions(class_data['name']).each do |action_data| %>
+                <div class="panel panel-default">
+                  <a id="<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(action_data['name']) %>" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', action_data['file'], '#L', action_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      <%= action_data['name'] %><%= params_signature(action_data['params']) %>
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <%= markdown(action_data['description']) %>
+                    <% if !!action_data['params'] %>
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        <% action_data['params'].each do |param_data| %>
+                          <dt><%= param_data['optional'] ? "[#{param_data['name']}]" : param_data['name'] %> <span class="type">{<%= param_data['type'] %>}</span></dt>
+                          <dd><%= markdown(param_data['description']) %></dd>
+                          <% if param_data['props'] %>
+                            <dl class="props">
+                              <% param_data['props'].each do |prop_data| %>
+                                <dt><%= param_data['name'] %>.<%= prop_data['optional'] ? "[#{prop_data['name']}]" : prop_data['name'] %> <span class="type">{<%= prop_data['type'] %>}</span></dt>
+                                <dd><%= markdown(prop_data['description']) %></dd>
+                              <% end %>
+                            </dl>
+                          <% end %>
+                        <% end %>
+                      </dl>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+          <div class="col-md-3 overview">
+            <% if !!class_data['extends'] %>
+              <h4>Extends</h4>
+              <p><span class="type"><%= class_data['extends'] %></span></p>
+            <% end %>
+            <% if !!class_data['uses'] %>
+              <h4>Uses</h4>
+              <ul class="list-unstyled">
+                <% class_data['uses'].each do |uses| %>
+                  <li>
+                    <span class="type"><%= uses %></span>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+            <% if properties(class_data['name']).any? %>
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                <% properties(class_data['name']).each do |property_data| %>
+                  <li>
+                    <a href="#<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(property_data['name']) %>"><%= property_data['name'] %></a>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+            <% if methods(class_data['name']).any? %>
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                <% methods(class_data['name']).each do |method_data| %>
+                  <li>
+                    <a href="#<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(method_data['name']) %>"><%= method_data['name'] %></a>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+            <% if actions(class_data['name']).any? %>
+              <h4>Actions</h4>
+              <ul class="list-unstyled">
+                <% actions(class_data['name']).each do |action_data| %>
+                  <li>
+                    <a href="#<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(action_data['name']) %>"><%= action_data['name'] %></a>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript" charset="utf-8">
+      $(function() {
+        hljs.initHighlightingOnLoad();
+        function updateDropdownCaption(text) {
+          if (!!text) {
+            $('.navbar .dropdown .dropdown-toggle .caption').text(text);
+          }
+        }
+        $('.navbar .dropdown a[class!="dropdown-toggle"]').on('click', function() {
+          updateDropdownCaption($(this).text());
+        });
+        updateDropdownCaption($('.navbar .dropdown a[href="' + document.location.hash + '"]').text());
+        $('body').scrollspy({ target: '.navbar' }).on('activate.bs.scrollspy', function(e) {
+          var link = $(e.target).find('.dropdown-menu li.active a');
+          updateDropdownCaption(link.text());
+        })
+      });
+    </script>
   </body>
 </html>

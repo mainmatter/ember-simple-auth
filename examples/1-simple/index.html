@@ -11,11 +11,11 @@
           <a style="cursor: pointer">Protected Page</a>
         {{/link-to}}
       </ul>
-      {{! display logout button when a session is authenticated, login button otherwise }}
+      {{! display logout button when the session is authenticated, login button otherwise }}
       {{#if session.isAuthenticated}}
-        <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
+        <a {{ action 'invalidateSession' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
       {{else}}
-        <a {{ action 'login' }} class="btn btn-success navbar-btn navbar-right">Login</a>
+        {{#link-to 'login' class="btn btn-success navbar-btn navbar-right"}}Login{{/link-to}}
       {{/if}}
     </div>
   </nav>
@@ -39,8 +39,8 @@
   <div class="page-header">
     <h1>Login</h1>
   </div>
-  {{! login form; the fields must be named "identification" and "password"; the controller action is "login" }}
-  <form {{action login on='submit'}}>
+  {{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
+  <form {{action authenticate on='submit'}}>
     <div class="form-group">
       <label for="identification">Login</label>
       {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login' class='form-control'}}
@@ -62,12 +62,12 @@
   </div>
 </script>
 
-<script>
+<script type="text/javascript">
   // setup Ember.SimpleAuth in an initializer
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      Ember.SimpleAuth.setup(container, application);
+      Ember.SimpleAuth.setup(application);
     }
   });
 
@@ -76,7 +76,7 @@
   App.Router.map(function() {
     // login route
     this.route('login');
-    //protected route that's inaccessible without authentication
+    // protected route that's inaccessible without authentication
     this.route('protected');
   });
 
