@@ -105,7 +105,6 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
       var properties        = _this.restore();
       var encodedProperties = JSON.stringify(properties);
       if (encodedProperties !== _this._lastProperties) {
-        console.log('triggering change');
         _this._lastProperties = encodedProperties;
         _this.trigger('ember-simple-auth:session-updated', properties);
       }
