@@ -151,9 +151,9 @@ This route displays the login form with fields for `identification` and
 ```html
 <form {{action authenticate on='submit'}}>
   <label for="identification">Login</label>
-  {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login'}}
+  {{input id='identification' placeholder='Enter Login' value=identification}}
   <label for="password">Password</label>
-  {{view Ember.TextField id='password' type='password' valueBinding='password' placeholder='Enter Password'}}
+  {{input id='password' placeholder='Enter Password' type='password' value=password}}
   <button type="submit">Login</button>
 </form>
 ```
