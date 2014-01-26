@@ -5,5 +5,5 @@ notifications:
 rvm:
   - 1.9.3
 cache: bundler
-install: bundle install --deployment
+install: travis_retry bundle install --deployment
 script: bundle exec rake test\[all]
