@@ -138,7 +138,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.0.11"><span class="label label-primary">0.0.11</span></a></p></li>
+            <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.1.0"><span class="label label-primary">0.1.0</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -1437,9 +1437,9 @@ action, e.g.:</p>
 
 <pre lang="handlebars"><code>&lt;form {{action login on=&#39;submit&#39;}}&gt;
   &lt;label for=&quot;identification&quot;&gt;Login&lt;/label&gt;
-  {{view Ember.TextField id=&#39;identification&#39; valueBinding=&#39;identification&#39; placeholder=&#39;Enter Login&#39;}}
+  {{input id=&#39;identification&#39; placeholder=&#39;Enter Login&#39; value=identification}}
   &lt;label for=&quot;password&quot;&gt;Password&lt;/label&gt;
-  {{view Ember.TextField id=&#39;password&#39; type=&#39;password&#39; valueBinding=&#39;password&#39; placeholder=&#39;Enter Password&#39;}}
+  {{input id=&#39;password&#39; placeholder=&#39;Enter Password&#39; type=&#39;password&#39; value=password}}
   &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
 &lt;/form&gt;
 </code></pre>
