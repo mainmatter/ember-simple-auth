@@ -1,33 +1,22 @@
 {
     "predef": [
-        "define",
         "console",
-        "Ember",
-        "DS",
-        "Handlebars",
-        "Metamorph",
-        "RSVP",
         "require",
-        "requireModule",
         "equal",
-        "notEqual",
         "test",
-        "asyncTest",
         "testBoth",
         "testWithDefault",
         "raises",
-        "throws",
         "deepEqual",
         "start",
         "stop",
         "ok",
         "strictEqual",
         "module",
-        "expect",
-        "minispade"
+        "expect"
     ],
 
-    "node" : false,
+    "node" : true,
     "browser" : true,
 
     "boss" : true,
