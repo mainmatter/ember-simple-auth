@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     cfg: {
       name: 'ember-simple-auth.js',
       barename: 'ember-simple-auth',
-      namespace: 'EmberSimpleAuth'
+      namespace: 'Ember'
     },
     env: process.env,
     pkg: grunt.file.readJSON('package.json')/*,
