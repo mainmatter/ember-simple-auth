@@ -110,6 +110,10 @@ Ember.SimpleAuth = Ember.Namespace.create({
     var link = this._linkOrigins[url] || function() {
       var link = document.createElement('a');
       link.href = url;
+      //IE requires the following line when url is relative.
+      //First assignment of relative url to link.href results in absolute url on link.href but link.hostname and other properties are not set
+      //Second assignment of absolute url to link.href results in link.hostname and other properties being set as expected
+      link.href = link.href;
       return (this._linkOrigins[url] = link);
     }.apply(this);
     var linkOrigin = extractLocationOrigin(link);
