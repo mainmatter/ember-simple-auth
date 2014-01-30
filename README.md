@@ -200,6 +200,17 @@ easy to implement authenticators for other strategies as well. All that needs
 to be done is to extend `Authenticators.Base` and implement 3 methods (see the
 [API docs for `Authenticators.Base`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authenticators-Base)).
 
+__When implementing a custom authenticator make sure it is defined in the
+application's namespace.__ Otherwise its class name cannot be auto-detected and
+the session restoration mechanism breaks. So always define the authenticator
+like this:
+
+```js
+App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+  ...
+});
+```
+
 To use a custom authenticator, simply specify it in the controller handling the
 login route of the application:
 

@@ -17,6 +17,26 @@
   when any of the session properties change. The session listens to that event
   and will handle the changes accordingly.
 
+  __Custom authenticators have to be defined in the applications's namespace__;
+  otherwise their class name cannot be auto-detected and the session
+  restoration mechanism breaks (see
+  [Ember.SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)).
+  So instead of this:
+
+  ```javascript
+  var CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+    ...
+  });
+  ```
+
+  the authenticator should be defined like this:
+
+  ```javascript
+  App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+    ...
+  });
+  ```
+
   @class Base
   @namespace Ember.SimpleAuth.Authenticators
   @extends Ember.Object
