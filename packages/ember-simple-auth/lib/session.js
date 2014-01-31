@@ -191,6 +191,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   */
   bindToAuthenticatorEvents: function() {
     var _this = this;
+    this.authenticator.off('ember-simple-auth:session-updated');
     this.authenticator.on('ember-simple-auth:session-updated', function(content) {
       _this.setup(_this.authenticator, content);
     });

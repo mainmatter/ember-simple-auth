@@ -55,7 +55,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       if (!Ember.isEmpty(properties.access_token)) {
-        _this.scheduleAccessTokenRefresh(properties.expires_in, properties.refresh_token);
+        _this.scheduleAccessTokenRefresh(properties.expires_in, properties.expires_at, properties.refresh_token);
         resolve(properties);
       } else {
         reject();
@@ -87,8 +87,9 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
       var data = { grant_type: 'password', username: credentials.identification, password: credentials.password };
       _this.makeRequest(data).then(function(response) {
         Ember.run(function() {
-          _this.scheduleAccessTokenRefresh(response.expires_in, response.refresh_token);
-          resolve(response);
+          var expiresAt = _this.absolutizeExpirationTime(response.expires_in);
+          _this.scheduleAccessTokenRefresh(response.expires_in, expiresAt, response.refresh_token);
+          resolve(Ember.$.extend(response, { expires_at: expiresAt }));
         });
       }, function(xhr, status, error) {
         Ember.run(function() {
@@ -114,14 +115,18 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
     @method scheduleAccessTokenRefresh
     @private
   */
-  scheduleAccessTokenRefresh: function(expiry, refreshToken) {
+  scheduleAccessTokenRefresh: function(expiresIn, expiresAt, refreshToken) {
     var _this = this;
     if (this.refreshAccessTokens) {
       Ember.run.cancel(this._refreshTokenTimeout);
       delete this._refreshTokenTimeout;
-      var waitTime = (expiry || 0) * 1000 - 5000; //refresh token 5 seconds before it expires
-      if (!Ember.isEmpty(refreshToken) && waitTime > 0) {
-        this._refreshTokenTimeout = Ember.run.later(this, this.refreshAccessToken, expiry, refreshToken, waitTime);
+      var now = new Date();
+      if (Ember.isEmpty(expiresAt) && !Ember.isEmpty(expiresIn)) {
+        expiresAt = new Date(now.getTime() + (expiresIn - 5) * 1000).getTime();
+      }
+      if (!Ember.isEmpty(refreshToken) && !Ember.isEmpty(expiresAt) && expiresAt > now) {
+        var waitTime = expiresAt - now.getTime();
+        this._refreshTokenTimeout = Ember.run.later(this, this.refreshAccessToken, expiresIn, refreshToken, waitTime);
       }
     }
   },
@@ -130,19 +135,26 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
     @method refreshAccessToken
     @private
   */
-  refreshAccessToken: function(expiry, refreshToken) {
+  refreshAccessToken: function(expiresIn, refreshToken) {
     var _this = this;
     var data  = { grant_type: 'refresh_token', refresh_token: refreshToken };
     this.makeRequest(data).then(function(response) {
       Ember.run(function() {
-        expiry       = response.expires_in || expiry;
-        refreshToken = response.refresh_token || refreshToken;
-        _this.scheduleAccessTokenRefresh(expiry, refreshToken);
-        _this.trigger('ember-simple-auth:session-updated', Ember.$.extend(response, { expires_in: expiry, refresh_token: refreshToken }));
+        expiresIn     = response.expires_in || expiresIn;
+        refreshToken  = response.refresh_token || refreshToken;
+        var expiresAt = _this.absolutizeExpirationTime(expiresIn);
+        _this.scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
+        _this.trigger('ember-simple-auth:session-updated', Ember.$.extend(response, { expires_in: expiresIn, expires_at: expiresAt, refresh_token: refreshToken }));
       });
     }, function(xhr, status, error) {
       Ember.Logger.warn('Access token could not be refreshed - server responded with ' + error + '.');
     });
+  },
+
+  absolutizeExpirationTime: function(expiresIn) {
+    if (!Ember.isEmpty(expiresIn)) {
+      return new Date((new Date().getTime()) + (expiresIn - 5) * 1000).getTime();
+    }
   },
 
   /**
