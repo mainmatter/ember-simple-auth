@@ -151,6 +151,10 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
     });
   },
 
+  /**
+    @method absolutizeExpirationTime
+    @private
+  */
   absolutizeExpirationTime: function(expiresIn) {
     if (!Ember.isEmpty(expiresIn)) {
       return new Date((new Date().getTime()) + (expiresIn - 5) * 1000).getTime();
