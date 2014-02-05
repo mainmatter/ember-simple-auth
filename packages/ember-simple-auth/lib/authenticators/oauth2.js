@@ -133,7 +133,7 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
       dataType:    'json',
       contentType: 'application/x-www-form-urlencoded'
     });
-  }
+  },
 
   /**
     @method scheduleAccessTokenRefresh
