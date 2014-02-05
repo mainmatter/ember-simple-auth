@@ -179,6 +179,7 @@ authenticator.
 
 * rack-oauth2: https://github.com/nov/rack-oauth2
 * doorkeeper: https://github.com/applicake/doorkeeper
+* Rails app template: https://github.com/bazzel/rails-templates/blob/master/ember-simple-auth.rb
 
 ###### PHP
 * oauth2-server: https://github.com/php-loep/oauth2-server
