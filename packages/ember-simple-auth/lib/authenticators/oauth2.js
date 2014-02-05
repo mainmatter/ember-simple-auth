@@ -112,6 +112,30 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
   },
 
   /**
+    Sends an `AJAX` request to the `serverTokenEndpoint`. This will always be a
+    _"POST_" request with content type _"application/x-www-form-urlencoded"_ as
+    specified in [RFC 6749](http://tools.ietf.org/html/rfc6749).
+
+    This method is not meant to be used directly but serves as an extension
+    point to e.g. add _"Client Credentials"_ (see
+    [RFC 6749, section 2.3](http://tools.ietf.org/html/rfc6749#section-2.3)).
+
+    @method makeRequest
+    @param {Object} data The data to send with the request, e.g. username and password or the refresh token
+    @return {Deferred object} A Deferred object (see [the jQuery docs](http://api.jquery.com/category/deferred-object/)) that is compatible to Ember.RSVP.Promise; will resolve if the request succeeds, reject otherwise
+    @protected
+  */
+  makeRequest: function(data) {
+    return Ember.$.ajax({
+      url:         this.serverTokenEndpoint,
+      type:        'POST',
+      data:        data,
+      dataType:    'json',
+      contentType: 'application/x-www-form-urlencoded'
+    });
+  }
+
+  /**
     @method scheduleAccessTokenRefresh
     @private
   */
@@ -159,19 +183,5 @@ Ember.SimpleAuth.Authenticators.OAuth2 = Ember.SimpleAuth.Authenticators.Base.ex
     if (!Ember.isEmpty(expiresIn)) {
       return new Date((new Date().getTime()) + (expiresIn - 5) * 1000).getTime();
     }
-  },
-
-  /**
-    @method makeRequest
-    @private
-  */
-  makeRequest: function(data) {
-    return Ember.$.ajax({
-      url:         this.serverTokenEndpoint,
-      type:        'POST',
-      data:        data,
-      dataType:    'json',
-      contentType: 'application/x-www-form-urlencoded'
-    });
   }
 });
