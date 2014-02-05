@@ -240,6 +240,7 @@ through <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
                     
                       <span class="label label-info pull-right">static</span>
                     
+                    
                     <h3 class="panel-title method">
                       setup(application, [options])
                       
@@ -626,6 +627,7 @@ session enforcement code is actually executed.</p>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/mixins/authenticated_route_mixin.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       beforeModel(transition)
                       
@@ -837,6 +839,7 @@ So instead of this:</p>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L46"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       restore(properties)
                       
@@ -884,6 +887,7 @@ reasonable default implementation.</p>
                   <a id="Ember-SimpleAuth-Authenticators-Base-authenticate" class="symbol-anchor"></a>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L70"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
                     
                     <h3 class="panel-title method">
                       authenticate(options)
@@ -935,6 +939,7 @@ see
                   <a id="Ember-SimpleAuth-Authenticators-Base-invalidate" class="symbol-anchor"></a>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L97"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
                     
                     <h3 class="panel-title method">
                       invalidate()
@@ -1074,6 +1079,7 @@ from.</p>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/oauth2.js#L40"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       restore(properties)
                       
@@ -1115,6 +1121,7 @@ token refreshing isn&#39;t disabled (see
                   <a id="Ember-SimpleAuth-Authenticators-OAuth2-authenticate" class="symbol-anchor"></a>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/oauth2.js#L66"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
                     
                     <h3 class="panel-title method">
                       authenticate(options)
@@ -1160,7 +1167,8 @@ token refreshing isn&#39;t disabled (see
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-Authenticators-OAuth2-invalidate" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/oauth2.js#L101"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/oauth2.js#L102"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
                     
                     <h3 class="panel-title method">
                       invalidate()
@@ -1177,6 +1185,50 @@ token refreshing isn&#39;t disabled (see
                       <h4 class="subsection">Returns</h4>
                       <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
                       <p>A resolving promise</p>
+
+                    
+                  </div>
+                </div>
+              
+                <div class="panel panel-default">
+                  <a id="Ember-SimpleAuth-Authenticators-OAuth2-makeRequest" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/oauth2.js#L114"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
+                    
+                      <span class="label label-warning pull-right">protected</span>
+                    
+                    <h3 class="panel-title method">
+                      makeRequest(data)
+                      
+                        <span class="type">&rarr; Deferred object</span>
+                      
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <p>Sends an <code>AJAX</code> request to the <code>serverTokenEndpoint</code>. This will always be a
+<em>&quot;POST</em>&quot; request with content type <em>&quot;application/x-www-form-urlencoded&quot;</em> as
+specified in <a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>.</p>
+
+<p>This method is not meant to be used directly but serves as an extension
+point to e.g. add <em>&quot;Client Credentials&quot;</em> (see
+<a href="http://tools.ietf.org/html/rfc6749#section-2.3">RFC 6749, section 2.3</a>).</p>
+
+                    
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        
+                          <dt>data <span class="type">{Object}</span></dt>
+                          <dd><p>The data to send with the request, e.g. username and password or the refresh token</p>
+</dd>
+                          
+                        
+                      </dl>
+                    
+                    
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; Deferred object</span></p>
+                      <p>A Deferred object (see <a href="http://api.jquery.com/category/deferred-object/">the jQuery docs</a>) that is compatible to Ember.RSVP.Promise; will resolve if the request succeeds, reject otherwise</p>
 
                     
                   </div>
@@ -1219,6 +1271,10 @@ token refreshing isn&#39;t disabled (see
                 
                   <li>
                     <a href="#Ember-SimpleAuth-Authenticators-OAuth2-invalidate">invalidate</a>
+                  </li>
+                
+                  <li>
+                    <a href="#Ember-SimpleAuth-Authenticators-OAuth2-makeRequest">makeRequest</a>
                   </li>
                 
               </ul>
@@ -1281,6 +1337,7 @@ from (see <a href="#Ember-SimpleAuth-Session">Ember.SimpleAuth.Session</a>).</p>
                   <a id="Ember-SimpleAuth-Authorizers-Base-authorize" class="symbol-anchor"></a>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authorizers/base.js#L33"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
                     
                     <h3 class="panel-title method">
                       authorize(jqXHR, requestOptions)
@@ -1372,6 +1429,7 @@ authorizer see
                   <a id="Ember-SimpleAuth-Authorizers-OAuth2-authorize" class="symbol-anchor"></a>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authorizers/oauth2.js#L13"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
                     
                     <h3 class="panel-title method">
                       authorize(jqXHR, requestOptions)
@@ -1637,6 +1695,7 @@ Ember.SimpleAuth&#39;s setup and can be specified there
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L91"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       authenticate(authenticator, options)
                       
@@ -1684,6 +1743,7 @@ unauthenticated.</p>
                   <a id="Ember-SimpleAuth-Session-invalidate" class="symbol-anchor"></a>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L120"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
                     
                     <h3 class="panel-title method">
                       invalidate()
@@ -1789,6 +1849,7 @@ being invalidated (see
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/base.js#L21"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       persist(properties)
                       
@@ -1819,6 +1880,7 @@ being invalidated (see
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/base.js#L32"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       restore()
                       
@@ -1846,6 +1908,7 @@ plain Object.</p>
                   <a id="Ember-SimpleAuth-Stores-Base-clear" class="symbol-anchor"></a>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/base.js#L45"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
                     
                     <h3 class="panel-title method">
                       clear()
@@ -1956,6 +2019,7 @@ from other cookies.</p>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/cookie.js#L50"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       persist(properties)
                       
@@ -1984,6 +2048,7 @@ from other cookies.</p>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/cookie.js#L63"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       restore()
                       
@@ -2009,6 +2074,7 @@ by the <code>cookieNamePrefix</code>.</p>
                   <a id="Ember-SimpleAuth-Stores-Cookie-clear" class="symbol-anchor"></a>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/cookie.js#L79"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
                     
                     <h3 class="panel-title method">
                       clear()
@@ -2086,6 +2152,7 @@ by the <code>cookieNamePrefix</code>.</p>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/ephemeral.js#L19"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       persist(properties)
                       
@@ -2114,6 +2181,7 @@ by the <code>cookieNamePrefix</code>.</p>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/ephemeral.js#L29"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       restore()
                       
@@ -2138,6 +2206,7 @@ by the <code>cookieNamePrefix</code>.</p>
                   <a id="Ember-SimpleAuth-Stores-Ephemeral-clear" class="symbol-anchor"></a>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/ephemeral.js#L39"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
                     
                     <h3 class="panel-title method">
                       clear()
@@ -2229,6 +2298,7 @@ other keys.</p>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/local_storage.js#L32"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       persist(properties)
                       
@@ -2257,6 +2327,7 @@ other keys.</p>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/local_storage.js#L46"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
+                    
                     <h3 class="panel-title method">
                       restore()
                       
@@ -2282,6 +2353,7 @@ the <code>keyPrefix</code>.</p>
                   <a id="Ember-SimpleAuth-Stores-LocalStorage-clear" class="symbol-anchor"></a>
                   <div class="panel-heading">
                     <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/stores/local_storage.js#L63"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    
                     
                     <h3 class="panel-title method">
                       clear()
