@@ -16,7 +16,7 @@
   action, e.g.:
 
   ```handlebars
-  <form {{action login on='submit'}}>
+  <form {{action 'authenticate' on='submit'}}>
     <label for="identification">Login</label>
     {{input id='identification' placeholder='Enter Login' value=identification}}
     <label for="password">Password</label>
