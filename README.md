@@ -149,7 +149,7 @@ This route displays the login form with fields for `identification` and
 `password`:
 
 ```html
-<form {{action authenticate on='submit'}}>
+<form {{action 'authenticate' on='submit'}}>
   <label for="identification">Login</label>
   {{input id='identification' placeholder='Enter Login' value=identification}}
   <label for="password">Password</label>
