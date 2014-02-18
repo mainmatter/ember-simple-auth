@@ -90,7 +90,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
 
     container.register('ember-simple-auth:session:current', session, { instantiate: false });
     Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {
-      container.inject(component, 'session', 'ember-simple-auth:session:current');
+      application.inject(component, 'session', 'ember-simple-auth:session:current');
     });
 
     Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
