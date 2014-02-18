@@ -22,6 +22,9 @@ var ContainerMock = Ember.Object.extend({
         object:   registration.factory
       });
     }
+  },
+  lookup: function(name) {
+    return Ember.tryInvoke(this.registrations[name], 'factory');
   }
 });
 

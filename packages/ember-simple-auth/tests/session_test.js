@@ -10,6 +10,13 @@ function mockPromise(resolveWith, rejectWith) {
   });
 }
 
+var containerMock;
+var ContainerMock = Ember.Object.extend({
+  lookup: function(name) {
+    return ContainerMock._lookupResult;
+  }
+});
+
 var storeMock;
 var StoreMock = Ember.SimpleAuth.Stores.Ephemeral.extend({
   restore: function() {
@@ -40,8 +47,9 @@ module('Ember.SimpleAuth.Session', {
     window.AuthenticatorMock = AuthenticatorMock;
     authenticatorMock        = AuthenticatorMock.create();
     storeMock                = StoreMock.create();
+    containerMock            = ContainerMock.create();
     Ember.run(function() {
-      session = Ember.SimpleAuth.Session.create({ authenticator: authenticatorMock, store: storeMock });
+      session = Ember.SimpleAuth.Session.create({ authenticator: authenticatorMock, store: storeMock, container: containerMock });
     });
   },
   teardown: function() {
@@ -51,7 +59,7 @@ module('Ember.SimpleAuth.Session', {
 });
 
 test('it is not authenticated when just created', function() {
-  session = Ember.SimpleAuth.Session.create({ store: storeMock });
+  session = Ember.SimpleAuth.Session.create({ store: storeMock, container: containerMock });
 
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when just created.');
 });
@@ -59,19 +67,20 @@ test('it is not authenticated when just created', function() {
 test('restores its state during initialization', function() {
   storeMock.persist({ authenticator: 'AuthenticatorMock' });
   AuthenticatorMock._resolve = { some: 'content' };
+  ContainerMock._lookupResult = authenticatorMock;
   Ember.run(function() {
-    session = Ember.SimpleAuth.Session.create({ store: storeMock });
+    session = Ember.SimpleAuth.Session.create({ store: storeMock, container: containerMock });
   });
 
   ok(storeMock.restoreInvoked, 'Ember.Session restores its content from the store during initialization.');
-  ok(session.get('authenticator') instanceof AuthenticatorMock, 'Ember.Session restores the authenticator as a new instance of the class read from the store during initialization.');
+  deepEqual(session.get('authenticator'), authenticatorMock, 'Ember.Session restores the authenticator by retrieving it from the container with the key read from the store during initialization.');
   ok(session.get('isAuthenticated'), 'Ember.Session is authenticated when the restored authenticator resolves during initialization.');
   deepEqual(session.get('content'), { some: 'content' }, 'Ember.Session sets its content when the restored authenticator resolves during initialization.');
 
   AuthenticatorMock._resolve = false;
   storeMock.persist({ key1: 'value1' });
   Ember.run(function() {
-    session = Ember.SimpleAuth.Session.create({ store: storeMock });
+    session = Ember.SimpleAuth.Session.create({ store: storeMock, container: containerMock });
   });
 
   equal(session.get('authenticator'), null, 'Ember.Session does not assign the authenticator during initialization when the authenticator rejects.');
@@ -100,7 +109,7 @@ test('authenticates itself with an authenticator', function() {
   AuthenticatorMock._resolve = false;
   AuthenticatorMock._reject = { error: 'message' };
   Ember.run(function() {
-    session = Ember.SimpleAuth.Session.create({ store: storeMock });
+    session = Ember.SimpleAuth.Session.create({ store: storeMock, container: containerMock });
     session.authenticate(authenticatorMock).then(function() {}, function(error) {
       rejected     = true;
       rejectedWith = error;

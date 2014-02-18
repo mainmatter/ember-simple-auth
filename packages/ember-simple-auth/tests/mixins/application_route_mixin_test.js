@@ -10,6 +10,13 @@ var TestRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
   }
 });
 
+var containerMock;
+var ContainerMock = Ember.Object.extend({
+  lookup: function(name) {
+    return null;
+  }
+});
+
 var authenticatorMock;
 var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
   invalidate: function() {
@@ -29,7 +36,8 @@ module('Ember.SimpleAuth.ApplicationRouteMixin', {
   setup: function() {
     testRoute         = TestRoute.create();
     authenticatorMock = AuthenticatorMock.create();
-    var session       = Ember.SimpleAuth.Session.create({ store: Ember.SimpleAuth.Stores.Ephemeral.create(), authenticator: authenticatorMock });
+    containerMock     = ContainerMock.create();
+    var session       = Ember.SimpleAuth.Session.create({ store: Ember.SimpleAuth.Stores.Ephemeral.create(), authenticator: authenticatorMock, container: containerMock });
     testRoute.set('session', session);
   }
 });

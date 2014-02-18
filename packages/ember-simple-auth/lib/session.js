@@ -1,11 +1,5 @@
 'use strict';
 
-function classifyString(className) {
-  return Ember.A((className || '').split('.')).reduce(function(acc, klass) {
-    return (acc || {})[klass];
-  }, window);
-}
-
 /**
   __The session provides access to the current authentication state as well as
   any properties resolved by the authenticator__ (see
@@ -77,11 +71,13 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     var _this = this;
     this.bindToStoreEvents();
     var restoredContent = this.store.restore();
-    var authenticator   = this.createAuthenticator(restoredContent.authenticator);
+    var authenticator   = this.container.lookup(restoredContent.authenticator);
     if (!!authenticator) {
       delete restoredContent.authenticator;
       authenticator.restore(restoredContent).then(function(content) {
         _this.setup(authenticator, content);
+      }, function() {
+        _this.store.clear();
       });
     } else {
       this.store.clear();
@@ -177,15 +173,6 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   },
 
   /**
-    @method createAuthenticator
-    @private
-  */
-  createAuthenticator: function(className) {
-    var authenticatorClass = classifyString(className);
-    return Ember.tryInvoke(authenticatorClass, 'create');
-  },
-
-  /**
     @method bindToAuthenticatorEvents
     @private
   */
@@ -204,7 +191,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   bindToStoreEvents: function() {
     var _this = this;
     this.store.on('ember-simple-auth:session-updated', function(content) {
-      var authenticator = _this.createAuthenticator(content.authenticator);
+      var authenticator = _this.container.lookup(content.authenticator);
       if (!!authenticator) {
         delete content.authenticator;
         authenticator.restore(content).then(function(content) {
