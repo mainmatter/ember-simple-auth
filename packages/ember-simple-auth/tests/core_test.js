@@ -89,6 +89,15 @@ test('injects the session in models, views, controllers and routes', function() 
   });
 });
 
+test('assigns the store and container to the session', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { store: Ember.SimpleAuth.Stores.Ephemeral });
+
+  var session = containerMock.injections[0].object;
+
+  equal(session.container, containerMock, 'Ember.SimpleAuth assigns the container to the session.');
+  equal(session.store.constructor, Ember.SimpleAuth.Stores.Ephemeral, 'Ember.SimpleAuth assigns the correct store to the session.');
+});
+
 test('registers an AJAX prefilter that authorizes requests', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { authorizer: AuthorizerMock });
 
