@@ -67,6 +67,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
 
     @method setup
     @static
+    @param {Container} container The Ember.js application's dependency injection container
     @param {Ember.Application} application The Ember.js application instance
     @param {Object} [options]
       @param {String} [options.authenticationRoute] route to transition to for authentication - defaults to `'login'`
@@ -76,7 +77,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
       @param {Object} [options.authorizer] The authorizer _class_ to use; must extend `Ember.SimpleAuth.Authorizers.Base` - defaults to `Ember.SimpleAuth.Authorizers.OAuth2`
       @param {Object} [options.store] The store _class_ to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.LocalStorage`
   **/
-  setup: function(application, options) {
+  setup: function(container, application, options) {
     options                       = options || {};
     this.routeAfterAuthentication = options.routeAfterAuthentication || this.routeAfterAuthentication;
     this.routeAfterInvalidation   = options.routeAfterInvalidation || this.routeAfterInvalidation;
@@ -84,12 +85,12 @@ Ember.SimpleAuth = Ember.Namespace.create({
     this._crossOriginWhitelist    = Ember.A(options.crossOriginWhitelist || []);
 
     var store      = (options.store || Ember.SimpleAuth.Stores.LocalStorage).create();
-    var session    = Ember.SimpleAuth.Session.create({ store: store });
+    var session    = Ember.SimpleAuth.Session.create({ store: store, container: container });
     var authorizer = (options.authorizer || Ember.SimpleAuth.Authorizers.OAuth2).create({ session: session });
 
-    application.register('ember-simple-auth:session:current', session, { instantiate: false, singleton: true });
+    container.register('ember-simple-auth:session:current', session, { instantiate: false, singleton: true });
     Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {
-      application.inject(component, 'session', 'ember-simple-auth:session:current');
+      container.inject(component, 'session', 'ember-simple-auth:session:current');
     });
 
     Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
