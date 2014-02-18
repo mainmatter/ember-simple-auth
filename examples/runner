@@ -2,10 +2,8 @@
 
 base_dir = File.dirname(__FILE__)
 
-unless File.exists?(File.join(base_dir, '..', 'dist', 'ember-simple-auth.js'))
-  puts "\n** dist/ember-simple-auth.js doesn't exist, building it first...\n\n"
-  `cd .. && bundle && bundle exec rake dist`
-end
+puts "\n** Building dist/ember-simple-auth.js...\n\n"
+`cd .. && bundle && bundle exec rake dist`
 
 require 'rubygems'
 require 'bundler'
