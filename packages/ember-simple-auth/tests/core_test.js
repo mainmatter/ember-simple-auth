@@ -81,6 +81,13 @@ test('assigns the route after session invalidation', function() {
   equal(Ember.SimpleAuth.routeAfterInvalidation, 'somewhere', 'Ember.SimpleAuth assigns routeAfterInvalidation when specified for setup.');
 });
 
+test('registers the OAuth2 authenticator', function() {
+  Ember.SimpleAuth.setup(containerMock, applicationMock);
+
+  var injection = containerMock.lookup('ember-simple-auth:authenticators:oauth2');
+  equal(injection.factory, Ember.SimpleAuth.Authenticators.OAuth2, 'Ember.SimpleAuth registers the OAuth2 authenticator.');
+});
+
 test('injects the session in models, views, controllers and routes', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock);
 
