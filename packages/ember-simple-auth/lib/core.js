@@ -1,7 +1,12 @@
 'use strict';
 
 function extractLocationOrigin(location) {
-  return location.protocol + '//' + location.hostname + (location.port !== '' ? ':' + location.port : '');
+  var port = location.port;
+  if (Ember.isEmpty(port)) {
+    //need to include the port whether its actually present or not as some versions of IE will always set it
+    port = location.protocol === 'http:' ? '80' : (location.protocol === 'https:' ? '443' : '');
+  }
+  return location.protocol + '//' + location.hostname + (port !== '' ? ':' + port : '');
 }
 
 /**
