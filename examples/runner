@@ -3,7 +3,7 @@
 base_dir = File.dirname(__FILE__)
 
 puts "\n** Building dist/ember-simple-auth.js...\n\n"
-`cd .. && bundle && bundle exec rake dist`
+`cd .. && grunt build && cp dist/ember-simple-auth-0.1.1.js dist/ember-simple-auth.js`
 
 require 'rubygems'
 require 'bundler'
@@ -182,8 +182,8 @@ __END__
 </div>
 <script>
   Ember.$(document).ready(function() {
-    Ember.SimpleAuth.Stores.Cookie.create().clear();
-    Ember.SimpleAuth.Stores.LocalStorage.create().clear();
+    EmberSimpleAuth.Stores.Cookie.create().clear();
+    EmberSimpleAuth.Stores.LocalStorage.create().clear();
   });
 </script>
 
