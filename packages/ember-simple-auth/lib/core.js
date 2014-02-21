@@ -1,6 +1,15 @@
 'use strict';
 
 function extractLocationOrigin(location) {
+  if (Ember.typeOf(location) === 'string') {
+    var link = document.createElement('a');
+    link.href = location;
+    //IE requires the following line when url is relative.
+    //First assignment of relative url to link.href results in absolute url on link.href but link.hostname and other properties are not set
+    //Second assignment of absolute url to link.href results in link.hostname and other properties being set as expected
+    link.href = link.href;
+    location = link;
+  }
   var port = location.port;
   if (Ember.isEmpty(port)) {
     //need to include the port whether its actually present or not as some versions of IE will always set it
@@ -87,7 +96,9 @@ Ember.SimpleAuth = Ember.Namespace.create({
     this.routeAfterAuthentication = options.routeAfterAuthentication || this.routeAfterAuthentication;
     this.routeAfterInvalidation   = options.routeAfterInvalidation || this.routeAfterInvalidation;
     this.authenticationRoute      = options.authenticationRoute || this.authenticationRoute;
-    this._crossOriginWhitelist    = Ember.A(options.crossOriginWhitelist || []);
+    this._crossOriginWhitelist    = Ember.A(options.crossOriginWhitelist || []).map(function(origin) {
+      return extractLocationOrigin(origin);
+    });
 
     var store      = (options.store || Ember.SimpleAuth.Stores.LocalStorage).create();
     var session    = Ember.SimpleAuth.Session.create({ store: store, container: container });
@@ -112,18 +123,9 @@ Ember.SimpleAuth = Ember.Namespace.create({
     @static
   */
   shouldAuthorizeRequest: function(url) {
-    this._linkOrigins    = this._linkOrigins || {};
+    this._urlOrigins     = this._urlOrigins || {};
     this._documentOrigin = this._documentOrigin || extractLocationOrigin(window.location);
-    var link = this._linkOrigins[url] || function() {
-      var link = document.createElement('a');
-      link.href = url;
-      //IE requires the following line when url is relative.
-      //First assignment of relative url to link.href results in absolute url on link.href but link.hostname and other properties are not set
-      //Second assignment of absolute url to link.href results in link.hostname and other properties being set as expected
-      link.href = link.href;
-      return (this._linkOrigins[url] = link);
-    }.apply(this);
-    var linkOrigin = extractLocationOrigin(link);
-    return this._crossOriginWhitelist.indexOf(linkOrigin) > -1 || linkOrigin === this._documentOrigin;
+    var urlOrigin        = this._urlOrigins[url] = this._urlOrigins[url] || extractLocationOrigin(url);
+    return this._crossOriginWhitelist.indexOf(urlOrigin) > -1 || urlOrigin === this._documentOrigin;
   }
 });

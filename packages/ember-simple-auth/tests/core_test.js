@@ -113,7 +113,7 @@ test('assigns the store and container to the session', function() {
 test('registers an AJAX prefilter that authorizes requests', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { authorizer: AuthorizerMock });
 
-  ajaxPrefilterMock.registeredAjaxPrefilter({}, {}, {});
+  ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'some' }, {}, {});
   ok(authorizerMock.authorized, "Ember.SimpleAuth registers an AJAX prefilter that authorizes requests that fo the the application's origin.");
 
   authorizerMock.authorized = false;
@@ -123,4 +123,8 @@ test('registers an AJAX prefilter that authorizes requests', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { crossOriginWhitelist: ['https://a.different.domain:1234'], authorizer: AuthorizerMock, store: Ember.SimpleAuth.Stores.Ephemeral });
   ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, {});
   ok(authorizerMock.authorized, 'Ember.SimpleAuth registers an AJAX prefilter that authorizes cross-origin requests when the origin is in the crossOriginWhitelist.');
+
+  Ember.SimpleAuth.setup(containerMock, applicationMock, { crossOriginWhitelist: ['http://a.different.domain'], authorizer: AuthorizerMock, store: Ember.SimpleAuth.Stores.Ephemeral });
+  ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'http://a.different.domain:80' }, {}, {});
+  ok(authorizerMock.authorized, 'Ember.SimpleAuth registers an AJAX prefilter that authorizes cross-origin requests when the origin is in the crossOriginWhitelist where default ports can be left out.');
 });
