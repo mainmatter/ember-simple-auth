@@ -17,23 +17,19 @@
   when any of the session properties change. The session listens to that event
   and will handle the changes accordingly.
 
-  __Custom authenticators have to be defined in the applications's namespace__;
-  otherwise their class name cannot be auto-detected and the session
-  restoration mechanism breaks (see
-  [Ember.SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)).
-  So instead of this:
+  __Custom authenticators have to be registered with Ember's dependency
+  injection container__ so that the session can retrieve an instance, e.g.:
 
   ```javascript
   var CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
     ...
   });
-  ```
-
-  the authenticator should be defined like this:
-
-  ```javascript
-  App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
-    ...
+  Ember.Application.initializer({
+    name: 'authentication',
+    initialize: function(container, application) {
+      container.register('app:authenticators:custom', CustomAuthenticator);
+      Ember.SimpleAuth.setup(container, application);
+    }
   });
   ```
 

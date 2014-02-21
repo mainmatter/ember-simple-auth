@@ -201,23 +201,28 @@ easy to implement authenticators for other strategies as well. All that needs
 to be done is to extend `Authenticators.Base` and implement 3 methods (see the
 [API docs for `Authenticators.Base`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authenticators-Base)).
 
-__When implementing a custom authenticator make sure it is defined in the
-application's namespace.__ Otherwise its class name cannot be auto-detected and
-the session restoration mechanism breaks. So always define the authenticator
-like this:
+__Custom authenticators have to be registered with Ember's dependency
+injection container__ so that the session can retrieve an instance, e.g.:
 
-```js
-App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+```javascript
+var CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
   ...
+});
+Ember.Application.initializer({
+  name: 'authentication',
+  initialize: function(container, application) {
+    container.register('app:authenticators:custom', CustomAuthenticator);
+    Ember.SimpleAuth.setup(container, application);
+  }
 });
 ```
 
-To use a custom authenticator, simply specify it in the controller handling the
-login route of the application:
+To use a custom authenticator, simply specify the registered factory in the
+controller handling the login route of the application:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-  authenticator: App.MyCustomAuthenticator
+  authenticator: 'app:authenticators:custom'
 });
 ```
 
@@ -229,7 +234,7 @@ to implement a custom solution:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationControllerMixin, {
-  authenticator: App.MyCustomAuthenticator,
+  authenticator: 'app:authenticators:custom',
   actions: {
     authenticate: function() {
       var options = …// some options that the authenticator uses
