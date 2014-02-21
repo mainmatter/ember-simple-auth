@@ -26,7 +26,7 @@ initializer__ (also see the
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(application);
+    Ember.SimpleAuth.setup(container, application);
   }
 });
 ```
@@ -149,7 +149,7 @@ This route displays the login form with fields for `identification` and
 `password`:
 
 ```html
-<form {{action authenticate on='submit'}}>
+<form {{action 'authenticate' on='submit'}}>
   <label for="identification">Login</label>
   {{input id='identification' placeholder='Enter Login' value=identification}}
   <label for="password">Password</label>
@@ -179,6 +179,7 @@ authenticator.
 
 * rack-oauth2: https://github.com/nov/rack-oauth2
 * doorkeeper: https://github.com/applicake/doorkeeper
+* Rails app template: https://github.com/bazzel/rails-templates/blob/master/ember-simple-auth.rb
 
 ###### PHP
 * oauth2-server: https://github.com/php-loep/oauth2-server
@@ -200,12 +201,28 @@ easy to implement authenticators for other strategies as well. All that needs
 to be done is to extend `Authenticators.Base` and implement 3 methods (see the
 [API docs for `Authenticators.Base`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authenticators-Base)).
 
-To use a custom authenticator, simply specify it in the controller handling the
-login route of the application:
+__Custom authenticators have to be registered with Ember's dependency
+injection container__ so that the session can retrieve an instance, e.g.:
+
+```javascript
+var CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+  ...
+});
+Ember.Application.initializer({
+  name: 'authentication',
+  initialize: function(container, application) {
+    container.register('app:authenticators:custom', CustomAuthenticator);
+    Ember.SimpleAuth.setup(container, application);
+  }
+});
+```
+
+To use a custom authenticator, simply specify the registered factory in the
+controller handling the login route of the application:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-  authenticator: App.MyCustomAuthenticator
+  authenticator: 'app:authenticators:custom'
 });
 ```
 
@@ -217,7 +234,7 @@ to implement a custom solution:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationControllerMixin, {
-  authenticator: App.MyCustomAuthenticator,
+  authenticator: 'app:authenticators:custom',
   actions: {
     authenticate: function() {
       var options = …// some options that the authenticator uses
@@ -267,7 +284,7 @@ To use a custom authorizer, simply configure it in the initializer:
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(application, {
+    Ember.SimpleAuth.setup(container, application, {
       authorizer: App.MyCustomAuthorizer
     });
   }
@@ -288,7 +305,7 @@ origins consist of protocol, host and port (port can be left out when it is
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(application, {
+    Ember.SimpleAuth.setup(container, application, {
       crossOriginWhitelist: ['http://some.other.domain:1234']
     });
   }
@@ -309,7 +326,7 @@ configured during setup (see the
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(application, {
+    Ember.SimpleAuth.setup(container, application, {
       store: Ember.SimpleAuth.Stores.Cookie
     });
   }

@@ -138,6 +138,9 @@
                     <% if method_data['static'] %>
                       <span class="label label-info pull-right">static</span>
                     <% end %>
+                    <% if method_data['access'] == 'protected' %>
+                      <span class="label label-warning pull-right">protected</span>
+                    <% end %>
                     <h3 class="panel-title method">
                       <%= method_data['name'] %><%= params_signature(method_data['params']) %>
                       <% if !!(method_data['return'] || {})['type'] %>

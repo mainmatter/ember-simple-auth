@@ -44,7 +44,7 @@
     <h1>Login</h1>
   </div>
   {{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
-  <form {{action authenticate on='submit'}}>
+  <form {{action 'authenticate' on='submit'}}>
     <div class="form-group">
       <label for="identification">Login</label>
       {{input id='identification' placeholder='Enter Login' class='form-control' value=identification}}
@@ -79,7 +79,7 @@
       Ember.SimpleAuth.Authenticators.OAuth2.reopen({
         serverTokenEndpoint: '/v2/token'
       });
-      Ember.SimpleAuth.setup(application);
+      Ember.SimpleAuth.setup(container, application);
     }
   });
 

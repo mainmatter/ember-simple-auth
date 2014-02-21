@@ -49,7 +49,9 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      Ember.SimpleAuth.setup(application);
+      // register the custom authenticator so the session can find it
+      container.register('app:authenticators:custom', App.ExternalAuthenticator);
+      Ember.SimpleAuth.setup(container, application);
     }
   });
 
@@ -100,7 +102,7 @@
       // override authenticateSession to instead of transitioning to a login route start authentication directly
       authenticateSession: function() {
         var _this = this;
-        this.get('session').authenticate(App.ExternalAuthenticator.create(), {}).then(function() {
+        this.get('session').authenticate('app:authenticators:custom', {}).then(function() {
           _this.send('sessionAuthenticationSucceeded');
         }, function(error) {
           _this.send('sessionAuthenticationFailed', error);

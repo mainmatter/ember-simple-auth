@@ -1,3 +1,10 @@
+# 0.1.1
+
+* use absolute expiration times for tokens, see #76
+* fix for cross origin check in IE, see #72
+* make sure errors bubble up, see #79
+* added documentation for customizing/extending the library
+
 # 0.1.0
 
 The Big Rewrite™, see the [README](https://github.com/simplabs/ember-simple-auth#readme) and the [release notes](https://github.com/simplabs/ember-simple-auth/releases/tag/0.1.0).

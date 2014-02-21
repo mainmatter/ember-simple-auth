@@ -2,10 +2,8 @@
 
 base_dir = File.dirname(__FILE__)
 
-unless File.exists?(File.join(base_dir, '..', 'dist', 'ember-simple-auth.js'))
-  puts "\n** dist/ember-simple-auth.js doesn't exist, building it first...\n\n"
-  `cd .. && bundle && bundle exec rake dist`
-end
+puts "\n** Building dist/ember-simple-auth.js...\n\n"
+`cd .. && bundle && bundle exec rake dist`
 
 require 'rubygems'
 require 'bundler'
@@ -130,7 +128,7 @@ __END__
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
-    <script src="http://builds.emberjs.com/beta/ember.js"></script>
+    <script src="http://builds.emberjs.com/release/ember.js"></script>
     <script src="ember-simple-auth.js"></script>
   </head>
   <body style="padding-top: 50px;">

@@ -2,7 +2,7 @@ var AuthenticatorMock = Ember.Object.extend();
 
 var testController;
 var TestController = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationControllerMixin, {
-  authenticator: AuthenticatorMock,
+  authenticator: 'authenticators:test',
   actions: {
     sessionAuthenticationSucceeded: function() {
       this.invokedSessionAuthenticationSucceeded = true;
@@ -39,11 +39,12 @@ module('Ember.SimpleAuth.AuthenticationControllerMixin', {
 
 test('authenticates the session', function() {
   Ember.run(function() {
-    testController.send('authenticate');
+    testController.send('authenticate', { 'key': 'value' });
   });
 
   ok(sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session when authentication is triggered.');
-  ok(sessionMock.invokedAuthenticateWith.authenticator instanceof AuthenticatorMock, 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session with the correct authenticator.');
+  equal(sessionMock.invokedAuthenticateWith.authenticator, 'authenticators:test', 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session with the correct authenticator.');
+  deepEqual(sessionMock.invokedAuthenticateWith.options, { 'key': 'value' }, 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session with the correct options.');
 });
 
 test('triggers the authenticationSucceeded action when authentication is successful', function() {
