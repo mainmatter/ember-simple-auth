@@ -1,6 +1,7 @@
 var containerMock;
 var ContainerMock = Ember.Object.extend({
   init: function() {
+    this.injections    = [];
     this.registrations = {};
   },
   register: function(name, factory, options) {
@@ -11,16 +12,9 @@ var ContainerMock = Ember.Object.extend({
   },
   lookup: function(name) {
     return this.registrations[name];
-  }
-});
-
-var applicationMock;
-var ApplicationMock = Ember.Object.extend({
-  init: function() {
-    this.injections = [];
   },
-  inject: function(target, property, name) {
-    var registration = this.container.lookup(name);
+  injection: function(target, property, name) {
+    var registration = this.lookup(name);
     if (registration) {
       this.injections.push({
         target:   target,
@@ -29,6 +23,10 @@ var ApplicationMock = Ember.Object.extend({
       });
     }
   }
+});
+
+var applicationMock;
+var ApplicationMock = Ember.Object.extend({
 });
 
 var authorizerMock;
@@ -54,7 +52,7 @@ module('Ember.SimpleAuth', {
   originalAjaxPrefilter: Ember.$.ajaxPrefilter,
   setup: function() {
     containerMock         = ContainerMock.create();
-    applicationMock       = ApplicationMock.create({ container: containerMock });
+    applicationMock       = ApplicationMock.create();
     ajaxPrefilterMock     = AjaxPrefilterMock.create();
     Ember.$.ajaxPrefilter = Ember.$.proxy(ajaxPrefilterMock.ajaxPrefilterCapture, ajaxPrefilterMock);
   },
@@ -92,7 +90,7 @@ test('injects the session in models, views, controllers and routes', function() 
   Ember.SimpleAuth.setup(containerMock, applicationMock);
 
   Ember.$.each(['model', 'view', 'controller', 'view'], function(i, component) {
-    var injection = Ember.$.grep(applicationMock.injections, function(injection) {
+    var injection = Ember.$.grep(containerMock.injections, function(injection) {
       return injection.target === component;
     })[0];
 
@@ -104,7 +102,7 @@ test('injects the session in models, views, controllers and routes', function() 
 test('assigns the store and container to the session', function() {
   Ember.SimpleAuth.setup(containerMock, applicationMock, { store: Ember.SimpleAuth.Stores.Ephemeral });
 
-  var session = applicationMock.injections[0].object;
+  var session = containerMock.injections[0].object;
 
   equal(session.container, containerMock, 'Ember.SimpleAuth assigns the container to the session.');
   equal(session.store.constructor, Ember.SimpleAuth.Stores.Ephemeral, 'Ember.SimpleAuth assigns the correct store to the session.');
