@@ -63,7 +63,7 @@ test('it is not authenticated when just created', function() {
 });
 
 test('restores its state during initialization', function() {
-  storeMock.persist({ authenticatorType: 'authenticators:test' });
+  storeMock.persist({ authenticatorFactory: 'authenticators:test' });
   AuthenticatorMock._resolve = { some: 'content' };
   Ember.run(function() {
     session = Ember.SimpleAuth.Session.create({ store: storeMock, container: containerMock });
@@ -72,7 +72,7 @@ test('restores its state during initialization', function() {
   ok(storeMock.restoreInvoked, 'Ember.Session restores its content from the store during initialization.');
   ok(containerMock.lookupInvoked, 'Ember.Session restores the authenticator type from the contaniner.');
   deepEqual(containerMock.lookupInvokedWith, 'authenticators:test', 'Ember.Session restores the authenticator from the container with the key read from the store.');
-  deepEqual(session.get('authenticatorType'), 'authenticators:test', 'Ember.Session restores the authenticator type.');
+  deepEqual(session.get('authenticatorFactory'), 'authenticators:test', 'Ember.Session restores the authenticator type.');
   ok(session.get('isAuthenticated'), 'Ember.Session is authenticated when the restored authenticator resolves during initialization.');
   deepEqual(session.get('content'), { some: 'content' }, 'Ember.Session sets its content when the restored authenticator resolves during initialization.');
 
@@ -82,7 +82,7 @@ test('restores its state during initialization', function() {
     session = Ember.SimpleAuth.Session.create({ store: storeMock, container: containerMock });
   });
 
-  equal(session.get('authenticatorType'), null, 'Ember.Session does not assign the authenticator during initialization when the authenticator rejects.');
+  equal(session.get('authenticatorFactory'), null, 'Ember.Session does not assign the authenticator during initialization when the authenticator rejects.');
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when the restored authenticator rejects during initialization.');
   equal(session.get('content'), null, 'Ember.Session does not set its content when the restored authenticator rejects during initialization.');
   equal(storeMock.restore().key1, null, 'Ember.Session clears the store when the restored authenticator rejects during initialization.');
@@ -100,7 +100,7 @@ test('authenticates itself with an authenticator', function() {
   ok(authenticatorMock.authenticateInvoked, 'Ember.Session authenticates itself with the passed authenticator.');
   ok(session.get('isAuthenticated'), 'Ember.Session is authenticated when the authenticator resolves.');
   equal(session.get('key'), 'value', 'Ember.Session saves all properties that the authenticator resolves with.');
-  equal(session.get('authenticatorType'), 'authenticators:test', 'Ember.Session saves the authenticator type when the authenticator resolves.');
+  equal(session.get('authenticatorFactory'), 'authenticators:test', 'Ember.Session saves the authenticator type when the authenticator resolves.');
   ok(resolved, 'Ember.Session returns a resolving promise when the authenticator resolves.');
 
   var rejected;
@@ -116,7 +116,7 @@ test('authenticates itself with an authenticator', function() {
   });
 
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when the authenticator rejects.');
-  equal(session.get('authenticatorType'), null, 'Ember.Session does not save the authenticator type when the authenticator rejects.');
+  equal(session.get('authenticatorFactory'), null, 'Ember.Session does not save the authenticator type when the authenticator rejects.');
   ok(rejected, 'Ember.Session returns a rejecting promise when the authenticator rejects.');
   deepEqual(rejectedWith, { error: 'message'}, 'Ember.Session returns a promise that rejects with the error that the authenticator rejects with.');
 });
@@ -126,7 +126,7 @@ test('invalidates itself', function() {
   AuthenticatorMock._reject = { error: 'message' };
   session.set('isAuthenticated', true);
   Ember.run(function() {
-    session.set('authenticatorType', 'authenticators:test');
+    session.set('authenticatorFactory', 'authenticators:test');
     session.set('content', { key: 'value' });
     session.invalidate();
   });
@@ -134,7 +134,7 @@ test('invalidates itself', function() {
   ok(authenticatorMock.invalidateInvoked, 'Ember.Session invalidates with the passed authenticator.');
   deepEqual(authenticatorMock.invalidateInvokedWith, { key: 'value' }, 'Ember.Session passes its content to the authenticator to invalidation.');
   ok(session.get('isAuthenticated'), 'Ember.Session remains authenticated when the authenticator rejects invalidation.');
-  equal(session.get('authenticatorType'), 'authenticators:test', 'Ember.Session does not unset the authenticator type when the authenticator rejects invalidation.');
+  equal(session.get('authenticatorFactory'), 'authenticators:test', 'Ember.Session does not unset the authenticator type when the authenticator rejects invalidation.');
 
   AuthenticatorMock._resolve = true;
   Ember.run(function() {
@@ -169,20 +169,20 @@ test('observes changes in the store', function() {
   AuthenticatorMock._resolve = false;
   Ember.run(function() {
     session.authenticate('authenticator').then(function() {
-      storeMock.trigger('ember-simple-auth:session-updated', { key: 'value', authenticatorType: 'authenticators:test2' });
+      storeMock.trigger('ember-simple-auth:session-updated', { key: 'value', authenticatorFactory: 'authenticators:test2' });
     });
   });
 
   equal(session.get('key'), null, 'Ember.Session does not update its properties when the store triggers the "ember-simple-auth:session-updated" event but the authenticator rejects.');
-  equal(session.get('authenticatorType'), null, 'Ember.Session does not update the authenticator type when the store triggers the "ember-simple-auth:session-updated" event but the authenticator rejects.');
+  equal(session.get('authenticatorFactory'), null, 'Ember.Session does not update the authenticator type when the store triggers the "ember-simple-auth:session-updated" event but the authenticator rejects.');
 
   AuthenticatorMock._resolve = { key: 'value' };
   Ember.run(function() {
     session.authenticate('authenticator').then(function() {
-      storeMock.trigger('ember-simple-auth:session-updated', { key: 'value', authenticatorType: 'authenticators:test2' });
+      storeMock.trigger('ember-simple-auth:session-updated', { key: 'value', authenticatorFactory: 'authenticators:test2' });
     });
   });
 
   equal(session.get('key'), 'value', 'Ember.Session updates its properties when the store triggers the "ember-simple-auth:session-updated" event and the authenticator resolves.');
-  equal(session.get('authenticatorType'), 'authenticators:test2', 'Ember.Session updates the authenticator type when the store triggers the "ember-simple-auth:session-updated" event and the authenticator resolves.');
+  equal(session.get('authenticatorFactory'), 'authenticators:test2', 'Ember.Session updates the authenticator type when the store triggers the "ember-simple-auth:session-updated" event and the authenticator resolves.');
 });
