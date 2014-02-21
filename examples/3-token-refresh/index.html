@@ -79,7 +79,7 @@
       Ember.SimpleAuth.Authenticators.OAuth2.reopen({
         serverTokenEndpoint: '/v2/token'
       });
-      Ember.SimpleAuth.setup(application);
+      Ember.SimpleAuth.setup(container, application);
     }
   });
 
