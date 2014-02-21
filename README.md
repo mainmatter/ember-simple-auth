@@ -26,7 +26,7 @@ initializer__ (also see the
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(application);
+    Ember.SimpleAuth.setup(container, application);
   }
 });
 ```
@@ -284,7 +284,7 @@ To use a custom authorizer, simply configure it in the initializer:
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(application, {
+    Ember.SimpleAuth.setup(container, application, {
       authorizer: App.MyCustomAuthorizer
     });
   }
@@ -305,7 +305,7 @@ origins consist of protocol, host and port (port can be left out when it is
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(application, {
+    Ember.SimpleAuth.setup(container, application, {
       crossOriginWhitelist: ['http://some.other.domain:1234']
     });
   }
@@ -326,7 +326,7 @@ configured during setup (see the
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(application, {
+    Ember.SimpleAuth.setup(container, application, {
       store: Ember.SimpleAuth.Stores.Cookie
     });
   }
