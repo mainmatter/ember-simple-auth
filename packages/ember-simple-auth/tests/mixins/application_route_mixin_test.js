@@ -13,7 +13,7 @@ var TestRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
 var containerMock;
 var ContainerMock = Ember.Object.extend({
   lookup: function(name) {
-    return null;
+    return ContainerMock._lookup;
   }
 });
 
@@ -34,10 +34,11 @@ var attemptedTransitionMock = { retry: function() { this.retried = true; } };
 
 module('Ember.SimpleAuth.ApplicationRouteMixin', {
   setup: function() {
-    testRoute         = TestRoute.create();
-    authenticatorMock = AuthenticatorMock.create();
-    containerMock     = ContainerMock.create();
-    var session       = Ember.SimpleAuth.Session.create({ store: Ember.SimpleAuth.Stores.Ephemeral.create(), authenticator: authenticatorMock, container: containerMock });
+    testRoute             = TestRoute.create();
+    authenticatorMock     = AuthenticatorMock.create();
+    containerMock         = ContainerMock.create();
+    ContainerMock._lookup = authenticatorMock;
+    var session           = Ember.SimpleAuth.Session.create({ store: Ember.SimpleAuth.Stores.Ephemeral.create(), authenticator: authenticatorMock, container: containerMock });
     testRoute.set('session', session);
   }
 });

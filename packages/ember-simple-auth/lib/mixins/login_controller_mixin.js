@@ -37,7 +37,7 @@ Ember.SimpleAuth.LoginControllerMixin = Ember.Mixin.create(Ember.SimpleAuth.Auth
     @type Ember.SimpleAuth.Authenticators.Base
     @default Ember.SimpleAuth.Authenticators.OAuth2
   */
-  authenticator: Ember.SimpleAuth.Authenticators.OAuth2,
+  authenticator: 'ember-simple-auth:authenticators:oauth2',
 
   actions: {
     /**

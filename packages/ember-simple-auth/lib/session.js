@@ -31,7 +31,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     @readOnly
     @default null
   */
-  authenticator: null,
+  authenticatorType: null,
   /**
     The store used to persist session properties. This is assigned during
     Ember.SimpleAuth's setup and can be specified there
@@ -70,12 +70,12 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   init: function() {
     var _this = this;
     this.bindToStoreEvents();
-    var restoredContent = this.store.restore();
-    var authenticator   = this.container.lookup(restoredContent.authenticator);
-    if (!!authenticator) {
-      delete restoredContent.authenticator;
-      authenticator.restore(restoredContent).then(function(content) {
-        _this.setup(authenticator, content);
+    var restoredContent   = this.store.restore();
+    var authenticatorType = restoredContent.authenticatorType;
+    if (!!authenticatorType) {
+      delete restoredContent.authenticatorType;
+      this.container.lookup(authenticatorType).restore(restoredContent).then(function(content) {
+        _this.setup(authenticatorType, content);
       }, function() {
         _this.store.clear();
       });
@@ -96,15 +96,15 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     unauthenticated.
 
     @method authenticate
-    @param {Ember.SimpleAuth.Authenticators.Base} authenticator The authenticator to authenticate with
+    @param {String} authenticatorType The type of authenticator to use as it is registered with Ember's container
     @param {Object} options The options to pass to the authenticator; depending on the type of authenticator these might be a set of credentials etc.
     @return {Ember.RSVP.Promise} A promise that resolves when the session was authenticated successfully
   */
-  authenticate: function(authenticator, options) {
+  authenticate: function(authenticatorType, options) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      authenticator.authenticate(options).then(function(content) {
-        _this.setup(authenticator, content);
+      _this.container.lookup(authenticatorType).authenticate(options).then(function(content) {
+        _this.setup(authenticatorType, content);
         resolve();
       }, function(error) {
         _this.clear();
@@ -131,8 +131,10 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   invalidate: function() {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      _this.authenticator.invalidate(_this.content).then(function() {
-        _this.authenticator.off('ember-simple-auth:session-updated');
+      var authenticator = _this.container.lookup(_this.authenticatorType);
+      console.log(authenticator);
+      authenticator.invalidate(_this.content).then(function() {
+        authenticator.off('ember-simple-auth:session-updated');
         _this.clear();
         resolve();
       }, function(error) {
@@ -145,16 +147,14 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     @method setup
     @private
   */
-  setup: function(authenticator, content) {
+  setup: function(authenticatorType, content) {
     this.setProperties({
-      isAuthenticated: true,
-      authenticator:   authenticator,
-      content:         content
+      isAuthenticated:   true,
+      authenticatorType: authenticatorType,
+      content:           content
     });
     this.bindToAuthenticatorEvents();
-    var data = Ember.$.extend({
-      authenticator: this.authenticator.constructor.toString()
-    }, this.content);
+    var data = Ember.$.extend({ authenticatorType: authenticatorType }, this.content);
     this.store.clear();
     this.store.persist(data);
   },
@@ -165,9 +165,9 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   */
   clear: function() {
     this.setProperties({
-      isAuthenticated: false,
-      authenticator:   null,
-      content:         null
+      isAuthenticated:   false,
+      authenticatorType: null,
+      content:           null
     });
     this.store.clear();
   },
@@ -178,9 +178,10 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   */
   bindToAuthenticatorEvents: function() {
     var _this = this;
-    this.authenticator.off('ember-simple-auth:session-updated');
-    this.authenticator.on('ember-simple-auth:session-updated', function(content) {
-      _this.setup(_this.authenticator, content);
+    var authenticator = this.container.lookup(this.authenticatorType);
+    authenticator.off('ember-simple-auth:session-updated');
+    authenticator.on('ember-simple-auth:session-updated', function(content) {
+      _this.setup(_this.authenticatorType, content);
     });
   },
 
@@ -191,11 +192,11 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   bindToStoreEvents: function() {
     var _this = this;
     this.store.on('ember-simple-auth:session-updated', function(content) {
-      var authenticator = _this.container.lookup(content.authenticator);
-      if (!!authenticator) {
-        delete content.authenticator;
-        authenticator.restore(content).then(function(content) {
-          _this.setup(authenticator, content);
+      var authenticatorType = content.authenticatorType;
+      if (!!authenticatorType) {
+        delete content.authenticatorType;
+        _this.container.lookup(authenticatorType).restore(content).then(function(content) {
+          _this.setup(authenticatorType, content);
         }, function() {
           _this.clear();
         });
