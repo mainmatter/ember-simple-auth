@@ -72,14 +72,14 @@
 </script>
 
 <script type="text/javascript">
-  // setup Ember.SimpleAuth in an initializer
+  // setup EmberSimpleAuth in an initializer
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      Ember.SimpleAuth.Authenticators.OAuth2.reopen({
+      EmberSimpleAuth.Authenticators.OAuth2.reopen({
         serverTokenEndpoint: '/v2/token'
       });
-      Ember.SimpleAuth.setup(container, application);
+      EmberSimpleAuth.Core.setup(container, application);
     }
   });
 
@@ -93,8 +93,8 @@
   });
 
   // use the provided mixins in the application route and login controller
-  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-  App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
+  App.ApplicationRoute = Ember.Route.extend(EmberSimpleAuth.ApplicationRouteMixin);
+  App.LoginController  = Ember.Controller.extend(EmberSimpleAuth.LoginControllerMixin);
 
   // clear a potentially stale error message from previous login attempts
   App.authenticationRoute = Ember.Route.extend({
@@ -104,5 +104,5 @@
   });
 
   // make this route protected
-  App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+  App.ProtectedRoute = Ember.Route.extend(EmberSimpleAuth.AuthenticatedRouteMixin);
 </script>

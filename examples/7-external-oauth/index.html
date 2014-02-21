@@ -45,13 +45,13 @@
 </script>
 
 <script type="text/javascript">
-  // setup Ember.SimpleAuth in an initializer
+  // setup EmberSimpleAuth in an initializer
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
       // register the custom authenticator so the session can find it
       container.register('app:authenticators:custom', App.ExternalAuthenticator);
-      Ember.SimpleAuth.setup(container, application);
+      EmberSimpleAuth.Core.setup(container, application);
     }
   });
 
@@ -63,7 +63,7 @@
   });
 
   // the custom authenticator that initiates the authentication process with Facebook
-  App.ExternalAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+  App.ExternalAuthenticator = EmberSimpleAuth.Authenticators.Base.extend({
     restore: function(properties) {
       var _this = this;
       return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -97,7 +97,7 @@
   App.ExternalConnector = Ember.Object.createWithMixins(Ember.Evented);
 
   // use the provided mixin in the application route
-  App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+  App.ApplicationRoute = Ember.Route.extend(EmberSimpleAuth.ApplicationRouteMixin, {
     actions: {
       // override authenticateSession to instead of transitioning to a login route start authentication directly
       authenticateSession: function() {
@@ -112,5 +112,5 @@
   });
 
   // make this route protected
-  App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+  App.ProtectedRoute = Ember.Route.extend(EmberSimpleAuth.AuthenticatedRouteMixin);
 </script>
