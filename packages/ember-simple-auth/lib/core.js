@@ -100,11 +100,12 @@ Ember.SimpleAuth = Ember.Namespace.create({
       return extractLocationOrigin(origin);
     });
 
+    container.register('ember-simple-auth:authenticators:oauth2', Ember.SimpleAuth.Authenticators.OAuth2);
+
     var store      = (options.store || Ember.SimpleAuth.Stores.LocalStorage).create();
     var session    = Ember.SimpleAuth.Session.create({ store: store, container: container });
     var authorizer = (options.authorizer || Ember.SimpleAuth.Authorizers.OAuth2).create({ session: session });
 
-    container.register('ember-simple-auth:authenticators:oauth2', Ember.SimpleAuth.Authenticators.OAuth2);
     container.register('ember-simple-auth:session:current', session, { instantiate: false });
     Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {
       container.injection(component, 'session', 'ember-simple-auth:session:current');
