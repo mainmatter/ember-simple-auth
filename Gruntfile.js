@@ -1,7 +1,6 @@
 module.exports = function(grunt) {
   var emberSimpleAuthConfig = require('grunt-microlib').init.bind(this)(grunt);
   grunt.loadNpmTasks('grunt-microlib');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
 
   this.registerTask(
     'test:phantom',
@@ -18,9 +17,9 @@ module.exports = function(grunt) {
       namespace: 'EmberSimpleAuth'
     },
     env: process.env,
-    pkg: grunt.file.readJSON('package.json')/*,
+    pkg: grunt.file.readJSON('package.json'),
     browserify: require('./options/browserify.js'),
-    mocha_phantomjs: require('./options/mocha_phantom.js')*/
+    mocha_phantomjs: require('./options/mocha_phantom.js')
   };
 
   grunt.initConfig(grunt.util._.merge(emberSimpleAuthConfig, config));
