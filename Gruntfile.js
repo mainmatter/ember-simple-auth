@@ -36,7 +36,7 @@ module.exports = function(grunt) {
 
   this.registerTask('docs', [
     'yuidoc',
-    'compile-handlebars:docs'
+    'compile-handlebars'
   ]);
 
   grunt.initConfig({
@@ -166,6 +166,7 @@ module.exports = function(grunt) {
       docs: {
         template: 'docs/theme/main.hbs',
         templateData: 'docs/build/data.json',
+        globals: ['docs/config.json'],
         helpers: 'docs/theme/helpers/**/*.js',
         output: 'docs/build/api.html'
       }

@@ -74,9 +74,9 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="dropdown" id="classesDropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption">{{log classes}}</span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption">{{#first (klasses)}}{{name}}{{/first}}</span></a>
               <ul class="dropdown-menu">
-                {{#each classes}}
+                {{#each (klasses)}}
                   <li>
                     <a href="#{{anchorify name}}">{{name}}</a>
                   </li>
@@ -85,14 +85,14 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/{{project.version}}"><span class="label label-primary">{{project.version}}</span></a></p></li>
+            <li><a href="{{@root.project.githubUrl}}"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text"><a href="{{@root.project.githubUrl}}/releases/tag/{{@root.project.version}}"><span class="label label-primary">{{@root.project.version}}</span></a></p></li>
           </ul>
         </div>
       </div>
     </header>
     <div class="container">
-      {{#each classes}}
+      {{#each (klasses)}}
         <div class="row">
           <div class="col-md-12">
             <div class="page-header">
@@ -104,158 +104,158 @@
         <div class="row">
           <div class="col-md-9" id="main-content">
             {{markdown description}}
-            <% if properties(class_data['name']).any? %>
-            <h3 class="section">Properties</h3>
-              <% properties(class_data['name']).each do |property_data| %>
+            {{#if properties}}
+              <h3 class="section">Properties</h3>
+              {{#each properties}}
                 <div class="panel panel-default">
-                  <a id="<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(property_data['name']) %>" class="symbol-anchor"></a>
+                  <a id="{{anchorify class}}-{{anchorify name}}" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', property_data['file'], '#L', property_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-                    <% if property_data.key?('readonly') %>
+                    <a class="pull-right" href="{{githubLink}}"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    {{#if readonly}}
                       <span class="label label-danger pull-right">read only</span>
-                    <% end %>
-                    <% if property_data['static'] %>
+                    {{/if}}
+                    {{#if static}}
                       <span class="label label-info pull-right">static</span>
-                    <% end %>
-                    <h3 class="panel-title property"><%= property_data['name'] %> <span class="type">{<%= property_data['type'] %>}</span></h3>
+                    {{/if}}
+                    <h3 class="panel-title property">{{name}} <span class="type">{{{type}}}</span></h3>
                   </div>
                   <div class="panel-body">
-                    <%= markdown(property_data['description']) %>
-                    <% if property_data['default'] %>
-                      Defaults to <code><%= property_data['default'] %></code>
-                    <% end %>
+                    {{markdown description}}
+                    {{#if default}}
+                      Defaults to <code>{{default}}</code>
+                      {{/if}}
                   </div>
                 </div>
-              <% end %>
-            <% end %>
-            <% if methods(class_data['name']).any? %>
+              {{/each}}
+            {{/if}}
+            {{#if methods}}
               <h3 class="section">Methods</h3>
-              <% methods(class_data['name']).each do |method_data| %>
+              {{#each methods}}
                 <div class="panel panel-default">
-                  <a id="<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(method_data['name']) %>" class="symbol-anchor"></a>
+                  <a id="{{anchorify class}}-{{anchorify name}}" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', method_data['file'], '#L', method_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-                    <% if method_data['static'] %>
+                    <a class="pull-right" href="{{githubLink}}"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    {{#if static}}
                       <span class="label label-info pull-right">static</span>
-                    <% end %>
-                    <% if method_data['access'] == 'protected' %>
+                    {{/if}}
+                    {{#if protected}}
                       <span class="label label-warning pull-right">protected</span>
-                    <% end %>
+                    {{/if}}
                     <h3 class="panel-title method">
-                      <%= method_data['name'] %><%= params_signature(method_data['params']) %>
-                      <% if !!(method_data['return'] || {})['type'] %>
-                        <span class="type">&rarr; <%= method_data['return']['type'] %></span>
-                      <% end %>
+                      {{signature}}
+                      {{#if return.type}}
+                        <span class="type">&rarr; {{return.type}}</span>
+                      {{/if}}
                     </h3>
                   </div>
                   <div class="panel-body">
-                    <%= markdown(method_data['description']) %>
-                    <% if !!method_data['params'] %>
+                    {{markdown description}}
+                    {{#if params}}
                       <h4 class="subsection">Arguments</h4>
                       <dl class="params">
-                        <% method_data['params'].each do |param_data| %>
-                          <dt><%= param_data['optional'] ? "[#{param_data['name']}]" : param_data['name'] %> <span class="type">{<%= param_data['type'] %>}</span></dt>
-                          <dd><%= markdown(param_data['description']) %></dd>
-                          <% if param_data['props'] %>
+                        {{#each params}}
+                          <dt>{{#if optional}}[{{name}}]{{else}}{{name}}{{/if}} <span class="type">{{{type}}}</span></dt>
+                          <dd>{{markdown description}}</dd>
+                          {{#if props}}
                             <dl class="props">
-                              <% param_data['props'].each do |prop_data| %>
-                                <dt><%= param_data['name'] %>.<%= prop_data['optional'] ? "[#{prop_data['name']}]" : prop_data['name'] %> <span class="type">{<%= prop_data['type'] %>}</span></dt>
-                                <dd><%= markdown(prop_data['description']) %></dd>
-                              <% end %>
+                              {{#each props}}
+                                <dt>{{../name}}.{{#if optional}}[{{name}}]{{else}}{{name}}{{/if}} <span class="type">{{{type}}}</span></dt>
+                                <dd>{{markdown description}}</dd>
+                              {{/each}}
                             </dl>
-                          <% end %>
-                        <% end %>
+                          {{/if}}
+                        {{/each}}
                       </dl>
-                    <% end %>
-                    <% if !!method_data['return'] %>
+                    {{/if}}
+                    {{#if return}}
                       <h4 class="subsection">Returns</h4>
-                      <p><span class="type return">&rarr; <%= method_data['return']['type'] %></span></p>
-                      <%= markdown(method_data['return']['description']) %>
-                    <% end %>
+                      <p><span class="type return">&rarr; {{return.type}}</span></p>
+                      {{markdown return.description}}
+                    {{/if}}
                   </div>
                 </div>
-              <% end %>
-            <% end %>
-            <% if actions(class_data['name']).any? %>
+              {{/each}}
+            {{/if}}
+            {{#if actions}}
               <h3 class="section">Actions</h3>
-              <% actions(class_data['name']).each do |action_data| %>
+              {{#each actions}}
                 <div class="panel panel-default">
-                  <a id="<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(action_data['name']) %>" class="symbol-anchor"></a>
+                  <a id="{{anchorify class}}-{{anchorify name}}" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="<%= [project['github_url'], '/blob/master/', action_data['file'], '#L', action_data['line']].join %>"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="{{githubLink}}"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     <h3 class="panel-title method">
-                      <%= action_data['name'] %><%= params_signature(action_data['params']) %>
+                      {{signature}}
                     </h3>
                   </div>
                   <div class="panel-body">
-                    <%= markdown(action_data['description']) %>
-                    <% if !!action_data['params'] %>
+                    {{markdown description}}
+                    {{#if params}}
                       <h4 class="subsection">Arguments</h4>
                       <dl class="params">
-                        <% action_data['params'].each do |param_data| %>
-                          <dt><%= param_data['optional'] ? "[#{param_data['name']}]" : param_data['name'] %> <span class="type">{<%= param_data['type'] %>}</span></dt>
-                          <dd><%= markdown(param_data['description']) %></dd>
-                          <% if param_data['props'] %>
+                        {{#each params}}
+                          <dt>{{#if optional}}[{{name}}]{{else}}{{name}}{{/if}} <span class="type">{{{type}}}</span></dt>
+                          <dd>{{markdown description}}</dd>
+                          {{#if props}}
                             <dl class="props">
-                              <% param_data['props'].each do |prop_data| %>
-                                <dt><%= param_data['name'] %>.<%= prop_data['optional'] ? "[#{prop_data['name']}]" : prop_data['name'] %> <span class="type">{<%= prop_data['type'] %>}</span></dt>
-                                <dd><%= markdown(prop_data['description']) %></dd>
-                              <% end %>
+                              {{#each props}}
+                                <dt>{{../name}}.{{#if optional}}[{{name}}]{{else}}{{name}}{{/if}} <span class="type">{{{type}}}</span></dt>
+                                <dd>{{markdown description}}</dd>
+                              {{/each}}
                             </dl>
-                          <% end %>
-                        <% end %>
+                          {{/if}}
+                        {{/each}}
                       </dl>
-                    <% end %>
+                    {{/if}}
                   </div>
                 </div>
-              <% end %>
-            <% end %>
+              {{/each}}
+            {{/if}}
           </div>
           <div class="col-md-3 overview">
-            <% if !!class_data['extends'] %>
+            {{#if extends}}
               <h4>Extends</h4>
-              <p><span class="type"><%= class_data['extends'] %></span></p>
-            <% end %>
-            <% if !!class_data['uses'] %>
+              <p><span class="type">{{extends}}</span></p>
+            {{/if}}
+            {{#if uses}}
               <h4>Uses</h4>
               <ul class="list-unstyled">
-                <% class_data['uses'].each do |uses| %>
+                {{#each uses}}
                   <li>
-                    <span class="type"><%= uses %></span>
+                    <span class="type">{{this}}</span>
                   </li>
-                <% end %>
+                {{/each}}
               </ul>
-            <% end %>
-            <% if properties(class_data['name']).any? %>
+            {{/if}}
+            {{#if properties}}
               <h4>Properties</h4>
               <ul class="list-unstyled">
-                <% properties(class_data['name']).each do |property_data| %>
+                {{#each properties}}
                   <li>
-                    <a href="#<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(property_data['name']) %>"><%= property_data['name'] %></a>
+                    <a href="#{{anchorify class}}-{{anchorify name}}">{{name}}</a>
                   </li>
-                <% end %>
+                {{/each}}
               </ul>
-            <% end %>
-            <% if methods(class_data['name']).any? %>
+            {{/if}}
+            {{#if methods}}
               <h4>Methods</h4>
               <ul class="list-unstyled">
-                <% methods(class_data['name']).each do |method_data| %>
+                {{#each methods}}
                   <li>
-                    <a href="#<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(method_data['name']) %>"><%= method_data['name'] %></a>
+                    <a href="#{{anchorify class}}-{{anchorify name}}">{{name}}</a>
                   </li>
-                <% end %>
+                {{/each}}
               </ul>
-            <% end %>
-            <% if actions(class_data['name']).any? %>
+            {{/if}}
+            {{#if actions}}
               <h4>Actions</h4>
               <ul class="list-unstyled">
-                <% actions(class_data['name']).each do |action_data| %>
+                {{#each actions}}
                   <li>
-                    <a href="#<%= sanitize_id(class_data['name']) %>-<%= sanitize_id(action_data['name']) %>"><%= action_data['name'] %></a>
+                    <a href="#{{anchorify class}}-{{anchorify name}}">{{name}}</a>
                   </li>
-                <% end %>
+                {{/each}}
               </ul>
-            <% end %>
+            {{/if}}
           </div>
         </div>
       {{/each}}
