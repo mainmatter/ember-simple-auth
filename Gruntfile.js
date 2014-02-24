@@ -109,10 +109,6 @@ module.exports = function(grunt) {
           cwd: 'tmp/',
           src: ['<%= pkg.name %>.js', '<%= pkg.name %>.amd.js', '<%= pkg.name %>.amd.js.map', '<%= pkg.name %>/**/*.js', 'vendor/**/*.js'],
           dest: 'dist/sources-<%= pkg.version %>/'
-        }, {
-          expand: true,
-          src: ['wrap/*', 'vendor/**/*.js'],
-          dest: 'dist/sources-<%= pkg.version %>/'
         }]
       }
     },
