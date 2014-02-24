@@ -21,22 +21,22 @@ module.exports = function(grunt) {
     'concat:tests',
   ]);
 
-  this.registerTask('server', [
+  this.registerTask('server', 'Runs a development server', [
     'build_tests',
     'connect',
     'watch'
   ]);
 
-  this.registerTask('test', [
+  this.registerTask('test', 'Executes the tests', [
     'jshint',
     'build_tests',
     'connect',
     'qunit'
   ]);
 
-  this.registerTask('docs', [
+  this.registerTask('docs', 'Builds the documentation', [
     'yuidoc',
-    'compile-handlebars'
+    'compile-handlebars:docs'
   ]);
 
   grunt.initConfig({
