@@ -34,12 +34,16 @@ module.exports = function(grunt) {
     'qunit'
   ]);
 
+  this.registerTask('docs', [
+    'yuidoc',
+    'compile-handlebars:docs'
+  ]);
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     connect: {
       server: {},
-
       options: {
         hostname: '0.0.0.0',
         port: grunt.option('port') || 8000,
@@ -47,9 +51,9 @@ module.exports = function(grunt) {
         middleware: function(connect, options) {
           return [
             require('connect-redirection')(),
-            function(req, res, next) {
-              if (req.url === '/') {
-                res.redirect('/test');
+            function(request, response, next) {
+              if (request.url === '/') {
+                response.redirect('/test');
               } else {
                 next();
               }
@@ -75,7 +79,6 @@ module.exports = function(grunt) {
           dest: 'tmp/'
         }]
       },
-
       tests: {
         type: 'amd',
         files: [{
@@ -134,7 +137,7 @@ module.exports = function(grunt) {
       }
     },
 
-    clean: ['dist', 'tmp'],
+    clean: ['dist', 'tmp', 'docs/build'],
 
     qunit: {
       all: {
@@ -143,6 +146,28 @@ module.exports = function(grunt) {
             'http://localhost:8000/test/index.html'
           ]
         }
+      }
+    },
+
+    yuidoc: {
+      compile: {
+        name: '<%= pkg.name %>',
+        description: '<%= pkg.description %>',
+        version: '<%= pkg.version %>',
+        options: {
+          parseOnly: true,
+          paths: 'lib',
+          outdir: 'docs/build'
+        }
+      }
+    },
+
+    'compile-handlebars': {
+      docs: {
+        template: 'docs/theme/main.hbs',
+        templateData: 'docs/build/data.json',
+        helpers: 'docs/theme/helpers/**/*.js',
+        output: 'docs/build/api.html'
       }
     }
   });
@@ -156,4 +181,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-es6-module-transpiler');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-yuidoc');
+  grunt.loadNpmTasks('grunt-compile-handlebars');
 };
