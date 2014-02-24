@@ -1,3 +1,10 @@
+# 0.1.2
+
+* Ember.SimpleAuth.setup now **expects the container and the application as arguments** (`Ember.SimpleAuth.setup(container, application);`)
+* the authenticator to use is now looked up via Ember's container instead of the class name which fixes all sorts of problems especially when using Ember AppKit with the new ES6 modules lookup
+* the examples will now always build a new release of Ember.SimpleAuth when starting
+* origin validation now works in IE, see #84
+
 # 0.1.1
 
 * use absolute expiration times for tokens, see #76
