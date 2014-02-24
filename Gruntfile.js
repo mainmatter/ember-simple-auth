@@ -7,7 +7,8 @@ module.exports = function(grunt) {
     'copy:sources',
     'uglify:library',
     'uglify:browser',
-    'docs'
+    'docs',
+    'copy:docs'
   ]);
 
   this.registerTask('build', 'Builds EmberSimpleAuth', [
@@ -109,6 +110,12 @@ module.exports = function(grunt) {
           cwd: 'tmp/',
           src: ['<%= pkg.name %>.js', '<%= pkg.name %>.amd.js', '<%= pkg.name %>.amd.js.map', '<%= pkg.name %>/**/*.js', 'vendor/**/*.js'],
           dest: 'dist/sources-<%= pkg.version %>/'
+        }]
+      },
+      docs: {
+        files: [{
+          src: ['docs/build/api.html'],
+          dest: 'dist/<%= pkg.name %>-<%= pkg.version %>-api-docs.html'
         }]
       }
     },
