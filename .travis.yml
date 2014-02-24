@@ -2,8 +2,6 @@
 notifications:
   email:
     on_success: never
-rvm:
-  - 1.9.3
-cache: bundler
-install: travis_retry bundle install --deployment
-script: bundle exec rake test\[all]
+language: node_js
+node_js:
+  - '0.10'
