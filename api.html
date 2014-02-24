@@ -166,7 +166,7 @@
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-authenticationRoute" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L21"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L35"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                       <span class="label label-danger pull-right">read only</span>
                     
@@ -188,7 +188,7 @@
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-routeAfterAuthentication" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L32"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L46"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                       <span class="label label-danger pull-right">read only</span>
                     
@@ -210,7 +210,7 @@ through <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-routeAfterInvalidation" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L43"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L57"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                       <span class="label label-danger pull-right">read only</span>
                     
@@ -236,13 +236,13 @@ through <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-setup" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L55"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/core.js#L69"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                       <span class="label label-info pull-right">static</span>
                     
                     
                     <h3 class="panel-title method">
-                      setup(application, [options])
+                      setup(container, application, [options])
                       
                     </h3>
                   </div>
@@ -253,7 +253,7 @@ initializer</strong> like this:</p>
 <pre lang="javascript"><code>Ember.Application.initializer({
   name: &#39;authentication&#39;,
   initialize: function(container, application) {
-    Ember.SimpleAuth.setup(application);
+    Ember.SimpleAuth.setup(container, application);
   }
 });
 </code></pre>
@@ -261,6 +261,11 @@ initializer</strong> like this:</p>
                     
                       <h4 class="subsection">Arguments</h4>
                       <dl class="params">
+                        
+                          <dt>container <span class="type">{Container}</span></dt>
+                          <dd><p>The Ember.js application&#39;s dependency injection container</p>
+</dd>
+                          
                         
                           <dt>application <span class="type">{Ember.Application}</span></dt>
                           <dd><p>The Ember.js application instance</p>
@@ -812,21 +817,18 @@ authorizer (see
 when any of the session properties change. The session listens to that event
 and will handle the changes accordingly.</p>
 
-<p><strong>Custom authenticators have to be defined in the applications&#39;s namespace</strong>;
-otherwise their class name cannot be auto-detected and the session
-restoration mechanism breaks (see
-<a href="#Ember-SimpleAuth-Authenticators-Base-restore">Ember.SimpleAuth.Authenticators.Base#restore</a>).
-So instead of this:</p>
+<p><strong>Custom authenticators have to be registered with Ember&#39;s dependency
+injection container</strong> so that the session can retrieve an instance, e.g.:</p>
 
 <pre lang="javascript"><code>var CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
   ...
 });
-</code></pre>
-
-<p>the authenticator should be defined like this:</p>
-
-<pre lang="javascript"><code>App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
-  ...
+Ember.Application.initializer({
+  name: &#39;authentication&#39;,
+  initialize: function(container, application) {
+    container.register(&#39;app:authenticators:custom&#39;, CustomAuthenticator);
+    Ember.SimpleAuth.setup(container, application);
+  }
 });
 </code></pre>
 
@@ -837,7 +839,7 @@ So instead of this:</p>
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-Authenticators-Base-restore" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L46"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L42"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                     
                     <h3 class="panel-title method">
@@ -886,7 +888,7 @@ reasonable default implementation.</p>
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-Authenticators-Base-authenticate" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L70"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L66"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                     
                     <h3 class="panel-title method">
@@ -938,7 +940,7 @@ see
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-Authenticators-Base-invalidate" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L97"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/authenticators/base.js#L93"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                     
                     <h3 class="panel-title method">
@@ -1511,7 +1513,7 @@ to have a <code>login</code> template with the fields <code>indentification</cod
 as well as an actionable button or link that triggers the <code>authenticate</code>
 action, e.g.:</p>
 
-<pre lang="handlebars"><code>&lt;form {{action login on=&#39;submit&#39;}}&gt;
+<pre lang="handlebars"><code>&lt;form {{action &#39;authenticate&#39; on=&#39;submit&#39;}}&gt;
   &lt;label for=&quot;identification&quot;&gt;Login&lt;/label&gt;
   {{input id=&#39;identification&#39; placeholder=&#39;Enter Login&#39; value=identification}}
   &lt;label for=&quot;password&quot;&gt;Password&lt;/label&gt;
@@ -1629,16 +1631,16 @@ These methods are usually invoked through actions from routes or controllers.</p
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-Session-authenticator" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L31"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L25"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                       <span class="label label-danger pull-right">read only</span>
                     
                     
-                    <h3 class="panel-title property">authenticator <span class="type">{Ember.SimpleAuth.Authenticators.Base}</span></h3>
+                    <h3 class="panel-title property">authenticator <span class="type">{String}</span></h3>
                   </div>
                   <div class="panel-body">
-                    <p>The authenticator used to authenticate the session. This is only set when
-the session is currently authenticated.</p>
+                    <p>The authenticator factory used to authenticate the session. This is only
+set when the session is currently authenticated.</p>
 
                     
                       Defaults to <code>null</code>
@@ -1649,7 +1651,7 @@ the session is currently authenticated.</p>
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-Session-store" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L41"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L35"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                       <span class="label label-danger pull-right">read only</span>
                     
@@ -1670,7 +1672,7 @@ Ember.SimpleAuth&#39;s setup and can be specified there
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-Session-isAuthenticated" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L52"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L46"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                       <span class="label label-danger pull-right">read only</span>
                     
@@ -1693,11 +1695,11 @@ Ember.SimpleAuth&#39;s setup and can be specified there
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-Session-authenticate" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L91"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L87"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                     
                     <h3 class="panel-title method">
-                      authenticate(authenticator, options)
+                      authenticate(authenticatorFactory, options)
                       
                         <span class="type">&rarr; Ember.RSVP.Promise</span>
                       
@@ -1718,8 +1720,8 @@ unauthenticated.</p>
                       <h4 class="subsection">Arguments</h4>
                       <dl class="params">
                         
-                          <dt>authenticator <span class="type">{Ember.SimpleAuth.Authenticators.Base}</span></dt>
-                          <dd><p>The authenticator to authenticate with</p>
+                          <dt>authenticatorFactory <span class="type">{String}</span></dt>
+                          <dd><p>The authenticator factory to use as it is registered with Ember&#39;s container, see <a href="http://emberjs.com/api/classes/Ember.Application.html#method_register">Ember&#39;s API docs</a></p>
 </dd>
                           
                         
@@ -1742,7 +1744,7 @@ unauthenticated.</p>
                 <div class="panel panel-default">
                   <a id="Ember-SimpleAuth-Session-invalidate" class="symbol-anchor"></a>
                   <div class="panel-heading">
-                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L120"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/session.js#L116"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
                     
                     
                     <h3 class="panel-title method">
