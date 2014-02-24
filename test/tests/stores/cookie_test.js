@@ -1,8 +1,10 @@
+import { Cookie } from 'ember-simple-auth/stores/cookie';
+
 var store;
 
-module('Ember.SimpleAuth.Stores.Cookie', {
+module('Stores.Cookie', {
   setup: function() {
-    store = Ember.SimpleAuth.Stores.Cookie.create();
+    store = Cookie.create();
   },
   teardown: function() {
     store.clear();

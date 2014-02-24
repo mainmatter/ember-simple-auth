@@ -1,8 +1,10 @@
+import { LocalStorage } from 'ember-simple-auth/stores/local_storage';
+
 var store;
 
-module('Ember.SimpleAuth.Stores.LocalStorage', {
+module('Stores.LocalStorage', {
   setup: function() {
-    store = Ember.SimpleAuth.Stores.LocalStorage.create();
+    store = LocalStorage.create();
   },
   teardown: function() {
     store.clear();

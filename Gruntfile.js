@@ -30,6 +30,7 @@ module.exports = function(grunt) {
   this.registerTask('test', [
     'jshint',
     'build_tests',
+    'connect',
     'qunit'
   ]);
 
@@ -136,7 +137,13 @@ module.exports = function(grunt) {
     clean: ['dist', 'tmp'],
 
     qunit: {
-      all: ['test/index.html']
+      all: {
+        options: {
+          urls: [
+            'http://localhost:8000/test/index.html'
+          ]
+        }
+      }
     }
   });
 

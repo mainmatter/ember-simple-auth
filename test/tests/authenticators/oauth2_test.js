@@ -1,3 +1,5 @@
+import { OAuth2 } from 'ember-simple-auth/authenticators/oauth2';
+
 var authenticator;
 
 var ajaxMock;
@@ -16,10 +18,10 @@ var AjaxMock = Ember.Object.extend({
   }
 });
 
-module('Ember.SimpleAuth.Authenticators.OAuth2', {
+module('Authenticators.OAuth2', {
   originalAjax: Ember.$.ajax,
   setup: function() {
-    authenticator = Ember.SimpleAuth.Authenticators.OAuth2.create();
+    authenticator = OAuth2.create();
     ajaxMock      = AjaxMock.create();
     Ember.$.ajax  = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
   },
@@ -39,8 +41,8 @@ test('restores the session', function() {
     });
   });
 
-  ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise when the properties it restores the session from include an access_token.');
-  deepEqual(resolvedWith, { access_token: 'access_token', key: 'value' }, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with the passed properties when the properties it restores the session from include an access_token.');
+  ok(resolved, 'Authenticators.OAuth2 returns a resolving promise when the properties it restores the session from include an access_token.');
+  deepEqual(resolvedWith, { access_token: 'access_token', key: 'value' }, 'Authenticators.OAuth2 returns a promise that resolves with the passed properties when the properties it restores the session from include an access_token.');
 
   var rejected;
   Ember.run(function() {
@@ -49,7 +51,7 @@ test('restores the session', function() {
     });
   });
 
-  ok(rejected, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a rejecting promise when the properties it restores the session from do not include an access_token.');
+  ok(rejected, 'Authenticators.OAuth2 returns a rejecting promise when the properties it restores the session from do not include an access_token.');
 
   rejected = false;
   Ember.run(function() {
@@ -58,7 +60,7 @@ test('restores the session', function() {
     });
   });
 
-  ok(rejected, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a rejecting promise when the properties it restores the session from include an empty access_token.');
+  ok(rejected, 'Authenticators.OAuth2 returns a rejecting promise when the properties it restores the session from include an empty access_token.');
 });
 
 test('issues an AJAX request for authentication', function() {
@@ -66,11 +68,11 @@ test('issues an AJAX request for authentication', function() {
     authenticator.authenticate({ identification: 'identification', password: 'password' });
   });
 
-  equal(ajaxMock.requestOptions.url, '/token', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request to the serverTokenEndpoint for authentication.');
-  equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a POST request for authentication.');
-  deepEqual(ajaxMock.requestOptions.data, { grant_type: 'password', password: 'password', username: 'identification' }, 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the correct data for authentication.');
-  equal(ajaxMock.requestOptions.dataType, 'json', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the data type "json" for authentication.');
-  equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" for authentication.');
+  equal(ajaxMock.requestOptions.url, '/token', 'Authenticators.OAuth2 sends a request to the serverTokenEndpoint for authentication.');
+  equal(ajaxMock.requestOptions.type, 'POST', 'Authenticators.OAuth2 sends a POST request for authentication.');
+  deepEqual(ajaxMock.requestOptions.data, { grant_type: 'password', password: 'password', username: 'identification' }, 'Authenticators.OAuth2 sends a request with the correct data for authentication.');
+  equal(ajaxMock.requestOptions.dataType, 'json', 'Authenticators.OAuth2 sends a request with the data type "json" for authentication.');
+  equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" for authentication.');
 });
 
 test('returns a promise on authentication', function() {
@@ -84,8 +86,8 @@ test('returns a promise on authentication', function() {
     });
   });
 
-  ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise when the authentication AJAX request is successful.');
-  deepEqual(resolvedWith, { access_token: 'access_token' }, "Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that resolves with the server's response when the authentication AJAX request is successful.");
+  ok(resolved, 'Authenticators.OAuth2 returns a resolving promise when the authentication AJAX request is successful.');
+  deepEqual(resolvedWith, { access_token: 'access_token' }, "Authenticators.OAuth2 returns a promise that resolves with the server's response when the authentication AJAX request is successful.");
 
   AjaxMock._resolve = false;
   AjaxMock._reject  = { responseText: 'error' };
@@ -98,8 +100,8 @@ test('returns a promise on authentication', function() {
     });
   });
 
-  ok(rejected, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a rejecting promise when the authentication AJAX request is not successful.');
-  deepEqual(rejectedWith, 'error', 'Ember.SimpleAuth.Authenticators.OAuth2 returns a promise that rejects with the error message from the response when the authentication AJAX request is not successful.');
+  ok(rejected, 'Authenticators.OAuth2 returns a rejecting promise when the authentication AJAX request is not successful.');
+  deepEqual(rejectedWith, 'error', 'Authenticators.OAuth2 returns a promise that rejects with the error message from the response when the authentication AJAX request is not successful.');
 });
 
 test('invalidates the session', function() {
@@ -110,7 +112,7 @@ test('invalidates the session', function() {
     });
   });
 
-  ok(resolved, 'Ember.SimpleAuth.Authenticators.OAuth2 returns a resolving promise for session invalidation.');
+  ok(resolved, 'Authenticators.OAuth2 returns a resolving promise for session invalidation.');
 });
 
 test('refreshes the access token', function() {
@@ -118,11 +120,11 @@ test('refreshes the access token', function() {
     authenticator.refreshAccessToken(1, 'refresh token!');
   });
 
-  equal(ajaxMock.requestOptions.url, '/token', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request to the serverTokenEndpoint to refresh the access token.');
-  equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a POST request to refresh the access token.');
-  deepEqual(ajaxMock.requestOptions.data, { grant_type: 'refresh_token', refresh_token: 'refresh token!' }, 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the correct data to refresh the access token.');
-  equal(ajaxMock.requestOptions.dataType, 'json', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the data type "json" to refresh the access token.');
-  equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" to refresh the access token.');
+  equal(ajaxMock.requestOptions.url, '/token', 'Authenticators.OAuth2 sends a request to the serverTokenEndpoint to refresh the access token.');
+  equal(ajaxMock.requestOptions.type, 'POST', 'Authenticators.OAuth2 sends a POST request to refresh the access token.');
+  deepEqual(ajaxMock.requestOptions.data, { grant_type: 'refresh_token', refresh_token: 'refresh token!' }, 'Authenticators.OAuth2 sends a request with the correct data to refresh the access token.');
+  equal(ajaxMock.requestOptions.dataType, 'json', 'Authenticators.OAuth2 sends a request with the data type "json" to refresh the access token.');
+  equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" to refresh the access token.');
 });
 
 test('keeps the token fresh', function() {
@@ -131,18 +133,18 @@ test('keeps the token fresh', function() {
     authenticator.refreshAccessToken(1, 'refresh token!');
   });
 
-  ok(Ember.isEmpty(authenticator._refreshTokenTimeout), 'Ember.SimpleAuth.Authenticators.OAuth2 does not schedule another refresh when refreshing the access token failed.');
+  ok(Ember.isEmpty(authenticator._refreshTokenTimeout), 'Authenticators.OAuth2 does not schedule another refresh when refreshing the access token failed.');
 
   AjaxMock._resolve = true;
   Ember.run(function() {
     authenticator.refreshAccessToken(5, 'refresh token!');
   });
 
-  ok(Ember.isEmpty(authenticator._refreshTokenTimeout), 'Ember.SimpleAuth.Authenticators.OAuth2 does not schedule another refresh when the token expiration time is 5 seconds or less.');
+  ok(Ember.isEmpty(authenticator._refreshTokenTimeout), 'Authenticators.OAuth2 does not schedule another refresh when the token expiration time is 5 seconds or less.');
 
   Ember.run(function() {
     authenticator.refreshAccessToken(10, 'refresh token!');
   });
 
-  ok(!Ember.isEmpty(authenticator._refreshTokenTimeout), 'Ember.SimpleAuth.Authenticators.OAuth2 schedules another refresh when it successfully refreshed the access token.');
+  ok(!Ember.isEmpty(authenticator._refreshTokenTimeout), 'Authenticators.OAuth2 schedules another refresh when it successfully refreshed the access token.');
 });

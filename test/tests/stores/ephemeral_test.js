@@ -1,8 +1,10 @@
+import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
+
 var store;
 
-module('Ember.SimpleAuth.Stores.Ephemeral', {
+module('Stores.Ephemeral', {
   setup: function() {
-    store = Ember.SimpleAuth.Stores.Ephemeral.create();
+    store = Ephemeral.create();
   }
 });
 
