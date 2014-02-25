@@ -34,6 +34,11 @@
       <div class="container">
         {{outlet}}
       </div>
+      <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">&larr; back to examples list</a>
+        </div>
+      </nav>
     </script>
 
     <script type="text/x-handlebars" data-template-name="index">
@@ -97,7 +102,7 @@
             // open a new window that displays the Facebook login dialog; see the callback handler on the server side
             // (get '/7-external-oauth/callback') in the runner file
             var authWindow = window.open(
-              'https://www.facebook.com/dialog/oauth?client_id=631252926924840&redirect_uri=http://localhost:4567/7-external-oauth/callback',
+              'https://www.facebook.com/dialog/oauth?client_id=631252926924840&redirect_uri=http://localhost:8000/7-external-oauth/callback',
               '_blank',
               'menubar=no,status=no,height=400,width=800'
             );

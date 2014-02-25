@@ -43,7 +43,7 @@ module.exports = function(grunt) {
   ]);
 
   this.registerTask('examples', 'Runs the examples server', [
-    'dist',
+    'build',
     'connect:examples'
   ]);
 
@@ -83,6 +83,7 @@ module.exports = function(grunt) {
             return [
               connect.logger('short'),
               connect.json(),
+              connect.query(),
               require('body-parser')(),
               require('connect-redirection')(),
               function(request, response, next) {
