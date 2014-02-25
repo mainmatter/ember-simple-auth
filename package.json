@@ -25,6 +25,7 @@
     "grunt-contrib-yuidoc": "~0.5.1",
     "grunt-compile-handlebars": "0.6.3",
     "connect-redirection": "~0.0.1",
+    "body-parser": "1.0.0",
     "handlebars": "~2.0.0",
     "marked": "~0.3.1"
   },

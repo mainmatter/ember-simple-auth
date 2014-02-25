@@ -81,6 +81,9 @@ module.exports = function(grunt) {
           base: '.',
           middleware: function(connect, options) {
             return [
+              connect.logger('short'),
+              connect.json(),
+              require('body-parser')(),
               require('connect-redirection')(),
               function(request, response, next) {
                 if (request.url === '/') {
