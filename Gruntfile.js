@@ -4,9 +4,9 @@ module.exports = function(grunt) {
   this.registerTask('dist', 'Builds a distributable version of EmberSimpleAuth', [
     'jshint',
     'build',
-    'copy:sources',
     'uglify:library',
     'uglify:browser',
+    'copy:dist',
     'docs',
     'copy:docs'
   ]);
@@ -14,7 +14,8 @@ module.exports = function(grunt) {
   this.registerTask('build', 'Builds EmberSimpleAuth', [
     'clean',
     'transpile:amd',
-    'concat:amd'
+    'concat:amd',
+    'concat:browser'
   ]);
 
   this.registerTask('build_tests', "Builds EmberSimpleAuth's tests", [
@@ -116,23 +117,36 @@ module.exports = function(grunt) {
 
     concat: {
       amd: {
-        src: ['tmp/ember-simple-auth.js', 'tmp/ember-simple-auth/**/*.js'],
-        dest: 'tmp/ember-simple-auth.amd.js'
+        src: ['tmp/<%= pkg.name %>.js', 'tmp/<%= pkg.name %>/**/*.js'],
+        dest: 'tmp/<%= pkg.name %>.amd.js'
+      },
+      browser: {
+        src: [
+          'wrap/browser.start',
+          'vendor/loader.js',
+          'tmp/<%= pkg.name %>.js',
+          'tmp/<%= pkg.name %>/**/*.js',
+          'wrap/browser.end'
+        ],
+        dest: 'tmp/<%= pkg.name %>.js'
       },
       tests: {
         src: ['tmp/tests/**/*.js'],
-        dest: 'tmp/ember-simple-auth-tests.amd.js'
+        dest: 'tmp/<%= pkg.name %>-tests.amd.js'
       }
     },
 
     copy: {
-      sources: {
-        files: [{
-          expand: true,
-          cwd: 'tmp/',
-          src: ['<%= pkg.name %>.js', '<%= pkg.name %>.amd.js', '<%= pkg.name %>.amd.js.map', '<%= pkg.name %>/**/*.js', 'vendor/**/*.js'],
-          dest: 'dist/sources-<%= pkg.version %>/'
-        }]
+      dist: {
+        files: [
+          {
+            src: ['tmp/<%= pkg.name %>.min.js'],
+            dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.min.js'
+          },{
+            src: ['tmp/<%= pkg.name %>.amd.min.js'],
+            dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.amd.min.js'
+          }
+        ]
       },
       docs: {
         files: [{
@@ -145,12 +159,12 @@ module.exports = function(grunt) {
     uglify: {
       library: {
         files: {
-          'dist/<%= pkg.name %>-<%= pkg.version %>.amd.min.js': ['dist/sources-<%= pkg.version %>/<%= pkg.name %>.amd.js']
+          'tmp/<%= pkg.name %>.amd.min.js': ['tmp/<%= pkg.name %>.amd.js']
         }
       },
       browser: {
         files: {
-          'dist/<%= pkg.name %>-<%= pkg.version %>.min.js': ['dist/sources-<%= pkg.version %>/<%= pkg.name %>.amd.js']
+          'tmp/<%= pkg.name %>.min.js': ['tmp/<%= pkg.name %>.js']
         }
       }
     },
