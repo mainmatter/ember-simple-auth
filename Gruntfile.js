@@ -32,7 +32,7 @@ module.exports = function(grunt) {
   this.registerTask('test', 'Executes the tests', [
     'jshint',
     'build_tests',
-    'connect',
+    'connect:dev',
     'qunit'
   ]);
 
