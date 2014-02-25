@@ -81,6 +81,14 @@ module.exports = function(grunt) {
           base: '.',
           middleware: function(connect, options) {
             return [
+              require('connect-redirection')(),
+              function(request, response, next) {
+                if (request.url === '/') {
+                  response.redirect('/examples');
+                } else {
+                  next();
+                }
+              },
               require('./examples/middleware'),
               connect.static(options.base)
             ];
