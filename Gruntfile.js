@@ -34,7 +34,14 @@ module.exports = function(grunt) {
     'jshint',
     'build_tests',
     'connect:dev',
-    'qunit'
+    'qunit:default'
+  ]);
+
+  this.registerTask('ci', 'Executes the tests on the ci server', [
+    'jshint',
+    'build_tests',
+    'connect:dev',
+    'qunit:ci'
   ]);
 
   this.registerTask('docs', 'Builds the documentation', [
@@ -192,11 +199,35 @@ module.exports = function(grunt) {
     clean: ['dist', 'tmp', 'docs/build'],
 
     qunit: {
-      all: {
+      default: {
         options: {
           urls: [
             'http://localhost:8000/test/index.html'
           ]
+        }
+      },
+      ci: {
+        options: {
+          urls: function() {
+            return [
+              'ember=1.2.0&jQuery=1.10.1',
+              'ember=1.2.1&jQuery=1.10.1',
+              'ember=1.2.2&jQuery=1.10.1',
+              'ember=1.3.0&jQuery=1.10.1',
+              'ember=1.3.1&jQuery=1.10.1',
+              'ember=1.3.2&jQuery=1.10.1',
+              'ember=1.2.0&jQuery=2.0.2',
+              'ember=1.2.1&jQuery=2.0.2',
+              'ember=1.2.2&jQuery=2.0.2',
+              'ember=1.3.0&jQuery=2.0.2',
+              'ember=1.3.1&jQuery=2.0.2',
+              'ember=1.3.2&jQuery=2.0.2',
+              'ember=1.4.0&jQuery=1.11.0',
+              'ember=1.4.0&jQuery=2.1.0'
+            ].map(function(bundle) {
+              return ('http://localhost:8000/test/index.html?' + bundle);
+            });
+          }()
         }
       }
     },
