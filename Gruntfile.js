@@ -194,12 +194,12 @@ module.exports = function(grunt) {
     qunit: {
       all: {
         options: {
-          urls: function(process) {
+          urls: function() {
             var bundle = process.env.BUNDLE || '';
             return [
               'http://localhost:8000/test/index.html?' + bundle
             ]
-          }(process)
+          }()
         }
       }
     },
