@@ -10,17 +10,9 @@ cache:
     - node_modules
 env:
   matrix:
-    - BUNDLE="ember=1.2.0&jQuery=1.10.1"
-    - BUNDLE="ember=1.2.1&jQuery=1.10.1"
     - BUNDLE="ember=1.2.2&jQuery=1.10.1"
-    - BUNDLE="ember=1.3.0&jQuery=1.10.1"
-    - BUNDLE="ember=1.3.1&jQuery=1.10.1"
-    - BUNDLE="ember=1.3.2&jQuery=1.10.1"
-    - BUNDLE="ember=1.2.0&jQuery=2.0.2"
-    - BUNDLE="ember=1.2.1&jQuery=2.0.2"
     - BUNDLE="ember=1.2.2&jQuery=2.0.2"
-    - BUNDLE="ember=1.3.0&jQuery=2.0.2"
-    - BUNDLE="ember=1.3.1&jQuery=2.0.2"
+    - BUNDLE="ember=1.3.2&jQuery=1.10.1"
     - BUNDLE="ember=1.3.2&jQuery=2.0.2"
     - BUNDLE="ember=1.4.0&jQuery=1.11.0"
     - BUNDLE="ember=1.4.0&jQuery=2.1.0"
