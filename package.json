@@ -30,6 +30,6 @@
     "marked": "~0.3.1"
   },
   "scripts": {
-    "test": "./node_modules/grunt-cli/bin/grunt ci"
+    "test": "./node_modules/grunt-cli/bin/grunt test"
   }
 }
