@@ -41,14 +41,14 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
     this.get('session').on('ember-simple-auth:session-authentication-succeeded', function() {
       _this.send('sessionAuthenticationSucceeded');
     });
-    this.get('session').on('ember-simple-auth:session-authentication-failed', function() {
-      _this.send('sessionAuthenticationFailed');
+    this.get('session').on('ember-simple-auth:session-authentication-failed', function(error) {
+      _this.send('sessionAuthenticationFailed', error);
     });
     this.get('session').on('ember-simple-auth:session-invalidation-succeeded', function() {
       _this.send('sessionInvalidationSucceeded');
     });
-    this.get('session').on('ember-simple-auth:session-invalidation-failed', function() {
-      _this.send('sessionInvalidationFailed');
+    this.get('session').on('ember-simple-auth:session-invalidation-failed', function(error) {
+      _this.send('sessionInvalidationFailed', error);
     });
   },
 
@@ -127,7 +127,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
       @method actions.sessionAuthenticationFailed
       @param {any} arguments Any error argument the promise returned by the authenticator rejects with, see [Ember.SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)
     */
-    sessionAuthenticationFailed: function() {
+    sessionAuthenticationFailed: function(error) {
     },
 
     /**
