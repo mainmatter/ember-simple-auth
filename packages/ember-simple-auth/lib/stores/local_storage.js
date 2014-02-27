@@ -22,6 +22,12 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
   keyPrefix: 'ember_simple_auth:',
 
   /**
+    @property _triggerChangeEventTimeout
+    @private
+  */
+  _triggerChangeEventTimeout: null,
+
+  /**
     @method init
     @private
   */
@@ -103,13 +109,14 @@ Ember.SimpleAuth.Stores.LocalStorage = Ember.SimpleAuth.Stores.Base.extend({
   bindToStorageEvents: function() {
     var _this = this;
     Ember.$(window).bind('storage', function(e) {
-      console.log(e);
       var properties        = _this.restore();
       var encodedProperties = JSON.stringify(properties);
-      console.log(encodedProperties !== _this._lastProperties);
       if (encodedProperties !== _this._lastProperties) {
         _this._lastProperties = encodedProperties;
-        _this.trigger('ember-simple-auth:session-updated', properties);
+        Ember.run.cancel(_this._triggerChangeEventTimeout);
+        _this._triggerChangeEventTimeout = Ember.run.next(_this, function() {
+          this.trigger('ember-simple-auth:session-updated', properties);
+        });
       }
     });
   }
