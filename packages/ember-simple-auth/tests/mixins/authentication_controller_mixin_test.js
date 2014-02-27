@@ -46,23 +46,3 @@ test('authenticates the session', function() {
   equal(sessionMock.invokedAuthenticateWith.authenticator, 'authenticators:test', 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session with the correct authenticator.');
   deepEqual(sessionMock.invokedAuthenticateWith.options, { 'key': 'value' }, 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session with the correct options.');
 });
-
-test('triggers the authenticationSucceeded action when authentication is successful', function() {
-  SessionMock._resolve = true;
-  Ember.run(function() {
-    testController.send('authenticate');
-  });
-
-  ok(testController.invokedSessionAuthenticationSucceeded, 'Ember.SimpleAuth.AuthenticationControllerMixin triggers the sessionAuthenticationSucceeded action when authentication was successful.');
-});
-
-test('triggers the authenticationFailed action when authentication fails', function() {
-  SessionMock._resolve = false;
-  SessionMock._reject = 'error!';
-  Ember.run(function() {
-    testController.send('authenticate');
-  });
-
-  ok(testController.invokedSessionAuthenticationFailed, 'Ember.SimpleAuth.AuthenticationControllerMixin triggers the sessionAuthenticationFailed action when authentication fails.');
-  equal(testController.invokedSessionAuthenticationFailedWith, 'error!', 'Ember.SimpleAuth.AuthenticationControllerMixin triggers the sessionAuthenticationFailed action with the rejection value of the session.');
-});

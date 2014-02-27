@@ -62,23 +62,3 @@ test('does not authenticate the session when identification or password are empt
 
   ok(!sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.LoginControllerMixin does not authenticate the session when authentication is triggered but identification and password are empty.');
 });
-
-test('triggers the authenticationSucceeded action when authentication is successful', function() {
-  SessionMock._resolve = true;
-  Ember.run(function() {
-    testController.send('authenticate');
-  });
-
-  ok(testController.invokedSessionAuthenticationSucceeded, 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationSucceeded action when authentication was successful.');
-});
-
-test('triggers the authenticationFailed action when authentication fails', function() {
-  SessionMock._resolve = false;
-  SessionMock._reject = 'error!';
-  Ember.run(function() {
-    testController.send('authenticate');
-  });
-
-  ok(testController.invokedSessionAuthenticationFailed, 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationFailed action when authentication fails.');
-  equal(testController.invokedSessionAuthenticationFailedWith, 'error!', 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationFailed action with the rejection value of the session.');
-});

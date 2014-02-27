@@ -37,11 +37,7 @@ Ember.SimpleAuth.AuthenticationControllerMixin = Ember.Mixin.create({
     */
     authenticate: function(options) {
       var _this = this;
-      this.get('session').authenticate(this.get('authenticator'), options).then(function() {
-        _this.send('sessionAuthenticationSucceeded');
-      }, function(error) {
-        _this.send('sessionAuthenticationFailed', error);
-      });
+      this.get('session').authenticate(this.get('authenticator'), options);
     }
   }
 });

@@ -140,11 +140,7 @@ Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
     */
     invalidateSession: function() {
       var _this = this;
-      this.get('session').invalidate().then(function() {
-        _this.send('sessionInvalidationSucceeded');
-      }, function(error) {
-        _this.send('sessionInvalidationFailed', error);
-      });
+      this.get('session').invalidate();
     },
 
     /**
