@@ -195,7 +195,7 @@ module.exports = function(grunt) {
       test: {
         options: {
           run: true,
-          reporter: 'Spec',
+          reporter: process.env.REPORTER || 'Spec',
           urls: function() {
             var bundle = process.env.BUNDLE || '';
             return [
