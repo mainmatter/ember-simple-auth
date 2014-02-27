@@ -36,9 +36,15 @@
 */
 Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
   activate: function() {
+    var _this = this;
     this._super();
-    console.log('created');
-    console.log(this.get('session'));
+    this.get('session').on('ember-simple-auth:session-authenticated', function() {
+      console.log('happened');
+      _this.send('sessionAuthenticationSucceeded');
+    });
+    this.get('session').on('ember-simple-auth:session-invalidated', function() {
+      _this.send('sessionInvalidationSucceeded');
+    });
   },
 
   actions: {
