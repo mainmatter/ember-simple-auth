@@ -110,6 +110,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend(Ember.Evented, {
         resolve();
       }, function(error) {
         _this.clear();
+        _this.trigger('ember-simple-auth:session-authentication-failed');
         reject(error);
       });
     });
@@ -140,6 +141,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend(Ember.Evented, {
         _this.trigger('ember-simple-auth:session-invalidation-succeeded');
         resolve();
       }, function(error) {
+        _this.trigger('ember-simple-auth:session-invalidation-failed');
         reject(error);
       });
     });
