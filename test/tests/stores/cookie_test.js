@@ -1,4 +1,4 @@
-import { Cookie } from 'ember-simple-auth/stores/cookie';
+/*import { Cookie } from 'ember-simple-auth/stores/cookie';
 
 var store;
 
@@ -67,3 +67,4 @@ test('recognizes when the cookies change', function() {
 
   ok(!triggered, 'Ember.SimpleAuth.Stores.Cookie does not trigger the "ember-simple-auth:session-updated" event when no cookies actually changed.');
 });
+*/

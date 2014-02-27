@@ -34,7 +34,7 @@ module.exports = function(grunt) {
     'jshint',
     'build_tests',
     'connect:dev',
-    'qunit'
+    'mocha'
   ]);
 
   this.registerTask('docs', 'Builds the documentation', [
@@ -191,9 +191,11 @@ module.exports = function(grunt) {
 
     clean: ['dist', 'tmp', 'docs/build'],
 
-    qunit: {
-      all: {
+    mocha: {
+      test: {
         options: {
+          run: true,
+          reporter: 'Spec',
           urls: function() {
             var bundle = process.env.BUNDLE || '';
             return [
@@ -231,7 +233,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
+  grunt.loadNpmTasks('grunt-mocha');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-es6-module-transpiler');

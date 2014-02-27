@@ -1,4 +1,4 @@
-import { ApplicationRouteMixin } from 'ember-simple-auth/mixins/application_route_mixin';
+/*import { ApplicationRouteMixin } from 'ember-simple-auth/mixins/application_route_mixin';
 import { Configuration } from 'ember-simple-auth/core';
 import { Session } from 'ember-simple-auth/session';
 import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
@@ -146,3 +146,4 @@ test('invalidates the session when an authorization error occurs', function() {
   equal(testRoute.get('session.isAuthenticated'), false, 'ApplicationRouteMixin invalidates the current session when an authorization error occurs.');
   equal(testRoute.transitionedTo, Configuration.routeAfterInvalidation, 'ApplicationRouteMixin transitions to the routeAfterInvalidation when an authorization error occurs.');
 });
+*/

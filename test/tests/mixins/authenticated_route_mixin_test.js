@@ -1,4 +1,4 @@
-import { AuthenticatedRouteMixin } from 'ember-simple-auth/mixins/authenticated_route_mixin';
+/*import { AuthenticatedRouteMixin } from 'ember-simple-auth/mixins/authenticated_route_mixin';
 import { Session } from 'ember-simple-auth/session';
 import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
 
@@ -64,3 +64,4 @@ test('aborts the attempted transaction when the session is not authenticated', f
 
   ok(!attemptedTransitionMock.aborted, 'AuthenticatedRouteMixin does not abort the attempted transition in beforeModel when the session is authenticated.');
 });
+*/

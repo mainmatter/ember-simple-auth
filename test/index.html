@@ -3,20 +3,27 @@
 <head>
   <meta charset="utf-8">
   <title>EmberSimpleAuth tests</title>
-  <link rel="stylesheet" href="vendor/qunit.css">
+  <link rel="stylesheet" href="vendor/mocha.css">
 </head>
 <body>
-  <div id="qunit"></div>
-  <div id="qunit-fixture"></div>
-  <script src="vendor/qunit.js"></script>
-  <script src="../vendor/loader.js"></script>
+  <div id="mocha"></div>
   <script src="lib/dependencies_loader.js"></script>
+  <script src="vendor/expect.js"></script>
+  <script src="vendor/mocha.js"></script>
+  <script>mocha.setup('bdd')</script>
+  <script src="../vendor/loader.js"></script>
   <script src="../tmp/ember-simple-auth.amd.js"></script>
   <script src="../tmp/ember-simple-auth-tests.amd.js"></script>
   <script type="text/javascript">
     Ember.Logger.warn = Ember.K;
     for (var key in requireModule.registry) {
       if (/^tests\//.test(key)) requireModule(key);
+    }
+
+    mocha.checkLeaks();
+    mocha.globals(['jQuery']);
+    if (navigator.userAgent.indexOf('PhantomJS') < 0) {
+      mocha.run();
     }
   </script>
 </body>

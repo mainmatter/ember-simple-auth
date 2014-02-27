@@ -1,4 +1,4 @@
-import { Session } from 'ember-simple-auth/session';
+/*import { Session } from 'ember-simple-auth/session';
 import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
 
 var session;
@@ -260,3 +260,4 @@ test('observes changes in the store', function() {
   equal(session.get('authenticatorFactory'), 'authenticators:test2', 'Ember.Session updates the authenticator type when the store triggers the "ember-simple-auth:session-updated" event and the authenticator resolves.');
   ok(triggeredAuthentication, 'Session triggers the "ember-simple-auth:session-authentication-succeeded" event when the store triggers the "ember-simple-auth:session-updated" event and the authenticator resolves.');
 });
+*/

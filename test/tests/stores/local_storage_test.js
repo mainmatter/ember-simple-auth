@@ -1,4 +1,4 @@
-import { LocalStorage } from 'ember-simple-auth/stores/local_storage';
+/*import { LocalStorage } from 'ember-simple-auth/stores/local_storage';
 
 var store;
 
@@ -35,3 +35,4 @@ test('saves properties', function() {
   equal(store.restore().key2, 'value2', 'Ember.SimpleAuth.Stores.LocalStorage saves multiple properties.');
   equal(store.restore().key, 'value', 'Ember.SimpleAuth.Stores.LocalStorage does not destroy previously stored properties when it saves others.');
 });
+*/

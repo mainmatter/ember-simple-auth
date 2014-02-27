@@ -1,4 +1,4 @@
-import { Base } from 'ember-simple-auth/authenticators/base';
+/*import { Base } from 'ember-simple-auth/authenticators/base';
 
 var authenticator;
 
@@ -29,3 +29,4 @@ test('invalidates the session', function() {
 
   ok(resolved, 'Authenticators.Base returns a resolving promise for session invalidation.');
 });
+*/

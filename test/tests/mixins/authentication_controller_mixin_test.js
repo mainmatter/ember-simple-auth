@@ -1,4 +1,4 @@
-import { AuthenticationControllerMixin } from 'ember-simple-auth/mixins/authentication_controller_mixin';
+/*import { AuthenticationControllerMixin } from 'ember-simple-auth/mixins/authentication_controller_mixin';
 
 var AuthenticatorMock = Ember.Object.extend();
 
@@ -49,3 +49,4 @@ test('authenticates the session', function() {
   deepEqual(sessionMock.invokedAuthenticateWith.options, { 'key': 'value' }, 'AuthenticationControllerMixin authenticates the session with the correct options.');
 });
 
+*/

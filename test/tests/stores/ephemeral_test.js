@@ -1,6 +1,18 @@
 import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
 
-var store;
+describe('Stores.Ephemeral', function() {
+  var store = Ephemeral.create();
+
+  it('clears itself', function() {
+    store.persist({ key1: 'value1', key2: 'value2' });
+    store.clear();
+
+    expect(store.restore().key1).to.be(undefined);
+    expect(store.restore().key2).to.be(undefined);
+  });
+});
+
+/*var store;
 
 module('Stores.Ephemeral', {
   setup: function() {
@@ -36,3 +48,4 @@ test('saves properties', function() {
   equal(store.restore().key2, 'value2', 'Ember.SimpleAuth.Stores.Ephemeral saves multiple properties.');
   equal(store.restore().key, 'value', 'Ember.SimpleAuth.Stores.Ephemeral does not destroy previously stored properties when it saves others.');
 });
+*/

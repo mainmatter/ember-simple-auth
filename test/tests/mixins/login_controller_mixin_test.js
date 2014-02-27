@@ -1,4 +1,4 @@
-import { LoginControllerMixin } from 'ember-simple-auth/mixins/login_controller_mixin';
+/*import { LoginControllerMixin } from 'ember-simple-auth/mixins/login_controller_mixin';
 
 var testController;
 var TestController = Ember.Controller.extend(LoginControllerMixin, {
@@ -65,3 +65,4 @@ test('does not authenticate the session when identification or password are empt
   ok(!sessionMock.invokedAuthenticate, 'LoginControllerMixin does not authenticate the session when authentication is triggered but identification and password are empty.');
 });
 
+*/
