@@ -87,6 +87,7 @@ Ember.SimpleAuth.Stores.Cookie = Ember.SimpleAuth.Stores.Base.extend({
     this.knownCookies().forEach(function(cookie) {
       _this.write(cookie, null, (new Date(0)).toGMTString());
     });
+    this._lastProperties = null;
   },
 
   /**
