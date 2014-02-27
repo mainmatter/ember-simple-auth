@@ -1,14 +1,16 @@
 import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
 
 describe('Stores.Ephemeral', function() {
-  var store = Ephemeral.create();
+  beforeEach(function() {
+    this.store = Ephemeral.create();
+  });
 
   it('clears itself', function() {
-    store.persist({ key1: 'value1', key2: 'value2' });
-    store.clear();
+    this.store.persist({ key1: 'value1', key2: 'value2' });
+    this.store.clear();
 
-    expect(store.restore().key1).to.be(undefined);
-    expect(store.restore().key2).to.be(undefined);
+    expect(this.store.restore().key1).to.be(undefined);
+    expect(this.store.restore().key2).to.be(undefined);
   });
 });
 
