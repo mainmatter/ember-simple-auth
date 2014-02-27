@@ -191,7 +191,6 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
   bindToStoreEvents: function() {
     var _this = this;
     this.store.on('ember-simple-auth:session-updated', function(content) {
-      console.log('store event');
       var authenticatorFactory = content.authenticatorFactory;
       if (!!authenticatorFactory) {
         delete content.authenticatorFactory;
