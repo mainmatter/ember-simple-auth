@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{project.name}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/7.4/styles/github.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+    <script src="http://yandex.st/highlightjs/7.4/highlight.min.js"></script>
+    <style type="text/css" media="screen">
+      body {
+        text-align: justify;
+      }
+      .navbar-nav > .active > a {
+        background: transparent !important;
+      }
+      .navbar .dropdown > a {
+        padding: 15px 10px 15px 0;
+      }
+      .navbar .navbar-collapse {
+        padding-left: 0;
+      }
+      h1.class, h3.property, h3.method, dl.params dt, span.type {
+        font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+        font-weight: bold;
+      }
+      span.type {
+        color: #999;
+      }
+      span.type.return {
+        font-weight:bold
+      }
+      .overview h4:first-child {
+        margin-top: 0;
+      }
+      h3.section, h4.subsection {
+        padding-bottom: 5px;
+        border-bottom: 1px dotted #eee;
+      }
+      .panel-heading span.pull-right {
+        margin-left: 5px;
+      }
+      dl.params dl.props {
+        margin-left: 3em;
+        margin-top: 5px;
+      }
+      strong {
+        background-color: #fffebb;
+        font-weight: normal;
+        padding: 2px;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+      }
+      pre, code {
+        color: #333;
+        background: #f8f8ff;
+      }
+      body .container .page-header:first-child {
+        margin-top: 55px;
+      }
+      a.symbol-anchor {
+        display: block;
+        position: relative;
+        top: -55px;
+        height: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown" id="classesDropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption">{{#first (klasses)}}{{name}}{{/first}}</span></a>
+              <ul class="dropdown-menu">
+                {{#each (klasses)}}
+                  <li>
+                    <a href="#{{anchorify name}}">{{name}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{@root.project.githubUrl}}"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text"><a href="{{@root.project.githubUrl}}/releases/tag/{{@root.project.version}}"><span class="label label-primary">{{@root.project.version}}</span></a></p></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div class="container">
+      {{#each (klasses)}}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <a id="{{anchorify name}}" class="symbol-anchor"></a>
+              <h1 class="class">{{name}}</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9" id="main-content">
+            {{markdown description}}
+            {{#if properties}}
+              <h3 class="section">Properties</h3>
+              {{#each properties}}
+                <div class="panel panel-default">
+                  <a id="{{anchorify class}}-{{anchorify name}}" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="{{githubLink}}"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    {{#if readonly}}
+                      <span class="label label-danger pull-right">read only</span>
+                    {{/if}}
+                    {{#if static}}
+                      <span class="label label-info pull-right">static</span>
+                    {{/if}}
+                    <h3 class="panel-title property">{{name}} <span class="type">{{{type}}}</span></h3>
+                  </div>
+                  <div class="panel-body">
+                    {{markdown description}}
+                    {{#if default}}
+                      Defaults to <code>{{default}}</code>
+                      {{/if}}
+                  </div>
+                </div>
+              {{/each}}
+            {{/if}}
+            {{#if methods}}
+              <h3 class="section">Methods</h3>
+              {{#each methods}}
+                <div class="panel panel-default">
+                  <a id="{{anchorify class}}-{{anchorify name}}" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="{{githubLink}}"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    {{#if static}}
+                      <span class="label label-info pull-right">static</span>
+                    {{/if}}
+                    {{#if protected}}
+                      <span class="label label-warning pull-right">protected</span>
+                    {{/if}}
+                    <h3 class="panel-title method">
+                      {{signature}}
+                      {{#if return.type}}
+                        <span class="type">&rarr; {{return.type}}</span>
+                      {{/if}}
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    {{markdown description}}
+                    {{#if params}}
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        {{#each params}}
+                          <dt>{{#if optional}}[{{name}}]{{else}}{{name}}{{/if}} <span class="type">{{{type}}}</span></dt>
+                          <dd>{{markdown description}}</dd>
+                          {{#if props}}
+                            <dl class="props">
+                              {{#each props}}
+                                <dt>{{../name}}.{{#if optional}}[{{name}}]{{else}}{{name}}{{/if}} <span class="type">{{{type}}}</span></dt>
+                                <dd>{{markdown description}}</dd>
+                              {{/each}}
+                            </dl>
+                          {{/if}}
+                        {{/each}}
+                      </dl>
+                    {{/if}}
+                    {{#if return}}
+                      <h4 class="subsection">Returns</h4>
+                      <p><span class="type return">&rarr; {{return.type}}</span></p>
+                      {{markdown return.description}}
+                    {{/if}}
+                  </div>
+                </div>
+              {{/each}}
+            {{/if}}
+            {{#if actions}}
+              <h3 class="section">Actions</h3>
+              {{#each actions}}
+                <div class="panel panel-default">
+                  <a id="{{anchorify class}}-{{anchorify name}}" class="symbol-anchor"></a>
+                  <div class="panel-heading">
+                    <a class="pull-right" href="{{githubLink}}"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                    <h3 class="panel-title method">
+                      {{signature}}
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    {{markdown description}}
+                    {{#if params}}
+                      <h4 class="subsection">Arguments</h4>
+                      <dl class="params">
+                        {{#each params}}
+                          <dt>{{#if optional}}[{{name}}]{{else}}{{name}}{{/if}} <span class="type">{{{type}}}</span></dt>
+                          <dd>{{markdown description}}</dd>
+                          {{#if props}}
+                            <dl class="props">
+                              {{#each props}}
+                                <dt>{{../name}}.{{#if optional}}[{{name}}]{{else}}{{name}}{{/if}} <span class="type">{{{type}}}</span></dt>
+                                <dd>{{markdown description}}</dd>
+                              {{/each}}
+                            </dl>
+                          {{/if}}
+                        {{/each}}
+                      </dl>
+                    {{/if}}
+                  </div>
+                </div>
+              {{/each}}
+            {{/if}}
+          </div>
+          <div class="col-md-3 overview">
+            {{#if extends}}
+              <h4>Extends</h4>
+              <p><span class="type">{{extends}}</span></p>
+            {{/if}}
+            {{#if uses}}
+              <h4>Uses</h4>
+              <ul class="list-unstyled">
+                {{#each uses}}
+                  <li>
+                    <span class="type">{{this}}</span>
+                  </li>
+                {{/each}}
+              </ul>
+            {{/if}}
+            {{#if properties}}
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                {{#each properties}}
+                  <li>
+                    <a href="#{{anchorify class}}-{{anchorify name}}">{{name}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            {{/if}}
+            {{#if methods}}
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                {{#each methods}}
+                  <li>
+                    <a href="#{{anchorify class}}-{{anchorify name}}">{{name}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            {{/if}}
+            {{#if actions}}
+              <h4>Actions</h4>
+              <ul class="list-unstyled">
+                {{#each actions}}
+                  <li>
+                    <a href="#{{anchorify class}}-{{anchorify name}}">{{name}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            {{/if}}
+          </div>
+        </div>
+      {{/each}}
+    </div>
+    <script type="text/javascript" charset="utf-8">
+      $(function() {
+        hljs.initHighlightingOnLoad();
+        function updateDropdownCaption(text) {
+          if (!!text) {
+            $('.navbar .dropdown .dropdown-toggle .caption').text(text);
+          }
+        }
+        $('.navbar .dropdown a[class!="dropdown-toggle"]').on('click', function() {
+          updateDropdownCaption($(this).text());
+        });
+        updateDropdownCaption($('.navbar .dropdown a[href="' + document.location.hash + '"]').text());
+        $('body').scrollspy({ target: '.navbar' }).on('activate.bs.scrollspy', function(e) {
+          var link = $(e.target).find('.dropdown-menu li.active a');
+          updateDropdownCaption(link.text());
+        })
+      });
+    </script>
+  </body>
+</html>
