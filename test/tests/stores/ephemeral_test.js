@@ -3,51 +3,55 @@ import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
 describe('Stores.Ephemeral', function() {
   beforeEach(function() {
     this.store = Ephemeral.create();
-  });
-
-  it('clears itself', function() {
-    this.store.persist({ key1: 'value1', key2: 'value2' });
     this.store.clear();
+  });
 
-    expect(this.store.restore().key1).to.be(undefined);
-    expect(this.store.restore().key2).to.be(undefined);
+  describe('#persist', function() {
+    it('persists an object', function() {
+      this.store.persist({ key: 'value' });
+
+      expect(this.store.restore()).to.eql({ key: 'value' });
+    });
+
+    it('does not override existing values', function() {
+      this.store.persist({ key1: 'value1' });
+      this.store.persist({ key2: 'value2' });
+
+      expect(this.store.restore()).to.eql({ key1: 'value1', key2: 'value2' });
+    });
+  });
+
+  describe('#restore', function() {
+    describe('when the store is empty', function() {
+      it('returns an empty object for an empty store', function() {
+        expect(this.store.restore()).to.eql({});
+      });
+    });
+
+    describe('when the store has elements', function() {
+      beforeEach(function() {
+        this.store.persist({ key1: 'value1', key2: 'value2' });
+      });
+
+      it('returns all properties in the store', function() {
+        expect(this.store.restore()).to.eql({ key1: 'value1', key2: 'value2' });
+      });
+
+      it('returns a copy of the stored properties', function() {
+        var properties = this.store.restore();
+        properties.key1 = 'another value!';
+
+        expect(this.store.restore()).to.eql({ key1: 'value1', key2: 'value2' });
+      });
+    });
+  });
+
+  describe('#clear', function() {
+    it('empties the store', function() {
+      this.store.persist({ key1: 'value1', key2: 'value2' });
+      this.store.clear();
+
+      expect(this.store.restore()).to.eql({});
+    });
   });
 });
-
-/*var store;
-
-module('Stores.Ephemeral', {
-  setup: function() {
-    store = Ephemeral.create();
-  }
-});
-
-test('clears itself', function() {
-  store.persist({ key1: 'value1', key2: 'value2' });
-  store.clear();
-
-  equal(store.restore().key1, null, 'Ember.SimpleAuth.Stores.Ephemeral deletes all properties when it is cleared.');
-  equal(store.restore().key2, null, 'Ember.SimpleAuth.Stores.Ephemeral deletes all properties when it is cleared.');
-});
-
-test('loads all properties', function() {
-  deepEqual(store.restore(), {}, 'Ember.SimpleAuth.Stores.Ephemeral returns an empty plain object when all properties are loaded but the store is empty');
-
-  store.persist({ key1: 'value1', key2: 'value2' });
-  deepEqual(store.restore(), { key1: 'value1', key2: 'value2' }, 'Ember.SimpleAuth.Stores.Ephemeral loads all stored properties.');
-
-  var loadedProperties = store.restore();
-  loadedProperties.key1 = 'another value';
-  deepEqual(store.restore(), { key1: 'value1', key2: 'value2' }, 'Ember.SimpleAuth.Stores.Ephemeral returns a copy of the stored properties when all properties are loaded.');
-});
-
-test('saves properties', function() {
-  store.persist({ key: 'value' });
-  equal(store.restore().key, 'value', 'Ember.SimpleAuth.Stores.Ephemeral saves a property and loads it again.');
-
-  store.persist({ key1: 'value1', key2: 'value2' });
-  equal(store.restore().key1, 'value1', 'Ember.SimpleAuth.Stores.Ephemeral saves multiple properties.');
-  equal(store.restore().key2, 'value2', 'Ember.SimpleAuth.Stores.Ephemeral saves multiple properties.');
-  equal(store.restore().key, 'value', 'Ember.SimpleAuth.Stores.Ephemeral does not destroy previously stored properties when it saves others.');
-});
-*/
