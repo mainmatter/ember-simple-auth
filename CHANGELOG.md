@@ -1,3 +1,7 @@
+# 0.1.3
+
+* fixed synchronization of stores, see #91
+
 # 0.1.2
 
 * Ember.SimpleAuth.setup now **expects the container and the application as arguments** (`Ember.SimpleAuth.setup(container, application);`)
