@@ -35,6 +35,12 @@
   @static
 */
 Ember.SimpleAuth.ApplicationRouteMixin = Ember.Mixin.create({
+  activate: function() {
+    this._super();
+    console.log('created');
+    console.log(this.get('session'));
+  },
+
   actions: {
     /**
       This action triggers transition to the `authenticationRoute` specified in

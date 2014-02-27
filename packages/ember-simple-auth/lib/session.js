@@ -20,8 +20,9 @@
   @class Session
   @namespace Ember.SimpleAuth
   @extends Ember.ObjectProxy
+  @uses Ember.Evented
 */
-Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
+Ember.SimpleAuth.Session = Ember.ObjectProxy.extend(Ember.Evented, {
   /**
     The authenticator factory used to authenticate the session. This is only
     set when the session is currently authenticated.
@@ -105,6 +106,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
     return new Ember.RSVP.Promise(function(resolve, reject) {
       _this.container.lookup(authenticatorFactory).authenticate(options).then(function(content) {
         _this.setup(authenticatorFactory, content);
+        _this.trigger('ember-simple-auth:session-authenticated');
         resolve();
       }, function(error) {
         _this.clear();
@@ -135,6 +137,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend({
       authenticator.invalidate(_this.content).then(function() {
         authenticator.off('ember-simple-auth:session-updated');
         _this.clear();
+        _this.trigger('ember-simple-auth:session-invalidated');
         resolve();
       }, function(error) {
         reject(error);
