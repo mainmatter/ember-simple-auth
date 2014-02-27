@@ -106,7 +106,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend(Ember.Evented, {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       _this.container.lookup(authenticatorFactory).authenticate(options).then(function(content) {
         _this.setup(authenticatorFactory, content);
-        _this.trigger('ember-simple-auth:session-authenticated');
+        _this.trigger('ember-simple-auth:session-authentication-succeeded');
         resolve();
       }, function(error) {
         _this.clear();
@@ -137,7 +137,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend(Ember.Evented, {
       authenticator.invalidate(_this.content).then(function() {
         authenticator.off('ember-simple-auth:session-updated');
         _this.clear();
-        _this.trigger('ember-simple-auth:session-invalidated');
+        _this.trigger('ember-simple-auth:session-invalidation-succeeded');
         resolve();
       }, function(error) {
         reject(error);

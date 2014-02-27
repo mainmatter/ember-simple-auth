@@ -93,7 +93,7 @@ test('authenticates itself with an authenticator', function() {
   var triggered;
   AuthenticatorMock._resolve = { key: 'value' };
   Ember.run(function() {
-    session.one('ember-simple-auth:session-authenticated', function() {
+    session.one('ember-simple-auth:session-authentication-succeeded', function() {
       triggered = true;
     });
     session.authenticate('authenticators:test').then(function() {
@@ -106,7 +106,7 @@ test('authenticates itself with an authenticator', function() {
   equal(session.get('key'), 'value', 'Ember.Session saves all properties that the authenticator resolves with.');
   equal(session.get('authenticatorFactory'), 'authenticators:test', 'Ember.Session saves the authenticator type when the authenticator resolves.');
   ok(resolved, 'Session returns a resolving promise when the authenticator resolves.');
-  ok(triggered, 'Session triggers the "ember-simple-auth:session-authenticated" event when the authenticator resolves.');
+  ok(triggered, 'Session triggers the "ember-simple-auth:session-authentication-succeeded" event when the authenticator resolves.');
 
   var rejected;
   var rejectedWith;
@@ -115,7 +115,7 @@ test('authenticates itself with an authenticator', function() {
   AuthenticatorMock._reject = { error: 'message' };
   Ember.run(function() {
     session = Ember.SimpleAuth.Session.create({ store: storeMock, container: containerMock });
-    session.one('ember-simple-auth:session-authenticated', function() {
+    session.one('ember-simple-auth:session-authentication-succeeded', function() {
       triggered = true;
     });
     session.authenticate(authenticatorMock).then(function() {}, function(error) {
@@ -128,7 +128,7 @@ test('authenticates itself with an authenticator', function() {
   equal(session.get('authenticatorFactory'), null, 'Ember.Session does not save the authenticator type when the authenticator rejects.');
   ok(rejected, 'Ember.Session returns a rejecting promise when the authenticator rejects.');
   deepEqual(rejectedWith, { error: 'message'}, 'Ember.Session returns a promise that rejects with the error that the authenticator rejects with.');
-  ok(!triggered, 'Session does not trigger the "ember-simple-auth:session-authenticated" event when the authenticator rejects.');
+  ok(!triggered, 'Session does not trigger the "ember-simple-auth:session-authentication-succeeded" event when the authenticator rejects.');
 });
 
 test('invalidates itself', function() {
@@ -139,7 +139,7 @@ test('invalidates itself', function() {
   Ember.run(function() {
     session.set('authenticatorFactory', 'authenticators:test');
     session.set('content', { key: 'value' });
-    session.one('ember-simple-auth:session-invalidated', function() {
+    session.one('ember-simple-auth:session-invalidation-succeeded', function() {
       triggered = true;
     });
     session.invalidate();
@@ -149,12 +149,12 @@ test('invalidates itself', function() {
   deepEqual(authenticatorMock.invalidateInvokedWith, { key: 'value' }, 'Ember.Session passes its content to the authenticator to invalidation.');
   ok(session.get('isAuthenticated'), 'Ember.Session remains authenticated when the authenticator rejects invalidation.');
   equal(session.get('authenticatorFactory'), 'authenticators:test', 'Ember.Session does not unset the authenticator type when the authenticator rejects invalidation.');
-  ok(!triggered, 'Session does not triggers the "ember-simple-auth:session-invalidated" event when the authenticator rejects invalidation.');
+  ok(!triggered, 'Session does not triggers the "ember-simple-auth:session-invalidation-succeeded" event when the authenticator rejects invalidation.');
 
   triggered = false;
   AuthenticatorMock._resolve = true;
   Ember.run(function() {
-    session.one('ember-simple-auth:session-invalidated', function() {
+    session.one('ember-simple-auth:session-invalidation-succeeded', function() {
       triggered = true;
     });
     session.invalidate();
@@ -163,7 +163,7 @@ test('invalidates itself', function() {
   ok(!session.get('isAuthenticated'), 'Ember.Session is not authenticated when invalidation with the authenticator resolves.');
   equal(session.get('aurhenticatorType'), null, 'Ember.Session unsets the authenticator type when invalidation with the authenticator resolves.');
   equal(session.get('content'), null, 'Ember.Session unsets its content when invalidation with the authenticator resolves.');
-  ok(triggered, 'Session triggers the "ember-simple-auth:session-invalidated" event when the authenticator resolves.');
+  ok(triggered, 'Session triggers the "ember-simple-auth:session-invalidation-succeeded" event when the authenticator resolves.');
 
   Ember.run(function() {
     authenticatorMock.trigger('ember-simple-auth:session-updated', { key: 'other value' });
