@@ -1,5 +1,5 @@
 import { ApplicationRouteMixin } from 'ember-simple-auth/mixins/application_route_mixin';
-import { Core } from 'ember-simple-auth/core';
+import { Configuration } from 'ember-simple-auth/core';
 import { Session } from 'ember-simple-auth/session';
 import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
 
@@ -51,7 +51,7 @@ module('ApplicationRouteMixin', {
 test('redirects to authenticate the session', function() {
   testRoute._actions.authenticateSession.apply(testRoute);
 
-  equal(testRoute.transitionedTo, Core.authenticationRoute, 'ApplicationRouteMixin redirects to the authenticationRoute to authenticate the session.');
+  equal(testRoute.transitionedTo, Configuration.authenticationRoute, 'ApplicationRouteMixin redirects to the authenticationRoute to authenticate the session.');
 });
 
 test('invalidates the current session', function() {
@@ -62,7 +62,7 @@ test('invalidates the current session', function() {
   });
 
   equal(testRoute.get('session.isAuthenticated'), false, 'ApplicationRouteMixin invalidates the current session when session invalidation is triggered.');
-  equal(testRoute.transitionedTo, Core.routeAfterInvalidation, 'ApplicationRouteMixin redirects to the routeAfterInvalidation when session invalidation is successful.');
+  equal(testRoute.transitionedTo, Configuration.routeAfterInvalidation, 'ApplicationRouteMixin redirects to the routeAfterInvalidation when session invalidation is successful.');
   ok(testRoute.invokedsessionInvalidationSucceeded, 'ApplicationRouteMixin triggers the sessionInvalidationSucceeded action when session invalidation is successful.');
 
   testRoute.transitionedTo                      = null;
@@ -80,7 +80,7 @@ test('invalidates the current session', function() {
 test('redirects when session authentication succeeds', function() {
   testRoute._actions.sessionAuthenticationSucceeded.apply(testRoute);
 
-  equal(testRoute.transitionedTo, Core.routeAfterAuthentication, 'ApplicationRouteMixin redirects to the routeAfterAuthentication route on sessionAuthenticationSucceeded when no attempted transition is saved.');
+  equal(testRoute.transitionedTo, Configuration.routeAfterAuthentication, 'ApplicationRouteMixin redirects to the routeAfterAuthentication route on sessionAuthenticationSucceeded when no attempted transition is saved.');
 
   testRoute.set('session.attemptedTransition', attemptedTransitionMock);
   testRoute._actions.sessionAuthenticationSucceeded.apply(testRoute);
@@ -110,5 +110,5 @@ test('invalidates the session when an authorization error occurs', function() {
   });
 
   equal(testRoute.get('session.isAuthenticated'), false, 'ApplicationRouteMixin invalidates the current session when an authorization error occurs.');
-  equal(testRoute.transitionedTo, Core.routeAfterInvalidation, 'ApplicationRouteMixin transitions to the routeAfterInvalidation when an authorization error occurs.');
+  equal(testRoute.transitionedTo, Configuration.routeAfterInvalidation, 'ApplicationRouteMixin transitions to the routeAfterInvalidation when an authorization error occurs.');
 });

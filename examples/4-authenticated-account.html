@@ -107,7 +107,7 @@
           });
           // register the custom authenticator so the session can find it
           container.register('app:authenticators:custom', App.CustomAuthenticator);
-          EmberSimpleAuth.Core.setup(container, application);
+          EmberSimpleAuth.setup(container, application);
         }
       });
 
