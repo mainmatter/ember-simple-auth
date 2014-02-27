@@ -1,6 +1,16 @@
-/*import { Cookie } from 'ember-simple-auth/stores/cookie';
+import { Cookie } from 'ember-simple-auth/stores/cookie';
+import { storeBehavior } from './common/store-behavior';
 
-var store;
+describe('Stores.Cookie', function() {
+  beforeEach(function() {
+    this.store = Cookie.create();
+    this.store.clear();
+  });
+
+  storeBehavior();
+});
+
+/*var store;
 
 module('Stores.Cookie', {
   setup: function() {
