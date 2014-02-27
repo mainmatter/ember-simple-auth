@@ -110,7 +110,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend(Ember.Evented, {
         resolve();
       }, function(error) {
         _this.clear();
-        _this.trigger('ember-simple-auth:session-authentication-failed');
+        _this.trigger('ember-simple-auth:session-authentication-failed', error);
         reject(error);
       });
     });
@@ -141,7 +141,7 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend(Ember.Evented, {
         _this.trigger('ember-simple-auth:session-invalidation-succeeded');
         resolve();
       }, function(error) {
-        _this.trigger('ember-simple-auth:session-invalidation-failed');
+        _this.trigger('ember-simple-auth:session-invalidation-failed', error);
         reject(error);
       });
     });
@@ -201,11 +201,22 @@ Ember.SimpleAuth.Session = Ember.ObjectProxy.extend(Ember.Evented, {
         delete content.authenticatorFactory;
         _this.container.lookup(authenticatorFactory).restore(content).then(function(content) {
           _this.setup(authenticatorFactory, content);
+          if (_this.get('isAuthenticated')) {
+            _this.trigger('ember-simple-auth:session-authentication-succeeded');
+          }
         }, function() {
+          var trigger = _this.get('isAuthenticated');
           _this.clear();
+          if (trigger) {
+            _this.trigger('ember-simple-auth:session-invalidation-succeeded');
+          }
         });
       } else {
+        var trigger = _this.get('isAuthenticated');
         _this.clear();
+        if (trigger) {
+          _this.trigger('ember-simple-auth:session-invalidation-succeeded');
+        }
       }
     });
   }

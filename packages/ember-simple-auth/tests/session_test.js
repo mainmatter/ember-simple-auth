@@ -30,7 +30,7 @@ var StoreMock = Ember.SimpleAuth.Stores.Ephemeral.extend({
 var authenticatorMock;
 var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
   restore: function(content) {
-    return mockPromise(AuthenticatorMock._resolve);
+    return mockPromise(AuthenticatorMock._resolve, AuthenticatorMock._reject);
   },
   authenticate: function(properties) {
     this.authenticateInvoked     = true;
@@ -40,7 +40,7 @@ var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
   invalidate: function(properties) {
     this.invalidateInvoked     = true;
     this.invalidateInvokedWith = properties;
-    return mockPromise(AuthenticatorMock._resolve);
+    return mockPromise(AuthenticatorMock._resolve, AuthenticatorMock._reject);
   }
 });
 
@@ -63,6 +63,7 @@ test('it is not authenticated when just created', function() {
 });
 
 test('restores its state during initialization', function() {
+  var triggered;
   storeMock.persist({ authenticatorFactory: 'authenticators:test' });
   AuthenticatorMock._resolve = { some: 'content' };
   Ember.run(function() {
@@ -92,6 +93,7 @@ test('authenticates itself with an authenticator', function() {
   var resolved;
   var triggeredSucceeded;
   var triggeredFailed;
+  var triggeredFailedWith;
   AuthenticatorMock._resolve = { key: 'value' };
   Ember.run(function() {
     session.one('ember-simple-auth:session-authentication-succeeded', function() {
@@ -124,8 +126,9 @@ test('authenticates itself with an authenticator', function() {
     session.one('ember-simple-auth:session-authentication-succeeded', function() {
       triggeredSucceeded = true;
     });
-    session.one('ember-simple-auth:session-authentication-failed', function() {
-      triggeredFailed = true;
+    session.one('ember-simple-auth:session-authentication-failed', function(error) {
+      triggeredFailed     = true;
+      triggeredFailedWith = error;
     });
     session.authenticate(authenticatorMock).then(function() {}, function(error) {
       rejected     = true;
@@ -139,11 +142,13 @@ test('authenticates itself with an authenticator', function() {
   deepEqual(rejectedWith, { error: 'message'}, 'Ember.Session returns a promise that rejects with the error that the authenticator rejects with.');
   ok(!triggeredSucceeded, 'Session does not trigger the "ember-simple-auth:session-authentication-succeeded" event when the authenticator rejects.');
   ok(triggeredFailed, 'Session triggers the "ember-simple-auth:session-authentication-failed" event when the authenticator rejects.');
+  deepEqual(triggeredFailedWith, { error: 'message'}, 'Session triggers the "ember-simple-auth:session-authentication-failed" event with the correct error when the authenticator rejects.');
 });
 
 test('invalidates itself', function() {
   var triggeredSucceeded;
   var triggeredFailed;
+  var triggeredFailedWith;
   AuthenticatorMock._resolve = false;
   AuthenticatorMock._reject = { error: 'message' };
   session.set('isAuthenticated', true);
@@ -153,8 +158,9 @@ test('invalidates itself', function() {
     session.one('ember-simple-auth:session-invalidation-succeeded', function() {
       triggeredSucceeded = true;
     });
-    session.one('ember-simple-auth:session-invalidation-failed', function() {
-      triggeredFailed = true;
+    session.one('ember-simple-auth:session-invalidation-failed', function(error) {
+      triggeredFailed     = true;
+      triggeredFailedWith = error;
     });
     session.invalidate();
   });
@@ -165,6 +171,7 @@ test('invalidates itself', function() {
   equal(session.get('authenticatorFactory'), 'authenticators:test', 'Ember.Session does not unset the authenticator type when the authenticator rejects invalidation.');
   ok(!triggeredSucceeded, 'Session does not trigger the "ember-simple-auth:session-invalidation-succeeded" event when the authenticator rejects invalidation.');
   ok(triggeredFailed, 'Session triggers the "ember-simple-auth:session-invalidation-failed" event when the authenticator rejects invalidation.');
+  deepEqual(triggeredFailedWith, { error: 'message' }, 'Session triggers the "ember-simple-auth:session-invalidation-failed" event with the correct error when the authenticator rejects invalidation.');
 
   triggeredSucceeded = false;
   triggeredFailed = false;
@@ -204,25 +211,50 @@ test('observes changes in the authenticator', function() {
 });
 
 test('observes changes in the store', function() {
-  var otherAuthenticatorMock = AuthenticatorMock.create();
-  ContainerMock._lookup      = otherAuthenticatorMock;
-  AuthenticatorMock._resolve = false;
+  var triggeredAuthentication;
+  var triggeredInvalidation;
+  AuthenticatorMock._resolve = true;
+  ContainerMock._lookup      = AuthenticatorMock.create();
   Ember.run(function() {
+    session.one('ember-simple-auth:session-invalidation-succeeded', function() {
+      triggeredInvalidation = true;
+    });
     session.authenticate('authenticator').then(function() {
+      AuthenticatorMock._resolve = false;
       storeMock.trigger('ember-simple-auth:session-updated', { key: 'value', authenticatorFactory: 'authenticators:test2' });
     });
   });
 
-  equal(session.get('key'), null, 'Ember.Session does not update its properties when the store triggers the "ember-simple-auth:session-updated" event but the authenticator rejects.');
-  equal(session.get('authenticatorFactory'), null, 'Ember.Session does not update the authenticator type when the store triggers the "ember-simple-auth:session-updated" event but the authenticator rejects.');
+  equal(session.get('key'), null, 'Ember.Session clears its properties when the store triggers the "ember-simple-auth:session-updated" event and the authenticator rejects.');
+  equal(session.get('authenticatorFactory'), null, 'Ember.Session unsets its authenticator type when the store triggers the "ember-simple-auth:session-updated" event and the authenticator rejects.');
+  ok(triggeredInvalidation, 'Session triggers the "ember-simple-auth:session-authentication-succeeded" event when the store triggers the "ember-simple-auth:session-updated" event and the authenticator rejects.');
+
+  triggeredInvalidation = false;
+  AuthenticatorMock._resolve = { key: 'value' };
+  Ember.run(function() {
+    session.one('ember-simple-auth:session-invalidation-succeeded', function() {
+      triggeredInvalidation = true;
+    });
+    session.authenticate('authenticator').then(function() {
+      storeMock.trigger('ember-simple-auth:session-updated', { key: 'value' });
+    });
+  });
+
+  equal(session.get('key'), null, 'Ember.Session clears its properties when the store triggers the "ember-simple-auth:session-updated" event and there is no authenticator factory in the stored properties.');
+  equal(session.get('authenticatorFactory'), null, 'Ember.Session unsets its authenticator type when the store triggers the "ember-simple-auth:session-updated" event and there is no authenticator factory in the stored properties.');
+  ok(triggeredInvalidation, 'Session triggers the "ember-simple-auth:session-authentication-succeeded" event when the store triggers the "ember-simple-auth:session-updated" event and there is no authenticator factory in the stored properties.');
 
   AuthenticatorMock._resolve = { key: 'value' };
   Ember.run(function() {
-    session.authenticate('authenticator').then(function() {
+    session.one('ember-simple-auth:session-authentication-succeeded', function() {
+      triggeredAuthentication = true;
+    });
+    session.invalidate('authenticator').then(function() {
       storeMock.trigger('ember-simple-auth:session-updated', { key: 'value', authenticatorFactory: 'authenticators:test2' });
     });
   });
 
   equal(session.get('key'), 'value', 'Ember.Session updates its properties when the store triggers the "ember-simple-auth:session-updated" event and the authenticator resolves.');
   equal(session.get('authenticatorFactory'), 'authenticators:test2', 'Ember.Session updates the authenticator type when the store triggers the "ember-simple-auth:session-updated" event and the authenticator resolves.');
+  ok(triggeredAuthentication, 'Session triggers the "ember-simple-auth:session-authentication-succeeded" event when the store triggers the "ember-simple-auth:session-updated" event and the authenticator resolves.');
 });
