@@ -1,3 +1,128 @@
+import { Session } from 'ember-simple-auth/session';
+import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
+import { Base as BaseAuthenticator } from 'ember-simple-auth/authenticators/base';
+
+describe('Session', function() {
+  beforeEach(function() {
+    this.session = Session.create({ store: EphemeralStore.create() });
+  });
+
+  it('is not authenticated initially', function() {
+    expect(this.session.get('isAuthenticated')).to.be(false);
+  });
+
+  describe('initialization', function() {
+    beforeEach(function() {
+      this.store = EphemeralStore.create();
+    });
+
+    function failingToRestoreBehavior() {
+      it('is not authenticated', function(done) {
+        Ember.run.next(this, function() {
+          expect(this.session.get('isAuthenticated')).to.be(false);
+          done();
+        });
+      });
+
+      it('clears the store', function(done) {
+        this.store.persist({ some: 'properties' });
+
+        Ember.run.next(this, function() {
+          expect(this.session.get('isAuthenticated')).to.be(false);
+          done();
+        });
+      });
+
+      it('does not trigger the "ember-simple-auth:session-authentication-failed" event', function(done) {
+        var triggered = false;
+        this.session.on('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
+
+        Ember.run.next(this, function() {
+          expect(triggered).to.be(false);
+          done();
+        });
+      });
+    }
+
+    describe('when the restored properties contain an authenticator factory', function() {
+      beforeEach(function() {
+        this.container     = { lookup: function() {} };
+        this.authenticator = BaseAuthenticator.create();
+        this.store.persist({ authenticatorFactory: 'authenticatorFactory' });
+        sinon.stub(this.container, 'lookup').returns(this.authenticator);
+      });
+
+      describe('when the authenticator resolves restoration', function() {
+        beforeEach(function() {
+          sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'properties' }));
+          this.session = Session.create({ store: this.store, container: this.container });
+        });
+
+        it('is authenticated', function(done) {
+          Ember.run.next(this, function() {
+            expect(this.session.get('isAuthenticated')).to.be(true);
+            done();
+          });
+        });
+
+        it('sets its content to the properties the auhneticator resolves with', function(done) {
+          Ember.run.next(this, function() {
+            var properties = this.store.restore();
+            delete properties.authenticatorFactory;
+
+            expect(this.session.get('content')).to.eql({ some: 'properties' });
+            done();
+          });
+        });
+
+        it('persists its content in the store', function(done) {
+          Ember.run.next(this, function() {
+            var properties = this.store.restore();
+            delete properties.authenticatorFactory;
+
+            expect(properties).to.eql({ some: 'properties' });
+            done();
+          });
+        });
+
+        it('persists the auhneticator factory in the store', function(done) {
+          Ember.run.next(this, function() {
+            expect(this.store.restore().authenticatorFactory).to.eql('authenticatorFactory');
+            done();
+          });
+        });
+
+        it('does not trigger the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
+          var triggered = false;
+          this.session.on('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+
+          Ember.run.next(this, function() {
+            expect(triggered).to.be(false);
+            done();
+          });
+        });
+      });
+
+      describe('when the authenticator rejects restoration', function() {
+        beforeEach(function() {
+          sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject());
+          this.session = Session.create({ store: this.store, container: this.container });
+        });
+
+        failingToRestoreBehavior();
+      });
+    });
+
+    describe('when the restored properties do not contain an authenticator factory', function() {
+      failingToRestoreBehavior();
+    });
+  });
+
+  describe('authentication', function() {
+
+  });
+});
+
 /*import { Session } from 'ember-simple-auth/session';
 import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
 
