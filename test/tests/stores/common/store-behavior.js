@@ -1,4 +1,4 @@
-var storeBehavior = function() {
+var itBehavesLikeAStore = function() {
   describe('#persist', function() {
     it('persists an object', function() {
       this.store.persist({ key: 'value' });
@@ -49,4 +49,4 @@ var storeBehavior = function() {
   });
 };
 
-export { storeBehavior };
+export { itBehavesLikeAStore };

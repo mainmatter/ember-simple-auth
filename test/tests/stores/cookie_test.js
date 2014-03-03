@@ -1,5 +1,5 @@
 import { Cookie } from 'ember-simple-auth/stores/cookie';
-import { storeBehavior } from './common/store-behavior';
+import { itBehavesLikeAStore } from './common/store-behavior';
 
 describe('Stores.Cookie', function() {
   beforeEach(function() {
@@ -7,7 +7,7 @@ describe('Stores.Cookie', function() {
     this.store.clear();
   });
 
-  storeBehavior();
+  itBehavesLikeAStore();
 
   describe('the "ember-simple-auth:session-updated" event', function() {
     beforeEach(function() {

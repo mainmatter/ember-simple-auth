@@ -1,5 +1,5 @@
 import { LocalStorage } from 'ember-simple-auth/stores/local_storage';
-import { storeBehavior } from './common/store-behavior';
+import { itBehavesLikeAStore } from './common/store-behavior';
 
 describe('Stores.LocalStorage', function() {
   beforeEach(function() {
@@ -7,5 +7,5 @@ describe('Stores.LocalStorage', function() {
     this.store.clear();
   });
 
-  storeBehavior();
+  itBehavesLikeAStore();
 });

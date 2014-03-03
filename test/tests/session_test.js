@@ -28,12 +28,24 @@ describe('Session', function() {
     });
   }
 
+  function itListensToStoreEvents() {
+    describe('when the store triggers the "ember-simple-auth:session-updated" event', function() {
+      beforeEach(async(function() {
+        this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+      }));
+
+      it('updates its content', async(function() {
+        expect(this.session.get('content')).to.eql({ some: 'other property' });
+      }));
+    });
+  }
+
   describe('initialization', function() {
     beforeEach(function() {
       this.store = EphemeralStore.create();
     });
 
-    function failingToRestoreBehavior() {
+    function itFailsToRestore() {
       it('is not authenticated', async(function() {
         expect(this.session.get('isAuthenticated')).to.be(false);
       }));
@@ -111,12 +123,12 @@ describe('Session', function() {
           this.session = Session.create({ store: this.store, container: this.container });
         });
 
-        failingToRestoreBehavior();
+        itFailsToRestore();
       });
     });
 
     describe('when the restored properties do not contain an authenticator factory', function() {
-      failingToRestoreBehavior();
+      itFailsToRestore();
     });
   });
 

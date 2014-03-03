@@ -1,5 +1,5 @@
 import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
-import { storeBehavior } from './common/store-behavior';
+import { itBehavesLikeAStore } from './common/store-behavior';
 
 describe('Stores.Ephemeral', function() {
   beforeEach(function() {
@@ -7,5 +7,5 @@ describe('Stores.Ephemeral', function() {
     this.store.clear();
   });
 
-  storeBehavior();
+  itBehavesLikeAStore();
 });
