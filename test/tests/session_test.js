@@ -422,7 +422,6 @@ describe('Session', function() {
 
       describe('when the authenticator rejects restoration', function() {
         beforeEach(function() {
-          Ember.tryInvoke(this.authenticator.restore, 'restore');
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject({ some: 'other property' }));
           this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
         });
@@ -458,7 +457,7 @@ describe('Session', function() {
 
         describe('when the session is not authenticated', function() {
           beforeEach(function() {
-            this.session.invalidate();
+            this.session.set('isAuthenticated', false);
           });
 
           it('does not trigger the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
@@ -466,7 +465,7 @@ describe('Session', function() {
             this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
 
             Ember.run.next(this, function() {
-              expect(triggered).to.be(true);
+              expect(triggered).to.be(false);
               done();
             });
           });
