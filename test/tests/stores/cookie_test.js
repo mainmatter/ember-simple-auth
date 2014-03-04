@@ -7,7 +7,9 @@ describe('Stores.Cookie', function() {
     this.store.clear();
   });
 
-  itBehavesLikeAStore();
+  itBehavesLikeAStore(function() {
+    this.store.syncProperties();
+  });
 
   describe('the "ember-simple-auth:session-updated" event', function() {
     beforeEach(function() {
@@ -19,34 +21,23 @@ describe('Stores.Cookie', function() {
       });
     });
 
-    it('is not triggered by #persist', function() {
-      this.store.persist({ key: 'other value' });
+    it('is not triggered when the cookie does not actually change', function(done) {
+      document.cookie = 'ember_simple_auth:key=value;';
       this.store.syncProperties();
 
-      expect(this.triggered).to.be(false);
-    });
-
-    describe('when the cookie does not actually change', function() {
-      beforeEach(function() {
-        document.cookie = 'ember_simple_auth:key=value;';
-      });
-
-      it('is not triggered', function() {
-        this.store.syncProperties();
-
+      Ember.run.next(this, function() {
         expect(this.triggered).to.be(false);
+        done();
       });
     });
 
-    describe('when the cookie changes', function() {
-      beforeEach(function() {
-        document.cookie = 'ember_simple_auth:key=other value;';
-      });
+    it('is triggered when the cookie changes', function(done) {
+      document.cookie = 'ember_simple_auth:key=other value;';
+      this.store.syncProperties();
 
-      it('is triggered', function() {
-        this.store.syncProperties();
-
+      Ember.run.next(this, function() {
         expect(this.triggered).to.be(true);
+        done();
       });
     });
   });

@@ -1,4 +1,6 @@
-var itBehavesLikeAStore = function() {
+var itBehavesLikeAStore = function(syncingMethod) {
+  syncingMethod = syncingMethod || Ember.K;
+
   describe('#persist', function() {
     it('persists an object', function() {
       this.store.persist({ key: 'value' });
@@ -11,6 +13,20 @@ var itBehavesLikeAStore = function() {
       this.store.persist({ key2: 'value2' });
 
       expect(this.store.restore()).to.eql({ key1: 'value1', key2: 'value2' });
+    });
+
+    it('does not trigger the "ember-simple-auth:session-updated" event', function(done) {
+      var triggered = false;
+      this.store.one('ember-simple-auth:session-updated', function() {
+        triggered = true;
+      });
+      this.store.persist({ key: 'other value' });
+      syncingMethod.apply(this);
+
+      Ember.run.next(function() {
+        expect(triggered).to.be(false);
+        done();
+      });
     });
   });
 
