@@ -41,7 +41,7 @@ describe('Session', function() {
 
       it('does not trigger the "ember-simple-auth:session-authentication-failed" event', function(done) {
         var triggered = false;
-        this.session.on('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
+        this.session.one('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
 
         Ember.run.next(this, function() {
           expect(triggered).to.be(false);
@@ -85,7 +85,7 @@ describe('Session', function() {
 
         it('does not trigger the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
           var triggered = false;
-          this.session.on('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+          this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
 
           Ember.run.next(this, function() {
             expect(triggered).to.be(false);
@@ -153,7 +153,7 @@ describe('Session', function() {
 
       it('triggers the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
         var triggered = false;
-        this.session.on('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+        this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
 
         Ember.run.next(this, function() {
           expect(triggered).to.be(true);
@@ -163,7 +163,7 @@ describe('Session', function() {
 
       it('does not trigger the "ember-simple-auth:session-authentication-failed" event', function(done) {
         var triggered = false;
-        this.session.on('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
+        this.session.one('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
 
         Ember.run.next(this, function() {
           expect(triggered).to.be(false);
@@ -214,7 +214,7 @@ describe('Session', function() {
 
       it('does not trigger the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
         var triggered = false;
-        this.session.on('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+        this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
 
         Ember.run.next(this, function() {
           expect(triggered).to.be(false);
@@ -224,7 +224,7 @@ describe('Session', function() {
 
       it('triggers the "ember-simple-auth:session-authentication-failed" event', function(done) {
         var triggered = false;
-        this.session.on('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
+        this.session.one('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
 
         Ember.run.next(this, function() {
           expect(triggered).to.be(true);
@@ -281,7 +281,7 @@ describe('Session', function() {
 
       it('does not trigger the "ember-simple-auth:session-invalidation-failed" event', function(done) {
         var triggered = false;
-        this.session.on('ember-simple-auth:session-invalidation-failed', function() { triggered = true; });
+        this.session.one('ember-simple-auth:session-invalidation-failed', function() { triggered = true; });
 
         Ember.run.next(this, function() {
           expect(triggered).to.be(false);
@@ -291,7 +291,7 @@ describe('Session', function() {
 
       it('triggers the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
         var triggered = false;
-        this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+        this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
 
         Ember.run.next(this, function() {
           expect(triggered).to.be(true);
@@ -330,7 +330,7 @@ describe('Session', function() {
 
       it('triggers the "ember-simple-auth:session-invalidation-failed" event', function(done) {
         var triggered = false;
-        this.session.on('ember-simple-auth:session-invalidation-failed', function() { triggered = true; });
+        this.session.one('ember-simple-auth:session-invalidation-failed', function() { triggered = true; });
 
         Ember.run.next(this, function() {
           expect(triggered).to.be(true);
@@ -340,7 +340,7 @@ describe('Session', function() {
 
       it('does not trigger the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
         var triggered = false;
-        this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+        this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
 
         Ember.run.next(this, function() {
           expect(triggered).to.be(false);
@@ -393,7 +393,7 @@ describe('Session', function() {
 
           it('does not trigger the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
             var triggered = false;
-            this.session.on('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+            this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
 
             Ember.run.next(this, function() {
               expect(triggered).to.be(false);
@@ -409,7 +409,7 @@ describe('Session', function() {
 
           it('triggers the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
             var triggered = false;
-            this.session.on('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+            this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
             this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
             Ember.run.next(this, function() {
@@ -445,7 +445,7 @@ describe('Session', function() {
 
           it('triggers the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
             var triggered = false;
-            this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+            this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
             this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
             Ember.run.next(this, function() {
@@ -462,7 +462,7 @@ describe('Session', function() {
 
           it('does not trigger the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
             var triggered = false;
-            this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+            this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
 
             Ember.run.next(this, function() {
               expect(triggered).to.be(false);
@@ -497,7 +497,7 @@ describe('Session', function() {
 
         it('triggers the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
           var triggered = false;
-          this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+          this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
           this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
 
           Ember.run.next(this, function() {
@@ -514,7 +514,7 @@ describe('Session', function() {
 
         it('does not trigger the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
           var triggered = false;
-          this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+          this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
 
           Ember.run.next(this, function() {
             expect(triggered).to.be(false);
