@@ -7,8 +7,10 @@ describe('Stores.Cookie', function() {
     this.store.clear();
   });
 
-  itBehavesLikeAStore(function() {
-    this.store.syncProperties();
+  itBehavesLikeAStore({
+    syncExternalChanges: function() {
+      this.store.syncProperties();
+    }
   });
 
   describe('the "ember-simple-auth:session-updated" event', function() {

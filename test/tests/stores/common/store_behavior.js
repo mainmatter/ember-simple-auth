@@ -1,5 +1,5 @@
-var itBehavesLikeAStore = function(syncingMethod) {
-  syncingMethod = syncingMethod || Ember.K;
+var itBehavesLikeAStore = function(options) {
+  var syncExternalChanges = (options || {}).syncExternalChanges || Ember.K;
 
   describe('#persist', function() {
     it('persists an object', function() {
@@ -21,7 +21,7 @@ var itBehavesLikeAStore = function(syncingMethod) {
         triggered = true;
       });
       this.store.persist({ key: 'other value' });
-      syncingMethod.apply(this);
+      syncExternalChanges.apply(this);
 
       Ember.run.next(function() {
         expect(triggered).to.be(false);
