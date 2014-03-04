@@ -5,14 +5,22 @@ describe('Authenticators.OAuth2', function() {
     this.authenticator = OAuth2.create();
   });
 
-  function itSchedulesTokenRefreshing() {
+  function itKeepsTheAccessTokenFresh() {
+    describe('when expiration and refresh token are present', function() {
+
+    });
+
+    describe('when no expiration and refresh token are present', function() {
+
+    });
   }
 
   describe('#restore', function() {
     describe('when the data contains an access_token', function() {
       it('returns a resolving promise', function(done) {
-        this.authenticator.restore({ access_token: 'access_token' }).then(function() {
+        this.authenticator.restore({ access_token: 'access_token' }).then(function(data) {
           expect(true).to.be.ok();
+          expect(data).to.eql({ access_token: 'access_token' });
           done();
         }, function() {
           expect().fail();
@@ -20,7 +28,7 @@ describe('Authenticators.OAuth2', function() {
         });
       });
 
-      itSchedulesTokenRefreshing();
+      itKeepsTheAccessTokenFresh();
     });
 
     describe('when the data does not contain an access_token', function() {
@@ -37,8 +45,14 @@ describe('Authenticators.OAuth2', function() {
   });
 
   describe('#authenticate', function() {
-    it('sends an AJAX request to the token endpoint', function(done) {
+    beforeEach(function() {
+      this.xhr                = sinon.useFakeXMLHttpRequest();
+      this.server             = sinon.fakeServer.create();
+      this.server.autoRespond = true;
       sinon.spy(Ember.$, 'ajax');
+    });
+
+    it('sends an AJAX request to the token endpoint', function(done) {
       this.authenticator.authenticate({ identification: 'username', password: 'password' });
 
       Ember.run.next(function() {
@@ -54,11 +68,115 @@ describe('Authenticators.OAuth2', function() {
     });
 
     describe('when the authentication request is successful', function() {
+      beforeEach(function() {
+        this.server.respondWith('POST', '/token', [
+          200,
+          { 'Content-Type': 'application/json' },
+          '{ "access_token": "secret token!" }'
+        ]);
+      });
 
+      it('returns a resolving promise', function(done) {
+        this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(function(data) {
+          expect(true).to.be.ok();
+          expect(data).to.eql({ access_token: 'secret token!' });
+          done();
+        }, function() {
+          expect().fail();
+          done();
+        });
+      });
+
+      describe('when the server response includes expiration data', function() {
+        beforeEach(function() {
+          this.server.respondWith('POST', '/token', [
+            200,
+            { 'Content-Type': 'application/json' },
+            '{ "access_token": "secret token!", "expires_in": 12345, "refresh_token": "refresh token!" }'
+          ]);
+        });
+
+        it('resolves with the correct data', function(done) {
+          this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(function(data) {
+            expect(data.expires_at).to.be.greaterThan(new Date().getTime());
+            delete data.expires_at;
+            expect(data).to.eql({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' });
+            done();
+          }, function() {
+            expect().fail();
+            done();
+          });
+        });
+
+        describe('when automatic token refreshing is enabled', function() {
+          beforeEach(function() {
+            sinon.spy(Ember.run, 'later');
+          });
+
+          it('schedules a token refresh', function(done) {
+            var _this = this;
+
+            this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(function(data) {
+              var spyCall = Ember.run.later.getCall(0);
+
+              expect(spyCall.args[1]).to.eql(_this.authenticator.refreshAccessToken);
+              expect(spyCall.args[2]).to.eql(12345);
+              expect(spyCall.args[3]).to.eql('refresh token!');
+              done();
+            });
+          });
+
+          afterEach(function() {
+            Ember.run.later.restore();
+          });
+        });
+
+        describe('when automatic token refreshing is disabled', function() {
+          beforeEach(function() {
+            this.authenticator.set('refreshAccessTokens', false);
+            sinon.spy(Ember.run, 'later');
+          });
+
+          it('does not schedule a token refresh', function(done) {
+            var _this = this;
+
+            this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(function(data) {
+              expect(Ember.run.later.called).to.be(false);
+              done();
+            });
+          });
+
+          afterEach(function() {
+            Ember.run.later.restore();
+          });
+        });
+      });
     });
 
     describe('when the authentication request fails', function() {
+      beforeEach(function() {
+        this.server.respondWith('POST', '/token', [
+          400,
+          { 'Content-Type': 'application/json' },
+          '{ "error": "invalid_grant" }'
+        ]);
+      });
 
+      it('returns a rejecting promise', function(done) {
+        this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(function() {
+          expect().fail();
+          done();
+        }, function(error) {
+          expect(true).to.be.ok();
+          expect(error).to.eql({ error: 'invalid_grant' });
+          done();
+        });
+      });
+    });
+
+    afterEach(function() {
+      this.xhr.restore();
+      Ember.$.ajax.restore();
     });
   });
 
@@ -73,156 +191,80 @@ describe('Authenticators.OAuth2', function() {
       });
     });
   });
-});
 
-/*import { OAuth2 } from 'ember-simple-auth/authenticators/oauth2';
+  // testing private API here ;(
+  describe('#refreshAccessToken', function() {
+    beforeEach(function() {
+      this.xhr                = sinon.useFakeXMLHttpRequest();
+      this.server             = sinon.fakeServer.create();
+      this.server.autoRespond = true;
+      sinon.spy(Ember.$, 'ajax');
+    });
 
-var authenticator;
+    it('sends an AJAX request to the token endpoint', function(done) {
+      this.authenticator.refreshAccessToken(12345, 'refresh token!');
 
-var ajaxMock;
-var AjaxMock = Ember.Object.extend({
-  ajaxCapture: function(options) {
-    this.requestOptions = options;
-    return {
-      then: function(success, fail) {
-        if (AjaxMock._resolve) {
-          success(AjaxMock._resolve);
-        } else if (AjaxMock._reject) {
-          fail(AjaxMock._reject);
-        }
-      }
-    };
-  }
-});
+      Ember.run.next(function() {
+        expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
+          url:         '/token',
+          type:        'POST',
+          data:        { grant_type: 'refresh_token', refresh_token: 'refresh token!' },
+          dataType:    'json',
+          contentType: 'application/x-www-form-urlencoded'
+        });
+        done();
+      });
+    });
 
-module('Authenticators.OAuth2', {
-  originalAjax: Ember.$.ajax,
-  setup: function() {
-    authenticator = OAuth2.create();
-    ajaxMock      = AjaxMock.create();
-    Ember.$.ajax  = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
-  },
-  teardown: function() {
-    Ember.run.cancel(authenticator._refreshTokenTimeout);
-    Ember.$.ajax = this.originalAjax;
-  }
-});
+    describe('when the authentication request is successful', function() {
+      beforeEach(function() {
+        this.server.respondWith('POST', '/token', [
+          200,
+          { 'Content-Type': 'application/json' },
+          '{ "access_token": "secret token 2!" }'
+        ]);
+      });
 
-test('restores the session', function() {
-  var resolved;
-  var resolvedWith;
-  Ember.run(function() {
-    authenticator.restore({ access_token: 'access_token', key: 'value' }).then(function(properties) {
-      resolved     = true;
-      resolvedWith = properties;
+      it('triggers the "ember-simple-auth:session-updated" event', function(done) {
+        var triggeredWith = false;
+        this.authenticator.one('ember-simple-auth:session-updated', function(data) { triggeredWith = data; });
+        this.authenticator.refreshAccessToken(12345, 'refresh token!');
+
+        Ember.run.later(function() {
+          expect(triggeredWith.expires_at).to.be.greaterThan(new Date().getTime());
+          delete triggeredWith.expires_at;
+          expect(triggeredWith).to.eql({ access_token: 'secret token 2!', expires_in: 12345, refresh_token: 'refresh token!' });
+          done();
+        }, 10);
+      });
+
+      describe('when the server reponse includes updated expiration data', function() {
+        beforeEach(function() {
+          this.server.respondWith('POST', '/token', [
+            200,
+            { 'Content-Type': 'application/json' },
+            '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }'
+          ]);
+        });
+
+        it('triggers the "ember-simple-auth:session-updated" event with the correct data', function(done) {
+          var triggeredWith = false;
+          this.authenticator.one('ember-simple-auth:session-updated', function(data) { triggeredWith = data; });
+          this.authenticator.refreshAccessToken(12345, 'refresh token!');
+
+          Ember.run.later(function() {
+            expect(triggeredWith.expires_at).to.be.greaterThan(new Date().getTime());
+            delete triggeredWith.expires_at;
+            expect(triggeredWith).to.eql({ access_token: 'secret token 2!', expires_in: 67890, refresh_token: 'refresh token 2!' });
+            done();
+          }, 10);
+        });
+      });
+    });
+
+    afterEach(function() {
+      this.xhr.restore();
+      Ember.$.ajax.restore();
     });
   });
-
-  ok(resolved, 'Authenticators.OAuth2 returns a resolving promise when the properties it restores the session from include an access_token.');
-  deepEqual(resolvedWith, { access_token: 'access_token', key: 'value' }, 'Authenticators.OAuth2 returns a promise that resolves with the passed properties when the properties it restores the session from include an access_token.');
-
-  var rejected;
-  Ember.run(function() {
-    authenticator.restore({}).then(function() {}, function() {
-      rejected = true;
-    });
-  });
-
-  ok(rejected, 'Authenticators.OAuth2 returns a rejecting promise when the properties it restores the session from do not include an access_token.');
-
-  rejected = false;
-  Ember.run(function() {
-    authenticator.restore({ access_token: '' }).then(function() {}, function() {
-      rejected = true;
-    });
-  });
-
-  ok(rejected, 'Authenticators.OAuth2 returns a rejecting promise when the properties it restores the session from include an empty access_token.');
 });
-
-test('issues an AJAX request for authentication', function() {
-  Ember.run(function() {
-    authenticator.authenticate({ identification: 'identification', password: 'password' });
-  });
-
-  equal(ajaxMock.requestOptions.url, '/token', 'Authenticators.OAuth2 sends a request to the serverTokenEndpoint for authentication.');
-  equal(ajaxMock.requestOptions.type, 'POST', 'Authenticators.OAuth2 sends a POST request for authentication.');
-  deepEqual(ajaxMock.requestOptions.data, { grant_type: 'password', password: 'password', username: 'identification' }, 'Authenticators.OAuth2 sends a request with the correct data for authentication.');
-  equal(ajaxMock.requestOptions.dataType, 'json', 'Authenticators.OAuth2 sends a request with the data type "json" for authentication.');
-  equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" for authentication.');
-});
-
-test('returns a promise on authentication', function() {
-  AjaxMock._resolve = { access_token: 'access_token' };
-  var resolved;
-  var resolvedWith;
-  Ember.run(function() {
-    authenticator.authenticate({}).then(function(properties) {
-      resolved     = true;
-      resolvedWith = properties;
-    });
-  });
-
-  ok(resolved, 'Authenticators.OAuth2 returns a resolving promise when the authentication AJAX request is successful.');
-  deepEqual(resolvedWith, { access_token: 'access_token' }, "Authenticators.OAuth2 returns a promise that resolves with the server's response when the authentication AJAX request is successful.");
-
-  AjaxMock._resolve = false;
-  AjaxMock._reject  = { responseText: 'error' };
-  var rejected;
-  var rejectedWith;
-  Ember.run(function() {
-    authenticator.authenticate({}).then(function() {}, function(error) {
-      rejected     = true;
-      rejectedWith = error;
-    });
-  });
-
-  ok(rejected, 'Authenticators.OAuth2 returns a rejecting promise when the authentication AJAX request is not successful.');
-  deepEqual(rejectedWith, 'error', 'Authenticators.OAuth2 returns a promise that rejects with the error message from the response when the authentication AJAX request is not successful.');
-});
-
-test('invalidates the session', function() {
-  var resolved;
-  Ember.run(function() {
-    authenticator.invalidate().then(function(error) {
-      resolved = true;
-    });
-  });
-
-  ok(resolved, 'Authenticators.OAuth2 returns a resolving promise for session invalidation.');
-});
-
-test('refreshes the access token', function() {
-  Ember.run(function() {
-    authenticator.refreshAccessToken(1, 'refresh token!');
-  });
-
-  equal(ajaxMock.requestOptions.url, '/token', 'Authenticators.OAuth2 sends a request to the serverTokenEndpoint to refresh the access token.');
-  equal(ajaxMock.requestOptions.type, 'POST', 'Authenticators.OAuth2 sends a POST request to refresh the access token.');
-  deepEqual(ajaxMock.requestOptions.data, { grant_type: 'refresh_token', refresh_token: 'refresh token!' }, 'Authenticators.OAuth2 sends a request with the correct data to refresh the access token.');
-  equal(ajaxMock.requestOptions.dataType, 'json', 'Authenticators.OAuth2 sends a request with the data type "json" to refresh the access token.');
-  equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Authenticators.OAuth2 sends a request with the content type "application/x-www-form-urlencoded" to refresh the access token.');
-});
-
-test('keeps the token fresh', function() {
-  AjaxMock._resolve = false;
-  Ember.run(function() {
-    authenticator.refreshAccessToken(1, 'refresh token!');
-  });
-
-  ok(Ember.isEmpty(authenticator._refreshTokenTimeout), 'Authenticators.OAuth2 does not schedule another refresh when refreshing the access token failed.');
-
-  AjaxMock._resolve = true;
-  Ember.run(function() {
-    authenticator.refreshAccessToken(5, 'refresh token!');
-  });
-
-  ok(Ember.isEmpty(authenticator._refreshTokenTimeout), 'Authenticators.OAuth2 does not schedule another refresh when the token expiration time is 5 seconds or less.');
-
-  Ember.run(function() {
-    authenticator.refreshAccessToken(10, 'refresh token!');
-  });
-
-  ok(!Ember.isEmpty(authenticator._refreshTokenTimeout), 'Authenticators.OAuth2 schedules another refresh when it successfully refreshed the access token.');
-});
-*/
