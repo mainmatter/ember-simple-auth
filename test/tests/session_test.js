@@ -28,182 +28,6 @@ describe('Session', function() {
     });
   }
 
-  function itListensToStoreEvents() {
-    describe('when the store triggers the "ember-simple-auth:session-updated" event', function() {
-      describe('when there is an authenticator factory in the event data', function() {
-        describe('when the authenticator resolves restoration', function() {
-          beforeEach(function() {
-            Ember.tryInvoke(this.authenticator.restore, 'restore');
-            sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'other property' }));
-            this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
-          });
-
-          it('is authenticated', async(function() {
-            expect(this.session.get('isAuthenticated')).to.be(true);
-          }));
-
-          it('sets its content to the properties the auhneticator resolves with', async(function() {
-            var properties = this.store.restore();
-            delete properties.authenticatorFactory;
-
-            expect(this.session.get('content')).to.eql({ some: 'other property' });
-          }));
-
-          it('persists its content in the store', async(function() {
-            var properties = this.store.restore();
-            delete properties.authenticatorFactory;
-
-            expect(properties).to.eql({ some: 'other property' });
-          }));
-
-          it('persists the authenticator factory in the store', async(function(done) {
-            expect(this.store.restore().authenticatorFactory).to.eql('authenticatorFactory');
-          }));
-
-          describe('when the session is already authenticated', function() {
-            beforeEach(async(function() {
-              this.session.set('isAuthenticated', true);
-            }));
-
-            it('does not trigger the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
-              var triggered = false;
-              this.session.on('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
-
-              Ember.run.next(this, function() {
-                expect(triggered).to.be(false);
-                done();
-              });
-            });
-          });
-
-          describe('when the session is not already authenticated', function() {
-            beforeEach(function() {
-              this.session.set('isAuthenticated', false);
-            });
-
-            it('triggers the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
-              var triggered = false;
-              this.session.on('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
-              this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
-
-              Ember.run.next(this, function() {
-                expect(triggered).to.be(true);
-                done();
-              });
-            });
-          });
-        });
-
-        describe('when the authenticator rejects restoration', function() {
-          beforeEach(function() {
-            Ember.tryInvoke(this.authenticator.restore, 'restore');
-            sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject({ some: 'other property' }));
-            this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
-          });
-
-          it('is not authenticated', async(function() {
-            expect(this.session.get('isAuthenticated')).to.be(false);
-          }));
-
-          it('clears its content', async(function() {
-            expect(this.session.get('content')).to.eql({});
-          }));
-
-          it('clears the store', async(function() {
-            expect(this.store.restore()).to.eql({});
-          }));
-
-          describe('when the session is authenticated', function() {
-            beforeEach(async(function() {
-              this.session.set('isAuthenticated', true);
-            }));
-
-            it('triggers the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
-              var triggered = false;
-              this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
-              this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
-
-              Ember.run.next(this, function() {
-                expect(triggered).to.be(true);
-                done();
-              });
-            });
-          });
-
-          describe('when the session is not authenticated', function() {
-            beforeEach(function() {
-              this.session.invalidate();
-            });
-
-            it('does not trigger the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
-              var triggered = false;
-              this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
-
-              Ember.run.next(this, function() {
-                expect(triggered).to.be(true);
-                done();
-              });
-            });
-          });
-        });
-      });
-
-      describe('when there is no authenticator factory in the store', function() {
-        beforeEach(async(function() {
-          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
-        }));
-
-        it('is not authenticated', async(function() {
-          expect(this.session.get('isAuthenticated')).to.be(false);
-        }));
-
-        it('clears its content', async(function() {
-          expect(this.session.get('content')).to.eql({});
-        }));
-
-        it('clears the store', async(function() {
-          expect(this.store.restore()).to.eql({});
-        }));
-
-        describe('when the session is authenticated', function() {
-          beforeEach(function() {
-            this.session.set('isAuthenticated', true);
-          });
-
-          it('triggers the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
-            var triggered = false;
-            this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
-            this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
-
-            Ember.run.next(this, function() {
-              expect(triggered).to.be(true);
-              done();
-            });
-          });
-        });
-
-        describe('when the session is not authenticated', function() {
-          beforeEach(async(function() {
-            var _this = this;
-            this.session.invalidate().then(function() {
-              _this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
-            });
-          }));
-
-          it('does not trigger the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
-            var triggered = false;
-            this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
-
-            Ember.run.next(this, function() {
-              expect(triggered).to.be(false);
-              done();
-            });
-          });
-        });
-      });
-    });
-  }
-
   describe('initialization', function() {
     beforeEach(function() {
       this.store = EphemeralStore.create();
@@ -279,7 +103,6 @@ describe('Session', function() {
         });
 
         itListensToAuthenticatorEvents();
-        itListensToStoreEvents();
       });
 
       describe('when the authenticator rejects restoration', function() {
@@ -354,7 +177,6 @@ describe('Session', function() {
       });
 
       itListensToAuthenticatorEvents();
-      itListensToStoreEvents();
     });
 
     describe('when the authenticator rejects authnetication', function() {
@@ -531,7 +353,179 @@ describe('Session', function() {
       });
 
       itListensToAuthenticatorEvents();
-      itListensToStoreEvents();
+    });
+  });
+
+  describe('when the store triggers the "ember-simple-auth:session-updated" event', function() {
+    describe('when there is an authenticator factory in the event data', function() {
+      describe('when the authenticator resolves restoration', function() {
+        beforeEach(function() {
+          sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'other property' }));
+          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+        });
+
+        it('is authenticated', async(function() {
+          expect(this.session.get('isAuthenticated')).to.be(true);
+        }));
+
+        it('sets its content to the properties the auhneticator resolves with', async(function() {
+          var properties = this.store.restore();
+          delete properties.authenticatorFactory;
+
+          expect(this.session.get('content')).to.eql({ some: 'other property' });
+        }));
+
+        it('persists its content in the store', async(function() {
+          var properties = this.store.restore();
+          delete properties.authenticatorFactory;
+
+          expect(properties).to.eql({ some: 'other property' });
+        }));
+
+        it('persists the authenticator factory in the store', async(function(done) {
+          expect(this.store.restore().authenticatorFactory).to.eql('authenticatorFactory');
+        }));
+
+        describe('when the session is already authenticated', function() {
+          beforeEach(async(function() {
+            this.session.set('isAuthenticated', true);
+          }));
+
+          it('does not trigger the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
+            var triggered = false;
+            this.session.on('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+
+            Ember.run.next(this, function() {
+              expect(triggered).to.be(false);
+              done();
+            });
+          });
+        });
+
+        describe('when the session is not already authenticated', function() {
+          beforeEach(function() {
+            this.session.set('isAuthenticated', false);
+          });
+
+          it('triggers the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
+            var triggered = false;
+            this.session.on('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+            this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+
+            Ember.run.next(this, function() {
+              expect(triggered).to.be(true);
+              done();
+            });
+          });
+        });
+      });
+
+      describe('when the authenticator rejects restoration', function() {
+        beforeEach(function() {
+          Ember.tryInvoke(this.authenticator.restore, 'restore');
+          sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject({ some: 'other property' }));
+          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+        });
+
+        it('is not authenticated', async(function() {
+          expect(this.session.get('isAuthenticated')).to.be(false);
+        }));
+
+        it('clears its content', async(function() {
+          expect(this.session.get('content')).to.eql({});
+        }));
+
+        it('clears the store', async(function() {
+          expect(this.store.restore()).to.eql({});
+        }));
+
+        describe('when the session is authenticated', function() {
+          beforeEach(async(function() {
+            this.session.set('isAuthenticated', true);
+          }));
+
+          it('triggers the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
+            var triggered = false;
+            this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+            this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+
+            Ember.run.next(this, function() {
+              expect(triggered).to.be(true);
+              done();
+            });
+          });
+        });
+
+        describe('when the session is not authenticated', function() {
+          beforeEach(function() {
+            this.session.invalidate();
+          });
+
+          it('does not trigger the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
+            var triggered = false;
+            this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+
+            Ember.run.next(this, function() {
+              expect(triggered).to.be(true);
+              done();
+            });
+          });
+        });
+      });
+    });
+
+    describe('when there is no authenticator factory in the store', function() {
+      beforeEach(async(function() {
+        this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+      }));
+
+      it('is not authenticated', async(function() {
+        expect(this.session.get('isAuthenticated')).to.be(false);
+      }));
+
+      it('clears its content', async(function() {
+        expect(this.session.get('content')).to.eql({});
+      }));
+
+      it('clears the store', async(function() {
+        expect(this.store.restore()).to.eql({});
+      }));
+
+      describe('when the session is authenticated', function() {
+        beforeEach(function() {
+          this.session.set('isAuthenticated', true);
+        });
+
+        it('triggers the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
+          var triggered = false;
+          this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+
+          Ember.run.next(this, function() {
+            expect(triggered).to.be(true);
+            done();
+          });
+        });
+      });
+
+      describe('when the session is not authenticated', function() {
+        beforeEach(async(function() {
+          var _this = this;
+          this.session.invalidate().then(function() {
+            _this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+          });
+        }));
+
+        it('does not trigger the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
+          var triggered = false;
+          this.session.on('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+
+          Ember.run.next(this, function() {
+            expect(triggered).to.be(false);
+            done();
+          });
+        });
+      });
     });
   });
 });
