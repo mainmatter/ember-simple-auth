@@ -5,16 +5,6 @@ describe('Authenticators.OAuth2', function() {
     this.authenticator = OAuth2.create();
   });
 
-  function itKeepsTheAccessTokenFresh() {
-    describe('when expiration and refresh token are present', function() {
-
-    });
-
-    describe('when no expiration and refresh token are present', function() {
-
-    });
-  }
-
   describe('#restore', function() {
     describe('when the data contains an access_token', function() {
       it('returns a resolving promise', function(done) {
