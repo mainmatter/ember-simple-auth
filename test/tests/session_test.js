@@ -9,7 +9,6 @@ describe('Session', function() {
     this.container     = { lookup: function() {} };
     this.authenticator = BaseAuthenticator.create();
     sinon.stub(this.container, 'lookup').returns(this.authenticator);
-    this.session = Session.create({ store: this.store, container: this.container });
   });
 
   function itListensToAuthenticatorEvents() {
@@ -25,10 +24,6 @@ describe('Session', function() {
   }
 
   describe('initialization', function() {
-    beforeEach(function() {
-      this.store = EphemeralStore.create();
-    });
-
     function itFailsToRestore() {
       it('is not authenticated', async(function() {
         expect(this.session.get('isAuthenticated')).to.be(false);
@@ -55,22 +50,22 @@ describe('Session', function() {
       });
     }
 
-    describe('when the restored properties contain an authenticator factory', function() {
+    describe('when the restored data contains an authenticator factory', function() {
       beforeEach(function() {
         this.store.persist({ authenticatorFactory: 'authenticatorFactory' });
       });
 
-      describe('when the authenticator resolves restoration', function() {
+      describe('when the authenticator resolves to restore', function() {
         beforeEach(function() {
           this.authenticatorStub = sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'properties' }));
-          this.session = Session.create({ store: this.store, container: this.container });
+          this.session           = Session.create({ store: this.store, container: this.container });
         });
 
         it('is authenticated', async(function() {
           expect(this.session.get('isAuthenticated')).to.be(true);
         }));
 
-        it('sets its content to the properties the auhneticator resolves with', async(function() {
+        it('sets its content to the data the auhneticator resolves with', async(function() {
           var properties = this.store.restore();
           delete properties.authenticatorFactory;
 
@@ -101,7 +96,7 @@ describe('Session', function() {
         itListensToAuthenticatorEvents();
       });
 
-      describe('when the authenticator rejects restoration', function() {
+      describe('when the authenticator rejects to restore', function() {
         beforeEach(function() {
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject());
           this.session = Session.create({ store: this.store, container: this.container });
@@ -111,13 +106,17 @@ describe('Session', function() {
       });
     });
 
-    describe('when the restored properties do not contain an authenticator factory', function() {
+    describe('when the restored data does not contain an authenticator factory', function() {
       itFailsToRestore();
     });
   });
 
   describe('authentication', function() {
-    describe('when the authenticator resolves authnetication', function() {
+    beforeEach(function() {
+      this.session = Session.create({ store: this.store, container: this.container });
+    });
+
+    describe('when the authenticator resolves to authenticate', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'properties' }));
         this.session.authenticate('authenticatorFactory');
@@ -137,7 +136,7 @@ describe('Session', function() {
         });
       });
 
-      it('sets its content to the properties the auhneticator resolves with', async(function() {
+      it('sets its content to the data the auhneticator resolves with', async(function() {
         expect(this.session.get('content')).to.eql({ some: 'properties' });
       }));
 
@@ -175,7 +174,7 @@ describe('Session', function() {
       itListensToAuthenticatorEvents();
     });
 
-    describe('when the authenticator rejects authnetication', function() {
+    describe('when the authenticator rejects to authenticate', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.reject());
         this.session.authenticate('authenticatorFactory');
@@ -237,11 +236,12 @@ describe('Session', function() {
 
   describe('invalidation', function() {
     beforeEach(function() {
+      this.session = Session.create({ store: this.store, container: this.container });
       sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'property' }));
       this.session.authenticate('authenticatorFactory');
     });
 
-    describe('when the authenticator resolves invalidation', function() {
+    describe('when the authenticator resolves to invaldiate', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.resolve());
         this.session.invalidate();
@@ -300,7 +300,7 @@ describe('Session', function() {
       });
     });
 
-    describe('when the authenticator rejects invalidation', function() {
+    describe('when the authenticator rejects to invalidate', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.reject());
         this.session.invalidate();
@@ -353,6 +353,10 @@ describe('Session', function() {
   });
 
   describe('when the store triggers the "ember-simple-auth:session-updated" event', function() {
+    beforeEach(function() {
+      this.session = Session.create({ store: this.store, container: this.container });
+    });
+
     describe('when there is an authenticator factory in the event data', function() {
       describe('when the authenticator resolves restoration', function() {
         beforeEach(function() {
@@ -364,7 +368,7 @@ describe('Session', function() {
           expect(this.session.get('isAuthenticated')).to.be(true);
         }));
 
-        it('sets its content to the properties the auhneticator resolves with', async(function() {
+        it('sets its content to the data the authenticator resolves with', async(function() {
           var properties = this.store.restore();
           delete properties.authenticatorFactory;
 
@@ -383,9 +387,9 @@ describe('Session', function() {
         }));
 
         describe('when the session is already authenticated', function() {
-          beforeEach(async(function() {
+          beforeEach(function() {
             this.session.set('isAuthenticated', true);
-          }));
+          });
 
           it('does not trigger the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
             var triggered = false;
@@ -416,7 +420,7 @@ describe('Session', function() {
         });
       });
 
-      describe('when the authenticator rejects restoration', function() {
+      describe('when the authenticator rejects to restore', function() {
         beforeEach(function() {
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject({ some: 'other property' }));
           this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
@@ -435,9 +439,9 @@ describe('Session', function() {
         }));
 
         describe('when the session is authenticated', function() {
-          beforeEach(async(function() {
+          beforeEach(function() {
             this.session.set('isAuthenticated', true);
-          }));
+          });
 
           it('triggers the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
             var triggered = false;
@@ -504,12 +508,9 @@ describe('Session', function() {
       });
 
       describe('when the session is not authenticated', function() {
-        beforeEach(async(function() {
-          var _this = this;
-          this.session.invalidate().then(function() {
-            _this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
-          });
-        }));
+        beforeEach(function() {
+          this.session.set('isAuthenticated', false);
+        });
 
         it('does not trigger the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
           var triggered = false;
