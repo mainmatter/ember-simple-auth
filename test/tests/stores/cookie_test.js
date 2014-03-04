@@ -23,7 +23,7 @@ describe('Stores.Cookie', function() {
       });
     });
 
-    it('is not triggered when the cookie does not actually change', function(done) {
+    it('is not triggered when the cookie has not actually changed', function(done) {
       document.cookie = 'ember_simple_auth:key=value;';
       this.store.syncProperties();
 
@@ -33,7 +33,7 @@ describe('Stores.Cookie', function() {
       });
     });
 
-    it('is triggered when the cookie changes', function(done) {
+    it('is triggered when the cookie changed', function(done) {
       document.cookie = 'ember_simple_auth:key=other value;';
       this.store.syncProperties();
 

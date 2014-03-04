@@ -8,7 +8,7 @@ var itBehavesLikeAStore = function(options) {
       expect(this.store.restore()).to.eql({ key: 'value' });
     });
 
-    it('does not override existing values', function() {
+    it('does not override existing data', function() {
       this.store.persist({ key1: 'value1' });
       this.store.persist({ key2: 'value2' });
 
@@ -32,21 +32,21 @@ var itBehavesLikeAStore = function(options) {
 
   describe('#restore', function() {
     describe('when the store is empty', function() {
-      it('returns an empty object for an empty store', function() {
+      it('returns an empty object', function() {
         expect(this.store.restore()).to.eql({});
       });
     });
 
-    describe('when the store has elements', function() {
+    describe('when the store has data', function() {
       beforeEach(function() {
         this.store.persist({ key1: 'value1', key2: 'value2' });
       });
 
-      it('returns all properties in the store', function() {
+      it('returns all data in the store', function() {
         expect(this.store.restore()).to.eql({ key1: 'value1', key2: 'value2' });
       });
 
-      it('returns a copy of the stored properties', function() {
+      it('returns a copy of the stored data', function() {
         var properties = this.store.restore();
         properties.key1 = 'another value!';
 
