@@ -1,134 +1,149 @@
-/*import { setup, Configuration } from 'ember-simple-auth/core';
-import { Session } from 'ember-simple-auth/session';
+import { setup, Configuration } from 'ember-simple-auth/core';
 import { Authenticators } from 'ember-simple-auth/authenticators';
+import { Authorizers } from 'ember-simple-auth/authorizers';
 import { Stores } from 'ember-simple-auth/stores';
+import { Session } from 'ember-simple-auth/session';
 
-var containerMock;
-var ContainerMock = Ember.Object.extend({
-  init: function() {
-    this.injections    = [];
-    this.registrations = {};
-  },
-  register: function(name, factory, options) {
-    this.registrations[name] = {
-      factory: factory,
-      options: options
-    };
-  },
-  lookup: function(name) {
-    return this.registrations[name];
-  },
-  injection: function(target, property, name) {
-    var registration = this.lookup(name);
-    if (registration) {
-      this.injections.push({
-        target:   target,
-        property: property,
-        object:   registration.factory
-      });
-    }
-  }
-});
-
-var applicationMock;
-var ApplicationMock = Ember.Object.extend({
-});
-
-var authorizerMock;
-var AuthorizerMock = Ember.Object.extend({
-  authorize: function() {
-    this.authorized = true;
-  }
-});
-AuthorizerMock.reopenClass({
-  create: function(options) {
-    return (authorizerMock = this._super(options));
-  }
-});
-
-var ajaxPrefilterMock;
-var AjaxPrefilterMock = Ember.Object.extend({
-  ajaxPrefilterCapture: function(prefilter) {
-    this.registeredAjaxPrefilter = prefilter;
-  }
-});
-
-module('Core', {
-  originalAjaxPrefilter: Ember.$.ajaxPrefilter,
-  setup: function() {
-    containerMock         = ContainerMock.create();
-    applicationMock       = ApplicationMock.create();
-    ajaxPrefilterMock     = AjaxPrefilterMock.create();
-    Ember.$.ajaxPrefilter = Ember.$.proxy(ajaxPrefilterMock.ajaxPrefilterCapture, ajaxPrefilterMock);
-  },
-  teardown: function() {
-    Ember.$.ajaxPrefilter = this.originalAjaxPrefilter;
-  }
-});
-
-test('assigns the authentication route', function() {
-  setup(containerMock, applicationMock, { authenticationRoute: 'somewhere' });
-
-  equal(Configuration.authenticationRoute, 'somewhere', 'setup configures authenticationRoute when specified for setup.');
-});
-
-test('assigns the route after authentication', function() {
-  setup(containerMock, applicationMock, { routeAfterAuthentication: 'somewhere' });
-
-  equal(Configuration.routeAfterAuthentication, 'somewhere', 'setup configures routeAfterAuthentication when specified for setup.');
-});
-
-test('assigns the route after session invalidation', function() {
-  setup(containerMock, applicationMock, { routeAfterInvalidation: 'somewhere' });
-
-  equal(Configuration.routeAfterInvalidation, 'somewhere', 'setup configures routeAfterInvalidation when specified for setup.');
-});
-
-test('registers the OAuth2 authenticator with the container', function() {
-  setup(containerMock, applicationMock);
-  var injection = containerMock.lookup('ember-simple-auth:authenticators:oauth2');
-
-  equal(injection.factory, Authenticators.OAuth2, 'setup registers the OAuth2 authenticator.');
-});
-
-test('injects the session in models, views, controllers and routes', function() {
-  setup(containerMock, applicationMock);
-
-  Ember.$.each(['model', 'view', 'controller', 'view'], function(i, component) {
-    var injection = Ember.$.grep(containerMock.injections, function(injection) {
-      return injection.target === component;
-    })[0];
-
-    equal(injection.object.constructor, Session, 'setup injects the session into ' + component + '.');
-    equal(injection.property, 'session', 'setup makes the session available as "session" in ' + component + '.');
+describe('Configuration', function() {
+  describe('authenticationRoute', function() {
+    it('defaults to "login"', function() {
+      expect(Configuration.authenticationRoute).to.eql('login');
+    });
+  });
+  describe('routeAfterAuthentication', function() {
+    it('defaults to "index"', function() {
+      expect(Configuration.routeAfterAuthentication).to.eql('index');
+    });
+  });
+  describe('routeAfterInvalidation', function() {
+    it('defaults to "index"', function() {
+      expect(Configuration.routeAfterInvalidation).to.eql('index');
+    });
   });
 });
 
-test('assigns the store and container to the session', function() {
-  setup(containerMock, applicationMock, { store: Stores.Ephemeral });
+describe('setup', function() {
+  beforeEach(function() {
+    this.container   = { register: function() {}, injection: function() {} };
+    this.application = {};
+  });
 
-  var session = containerMock.injections[0].object;
+  it('sets authenticationRoute', function() {
+    setup(this.container, this.application, { authenticationRoute: 'authenticationRoute' });
 
-  equal(session.container, containerMock, 'setup assigns the container to the session.');
-  equal(session.store.constructor, Stores.Ephemeral, 'setup assigns the correct store to the session.');
+    expect(Configuration.authenticationRoute).to.eql('authenticationRoute');
+  });
+
+  it('sets routeAfterAuthentication', function() {
+    setup(this.container, this.application, { routeAfterAuthentication: 'routeAfterAuthentication' });
+
+    expect(Configuration.routeAfterAuthentication).to.eql('routeAfterAuthentication');
+  });
+
+  it('sets routeAfterInvalidation', function() {
+    setup(this.container, this.application, { routeAfterInvalidation: 'routeAfterInvalidation' });
+
+    expect(Configuration.routeAfterInvalidation).to.eql('routeAfterInvalidation');
+  });
+
+  it('registers the OAuth2 authenticator in the Ember container', function() {
+    var containerSpy = sinon.spy(this.container, 'register');
+    setup(this.container, this.application);
+
+    expect(containerSpy.withArgs('ember-simple-auth:authenticators:oauth2', Authenticators.OAuth2).calledOnce).to.be(true);
+  });
+
+  describe('the session instance', function() {
+    it('uses the LocalStorage store by default', function() {
+      sinon.spy(this.container, 'register');
+      setup(this.container, this.application);
+      var spyCall = this.container.register.getCall(1);
+
+      expect(spyCall.args[1].store.constructor).to.eql(Stores.LocalStorage);
+    });
+
+    it('uses a custom store if specified', function() {
+      sinon.spy(this.container, 'register');
+      setup(this.container, this.application, { store: Stores.Ephemeral });
+      var spyCall = this.container.register.getCall(1);
+
+      expect(spyCall.args[1].store.constructor).to.eql(Stores.Ephemeral);
+    });
+
+    it("uses the app's container", function() {
+      sinon.spy(this.container, 'register');
+      setup(this.container, this.application);
+      var spyCall = this.container.register.getCall(1);
+
+      expect(spyCall.args[1].container).to.eql(this.container);
+    });
+
+    it('is registered with the Ember container', function() {
+      sinon.spy(this.container, 'register');
+      setup(this.container, this.application);
+      var spyCall = this.container.register.getCall(1);
+
+      expect(spyCall.args[0]).to.eql('ember-simple-auth:session:current');
+      expect(spyCall.args[1].constructor).to.eql(Session);
+    });
+
+    it('is injected as "session" into all models, controllers, routes and views', function() {
+      var containerSpy = sinon.spy(this.container, 'injection');
+      setup(this.container, this.application);
+
+      ['model', 'controller', 'view', 'route'].forEach(function(component) {
+        expect(containerSpy.withArgs(component, 'session', 'ember-simple-auth:session:current').calledOnce).to.be(true);
+      });
+    });
+  });
+
+  describe('the AJAX prefilter', function() {
+    beforeEach(function() {
+      this.authorizer    = { authorize: function() {} };
+      this.authorizerSpy = sinon.spy(this.authorizer, 'authorize');
+      sinon.stub(Authorizers.OAuth2, 'create').returns(this.authorizer);
+    });
+
+    it('uses the OAuth2 authorizer by default', function() {
+      setup(this.container, this.application);
+      Ember.$.get(window.location);
+
+      expect(this.authorizerSpy.calledOnce).to.be(true);
+    });
+
+    it('uses a custom authorizer if configured', function() {
+      var CustomAuthorizer = Authorizers.Base.extend();
+      sinon.stub(CustomAuthorizer, 'create').returns(this.authorizer);
+      setup(this.container, this.application, { authorizer: CustomAuthorizer });
+      Ember.$.get(window.location);
+
+      expect(this.authorizerSpy.calledOnce).to.be(true);
+    });
+
+    it('does not authorize requests going to a foreign origin', function() {
+      setup(this.container, this.application);
+      Ember.$.get('http://other-domain.com');
+
+      expect(this.authorizerSpy.calledOnce).to.be(false);
+    });
+
+    it('authorize requests going to a foreign origin if the origin is whitelisted', function() {
+      setup(this.container, this.application, { crossOriginWhitelist: ['http://other-domain.com', 'https://another-port.net:4567'] });
+      Ember.$.get('http://other-domain.com/path/query=string');
+
+      expect(this.authorizerSpy.calledOnce).to.be(true);
+
+      Ember.$.get('http://other-domain.com:80/path/query=string');
+
+      expect(this.authorizerSpy.calledTwice).to.be(true);
+
+      Ember.$.get('https://another-port.net:4567/path/query=string');
+
+      expect(this.authorizerSpy.calledThrice).to.be(true);
+    });
+
+    afterEach(function() {
+      Authorizers.OAuth2.create.restore();
+    });
+  });
 });
-
-test('registers an AJAX prefilter that authorizes requests', function() {
-  setup(containerMock, applicationMock, { authorizer: AuthorizerMock });
-
-  ajaxPrefilterMock.registeredAjaxPrefilter({ url: '/some' }, {}, {});
-  ok(authorizerMock.authorized, "setup registers an AJAX prefilter that authorizes requests that go to the application's origin.");
-
-  authorizerMock.authorized = false;
-  ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, {});
-  ok(!authorizerMock.authorized, 'setup registers an AJAX prefilter that does not authorize cross-origin requests.');
-
-  setup(containerMock, applicationMock, { crossOriginWhitelist: ['https://a.different.domain:1234'], authorizer: AuthorizerMock, store: Stores.Ephemeral });
-  ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'https://a.different.domain:1234' }, {}, {});
-  ok(authorizerMock.authorized, 'setup registers an AJAX prefilter that authorizes cross-origin requests when the origin is in the crossOriginWhitelist.');
-
-  setup(containerMock, applicationMock, { crossOriginWhitelist: ['http://a.different.domain'], authorizer: AuthorizerMock, store: Stores.Ephemeral });
-  ajaxPrefilterMock.registeredAjaxPrefilter({ url: 'http://a.different.domain:80' }, {}, {});
-  ok(authorizerMock.authorized, 'setup registers an AJAX prefilter that authorizes cross-origin requests when the origin is in the crossOriginWhitelist where default ports can be left out.');
-});
-*/
