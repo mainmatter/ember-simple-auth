@@ -1,3 +1,57 @@
+import { OAuth2 } from 'ember-simple-auth/authenticators/oauth2';
+
+describe('Authenticators.OAuth2', function() {
+  beforeEach(function() {
+    this.authenticator = OAuth2.create();
+  });
+
+  function itSchedulesTokenRefreshing() {
+  }
+
+  describe('#restore', function() {
+    describe('when the data contains an access_token', function() {
+      it('returns a resolving promise', function(done) {
+        this.authenticator.restore({ access_token: 'access_token' }).then(function() {
+          expect(true).to.be.ok();
+          done();
+        }, function() {
+          expect().fail();
+          done();
+        });
+      });
+
+      itSchedulesTokenRefreshing();
+    });
+
+    describe('when the data does not contain an access_token', function() {
+      it('returns a rejecting promise', function(done) {
+        this.authenticator.restore().then(function() {
+          expect().fail();
+          done();
+        }, function() {
+          expect(true).to.be.ok();
+          done();
+        });
+      });
+    });
+  });
+
+  describe('#authenticate', function() {
+  });
+
+  describe('#invalidate', function() {
+    it('returns a resolving promise', function(done) {
+      this.authenticator.invalidate().then(function() {
+        expect(true).to.be.ok();
+        done();
+      }, function() {
+        expect().fail();
+        done();
+      });
+    });
+  });
+});
+
 /*import { OAuth2 } from 'ember-simple-auth/authenticators/oauth2';
 
 var authenticator;
