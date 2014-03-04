@@ -19,23 +19,35 @@ describe('Stores.Cookie', function() {
       });
     });
 
-    it('is not triggered when the store changes the cookie itself', function() {
+    it('is not triggered by #persist', function() {
+      this.store.persist({ key: 'other value' });
       this.store.syncProperties();
 
       expect(this.triggered).to.be(false);
     });
 
-    it('is not triggered when nothing actually changes in the cookie', function() {
-      this.store.syncProperties();
+    describe('when the cookie does not actually change', function() {
+      beforeEach(function() {
+        document.cookie = 'ember_simple_auth:key=value;';
+      });
 
-      expect(this.triggered).to.be(false);
+      it('is not triggered', function() {
+        this.store.syncProperties();
+
+        expect(this.triggered).to.be(false);
+      });
     });
 
-    it('is triggered when the cookie is changed outside of the store', function() {
-      document.cookie = 'ember_simple_auth:key=other value;';
-      this.store.syncProperties();
+    describe('when the cookie changes', function() {
+      beforeEach(function() {
+        document.cookie = 'ember_simple_auth:key=other value;';
+      });
 
-      expect(this.triggered).to.be(true);
+      it('is triggered', function() {
+        this.store.syncProperties();
+
+        expect(this.triggered).to.be(true);
+      });
     });
   });
 });
