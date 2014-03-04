@@ -37,6 +37,29 @@ describe('Authenticators.OAuth2', function() {
   });
 
   describe('#authenticate', function() {
+    it('sends an AJAX request to the token endpoint', function(done) {
+      sinon.spy(Ember.$, 'ajax');
+      this.authenticator.authenticate({ identification: 'username', password: 'password' });
+
+      Ember.run.next(function() {
+        expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
+          url:         '/token',
+          type:        'POST',
+          data:        { grant_type: 'password', username: 'username', password: 'password' },
+          dataType:    'json',
+          contentType: 'application/x-www-form-urlencoded'
+        });
+        done();
+      });
+    });
+
+    describe('when the authentication request is successful', function() {
+
+    });
+
+    describe('when the authentication request fails', function() {
+
+    });
   });
 
   describe('#invalidate', function() {
