@@ -1,5 +1,5 @@
 import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
-import { itBehavesLikeAStore } from './common/store_behavior';
+import { itBehavesLikeAStore } from './shared/store_behavior';
 
 describe('Stores.Ephemeral', function() {
   beforeEach(function() {
