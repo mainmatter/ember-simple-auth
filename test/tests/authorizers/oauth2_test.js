@@ -1,35 +1,38 @@
-/*import { OAuth2 } from 'ember-simple-auth/authorizers/oauth2';
+import { OAuth2 } from 'ember-simple-auth/authorizers/oauth2';
+import { Session } from 'ember-simple-auth/session';
+import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
 
-var authorizer;
+describe('Authorizers.OAuth2', function() {
+  beforeEach(function() {
+    this.authorizer  = OAuth2.create();
+    this.request     = new XMLHttpRequest();
+    this.requestMock = sinon.mock(this.request);
+  });
 
-var sessionMock;
+  describe('#authorize', function() {
+    describe('when the session has a non empty access_token', function() {
+      beforeEach(function() {
+        this.authorizer.set('session', Session.create({ store: EphemeralStore.create() }));
+        this.authorizer.set('session.access_token', 'secret token!');
+      });
 
-var xhrMock;
-var XhrMock = Ember.Object.extend({
-  init: function() {
-    this.requestHeaders = {};
-  },
-  setRequestHeader: function(name, value) {
-    this.requestHeaders[name] = value;
-  }
+      it('adds the "Authorization" header to the request', function() {
+        this.requestMock.expects('setRequestHeader').once().withArgs('Authorization', 'Bearer secret token!');
+
+        this.authorizer.authorize(this.request);
+
+        this.requestMock.verify();
+      });
+    });
+
+    describe('when the session has no access_token', function() {
+      it('does not add the "Authorization" header to the request', function() {
+        this.requestMock.expects('setRequestHeader').never();
+
+        this.authorizer.authorize(this.request);
+
+        this.requestMock.verify();
+      });
+    });
+  });
 });
-
-module('Authorizers.OAuth2', {
-  setup: function() {
-    xhrMock     = XhrMock.create();
-    sessionMock = Ember.Object.create();
-    authorizer  = OAuth2.create({ session: sessionMock });
-  }
-});
-
-test('authorizes an AJAX request', function() {
-  authorizer.set('session.access_token', null);
-  authorizer.authorize(xhrMock, {});
-  equal(xhrMock.requestHeaders.Authorization, null, 'Authorizers.OAuth2 does not add the access_token to an AJAX request when it is empty.');
-
-  var token = Math.random().toString(36);
-  authorizer.set('session.access_token', token);
-  authorizer.authorize(xhrMock, {});
-  equal(xhrMock.requestHeaders.Authorization, 'Bearer ' + token, 'Authorizers.OAuth2 adds the access_token to an AJAX request when it is not empty.');
-});
-*/
