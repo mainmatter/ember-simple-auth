@@ -12,10 +12,6 @@ describe('Session', function() {
     this.session = Session.create({ store: this.store, container: this.container });
   });
 
-  it('is not authenticated initially', function() {
-    expect(this.session.get('isAuthenticated')).to.be(false);
-  });
-
   function itListensToAuthenticatorEvents() {
     describe('when the authenticator triggers the "ember-simple-auth:session-updated" event', function() {
       beforeEach(async(function() {
