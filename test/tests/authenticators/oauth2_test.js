@@ -8,9 +8,9 @@ describe('Authenticators.OAuth2', function() {
   describe('#restore', function() {
     describe('when the data contains an access_token', function() {
       it('returns a resolving promise', function(done) {
-        this.authenticator.restore({ access_token: 'access_token' }).then(function(data) {
+        this.authenticator.restore({ access_token: 'secret token!' }).then(function(data) {
           expect(true).to.be.ok();
-          expect(data).to.eql({ access_token: 'access_token' });
+          expect(data).to.eql({ access_token: 'secret token!' });
           done();
         }, function() {
           expect().fail();
@@ -18,7 +18,60 @@ describe('Authenticators.OAuth2', function() {
         });
       });
 
-      itKeepsTheAccessTokenFresh();
+      describe('when the data includes expiration data', function() {
+        it('resolves with the correct data', function(done) {
+          this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
+            expect(data).to.eql({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' });
+            done();
+          }, function() {
+            expect().fail();
+            done();
+          });
+        });
+
+        describe('when automatic token refreshing is enabled', function() {
+          beforeEach(function() {
+            sinon.spy(Ember.run, 'later');
+          });
+
+          it('schedules a token refresh', function(done) {
+            var _this = this;
+
+            this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
+              var spyCall = Ember.run.later.getCall(0);
+
+              expect(spyCall.args[1]).to.eql(_this.authenticator.refreshAccessToken);
+              expect(spyCall.args[2]).to.eql(12345);
+              expect(spyCall.args[3]).to.eql('refresh token!');
+              done();
+            });
+          });
+
+          afterEach(function() {
+            Ember.run.later.restore();
+          });
+        });
+
+        describe('when automatic token refreshing is disabled', function() {
+          beforeEach(function() {
+            this.authenticator.set('refreshAccessTokens', false);
+            sinon.spy(Ember.run, 'later');
+          });
+
+          it('does not schedule a token refresh', function(done) {
+            var _this = this;
+
+            this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
+              expect(Ember.run.later.called).to.be(false);
+              done();
+            });
+          });
+
+          afterEach(function() {
+            Ember.run.later.restore();
+          });
+        });
+      });
     });
 
     describe('when the data does not contain an access_token', function() {
