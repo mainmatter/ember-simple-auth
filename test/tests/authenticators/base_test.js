@@ -1,32 +1,43 @@
-/*import { Base } from 'ember-simple-auth/authenticators/base';
+import { Base } from 'ember-simple-auth/authenticators/base';
 
-var authenticator;
+describe('Authenticators.Base', function() {
+  beforeEach(function() {
+    this.authenticator = Base.create();
+  });
 
-module('Authenticators.Base', {
-  setup: function() {
-    authenticator = Base.create();
-  }
-});
-
-test('does not restore the session', function() {
-  var rejected;
-  Ember.run(function() {
-    authenticator.restore({}).then(function() {}, function() {
-      rejected = true;
+  describe('#restore', function() {
+    it('returns a rejecting promise', function(done) {
+      this.authenticator.restore().then(function() {
+        expect().fail();
+        done();
+      }, function() {
+        expect(true).to.be.ok();
+        done();
+      });
     });
   });
 
-  ok(rejected, 'Authenticators.Base returns a rejecting promise for session restoration.');
-});
-
-test('invalidates the session', function() {
-  var resolved;
-  Ember.run(function() {
-    authenticator.invalidate().then(function() {
-      resolved = true;
+  describe('#authenticate', function() {
+    it('returns a rejecting promise', function(done) {
+      this.authenticator.authenticate().then(function() {
+        expect().fail();
+        done();
+      }, function() {
+        expect(true).to.be.ok();
+        done();
+      });
     });
   });
 
-  ok(resolved, 'Authenticators.Base returns a resolving promise for session invalidation.');
+  describe('#invalidate', function() {
+    it('returns a rejecting promise', function(done) {
+      this.authenticator.invalidate().then(function() {
+        expect().fail();
+        done();
+      }, function() {
+        expect(true).to.be.ok();
+        done();
+      });
+    });
+  });
 });
-*/
