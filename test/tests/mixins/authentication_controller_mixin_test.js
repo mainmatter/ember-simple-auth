@@ -11,7 +11,7 @@ describe('AuthenticationControllerMixin', function() {
       }).create({ session: this.session });
     });
 
-    it('authenticates the route', function() {
+    it('authenticates the session', function() {
       sinon.spy(this.session, 'authenticate');
       this.controller._actions.authenticate.apply(this.controller, [{ some: 'options' }]);
 
