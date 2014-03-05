@@ -1,149 +1,205 @@
-/*import { ApplicationRouteMixin } from 'ember-simple-auth/mixins/application_route_mixin';
-import { Configuration } from 'ember-simple-auth/core';
+import { ApplicationRouteMixin } from 'ember-simple-auth/mixins/application_route_mixin';
 import { Session } from 'ember-simple-auth/session';
-import { Ephemeral } from 'ember-simple-auth/stores/ephemeral';
+import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
+import { Configuration } from 'ember-simple-auth/core';
 
-var testRoute;
-var TestRoute = Ember.Route.extend(ApplicationRouteMixin, {
-  transitionTo: function(targetRoute) {
-    this.transitionedTo = targetRoute;
-  },
-  send: function(action, param) {
-    this.invokedSessionAuthenticationSucceeded  = (action === 'sessionAuthenticationSucceeded');
-    this.invokedSessionAuthenticationFailed     = (action === 'sessionAuthenticationFailed');
-    this.invokedSessionAuthenticationFailedWith = param;
-    this.invokedSessionInvalidationSucceeded    = (action === 'sessionInvalidationSucceeded');
-    this.invokedSessionInvalidationFailed       = (action === 'sessionInvalidationFailed');
-    this.invokedSessionInvalidationFailedWith   = param;
-    this._actions[action].apply(this);
-  }
-});
+var TestRoute = Ember.Route.extend(ApplicationRouteMixin);
 
-var containerMock;
-var ContainerMock = Ember.Object.extend({
-  lookup: function(name) {
-    return ContainerMock._lookup;
-  }
-});
+describe('ApplicationRouteMixin', function() {
+  beforeEach(function() {
+    this.session = Session.create({ store: EphemeralStore.create() });
+    this.route   = Ember.Route.extend(ApplicationRouteMixin, {
+      send: function() {},
+      transitionTo: function() {}
+    }).create({ session: this.session });
+  });
 
-var authenticatorMock;
-var AuthenticatorMock = Ember.Object.extend(Ember.Evented, {
-  invalidate: function() {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (AuthenticatorMock._resolve) {
-        resolve();
-      } else {
-        reject();
-      }
+  describe('session events', function() {
+    beforeEach(function() {
+      this.route.activate();
+      sinon.spy(this.route, 'send');
     });
-  }
-});
 
-var attemptedTransitionMock = { retry: function() { this.retried = true; } };
+    it('handles the "ember-simple-auth:session-authentication-succeeded" of the session', function(done) {
+      this.session.trigger('ember-simple-auth:session-authentication-succeeded');
 
-module('ApplicationRouteMixin', {
-  setup: function() {
-    testRoute             = TestRoute.create();
-    authenticatorMock     = AuthenticatorMock.create();
-    containerMock         = ContainerMock.create();
-    ContainerMock._lookup = authenticatorMock;
-    var session           = Session.create({ store: Ephemeral.create(), container: containerMock });
-    testRoute.set('session', session);
-    testRoute.activate();
-  }
-});
+      Ember.run.next(this, function() {
+        expect(this.route.send.withArgs('sessionAuthenticationSucceeded').calledOnce).to.be(true);
+        done();
+      });
+    });
 
-test('redirects to authenticate the session', function() {
-  testRoute._actions.authenticateSession.apply(testRoute);
+    it('handles the "ember-simple-auth:session-authentication-failed" of the session', function(done) {
+      this.session.trigger('ember-simple-auth:session-authentication-failed');
 
-  equal(testRoute.transitionedTo, Configuration.authenticationRoute, 'ApplicationRouteMixin redirects to the authenticationRoute to authenticate the session.');
-});
+      Ember.run.next(this, function() {
+        expect(this.route.send.withArgs('sessionAuthenticationFailed').calledOnce).to.be(true);
+        done();
+      });
+    });
 
-test('listens to session events', function() {
-  var error = { some: 'error' };
-  Ember.run(function() {
-    testRoute.get('session').trigger('ember-simple-auth:session-authentication-succeeded');
+    it('handles the "ember-simple-auth:session-invalidation-succeeded" of the session', function(done) {
+      this.session.trigger('ember-simple-auth:session-invalidation-succeeded');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send.withArgs('sessionInvalidationSucceeded').calledOnce).to.be(true);
+        done();
+      });
+    });
+
+    it('handles the "ember-simple-auth:session-invalidation-failed" of the session', function(done) {
+      this.session.trigger('ember-simple-auth:session-invalidation-failed');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send.withArgs('sessionInvalidationFailed').calledOnce).to.be(true);
+        done();
+      });
+    });
   });
 
-  ok(testRoute.invokedSessionAuthenticationSucceeded, 'Ember.SimpleAuth.ApplicationRouteMixin triggers the sessionAuthenticationSucceeded action when the session triggers the "ember-simple-auth:session-authentication-succeeded" event.');
+  describe('the "authenticateSession" action', function() {
+    beforeEach(function() {
+      sinon.spy(this.route, 'transitionTo');
+    });
 
-  Ember.run(function() {
-    testRoute.get('session').trigger('ember-simple-auth:session-authentication-failed', error);
+    it('transitions to "Configuration.authenticationRoute"', function() {
+      this.route._actions.authenticateSession.apply(this.route);
+
+      expect(this.route.transitionTo.withArgs(Configuration.authenticationRoute).calledOnce).to.be(true);
+    });
   });
 
-  ok(testRoute.invokedSessionAuthenticationFailed, 'Ember.SimpleAuth.ApplicationRouteMixin triggers the sessionAuthenticationFailed action when the session triggers the "ember-simple-auth:session-authentication-failed" event.');
-  deepEqual(testRoute.invokedSessionAuthenticationFailedWith, error, 'Ember.SimpleAuth.ApplicationRouteMixin triggers the sessionAuthenticationFailed action with the correct error object when the session triggers the "ember-simple-auth:session-authentication-failed" event.');
+  describe('the "sessionAuthenticationSucceeded" action', function() {
+    beforeEach(function() {
+      sinon.spy(this.route, 'transitionTo');
+    });
 
-  Ember.run(function() {
-    testRoute.get('session').trigger('ember-simple-auth:session-invalidation-succeeded');
+    describe('when an attempted transition is stored in the session', function() {
+      beforeEach(function() {
+        this.attemptedTransition = { retry: function() {} };
+        this.session.set('attemptedTransition', this.attemptedTransition);
+      });
+
+      it('retries that transition', function() {
+        var attemptedTransitionMock = sinon.mock(this.attemptedTransition);
+        attemptedTransitionMock.expects('retry').once();
+
+        this.route._actions.sessionAuthenticationSucceeded.apply(this.route);
+
+        attemptedTransitionMock.verify();
+      });
+
+      it('removes it from the session', function() {
+        this.route._actions.sessionAuthenticationSucceeded.apply(this.route);
+
+        expect(this.session.get('attemptedTransition')).to.be(null);
+      });
+    });
+
+    describe('when no attempted transition is stored in the session', function() {
+      it('transitions to "Configuration.routeAfterAuthentication"', function() {
+        this.route._actions.sessionAuthenticationSucceeded.apply(this.route);
+
+        expect(this.route.transitionTo.withArgs(Configuration.routeAfterAuthentication).calledOnce).to.be(true);
+      });
+    });
   });
 
-  ok(testRoute.invokedSessionInvalidationSucceeded, 'Ember.SimpleAuth.ApplicationRouteMixin triggers the sessionInvalidationSucceeded action when the session triggers the "ember-simple-auth:session-invalidation-succeeded" event.');
+  describe('the "invalidateSession" action', function() {
+    it('invalidates the session', function() {
+      sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.Promise.resolve());
+      this.route._actions.invalidateSession.apply(this.route);
 
-  Ember.run(function() {
-    testRoute.get('session').trigger('ember-simple-auth:session-invalidation-failed', error);
+      expect(this.session.invalidate.calledOnce).to.be(true);
+    });
   });
 
-  ok(testRoute.invokedSessionInvalidationFailed, 'Ember.SimpleAuth.ApplicationRouteMixin triggers the sessionInvalidationFailed action when the session triggers the "ember-simple-auth:session-invalidation-failed" event.');
-  deepEqual(testRoute.invokedSessionInvalidationFailedWith, error, 'Ember.SimpleAuth.ApplicationRouteMixin triggers the sessionInvalidationFailed action with the correct error when the session triggers the "ember-simple-auth:session-invalidation-failed" event.');
+  describe('the "sessionInvalidationSucceeded" action', function() {
+    beforeEach(function() {
+      sinon.spy(this.route, 'transitionTo');
+    });
+
+    it('transitions to "Configuration.routeAfterInvalidation"', function() {
+      this.route._actions.sessionInvalidationSucceeded.apply(this.route);
+
+      expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).calledOnce).to.be(true);
+    });
+  });
+
+  describe('the "authorizationFailed" action', function() {
+    beforeEach(function() {
+      sinon.spy(this.route, 'transitionTo');
+    });
+
+    it('invalidates the session', function() {
+      sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.Promise.resolve());
+      this.route._actions.authorizationFailed.apply(this.route);
+
+      expect(this.session.invalidate.calledOnce).to.be(true);
+    });
+
+    describe('if session invalidation succeeds', function() {
+      beforeEach(function() {
+        sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.Promise.resolve());
+      });
+
+      it('transitions to "Configuration.routeAfterInvalidation"', function(done) {
+        this.route._actions.authorizationFailed.apply(this.route);
+
+        Ember.run.next(this, function() {
+          expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).calledOnce).to.be(true);
+          done();
+        });
+      });
+    });
+
+    describe('if session invalidation fails', function() {
+      beforeEach(function() {
+        sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.Promise.reject());
+      });
+
+      it('does not transition', function(done) {
+        this.route._actions.authorizationFailed.apply(this.route);
+
+        Ember.run.next(this, function() {
+          expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).called).to.be(false);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('the "error" action', function() {
+    beforeEach(function() {
+      sinon.spy(this.route, 'send');
+    });
+
+    describe('when the error reason is status 401', function() {
+      it('invokes the "authorizationFailed" action', function() {
+        this.route._actions.error.apply(this.route, [{ status: 401 }]);
+
+        expect(this.route.send.withArgs('authorizationFailed').calledOnce).to.be(true);
+      });
+
+      it('returns true', function() {
+        var returnValue = this.route._actions.error.apply(this.route, [{ status: 401 }]);
+
+        expect(returnValue).to.be(true);
+      });
+    });
+
+    describe('when the error reason is not status 401', function() {
+      it('does not invoke the "authorizationFailed" action', function() {
+        this.route._actions.error.apply(this.route, [{ status: 500 }]);
+
+        expect(this.route.send.withArgs('authorizationFailed').calledOnce).to.be(false);
+      });
+
+      it('returns true', function() {
+        var returnValue = this.route._actions.error.apply(this.route, [{ status: 500 }]);
+
+        expect(returnValue).to.be(true);
+      });
+    });
+  });
 });
-
-test('invalidates the current session', function() {
-  AuthenticatorMock._resolve = true;
-  testRoute.set('session.isAuthenticated', true);
-  Ember.run(function() {
-    testRoute._actions.invalidateSession.apply(testRoute);
-  });
-
-  equal(testRoute.get('session.isAuthenticated'), false, 'ApplicationRouteMixin invalidates the current session when session invalidation is triggered.');
-  equal(testRoute.transitionedTo, Configuration.routeAfterInvalidation, 'ApplicationRouteMixin redirects to the routeAfterInvalidation when session invalidation is successful.');
-  ok(testRoute.invokedSessionInvalidationSucceeded, 'ApplicationRouteMixin triggers the sessionInvalidationSucceeded action when session invalidation is successful.');
-
-  testRoute.transitionedTo                      = null;
-  testRoute.invokedsessionInvalidationSucceeded = false;
-  AuthenticatorMock._resolve                    = false;
-  Ember.run(function() {
-    testRoute._actions.invalidateSession.apply(testRoute);
-  });
-
-  ok(!testRoute.invokedsessionInvalidationSucceeded, 'ApplicationRouteMixin does not invoke the sessionInvalidationSucceeded action when session invalidation fails.');
-  equal(testRoute.transitionedTo, null, 'ApplicationRouteMixin does not redirect to the routeAfterInvalidation on session invalidation when session invalidation fails.');
-  ok(testRoute.invokedSessionInvalidationFailed, 'ApplicationRouteMixin invokes the sessionInvalidationFailed action when session invalidation fails.');
-});
-
-test('redirects when session authentication succeeds', function() {
-  testRoute._actions.sessionAuthenticationSucceeded.apply(testRoute);
-
-  equal(testRoute.transitionedTo, Configuration.routeAfterAuthentication, 'ApplicationRouteMixin redirects to the routeAfterAuthentication route on sessionAuthenticationSucceeded when no attempted transition is saved.');
-
-  testRoute.set('session.attemptedTransition', attemptedTransitionMock);
-  testRoute._actions.sessionAuthenticationSucceeded.apply(testRoute);
-
-  ok(attemptedTransitionMock.retried, 'ApplicationRouteMixin retries a saved attempted transition on sessionAuthenticationSucceeded when one is saved.');
-});
-
-test('clears a saved attempted transition when session authentication succeeds', function() {
-  testRoute.set('session.attemptedTransition', attemptedTransitionMock);
-  testRoute._actions.sessionAuthenticationSucceeded.apply(testRoute);
-
-  equal(testRoute.get('session.attemptedTransition'), null, 'ApplicationRouteMixin clears a saved attempted transition on sessionAuthenticationSucceeded.');
-});
-
-test('invalidates the session when an authorization error occurs', function() {
-  AuthenticatorMock._resolve = true;
-  testRoute.set('session.isAuthenticated', true);
-  Ember.run(function() {
-    testRoute._actions.error.apply(testRoute, [{ status: 500 }]);
-  });
-
-  ok(testRoute.get('session.isAuthenticated'), 'ApplicationRouteMixin does not invalidate the current session when a non-authorization related error occurs.');
-  equal(testRoute.transitionedTo, null, 'ApplicationRouteMixin does not transition to the routeAfterInvalidation when a non-authorization related error occurs.');
-
-  Ember.run(function() {
-    testRoute._actions.error.apply(testRoute, [{ status: 401 }]);
-  });
-
-  equal(testRoute.get('session.isAuthenticated'), false, 'ApplicationRouteMixin invalidates the current session when an authorization error occurs.');
-  equal(testRoute.transitionedTo, Configuration.routeAfterInvalidation, 'ApplicationRouteMixin transitions to the routeAfterInvalidation when an authorization error occurs.');
-});
-*/
