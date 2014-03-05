@@ -47,10 +47,10 @@ describe('setup', function() {
   });
 
   it('registers the OAuth2 authenticator in the Ember container', function() {
-    var containerSpy = sinon.spy(this.container, 'register');
+    sinon.spy(this.container, 'register');
     setup(this.container, this.application);
 
-    expect(containerSpy.withArgs('ember-simple-auth:authenticators:oauth2', Authenticators.OAuth2).calledOnce).to.be(true);
+    expect(this.container.register.withArgs('ember-simple-auth:authenticators:oauth2', Authenticators.OAuth2).calledOnce).to.be(true);
   });
 
   describe('the session instance', function() {
@@ -88,19 +88,20 @@ describe('setup', function() {
     });
 
     it('is injected as "session" into all models, controllers, routes and views', function() {
-      var containerSpy = sinon.spy(this.container, 'injection');
+      var _this = this;
+      sinon.spy(this.container, 'injection');
       setup(this.container, this.application);
 
       ['model', 'controller', 'view', 'route'].forEach(function(component) {
-        expect(containerSpy.withArgs(component, 'session', 'ember-simple-auth:session:current').calledOnce).to.be(true);
+        expect(_this.container.injection.withArgs(component, 'session', 'ember-simple-auth:session:current').calledOnce).to.be(true);
       });
     });
   });
 
   describe('the AJAX prefilter', function() {
     beforeEach(function() {
-      this.authorizer    = { authorize: function() {} };
-      this.authorizerSpy = sinon.spy(this.authorizer, 'authorize');
+      this.authorizer = { authorize: function() {} };
+      sinon.spy(this.authorizer, 'authorize');
       sinon.stub(Authorizers.OAuth2, 'create').returns(this.authorizer);
     });
 
@@ -108,7 +109,7 @@ describe('setup', function() {
       setup(this.container, this.application);
       Ember.$.get(window.location);
 
-      expect(this.authorizerSpy.calledOnce).to.be(true);
+      expect(this.authorizer.authorize.calledOnce).to.be(true);
     });
 
     it('uses a custom authorizer if configured', function() {
@@ -117,29 +118,29 @@ describe('setup', function() {
       setup(this.container, this.application, { authorizer: CustomAuthorizer });
       Ember.$.get(window.location);
 
-      expect(this.authorizerSpy.calledOnce).to.be(true);
+      expect(this.authorizer.authorize.calledOnce).to.be(true);
     });
 
     it('does not authorize requests going to a foreign origin', function() {
       setup(this.container, this.application);
       Ember.$.get('http://other-domain.com');
 
-      expect(this.authorizerSpy.calledOnce).to.be(false);
+      expect(this.authorizer.authorize.calledOnce).to.be(false);
     });
 
     it('authorize requests going to a foreign origin if the origin is whitelisted', function() {
       setup(this.container, this.application, { crossOriginWhitelist: ['http://other-domain.com', 'https://another-port.net:4567'] });
       Ember.$.get('http://other-domain.com/path/query=string');
 
-      expect(this.authorizerSpy.calledOnce).to.be(true);
+      expect(this.authorizer.authorize.calledOnce).to.be(true);
 
       Ember.$.get('http://other-domain.com:80/path/query=string');
 
-      expect(this.authorizerSpy.calledTwice).to.be(true);
+      expect(this.authorizer.authorize.calledTwice).to.be(true);
 
       Ember.$.get('https://another-port.net:4567/path/query=string');
 
-      expect(this.authorizerSpy.calledThrice).to.be(true);
+      expect(this.authorizer.authorize.calledThrice).to.be(true);
     });
 
     afterEach(function() {
