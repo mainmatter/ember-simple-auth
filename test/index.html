@@ -22,7 +22,6 @@
       if (/^tests\//.test(key)) requireModule(key);
     }
 
-    mocha.checkLeaks();
     if (navigator.userAgent.indexOf('PhantomJS') < 0) {
       mocha.run();
     }
