@@ -1,12 +1,13 @@
-import { ApplicationRouteMixin } from 'ember-simple-auth/mixins/application_route_mixin';
+import { AuthenticatedRouteMixin } from 'ember-simple-auth/mixins/authenticated_route_mixin';
 import { Session } from 'ember-simple-auth/session';
 import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
 
 describe('AuthenticatedRouteMixin', function() {
   describe('#beforeModel', function() {
     beforeEach(function() {
+      this.session    = Session.create({ store: EphemeralStore.create() });
       this.transition = { abort: function() {}, send: function() {} };
-      this.route      = Ember.Route.extend(AuthenticatedRouteMixin);
+      this.route      = Ember.Route.extend(AuthenticatedRouteMixin).create({ session: this.session });
       sinon.spy(this.transition, 'abort');
       sinon.spy(this.transition, 'send');
     });
