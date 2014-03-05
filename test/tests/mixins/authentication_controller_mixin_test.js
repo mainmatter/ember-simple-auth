@@ -12,7 +12,7 @@ describe('AuthenticationControllerMixin', function() {
     });
 
     it('authenticates the session', function() {
-      sinon.spy(this.session, 'authenticate');
+      sinon.stub(this.session, 'authenticate');
       this.controller._actions.authenticate.apply(this.controller, [{ some: 'options' }]);
 
       expect(this.session.authenticate.withArgs('authenticatorFactory', { some: 'options' }).calledOnce).to.be(true);
