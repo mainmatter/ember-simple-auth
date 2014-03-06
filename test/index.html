@@ -22,6 +22,8 @@
       if (/^tests\//.test(key)) requireModule(key);
     }
 
+    mocha.checkLeaks();
+    mocha.globals(['jQuery', 'Ember', 'Handlebars']);
     if (navigator.userAgent.indexOf('PhantomJS') < 0) {
       mocha.run();
     }
