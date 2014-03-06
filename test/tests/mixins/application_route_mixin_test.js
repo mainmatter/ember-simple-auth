@@ -107,7 +107,7 @@ describe('ApplicationRouteMixin', function() {
 
   describe('the "invalidateSession" action', function() {
     it('invalidates the session', function() {
-      sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.Promise.resolve());
+      sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
       this.route._actions.invalidateSession.apply(this.route);
 
       expect(this.session.invalidate.calledOnce).to.be.true;
@@ -132,7 +132,7 @@ describe('ApplicationRouteMixin', function() {
     });
 
     it('invalidates the session', function() {
-      sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.Promise.resolve());
+      sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
       this.route._actions.authorizationFailed.apply(this.route);
 
       expect(this.session.invalidate.calledOnce).to.be.true;
@@ -140,7 +140,7 @@ describe('ApplicationRouteMixin', function() {
 
     describe('if session invalidation succeeds', function() {
       beforeEach(function() {
-        sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.Promise.resolve());
+        sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
       });
 
       it('transitions to "Configuration.routeAfterInvalidation"', function(done) {
@@ -155,7 +155,7 @@ describe('ApplicationRouteMixin', function() {
 
     describe('if session invalidation fails', function() {
       beforeEach(function() {
-        sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.Promise.reject());
+        sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.reject());
       });
 
       it('does not transition', function(done) {
