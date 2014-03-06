@@ -230,6 +230,7 @@ module.exports = function(grunt) {
         template: 'docs/theme/main.hbs',
         templateData: 'docs/build/data.json',
         globals: ['docs/config.json'],
+        partials: 'docs/theme/partials/**/*.hbs',
         helpers: 'docs/theme/helpers/**/*.js',
         output: 'docs/build/api.html'
       }
