@@ -491,14 +491,14 @@ describe('Session', function() {
           });
         });
 
-        it('persists the authenticator factory in the store', function(done) {
+        it('persists its content in the store', function(done) {
           this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
           Ember.run.next(this, function() {
             var properties = this.store.restore();
             delete properties.authenticatorFactory;
 
-            expect(this.store.restore().authenticatorFactory).to.eql('authenticatorFactory');
+            expect(properties).to.eql({ some: 'other property' });
             done();
           });
         });
