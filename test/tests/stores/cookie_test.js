@@ -9,7 +9,7 @@ describe('Stores.Cookie', function() {
 
   itBehavesLikeAStore({
     syncExternalChanges: function() {
-      this.store.syncProperties();
+      this.store.syncData();
     }
   });
 
@@ -25,7 +25,7 @@ describe('Stores.Cookie', function() {
 
     it('is not triggered when the cookie has not actually changed', function(done) {
       document.cookie = 'ember_simple_auth:key=value;';
-      this.store.syncProperties();
+      this.store.syncData();
 
       Ember.run.next(this, function() {
         expect(this.triggered).to.be.false;
@@ -35,7 +35,7 @@ describe('Stores.Cookie', function() {
 
     it('is triggered when the cookie changed', function(done) {
       document.cookie = 'ember_simple_auth:key=other value;';
-      this.store.syncProperties();
+      this.store.syncData();
 
       Ember.run.next(this, function() {
         expect(this.triggered).to.be.true;

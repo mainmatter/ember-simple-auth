@@ -47,8 +47,8 @@ var itBehavesLikeAStore = function(options) {
       });
 
       it('returns a copy of the stored data', function() {
-        var properties = this.store.restore();
-        properties.key1 = 'another value!';
+        var data = this.store.restore();
+        data.key1 = 'another value!';
 
         expect(this.store.restore()).to.eql({ key1: 'value1', key2: 'value2' });
       });
