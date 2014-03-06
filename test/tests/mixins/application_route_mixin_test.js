@@ -24,7 +24,7 @@ describe('ApplicationRouteMixin', function() {
       this.session.trigger('ember-simple-auth:session-authentication-succeeded');
 
       Ember.run.next(this, function() {
-        expect(this.route.send.withArgs('sessionAuthenticationSucceeded').calledOnce).to.be.true;
+        expect(this.route.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
         done();
       });
     });
@@ -33,7 +33,7 @@ describe('ApplicationRouteMixin', function() {
       this.session.trigger('ember-simple-auth:session-authentication-failed');
 
       Ember.run.next(this, function() {
-        expect(this.route.send.withArgs('sessionAuthenticationFailed').calledOnce).to.be.true;
+        expect(this.route.send).to.have.been.calledWith('sessionAuthenticationFailed');
         done();
       });
     });
@@ -42,7 +42,7 @@ describe('ApplicationRouteMixin', function() {
       this.session.trigger('ember-simple-auth:session-invalidation-succeeded');
 
       Ember.run.next(this, function() {
-        expect(this.route.send.withArgs('sessionInvalidationSucceeded').calledOnce).to.be.true;
+        expect(this.route.send).to.have.been.calledWith('sessionInvalidationSucceeded');
         done();
       });
     });
@@ -51,7 +51,7 @@ describe('ApplicationRouteMixin', function() {
       this.session.trigger('ember-simple-auth:session-invalidation-failed');
 
       Ember.run.next(this, function() {
-        expect(this.route.send.withArgs('sessionInvalidationFailed').calledOnce).to.be.true;
+        expect(this.route.send).to.have.been.calledWith('sessionInvalidationFailed');
         done();
       });
     });
@@ -65,7 +65,7 @@ describe('ApplicationRouteMixin', function() {
     it('transitions to "Configuration.authenticationRoute"', function() {
       this.route._actions.authenticateSession.apply(this.route);
 
-      expect(this.route.transitionTo.withArgs(Configuration.authenticationRoute).calledOnce).to.be.true;
+      expect(this.route.transitionTo).to.have.been.calledWith(Configuration.authenticationRoute);
     });
   });
 
@@ -100,7 +100,7 @@ describe('ApplicationRouteMixin', function() {
       it('transitions to "Configuration.routeAfterAuthentication"', function() {
         this.route._actions.sessionAuthenticationSucceeded.apply(this.route);
 
-        expect(this.route.transitionTo.withArgs(Configuration.routeAfterAuthentication).calledOnce).to.be.true;
+        expect(this.route.transitionTo).to.have.been.calledWith(Configuration.routeAfterAuthentication);
       });
     });
   });
@@ -110,7 +110,7 @@ describe('ApplicationRouteMixin', function() {
       sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
       this.route._actions.invalidateSession.apply(this.route);
 
-      expect(this.session.invalidate.calledOnce).to.be.true;
+      expect(this.session.invalidate).to.have.been.calledOnce;
     });
   });
 
@@ -122,7 +122,7 @@ describe('ApplicationRouteMixin', function() {
     it('transitions to "Configuration.routeAfterInvalidation"', function() {
       this.route._actions.sessionInvalidationSucceeded.apply(this.route);
 
-      expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).calledOnce).to.be.true;
+      expect(this.route.transitionTo).to.have.been.calledWith(Configuration.routeAfterInvalidation);
     });
   });
 
@@ -135,7 +135,7 @@ describe('ApplicationRouteMixin', function() {
       sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
       this.route._actions.authorizationFailed.apply(this.route);
 
-      expect(this.session.invalidate.calledOnce).to.be.true;
+      expect(this.session.invalidate).to.have.been.calledOnce;
     });
 
     describe('if session invalidation succeeds', function() {
@@ -147,7 +147,7 @@ describe('ApplicationRouteMixin', function() {
         this.route._actions.authorizationFailed.apply(this.route);
 
         Ember.run.next(this, function() {
-          expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).calledOnce).to.be.true;
+          expect(this.route.transitionTo).to.have.been.calledWith(Configuration.routeAfterInvalidation);
           done();
         });
       });
@@ -162,7 +162,7 @@ describe('ApplicationRouteMixin', function() {
         this.route._actions.authorizationFailed.apply(this.route);
 
         Ember.run.next(this, function() {
-          expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).called).to.be.false;
+          expect(this.route.transitionTo).to.not.have.been.called;
           done();
         });
       });
@@ -178,7 +178,7 @@ describe('ApplicationRouteMixin', function() {
       it('invokes the "authorizationFailed" action', function() {
         this.route._actions.error.apply(this.route, [{ status: 401 }]);
 
-        expect(this.route.send.withArgs('authorizationFailed').calledOnce).to.be.true;
+        expect(this.route.send).to.have.been.calledWith('authorizationFailed');
       });
 
       it('returns true', function() {
@@ -192,7 +192,7 @@ describe('ApplicationRouteMixin', function() {
       it('does not invoke the "authorizationFailed" action', function() {
         this.route._actions.error.apply(this.route, [{ status: 500 }]);
 
-        expect(this.route.send.withArgs('authorizationFailed').calledOnce).to.be.false;
+        expect(this.route.send).to.not.have.been.called;
       });
 
       it('returns true', function() {

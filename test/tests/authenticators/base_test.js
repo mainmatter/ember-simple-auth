@@ -7,11 +7,8 @@ describe('Authenticators.Base', function() {
 
   describe('#restore', function() {
     it('returns a rejecting promise', function(done) {
-      this.authenticator.restore().then(function() {
-        expect().fail();
-        done();
-      }, function() {
-        expect(true).to.be.ok;
+      this.authenticator.restore().then(null, function() {
+        expect(true).to.be.true;
         done();
       });
     });
@@ -19,11 +16,8 @@ describe('Authenticators.Base', function() {
 
   describe('#authenticate', function() {
     it('returns a rejecting promise', function(done) {
-      this.authenticator.authenticate().then(function() {
-        expect().fail();
-        done();
-      }, function() {
-        expect(true).to.be.ok;
+      this.authenticator.authenticate().then(null, function() {
+        expect(true).to.be.true;
         done();
       });
     });
@@ -31,11 +25,8 @@ describe('Authenticators.Base', function() {
 
   describe('#invalidate', function() {
     it('returns a rejecting promise', function(done) {
-      this.authenticator.invalidate().then(function() {
-        expect().fail();
-        done();
-      }, function() {
-        expect(true).to.be.ok;
+      this.authenticator.invalidate().then(null, function() {
+        expect(true).to.be.true;
         done();
       });
     });

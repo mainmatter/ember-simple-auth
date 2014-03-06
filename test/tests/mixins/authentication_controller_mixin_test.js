@@ -15,7 +15,7 @@ describe('AuthenticationControllerMixin', function() {
       sinon.stub(this.session, 'authenticate');
       this.controller._actions.authenticate.apply(this.controller, [{ some: 'options' }]);
 
-      expect(this.session.authenticate.withArgs('authenticatorFactory', { some: 'options' }).calledOnce).to.be.true;
+      expect(this.session.authenticate).to.have.been.calledWith('authenticatorFactory', { some: 'options' });
     });
   });
 });

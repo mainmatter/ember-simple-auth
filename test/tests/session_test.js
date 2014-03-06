@@ -1,7 +1,6 @@
 import { Session } from 'ember-simple-auth/session';
 import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
 import { Base as BaseAuthenticator } from 'ember-simple-auth/authenticators/base';
-import { async } from './support/async';
 
 describe('Session', function() {
   beforeEach(function() {
@@ -11,23 +10,16 @@ describe('Session', function() {
     sinon.stub(this.container, 'lookup').returns(this.authenticator);
   });
 
-  function itListensToAuthenticatorEvents() {
-    describe('when the authenticator triggers the "ember-simple-auth:session-updated" event', function() {
-      beforeEach(async(function() {
-        this.authenticator.trigger('ember-simple-auth:session-updated', { some: 'other property' });
-      }));
-
-      it('updates its content', async(function() {
-        expect(this.session.get('content')).to.eql({ some: 'other property' });
-      }));
-    });
-  }
-
   describe('initialization', function() {
-    function itFailsToRestore() {
-      it('is not authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be.false;
-      }));
+    function itDoesNotRestore() {
+      it('is not authenticated', function(done) {
+        this.session = Session.create({ store: this.store, container: this.container });
+
+        Ember.run.next(this, function() {
+          expect(this.session.get('isAuthenticated')).to.be.false;
+          done();
+        });
+      });
 
       it('clears the store', function(done) {
         this.store.persist({ some: 'properties' });
@@ -41,7 +33,9 @@ describe('Session', function() {
 
       it('does not trigger the "ember-simple-auth:session-authentication-failed" event', function(done) {
         var triggered = false;
-        this.session.one('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
+        Session.create(
+          { store: this.store, container: this.container }
+        ).one('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.false;
@@ -58,34 +52,55 @@ describe('Session', function() {
       describe('when the authenticator resolves to restore', function() {
         beforeEach(function() {
           this.authenticatorStub = sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'properties' }));
-          this.session           = Session.create({ store: this.store, container: this.container });
         });
 
-        it('is authenticated', async(function() {
-          expect(this.session.get('isAuthenticated')).to.be.true;
-        }));
+        it('is authenticated', function(done) {
+          this.session = Session.create({ store: this.store, container: this.container });
 
-        it('sets its content to the data the auhneticator resolves with', async(function() {
-          var properties = this.store.restore();
-          delete properties.authenticatorFactory;
+          Ember.run.next(this, function() {
+            expect(this.session.get('isAuthenticated')).to.be.true;
+            done();
+          });
+        });
 
-          expect(this.session.get('content')).to.eql({ some: 'properties' });
-        }));
+        it('sets its content to the data the authenticator resolves with', function(done) {
+          this.session = Session.create({ store: this.store, container: this.container });
 
-        it('persists its content in the store', async(function() {
-          var properties = this.store.restore();
-          delete properties.authenticatorFactory;
+          Ember.run.next(this, function() {
+            var properties = this.store.restore();
+            delete properties.authenticatorFactory;
 
-          expect(properties).to.eql({ some: 'properties' });
-        }));
+            expect(this.session.get('content')).to.eql({ some: 'properties' });
+            done();
+          });
+        });
 
-        it('persists the authenticator factory in the store', async(function(done) {
-          expect(this.store.restore().authenticatorFactory).to.eql('authenticatorFactory');
-        }));
+        it('persists its content in the store', function(done) {
+          this.session = Session.create({ store: this.store, container: this.container });
+
+          Ember.run.next(this, function() {
+            var properties = this.store.restore();
+            delete properties.authenticatorFactory;
+
+            expect(properties).to.eql({ some: 'properties' });
+            done();
+          });
+        });
+
+        it('persists the authenticator factory in the store', function(done) {
+          this.session = Session.create({ store: this.store, container: this.container });
+
+          Ember.run.next(this, function() {
+            expect(this.store.restore().authenticatorFactory).to.eql('authenticatorFactory');
+            done();
+          });
+        });
 
         it('does not trigger the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
           var triggered = false;
-          this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+          Session.create(
+            {store: this.store, container: this.container }
+          ).one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
 
           Ember.run.next(this, function() {
             expect(triggered).to.be.false;
@@ -93,21 +108,33 @@ describe('Session', function() {
           });
         });
 
-        itListensToAuthenticatorEvents();
+        describe('when the authenticator triggers the "ember-simple-auth:session-updated" event', function() {
+          it('updates its content', function(done) {
+            this.session = Session.create({ store: this.store, container: this.container });
+
+            Ember.run.next(this, function() {
+              this.authenticator.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+
+              Ember.run.next(this, function() {
+                expect(this.session.get('content')).to.eql({ some: 'other property' });
+                done();
+              });
+            });
+          });
+        });
       });
 
       describe('when the authenticator rejects to restore', function() {
         beforeEach(function() {
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject());
-          this.session = Session.create({ store: this.store, container: this.container });
         });
 
-        itFailsToRestore();
+        itDoesNotRestore();
       });
     });
 
     describe('when the restored data does not contain an authenticator factory', function() {
-      itFailsToRestore();
+      itDoesNotRestore();
     });
   });
 
@@ -119,41 +146,58 @@ describe('Session', function() {
     describe('when the authenticator resolves to authenticate', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'properties' }));
-        this.session.authenticate('authenticatorFactory');
       });
 
-      it('is authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be.true;
-      }));
+      it('is authenticated', function(done) {
+        var _this = this;
 
-      it('returns a resolving promise', function(done) {
         this.session.authenticate('authenticatorFactory').then(function() {
-          expect(true).to.be.ok;
-          done();
-        }, function() {
-          expect().fail();
+          expect(_this.session.get('isAuthenticated')).to.be.true;
           done();
         });
       });
 
-      it('sets its content to the data the auhneticator resolves with', async(function() {
-        expect(this.session.get('content')).to.eql({ some: 'properties' });
-      }));
+      it('returns a resolving promise', function(done) {
+        this.session.authenticate('authenticatorFactory').then(function() {
+          expect(true).to.be.true;
+          done();
+        });
+      });
 
-      it('persists its content in the store', async(function() {
-        var properties = this.store.restore();
-        delete properties.authenticatorFactory;
+      it('sets its content to the data the authenticator resolves with', function(done) {
+        var _this = this;
 
-        expect(properties).to.eql({ some: 'properties' });
-      }));
+        this.session.authenticate('authenticatorFactory').then(function() {
+          expect(_this.session.get('content')).to.eql({ some: 'properties' });
+          done();
+        });
+      });
 
-      it('persists the authenticator factory in the store', async(function(done) {
-        expect(this.store.restore().authenticatorFactory).to.eql('authenticatorFactory');
-      }));
+      it('persists its content in the store', function(done) {
+        var _this = this;
+
+        this.session.authenticate('authenticatorFactory').then(function() {
+          var properties = _this.store.restore();
+          delete properties.authenticatorFactory;
+
+          expect(properties).to.eql({ some: 'properties' });
+          done();
+        });
+      });
+
+      it('persists the authenticator factory in the store', function(done) {
+        var _this = this;
+
+        this.session.authenticate('authenticatorFactory').then(function() {
+          expect(_this.store.restore().authenticatorFactory).to.eql('authenticatorFactory');
+          done();
+        });
+      });
 
       it('triggers the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
-        var triggered = false;
         this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+        this.session.authenticate('authenticatorFactory');
+        var triggered = false;
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.true;
@@ -162,8 +206,9 @@ describe('Session', function() {
       });
 
       it('does not trigger the "ember-simple-auth:session-authentication-failed" event', function(done) {
-        var triggered = false;
         this.session.one('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
+        this.session.authenticate('authenticatorFactory');
+        var triggered = false;
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.false;
@@ -171,43 +216,59 @@ describe('Session', function() {
         });
       });
 
-      itListensToAuthenticatorEvents();
+      describe('when the authenticator triggers the "ember-simple-auth:session-updated" event', function() {
+        it('updates its content', function(done) {
+          var _this = this;
+
+          this.session.authenticate('authenticatorFactory').then(function() {
+            _this.authenticator.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+
+            Ember.run.next(_this, function() {
+              expect(_this.session.get('content')).to.eql({ some: 'other property' });
+              done();
+            });
+          });
+        });
+      });
     });
 
     describe('when the authenticator rejects to authenticate', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.reject());
-        this.session.authenticate('authenticatorFactory');
       });
 
-      it('is not authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be.false;
-      }));
+      it('is not authenticated', function(done) {
+        var _this = this;
+
+        this.session.authenticate('authenticatorFactory').then(null, function() {
+          expect(_this.session.get('isAuthenticated')).to.be.false;
+          done();
+        });
+      });
 
       it('returns a rejecting promise', function(done) {
-        this.session.authenticate('authenticatorFactory').then(function() {
-          expect().fail();
-          done();
-        }, function() {
-          expect(true).to.be.ok;
+        this.session.authenticate('authenticatorFactory').then(null, function() {
+          expect(true).to.be.true;
           done();
         });
       });
 
       it('clears its content', function(done) {
+        var _this = this;
         this.session.set('some', 'property');
 
-        Ember.run.next(this, function() {
-          expect(this.session.get('content')).to.eql({});
+        this.session.authenticate('authenticatorFactory').then(null, function() {
+          expect(_this.session.get('content')).to.eql({});
           done();
         });
       });
 
       it('clears the store', function(done) {
+        var _this = this;
         this.store.persist({ some: 'property' });
 
-        Ember.run.next(this, function() {
-          expect(this.store.restore()).to.eql({});
+        this.session.authenticate('authenticatorFactory').then(null, function() {
+          expect(_this.store.restore()).to.eql({});
           done();
         });
       });
@@ -215,6 +276,7 @@ describe('Session', function() {
       it('does not trigger the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
         var triggered = false;
         this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+        this.session.authenticate('authenticatorFactory');
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.false;
@@ -225,6 +287,7 @@ describe('Session', function() {
       it('triggers the "ember-simple-auth:session-authentication-failed" event', function(done) {
         var triggered = false;
         this.session.one('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
+        this.session.authenticate('authenticatorFactory');
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.true;
@@ -235,46 +298,51 @@ describe('Session', function() {
   });
 
   describe('invalidation', function() {
-    beforeEach(function() {
+    beforeEach(function(done) {
       this.session = Session.create({ store: this.store, container: this.container });
       sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'property' }));
-      this.session.authenticate('authenticatorFactory');
+      this.session.authenticate('authenticatorFactory').then(function() {
+        done();
+      });
     });
 
     describe('when the authenticator resolves to invaldiate', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.resolve());
-        this.session.invalidate();
       });
 
-      it('is not authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be.false;
-      }));
+      it('is not authenticated', function(done) {
+        var _this = this;
+
+        this.session.invalidate().then(function() {
+          expect(_this.session.get('isAuthenticated')).to.be.false;
+          done();
+        });
+      });
 
       it('returns a resolving promise', function(done) {
         this.session.invalidate().then(function() {
-          expect(true).to.be.ok;
-          done();
-        }, function() {
-          expect().fail();
+          expect(true).to.be.true;
           done();
         });
       });
 
       it('clears its content', function(done) {
+        var _this = this;
         this.session.set('some', 'property');
 
-        Ember.run.next(this, function() {
-          expect(this.session.get('content')).to.eql({});
+        this.session.invalidate().then(function() {
+          expect(_this.session.get('content')).to.eql({});
           done();
         });
       });
 
       it('clears the store', function(done) {
+        var _this = this;
         this.store.persist({ some: 'property' });
 
-        Ember.run.next(this, function() {
-          expect(this.store.restore()).to.eql({});
+        this.session.invalidate().then(function() {
+          expect(_this.store.restore()).to.eql({});
           done();
         });
       });
@@ -282,6 +350,7 @@ describe('Session', function() {
       it('does not trigger the "ember-simple-auth:session-invalidation-failed" event', function(done) {
         var triggered = false;
         this.session.one('ember-simple-auth:session-invalidation-failed', function() { triggered = true; });
+        this.session.invalidate();
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.false;
@@ -292,6 +361,7 @@ describe('Session', function() {
       it('triggers the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
         var triggered = false;
         this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+        this.session.invalidate();
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.true;
@@ -303,34 +373,46 @@ describe('Session', function() {
     describe('when the authenticator rejects to invalidate', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.reject());
-        this.session.invalidate();
       });
 
-      it('stays authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be.true;
-      }));
+      it('stays authenticated', function(done) {
+        var _this = this;
 
-      it('returns a rejecting promise', function(done) {
-        this.session.invalidate().then(function() {
-          expect().fail();
-          done();
-        }, function() {
-          expect(true).to.be.ok;
+        this.session.invalidate().then(null, function() {
+          expect(_this.session.get('isAuthenticated')).to.be.true;
           done();
         });
       });
 
-      it('keeps its content', async(function() {
-        expect(this.session.get('content')).to.eql({ some: 'property' });
-      }));
+      it('returns a rejecting promise', function(done) {
+        this.session.invalidate().then(null, function() {
+          expect(true).to.be.true;
+          done();
+        });
+      });
 
-      it('keeps the store', async(function() {
-        expect(this.store.restore()).to.eql({ some: 'property', authenticatorFactory: 'authenticatorFactory' });
-      }));
+      it('keeps its content', function(done) {
+        var _this = this;
+
+        this.session.invalidate().then(null, function() {
+          expect(_this.session.get('content')).to.eql({ some: 'property' });
+          done();
+        });
+      });
+
+      it('does not update the store', function(done) {
+        var _this = this;
+
+        this.session.invalidate().then(null, function() {
+          expect(_this.store.restore()).to.eql({ some: 'property', authenticatorFactory: 'authenticatorFactory' });
+          done();
+        });
+      });
 
       it('triggers the "ember-simple-auth:session-invalidation-failed" event', function(done) {
         var triggered = false;
         this.session.one('ember-simple-auth:session-invalidation-failed', function() { triggered = true; });
+        this.session.invalidate();
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.true;
@@ -341,6 +423,7 @@ describe('Session', function() {
       it('does not trigger the "ember-simple-auth:session-invalidation-succeeded" event', function(done) {
         var triggered = false;
         this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
+        this.session.invalidate();
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.false;
@@ -348,7 +431,19 @@ describe('Session', function() {
         });
       });
 
-      itListensToAuthenticatorEvents();
+      describe('when the authenticator triggers the "ember-simple-auth:session-updated" event', function() {
+        it('updates its content', function(done) {
+          var _this = this;
+          this.session.invalidate().then(null, function() {
+            _this.authenticator.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+
+            Ember.run.next(_this, function() {
+              expect(_this.session.get('content')).to.eql({ some: 'other property' });
+              done();
+            });
+          });
+        });
+      });
     });
   });
 
@@ -361,30 +456,52 @@ describe('Session', function() {
       describe('when the authenticator resolves restoration', function() {
         beforeEach(function() {
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'other property' }));
-          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
         });
 
-        it('is authenticated', async(function() {
-          expect(this.session.get('isAuthenticated')).to.be.true;
-        }));
+        it('is authenticated', function(done) {
+          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
-        it('sets its content to the data the authenticator resolves with', async(function() {
-          var properties = this.store.restore();
-          delete properties.authenticatorFactory;
+          Ember.run.next(this, function() {
+            expect(this.session.get('isAuthenticated')).to.be.true;
+            done();
+          });
+        });
 
-          expect(this.session.get('content')).to.eql({ some: 'other property' });
-        }));
+        it('sets its content to the data the authenticator resolves with', function(done) {
+          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
-        it('persists its content in the store', async(function() {
-          var properties = this.store.restore();
-          delete properties.authenticatorFactory;
+          Ember.run.next(this, function() {
+            var properties = this.store.restore();
+            delete properties.authenticatorFactory;
 
-          expect(properties).to.eql({ some: 'other property' });
-        }));
+            expect(this.session.get('content')).to.eql({ some: 'other property' });
+            done();
+          });
+        });
 
-        it('persists the authenticator factory in the store', async(function(done) {
-          expect(this.store.restore().authenticatorFactory).to.eql('authenticatorFactory');
-        }));
+        it('persists its content in the store', function(done) {
+          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+
+          Ember.run.next(this, function() {
+            var properties = this.store.restore();
+            delete properties.authenticatorFactory;
+
+            expect(properties).to.eql({ some: 'other property' });
+            done();
+          });
+        });
+
+        it('persists the authenticator factory in the store', function(done) {
+          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+
+          Ember.run.next(this, function() {
+            var properties = this.store.restore();
+            delete properties.authenticatorFactory;
+
+            expect(this.store.restore().authenticatorFactory).to.eql('authenticatorFactory');
+            done();
+          });
+        });
 
         describe('when the session is already authenticated', function() {
           beforeEach(function() {
@@ -394,6 +511,7 @@ describe('Session', function() {
           it('does not trigger the "ember-simple-auth:session-authentication-succeeded" event', function(done) {
             var triggered = false;
             this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
+            this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
             Ember.run.next(this, function() {
               expect(triggered).to.be.false;
@@ -423,20 +541,34 @@ describe('Session', function() {
       describe('when the authenticator rejects to restore', function() {
         beforeEach(function() {
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject({ some: 'other property' }));
-          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
         });
 
-        it('is not authenticated', async(function() {
-          expect(this.session.get('isAuthenticated')).to.be.false;
-        }));
+        it('is not authenticated', function(done) {
+          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
-        it('clears its content', async(function() {
-          expect(this.session.get('content')).to.eql({});
-        }));
+          Ember.run.next(this, function() {
+            expect(this.session.get('isAuthenticated')).to.be.false;
+            done();
+          });
+        });
 
-        it('clears the store', async(function() {
-          expect(this.store.restore()).to.eql({});
-        }));
+        it('clears its content', function(done) {
+          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+
+          Ember.run.next(this, function() {
+            expect(this.session.get('content')).to.eql({});
+            done();
+          });
+        });
+
+        it('clears the store', function(done) {
+          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+
+          Ember.run.next(this, function() {
+            expect(this.store.restore()).to.eql({});
+            done();
+          });
+        });
 
         describe('when the session is authenticated', function() {
           beforeEach(function() {
@@ -474,21 +606,32 @@ describe('Session', function() {
     });
 
     describe('when there is no authenticator factory in the store', function() {
-      beforeEach(async(function() {
+      it('is not authenticated', function(done) {
         this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
-      }));
 
-      it('is not authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be.false;
-      }));
+        Ember.run.next(this, function() {
+          expect(this.session.get('isAuthenticated')).to.be.false;
+          done();
+        });
+      });
 
-      it('clears its content', async(function() {
-        expect(this.session.get('content')).to.eql({});
-      }));
+      it('clears its content', function(done) {
+        this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
 
-      it('clears the store', async(function() {
-        expect(this.store.restore()).to.eql({});
-      }));
+        Ember.run.next(this, function() {
+          expect(this.session.get('content')).to.eql({});
+          done();
+        });
+      });
+
+      it('clears the store', function(done) {
+        this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+
+        Ember.run.next(this, function() {
+          expect(this.store.restore()).to.eql({});
+          done();
+        });
+      });
 
       describe('when the session is authenticated', function() {
         beforeEach(function() {

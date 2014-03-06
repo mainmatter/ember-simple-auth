@@ -33,7 +33,10 @@ describe('LoginControllerMixin', function() {
       it('authenticates the session', function() {
         this.controller._actions.authenticate.apply(this.controller);
 
-        expect(this.session.authenticate.withArgs('ember-simple-auth:authenticators:oauth2', { identification: 'identification', password: 'password' }).calledOnce).to.be.true;
+        expect(this.session.authenticate).to.have.been.calledWith(
+          'ember-simple-auth:authenticators:oauth2',
+          { identification: 'identification', password: 'password'
+        });
       });
     });
 
@@ -42,7 +45,7 @@ describe('LoginControllerMixin', function() {
         sinon.spy(this.session, 'authenticate');
         this.controller._actions.authenticate.apply(this.controller);
 
-        expect(this.session.authenticate.called).to.be.false;
+        expect(this.session.authenticate).to.not.have.been.called;
       });
     });
   });
