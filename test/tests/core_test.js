@@ -50,12 +50,15 @@ describe('setup', function() {
     sinon.spy(this.container, 'register');
     setup(this.container, this.application);
 
-    expect(this.container.register.withArgs('ember-simple-auth:authenticators:oauth2', Authenticators.OAuth2).calledOnce).to.be.true;
+    expect(this.container.register).to.have.been.calledWith('ember-simple-auth:authenticators:oauth2', Authenticators.OAuth2);
   });
 
   describe('the session instance', function() {
-    it('uses the LocalStorage store by default', function() {
+    beforeEach(function() {
       sinon.spy(this.container, 'register');
+    });
+
+    it('uses the LocalStorage store by default', function() {
       setup(this.container, this.application);
       var spyCall = this.container.register.getCall(1);
 
@@ -63,7 +66,6 @@ describe('setup', function() {
     });
 
     it('uses a custom store if specified', function() {
-      sinon.spy(this.container, 'register');
       setup(this.container, this.application, { store: Stores.Ephemeral });
       var spyCall = this.container.register.getCall(1);
 
@@ -71,7 +73,6 @@ describe('setup', function() {
     });
 
     it("uses the app's container", function() {
-      sinon.spy(this.container, 'register');
       setup(this.container, this.application);
       var spyCall = this.container.register.getCall(1);
 
@@ -79,7 +80,6 @@ describe('setup', function() {
     });
 
     it('is registered with the Ember container', function() {
-      sinon.spy(this.container, 'register');
       setup(this.container, this.application);
       var spyCall = this.container.register.getCall(1);
 
@@ -93,7 +93,7 @@ describe('setup', function() {
       setup(this.container, this.application);
 
       ['model', 'controller', 'view', 'route'].forEach(function(component) {
-        expect(_this.container.injection.withArgs(component, 'session', 'ember-simple-auth:session:current').calledOnce).to.be.true;
+        expect(_this.container.injection).to.have.been.calledWith(component, 'session', 'ember-simple-auth:session:current');
       });
     });
   });
@@ -109,7 +109,7 @@ describe('setup', function() {
       setup(this.container, this.application);
       Ember.$.get(window.location);
 
-      expect(this.authorizer.authorize.calledOnce).to.be.true;
+      expect(this.authorizer.authorize).to.have.been.calledOnce;
     });
 
     it('uses a custom authorizer if configured', function() {
@@ -118,29 +118,29 @@ describe('setup', function() {
       setup(this.container, this.application, { authorizer: CustomAuthorizer });
       Ember.$.get(window.location);
 
-      expect(this.authorizer.authorize.calledOnce).to.be.true;
+      expect(this.authorizer.authorize).to.have.been.calledOnce;
     });
 
     it('does not authorize requests going to a foreign origin', function() {
       setup(this.container, this.application);
       Ember.$.get('http://other-domain.com');
 
-      expect(this.authorizer.authorize.calledOnce).to.be.false;
+      expect(this.authorizer.authorize).to.not.have.been.called;
     });
 
     it('authorize requests going to a foreign origin if the origin is whitelisted', function() {
       setup(this.container, this.application, { crossOriginWhitelist: ['http://other-domain.com', 'https://another-port.net:4567'] });
       Ember.$.get('http://other-domain.com/path/query=string');
 
-      expect(this.authorizer.authorize.calledOnce).to.be.true;
+      expect(this.authorizer.authorize).to.have.been.calledOnce;
 
       Ember.$.get('http://other-domain.com:80/path/query=string');
 
-      expect(this.authorizer.authorize.calledTwice).to.be.true;
+      expect(this.authorizer.authorize).to.have.been.calledTwice;
 
       Ember.$.get('https://another-port.net:4567/path/query=string');
 
-      expect(this.authorizer.authorize.calledThrice).to.be.true;
+      expect(this.authorizer.authorize).to.have.been.calledThrice;
     });
 
     afterEach(function() {
