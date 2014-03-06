@@ -161,7 +161,7 @@ module.exports = function(grunt) {
       },
       docs: {
         files: [{
-          src: ['docs/build/api.html'],
+          src: ['tmp/api.html'],
           dest: 'dist/<%= pkg.name %>-<%= pkg.version %>-api-docs.html'
         }]
       }
@@ -195,7 +195,7 @@ module.exports = function(grunt) {
       }
     },
 
-    clean: ['dist', 'tmp', 'docs/build'],
+    clean: ['dist', 'tmp'],
 
     mocha: {
       test: {
@@ -220,7 +220,7 @@ module.exports = function(grunt) {
         options: {
           parseOnly: true,
           paths: 'lib',
-          outdir: 'docs/build'
+          outdir: 'tmp'
         }
       }
     },
@@ -228,11 +228,11 @@ module.exports = function(grunt) {
     'compile-handlebars': {
       docs: {
         template: 'docs/theme/main.hbs',
-        templateData: 'docs/build/data.json',
+        templateData: 'tmp/data.json',
         globals: ['docs/config.json'],
         partials: 'docs/theme/partials/**/*.hbs',
         helpers: 'docs/theme/helpers/**/*.js',
-        output: 'docs/build/api.html'
+        output: 'tmp/api.html'
       }
     }
   });
