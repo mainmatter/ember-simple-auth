@@ -32,8 +32,8 @@ function modulizeName(name, module) {
 
 function processFunctions(funcs) {
   return funcs.map(function(func) {
-    func.signature = buildSignature(func);
     func.name      = func.name.replace(/^actions\./, '');
+    func.signature = buildSignature(func);
     return func;
   });
 }
@@ -66,7 +66,15 @@ function cleanModuleItems(items, module) {
   return items.map(function(item) {
     item.class     = cleanElementName(item.namespace, module);
     item.namespace = module;
-    item.anchor    = anchorify(item.namespace + '-' + module);
+    item.anchor    = anchorify(item.namespace + '-' + item.name);
+    return item;
+  });
+};
+
+function cleanClassItems(items, module) {
+  return items.map(function(item) {
+    item.class  = modulizeName(cleanElementName(item.class, module), module);
+    item.anchor = anchorify(item.class + '-' + item.name);
     return item;
   });
 };
@@ -90,14 +98,10 @@ module.exports = function() {
     klass = _this.classes[klassNames[i]]
     var klassItems = _this.classitems.filter(function(classitem) {
       return classitem.class === klass.name && classitem.access !== 'private';
-    }).map(function(item) {
-      item.class  = modulizeName(cleanElementName(item.class, module.name), module.name);
-      item.anchor = anchorify(item.class + '-' + item.name);
-      return item;
     });
-    klass.properties = extractProperties(klassItems);
-    klass.methods    = extractMethods(klassItems);
-    klass.actions    = extractActions(klassItems);
+    klass.properties = cleanClassItems(extractProperties(klassItems), module.name);
+    klass.methods    = cleanClassItems(extractMethods(klassItems), module.name);
+    klass.actions    = cleanClassItems(extractActions(klassItems), module.name);
     klass.uses       = (klass.uses || []).map(function(name) {
       return cleanElementName(name, module.name);
     });
