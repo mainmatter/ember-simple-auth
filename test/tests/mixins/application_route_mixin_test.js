@@ -24,7 +24,7 @@ describe('ApplicationRouteMixin', function() {
       this.session.trigger('ember-simple-auth:session-authentication-succeeded');
 
       Ember.run.next(this, function() {
-        expect(this.route.send.withArgs('sessionAuthenticationSucceeded').calledOnce).to.be(true);
+        expect(this.route.send.withArgs('sessionAuthenticationSucceeded').calledOnce).to.be.true;
         done();
       });
     });
@@ -33,7 +33,7 @@ describe('ApplicationRouteMixin', function() {
       this.session.trigger('ember-simple-auth:session-authentication-failed');
 
       Ember.run.next(this, function() {
-        expect(this.route.send.withArgs('sessionAuthenticationFailed').calledOnce).to.be(true);
+        expect(this.route.send.withArgs('sessionAuthenticationFailed').calledOnce).to.be.true;
         done();
       });
     });
@@ -42,7 +42,7 @@ describe('ApplicationRouteMixin', function() {
       this.session.trigger('ember-simple-auth:session-invalidation-succeeded');
 
       Ember.run.next(this, function() {
-        expect(this.route.send.withArgs('sessionInvalidationSucceeded').calledOnce).to.be(true);
+        expect(this.route.send.withArgs('sessionInvalidationSucceeded').calledOnce).to.be.true;
         done();
       });
     });
@@ -51,7 +51,7 @@ describe('ApplicationRouteMixin', function() {
       this.session.trigger('ember-simple-auth:session-invalidation-failed');
 
       Ember.run.next(this, function() {
-        expect(this.route.send.withArgs('sessionInvalidationFailed').calledOnce).to.be(true);
+        expect(this.route.send.withArgs('sessionInvalidationFailed').calledOnce).to.be.true;
         done();
       });
     });
@@ -65,7 +65,7 @@ describe('ApplicationRouteMixin', function() {
     it('transitions to "Configuration.authenticationRoute"', function() {
       this.route._actions.authenticateSession.apply(this.route);
 
-      expect(this.route.transitionTo.withArgs(Configuration.authenticationRoute).calledOnce).to.be(true);
+      expect(this.route.transitionTo.withArgs(Configuration.authenticationRoute).calledOnce).to.be.true;
     });
   });
 
@@ -92,7 +92,7 @@ describe('ApplicationRouteMixin', function() {
       it('removes it from the session', function() {
         this.route._actions.sessionAuthenticationSucceeded.apply(this.route);
 
-        expect(this.session.get('attemptedTransition')).to.be(null);
+        expect(this.session.get('attemptedTransition')).to.be.null;
       });
     });
 
@@ -100,7 +100,7 @@ describe('ApplicationRouteMixin', function() {
       it('transitions to "Configuration.routeAfterAuthentication"', function() {
         this.route._actions.sessionAuthenticationSucceeded.apply(this.route);
 
-        expect(this.route.transitionTo.withArgs(Configuration.routeAfterAuthentication).calledOnce).to.be(true);
+        expect(this.route.transitionTo.withArgs(Configuration.routeAfterAuthentication).calledOnce).to.be.true;
       });
     });
   });
@@ -110,7 +110,7 @@ describe('ApplicationRouteMixin', function() {
       sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.Promise.resolve());
       this.route._actions.invalidateSession.apply(this.route);
 
-      expect(this.session.invalidate.calledOnce).to.be(true);
+      expect(this.session.invalidate.calledOnce).to.be.true;
     });
   });
 
@@ -122,7 +122,7 @@ describe('ApplicationRouteMixin', function() {
     it('transitions to "Configuration.routeAfterInvalidation"', function() {
       this.route._actions.sessionInvalidationSucceeded.apply(this.route);
 
-      expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).calledOnce).to.be(true);
+      expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).calledOnce).to.be.true;
     });
   });
 
@@ -135,7 +135,7 @@ describe('ApplicationRouteMixin', function() {
       sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.Promise.resolve());
       this.route._actions.authorizationFailed.apply(this.route);
 
-      expect(this.session.invalidate.calledOnce).to.be(true);
+      expect(this.session.invalidate.calledOnce).to.be.true;
     });
 
     describe('if session invalidation succeeds', function() {
@@ -147,7 +147,7 @@ describe('ApplicationRouteMixin', function() {
         this.route._actions.authorizationFailed.apply(this.route);
 
         Ember.run.next(this, function() {
-          expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).calledOnce).to.be(true);
+          expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).calledOnce).to.be.true;
           done();
         });
       });
@@ -162,7 +162,7 @@ describe('ApplicationRouteMixin', function() {
         this.route._actions.authorizationFailed.apply(this.route);
 
         Ember.run.next(this, function() {
-          expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).called).to.be(false);
+          expect(this.route.transitionTo.withArgs(Configuration.routeAfterInvalidation).called).to.be.false;
           done();
         });
       });
@@ -178,13 +178,13 @@ describe('ApplicationRouteMixin', function() {
       it('invokes the "authorizationFailed" action', function() {
         this.route._actions.error.apply(this.route, [{ status: 401 }]);
 
-        expect(this.route.send.withArgs('authorizationFailed').calledOnce).to.be(true);
+        expect(this.route.send.withArgs('authorizationFailed').calledOnce).to.be.true;
       });
 
       it('returns true', function() {
         var returnValue = this.route._actions.error.apply(this.route, [{ status: 401 }]);
 
-        expect(returnValue).to.be(true);
+        expect(returnValue).to.be.true;
       });
     });
 
@@ -192,13 +192,13 @@ describe('ApplicationRouteMixin', function() {
       it('does not invoke the "authorizationFailed" action', function() {
         this.route._actions.error.apply(this.route, [{ status: 500 }]);
 
-        expect(this.route.send.withArgs('authorizationFailed').calledOnce).to.be(false);
+        expect(this.route.send.withArgs('authorizationFailed').calledOnce).to.be.false;
       });
 
       it('returns true', function() {
         var returnValue = this.route._actions.error.apply(this.route, [{ status: 500 }]);
 
-        expect(returnValue).to.be(true);
+        expect(returnValue).to.be.true;
       });
     });
   });

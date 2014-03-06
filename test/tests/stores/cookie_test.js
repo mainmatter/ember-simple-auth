@@ -28,7 +28,7 @@ describe('Stores.Cookie', function() {
       this.store.syncProperties();
 
       Ember.run.next(this, function() {
-        expect(this.triggered).to.be(false);
+        expect(this.triggered).to.be.false;
         done();
       });
     });
@@ -38,7 +38,7 @@ describe('Stores.Cookie', function() {
       this.store.syncProperties();
 
       Ember.run.next(this, function() {
-        expect(this.triggered).to.be(true);
+        expect(this.triggered).to.be.true;
         done();
       });
     });

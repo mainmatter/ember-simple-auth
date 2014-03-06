@@ -24,7 +24,7 @@ var itBehavesLikeAStore = function(options) {
       syncExternalChanges.apply(this);
 
       Ember.run.next(function() {
-        expect(triggered).to.be(false);
+        expect(triggered).to.be.false;
         done();
       });
     });

@@ -27,13 +27,13 @@ describe('LoginControllerMixin', function() {
       it('unsets the password', function() {
         this.controller._actions.authenticate.apply(this.controller);
 
-        expect(this.controller.get('password')).to.be(null);
+        expect(this.controller.get('password')).to.be.null;
       });
 
       it('authenticates the session', function() {
         this.controller._actions.authenticate.apply(this.controller);
 
-        expect(this.session.authenticate.withArgs('ember-simple-auth:authenticators:oauth2', { identification: 'identification', password: 'password' }).calledOnce).to.be(true);
+        expect(this.session.authenticate.withArgs('ember-simple-auth:authenticators:oauth2', { identification: 'identification', password: 'password' }).calledOnce).to.be.true;
       });
     });
 
@@ -42,7 +42,7 @@ describe('LoginControllerMixin', function() {
         sinon.spy(this.session, 'authenticate');
         this.controller._actions.authenticate.apply(this.controller);
 
-        expect(this.session.authenticate.called).to.be(false);
+        expect(this.session.authenticate.called).to.be.false;
       });
     });
   });

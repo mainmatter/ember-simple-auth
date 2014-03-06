@@ -20,13 +20,13 @@ describe('AuthenticatedRouteMixin', function() {
       it('does not abort the transition', function() {
         this.route.beforeModel(this.transition);
 
-        expect(this.transition.abort.calledOnce).to.be(false);
+        expect(this.transition.abort.calledOnce).to.be.false;
       });
 
       it('does not invoke the "authenticateSession" action', function() {
         this.route.beforeModel(this.transition);
 
-        expect(this.transition.send.withArgs('authenticateSession').calledOnce).to.be(false);
+        expect(this.transition.send.withArgs('authenticateSession').calledOnce).to.be.false;
       });
     });
 
@@ -34,13 +34,13 @@ describe('AuthenticatedRouteMixin', function() {
       it('aborts the transition', function() {
         this.route.beforeModel(this.transition);
 
-        expect(this.transition.abort.calledOnce).to.be(true);
+        expect(this.transition.abort.calledOnce).to.be.true;
       });
 
       it('invokes the "authenticateSession" action', function() {
         this.route.beforeModel(this.transition);
 
-        expect(this.transition.send.withArgs('authenticateSession').calledOnce).to.be(true);
+        expect(this.transition.send.withArgs('authenticateSession').calledOnce).to.be.true;
       });
     });
   });

@@ -26,7 +26,7 @@ describe('Session', function() {
   describe('initialization', function() {
     function itFailsToRestore() {
       it('is not authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be(false);
+        expect(this.session.get('isAuthenticated')).to.be.false;
       }));
 
       it('clears the store', function(done) {
@@ -44,7 +44,7 @@ describe('Session', function() {
         this.session.one('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
 
         Ember.run.next(this, function() {
-          expect(triggered).to.be(false);
+          expect(triggered).to.be.false;
           done();
         });
       });
@@ -62,7 +62,7 @@ describe('Session', function() {
         });
 
         it('is authenticated', async(function() {
-          expect(this.session.get('isAuthenticated')).to.be(true);
+          expect(this.session.get('isAuthenticated')).to.be.true;
         }));
 
         it('sets its content to the data the auhneticator resolves with', async(function() {
@@ -88,7 +88,7 @@ describe('Session', function() {
           this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
 
           Ember.run.next(this, function() {
-            expect(triggered).to.be(false);
+            expect(triggered).to.be.false;
             done();
           });
         });
@@ -123,12 +123,12 @@ describe('Session', function() {
       });
 
       it('is authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be(true);
+        expect(this.session.get('isAuthenticated')).to.be.true;
       }));
 
       it('returns a resolving promise', function(done) {
         this.session.authenticate('authenticatorFactory').then(function() {
-          expect(true).to.be.ok();
+          expect(true).to.be.ok;
           done();
         }, function() {
           expect().fail();
@@ -156,7 +156,7 @@ describe('Session', function() {
         this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
 
         Ember.run.next(this, function() {
-          expect(triggered).to.be(true);
+          expect(triggered).to.be.true;
           done();
         });
       });
@@ -166,7 +166,7 @@ describe('Session', function() {
         this.session.one('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
 
         Ember.run.next(this, function() {
-          expect(triggered).to.be(false);
+          expect(triggered).to.be.false;
           done();
         });
       });
@@ -181,7 +181,7 @@ describe('Session', function() {
       });
 
       it('is not authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be(false);
+        expect(this.session.get('isAuthenticated')).to.be.false;
       }));
 
       it('returns a rejecting promise', function(done) {
@@ -189,7 +189,7 @@ describe('Session', function() {
           expect().fail();
           done();
         }, function() {
-          expect(true).to.be.ok();
+          expect(true).to.be.ok;
           done();
         });
       });
@@ -217,7 +217,7 @@ describe('Session', function() {
         this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
 
         Ember.run.next(this, function() {
-          expect(triggered).to.be(false);
+          expect(triggered).to.be.false;
           done();
         });
       });
@@ -227,7 +227,7 @@ describe('Session', function() {
         this.session.one('ember-simple-auth:session-authentication-failed', function() { triggered = true; });
 
         Ember.run.next(this, function() {
-          expect(triggered).to.be(true);
+          expect(triggered).to.be.true;
           done();
         });
       });
@@ -248,12 +248,12 @@ describe('Session', function() {
       });
 
       it('is not authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be(false);
+        expect(this.session.get('isAuthenticated')).to.be.false;
       }));
 
       it('returns a resolving promise', function(done) {
         this.session.invalidate().then(function() {
-          expect(true).to.be.ok();
+          expect(true).to.be.ok;
           done();
         }, function() {
           expect().fail();
@@ -284,7 +284,7 @@ describe('Session', function() {
         this.session.one('ember-simple-auth:session-invalidation-failed', function() { triggered = true; });
 
         Ember.run.next(this, function() {
-          expect(triggered).to.be(false);
+          expect(triggered).to.be.false;
           done();
         });
       });
@@ -294,7 +294,7 @@ describe('Session', function() {
         this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
 
         Ember.run.next(this, function() {
-          expect(triggered).to.be(true);
+          expect(triggered).to.be.true;
           done();
         });
       });
@@ -307,7 +307,7 @@ describe('Session', function() {
       });
 
       it('stays authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be(true);
+        expect(this.session.get('isAuthenticated')).to.be.true;
       }));
 
       it('returns a rejecting promise', function(done) {
@@ -315,7 +315,7 @@ describe('Session', function() {
           expect().fail();
           done();
         }, function() {
-          expect(true).to.be.ok();
+          expect(true).to.be.ok;
           done();
         });
       });
@@ -333,7 +333,7 @@ describe('Session', function() {
         this.session.one('ember-simple-auth:session-invalidation-failed', function() { triggered = true; });
 
         Ember.run.next(this, function() {
-          expect(triggered).to.be(true);
+          expect(triggered).to.be.true;
           done();
         });
       });
@@ -343,7 +343,7 @@ describe('Session', function() {
         this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
 
         Ember.run.next(this, function() {
-          expect(triggered).to.be(false);
+          expect(triggered).to.be.false;
           done();
         });
       });
@@ -365,7 +365,7 @@ describe('Session', function() {
         });
 
         it('is authenticated', async(function() {
-          expect(this.session.get('isAuthenticated')).to.be(true);
+          expect(this.session.get('isAuthenticated')).to.be.true;
         }));
 
         it('sets its content to the data the authenticator resolves with', async(function() {
@@ -396,7 +396,7 @@ describe('Session', function() {
             this.session.one('ember-simple-auth:session-authentication-succeeded', function() { triggered = true; });
 
             Ember.run.next(this, function() {
-              expect(triggered).to.be(false);
+              expect(triggered).to.be.false;
               done();
             });
           });
@@ -413,7 +413,7 @@ describe('Session', function() {
             this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
             Ember.run.next(this, function() {
-              expect(triggered).to.be(true);
+              expect(triggered).to.be.true;
               done();
             });
           });
@@ -427,7 +427,7 @@ describe('Session', function() {
         });
 
         it('is not authenticated', async(function() {
-          expect(this.session.get('isAuthenticated')).to.be(false);
+          expect(this.session.get('isAuthenticated')).to.be.false;
         }));
 
         it('clears its content', async(function() {
@@ -449,7 +449,7 @@ describe('Session', function() {
             this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
             Ember.run.next(this, function() {
-              expect(triggered).to.be(true);
+              expect(triggered).to.be.true;
               done();
             });
           });
@@ -465,7 +465,7 @@ describe('Session', function() {
             this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
 
             Ember.run.next(this, function() {
-              expect(triggered).to.be(false);
+              expect(triggered).to.be.false;
               done();
             });
           });
@@ -479,7 +479,7 @@ describe('Session', function() {
       }));
 
       it('is not authenticated', async(function() {
-        expect(this.session.get('isAuthenticated')).to.be(false);
+        expect(this.session.get('isAuthenticated')).to.be.false;
       }));
 
       it('clears its content', async(function() {
@@ -501,7 +501,7 @@ describe('Session', function() {
           this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
 
           Ember.run.next(this, function() {
-            expect(triggered).to.be(true);
+            expect(triggered).to.be.true;
             done();
           });
         });
@@ -517,7 +517,7 @@ describe('Session', function() {
           this.session.one('ember-simple-auth:session-invalidation-succeeded', function() { triggered = true; });
 
           Ember.run.next(this, function() {
-            expect(triggered).to.be(false);
+            expect(triggered).to.be.false;
             done();
           });
         });

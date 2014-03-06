@@ -9,7 +9,7 @@ describe('Authenticators.OAuth2', function() {
     describe('when the data contains an access_token', function() {
       it('returns a resolving promise', function(done) {
         this.authenticator.restore({ access_token: 'secret token!' }).then(function(data) {
-          expect(true).to.be.ok();
+          expect(true).to.be.ok;
           expect(data).to.eql({ access_token: 'secret token!' });
           done();
         }, function() {
@@ -62,7 +62,7 @@ describe('Authenticators.OAuth2', function() {
             var _this = this;
 
             this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
-              expect(Ember.run.later.called).to.be(false);
+              expect(Ember.run.later.called).to.be.false;
               done();
             });
           });
@@ -80,7 +80,7 @@ describe('Authenticators.OAuth2', function() {
           expect().fail();
           done();
         }, function() {
-          expect(true).to.be.ok();
+          expect(true).to.be.ok;
           done();
         });
       });
@@ -121,7 +121,7 @@ describe('Authenticators.OAuth2', function() {
 
       it('returns a resolving promise', function(done) {
         this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(function(data) {
-          expect(true).to.be.ok();
+          expect(true).to.be.ok;
           expect(data).to.eql({ access_token: 'secret token!' });
           done();
         }, function() {
@@ -184,7 +184,7 @@ describe('Authenticators.OAuth2', function() {
             var _this = this;
 
             this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(function(data) {
-              expect(Ember.run.later.called).to.be(false);
+              expect(Ember.run.later.called).to.be.false;
               done();
             });
           });
@@ -210,7 +210,7 @@ describe('Authenticators.OAuth2', function() {
           expect().fail();
           done();
         }, function(error) {
-          expect(true).to.be.ok();
+          expect(true).to.be.ok;
           expect(error).to.eql({ error: 'invalid_grant' });
           done();
         });
@@ -226,7 +226,7 @@ describe('Authenticators.OAuth2', function() {
   describe('#invalidate', function() {
     it('returns a resolving promise', function(done) {
       this.authenticator.invalidate().then(function() {
-        expect(true).to.be.ok();
+        expect(true).to.be.ok;
         done();
       }, function() {
         expect().fail();

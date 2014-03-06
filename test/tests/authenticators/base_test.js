@@ -11,7 +11,7 @@ describe('Authenticators.Base', function() {
         expect().fail();
         done();
       }, function() {
-        expect(true).to.be.ok();
+        expect(true).to.be.ok;
         done();
       });
     });
@@ -23,7 +23,7 @@ describe('Authenticators.Base', function() {
         expect().fail();
         done();
       }, function() {
-        expect(true).to.be.ok();
+        expect(true).to.be.ok;
         done();
       });
     });
@@ -35,7 +35,7 @@ describe('Authenticators.Base', function() {
         expect().fail();
         done();
       }, function() {
-        expect(true).to.be.ok();
+        expect(true).to.be.ok;
         done();
       });
     });
