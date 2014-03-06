@@ -46,7 +46,7 @@ describe('setup', function() {
     expect(Configuration.routeAfterInvalidation).to.eql('routeAfterInvalidation');
   });
 
-  it('registers the OAuth2 authenticator in the Ember container', function() {
+  it('registers the OAuth2 authenticator with the container', function() {
     sinon.spy(this.container, 'register');
     setup(this.container, this.application);
 
