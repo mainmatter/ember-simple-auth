@@ -6,8 +6,7 @@ module.exports = function(grunt) {
     'build',
     'uglify:library',
     'uglify:browser',
-    'docs',
-    'copy'
+    'copy:dist'
   ]);
 
   this.registerTask('build', 'Builds EmberSimpleAuth', [
@@ -38,7 +37,8 @@ module.exports = function(grunt) {
 
   this.registerTask('docs', 'Builds the documentation', [
     'yuidoc',
-    'compile-handlebars:docs'
+    'compile-handlebars:docs',
+    'copy:docs'
   ]);
 
   this.registerTask('examples', 'Runs the examples server', [
