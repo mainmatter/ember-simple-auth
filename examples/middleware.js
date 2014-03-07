@@ -24,7 +24,7 @@ module.exports = function(request, response, next) {
 
   // endpoint that will always cause an authorization error
   } else if (request.url === '/auth-error' && request.method === 'GET') {
-    error(400, '{ "error": "your token has expired" }');
+    error(401, '{ "error": "your token has expired" }');
 
   // authentication endpoint that also supports token refreshing via the "refresh_token" grant type
   } else if (request.url === '/v2/token' && request.method === 'POST') {
