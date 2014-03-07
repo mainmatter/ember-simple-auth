@@ -112,6 +112,10 @@
         body:  DS.attr()
       });
 
+      App.Router.reopen({
+        rootURL: '/examples/5-ember-data.html'
+      });
+
       App.Router.map(function() {
         // login route
         this.route('login');

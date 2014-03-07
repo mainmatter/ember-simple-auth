@@ -116,6 +116,10 @@
 
       App = Ember.Application.create({});
 
+      App.Router.reopen({
+        rootURL: '/examples/2-errors.html'
+      });
+
       App.Router.map(function() {
         // login route
         this.route('login');

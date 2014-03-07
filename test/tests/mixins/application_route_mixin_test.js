@@ -115,20 +115,17 @@ describe('ApplicationRouteMixin', function() {
   });
 
   describe('the "sessionInvalidationSucceeded" action', function() {
-    beforeEach(function() {
-      sinon.spy(this.route, 'transitionTo');
-    });
-
-    it('transitions to "Configuration.routeAfterInvalidation"', function() {
+    it('reloads the application', function() {
+      sinon.stub(this.route, 'reloadApp');
       this.route._actions.sessionInvalidationSucceeded.apply(this.route);
 
-      expect(this.route.transitionTo).to.have.been.calledWith(Configuration.routeAfterInvalidation);
+      expect(this.route.reloadApp).to.have.been.calledOnce;
     });
   });
 
   describe('the "authorizationFailed" action', function() {
     beforeEach(function() {
-      sinon.spy(this.route, 'transitionTo');
+      sinon.stub(this.route, 'reloadApp');
     });
 
     it('invalidates the session', function() {
@@ -143,11 +140,11 @@ describe('ApplicationRouteMixin', function() {
         sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
       });
 
-      it('transitions to "Configuration.routeAfterInvalidation"', function(done) {
+      it('reloads the application', function(done) {
         this.route._actions.authorizationFailed.apply(this.route);
 
         Ember.run.next(this, function() {
-          expect(this.route.transitionTo).to.have.been.calledWith(Configuration.routeAfterInvalidation);
+          expect(this.route.reloadApp).to.have.been.calledOnce;
           done();
         });
       });
@@ -158,11 +155,11 @@ describe('ApplicationRouteMixin', function() {
         sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.reject());
       });
 
-      it('does not transition', function(done) {
+      it('does not reload the application', function(done) {
         this.route._actions.authorizationFailed.apply(this.route);
 
         Ember.run.next(this, function() {
-          expect(this.route.transitionTo).to.not.have.been.called;
+          expect(this.route.reloadApp).to.not.have.been.called;
           done();
         });
       });

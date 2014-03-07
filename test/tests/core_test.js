@@ -15,16 +15,17 @@ describe('Configuration', function() {
       expect(Configuration.routeAfterAuthentication).to.eql('index');
     });
   });
-  describe('routeAfterInvalidation', function() {
-    it('defaults to "index"', function() {
-      expect(Configuration.routeAfterInvalidation).to.eql('index');
+  describe('applicationRootUrl', function() {
+    it('defaults to null', function() {
+      expect(Configuration.applicationRootUrl).to.be.null;
     });
   });
 });
 
 describe('setup', function() {
   beforeEach(function() {
-    this.container   = { register: function() {}, injection: function() {} };
+    this.container = { register: function() {}, injection: function() {}, lookup: function() {} };
+    sinon.stub(this.container, 'lookup').returns({ get: function() { return 'rootURL'; } });
     this.application = {};
   });
 
@@ -40,10 +41,16 @@ describe('setup', function() {
     expect(Configuration.routeAfterAuthentication).to.eql('routeAfterAuthentication');
   });
 
-  it('sets routeAfterInvalidation', function() {
-    setup(this.container, this.application, { routeAfterInvalidation: 'routeAfterInvalidation' });
+  it('sets applicationRootUrl', function() {
+    setup(this.container, this.application, { applicationRootUrl: 'applicationRootUrl' });
 
-    expect(Configuration.routeAfterInvalidation).to.eql('routeAfterInvalidation');
+    expect(Configuration.applicationRootUrl).to.eql('applicationRootUrl');
+  });
+
+  it("defaults applicationRootUrl to the application's root Url", function() {
+    setup(this.container, this.application);
+
+    expect(Configuration.applicationRootUrl).to.eql('rootURL');
   });
 
   it('registers the OAuth2 authenticator with the container', function() {

@@ -91,6 +91,10 @@
 
       App = Ember.Application.create({});
 
+      App.Router.reopen({
+        rootURL: '/examples/1-simple.html'
+      });
+
       App.Router.map(function() {
         // login route
         this.route('login');

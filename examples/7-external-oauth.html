@@ -74,6 +74,10 @@
 
       App = Ember.Application.create();
 
+      App.Router.reopen({
+        rootURL: '/examples/7-external-oauth.html'
+      });
+
       App.Router.map(function() {
         // protected route that's inaccessible without authentication
         this.route('protected');

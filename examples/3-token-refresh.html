@@ -102,6 +102,10 @@
 
       App = Ember.Application.create({});
 
+      App.Router.reopen({
+        rootURL: '/examples/3-token-refresh.html'
+      });
+
       App.Router.map(function() {
         // login route
         this.route('login');

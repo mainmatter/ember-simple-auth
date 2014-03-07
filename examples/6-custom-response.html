@@ -114,6 +114,10 @@
         name:  DS.attr()
       });
 
+      App.Router.reopen({
+        rootURL: '/examples/6-custom-response.html'
+      });
+
       App.Router.map(function() {
         // login route
         this.route('login');
