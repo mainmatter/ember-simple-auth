@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   this.registerTask('default', ['test']);
 
   this.registerTask('dist', 'Builds a distributable version of EmberSimpleAuth', [
-    'jshint',
+    'lint',
     'build',
     'uglify:library',
     'uglify:browser',
@@ -22,6 +22,11 @@ module.exports = function(grunt) {
     'concat:tests',
   ]);
 
+  this.registerTask('lint', 'Applies all the JSHint/spacing rules', [
+    'jshint',
+    'lintspaces'
+  ]);
+
   this.registerTask('dev_server', 'Runs a development server', [
     'build_tests',
     'connect:dev',
@@ -29,7 +34,7 @@ module.exports = function(grunt) {
   ]);
 
   this.registerTask('test', 'Executes the tests', [
-    'jshint',
+    'lint',
     'build_tests',
     'connect:dev',
     'mocha'
@@ -102,7 +107,7 @@ module.exports = function(grunt) {
 
     watch: {
       files: ['lib/**', 'test/**/*'],
-      tasks: ['build_tests', 'jshint']
+      tasks: ['build_tests', 'lint']
     },
 
     transpile: {
@@ -197,6 +202,26 @@ module.exports = function(grunt) {
 
     clean: ['dist', 'tmp'],
 
+    lintspaces: {
+      all: {
+        src: [
+          'docs/theme/**/*',
+          'examples/**/*',
+          'lib/**/*',
+          'test/tests/**/*',
+          'test/lib/**/*',
+          'test/index.html',
+          'wrap/**/*'
+        ],
+        options: {
+          newline: true,
+          trailingspaces: true,
+          indentation: 'spaces',
+          spaces: 2
+        }
+      }
+    },
+
     mocha: {
       test: {
         options: {
@@ -248,4 +273,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-compile-handlebars');
+  grunt.loadNpmTasks('grunt-lintspaces');
 };
