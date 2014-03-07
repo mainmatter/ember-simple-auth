@@ -33,7 +33,6 @@ describe('Authorizers.OAuth2', function() {
 
         it('adds the "Authorization" header to the request', function() {
           this.requestMock.expects('setRequestHeader').once().withArgs('Authorization', 'Bearer secret token!');
-          console.log('authing');
           this.authorizer.authorize(this.request, {});
 
           this.requestMock.verify();
