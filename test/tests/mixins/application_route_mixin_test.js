@@ -114,20 +114,7 @@ describe('ApplicationRouteMixin', function() {
     });
   });
 
-  describe('the "sessionInvalidationSucceeded" action', function() {
-    it('reloads the application', function() {
-      sinon.stub(this.route, 'reloadApp');
-      this.route._actions.sessionInvalidationSucceeded.apply(this.route);
-
-      expect(this.route.reloadApp).to.have.been.calledOnce;
-    });
-  });
-
   describe('the "authorizationFailed" action', function() {
-    beforeEach(function() {
-      sinon.stub(this.route, 'reloadApp');
-    });
-
     it('invalidates the session', function() {
       sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
       this.route._actions.authorizationFailed.apply(this.route);
