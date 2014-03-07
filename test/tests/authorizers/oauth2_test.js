@@ -15,7 +15,7 @@ describe('Authorizers.OAuth2', function() {
       it('does not add the "Authorization" header to the request', function() {
         this.requestMock.expects('setRequestHeader').never();
 
-        this.authorizer.authorize(this.request);
+        this.authorizer.authorize(this.request, {});
 
         this.requestMock.verify();
       });
@@ -33,8 +33,8 @@ describe('Authorizers.OAuth2', function() {
 
         it('adds the "Authorization" header to the request', function() {
           this.requestMock.expects('setRequestHeader').once().withArgs('Authorization', 'Bearer secret token!');
-
-          this.authorizer.authorize(this.request);
+          console.log('authing');
+          this.authorizer.authorize(this.request, {});
 
           this.requestMock.verify();
         });
