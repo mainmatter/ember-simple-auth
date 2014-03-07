@@ -134,36 +134,6 @@ describe('ApplicationRouteMixin', function() {
 
       expect(this.session.invalidate).to.have.been.calledOnce;
     });
-
-    describe('if session invalidation succeeds', function() {
-      beforeEach(function() {
-        sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
-      });
-
-      it('reloads the application', function(done) {
-        this.route._actions.authorizationFailed.apply(this.route);
-
-        Ember.run.next(this, function() {
-          expect(this.route.reloadApp).to.have.been.calledOnce;
-          done();
-        });
-      });
-    });
-
-    describe('if session invalidation fails', function() {
-      beforeEach(function() {
-        sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.reject());
-      });
-
-      it('does not reload the application', function(done) {
-        this.route._actions.authorizationFailed.apply(this.route);
-
-        Ember.run.next(this, function() {
-          expect(this.route.reloadApp).to.not.have.been.called;
-          done();
-        });
-      });
-    });
   });
 
   describe('the "error" action', function() {
