@@ -354,7 +354,8 @@ stores its data in the browser's `localStorage`; __this is the default store__.
 The ephemeral store (see the
 [API docs for `Stores.Ephemeral`](http://ember-simple-auth.simplabs.com/api.html#EmberSimpleAuth-Stores-Ephemeral))
 stores its data in memory and thus __is not actually persistent__. This store
-is mainly useful for testing.
+is mainly useful for testing. Also the ephemeral store cannot keep multiple
+tabs or windows in sync of course as these tabs/windows cannot share memory.
 
 #### Implementing a custom Store
 
