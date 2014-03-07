@@ -41,13 +41,7 @@ describe('setup', function() {
     expect(Configuration.routeAfterAuthentication).to.eql('routeAfterAuthentication');
   });
 
-  it('sets applicationRootUrl', function() {
-    setup(this.container, this.application, { applicationRootUrl: 'applicationRootUrl' });
-
-    expect(Configuration.applicationRootUrl).to.eql('applicationRootUrl');
-  });
-
-  it("defaults applicationRootUrl to the application's root Url", function() {
+  it("sets applicationRootUrl to the application's root Url", function() {
     setup(this.container, this.application);
 
     expect(Configuration.applicationRootUrl).to.eql('rootURL');
