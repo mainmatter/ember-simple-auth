@@ -12,8 +12,6 @@ authorization mechanisms.
 
 ## What does it do?
 
-EmberSimpleAuth does a bunch of things in Ember.js applications:
-
 * it __manages the session state; logs the user in and out__
 * it __enforces authentication__ for defined routes
 * it __adds authorization info to AJAX requests__ so the server can verify
@@ -390,7 +388,7 @@ To run the examples you need to have [node.js](http://nodejs.org) and
 
 ```bash
 git clone https://github.com/simplabs/ember-simple-auth.git
-cd ember-simple-auth/examples
+cd ember-simple-auth
 npm install
 grunt examples
 ```
