@@ -156,7 +156,7 @@
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(EmberSimpleAuth.ApplicationRouteMixin);
       App.LoginController  = Ember.Controller.extend(EmberSimpleAuth.LoginControllerMixin, {
-        authenticator: 'app:authenticators:custom'
+        authenticatorFactory: 'app:authenticators:custom'
       });
 
       // clear a potentially stale error message from previous login attempts
