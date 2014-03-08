@@ -216,7 +216,7 @@ application:
 
 ```js
 App.LoginController = Ember.Controller.extend(EmberSimpleAuth.LoginControllerMixin, {
-  authenticator: 'app:authenticators:custom'
+  authenticatorFactory: 'app:authenticators:custom'
 });
 ```
 
