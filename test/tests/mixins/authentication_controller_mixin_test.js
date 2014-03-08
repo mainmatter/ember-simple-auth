@@ -7,7 +7,7 @@ describe('AuthenticationControllerMixin', function() {
     beforeEach(function() {
       this.session    = Session.create({ store: EphemeralStore.create() });
       this.controller = Ember.Controller.extend(AuthenticationControllerMixin, {
-        authenticator: 'authenticatorFactory'
+        authenticatorFactory: 'authenticatorFactory'
       }).create({ session: this.session });
     });
 
