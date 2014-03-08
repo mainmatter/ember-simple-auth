@@ -184,26 +184,8 @@ session.
 
 There is a whole bunch of middlewares for different languages and servers that
 implement OAuth 2.0 and can be used with EmberSimpleAuth's OAuth 2.0
-authenticator.
-
-###### Ruby
-
-* rack-oauth2: https://github.com/nov/rack-oauth2
-* doorkeeper: https://github.com/applicake/doorkeeper
-* Rails app template: https://github.com/bazzel/rails-templates/blob/master/ember-simple-auth.rb
-
-###### PHP
-* oauth2-server: https://github.com/php-loep/oauth2-server
-* zfr-oauth2-server: https://github.com/zf-fr/zfr-oauth2-server
-* zfr-oauth2-server-module (for ZF2): https://github.com/zf-fr/zfr-oauth2-server-module
-
-###### Java
-
-* scribe-java: https://github.com/fernandezpablo85/scribe-java
-
-###### Node.js
-
-* oauth2orize: https://github.com/jaredhanson/oauth2orize
+authenticator. The
+[complete list can be found in the Wiki](https://github.com/simplabs/ember-simple-auth/wiki/OAuth-2.0-Middlewares).
 
 #### Implementing a custom Authenticator
 
