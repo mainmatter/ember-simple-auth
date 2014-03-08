@@ -228,7 +228,7 @@ to implement a custom solution:
 
 ```js
 App.LoginController = Ember.Controller.extend(EmberSimpleAuth.AuthenticationControllerMixin, {
-  authenticator: 'app:authenticators:custom',
+  authenticatorFactory: 'app:authenticators:custom',
   actions: {
     authenticate: function() {
       var options = …// some options that the authenticator uses
