@@ -22,13 +22,14 @@ Ember.SimpleAuth.Authenticators.Devise = Ember.SimpleAuth.Authenticators.Base.ex
   serverTokenEndpoint: '/users/sign_in',
   
   /**
-  Restores the session from a set of session properties; __will return a
-  resolving promise when there's a non-empty `remember_token` in the
-  `properties`__ and a rejecting promise otherwise.
-
-  @method restore
-  @param {Object} properties The properties to restore the session from
-  @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
+    Restores the session from a set of session properties; __will return a
+    resolving promise when there's a non-empty `remember_token` in the
+    `properties`__ and a rejecting promise otherwise.
+  
+    @method restore
+    @param {Object} properties The properties to restore the session from
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
+  */
   restore: function(properties) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
