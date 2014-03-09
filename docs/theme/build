@@ -1,0 +1,87 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'erb'
+require 'fileutils'
+require 'ostruct'
+require 'github/markdown'
+
+input_file = File.absolute_path(ARGV[0])
+output_dir = File.absolute_path(ARGV[1])
+
+unless File.exists?(input_file)
+  puts "#{input_file} does not exist, exiting!"
+end
+
+if File.exists?(output_dir)
+  FileUtils.rm_rf(output_dir)
+end
+FileUtils.mkdir_p(output_dir)
+
+main_layout = File.read(File.absolute_path('templates/main.html.erb', File.dirname(__FILE__)));
+
+class TemplateData
+
+  def initialize(input_file)
+    @data = JSON.load(File.open(input_file))
+  end
+
+  def project
+    @data['project']
+  end
+
+  def classes
+    @data['classes'].values.sort { |a, b| a['name'] <=> b['name'] }
+  end
+
+  def methods(class_name = nil)
+    @data['classitems'].select do |item|
+      item['itemtype'] == 'method' && item['access'] != 'private' && !(item['name'] =~ /^actions\./)
+    end.select do |item|
+      !!class_name ? item['class'] == class_name : true
+    end
+  end
+
+  def actions(class_name = nil)
+    @data['classitems'].select do |item|
+      item['itemtype'] == 'method' && item['access'] != 'private' && item['name'] =~ /^actions\./
+    end.select do |item|
+      !!class_name ? item['class'] == class_name : true
+    end.map do |item|
+      item.dup.merge('name' => item['name'].gsub(/^actions\./, ''))
+    end
+  end
+
+  def properties(class_name = nil)
+    @data['classitems'].select do |item|
+      item['itemtype'] == 'property' && item['access'] != 'private'
+    end.select do |item|
+      !!class_name ? item['class'] == class_name : true
+    end
+  end
+
+  def params_signature(params)
+    params = (params || []).map { |param| param['optional'] ? "[#{param['name']}]" : param['name'] }
+    "(#{params.join(', ')})"
+  end
+
+  def markdown(content)
+    content = content.gsub(/\(\#(.*)\)/) do
+      "(##{sanitize_id($1)})"
+    end
+    GitHub::Markdown.render_gfm(content).gsub('<br>', '')
+  end
+
+  def sanitize_id(id)
+    id.gsub(/[\._]/, '-')
+  end
+
+  def get_binding
+    binding
+  end
+
+end
+
+File.open("#{output_dir}/index.html", 'w') do |f|
+  f << ERB.new(main_layout).result(TemplateData.new(input_file).get_binding)
+end

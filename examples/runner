@@ -1,0 +1,215 @@
+#!/usr/bin/env ruby
+
+base_dir = File.dirname(__FILE__)
+
+puts "\n** Building dist/ember-simple-auth.js...\n\n"
+`cd .. && bundle && bundle exec rake dist`
+
+require 'rubygems'
+require 'bundler'
+
+Bundler.require
+
+# serves the main template (see bottom of this file)
+get '/' do
+  erb :index
+end
+
+# serve the JS file from the /dist directory
+get '/ember-simple-auth.js' do
+  [200, { 'Content-Type' => 'text/javascript' }, File.read(File.join(base_dir, '..', 'dist', 'ember-simple-auth.js'))]
+end
+
+# serve the HTML files from the respective example directoy
+%w(1-simple 2-errors 3-token-refresh 4-authenticated-account 5-ember-data 6-custom-response 7-external-oauth).each do |example|
+  get "/#{example}" do
+    erb File.read(File.join(base_dir, example, 'index.html'))
+  end
+end
+
+# token endpoint; successfull if credentials are letme/in
+post '/token' do
+  if params[:grant_type] == 'password'
+    if params[:username] == 'letme' && params[:password] == 'in'
+      [200, { 'Content-Type' => 'application/json' }, ['{ "access_token": "secret token!" }']]
+    else
+      [400, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid_grant" }']]
+    end
+  else
+    [400, { 'Content-Type' => 'application/json' }, ['{ "error": "unsupported_grant_type" }']]
+  end
+end
+
+get '/auth-error' do
+  [401, { 'Content-Type' => 'application/json' }, ['{ "error": "your token has expired" }']]
+end
+
+# token endpoint that also support token refresh
+post '/v2/token' do
+  if params[:grant_type] == 'password'
+    if params[:username] == 'letme' && params[:password] == 'in'
+      [200, { 'Content-Type' => 'application/json' }, ['{ "access_token": "secret token - 1", "refresh_token": "secret refresh token!", "expires_in": 15 }']]
+    else
+      [400, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid_grant" }']]
+    end
+  elsif params[:grant_type] == 'refresh_token'
+    if params[:refresh_token] == 'secret refresh token!'
+      token_counter = env['HTTP_AUTHORIZATION'].match(/Bearer [^\d]*(\d+)/)[1]
+      [200, { 'Content-Type' => 'application/json' }, [%Q({ "access_token": "secret token - #{token_counter.to_i + 1}" })]]
+    else
+      [400, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid_grant" }']]
+    end
+  else
+    [400, { 'Content-Type' => 'application/json' }, ['{ "error": "unsupported_grant_type" }']]
+  end
+end
+
+# posts endpoint; successful if a valid authentication token header is sent
+get '/posts' do
+  if env['HTTP_AUTHORIZATION'] == 'Bearer secret token!'
+    [200, { 'Content-Type' => 'application/json' }, ['{ "posts": [{ "id": 1, "title": "first post", "body": "some content"}, { "id": 2, "title": "2nd post", "body": "some other body" }] }']]
+  else
+    [401, {}, ['']]
+  end
+end
+
+# account endpoint; successful if a valid authentication token header is sent
+get '/accounts/1' do
+  if env['HTTP_AUTHORIZATION'] == 'Bearer secret token!'
+    [200, { 'Content-Type' => 'application/json' }, ['{ "account": { "id": 1, "login": "letme", "name": "Some Person"} }']]
+  else
+    [401, {}, ['']]
+  end
+end
+
+# session creation endpoint with additional authenticated user
+post '/v3/token' do
+  if params[:grant_type] == 'password' && params[:username] == 'letme' && params[:password] == 'in'
+    [200, { 'Content-Type' => 'application/json' }, ['{ "access_token": "secret token!", "account_id": 1 }']]
+  else
+    [422, { 'Content-Type' => 'application/json' }, ['{ "error": "invalid_grant" }']]
+  end
+end
+
+# session creation endpoint with custom response
+put '/v4/token' do
+  payload = request.body.read
+  json    = JSON.parse(payload)
+  if json['SESSION']['USER_NAME'] == 'letme' && json['SESSION']['PASS'] == 'in'
+    [200, { 'Content-Type' => 'application/json' }, ['{ "SESSION": { "TOKEN": "secret token!", "AUTHENTICATED_USER": { "ID": 1 } } }']]
+  else
+    [422, { 'Content-Type' => 'application/json' }, ['{ "ERROR": { "MSG": "invalid credentials" } }']]
+  end
+end
+
+delete '/v4/token' do
+  [200, {}, []]
+end
+
+# callback for Facebook OAuth
+get '/7-external-oauth/callback' do
+  success = !params[:error]
+
+  # when login succeeded, verify/exchange the token from the response here
+
+  # depending on whether the login succeeded, the template invokes the respective callbacks
+  # on its opening window with the respecitve data (session JSON or error object)
+  erb :oauth_callback_success, layout: false, locals: { success: success }
+end
+
+__END__
+
+@@ layout
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ember.SimpleAuth - examples</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
+    <script src="http://builds.emberjs.com/release/ember.js"></script>
+    <script src="ember-simple-auth.js"></script>
+  </head>
+  <body style="padding-top: 50px;">
+    <%= yield %>
+    <% unless request.path_info == '/' || request.path_info =~ /oauth\/callback/ %>
+      <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">&larr; back to examples list</a>
+        </div>
+      </nav>
+    <% end %>
+  </body>
+</html>
+
+@@ index
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="list-group">
+        <a href="/1-simple" class="list-group-item">
+          <h4 class="list-group-item-heading">Simple example</h4>
+          <p class="list-group-item-text">Simple example with only basic authnetication - no error handling, no data, no session account etc.</p>
+        </a>
+        <a href="/2-errors" class="list-group-item">
+          <h4 class="list-group-item-heading">Example with error handling</h4>
+          <p class="list-group-item-text">Simple example with error handling - still no data, no session account etc.</p>
+        </a>
+        <a href="/3-token-refresh" class="list-group-item">
+          <h4 class="list-group-item-heading">Example with token refresh</h4>
+          <p class="list-group-item-text">Simple example with error handling and automatic token refresh.</p>
+        </a>
+        <a href="/4-authenticated-account" class="list-group-item">
+          <h4 class="list-group-item-heading">Example with session account</h4>
+          <p class="list-group-item-text">Full-fledged example with error handling and a custom authenticator that also provides an authenticated account.</p>
+        </a>
+        <a href="/5-ember-data" class="list-group-item">
+          <h4 class="list-group-item-heading">Ember Data example</h4>
+          <p class="list-group-item-text">Example that uses ember-data.</p>
+        </a>
+        <a href="/6-custom-response" class="list-group-item">
+          <h4 class="list-group-item-heading">Custom Server example</h4>
+          <p class="list-group-item-text">An example with a server that is fully custom.</p>
+        </a>
+        <a href="/7-external-oauth" class="list-group-item">
+          <h4 class="list-group-item-heading">External OAuth example</h4>
+          <p class="list-group-item-text">Exampled where Facebook OAuth is used to authenticate users instead of credentials-based authentication.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  Ember.$(document).ready(function() {
+    Ember.SimpleAuth.Stores.Cookie.create().clear();
+    Ember.SimpleAuth.Stores.LocalStorage.create().clear();
+  });
+</script>
+
+@@ oauth_callback_error
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="alert alert-danger">
+        <strong>Login failed:</strong> <%= error_message %>
+      </div>
+    </div>
+  </div>
+</div>
+
+@@ oauth_callback_success
+<html>
+<head>
+</head>
+<body>
+  <script>
+    <% if success %>
+      window.opener.App.ExternalConnector.trigger('externalAuthenticationSucceeded', { access_token: 'secret token!' });
+    <% else %>
+      window.opener.App.ExternalConnector.trigger('externalAuthenticationFailed', 'access not granted!');
+    <% end %>
+    window.close();
+  </script>
+</body>
+</html>
