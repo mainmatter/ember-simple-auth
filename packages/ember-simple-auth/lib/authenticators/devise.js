@@ -10,7 +10,7 @@
   @extends Ember.SimpleAuth.Authenticators.Base
 */
 
-Ember.SimpleAuth.Authenticators.DeviseAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+Ember.SimpleAuth.Authenticators.Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   /**
     The endpoint on the server the authenticator acquires the access token
     from.
