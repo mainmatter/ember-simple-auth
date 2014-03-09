@@ -1,4 +1,16 @@
-var DeviseAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+'use strict';
+
+/**
+  Authenticator for use with Devise.
+
+  This authenticator supports Devise's rememberable module.
+
+  @class Devise
+  @namespace Ember.SimpleAuth.Authenticators
+  @extends Ember.SimpleAuth.Authenticators.Base
+*/
+
+Ember.SimpleAuth.Authenticators.DeviseAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
   /**
     The endpoint on the server the authenticator acquires the access token
     from.
