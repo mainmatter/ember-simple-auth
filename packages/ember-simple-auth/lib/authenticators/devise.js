@@ -25,7 +25,11 @@ Ember.SimpleAuth.Authenticators.Devise = Ember.SimpleAuth.Authenticators.Base.ex
     Restores the session from a set of session properties; __will return a
     resolving promise when there's a non-empty `remember_token` in the
     `properties`__ and a rejecting promise otherwise.
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 672ddb856aedde0627f1d62949c8940f58f31a70
     @method restore
     @param {Object} properties The properties to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
@@ -37,7 +41,11 @@ Ember.SimpleAuth.Authenticators.Devise = Ember.SimpleAuth.Authenticators.Base.ex
         var data = {
           remember_token: properties.remember_token
         };
+<<<<<<< HEAD
         return _this.makeRequest(data, resolve, reject);
+=======
+        return _this.makeRequest(resolve, data);
+>>>>>>> 672ddb856aedde0627f1d62949c8940f58f31a70
       } else {
         return reject();
       }
@@ -65,7 +73,11 @@ Ember.SimpleAuth.Authenticators.Devise = Ember.SimpleAuth.Authenticators.Base.ex
         password: credentials.password,
         remember_me: credentials.remember_me
       };
+<<<<<<< HEAD
       return _this.makeRequest(data, resolve, reject);
+=======
+      return _this.makeRequest(resolve, data);
+>>>>>>> 672ddb856aedde0627f1d62949c8940f58f31a70
     });
   },
 
@@ -97,7 +109,11 @@ Ember.SimpleAuth.Authenticators.Devise = Ember.SimpleAuth.Authenticators.Base.ex
     @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
     @protected
   */
+<<<<<<< HEAD
   makeRequest: function(data, resolve, reject) {
+=======
+  makeRequest: function(resolve, data) {
+>>>>>>> 672ddb856aedde0627f1d62949c8940f58f31a70
     return Ember.$.ajax({
       url: this.serverTokenEndpoint,
       type: "POST",
