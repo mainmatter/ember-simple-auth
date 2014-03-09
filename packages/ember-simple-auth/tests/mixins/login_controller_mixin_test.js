@@ -31,19 +31,31 @@ module('Ember.SimpleAuth.LoginControllerMixin', {
     testController = TestController.create();
     sessionMock    = SessionMock.create();
     testController.set('session', sessionMock);
+<<<<<<< HEAD
+    testController.setProperties({ identification: 'identification', password: 'password', remember_me: false });
+=======
     testController.setProperties({ identification: 'identification', password: 'password' });
+>>>>>>> 672ddb856aedde0627f1d62949c8940f58f31a70
   }
 });
 
 test('authenticates the session', function() {
   Ember.run(function() {
+<<<<<<< HEAD
+    testController.setProperties({ identification: 'identification', password: 'password', remember_me: false });
+=======
     testController.setProperties({ identification: 'identification', password: 'password' });
+>>>>>>> 672ddb856aedde0627f1d62949c8940f58f31a70
     testController.send('authenticate');
   });
 
   ok(sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.LoginControllerMixin authenticates the session when authentication is triggered.');
   equal(sessionMock.invokedAuthenticateWith.authenticator, 'ember-simple-auth:authenticators:oauth2', 'Ember.SimpleAuth.LoginControllerMixin authenticates the session with the correct authenticator.');
+<<<<<<< HEAD
+  deepEqual(sessionMock.invokedAuthenticateWith.options, { identification: 'identification', password: 'password', remember_me: false }, 'Ember.SimpleAuth.LoginControllerMixin authenticates the session with identification, password, and remember_me.');
+=======
   deepEqual(sessionMock.invokedAuthenticateWith.options, { identification: 'identification', password: 'password' }, 'Ember.SimpleAuth.LoginControllerMixin authenticates the session with identification and password.');
+>>>>>>> 672ddb856aedde0627f1d62949c8940f58f31a70
 });
 
 test('does not authenticate the session when identification or password are empty', function() {
