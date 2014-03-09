@@ -99,8 +99,4 @@ test('invalidates the session', function() {
   });
 
   ok(resolved, 'Ember.SimpleAuth.Authenticators.Devise returns a resolving promise for session invalidation.');
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> 672ddb856aedde0627f1d62949c8940f58f31a70
