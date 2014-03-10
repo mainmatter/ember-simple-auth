@@ -17,7 +17,7 @@ Ember.SimpleAuth.Authenticators.Devise = Ember.SimpleAuth.Authenticators.Base.ex
 
     @property serverTokenEndpoint
     @type String
-    @default '/token'
+    @default '/users/sign_in'
   */
   serverTokenEndpoint: '/users/sign_in',
   
