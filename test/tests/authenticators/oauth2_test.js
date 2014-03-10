@@ -22,6 +22,15 @@ describe('Authenticators.OAuth2', function() {
           });
         });
 
+        describe('when the data includes an expiration time in the past', function() {
+          it('returns a rejecting promise', function(done) {
+            this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(null, function() {
+              expect(true).to.be.true;
+              done();
+            });
+          });
+        });
+
         describe('when automatic token refreshing is enabled', function() {
           beforeEach(function() {
             sinon.spy(Ember.run, 'later');
