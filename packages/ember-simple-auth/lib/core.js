@@ -101,6 +101,7 @@ Ember.SimpleAuth = Ember.Namespace.create({
     });
 
     container.register('ember-simple-auth:authenticators:oauth2', Ember.SimpleAuth.Authenticators.OAuth2);
+    container.register('ember-simple-auth:authenticators:devise', Ember.SimpleAuth.Authenticators.Devise);
 
     var store      = (options.store || Ember.SimpleAuth.Stores.LocalStorage).create();
     var session    = Ember.SimpleAuth.Session.create({ store: store, container: container });

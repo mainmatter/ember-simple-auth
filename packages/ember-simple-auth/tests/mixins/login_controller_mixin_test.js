@@ -31,19 +31,19 @@ module('Ember.SimpleAuth.LoginControllerMixin', {
     testController = TestController.create();
     sessionMock    = SessionMock.create();
     testController.set('session', sessionMock);
-    testController.setProperties({ identification: 'identification', password: 'password' });
+    testController.setProperties({ identification: 'identification', password: 'password', remember_me: false });
   }
 });
 
 test('authenticates the session', function() {
   Ember.run(function() {
-    testController.setProperties({ identification: 'identification', password: 'password' });
+    testController.setProperties({ identification: 'identification', password: 'password', remember_me: false });
     testController.send('authenticate');
   });
 
   ok(sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.LoginControllerMixin authenticates the session when authentication is triggered.');
   equal(sessionMock.invokedAuthenticateWith.authenticator, 'ember-simple-auth:authenticators:oauth2', 'Ember.SimpleAuth.LoginControllerMixin authenticates the session with the correct authenticator.');
-  deepEqual(sessionMock.invokedAuthenticateWith.options, { identification: 'identification', password: 'password' }, 'Ember.SimpleAuth.LoginControllerMixin authenticates the session with identification and password.');
+  deepEqual(sessionMock.invokedAuthenticateWith.options, { identification: 'identification', password: 'password', remember_me: false }, 'Ember.SimpleAuth.LoginControllerMixin authenticates the session with identification, password, and remember_me.');
 });
 
 test('does not authenticate the session when identification or password are empty', function() {
