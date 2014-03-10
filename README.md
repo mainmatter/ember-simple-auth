@@ -194,8 +194,6 @@ authenticator.
 
 * oauth2orize: https://github.com/jaredhanson/oauth2orize
 
-<<<<<<< HEAD
-=======
 ##### Using the Devise Authenticator
 
 In order to use the Devise authenticator the application needs to have a
@@ -234,7 +232,7 @@ App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMi
 The mixin will by default use the OAuth 2.0 authenticator to authenticate the
 session, so be sure to set the authenticator to `ember-simple-auth:authenticators:devise`.
 
->>>>>>> 672ddb856aedde0627f1d62949c8940f58f31a70
+
 #### Implementing a custom Authenticator
 
 While Ember.SimpleAuth only comes with the OAuth 2.0 authenticator, it is
