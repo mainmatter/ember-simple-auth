@@ -1,3 +1,12 @@
+# 0.2.0
+
+* __new root module name: EmberSimpleAuth__
+* the library is now built with grunt, uses ES6 modules and is tested with mocha - all Ruby dependencies have been removed
+* added warnings when credentials/tokens etc. are transmitted via insecure connections (HTTP)
+* the OAuth 2.0 authenticator rejects restoration when the access token is known to have expired, see #102
+* EmberSimpleAuth now reloads the application's root page on logout so all sensitive in-memory data etc. gets cleared
+* the store is not updated unnecessarily anymore, see #97
+
 # 0.1.3
 
 * fixed synchronization of stores, see #91
