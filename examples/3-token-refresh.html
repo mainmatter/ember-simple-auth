@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>EmberSimpleAuth - examples</title>
+    <title>Ember.SimpleAuth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -89,14 +89,14 @@
     </script>
 
     <script type="text/javascript">
-      // setup EmberSimpleAuth in an initializer
+      // setup Ember.SimpleAuth in an initializer
       Ember.Application.initializer({
         name: 'authentication',
         initialize: function(container, application) {
-          EmberSimpleAuth.Authenticators.OAuth2.reopen({
+          Ember.SimpleAuth.Authenticators.OAuth2.reopen({
             serverTokenEndpoint: '/v2/token'
           });
-          EmberSimpleAuth.setup(container, application);
+          Ember.SimpleAuth.setup(container, application);
         }
       });
 
@@ -114,8 +114,8 @@
       });
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(EmberSimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(EmberSimpleAuth.LoginControllerMixin);
+      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
+      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
 
       // clear a potentially stale error message from previous login attempts
       App.authenticationRoute = Ember.Route.extend({
@@ -125,7 +125,7 @@
       });
 
       // make this route protected
-      App.ProtectedRoute = Ember.Route.extend(EmberSimpleAuth.AuthenticatedRouteMixin);
+      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
     </script>
   </body>
 </html>

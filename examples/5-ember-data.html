@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>EmberSimpleAuth - examples</title>
+    <title>Ember.SimpleAuth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -97,11 +97,11 @@
     </script>
 
     <script type="text/javascript">
-      // setup EmberSimpleAuth in an initializer
+      // setup Ember.SimpleAuth in an initializer
       Ember.Application.initializer({
         name: 'authentication',
         initialize: function(container, application) {
-          EmberSimpleAuth.setup(container, application);
+          Ember.SimpleAuth.setup(container, application);
         }
       });
 
@@ -125,14 +125,14 @@
       });
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(EmberSimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(EmberSimpleAuth.LoginControllerMixin);
+      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
+      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
 
       // make these routes protected
-      App.ProtectedRoute = Ember.Route.extend(EmberSimpleAuth.AuthenticatedRouteMixin);
-      App.PostsRoute     = Ember.Route.extend(EmberSimpleAuth.AuthenticatedRouteMixin, {
+      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+      App.PostsRoute     = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         model: function() {
-          // EmberSimpleAuth adds the "Authorization" header to this AJAX request automatically
+          // Ember.SimpleAuth adds the "Authorization" header to this AJAX request automatically
           return this.get('store').findAll('post');
         }
       });

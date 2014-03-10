@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>EmberSimpleAuth - examples</title>
+    <title>Ember.SimpleAuth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -62,13 +62,13 @@
     </script>
 
     <script type="text/javascript">
-      // setup EmberSimpleAuth in an initializer
+      // setup Ember.SimpleAuth in an initializer
       Ember.Application.initializer({
         name: 'authentication',
         initialize: function(container, application) {
           // register the custom authenticator so the session can find it
           container.register('app:authenticators:custom', App.ExternalAuthenticator);
-          EmberSimpleAuth.setup(container, application);
+          Ember.SimpleAuth.setup(container, application);
         }
       });
 
@@ -84,7 +84,7 @@
       });
 
       // the custom authenticator that initiates the authentication process with Facebook
-      App.ExternalAuthenticator = EmberSimpleAuth.Authenticators.Base.extend({
+      App.ExternalAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
         restore: function(properties) {
           var _this = this;
           return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -118,7 +118,7 @@
       App.ExternalConnector = Ember.Object.createWithMixins(Ember.Evented);
 
       // use the provided mixin in the application route
-      App.ApplicationRoute = Ember.Route.extend(EmberSimpleAuth.ApplicationRouteMixin, {
+      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
         actions: {
           // override authenticateSession to instead of transitioning to a login route start authentication directly
           authenticateSession: function() {
@@ -129,7 +129,7 @@
       });
 
       // make this route protected
-      App.ProtectedRoute = Ember.Route.extend(EmberSimpleAuth.AuthenticatedRouteMixin);
+      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
     </script>
   </body>
 </html>

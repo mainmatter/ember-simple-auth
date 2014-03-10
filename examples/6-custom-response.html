@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>EmberSimpleAuth - examples</title>
+    <title>Ember.SimpleAuth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -88,12 +88,12 @@
     </script>
 
     <script type="text/javascript">
-      // setup EmberSimpleAuth in an initializer
+      // setup Ember.SimpleAuth in an initializer
       Ember.Application.initializer({
         name: 'authentication',
         initialize: function(container, application) {
           // customize the session so that it handles the additional authenticated account
-          EmberSimpleAuth.Session.reopen({
+          Ember.SimpleAuth.Session.reopen({
             account: function() {
               var accountId = this.get('account_id');
               if (!Ember.isEmpty(accountId)) {
@@ -103,7 +103,7 @@
           });
           // register the custom authenticator so the session can find it
           container.register('app:authenticators:custom', App.CustomAuthenticator);
-          EmberSimpleAuth.setup(container, application);
+          Ember.SimpleAuth.setup(container, application);
         }
       });
 
@@ -127,7 +127,7 @@
 
       // the custom authenticator that handles the authenticated account (make sure to mix in
       // Ember.Evented as the session will subscribe to the authenticator's "'ember-simple-auth:session-updated'" event)
-      App.CustomAuthenticator = EmberSimpleAuth.Authenticators.OAuth2.extend(Ember.Evented, {
+      App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.OAuth2.extend(Ember.Evented, {
         tokenEndpoint: '/v4/token',
 
         authenticate: function(credentials) {
@@ -163,8 +163,8 @@
       });
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(EmberSimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(EmberSimpleAuth.LoginControllerMixin, {
+      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
+      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
         authenticatorFactory: 'app:authenticators:custom',
         actions: {
           // display an error when loggign in fails
@@ -182,7 +182,7 @@
       });
 
       // make these route protected
-      App.ProtectedRoute = Ember.Route.extend(EmberSimpleAuth.AuthenticatedRouteMixin);
+      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
     </script>
   </body>
 </html>
