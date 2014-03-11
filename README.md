@@ -12,13 +12,9 @@ authorization mechanisms.
 
 ## What does it do?
 
-* it __manages the session state; logs the user in and out__
-* it __enforces authentication__ for defined routes
-* it __adds authorization info to AJAX requests__ so the server can verify
-  identity
-* it __handles authorization errors__
-* it __persists the session so it survives page reloads__
-* it keeps the authentication state in __sync over multiple tabs or windows__
+* it __manages session state__, synchronizes it across tabs/windows
+* it __enforces authentication__ on defined routes
+* it __authorizes server requests__
 * it provides a __clean customization API__ and can __work with any backend__
 
 ## How does it work?
