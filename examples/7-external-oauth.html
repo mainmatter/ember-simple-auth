@@ -7,6 +7,7 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
     <script src="http://builds.emberjs.com/release/ember.js"></script>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
     <script src="../tmp/ember-simple-auth.js"></script>
   </head>
   <body style="padding-top: 50px;">
@@ -62,12 +63,15 @@
     </script>
 
     <script type="text/javascript">
+      // setup Facebook SDK
+      FB.init({ appId: '631252926924840' });
+
       // setup Ember.SimpleAuth in an initializer
       Ember.Application.initializer({
         name: 'authentication',
         initialize: function(container, application) {
-          // register the custom authenticator so the session can find it
-          container.register('app:authenticators:custom', App.ExternalAuthenticator);
+          // register the Facebook authenticator so the session can find it
+          container.register('app:authenticators:facebook', App.FacebookAuthenticator);
           Ember.SimpleAuth.setup(container, application);
         }
       });
@@ -84,11 +88,11 @@
       });
 
       // the custom authenticator that initiates the authentication process with Facebook
-      App.ExternalAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+      App.FacebookAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
         restore: function(properties) {
           var _this = this;
           return new Ember.RSVP.Promise(function(resolve, reject) {
-            if (!Ember.isEmpty(properties.access_token)) {
+            if (!Ember.isEmpty(properties.accessToken)) {
               resolve(properties);
             } else {
               reject();
@@ -97,25 +101,42 @@
         },
         authenticate: function() {
           return new Ember.RSVP.Promise(function(resolve, reject) {
-            App.ExternalConnector.one('externalAuthenticationSucceeded', function(properties) {
-              Ember.run(function() { resolve(properties); });
+            FB.login(function(fbResponse) {
+              if (fbResponse.authResponse) {
+                Ember.$.ajax({
+                  url:  '/v5/validate-facebook-token',
+                  type: 'PUT',
+                  data: { accessToken: fbResponse.authResponse.accessToken }
+                }).then(function(response) {
+                  Ember.run(function() {
+                    resolve({ accessToken: fbResponse.authResponse.accessToken });
+                  });
+                }, function(xhr, status, error) {
+                  Ember.run(function() {
+                    reject(xhr.responseText);
+                  });
+                });
+              } else {
+                reject();
+              }
             });
-            App.ExternalConnector.one('externalAuthenticationFailed', function(error) {
-              Ember.run(function() { reject(error); });
+          });
+        },
+        invalidate: function() {
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            FB.logout(function(response) {
+              Ember.$.ajax({
+                url:  '/v5/invalidate-facebook-token',
+                type: 'PUT'
+              }).then(function(response) {
+                Ember.run(resolve);
+              }, function(xhr, status, error) {
+                Ember.run(reject);
+              });
             });
-            // open a new window that displays the Facebook login dialog; see the callback handler on the server side
-            // (get '/7-external-oauth/callback') in the runner file
-            var authWindow = window.open(
-              'https://www.facebook.com/dialog/oauth?client_id=631252926924840&redirect_uri=' + window.location.origin + '/7-external-oauth/callback',
-              '_blank',
-              'menubar=no,status=no,height=400,width=800'
-            );
           });
         }
       });
-      // this is used as an interface to the external window and will receive any events triggered from
-      // that window
-      App.ExternalConnector = Ember.Object.createWithMixins(Ember.Evented);
 
       // use the provided mixin in the application route
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
@@ -123,7 +144,7 @@
           // override authenticateSession to instead of transitioning to a login route start authentication directly
           authenticateSession: function() {
             var _this = this;
-            this.get('session').authenticate('app:authenticators:custom', {});
+            this.get('session').authenticate('app:authenticators:facebook', {});
           }
         }
       });

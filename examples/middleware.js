@@ -88,26 +88,12 @@ module.exports = function(request, response, next) {
       next();
     }
 
-  // callback for FAcebook OAuth integration
-  } else if (request.url.match(/^\/7-external-oauth\/callback.*/) && request.method === 'GET') {
-    var callbackCode;
-    if (!!request.query.error) {
-      callbackCode = "window.opener.App.ExternalConnector.trigger('externalAuthenticationFailed', 'access not granted!');";
-    } else {
-      callbackCode = "window.opener.App.ExternalConnector.trigger('externalAuthenticationSucceeded', { access_token: 'secret token!' }); window.close();";
-    }
-    response.statusCode = 200;
-    response.setHeader('Content-Type', 'text/html');
-    response.end(' \
-      <html> \
-        <head></head> \
-        <body> \
-          <script> \
-            ' + callbackCode + ' \
-          </script> \
-        </body> \
-      </html> \
-    ');
+  // validate the Facebook token sent from the client
+  } else if (request.url === '/v5/validate-facebook-token' && request.method === 'PUT') {
+    success('{}');
+  // if the Facebook token was stored in a DB or so it would be deleted here
+  } else if (request.url === '/v5/invalidate-facebook-token' && request.method === 'PUT') {
+    success('{}');
 
   } else {
     next();
