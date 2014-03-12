@@ -106,7 +106,7 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      files: ['lib/**', 'test/**/*'],
+      files: ['packages/ember-simple-auth/lib/**', 'packages/ember-simple-auth/test/**/*'],
       tasks: ['build_tests', 'lint']
     },
 
@@ -115,7 +115,7 @@ module.exports = function(grunt) {
         type: 'amd',
         files: [{
           expand: true,
-          cwd: 'lib/',
+          cwd: 'packages/ember-simple-auth/lib/',
           src: ['**/*.js'],
           dest: 'tmp/'
         }]
@@ -124,7 +124,7 @@ module.exports = function(grunt) {
         type: 'amd',
         files: [{
           expand: true,
-          cwd: 'test/',
+          cwd: 'packages/ember-simple-auth/test/',
           src: ['test_helpers.js', 'tests.js', 'tests/**/*.js'],
           dest: 'tmp/'
         }]
@@ -138,11 +138,11 @@ module.exports = function(grunt) {
       },
       browser: {
         src: [
-          'wrap/browser.start',
+          'packages/ember-simple-auth/wrap/browser.start',
           'vendor/loader.js',
           'tmp/<%= pkg.name %>.js',
           'tmp/<%= pkg.name %>/**/*.js',
-          'wrap/browser.end'
+          'packages/ember-simple-auth/wrap/browser.end'
         ],
         dest: 'tmp/<%= pkg.name %>.js'
       },
@@ -190,16 +190,16 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      library: 'lib/**/*.js',
+      library: 'packages/ember-simple-auth/lib/**/*.js',
       options: {
         jshintrc: '.jshintrc'
       },
       tests: {
         files: {
-          src: ['test/tests/**/*.js']
+          src: ['packages/ember-simple-auth/test/tests/**/*.js']
         },
         options: {
-          jshintrc: 'test/tests/.jshintrc'
+          jshintrc: 'packages/ember-simple-auth/test/tests/.jshintrc'
         }
       }
     },
@@ -211,10 +211,10 @@ module.exports = function(grunt) {
         src: [
           'docs/theme/**/*',
           'examples/**/*',
-          'lib/**/*',
-          'test/tests/**/*',
-          'test/lib/**/*',
-          'test/index.html',
+          'packages/ember-simple-auth/lib/**/*',
+          'packages/ember-simple-auth/test/tests/**/*',
+          'packages/ember-simple-auth/test/lib/**/*',
+          'packages/ember-simple-auth/test/index.html',
           'wrap/**/*'
         ],
         options: {
@@ -234,7 +234,7 @@ module.exports = function(grunt) {
           urls: function() {
             var bundle = process.env.BUNDLE || '';
             return [
-              'http://localhost:8000/test/index.html?' + bundle
+              'http://localhost:8000/packages/ember-simple-auth/test/index.html?' + bundle
             ]
           }()
         }
@@ -248,7 +248,7 @@ module.exports = function(grunt) {
         version: '<%= pkg.version %>',
         options: {
           parseOnly: true,
-          paths: 'lib',
+          paths: 'packages',
           outdir: 'tmp'
         }
       }
