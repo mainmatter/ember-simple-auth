@@ -115,7 +115,7 @@ module.exports = function(grunt) {
         type: 'amd',
         files: [{
           expand: true,
-          cwd: 'packages/ember-simple-auth/lib/',
+          cwd: 'packages/<%= pkg.name %>/lib/',
           src: ['**/*.js'],
           dest: 'tmp/'
         }]
@@ -124,7 +124,7 @@ module.exports = function(grunt) {
         type: 'amd',
         files: [{
           expand: true,
-          cwd: 'packages/ember-simple-auth/',
+          cwd: 'packages/<%= pkg.name %>/',
           src: ['tests/**/*.js'],
           dest: 'tmp/'
         }]
@@ -138,11 +138,11 @@ module.exports = function(grunt) {
       },
       browser: {
         src: [
-          'packages/ember-simple-auth/wrap/browser.start',
+          'packages/<%= pkg.name %>/wrap/browser.start',
           'vendor/loader.js',
           'tmp/<%= pkg.name %>.js',
           'tmp/<%= pkg.name %>/**/*.js',
-          'packages/ember-simple-auth/wrap/browser.end'
+          'packages/<%= pkg.name %>/wrap/browser.end'
         ],
         dest: 'tmp/<%= pkg.name %>.js'
       },
@@ -190,16 +190,16 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      library: 'packages/ember-simple-auth/lib/**/*.js',
+      library: 'packages/<%= pkg.name %>/lib/**/*.js',
       options: {
         jshintrc: '.jshintrc'
       },
       tests: {
         files: {
-          src: ['packages/ember-simple-auth/tests/**/*.js']
+          src: ['packages/<%= pkg.name %>/tests/**/*.js']
         },
         options: {
-          jshintrc: 'packages/ember-simple-auth/tests/.jshintrc'
+          jshintrc: 'packages/<%= pkg.name %>/tests/.jshintrc'
         }
       }
     },
