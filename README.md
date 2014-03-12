@@ -13,6 +13,7 @@ authorization mechanisms.
 ## What does it do?
 
 * it __manages session state__, synchronizes it across tabs/windows
+* it __authenticates users__ against backends, external providers etc.
 * it __enforces authentication__ on defined routes
 * it __authorizes server requests__
 * it provides a __clean customization API__ and can __work with any backend__
