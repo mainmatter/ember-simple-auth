@@ -46,10 +46,18 @@ module.exports = function(grunt) {
     'copy:docs'
   ]);
 
+  this.registerTask('copy:dist', 'Copies all distribution files to /dist', [
+    'copy:plain',
+    'copy:min',
+    'copy:amd'
+  ]);
+
   this.registerTask('examples', 'Runs the examples server', [
     'build',
     'connect:examples'
   ]);
+
+  var packages = grunt.file.expand({ filter: 'isDirectory', cwd: 'packages' }, '*');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -113,60 +121,101 @@ module.exports = function(grunt) {
     transpile: {
       amd: {
         type: 'amd',
-        files: [{
-          expand: true,
-          cwd: 'packages/<%= pkg.name %>/lib/',
-          src: ['**/*.js'],
-          dest: 'tmp/'
-        }]
+        files: packages.map(function(pkg) {
+          return {
+            expand: true,
+            cwd: 'packages/' + pkg + '/lib/',
+            src: ['**/*.js'],
+            dest: 'tmp/libs'
+          };
+        })
       },
       tests: {
         type: 'amd',
-        files: [{
-          expand: true,
-          cwd: 'packages/<%= pkg.name %>/',
-          src: ['tests/**/*.js'],
-          dest: 'tmp/'
-        }]
+        files: packages.map(function(pkg) {
+          return {
+            expand: true,
+            cwd: 'packages/' + pkg,
+            src: ['tests/**/*.js'],
+            dest: 'tmp/tests/' + pkg
+          };
+        })
       }
     },
 
     concat: {
       amd: {
-        src: ['tmp/<%= pkg.name %>.js', 'tmp/<%= pkg.name %>/**/*.js'],
-        dest: 'tmp/<%= pkg.name %>.amd.js'
+        files: (function() {
+          var files = {};
+          packages.forEach(function(pkg) {
+            files['tmp/' + pkg + '.amd.js'] = ['tmp/libs/' + pkg + '.js', 'tmp/libs/' + pkg + '/**/*.js'];
+          });
+          return files;
+        })()
       },
       browser: {
-        src: [
-          'packages/<%= pkg.name %>/wrap/browser.start',
-          'vendor/loader.js',
-          'tmp/<%= pkg.name %>.js',
-          'tmp/<%= pkg.name %>/**/*.js',
-          'packages/<%= pkg.name %>/wrap/browser.end'
-        ],
-        dest: 'tmp/<%= pkg.name %>.js'
+        files: (function() {
+          var files = {};
+          packages.forEach(function(pkg) {
+            files['tmp/' + pkg + '.js'] = ['packages/' + pkg + '/wrap/browser.start', 'vendor/loader.js', 'tmp/libs/' + pkg + '.js', 'tmp/libs/' + pkg + '/**/*.js', 'packages/' + pkg + '/wrap/browser.end'];
+          });
+          return files;
+        })()
       },
       tests: {
-        src: ['tmp/tests/**/*.js'],
-        dest: 'tmp/<%= pkg.name %>-tests.amd.js'
+        files: (function() {
+          var files = {};
+          packages.forEach(function(pkg) {
+            files['tmp/' + pkg + '-tests.amd.js'] = ['tmp/tests/' + pkg + '/**/*.js'];
+          });
+          return files;
+        })()
+      }
+    },
+
+    uglify: {
+      library: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg + '.amd.js'],
+            dest: 'tmp/' + pkg + '.amd.min.js'
+          };
+        })
+      },
+      browser: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg + '.js'],
+            dest: 'tmp/' + pkg + '.min.js'
+          };
+        })
       }
     },
 
     copy: {
-      dist: {
-        files: [
-          {
-            src: ['tmp/<%= pkg.name %>.js'],
-            dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
-          },
-          {
-            src: ['tmp/<%= pkg.name %>.min.js'],
-            dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.min.js'
-          },{
-            src: ['tmp/<%= pkg.name %>.amd.min.js'],
-            dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.amd.min.js'
-          }
-        ]
+      plain: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg + '.js'],
+            dest: 'dist/' + pkg + '-<%= pkg.version %>.js'
+          };
+        })
+      },
+      min: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg + '.min.js'],
+            dest: 'dist/' + pkg + '-<%= pkg.version %>.min.js'
+          };
+        })
+      },
+      amd: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg + '.amd.min.js'],
+            dest: 'dist/' + pkg + '-<%= pkg.version %>.amd.min.js'
+          };
+        })
       },
       docs: {
         files: [{
@@ -176,30 +225,17 @@ module.exports = function(grunt) {
       }
     },
 
-    uglify: {
-      library: {
-        files: {
-          'tmp/<%= pkg.name %>.amd.min.js': ['tmp/<%= pkg.name %>.amd.js']
-        }
-      },
-      browser: {
-        files: {
-          'tmp/<%= pkg.name %>.min.js': ['tmp/<%= pkg.name %>.js']
-        }
-      }
-    },
-
     jshint: {
-      library: 'packages/<%= pkg.name %>/lib/**/*.js',
+      library: 'packages/*/lib/**/*.js',
       options: {
         jshintrc: '.jshintrc'
       },
       tests: {
         files: {
-          src: ['packages/<%= pkg.name %>/tests/**/*.js']
+          src: ['packages/*/tests/**/*.js']
         },
         options: {
-          jshintrc: 'packages/<%= pkg.name %>/tests/.jshintrc'
+          jshintrc: '.jshintrc-tests'
         }
       }
     },

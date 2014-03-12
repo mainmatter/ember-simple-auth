@@ -20,7 +20,7 @@
   <script type="text/javascript">
     Ember.Logger.warn = Ember.K;
     for (var key in requireModule.registry) {
-      if (/^tests\//.test(key)) requireModule(key);
+      if (/^\/tests\//.test(key)) requireModule(key);
     }
 
     var expect = chai.expect;
