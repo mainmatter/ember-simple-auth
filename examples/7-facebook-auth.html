@@ -44,7 +44,7 @@
 
     <script type="text/x-handlebars" data-template-name="index">
       <div class="page-header">
-        <h1>External OAuth example</h1>
+        <h1>Facebook Auth example</h1>
       </div>
       {{#unless session.isAuthenticated}}
         <div class="alert alert-info">
@@ -79,7 +79,7 @@
       App = Ember.Application.create();
 
       App.Router.reopen({
-        rootURL: '/examples/7-external-oauth.html'
+        rootURL: '/examples/7-facebook-auth.html'
       });
 
       App.Router.map(function() {
@@ -101,23 +101,33 @@
         },
         authenticate: function() {
           return new Ember.RSVP.Promise(function(resolve, reject) {
-            FB.login(function(fbResponse) {
-              if (fbResponse.authResponse) {
-                Ember.$.ajax({
-                  url:  '/v5/validate-facebook-token',
-                  type: 'PUT',
-                  data: { accessToken: fbResponse.authResponse.accessToken }
-                }).then(function(response) {
-                  Ember.run(function() {
-                    resolve({ accessToken: fbResponse.authResponse.accessToken });
-                  });
-                }, function(xhr, status, error) {
-                  Ember.run(function() {
-                    reject(xhr.responseText);
-                  });
+            FB.getLoginStatus(function(fbResponse) {
+              if (fbResponse.status === 'connected') {
+                Ember.run(function() {
+                  resolve({ accessToken: fbResponse.authResponse.accessToken });
                 });
-              } else {
+              } else if (fbResponse.status === 'not_authorized') {
                 reject();
+              } else {
+                FB.login(function(fbResponse) {
+                  if (fbResponse.authResponse) {
+                    Ember.$.ajax({
+                      url:  '/v5/validate-facebook-token',
+                      type: 'PUT',
+                      data: { accessToken: fbResponse.authResponse.accessToken }
+                    }).then(function(response) {
+                      Ember.run(function() {
+                        resolve({ accessToken: fbResponse.authResponse.accessToken });
+                      });
+                    }, function(xhr, status, error) {
+                      Ember.run(function() {
+                        reject(xhr.responseText);
+                      });
+                    });
+                  } else {
+                    reject();
+                  }
+                });
               }
             });
           });
