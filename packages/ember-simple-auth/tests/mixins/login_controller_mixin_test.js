@@ -5,12 +5,9 @@ import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral'
 describe('LoginControllerMixin', function() {
   beforeEach(function() {
     this.session    = Session.create({ store: EphemeralStore.create() });
-    this.controller = Ember.Controller.extend(LoginControllerMixin).create({ session: this.session });
-  });
-
-  describe('#authenticator', function() {
-    it('defaults to "ember-simple-auth:authenticators:oauth2"', function() {
-      expect(this.controller.get('authenticatorFactory')).to.eql('ember-simple-auth:authenticators:oauth2');
+    this.controller = Ember.Controller.extend(LoginControllerMixin).create({
+      authenticatorFactory: 'authenticatorFactory',
+      session:              this.session
     });
   });
 
@@ -34,7 +31,7 @@ describe('LoginControllerMixin', function() {
         this.controller._actions.authenticate.apply(this.controller);
 
         expect(this.session.authenticate).to.have.been.calledWith(
-          'ember-simple-auth:authenticators:oauth2',
+          'authenticatorFactory',
           { identification: 'identification', password: 'password'
         });
       });

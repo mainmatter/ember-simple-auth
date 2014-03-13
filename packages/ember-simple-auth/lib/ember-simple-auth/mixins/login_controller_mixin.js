@@ -2,7 +2,6 @@ var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
 import { AuthenticationControllerMixin } from './authentication_controller_mixin';
-import { OAuth2 } from '../authenticators/oauth2';
 
 /**
   A mixin to use with the controller that handles the `authenticationRoute`
@@ -33,15 +32,6 @@ import { OAuth2 } from '../authenticators/oauth2';
   @extends Ember.SimpleAuth.AuthenticationControllerMixin
 */
 var LoginControllerMixin = Ember.Mixin.create(AuthenticationControllerMixin, {
-  /**
-    The authenticator factory used to authenticate the session.
-
-    @property authenticatorFactory
-    @type String
-    @default 'ember-simple-auth:authenticators:oauth2'
-  */
-  authenticatorFactory: 'ember-simple-auth:authenticators:oauth2',
-
   actions: {
     /**
       This action will authenticate the session with the configured

@@ -1,0 +1,2 @@
+global.Ember.SimpleAuth.OAuth = requireModule('ember-simple-auth-oauth');
+})((typeof global !== 'undefined') ? global : window);

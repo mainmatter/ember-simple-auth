@@ -1,6 +1,5 @@
 import { setup, Configuration } from 'ember-simple-auth/core';
-import { Authenticators } from 'ember-simple-auth/authenticators';
-import { Authorizers } from 'ember-simple-auth/authorizers';
+import { Authorizer } from 'ember-simple-auth/authorizer';
 import { Stores } from 'ember-simple-auth/stores';
 import { Session } from 'ember-simple-auth/session';
 
@@ -47,13 +46,6 @@ describe('setup', function() {
     expect(Configuration.applicationRootUrl).to.eql('rootURL');
   });
 
-  it('registers the OAuth2 authenticator with the container', function() {
-    sinon.spy(this.container, 'register');
-    setup(this.container, this.application);
-
-    expect(this.container.register).to.have.been.calledWith('ember-simple-auth:authenticators:oauth2', Authenticators.OAuth2);
-  });
-
   describe('the session instance', function() {
     beforeEach(function() {
       sinon.spy(this.container, 'register');
@@ -61,28 +53,28 @@ describe('setup', function() {
 
     it('uses the LocalStorage store by default', function() {
       setup(this.container, this.application);
-      var spyCall = this.container.register.getCall(1);
+      var spyCall = this.container.register.getCall(0);
 
       expect(spyCall.args[1].store.constructor).to.eql(Stores.LocalStorage);
     });
 
     it('uses a custom store if specified', function() {
       setup(this.container, this.application, { store: Stores.Ephemeral });
-      var spyCall = this.container.register.getCall(1);
+      var spyCall = this.container.register.getCall(0);
 
       expect(spyCall.args[1].store.constructor).to.eql(Stores.Ephemeral);
     });
 
     it("uses the app's container", function() {
       setup(this.container, this.application);
-      var spyCall = this.container.register.getCall(1);
+      var spyCall = this.container.register.getCall(0);
 
       expect(spyCall.args[1].container).to.eql(this.container);
     });
 
     it('is registered with the Ember container', function() {
       setup(this.container, this.application);
-      var spyCall = this.container.register.getCall(1);
+      var spyCall = this.container.register.getCall(0);
 
       expect(spyCall.args[0]).to.eql('ember-simple-auth:session:current');
       expect(spyCall.args[1].constructor).to.eql(Session);
@@ -102,21 +94,12 @@ describe('setup', function() {
   describe('the AJAX prefilter', function() {
     beforeEach(function() {
       this.authorizer = { authorize: function() {} };
+      sinon.stub(Authorizer, 'create').returns(this.authorizer);
       sinon.spy(this.authorizer, 'authorize');
-      sinon.stub(Authorizers.OAuth2, 'create').returns(this.authorizer);
     });
 
-    it('uses the OAuth2 authorizer by default', function() {
-      setup(this.container, this.application);
-      Ember.$.get(window.location);
-
-      expect(this.authorizer.authorize).to.have.been.calledOnce;
-    });
-
-    it('uses a custom authorizer if configured', function() {
-      var CustomAuthorizer = Authorizers.Base.extend();
-      sinon.stub(CustomAuthorizer, 'create').returns(this.authorizer);
-      setup(this.container, this.application, { authorizer: CustomAuthorizer });
+    it('uses the configured authorizer', function() {
+      setup(this.container, this.application, { authorizer: this.CustomAuthorizer });
       Ember.$.get(window.location);
 
       expect(this.authorizer.authorize).to.have.been.calledOnce;
@@ -129,7 +112,7 @@ describe('setup', function() {
       expect(this.authorizer.authorize).to.not.have.been.called;
     });
 
-    it('authorize requests going to a foreign origin if the origin is whitelisted', function() {
+    it('authorizes requests going to a foreign origin if the origin is whitelisted', function() {
       setup(this.container, this.application, { crossOriginWhitelist: ['http://other-domain.com', 'https://another-port.net:4567'] });
       Ember.$.get('http://other-domain.com/path/query=string');
 
@@ -145,7 +128,7 @@ describe('setup', function() {
     });
 
     afterEach(function() {
-      Authorizers.OAuth2.create.restore();
+      Authorizer.create.restore();
     });
   });
 });

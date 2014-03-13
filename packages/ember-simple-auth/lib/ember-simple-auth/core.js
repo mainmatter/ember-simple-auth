@@ -1,7 +1,6 @@
 import { Session } from './session';
-import { Authenticators } from './authenticators';
-import { Authorizers } from './authorizers';
 import { Stores } from './stores';
+import { Authorizer } from './authorizer';
 
 function extractLocationOrigin(location) {
   if (Ember.typeOf(location) === 'string') {
@@ -103,11 +102,9 @@ var setup = function(container, application, options) {
     return extractLocationOrigin(origin);
   });
 
-  container.register('ember-simple-auth:authenticators:oauth2', Authenticators.OAuth2);
-
   var store      = (options.store || Stores.LocalStorage).create();
   var session    = Session.create({ store: store, container: container });
-  var authorizer = (options.authorizer || Authorizers.OAuth2).create({ session: session });
+  var authorizer = (options.authorizer || Authorizer).create({ session: session });
 
   container.register('ember-simple-auth:session:current', session, { instantiate: false });
   Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {

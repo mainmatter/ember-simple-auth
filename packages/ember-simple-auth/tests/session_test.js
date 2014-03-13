@@ -1,12 +1,12 @@
 import { Session } from 'ember-simple-auth/session';
 import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
-import { Base as BaseAuthenticator } from 'ember-simple-auth/authenticators/base';
+import { Authenticator } from 'ember-simple-auth/authenticator';
 
 describe('Session', function() {
   beforeEach(function() {
     this.store         = EphemeralStore.create();
     this.container     = { lookup: function() {} };
-    this.authenticator = BaseAuthenticator.create();
+    this.authenticator = Authenticator.create();
     sinon.stub(this.container, 'lookup').returns(this.authenticator);
   });
 
