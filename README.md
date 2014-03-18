@@ -201,7 +201,7 @@ var CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    container.register('app:authenticators:custom', CustomAuthenticator);
+    container.register('authenticators:custom', CustomAuthenticator);
     Ember.SimpleAuth.setup(container, application);
   }
 });
@@ -213,7 +213,7 @@ application:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-  authenticatorFactory: 'app:authenticators:custom'
+  authenticatorFactory: 'authenticators:custom'
 });
 ```
 
@@ -225,7 +225,7 @@ to implement a custom solution:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationControllerMixin, {
-  authenticatorFactory: 'app:authenticators:custom',
+  authenticatorFactory: 'authenticators:custom',
   actions: {
     authenticate: function() {
       var options = …// some options that the authenticator uses
