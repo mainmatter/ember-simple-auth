@@ -106,7 +106,7 @@
             }.property('accountId')
           });
           // register the custom authenticator so the session can find it
-          container.register('app:authenticators:custom', App.CustomAuthenticator);
+          container.register('authenticators:custom', App.CustomAuthenticator);
           Ember.SimpleAuth.setup(container, application);
         }
       });
@@ -156,7 +156,7 @@
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
       App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'app:authenticators:custom'
+        authenticatorFactory: 'authenticators:custom'
       });
 
       // clear a potentially stale error message from previous login attempts
