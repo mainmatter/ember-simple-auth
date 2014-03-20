@@ -88,13 +88,6 @@ module.exports = function(request, response, next) {
       next();
     }
 
-  // validate the Facebook token sent from the client
-  } else if (request.url === '/v5/validate-facebook-token' && request.method === 'PUT') {
-    success('{}');
-  // if the Facebook token was stored in a DB or so it would be deleted here
-  } else if (request.url === '/v5/invalidate-facebook-token' && request.method === 'PUT') {
-    success('{}');
-
   } else {
     next();
   }

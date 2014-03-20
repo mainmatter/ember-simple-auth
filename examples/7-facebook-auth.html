@@ -110,18 +110,8 @@
               } else {
                 FB.login(function(fbResponse) {
                   if (fbResponse.authResponse) {
-                    Ember.$.ajax({
-                      url:  '/v5/validate-facebook-token',
-                      type: 'PUT',
-                      data: { accessToken: fbResponse.authResponse.accessToken }
-                    }).then(function(response) {
-                      Ember.run(function() {
-                        resolve({ accessToken: fbResponse.authResponse.accessToken });
-                      });
-                    }, function(xhr, status, error) {
-                      Ember.run(function() {
-                        reject(xhr.responseText);
-                      });
+                    Ember.run(function() {
+                      resolve({ accessToken: fbResponse.authResponse.accessToken });
                     });
                   } else {
                     reject();
@@ -134,14 +124,7 @@
         invalidate: function() {
           return new Ember.RSVP.Promise(function(resolve, reject) {
             FB.logout(function(response) {
-              Ember.$.ajax({
-                url:  '/v5/invalidate-facebook-token',
-                type: 'PUT'
-              }).then(function(response) {
-                Ember.run(resolve);
-              }, function(xhr, status, error) {
-                Ember.run(reject);
-              });
+              Ember.run(resolve);
             });
           });
         }
