@@ -29,7 +29,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      container.register('app:authenticators:custom', CustomAuthenticator);
+      container.register('authenticators:custom', CustomAuthenticator);
       Ember.SimpleAuth.setup(container, application);
     }
   });

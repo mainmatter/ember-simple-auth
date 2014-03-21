@@ -72,7 +72,7 @@ var ApplicationRouteMixin = Ember.Mixin.create({
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
         actions: {
           authenticateSession: function() {
-            this.get('session').authenticate('app:authenticators:custom', {});
+            this.get('session').authenticate('authenticators:custom', {});
           }
         }
       });

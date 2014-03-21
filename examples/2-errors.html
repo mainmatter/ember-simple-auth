@@ -131,22 +131,20 @@
 
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+      App.LoginRoute       = Ember.Route.extend({
+        // clear a potentially stale error message from previous login attempts
+        setupController: function(controller, model) {
+          controller.set('errorMessage', null);
+        },
         actions: {
           // display an error when authentication fails
           sessionAuthenticationFailed: function(error) {
             var message = JSON.parse(error).error;
-            this.set('errorMessage', message);
+            this.controller.set('errorMessage', message);
           }
         }
       });
-
-      // clear a potentially stale error message from previous login attempts
-      App.authenticationRoute = Ember.Route.extend({
-        setupController: function(controller, model) {
-          controller.set('errorMessage', null);
-        }
-      });
+      App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
 
       // make these routes protected
       App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);

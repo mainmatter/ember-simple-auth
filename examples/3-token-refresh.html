@@ -117,13 +117,6 @@
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
       App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
 
-      // clear a potentially stale error message from previous login attempts
-      App.authenticationRoute = Ember.Route.extend({
-        setupController: function(controller, model) {
-          controller.set('errorMessage', null);
-        }
-      });
-
       // make this route protected
       App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
     </script>
