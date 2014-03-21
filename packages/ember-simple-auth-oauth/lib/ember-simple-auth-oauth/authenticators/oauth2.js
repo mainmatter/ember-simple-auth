@@ -1,7 +1,7 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { isSecureUrl } from './utils/is_secure_url';
+import { isSecureUrl } from '../utils/is_secure_url';
 import { Authenticator as BaseAuthenticator } from 'ember-simple-auth/authenticator';
 
 /**
@@ -15,9 +15,9 @@ import { Authenticator as BaseAuthenticator } from 'ember-simple-auth/authentica
 
   @class OAuth2
   @namespace Authenticators
-  @extends Authenticator
+  @extends Base
 */
-var Authenticator = BaseAuthenticator.extend({
+var OAuth2 = BaseAuthenticator.extend({
   /**
     The endpoint on the server the authenticator acquires the access token
     from.
@@ -197,4 +197,4 @@ var Authenticator = BaseAuthenticator.extend({
   }
 });
 
-export { Authenticator };
+export { OAuth2 };

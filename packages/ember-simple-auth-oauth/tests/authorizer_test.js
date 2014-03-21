@@ -1,10 +1,10 @@
-import { Authorizer } from 'ember-simple-auth-oauth/authorizer';
+import { OAuth2 } from 'ember-simple-auth-oauth/authorizers/oauth2';
 import { Session } from 'ember-simple-auth/session';
 import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
 
-describe('Authorizer', function() {
+describe('OAuth2', function() {
   beforeEach(function() {
-    this.authorizer  = Authorizer.create();
+    this.authorizer  = OAuth2.create();
     this.request     = { setRequestHeader: function() {} };
     this.requestMock = sinon.mock(this.request);
     this.authorizer.set('session', Session.create({ store: EphemeralStore.create() }));

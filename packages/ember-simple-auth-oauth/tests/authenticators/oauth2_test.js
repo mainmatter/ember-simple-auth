@@ -1,8 +1,8 @@
-import { Authenticator } from 'ember-simple-auth-oauth/authenticator';
+import { OAuth2 } from 'ember-simple-auth-oauth/authenticators/oauth2';
 
-describe('Authenticator', function() {
+describe('OAuth2', function() {
   beforeEach(function() {
-    this.authenticator = Authenticator.create();
+    this.authenticator = OAuth2.create();
   });
 
   describe('#restore', function() {

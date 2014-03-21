@@ -1,7 +1,7 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { isSecureUrl } from './utils/is_secure_url';
+import { isSecureUrl } from '../utils/is_secure_url';
 import { Authorizer as BaseAuthorizer } from 'ember-simple-auth/authorizer';
 
 /**
@@ -12,9 +12,9 @@ import { Authorizer as BaseAuthorizer } from 'ember-simple-auth/authorizer';
 
   @class OAuth2
   @namespace Authorizers
-  @extends Authorizer
+  @extends Base
 */
-var Authorizer = BaseAuthorizer.extend({
+var OAuth2 = BaseAuthorizer.extend({
   /**
     Authorizes an XHR request by sending the `access_token` property from the
     session as a bearer token in the `Authorization` header:
@@ -37,4 +37,4 @@ var Authorizer = BaseAuthorizer.extend({
   }
 });
 
-export { Authorizer };
+export { OAuth2 };
