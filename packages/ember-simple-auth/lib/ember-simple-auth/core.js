@@ -28,6 +28,8 @@ function shouldAuthorizeRequest(url) {
   return crossOriginWhitelist.indexOf(urlOrigin) > -1 || urlOrigin === documentOrigin;
 }
 
+var extensionInitializers = [];
+
 /**
   Ember.SimpleAuth's configuration object.
 
@@ -66,11 +68,6 @@ var Configuration = {
     @type String
   */
   applicationRootUrl: null,
-};
-
-var extensionInitializers = [];
-var initializeExtension   = function(initializer) {
-  extensionInitializers.push(initializer);
 };
 
 /**
@@ -125,6 +122,21 @@ var setup = function(container, application, options) {
       authorizer.authorize(jqXHR, options);
     }
   });
+};
+
+/**
+  Registers an extension initializer to be invoked when
+  [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup) is invoked. __This is used
+  by extensions__ to the base Ember.SimpleAuth library that can e.g. register
+  factories with the Ember.js Dependency Injection container here etc.
+
+  @method initializeExtension
+  @namespace $mainModule
+  @static
+  @param {Function} initializer The initializer to be invoked when [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup) is invoked; this will receive the same arguments as [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
+*/
+var initializeExtension = function(initializer) {
+  extensionInitializers.push(initializer);
 };
 
 export { setup, initializeExtension, Configuration };
