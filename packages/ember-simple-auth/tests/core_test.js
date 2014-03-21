@@ -1,4 +1,4 @@
-import { setup, Configuration } from 'ember-simple-auth/core';
+import { setup, initializeExtension, Configuration } from 'ember-simple-auth/core';
 import { Base as Authorizer } from 'ember-simple-auth/authorizers/base';
 import { Stores } from 'ember-simple-auth/stores';
 import { Session } from 'ember-simple-auth/session';
@@ -26,6 +26,14 @@ describe('setup', function() {
     this.container = { register: function() {}, injection: function() {}, lookup: function() {} };
     sinon.stub(this.container, 'lookup').returns({ get: function() { return 'rootURL'; } });
     this.application = {};
+  });
+
+  it('calls all registered extension initializers', function() {
+    var initializer = sinon.spy();
+    initializeExtension(initializer);
+    setup(this.container, this.application, {});
+
+    expect(initializer.withArgs(this.container, this.application, {})).to.have.been.calledOnce;
   });
 
   it('sets authenticationRoute', function() {

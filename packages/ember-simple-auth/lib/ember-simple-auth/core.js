@@ -68,6 +68,11 @@ var Configuration = {
   applicationRootUrl: null,
 };
 
+var extensionInitializers = [];
+var initializeExtension   = function(initializer) {
+  extensionInitializers.push(initializer);
+};
+
 /**
   Sets up Ember.SimpleAuth for the application; this method __should be invoked
   in a custom initializer__ like this:
@@ -94,6 +99,10 @@ var Configuration = {
     @param {Object} [options.store] The store _class_ to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.LocalStorage`
 **/
 var setup = function(container, application, options) {
+  extensionInitializers.forEach(function(initializer) {
+    initializer(container, application, options);
+  });
+
   options                                = options || {};
   Configuration.routeAfterAuthentication = options.routeAfterAuthentication || Configuration.routeAfterAuthentication;
   Configuration.authenticationRoute      = options.authenticationRoute || Configuration.authenticationRoute;
@@ -118,4 +127,4 @@ var setup = function(container, application, options) {
   });
 };
 
-export { setup, Configuration };
+export { setup, initializeExtension, Configuration };
