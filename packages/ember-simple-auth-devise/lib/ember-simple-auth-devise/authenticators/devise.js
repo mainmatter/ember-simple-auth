@@ -7,8 +7,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   This authenticator supports Devise's rememberable module.
 
   @class Devise
-  @namespace Ember.SimpleAuth.Authenticators
-  @extends Ember.SimpleAuth.Authenticators.Base
+  @namespace Authenticators
+  @extends Base
 */
 
 var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
