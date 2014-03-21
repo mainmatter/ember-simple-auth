@@ -1,4 +1,4 @@
-import { setup, Configuration } from './ember-simple-auth/core';
+import { setup, initializeExtension, Configuration } from './ember-simple-auth/core';
 import { Session } from './ember-simple-auth/session';
 import { Authenticators } from './ember-simple-auth/authenticators';
 import { Authorizers } from './ember-simple-auth/authorizers';
@@ -14,4 +14,4 @@ import { LoginControllerMixin } from './ember-simple-auth/mixins/login_controlle
   @module Ember.SimpleAuth
 */
 
-export { setup, Configuration, Session, Authenticators, Authorizers, Stores, ApplicationRouteMixin, AuthenticatedRouteMixin, AuthenticationControllerMixin, LoginControllerMixin };
+export { setup, initializeExtension, Configuration, Session, Authenticators, Authorizers, Stores, ApplicationRouteMixin, AuthenticatedRouteMixin, AuthenticationControllerMixin, LoginControllerMixin };

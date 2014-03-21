@@ -2,4 +2,8 @@ var oauth2 = requireModule('ember-simple-auth-oauth2');
 
 global.Ember.SimpleAuth.Authenticators.OAuth2 = oauth2.Authenticator;
 global.Ember.SimpleAuth.Authorizers.OAuth2    = oauth2.Authorizer;
+
+Ember.SimpleAuth.initializeExtension(function(container, application, options) {
+  container.register('authenticators:oauth2', Ember.SimpleAuth.Authenticators.OAuth2);
+});
 })((typeof global !== 'undefined') ? global : window);
