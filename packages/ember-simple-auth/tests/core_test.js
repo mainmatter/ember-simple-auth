@@ -29,11 +29,14 @@ describe('setup', function() {
   });
 
   it('calls all registered extension initializers', function() {
-    var initializer = sinon.spy();
-    initializeExtension(initializer);
+    var initializer1 = sinon.spy();
+    var initializer2 = sinon.spy();
+    initializeExtension(initializer1);
+    initializeExtension(initializer2);
     setup(this.container, this.application, {});
 
-    expect(initializer.withArgs(this.container, this.application, {})).to.have.been.calledOnce;
+    expect(initializer1.withArgs(this.container, this.application, {})).to.have.been.calledOnce;
+    expect(initializer2.withArgs(this.container, this.application, {})).to.have.been.calledOnce;
   });
 
   it('sets authenticationRoute', function() {
