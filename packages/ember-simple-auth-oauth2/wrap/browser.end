@@ -1,2 +1,5 @@
-global.Ember.SimpleAuth.OAuth = requireModule('ember-simple-auth-oauth2');
+var oauth2 = requireModule('ember-simple-auth-oauth2');
+
+global.Ember.SimpleAuth.Authenticators.OAuth2 = oauth2.Authenticator;
+global.Ember.SimpleAuth.Authorizers.OAuth2    = oauth2.Authorizer;
 })((typeof global !== 'undefined') ? global : window);
