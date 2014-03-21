@@ -34,7 +34,7 @@ function shouldAuthorizeRequest(url) {
   @class Configuration
   @namespace $mainModule
 */
-var Configuration = Ember.Namespace.create({
+var Configuration = {
   /**
     The route to transition to for authentication; should be set through
     [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
@@ -66,7 +66,7 @@ var Configuration = Ember.Namespace.create({
     @type String
   */
   applicationRootUrl: null,
-});
+};
 
 /**
   Sets up Ember.SimpleAuth for the application; this method __should be invoked
