@@ -1,8 +1,8 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { Base } from './base';
-import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
+import { Base } from 'ember-simple-auth/stores/base';
+import { flatObjectsAreEqual } from 'ember-simple-auth/utils/flat_objects_are_equal';
 
 /**
   Store that saves its data in session cookies.

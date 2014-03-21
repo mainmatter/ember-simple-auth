@@ -1,0 +1,2 @@
+global.Ember.SimpleAuth.Stores.Cookie = requireModule('ember-simple-auth-cookie-store');
+})((typeof global !== 'undefined') ? global : window);
