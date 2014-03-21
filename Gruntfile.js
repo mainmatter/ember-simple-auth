@@ -6,7 +6,8 @@ module.exports = function(grunt) {
     'build',
     'uglify:library',
     'uglify:browser',
-    'copy:dist'
+    'copy:dist',
+    'docs'
   ]);
 
   this.registerTask('build', 'Builds Ember.SimpleAuth', [
