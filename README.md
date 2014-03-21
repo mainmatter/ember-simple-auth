@@ -154,7 +154,7 @@ App.Router.map(function() {
 ```
 
 This route displays the login form with fields for `identification` and
-`password`:
+`password` controller properties:
 
 ```html
 <form {{action 'authenticate' on='submit'}}>
