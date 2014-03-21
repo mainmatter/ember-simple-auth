@@ -2,8 +2,8 @@ var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
 import { isSecureUrl } from '../utils/is_secure_url';
-import { Base } from 'ember-simple-auth/authenticators/base';
-
+//TODO: somehow need to prefix this for the tests:
+//Ember.SimpleAuth = requireModule('ember-simple-auth');
 /**
   Authenticator that conforms to OAuth 2
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Resource
@@ -17,7 +17,7 @@ import { Base } from 'ember-simple-auth/authenticators/base';
   @namespace Authenticators
   @extends Base
 */
-var OAuth2 = Base.extend({
+var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
   /**
     The endpoint on the server the authenticator acquires the access token
     from.
