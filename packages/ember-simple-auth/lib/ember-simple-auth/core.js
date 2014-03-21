@@ -1,6 +1,6 @@
 import { Session } from './session';
 import { Stores } from './stores';
-import { Authorizer } from './authorizer';
+import { Base as Authorizer } from './authorizers/base';
 
 function extractLocationOrigin(location) {
   if (Ember.typeOf(location) === 'string') {

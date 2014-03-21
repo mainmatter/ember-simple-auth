@@ -1,6 +1,6 @@
 import { Session } from 'ember-simple-auth/session';
 import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
-import { Authenticator } from 'ember-simple-auth/authenticator';
+import { Base as Authenticator } from 'ember-simple-auth/authenticators/base';
 
 describe('Session', function() {
   beforeEach(function() {

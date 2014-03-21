@@ -1,5 +1,5 @@
 import { setup, Configuration } from 'ember-simple-auth/core';
-import { Authorizer } from 'ember-simple-auth/authorizer';
+import { Base as Authorizer } from 'ember-simple-auth/authorizers/base';
 import { Stores } from 'ember-simple-auth/stores';
 import { Session } from 'ember-simple-auth/session';
 
