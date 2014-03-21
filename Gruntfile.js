@@ -52,11 +52,6 @@ module.exports = function(grunt) {
     'copy:amd'
   ]);
 
-  this.registerTask('examples', 'Runs the examples server', [
-    'build',
-    'connect:examples'
-  ]);
-
   var packages = grunt.file.expand({ filter: 'isDirectory', cwd: 'packages' }, '*');
 
   grunt.initConfig({
@@ -68,28 +63,6 @@ module.exports = function(grunt) {
         options: {
           hostname: '0.0.0.0',
           port: grunt.option('port') || 8000,
-          base: '.',
-          middleware: function(connect, options) {
-            return [
-              require('connect-redirection')(),
-              function(request, response, next) {
-                if (request.url === '/') {
-                  response.redirect('/test');
-                } else {
-                  next();
-                }
-              },
-              connect.static(options.base)
-            ];
-          }
-        }
-      },
-      examples: {
-        server: {},
-        options: {
-          hostname: '0.0.0.0',
-          port: grunt.option('port') || 8000,
-          keepalive: true,
           base: '.',
           middleware: function(connect, options) {
             return [

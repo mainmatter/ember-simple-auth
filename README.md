@@ -369,7 +369,7 @@ To run the examples you need to have [node.js](http://nodejs.org) and
 git clone https://github.com/simplabs/ember-simple-auth.git
 cd ember-simple-auth
 npm install
-grunt examples
+grunt dev_server
 ```
 
 Open [http://localhost:8000](http://localhost:8000) to access the examples.
