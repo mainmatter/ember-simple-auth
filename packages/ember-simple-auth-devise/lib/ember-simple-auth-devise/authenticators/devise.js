@@ -1,4 +1,5 @@
-'use strict';
+var global = (typeof window !== 'undefined') ? window : {},
+    Ember = global.Ember;
 
 /**
   Authenticator for use with Devise.
@@ -10,7 +11,7 @@
   @extends Ember.SimpleAuth.Authenticators.Base
 */
 
-Ember.SimpleAuth.Authenticators.Devise = Ember.SimpleAuth.Authenticators.Base.extend({
+var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   /**
     The endpoint on the server the authenticator acquires the access token
     from.
@@ -20,7 +21,7 @@ Ember.SimpleAuth.Authenticators.Devise = Ember.SimpleAuth.Authenticators.Base.ex
     @default '/users/sign_in'
   */
   serverTokenEndpoint: '/users/sign_in',
-  
+
   /**
     Restores the session from a set of session properties; __will return a
     resolving promise when there's a non-empty `remember_token` in the
@@ -117,3 +118,5 @@ Ember.SimpleAuth.Authenticators.Devise = Ember.SimpleAuth.Authenticators.Base.ex
     });
   }
 });
+
+export { Devise };
