@@ -1,4 +1,4 @@
-import { OAuth2 } from 'ember-simple-auth-oauth/authorizers/oauth2';
+import { OAuth2 } from 'ember-simple-auth-oauth2/authorizers/oauth2';
 import { Session } from 'ember-simple-auth/session';
 import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
 
