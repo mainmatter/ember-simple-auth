@@ -2,8 +2,7 @@ var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
 import { isSecureUrl } from '../utils/is_secure_url';
-//TODO: somehow need to prefix this for the tests:
-//Ember.SimpleAuth = requireModule('ember-simple-auth');
+
 /**
   Authenticator that conforms to OAuth 2
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Resource

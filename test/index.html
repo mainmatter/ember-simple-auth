@@ -23,6 +23,7 @@
   <script src="../tmp/ember-simple-auth-cookie-store-tests.amd.js"></script>
   <script type="text/javascript">
     Ember.Logger.warn = Ember.K;
+    Ember.SimpleAuth  = requireModule('ember-simple-auth');
     for (var key in requireModule.registry) {
       if (/^\/tests\//.test(key)) requireModule(key);
     }
