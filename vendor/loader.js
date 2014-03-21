@@ -1,7 +1,8 @@
 var define, requireModule;
 
 (function() {
-  var registry = {}, seen = {};
+  global.__ember_simple_auth_registry__ = global.__ember_simple_auth_registry__ || {};
+  var registry = global.__ember_simple_auth_registry__, seen = {};
 
   define = function(name, deps, callback) {
     registry[name] = { deps: deps, callback: callback };
