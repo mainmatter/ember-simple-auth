@@ -397,6 +397,11 @@ To install Ember.SimpleAuth in an Ember.js application you have several options:
 * Download a prebuilt version from
   [the releases page](https://github.com/simplabs/ember-simple-auth/releases)
 * [Build it yourself](#building)
+* include it as a rails asset pipeline gem in the Gemfile:
+
+```ruby
+gem 'ember_simple_auth-rails', '0.2.0'
+```
 
 ## Building
 
