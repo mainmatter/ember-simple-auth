@@ -87,14 +87,14 @@ var Configuration = {
   @static
   @param {Container} container The Ember.js application's dependency injection container
   @param {Ember.Application} application The Ember.js application instance
-  @param {String} authorizerFactory The authorizer factory to use as it is registered with Ember's container, see [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register)
   @param {Object} options
+    @param {String} [options.authorizerFactory] The authorizer factory to use as it is registered with Ember's container, see [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register)
     @param {String} [options.authenticationRoute] route to transition to for authentication - defaults to `'login'`
     @param {String} [options.routeAfterAuthentication] route to transition to after successful authentication - defaults to `'index'`
     @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js application was loaded from; to explicitely enable authorization for additional origins, whitelist those origins - defaults to `[]` _(beware that origins consist of protocol, host and port (port can be left out when it is 80 for HTTP or 443 for HTTPS))_
     @param {Object} [options.store] The store _class_ to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.LocalStorage`
 **/
-var setup = function(container, application, authorizerFactory, options) {
+var setup = function(container, application, options) {
   extensionInitializers.forEach(function(initializer) {
     initializer(container, application, options);
   });
@@ -109,19 +109,25 @@ var setup = function(container, application, authorizerFactory, options) {
 
   var store      = (options.store || Stores.LocalStorage).create();
   var session    = Session.create({ store: store, container: container });
-  var authorizer = container.lookup(authorizerFactory);
-  authorizer.set('session', session);
 
   container.register('ember-simple-auth:session:current', session, { instantiate: false });
   Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {
     container.injection(component, 'session', 'ember-simple-auth:session:current');
   });
 
-  Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    if (shouldAuthorizeRequest(options.url)) {
-      authorizer.authorize(jqXHR, options);
+  if (!Ember.isEmpty(options.authorizerFactory)) {
+    var authorizer = container.lookup(options.authorizerFactory);
+    if (!!authorizer) {
+      authorizer.set('session', session);
+      Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+        if (shouldAuthorizeRequest(options.url)) {
+          authorizer.authorize(jqXHR, options);
+        }
+      });
     }
-  });
+  } else {
+    Ember.Logger.debug('No authorizer factory was specified for Ember.SimpleAuth - specify one to make sure requests are authorized.');
+  }
 };
 
 /**
