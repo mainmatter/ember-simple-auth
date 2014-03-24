@@ -30,14 +30,13 @@ module.exports = function(request, response, next) {
   } else if (request.url === '/v2/token' && request.method === 'POST') {
     if (request.body.grant_type === 'password') {
       if (request.body.username === 'letme' && request.body.password === 'in') {
-        success('{ "access_token": "secret token - 1", "refresh_token": "secret refresh token!", "expires_in": 15 }');
+        success('{ "access_token": "secret token!", "refresh_token": "secret refresh token!", "expires_in": 15 }');
       } else {
         error(400, '{ "error": "invalid_grant" }');
       }
     } else if (request.body.grant_type === 'refresh_token') {
       if (request.body.refresh_token === 'secret refresh token!') {
-        var currentToken = parseInt((request.headers.authorization.match(/Bearer [^\d]*(\d+)/) || [])[1]);
-        success('{ "access_token": "secret token - ' + (currentToken + 1) + '" }');
+        success('{ "access_token": "' + Math.random().toString(36).substring(10) + '" }');
       } else {
         error(400, '{ "error": "invalid_grant" }');
       }

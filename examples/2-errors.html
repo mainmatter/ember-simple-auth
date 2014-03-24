@@ -145,7 +145,7 @@
           }
         }
       });
-      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+      App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
         authenticatorFactory: 'authenticators:oauth2'
       });
 
@@ -153,6 +153,7 @@
       App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
       App.ErroneousRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         model: function() {
+          // this will always respond with an authorization error (401)
           return Ember.$.get('/auth-error');
         }
       });

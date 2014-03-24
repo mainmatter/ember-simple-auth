@@ -102,7 +102,10 @@
       Ember.Application.initializer({
         name: 'authentication',
         initialize: function(container, application) {
-          Ember.SimpleAuth.setup(container, application, { authorizerFactory: 'authorizers:oauth2' });
+          Ember.SimpleAuth.setup(container, application, {
+            // configure an authorizer so that Ember Data requests get authorized
+            authorizerFactory: 'authorizers:oauth2'
+          });
         }
       });
 
