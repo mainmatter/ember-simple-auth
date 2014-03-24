@@ -55,6 +55,31 @@ var itBehavesLikeAStore = function(options) {
     });
   });
 
+  describe('#replace', function() {
+    beforeEach(function() {
+      this.store.persist({ key: 'value' });
+    });
+
+    describe("when the store's content and the specified data are equal", function() {
+      it('does not do anything', function() {
+        sinon.spy(this.store, 'clear');
+        sinon.spy(this.store, 'persist');
+        this.store.replace({ key: 'value' });
+
+        expect(this.store.clear).to.not.have.been.called;
+        expect(this.store.persist).to.not.have.been.called;
+      });
+    });
+
+    describe("when the store's content and the specified data are not equal", function() {
+      it('replaces all existing data in the store', function() {
+        this.store.replace({ otherKey: 'other value' });
+
+        expect(this.store.restore()).to.eql({ otherKey: 'other value' });
+      });
+    });
+  });
+
   describe('#clear', function() {
     it('empties the store', function() {
       this.store.persist({ key1: 'value1', key2: 'value2' });

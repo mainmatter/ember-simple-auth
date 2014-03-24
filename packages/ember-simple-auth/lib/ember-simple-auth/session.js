@@ -1,8 +1,6 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { flatObjectsAreEqual } from './utils/flat_objects_are_equal';
-
 /**
   __The session provides access to the current authentication state as well as
   any data resolved by the authenticator__ (see
@@ -162,10 +160,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     });
     this.bindToAuthenticatorEvents();
     var data = Ember.$.extend({ authenticatorFactory: authenticatorFactory }, this.content);
-    if (!flatObjectsAreEqual(data, this.store.restore())) {
-      this.store.clear();
-      this.store.persist(data);
-    }
+    this.store.replace(data);
     if (trigger) {
       this.trigger('ember-simple-auth:session-authentication-succeeded');
     }
