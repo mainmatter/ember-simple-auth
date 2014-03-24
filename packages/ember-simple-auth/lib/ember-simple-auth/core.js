@@ -126,7 +126,7 @@ var setup = function(container, application, options) {
       });
     }
   } else {
-    Ember.Logger.debug('No authorizer factory was specified for Ember.SimpleAuth - specify one to make sure requests are authorized.');
+    Ember.Logger.debug('No authorizer factory was specified for Ember.SimpleAuth - specify one if backend requests need to be authorized.');
   }
 };
 
