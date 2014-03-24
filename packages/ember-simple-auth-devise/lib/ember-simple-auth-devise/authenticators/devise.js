@@ -38,9 +38,9 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
         var data = {
           remember_token: properties.remember_token
         };
-        return _this.makeRequest(data, resolve, reject);
+        _this.makeRequest(data, resolve, reject);
       } else {
-        return reject();
+        reject();
       }
     });
   },
@@ -66,7 +66,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
         password: credentials.password,
         remember_me: credentials.remember_me
       };
-      return _this.makeRequest(data, resolve, reject);
+      _this.makeRequest(data, resolve, reject);
     });
   },
 
@@ -79,9 +79,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   invalidate: function() {
     Ember.run.cancel(this._refreshTokenTimeout);
     delete this._refreshTokenTimeout;
-    return new Ember.RSVP.Promise(function(resolve) {
-      return resolve();
-    });
+    return new Ember.RSVP.resolve();
   },
 
   /**
@@ -100,20 +98,20 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   */
   makeRequest: function(data, resolve, reject) {
     return Ember.$.ajax({
-      url: this.serverTokenEndpoint,
-      type: "POST",
-      data: data,
-      dataType: "json",
-      contentType: "application/x-www-form-urlencoded"
+      url:         this.serverTokenEndpoint,
+      type:        'POST',
+      data:        data,
+      dataType:    'json',
+      contentType: 'application/x-www-form-urlencoded'
     }).then((function(response) {
-      return Ember.run(function() {
-        return resolve(Ember.$.extend(response, {
+      Ember.run(function() {
+        resolve(Ember.$.extend(response, {
           remember_token: response.remember_token
         }));
       });
     }), function(xhr, status, error) {
-      return Ember.run(function() {
-        return reject(xhr.responseText);
+      Ember.run(function() {
+        reject(xhr.responseText);
       });
     });
   }
