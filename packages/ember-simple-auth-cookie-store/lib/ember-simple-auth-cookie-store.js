@@ -1,3 +1,3 @@
 import { Cookie } from './ember-simple-auth-cookie-store/stores/cookie';
 
-export { Cookie };
+export default Cookie;

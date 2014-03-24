@@ -1,4 +1,2 @@
-var cookieStore = requireModule('ember-simple-auth-cookie-store');
-
-global.Ember.SimpleAuth.Stores.Cookie = cookieStore.Cookie;
+global.Ember.SimpleAuth.Stores.Cookie = requireModule('ember-simple-auth-cookie-store').default;
 })((typeof global !== 'undefined') ? global : window);
