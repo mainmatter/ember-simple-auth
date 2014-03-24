@@ -107,8 +107,8 @@ var setup = function(container, application, options) {
     return extractLocationOrigin(origin);
   });
 
-  var store      = (options.store || Stores.LocalStorage).create();
-  var session    = Session.create({ store: store, container: container });
+  var store   = (options.store || Stores.LocalStorage).create();
+  var session = Session.create({ store: store, container: container });
 
   container.register('ember-simple-auth:session:current', session, { instantiate: false });
   Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {
