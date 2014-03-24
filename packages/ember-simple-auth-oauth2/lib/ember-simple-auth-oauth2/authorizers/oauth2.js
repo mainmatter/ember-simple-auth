@@ -1,8 +1,6 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { isSecureUrl } from '../utils/is_secure_url';
-
 /**
   Authorizer that conforms to OAuth 2
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)) by sending a bearer token
@@ -28,7 +26,7 @@ var OAuth2 = Ember.SimpleAuth.Authorizers.Base.extend({
   */
   authorize: function(jqXHR, requestOptions) {
     if (this.get('session.isAuthenticated') && !Ember.isEmpty(this.get('session.access_token'))) {
-      if (!isSecureUrl(requestOptions.url)) {
+      if (!Ember.SimpleAuth.Utils.isSecureUrl(requestOptions.url)) {
         Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
       }
       jqXHR.setRequestHeader('Authorization', 'Bearer ' + this.get('session.access_token'));

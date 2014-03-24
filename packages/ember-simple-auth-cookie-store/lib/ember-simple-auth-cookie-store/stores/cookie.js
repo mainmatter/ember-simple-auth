@@ -129,7 +129,7 @@ var Cookie = Ember.SimpleAuth.Stores.Base.extend({
   */
   syncData: function() {
     var data = this.restore();
-    if (!flatObjectsAreEqual(data, this._lastData)) {
+    if (!Ember.SimpleAuth.Utils.flatObjectsAreEqual(data, this._lastData)) {
       this._lastData = data;
       this.trigger('ember-simple-auth:session-updated', data);
     }

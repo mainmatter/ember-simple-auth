@@ -1,8 +1,6 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { isSecureUrl } from '../utils/is_secure_url';
-
 /**
   Authenticator that conforms to OAuth 2
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Resource
@@ -134,7 +132,7 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
     @protected
   */
   makeRequest: function(data) {
-    if (!isSecureUrl(this.serverTokenEndpoint)) {
+    if (!Ember.SimpleAuth.Utils.isSecureUrl(this.serverTokenEndpoint)) {
       Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
     }
     return Ember.$.ajax({
