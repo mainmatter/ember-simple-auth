@@ -9,6 +9,7 @@
     <script src="http://builds.emberjs.com/release/ember.js"></script>
     <script src="http://builds.emberjs.com/beta/ember-data.js"></script>
     <script src="../tmp/ember-simple-auth.js"></script>
+    <script src="../tmp/ember-simple-auth-oauth2.js"></script>
   </head>
   <body style="padding-top: 50px;">
     <script type="text/x-handlebars">
@@ -101,7 +102,7 @@
       Ember.Application.initializer({
         name: 'authentication',
         initialize: function(container, application) {
-          Ember.SimpleAuth.setup(container, application);
+          Ember.SimpleAuth.setup(container, application, 'authorizers:oauth2');
         }
       });
 
@@ -126,7 +127,9 @@
 
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
+      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+        authenticatorFactory: 'authenticators:oauth2'
+      });
 
       // make these routes protected
       App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
