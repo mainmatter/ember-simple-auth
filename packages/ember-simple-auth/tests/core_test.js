@@ -27,7 +27,7 @@ describe('setup', function() {
     this.store         = Stores.LocalStorage.create();
     this.containerStub = sinon.stub(this.container, 'lookup');
     this.containerStub.withArgs('router:main').returns({ get: function() { return 'rootURL'; } });
-    this.containerStub.withArgs('ember-simple-auth:session-stores:local-storage').returns(this.store);
+    this.containerStub.withArgs('session-store:local-storage').returns(this.store);
   });
 
   it('calls all registered extension initializers', function() {
@@ -73,8 +73,8 @@ describe('setup', function() {
 
     it('uses a custom store if specified', function() {
       var store = Stores.Ephemeral.create();
-      this.containerStub.withArgs('ember-simple-auth:session-stores:ephemeral').returns(store);
-      setup(this.container, this.application, { storeFactory: 'ember-simple-auth:session-stores:ephemeral' });
+      this.containerStub.withArgs('session-store:ephemeral').returns(store);
+      setup(this.container, this.application, { storeFactory: 'session-store:ephemeral' });
       var spyCall = this.container.register.getCall(2);
 
       expect(spyCall.args[1].store).to.eql(store);
@@ -91,7 +91,7 @@ describe('setup', function() {
       setup(this.container, this.application);
       var spyCall = this.container.register.getCall(2);
 
-      expect(spyCall.args[0]).to.eql('ember-simple-auth:session:current');
+      expect(spyCall.args[0]).to.eql('session');
       expect(spyCall.args[1].constructor).to.eql(Session);
     });
 
@@ -101,7 +101,7 @@ describe('setup', function() {
       setup(this.container, this.application);
 
       ['model', 'controller', 'view', 'route'].forEach(function(component) {
-        expect(_this.container.injection).to.have.been.calledWith(component, 'session', 'ember-simple-auth:session:current');
+        expect(_this.container.injection).to.have.been.calledWith(component, 'session', 'session');
       });
     });
   });

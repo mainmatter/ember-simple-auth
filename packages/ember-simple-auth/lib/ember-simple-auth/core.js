@@ -108,13 +108,13 @@ var setup = function(container, application, options) {
     return extractLocationOrigin(origin);
   });
 
-  options.storeFactory = options.storeFactory || 'ember-simple-auth:session-stores:local-storage';
+  options.storeFactory = options.storeFactory || 'session-store:local-storage';
   var store            = container.lookup(options.storeFactory);
   var session          = Session.create({ store: store, container: container });
 
-  container.register('ember-simple-auth:session:current', session, { instantiate: false });
+  container.register('session', session, { instantiate: false });
   Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {
-    container.injection(component, 'session', 'ember-simple-auth:session:current');
+    container.injection(component, 'session', 'session');
   });
 
   if (!Ember.isEmpty(options.authorizerFactory)) {

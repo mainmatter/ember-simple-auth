@@ -88,7 +88,7 @@
         name: 'authentication',
         initialize: function(container, application) {
           Ember.SimpleAuth.setup(container, application, {
-            storeFactory: 'ember-simple-auth:session-stores:cookie'
+            storeFactory: 'session-store:cookie'
           });
         }
       });
@@ -109,7 +109,7 @@
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
       App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'authenticators:oauth2'
+        authenticatorFactory: 'authenticator:oauth2-password-grant'
       });
 
       // make this route protected

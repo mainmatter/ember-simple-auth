@@ -110,7 +110,7 @@
           container.register('authenticators:custom', App.CustomAuthenticator);
           Ember.SimpleAuth.setup(container, application, {
             // configure an authorizer so the accound model can be read from the server
-            authorizerFactory: 'authorizers:oauth2'
+            authorizerFactory: 'authorizer:oauth2-bearer'
           });
         }
       });

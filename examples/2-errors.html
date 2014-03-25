@@ -146,7 +146,7 @@
         }
       });
       App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'authenticators:oauth2'
+        authenticatorFactory: 'authenticator:oauth2-password-grant'
       });
 
       // make these routes protected

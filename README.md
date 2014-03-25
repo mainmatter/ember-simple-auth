@@ -216,11 +216,11 @@ needs to include:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin,
-  { authenticator: "ember-simple-auth:authenticators:devise" });
+  { authenticator: "authenticator:devise" });
 ```
 
 The mixin will by default use the OAuth 2.0 authenticator to authenticate the
-session, so be sure to set the authenticator to `ember-simple-auth:authenticators:devise`.
+session, so be sure to set the authenticator to `authenticator:devise`.
 
 
 #### Implementing a custom Authenticator

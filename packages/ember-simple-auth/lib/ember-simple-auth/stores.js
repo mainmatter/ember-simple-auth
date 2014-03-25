@@ -9,8 +9,8 @@ var Stores = {
 };
 
 var registerStores = function(container) {
-  container.register('ember-simple-auth:session-stores:local-storage', LocalStorage);
-  container.register('ember-simple-auth:session-stores:ephemeral', Ephemeral);
+  container.register('session-store:local-storage', LocalStorage);
+  container.register('session-store:ephemeral', Ephemeral);
 };
 
 export { registerStores, Stores };
