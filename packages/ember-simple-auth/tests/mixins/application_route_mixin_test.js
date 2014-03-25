@@ -20,8 +20,8 @@ describe('ApplicationRouteMixin', function() {
       sinon.spy(this.route, 'send');
     });
 
-    it('handles the "ember-simple-auth:session-authentication-succeeded" of the session', function(done) {
-      this.session.trigger('ember-simple-auth:session-authentication-succeeded');
+    it('handles the "sessionAuthenticationSucceeded" of the session', function(done) {
+      this.session.trigger('sessionAuthenticationSucceeded');
 
       Ember.run.next(this, function() {
         expect(this.route.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
@@ -29,8 +29,8 @@ describe('ApplicationRouteMixin', function() {
       });
     });
 
-    it('handles the "ember-simple-auth:session-authentication-failed" of the session', function(done) {
-      this.session.trigger('ember-simple-auth:session-authentication-failed');
+    it('handles the "sessionAuthenticationFailed" of the session', function(done) {
+      this.session.trigger('sessionAuthenticationFailed');
 
       Ember.run.next(this, function() {
         expect(this.route.send).to.have.been.calledWith('sessionAuthenticationFailed');
@@ -38,8 +38,8 @@ describe('ApplicationRouteMixin', function() {
       });
     });
 
-    it('handles the "ember-simple-auth:session-invalidation-succeeded" of the session', function(done) {
-      this.session.trigger('ember-simple-auth:session-invalidation-succeeded');
+    it('handles the "sessionInvalidationSucceeded" of the session', function(done) {
+      this.session.trigger('sessionInvalidationSucceeded');
 
       Ember.run.next(this, function() {
         expect(this.route.send).to.have.been.calledWith('sessionInvalidationSucceeded');
@@ -47,8 +47,8 @@ describe('ApplicationRouteMixin', function() {
       });
     });
 
-    it('handles the "ember-simple-auth:session-invalidation-failed" of the session', function(done) {
-      this.session.trigger('ember-simple-auth:session-invalidation-failed');
+    it('handles the "sessionInvalidationFailed" of the session', function(done) {
+      this.session.trigger('sessionInvalidationFailed');
 
       Ember.run.next(this, function() {
         expect(this.route.send).to.have.been.calledWith('sessionInvalidationFailed');

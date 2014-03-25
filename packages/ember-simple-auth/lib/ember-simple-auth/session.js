@@ -109,7 +109,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
         resolve();
       }, function(error) {
         _this.clear();
-        _this.trigger('ember-simple-auth:session-authentication-failed', error);
+        _this.trigger('sessionAuthenticationFailed', error);
         reject(error);
       });
     });
@@ -141,7 +141,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
         _this.clear(true);
         resolve();
       }, function(error) {
-        _this.trigger('ember-simple-auth:session-invalidation-failed', error);
+        _this.trigger('sessionInvalidationFailed', error);
         reject(error);
       });
     });
@@ -162,7 +162,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     var data = Ember.$.extend({ authenticatorFactory: authenticatorFactory }, this.content);
     this.store.replace(data);
     if (trigger) {
-      this.trigger('ember-simple-auth:session-authentication-succeeded');
+      this.trigger('sessionAuthenticationSucceeded');
     }
   },
 
@@ -179,7 +179,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     });
     this.store.clear();
     if (trigger) {
-      this.trigger('ember-simple-auth:session-invalidation-succeeded');
+      this.trigger('sessionInvalidationSucceeded');
     }
   },
 
