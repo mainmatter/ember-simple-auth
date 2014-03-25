@@ -73,18 +73,24 @@ module.exports = function(request, response, next) {
     }
 
   // custom authentication endpoint with a completely non-standard interface
-  } else if (request.url === '/v4/token') {
-    if (request.method === 'PUT') {
-      if (request.body.SESSION.USER_NAME === 'letme' && request.body.SESSION.PASS === 'in') {
-        success('{ "SESSION": { "TOKEN": "secret token!", "AUTHENTICATED_USER": { "ID": 1 } } }');
+  } else if (request.url === '/v4/session') {
+    if (request.method === 'POST') {
+      if (request.body.session.identification === 'letme' && request.body.session.password === 'in') {
+        success('{ "session": { "token": "secret token!" } }');
       } else {
-        error(422, '{ "ERROR": { "MSG": "invalid credentials" } }');
+        error(422, '{ "error": "invalid credentials" }');
       }
     // callback that will be invoked when the user logs out
     } else if (request.method === 'DELETE') {
       success('');
     } else {
       next();
+    }
+  } else if (request.url === '/v4/data') {
+    if (request.headers.authorization === 'Token: secret token!') {
+      success('{ "some": "data" }');
+    } else {
+      error(401, '{}');
     }
 
   } else {
