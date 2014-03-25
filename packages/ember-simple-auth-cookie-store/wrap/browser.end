@@ -1,6 +1,6 @@
 global.Ember.SimpleAuth.Stores.Cookie = requireModule('ember-simple-auth-cookie-store').default;
 
 global.Ember.SimpleAuth.initializeExtension(function(container, application, options) {
-  container.register('ember-simple-auth:session-stores:cookie', global.Ember.SimpleAuth.Stores.Cookie);
+  container.register('session-store:cookie', global.Ember.SimpleAuth.Stores.Cookie);
 });
 })((typeof global !== 'undefined') ? global : window);
