@@ -130,7 +130,7 @@
       });
 
       // the custom authenticator that handles the authenticated account (make sure to mix in
-      // Ember.Evented as the session will subscribe to the authenticator's "'ember-simple-auth:session-updated'" event)
+      // Ember.Evented as the session will subscribe to the authenticator's "'updated'" event)
       App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.OAuth2.extend(Ember.Evented, {
         tokenEndpoint: '/v4/token',
 

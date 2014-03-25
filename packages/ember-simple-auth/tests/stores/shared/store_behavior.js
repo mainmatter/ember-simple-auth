@@ -15,9 +15,9 @@ var itBehavesLikeAStore = function(options) {
       expect(this.store.restore()).to.eql({ key1: 'value1', key2: 'value2' });
     });
 
-    it('does not trigger the "ember-simple-auth:session-updated" event', function(done) {
+    it('does not trigger the "updated" event', function(done) {
       var triggered = false;
-      this.store.one('ember-simple-auth:session-updated', function() {
+      this.store.one('updated', function() {
         triggered = true;
       });
       this.store.persist({ key: 'other value' });

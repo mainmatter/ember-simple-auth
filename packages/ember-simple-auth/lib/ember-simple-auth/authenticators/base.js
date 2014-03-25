@@ -15,7 +15,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   method is stored in the session and can then be used by the authorizer (see
   [Ember.SimpleAuth.Authorizers.Base](#Ember-SimpleAuth-Authorizers-Base)).
 
-  Authenticators may trigger the `'ember-simple-auth:session-updated'` event
+  Authenticators may trigger the `'updated'` event
   when any of the session properties change. The session listens to that event
   and will handle the changes accordingly.
 

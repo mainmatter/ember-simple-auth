@@ -257,9 +257,9 @@ describe('OAuth2', function() {
         ]);
       });
 
-      it('triggers the "ember-simple-auth:session-updated" event', function(done) {
+      it('triggers the "updated" event', function(done) {
         var triggeredWith = false;
-        this.authenticator.one('ember-simple-auth:session-updated', function(data) { triggeredWith = data; });
+        this.authenticator.one('updated', function(data) { triggeredWith = data; });
         this.authenticator.refreshAccessToken(12345, 'refresh token!');
 
         Ember.run.later(function() {
@@ -279,9 +279,9 @@ describe('OAuth2', function() {
           ]);
         });
 
-        it('triggers the "ember-simple-auth:session-updated" event with the correct data', function(done) {
+        it('triggers the "updated" event with the correct data', function(done) {
           var triggeredWith = false;
-          this.authenticator.one('ember-simple-auth:session-updated', function(data) { triggeredWith = data; });
+          this.authenticator.one('updated', function(data) { triggeredWith = data; });
           this.authenticator.refreshAccessToken(12345, 'refresh token!');
 
           Ember.run.later(function() {

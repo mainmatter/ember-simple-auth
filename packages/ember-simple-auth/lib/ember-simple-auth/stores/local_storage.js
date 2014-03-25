@@ -7,7 +7,7 @@ import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
 /**
   Store that saves its data in the browser's `localStorage`.
 
-  This store will trigger the `'ember-simple-auth:session-updated'` event when
+  This store will trigger the `'updated'` event when
   any of the keys it manages is changed from another tab or window.
 
   @class LocalStorage
@@ -118,7 +118,7 @@ var LocalStorage = Base.extend({
         _this._lastData = data;
         Ember.run.cancel(_this._triggerChangeEventTimeout);
         _this._triggerChangeEventTimeout = Ember.run.next(_this, function() {
-          this.trigger('ember-simple-auth:session-updated', data);
+          this.trigger('updated', data);
         });
       }
     });

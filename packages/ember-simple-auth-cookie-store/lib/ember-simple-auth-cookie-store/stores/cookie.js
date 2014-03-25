@@ -12,7 +12,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   that also persistently stores data but instead of cookies relies on the
   `localStorage` API and does not need to poll for external changes.
 
-  This store will trigger the `'ember-simple-auth:session-updated'` event when
+  This store will trigger the `'updated'` event when
   any of its cookies is changed from another tab or window.
 
   @class Cookie
@@ -131,7 +131,7 @@ var Cookie = Ember.SimpleAuth.Stores.Base.extend({
     var data = this.restore();
     if (!Ember.SimpleAuth.Utils.flatObjectsAreEqual(data, this._lastData)) {
       this._lastData = data;
-      this.trigger('ember-simple-auth:session-updated', data);
+      this.trigger('updated', data);
     }
     if (!Ember.testing) {
       Ember.run.cancel(this._syncDataTimeout);

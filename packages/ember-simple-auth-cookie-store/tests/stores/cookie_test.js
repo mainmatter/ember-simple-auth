@@ -13,12 +13,12 @@ describe('Stores.Cookie', function() {
     }
   });
 
-  describe('the "ember-simple-auth:session-updated" event', function() {
+  describe('the "updated" event', function() {
     beforeEach(function() {
       var _this = this;
       _this.triggered = false;
       this.store.persist({ key: 'value' });
-      _this.store.one('ember-simple-auth:session-updated', function() {
+      _this.store.one('updated', function() {
         _this.triggered = true;
       });
     });

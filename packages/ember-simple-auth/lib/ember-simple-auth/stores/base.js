@@ -7,7 +7,7 @@ import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
   The base for all store types. __This serves as a starting point for
   implementing custom stores and must not be used directly.__
 
-  Stores may trigger the `'ember-simple-auth:session-updated'` event when
+  Stores may trigger the `'updated'` event when
   any of the stored values change due to external actions (e.g. from another
   tab). The session listens to that event and will handle the changes
   accordingly. Whenever the event is triggered by the store, the session will

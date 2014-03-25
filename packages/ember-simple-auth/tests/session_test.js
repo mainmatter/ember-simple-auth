@@ -108,12 +108,12 @@ describe('Session', function() {
           });
         });
 
-        describe('when the authenticator triggers the "ember-simple-auth:session-updated" event', function() {
+        describe('when the authenticator triggers the "updated" event', function() {
           it('updates its content', function(done) {
             this.session = Session.create({ store: this.store, container: this.container });
 
             Ember.run.next(this, function() {
-              this.authenticator.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+              this.authenticator.trigger('updated', { some: 'other property' });
 
               Ember.run.next(this, function() {
                 expect(this.session.get('content')).to.eql({ some: 'other property' });
@@ -216,12 +216,12 @@ describe('Session', function() {
         });
       });
 
-      describe('when the authenticator triggers the "ember-simple-auth:session-updated" event', function() {
+      describe('when the authenticator triggers the "updated" event', function() {
         it('updates its content', function(done) {
           var _this = this;
 
           this.session.authenticate('authenticatorFactory').then(function() {
-            _this.authenticator.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+            _this.authenticator.trigger('updated', { some: 'other property' });
 
             Ember.run.next(_this, function() {
               expect(_this.session.get('content')).to.eql({ some: 'other property' });
@@ -431,11 +431,11 @@ describe('Session', function() {
         });
       });
 
-      describe('when the authenticator triggers the "ember-simple-auth:session-updated" event', function() {
+      describe('when the authenticator triggers the "updated" event', function() {
         it('updates its content', function(done) {
           var _this = this;
           this.session.invalidate().then(null, function() {
-            _this.authenticator.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+            _this.authenticator.trigger('updated', { some: 'other property' });
 
             Ember.run.next(_this, function() {
               expect(_this.session.get('content')).to.eql({ some: 'other property' });
@@ -447,7 +447,7 @@ describe('Session', function() {
     });
   });
 
-  describe('when the store triggers the "ember-simple-auth:session-updated" event', function() {
+  describe('when the store triggers the "updated" event', function() {
     beforeEach(function() {
       this.session = Session.create({ store: this.store, container: this.container });
     });
@@ -459,7 +459,7 @@ describe('Session', function() {
         });
 
         it('is authenticated', function(done) {
-          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+          this.store.trigger('updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
           Ember.run.next(this, function() {
             expect(this.session.get('isAuthenticated')).to.be.true;
@@ -468,7 +468,7 @@ describe('Session', function() {
         });
 
         it('sets its content to the data the authenticator resolves with', function(done) {
-          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+          this.store.trigger('updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
           Ember.run.next(this, function() {
             var properties = this.store.restore();
@@ -480,7 +480,7 @@ describe('Session', function() {
         });
 
         it('persists its content in the store', function(done) {
-          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+          this.store.trigger('updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
           Ember.run.next(this, function() {
             var properties = this.store.restore();
@@ -492,7 +492,7 @@ describe('Session', function() {
         });
 
         it('persists its content in the store', function(done) {
-          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+          this.store.trigger('updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
           Ember.run.next(this, function() {
             var properties = this.store.restore();
@@ -511,7 +511,7 @@ describe('Session', function() {
           it('does not trigger the "sessionAuthenticationSucceeded" event', function(done) {
             var triggered = false;
             this.session.one('sessionAuthenticationSucceeded', function() { triggered = true; });
-            this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+            this.store.trigger('updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
             Ember.run.next(this, function() {
               expect(triggered).to.be.false;
@@ -528,7 +528,7 @@ describe('Session', function() {
           it('triggers the "sessionAuthenticationSucceeded" event', function(done) {
             var triggered = false;
             this.session.one('sessionAuthenticationSucceeded', function() { triggered = true; });
-            this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+            this.store.trigger('updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
             Ember.run.next(this, function() {
               expect(triggered).to.be.true;
@@ -544,7 +544,7 @@ describe('Session', function() {
         });
 
         it('is not authenticated', function(done) {
-          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+          this.store.trigger('updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
           Ember.run.next(this, function() {
             expect(this.session.get('isAuthenticated')).to.be.false;
@@ -553,7 +553,7 @@ describe('Session', function() {
         });
 
         it('clears its content', function(done) {
-          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+          this.store.trigger('updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
           Ember.run.next(this, function() {
             expect(this.session.get('content')).to.eql({});
@@ -562,7 +562,7 @@ describe('Session', function() {
         });
 
         it('clears the store', function(done) {
-          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+          this.store.trigger('updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
           Ember.run.next(this, function() {
             expect(this.store.restore()).to.eql({});
@@ -578,7 +578,7 @@ describe('Session', function() {
           it('triggers the "sessionInvalidationSucceeded" event', function(done) {
             var triggered = false;
             this.session.one('sessionInvalidationSucceeded', function() { triggered = true; });
-            this.store.trigger('ember-simple-auth:session-updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
+            this.store.trigger('updated', { some: 'other property', authenticatorFactory: 'authenticatorFactory' });
 
             Ember.run.next(this, function() {
               expect(triggered).to.be.true;
@@ -607,7 +607,7 @@ describe('Session', function() {
 
     describe('when there is no authenticator factory in the store', function() {
       it('is not authenticated', function(done) {
-        this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+        this.store.trigger('updated', { some: 'other property' });
 
         Ember.run.next(this, function() {
           expect(this.session.get('isAuthenticated')).to.be.false;
@@ -616,7 +616,7 @@ describe('Session', function() {
       });
 
       it('clears its content', function(done) {
-        this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+        this.store.trigger('updated', { some: 'other property' });
 
         Ember.run.next(this, function() {
           expect(this.session.get('content')).to.eql({});
@@ -625,7 +625,7 @@ describe('Session', function() {
       });
 
       it('clears the store', function(done) {
-        this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+        this.store.trigger('updated', { some: 'other property' });
 
         Ember.run.next(this, function() {
           expect(this.store.restore()).to.eql({});
@@ -641,7 +641,7 @@ describe('Session', function() {
         it('triggers the "sessionInvalidationSucceeded" event', function(done) {
           var triggered = false;
           this.session.one('sessionInvalidationSucceeded', function() { triggered = true; });
-          this.store.trigger('ember-simple-auth:session-updated', { some: 'other property' });
+          this.store.trigger('updated', { some: 'other property' });
 
           Ember.run.next(this, function() {
             expect(triggered).to.be.true;

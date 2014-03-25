@@ -7,7 +7,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   Owner Password Credentials Grant Type"_.
 
   This authenticator supports refreshing the access token automatically and
-  will trigger the `'ember-simple-auth:session-updated'` event each time the
+  will trigger the `'updated'` event each time the
   token was refreshed.
 
   @class OAuth2
@@ -176,7 +176,7 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
         refreshToken  = response.refresh_token || refreshToken;
         var expiresAt = _this.absolutizeExpirationTime(expiresIn);
         _this.scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
-        _this.trigger('ember-simple-auth:session-updated', Ember.$.extend(response, { expires_in: expiresIn, expires_at: expiresAt, refresh_token: refreshToken }));
+        _this.trigger('updated', Ember.$.extend(response, { expires_in: expiresIn, expires_at: expiresAt, refresh_token: refreshToken }));
       });
     }, function(xhr, status, error) {
       Ember.Logger.warn('Access token could not be refreshed - server responded with ' + error + '.');

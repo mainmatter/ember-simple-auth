@@ -137,7 +137,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var authenticator = _this.container.lookup(_this.authenticatorFactory);
       authenticator.invalidate(_this.content).then(function() {
-        authenticator.off('ember-simple-auth:session-updated');
+        authenticator.off('updated');
         _this.clear(true);
         resolve();
       }, function(error) {
@@ -190,8 +190,8 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
   bindToAuthenticatorEvents: function() {
     var _this = this;
     var authenticator = this.container.lookup(this.authenticatorFactory);
-    authenticator.off('ember-simple-auth:session-updated');
-    authenticator.on('ember-simple-auth:session-updated', function(content) {
+    authenticator.off('updated');
+    authenticator.on('updated', function(content) {
       _this.setup(_this.authenticatorFactory, content);
     });
   },
@@ -202,7 +202,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
   */
   bindToStoreEvents: function() {
     var _this = this;
-    this.store.on('ember-simple-auth:session-updated', function(content) {
+    this.store.on('updated', function(content) {
       var authenticatorFactory = content.authenticatorFactory;
       if (!!authenticatorFactory) {
         delete content.authenticatorFactory;
