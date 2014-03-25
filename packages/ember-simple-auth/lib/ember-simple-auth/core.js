@@ -1,5 +1,5 @@
 import { Session } from './session';
-import { Stores } from './stores';
+import { registerStores } from './stores';
 
 function extractLocationOrigin(location) {
   if (Ember.typeOf(location) === 'string') {
@@ -89,12 +89,13 @@ var Configuration = {
   @param {Ember.Application} application The Ember.js application instance
   @param {Object} options
     @param {String} [options.authorizerFactory] The authorizer factory to use as it is registered with Ember's container, see [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register)
+    @param {Object} [options.storeFactory] The store factory to use as it is registered with Ember's container, see [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register) - defaults to `session-stores:local-storage`
     @param {String} [options.authenticationRoute] route to transition to for authentication - defaults to `'login'`
     @param {String} [options.routeAfterAuthentication] route to transition to after successful authentication - defaults to `'index'`
     @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js application was loaded from; to explicitely enable authorization for additional origins, whitelist those origins - defaults to `[]` _(beware that origins consist of protocol, host and port (port can be left out when it is 80 for HTTP or 443 for HTTPS))_
-    @param {Object} [options.store] The store _class_ to use; must extend `Ember.SimpleAuth.Stores.Base` - defaults to `Ember.SimpleAuth.Stores.LocalStorage`
 **/
 var setup = function(container, application, options) {
+  registerStores(container);
   extensionInitializers.forEach(function(initializer) {
     initializer(container, application, options);
   });
@@ -107,8 +108,9 @@ var setup = function(container, application, options) {
     return extractLocationOrigin(origin);
   });
 
-  var store   = (options.store || Stores.LocalStorage).create();
-  var session = Session.create({ store: store, container: container });
+  options.storeFactory = options.storeFactory || 'ember-simple-auth:session-stores:local-storage';
+  var store            = container.lookup(options.storeFactory);
+  var session          = Session.create({ store: store, container: container });
 
   container.register('ember-simple-auth:session:current', session, { instantiate: false });
   Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {

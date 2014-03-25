@@ -24,8 +24,10 @@ describe('setup', function() {
   beforeEach(function() {
     this.container     = { register: function() {}, injection: function() {}, lookup: function() {} };
     this.application   = {};
+    this.store         = Stores.LocalStorage.create();
     this.containerStub = sinon.stub(this.container, 'lookup');
     this.containerStub.withArgs('router:main').returns({ get: function() { return 'rootURL'; } });
+    this.containerStub.withArgs('ember-simple-auth:session-stores:local-storage').returns(this.store);
   });
 
   it('calls all registered extension initializers', function() {
@@ -35,8 +37,8 @@ describe('setup', function() {
     initializeExtension(initializer2);
     setup(this.container, this.application, {});
 
-    expect(initializer1.withArgs(this.container, this.application, {})).to.have.been.calledOnce;
-    expect(initializer2.withArgs(this.container, this.application, {})).to.have.been.calledOnce;
+    expect(initializer1).to.have.been.calledOnce;
+    expect(initializer2).to.have.been.calledOnce;
   });
 
   it('sets authenticationRoute', function() {
@@ -64,28 +66,30 @@ describe('setup', function() {
 
     it('uses the LocalStorage store by default', function() {
       setup(this.container, this.application);
-      var spyCall = this.container.register.getCall(0);
+      var spyCall = this.container.register.getCall(2);
 
-      expect(spyCall.args[1].store.constructor).to.eql(Stores.LocalStorage);
+      expect(spyCall.args[1].store).to.eql(this.store);
     });
 
     it('uses a custom store if specified', function() {
-      setup(this.container, this.application, { store: Stores.Ephemeral });
-      var spyCall = this.container.register.getCall(0);
+      var store = Stores.Ephemeral.create();
+      this.containerStub.withArgs('ember-simple-auth:session-stores:ephemeral').returns(store);
+      setup(this.container, this.application, { storeFactory: 'ember-simple-auth:session-stores:ephemeral' });
+      var spyCall = this.container.register.getCall(2);
 
-      expect(spyCall.args[1].store.constructor).to.eql(Stores.Ephemeral);
+      expect(spyCall.args[1].store).to.eql(store);
     });
 
     it("uses the app's container", function() {
       setup(this.container, this.application);
-      var spyCall = this.container.register.getCall(0);
+      var spyCall = this.container.register.getCall(2);
 
       expect(spyCall.args[1].container).to.eql(this.container);
     });
 
     it('is registered with the Ember container', function() {
       setup(this.container, this.application);
-      var spyCall = this.container.register.getCall(0);
+      var spyCall = this.container.register.getCall(2);
 
       expect(spyCall.args[0]).to.eql('ember-simple-auth:session:current');
       expect(spyCall.args[1].constructor).to.eql(Session);

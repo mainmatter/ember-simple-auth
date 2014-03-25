@@ -88,7 +88,7 @@
         name: 'authentication',
         initialize: function(container, application) {
           Ember.SimpleAuth.setup(container, application, {
-            store: Ember.SimpleAuth.Stores.Cookie
+            storeFactory: 'ember-simple-auth:session-stores:cookie'
           });
         }
       });
