@@ -112,9 +112,9 @@ var setup = function(container, application, options) {
   var store            = container.lookup(options.storeFactory);
   var session          = Session.create({ store: store, container: container });
 
-  container.register('session', session, { instantiate: false });
+  container.register('session:main', session, { instantiate: false });
   Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {
-    container.injection(component, 'session', 'session');
+    container.injection(component, 'session', 'session:main');
   });
 
   if (!Ember.isEmpty(options.authorizerFactory)) {

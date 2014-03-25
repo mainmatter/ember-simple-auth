@@ -91,7 +91,7 @@ describe('setup', function() {
       setup(this.container, this.application);
       var spyCall = this.container.register.getCall(2);
 
-      expect(spyCall.args[0]).to.eql('session');
+      expect(spyCall.args[0]).to.eql('session:main');
       expect(spyCall.args[1].constructor).to.eql(Session);
     });
 
@@ -101,7 +101,7 @@ describe('setup', function() {
       setup(this.container, this.application);
 
       ['model', 'controller', 'view', 'route'].forEach(function(component) {
-        expect(_this.container.injection).to.have.been.calledWith(component, 'session', 'session');
+        expect(_this.container.injection).to.have.been.calledWith(component, 'session', 'session:main');
       });
     });
   });
