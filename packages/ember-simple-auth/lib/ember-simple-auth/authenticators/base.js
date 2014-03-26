@@ -15,9 +15,10 @@ var global = (typeof window !== 'undefined') ? window : {},
   method is stored in the session and can then be used by the authorizer (see
   [Ember.SimpleAuth.Authorizers.Base](#Ember-SimpleAuth-Authorizers-Base)).
 
-  Authenticators may trigger the `'updated'` event
-  when any of the session properties change. The session listens to that event
-  and will handle the changes accordingly.
+  Authenticators may trigger the `'updated'` and the `'invalidated'` events.
+  The `'updated'` event signals that the session data changed while the
+  `'ìnvalidated`' event signals that the authenticator decided that the
+  session became invalid. Both events are handled by the session automatically.
 
   __Custom authenticators have to be registered with Ember's dependency
   injection container__ so that the session can retrieve an instance, e.g.:
