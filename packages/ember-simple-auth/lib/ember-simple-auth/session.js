@@ -192,7 +192,11 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     var authenticator = this.container.lookup(this.authenticatorFactory);
     authenticator.off('updated');
     authenticator.on('updated', function(content) {
-      _this.setup(_this.authenticatorFactory, content);
+      authenticator.restore(content).then(function(content) {
+        _this.setup(_this.authenticatorFactory, content);
+      }, function() {
+        _this.clear(true);
+      });
     });
   },
 
