@@ -80,8 +80,8 @@ function cleanClassItems(items, module) {
 };
 
 module.exports = function() {
-  var _this        = this;
-  var module       = this.modules[this.project.module];
+  var _this       = this;
+  var module      = this.modules[this.project.module];
   var moduleItems = this.classitems.filter(function(item) {
     return item.namespace === '$mainModule' && item.access !== 'private';
   });
