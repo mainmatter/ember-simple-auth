@@ -7,12 +7,11 @@ import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
   The base for all store types. __This serves as a starting point for
   implementing custom stores and must not be used directly.__
 
-  Stores may trigger the `'updated'` event when
-  any of the stored values change due to external actions (e.g. from another
-  tab). The session listens to that event and will handle the changes
-  accordingly. Whenever the event is triggered by the store, the session will
-  forward all values as one object to its authenticator which might then
-  invalidate the session (see
+  Stores may trigger the `'updated'` event when their data changed due to
+  external actions (e.g. from another tab). The session listens to that event
+  and will handle the changes accordingly. Whenever the event is triggered by
+  the store, the session will forward the data to its authenticator which
+  decides whether the session is still valid (see
   [Ember.SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)).
 
   @class Base

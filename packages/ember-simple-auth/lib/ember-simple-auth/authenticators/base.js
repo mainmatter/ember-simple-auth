@@ -19,6 +19,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   The `'updated'` event signals that the session data changed while the
   `'ìnvalidated`' event signals that the authenticator decided that the
   session became invalid. Both events are handled by the session automatically.
+  The `'updated'` event requires the complete session data as its argument.
 
   __Custom authenticators have to be registered with Ember's dependency
   injection container__ so that the session can retrieve an instance, e.g.:
