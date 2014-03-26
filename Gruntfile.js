@@ -43,7 +43,7 @@ module.exports = function(grunt) {
 
   this.registerTask('docs', 'Builds the documentation', [
     'yuidoc',
-    'compile-handlebars:docs',
+    'compile-handlebars',
     'copy:docs'
   ]);
 
@@ -196,10 +196,12 @@ module.exports = function(grunt) {
         })
       },
       docs: {
-        files: [{
-          src: ['tmp/api.html'],
-          dest: 'dist/<%= pkg.name %>-<%= pkg.version %>-api-docs.html'
-        }]
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/docs/' + pkg.name + '/api.html'],
+            dest: 'dist/' + pkg.name + '-' + pkg.version + '-api-docs.html'
+          };
+        })
       }
     },
 
@@ -254,29 +256,31 @@ module.exports = function(grunt) {
       }
     },
 
-    yuidoc: {
-      compile: {
-        name: '<%= pkg.name %>',
-        description: '<%= pkg.description %>',
-        version: '<%= pkg.version %>',
+    yuidoc: packages.reduce(function(acc, pkg) {
+      acc[pkg.name] = {
+        name: pkg.name,
+        description: pkg.description,
+        version: pkg.version,
         options: {
           parseOnly: true,
-          paths: 'packages',
-          outdir: 'tmp'
+          paths: 'packages/' + pkg.name,
+          outdir: 'tmp/docs/' + pkg.name
         }
-      }
-    },
+      };
+      return acc;
+    }, {}),
 
-    'compile-handlebars': {
-      docs: {
+    'compile-handlebars': packages.reduce(function(acc, pkg) {
+      acc[pkg.name] = {
         template: 'docs/theme/main.hbs',
-        templateData: 'tmp/data.json',
-        globals: ['docs/config.json'],
+        templateData: 'tmp/docs/' + pkg.name +  '/data.json',
+        globals: ['docs/config.json', 'packages/' + pkg.name + '/package.json'],
         partials: 'docs/theme/partials/**/*.hbs',
         helpers: 'docs/theme/helpers/**/*.js',
-        output: 'tmp/api.html'
+        output: 'tmp/docs/' + pkg.name + '/api.html'
       }
-    }
+      return acc;
+    }, {})
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
