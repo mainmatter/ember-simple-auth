@@ -121,7 +121,7 @@ describe('Session', function() {
         this.store.persist({ authenticatorFactory: 'authenticatorFactory' });
       });
 
-      describe('when the authenticator resolves to restore', function() {
+      describe('when the authenticator resolves restoration', function() {
         beforeEach(function() {
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'properties' }));
         });
@@ -208,7 +208,7 @@ describe('Session', function() {
       this.session = Session.create({ store: this.store, container: this.container });
     });
 
-    describe('when the authenticator resolves to authenticate', function() {
+    describe('when the authenticator resolves authentication', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'properties' }));
       });
@@ -362,7 +362,7 @@ describe('Session', function() {
       });
     });
 
-    describe('when the authenticator resolves to invaldiate', function() {
+    describe('when the authenticator resolves to invaldiation', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.resolve());
       });
