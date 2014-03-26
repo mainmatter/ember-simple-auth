@@ -10,78 +10,72 @@ describe('Session', function() {
     sinon.stub(this.container, 'lookup').returns(this.authenticator);
   });
 
-  function itHandlesTheAuthenticatorUpdatedEvent(preparation) {
+  function itHandlesAuthenticatorEvents(preparation) {
     describe('when the authenticator triggers the "updated" event', function() {
       beforeEach(function(done) {
         preparation.apply(this, [done]);
       });
 
-      describe('when the authenticator resolves restoration', function() {
-        beforeEach(function() {
-          sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'other property' }));
-        });
+      it('updates its content', function(done) {
+        Ember.run.next(this, function() {
+          this.authenticator.trigger('updated', { some: 'other property' });
 
-        it('updates its content', function(done) {
           Ember.run.next(this, function() {
-            this.authenticator.trigger('updated', { some: 'other property' });
+            expect(this.session.get('content')).to.eql({ some: 'other property' });
+            done();
+          });
+        });
+      });
+    });
 
-            Ember.run.next(this, function() {
-              expect(this.session.get('content')).to.eql({ some: 'other property' });
-              done();
-            });
+    describe('when the authenticator triggers the "invalidated" event', function() {
+      beforeEach(function(done) {
+        preparation.apply(this, [done]);
+      });
+
+      it('is not authenticated', function(done) {
+        Ember.run.next(this, function() {
+          this.authenticator.trigger('invalidated', { some: 'other property' });
+
+          Ember.run.next(this, function() {
+            expect(this.session.get('isAuthenticated')).to.be.false;
+            done();
           });
         });
       });
 
-      describe('when the authenticator rejects restoration', function() {
-        beforeEach(function() {
-          sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject());
-        });
+      it('clears its content', function(done) {
+        Ember.run.next(this, function() {
+          this.authenticator.trigger('invalidated', { some: 'other property' });
 
-        it('is not authenticated', function(done) {
           Ember.run.next(this, function() {
-            this.authenticator.trigger('updated', { some: 'other property' });
-
-            Ember.run.next(this, function() {
-              expect(this.session.get('isAuthenticated')).to.be.false;
-              done();
-            });
+            expect(this.session.get('content')).to.eql({});
+            done();
           });
         });
+      });
 
-        it('clears its content', function(done) {
+      it('clears the store', function(done) {
+        Ember.run.next(this, function() {
+          this.authenticator.trigger('invalidated', { some: 'other property' });
+
           Ember.run.next(this, function() {
-            this.authenticator.trigger('updated', { some: 'other property' });
-
-            Ember.run.next(this, function() {
-              expect(this.session.get('content')).to.eql({});
-              done();
-            });
+            expect(this.store.restore()).to.eql({});
+            done();
           });
         });
+      });
 
-        it('clears the store', function(done) {
-          Ember.run.next(this, function() {
-            this.authenticator.trigger('updated', { some: 'other property' });
+      it('triggers the "sessionInvalidationSucceeded" event', function(done) {
+        var triggered = false;
+        this.session.one('sessionInvalidationSucceeded', function() { triggered = true; });
 
-            Ember.run.next(this, function() {
-              expect(this.store.restore()).to.eql({});
-              done();
-            });
-          });
-        });
-
-        it('triggers the "sessionInvalidationSucceeded" event', function(done) {
-          var triggered = false;
-          this.session.one('sessionInvalidationSucceeded', function() { triggered = true; });
+        Ember.run.next(this, function() {
+          this.authenticator.trigger('invalidated', { some: 'other property' });
 
           Ember.run.next(this, function() {
-            this.authenticator.trigger('updated', { some: 'other property' });
-
-            Ember.run.next(this, function() {
-              expect(triggered).to.be.true;
-              done();
-            });
+            expect(triggered).to.be.true;
+            done();
           });
         });
       });
@@ -186,7 +180,7 @@ describe('Session', function() {
           });
         });
 
-        itHandlesTheAuthenticatorUpdatedEvent(function(done) {
+        itHandlesAuthenticatorEvents(function(done) {
           this.session = Session.create({ store: this.store, container: this.container });
           Ember.run.next(this, function() {
             this.authenticator.restore.restore();
@@ -287,7 +281,7 @@ describe('Session', function() {
         });
       });
 
-      itHandlesTheAuthenticatorUpdatedEvent(function(done) {
+      itHandlesAuthenticatorEvents(function(done) {
         this.session.authenticate('authenticatorFactory').then(function() {
           done();
         });
@@ -493,7 +487,7 @@ describe('Session', function() {
         });
       });
 
-      itHandlesTheAuthenticatorUpdatedEvent(function(done) {
+      itHandlesAuthenticatorEvents(function(done) {
         done();
       });
     });

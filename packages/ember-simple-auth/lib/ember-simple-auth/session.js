@@ -191,12 +191,12 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     var _this = this;
     var authenticator = this.container.lookup(this.authenticatorFactory);
     authenticator.off('updated');
+    authenticator.off('invalidated');
     authenticator.on('updated', function(content) {
-      authenticator.restore(content).then(function(content) {
-        _this.setup(_this.authenticatorFactory, content);
-      }, function() {
-        _this.clear(true);
-      });
+      _this.setup(_this.authenticatorFactory, content);
+    });
+    authenticator.on('invalidated', function(content) {
+      _this.clear(true);
     });
   },
 
