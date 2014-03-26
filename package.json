@@ -1,14 +1,8 @@
 {
-  "name": "ember-simple-auth",
-  "version": "0.2.0",
-  "description": "A lightweight library for implementing authentication/authorization with Ember.js applications.",
-  "readmeFilename": "README.md",
+  "name": "ember-simple-auth-meta",
+  "description": "Ember.SimpleAuth Meta Package",
   "author": "Marco Otte-Witte",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url":  "git://github.com/simplabs/ember-simple-auth.git"
-  },
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-cli": "~0.1.11",

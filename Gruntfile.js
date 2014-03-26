@@ -53,7 +53,11 @@ module.exports = function(grunt) {
     'copy:amd'
   ]);
 
-  var packages = grunt.file.expand({ filter: 'isDirectory', cwd: 'packages' }, '*');
+  var packages = grunt.file.expand('packages/*/package.json').reduce(function(acc, package) {
+    var packageContents = grunt.file.readJSON(package);
+    acc.push(packageContents);
+    return acc;
+  }, []);
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -98,7 +102,7 @@ module.exports = function(grunt) {
         files: packages.map(function(pkg) {
           return {
             expand: true,
-            cwd: 'packages/' + pkg + '/lib/',
+            cwd: 'packages/' + pkg.name + '/lib/',
             src: ['**/*.js'],
             dest: 'tmp/libs'
           };
@@ -109,9 +113,9 @@ module.exports = function(grunt) {
         files: packages.map(function(pkg) {
           return {
             expand: true,
-            cwd: 'packages/' + pkg,
+            cwd: 'packages/' + pkg.name,
             src: ['tests/**/*.js'],
-            dest: 'tmp/tests/' + pkg
+            dest: 'tmp/tests/' + pkg.name
           };
         })
       }
@@ -122,7 +126,7 @@ module.exports = function(grunt) {
         files: (function() {
           var files = {};
           packages.forEach(function(pkg) {
-            files['tmp/' + pkg + '.amd.js'] = ['tmp/libs/' + pkg + '.js', 'tmp/libs/' + pkg + '/**/*.js'];
+            files['tmp/' + pkg.name + '.amd.js'] = ['tmp/libs/' + pkg.name + '.js', 'tmp/libs/' + pkg.name + '/**/*.js'];
           });
           return files;
         })()
@@ -131,7 +135,7 @@ module.exports = function(grunt) {
         files: (function() {
           var files = {};
           packages.forEach(function(pkg) {
-            files['tmp/' + pkg + '.js'] = ['packages/' + pkg + '/wrap/browser.start', 'vendor/loader.js', 'tmp/libs/' + pkg + '.js', 'tmp/libs/' + pkg + '/**/*.js', 'packages/' + pkg + '/wrap/browser.end'];
+            files['tmp/' + pkg.name + '.js'] = ['packages/' + pkg.name + '/wrap/browser.start', 'vendor/loader.js', 'tmp/libs/' + pkg.name + '.js', 'tmp/libs/' + pkg.name + '/**/*.js', 'packages/' + pkg.name + '/wrap/browser.end'];
           });
           return files;
         })()
@@ -140,7 +144,7 @@ module.exports = function(grunt) {
         files: (function() {
           var files = {};
           packages.forEach(function(pkg) {
-            files['tmp/' + pkg + '-tests.amd.js'] = ['tmp/tests/' + pkg + '/**/*.js'];
+            files['tmp/' + pkg.name + '-tests.amd.js'] = ['tmp/tests/' + pkg.name + '/**/*.js'];
           });
           return files;
         })()
@@ -151,16 +155,16 @@ module.exports = function(grunt) {
       library: {
         files: packages.map(function(pkg) {
           return {
-            src: ['tmp/' + pkg + '.amd.js'],
-            dest: 'tmp/' + pkg + '.amd.min.js'
+            src: ['tmp/' + pkg.name + '.amd.js'],
+            dest: 'tmp/' + pkg.name + '.amd.min.js'
           };
         })
       },
       browser: {
         files: packages.map(function(pkg) {
           return {
-            src: ['tmp/' + pkg + '.js'],
-            dest: 'tmp/' + pkg + '.min.js'
+            src: ['tmp/' + pkg.name + '.js'],
+            dest: 'tmp/' + pkg.name + '.min.js'
           };
         })
       }
@@ -170,24 +174,24 @@ module.exports = function(grunt) {
       plain: {
         files: packages.map(function(pkg) {
           return {
-            src: ['tmp/' + pkg + '.js'],
-            dest: 'dist/' + pkg + '-<%= pkg.version %>.js'
+            src: ['tmp/' + pkg.name + '.js'],
+            dest: 'dist/' + pkg.name + '-' + pkg.version + '.js'
           };
         })
       },
       min: {
         files: packages.map(function(pkg) {
           return {
-            src: ['tmp/' + pkg + '.min.js'],
-            dest: 'dist/' + pkg + '-<%= pkg.version %>.min.js'
+            src: ['tmp/' + pkg.name + '.min.js'],
+            dest: 'dist/' + pkg.name + '-' + pkg.version + '.min.js'
           };
         })
       },
       amd: {
         files: packages.map(function(pkg) {
           return {
-            src: ['tmp/' + pkg + '.amd.min.js'],
-            dest: 'dist/' + pkg + '-<%= pkg.version %>.amd.min.js'
+            src: ['tmp/' + pkg.name + '.amd.min.js'],
+            dest: 'dist/' + pkg.name + '-' + pkg.version + '.amd.min.js'
           };
         })
       },
