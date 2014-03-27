@@ -30,7 +30,8 @@ import { Configuration } from './../core';
 
   This mixin also defines actions that are triggered whenever the session is
   successfully authenticated or invalidated and whenever authentication or
-  invalidation fails.
+  invalidation fails. These actions provide a good starting point for adding
+  custom behavior to these events.
 
   @class ApplicationRouteMixin
   @namespace $mainModule
@@ -72,7 +73,7 @@ var ApplicationRouteMixin = Ember.Mixin.create({
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
         actions: {
           authenticateSession: function() {
-            this.get('session').authenticate('authenticators:custom', {});
+            this.get('session').authenticate('authenticator:custom', {});
           }
         }
       });
@@ -133,7 +134,7 @@ var ApplicationRouteMixin = Ember.Mixin.create({
       This action invalidates the session (see
       [Ember.SimpleAuth.Session#invalidate](#Ember-SimpleAuth-Session-invalidate)).
       If invalidation succeeds, it reloads the application (see
-      [Ember.SimpleAuth.ApplicationRouteMixin.sessionInvalidationSucceeded](#Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)).
+      [Ember.SimpleAuth.ApplicationRouteMixin#sessionInvalidationSucceeded](#Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)).
 
       @method actions.invalidateSession
     */
@@ -145,8 +146,8 @@ var ApplicationRouteMixin = Ember.Mixin.create({
       This action is invoked whenever the session is successfully invalidated.
       It reloads the Ember.js application by redirecting the browser to the
       application's root URL so that all in-memory data (such as Ember Data
-      stores etc.) is cleared. The root URL is automatically retrieved from the
-      Ember.js application's router (see
+      stores etc.) gets cleared. The root URL is automatically retrieved from
+      the Ember.js application's router (see
       http://emberjs.com/guides/routing/#toc_specifying-a-root-url).
 
       @method actions.sessionInvalidationSucceeded
@@ -161,15 +162,16 @@ var ApplicationRouteMixin = Ember.Mixin.create({
       default.
 
       @method actions.sessionInvalidationFailed
+      @param {any} error The error the promise returned by the authenticator rejects with, see [Ember.SimpleAuth.Authenticators.Base#invalidate](#Ember-SimpleAuth-Authenticators-Base-invalidate)
     */
     sessionInvalidationFailed: function(error) {
     },
 
     /**
       This action is invoked when an authorization error occurs (which is
-      usually __when a server responds with HTTP status 401__). It invalidates
-      the session and reloads the application (see
-      [Ember.SimpleAuth.ApplicationRouteMixin.sessionInvalidationSucceeded](#Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)).
+      the case __when the server responds with HTTP status 401__). It
+      invalidates the session and reloads the application (see
+      [Ember.SimpleAuth.ApplicationRouteMixin#sessionInvalidationSucceeded](#Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)).
 
       @method actions.authorizationFailed
     */

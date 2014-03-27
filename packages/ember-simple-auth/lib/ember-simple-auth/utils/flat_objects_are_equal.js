@@ -1,3 +1,7 @@
+/**
+  @method flatObjectsAreEqual
+  @private
+*/
 var flatObjectsAreEqual = function(a, b) {
   function sortObject(object) {
     var array = [];

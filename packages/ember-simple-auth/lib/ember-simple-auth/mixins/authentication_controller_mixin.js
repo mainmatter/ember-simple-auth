@@ -5,15 +5,15 @@ var global = (typeof window !== 'undefined') ? window : {},
   The mixin for the controller that handles the `authenticationRoute` specified
   in [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)). It provides the
   `authenticate` action that will authenticate the session with the configured
-  [Ember.SimpleAuth.AuthenticationControllerMixin#authenticatorFactory](#Ember-SimpleAuth-AuthenticationControllerMixin-authenticatorFactory)
-  when invoked.
+  authenticator (see
+  [Ember.SimpleAuth.AuthenticationControllerMixin#authenticatorFactory](#Ember-SimpleAuth-AuthenticationControllerMixin-authenticatorFactory)).
 
   @class AuthenticationControllerMixin
   @extends Ember.Mixin
 */
 var AuthenticationControllerMixin = Ember.Mixin.create({
   /**
-    The authenticator factory used to authenticate the session.
+    The authenticator used to authenticate the session.
 
     @property authenticatorFactory
     @type String
@@ -24,16 +24,9 @@ var AuthenticationControllerMixin = Ember.Mixin.create({
   actions: {
     /**
       This action will authenticate the session with the configured
-      [Ember.SimpleAuth.AuthenticationControllerMixin#authenticatorFactory](#Ember-SimpleAuth-AuthenticationControllerMixin-authenticatorFactory)
-      (see
+      authenticator (see
+      [Ember.SimpleAuth.AuthenticationControllerMixin#authenticatorFactory](#Ember-SimpleAuth-AuthenticationControllerMixin-authenticatorFactory),
       [Ember.SimpleAuth.Session#authenticate](#Ember-SimpleAuth-Session-authenticate)).
-
-      If authentication succeeds, this method triggers the
-      `sessionAuthenticationSucceeded` action (see
-      [Ember.SimpleAuth.ApplicationRouteMixin#sessionAuthenticationSucceeded](#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationSucceeded)).
-      If authentication fails it triggers the `sessionAuthenticationFailed`
-      action (see
-      [Ember.SimpleAuth.ApplicationRouteMixin#sessionAuthenticationFailed](#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationFailed)).
 
       @method actions.authenticate
       @param {Object} options Any options the auhtenticator needs to authenticate the session

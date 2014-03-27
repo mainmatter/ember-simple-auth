@@ -7,8 +7,8 @@ import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
 /**
   Store that saves its data in the browser's `localStorage`.
 
-  This store will trigger the `'updated'` event when
-  any of the keys it manages is changed from another tab or window.
+  This store will trigger the `'updated'` event when any of the keys it manages
+  is changed from another tab or window.
 
   @class LocalStorage
   @namespace Stores

@@ -4,13 +4,12 @@ var global = (typeof window !== 'undefined') ? window : {},
 import { AuthenticationControllerMixin } from './authentication_controller_mixin';
 
 /**
-  A mixin to use with the controller that handles the `authenticationRoute`
+  The mixin to use with the controller that handles the `authenticationRoute`
   specified in
   [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup) if the used authentication
   mechanism works with a login form that asks for user credentials. It provides
   the `authenticate` action that will authenticate the session with the
-  configured authenticator factory when invoked. __This is a
-  specialization of
+  configured authenticator when invoked. __This is a specialization of
   [Ember.SimpleAuth.AuthenticationControllerMixin](#Ember-SimpleAuth-AuthenticationControllerMixin).__
 
   Accompanying the controller that this mixin is mixed in the application needs
@@ -35,12 +34,13 @@ var LoginControllerMixin = Ember.Mixin.create(AuthenticationControllerMixin, {
   actions: {
     /**
       This action will authenticate the session with the configured
-      [Ember.SimpleAuth.LoginControllerMixin#authenticatorFactory](#Ember-SimpleAuth-LoginControllerMixin-authenticatorFactory)
+      authenticator (see
+      [Ember.SimpleAuth.LoginControllerMixin#authenticatorFactory](#Ember-SimpleAuth-LoginControllerMixin-authenticatorFactory))
       if both `identification` and `password` are non-empty. It passes both
       values to the authenticator.
 
-      _The action also resets the `password` property so sensitive data does not
-      stay in memory for longer than necessary._
+      __The action also resets the `password` property so sensitive data does
+      not stay in memory for longer than necessary.__
 
       @method actions.authenticate
     */

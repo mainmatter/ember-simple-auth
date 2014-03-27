@@ -5,7 +5,10 @@ import { Base } from './base';
 
 /**
   Store that saves its data in memory and thus __is not actually persistent__.
-  This store is mainly useful for testing.
+  It does also not synchronize the session's state across multiple tabs or
+  windows as those cannot share memory.
+
+  __This store is mainly useful for testing.__
 
   @class Ephemeral
   @namespace Stores
@@ -31,7 +34,7 @@ var Ephemeral = Base.extend({
   },
 
   /**
-    Restores all data currently saved as one plain object.
+    Restores all data currently saved as a plain object.
 
     @method restore
     @return {Object} All data currently persisted

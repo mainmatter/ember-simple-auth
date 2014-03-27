@@ -12,8 +12,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   the query part of the URL, cookies etc. __The authorizer has to fit the
   authenticator__ (see
   [Ember.SimpleAuth.Authenticators.Base](#Ember-SimpleAuth-Authenticators-Base))
-  as it usually relies on data that the authenticator retrieves during
-  authentication and that it makes available through the session.
+  as it relies on data that the authenticator retrieved during authentication
+  and that it makes available through the session.
 
   @class Base
   @namespace Authorizers
@@ -27,7 +27,7 @@ var Base = Ember.Object.extend({
     @property session
     @readOnly
     @type Ember.SimpleAuth.Session
-    @default the session instance that is created during the Ember.js application's intialization
+    @default the session instance that is created during Ember.SimpleAuth' setup (see [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup))
   */
   session: null,
 
@@ -36,10 +36,7 @@ var Base = Ember.Object.extend({
     allows the server to identify the user making the request (e.g. a token in
     the `Authorization` header or some other secret in the query string etc.).
 
-    `Ember.SimpleAuth.Authorizers.Base`'s implementation does nothing as
-    there's no reasonable default behavior (for Ember.SimpleAuth's default
-    authorizer see
-    [Ember.SimpleAuth.Authorizers.OAuth2](#Ember-SimpleAuth-Authorizers-OAuth2)).
+    `Ember.SimpleAuth.Authorizers.Base`'s implementation does nothing.
 
     @method authorize
     @param {jqXHR} jqXHR The XHR request to authorize (see http://api.jquery.com/jQuery.ajax/#jqXHR)

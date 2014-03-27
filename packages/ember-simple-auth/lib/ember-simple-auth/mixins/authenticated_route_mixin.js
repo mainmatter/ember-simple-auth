@@ -3,10 +3,14 @@ var global = (typeof window !== 'undefined') ? window : {},
 
 /**
   The mixin for routes that require the session to be authenticated in order to
-  be accessible. Including this mixin in a route automatically adds hooks that
-  enforce the session to be authenticated and redirect to the
+  be accessible. Including this mixin in a route automatically adds a hook that
+  enforces the session to be authenticated and redirect to the
   `authenticationRoute` specified in
   [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup) if it is not.
+
+  ```javascript
+    App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+  ```
 
   `Ember.SimpleAuth.AuthenticatedRouteMixin` performs the redirect in the
   `beforeModel` method so that in all methods executed after that the session

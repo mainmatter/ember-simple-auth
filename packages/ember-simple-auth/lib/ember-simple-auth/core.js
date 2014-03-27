@@ -77,7 +77,7 @@ var Configuration = {
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      Ember.SimpleAuth.setup(container, application, 'authorizerFactory');
+      Ember.SimpleAuth.setup(container, application);
     }
   });
   ```
@@ -88,7 +88,7 @@ var Configuration = {
   @param {Container} container The Ember.js application's dependency injection container
   @param {Ember.Application} application The Ember.js application instance
   @param {Object} options
-    @param {String} [options.authorizerFactory] The authorizer factory to use as it is registered with Ember's container, see [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register)
+    @param {String} [options.authorizerFactory] The authorizer factory to use as it is registered with Ember's container, see [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register); when the application does not interact with a server that requires authorized requests, no auzthorizer is needed
     @param {Object} [options.storeFactory] The store factory to use as it is registered with Ember's container, see [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register) - defaults to `session-stores:local-storage`
     @param {String} [options.authenticationRoute] route to transition to for authentication - defaults to `'login'`
     @param {String} [options.routeAfterAuthentication] route to transition to after successful authentication - defaults to `'index'`
@@ -136,7 +136,7 @@ var setup = function(container, application, options) {
   Registers an extension initializer to be invoked when
   [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup) is invoked. __This is used
   by extensions__ to the base Ember.SimpleAuth library that can e.g. register
-  factories with the Ember.js Dependency Injection container here etc.
+  factories with the Ember.js dependency injection container here etc.
 
   @method initializeExtension
   @namespace $mainModule

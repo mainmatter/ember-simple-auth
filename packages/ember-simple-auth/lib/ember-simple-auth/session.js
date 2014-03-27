@@ -3,20 +3,43 @@ var global = (typeof window !== 'undefined') ? window : {},
 
 /**
   __The session provides access to the current authentication state as well as
-  any data resolved by the authenticator__ (see
+  any data the authenticator resolved with__ (see
   [Ember.SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)).
   It is created when Ember.SimpleAuth is set up (see
   [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)) and __injected into all
   models, controllers, routes and views so that all parts of the application
   can always access the current authentication state and other data__,
-  depending on the used authenticator (see
+  depending on the used authenticator and whether the session is actually
+  authenticated (see
   [Ember.SimpleAuth.Authenticators.Base](#Ember-SimpleAuth-Authenticators-Base))).
 
-  The session also provides methods to authenticate the user and to invalidate
-  itself (see
+  The session also provides methods to authenticate it and to invalidate itself
+  (see
   [Ember.SimpleAuth.Session#authenticate](#Ember-SimpleAuth-Session-authenticate),
-  [Ember.SimpleAuth.Session#invaldiate](#Ember-SimpleAuth-Session-invaldiate)
+  [Ember.SimpleAuth.Session#invaldiate](#Ember-SimpleAuth-Session-invaldiate)).
   These methods are usually invoked through actions from routes or controllers.
+  To authenticate the session manually, simple call the
+  [Ember.SimpleAuth.Session#authenticate](#Ember-SimpleAuth-Session-authenticate)
+  method with the authenticator factory to use as well as any options the
+  authenticator needs to authenticate the session:
+
+  ```javascript
+    this.get('session').authenticate('authenticatorFactory', { some: 'option' }).then(function() {
+      // authentication was successful
+    }, function() {
+      // authentication failed
+    });
+  ```
+
+  When the session's authentication state changes or an attempt to change it
+  fails, it will trigger the `'sessionAuthenticationSucceeded'`,
+  `'sessionAuthenticationFailed'`, `'sessionInvalidationSucceeded'` or
+  `'sessionInvalidationFailed'` events.
+
+  The session also observes the store and - if it is authenticated - the
+  authenticator for changes (see
+  [Ember.SimpleAuth.Authenticators.Base](#Ember-SimpleAuth-Authenticators-Base)
+  end [Ember.SimpleAuth.Stores.Base](#Ember-SimpleAuth-Stores-Base)).
 
   @class Session
   @extends Ember.ObjectProxy
@@ -35,7 +58,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
   authenticatorFactory: null,
   /**
     The store used to persist session properties. This is assigned during
-    Ember.SimpleAuth's setup and can be specified there
+    Ember.SimpleAuth's setup and can be configured there
     (see [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)).
 
     @property store
@@ -90,6 +113,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     __This delegates the actual authentication work to the `authenticator`__
     and handles the returned promise accordingly (see
     [Ember.SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)).
+    All data the authenticator resolves with will be saved in the session.
 
     __This method returns a promise itself. A resolving promise indicates that
     the session was successfully authenticated__ while a rejecting promise
@@ -127,7 +151,8 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     the session was successfully invalidated__ while a rejecting promise
     indicates that the promise returned by the `authenticator` rejected and
     thus invalidation was cancelled. In that case the session remains
-    authenticated.
+    authenticated. Once the session is successfully invalidated it clears all
+    of its data.
 
     @method invalidate
     @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully

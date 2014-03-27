@@ -7,6 +7,12 @@ import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
   The base for all store types. __This serves as a starting point for
   implementing custom stores and must not be used directly.__
 
+  Stores are used to persist the session's state so it survives a page reload
+  and is synchronized across multiple tabs or windows of the same application.
+  The store to be used with the application can be configured during
+  Ember.SimpleAuth's setup
+  (see [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)).
+
   Stores may trigger the `'updated'` event when their data changed due to
   external actions (e.g. from another tab). The session listens to that event
   and will handle the changes accordingly. Whenever the event is triggered by
@@ -32,7 +38,7 @@ var Base = Ember.Object.extend(Ember.Evented, {
   },
 
   /**
-    Restores all data currently saved in the store as one plain object.
+    Restores all data currently saved in the store as a plain object.
 
     `Ember.SimpleAuth.Stores.Base`'s implementation always returns an empty
     plain Object.
