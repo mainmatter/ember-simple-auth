@@ -7,8 +7,10 @@ var global = (typeof window !== 'undefined') ? window : {},
   Owner Password Credentials Grant Type"_.
 
   This authenticator supports refreshing the access token automatically and
-  will trigger the `'updated'` event each time the
-  token was refreshed.
+  will trigger the `'updated'` event each time the token was refreshed.
+
+  _The factory for this authenticator is registered as
+  `'authenticator:oauth2-password-grant'` in Ember's container._
 
   @class OAuth2
   @namespace Authenticators
@@ -24,6 +26,7 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
     @default '/token'
   */
   serverTokenEndpoint: '/token',
+
   /**
     Sets whether the authenticator automatically refreshes access tokens.
 
@@ -32,6 +35,7 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
     @default true
   */
   refreshAccessTokens: true,
+
   /**
     @property _refreshTokenTimeout
     @private
@@ -71,8 +75,9 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
 
   /**
     Authenticates the session with the specified `credentials`; the credentials
-    are `POST`ed to the `serverTokenEndpoint` and if they are valid the server
-    returns an access token in response (see
+    are `POST`ed to the `serverTokenEndpoint` (see
+    [Ember.SimpleAuth.Authenticators.OAuth2#serverTokenEndpoint](#Ember-SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint))
+    and if they are valid the server returns an access token in response (see
     http://tools.ietf.org/html/rfc6749#section-4.3). __If the credentials are
     valid and authentication succeeds, a promise that resolves with the
     server's response is returned__, otherwise a promise that rejects with the
@@ -106,7 +111,8 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
   },
 
   /**
-    Cancels any outstanding automatic token refreshes.
+    Cancels any outstanding automatic token refreshes and returns a resolving
+    promise.
 
     @method invalidate
     @return {Ember.RSVP.Promise} A resolving promise

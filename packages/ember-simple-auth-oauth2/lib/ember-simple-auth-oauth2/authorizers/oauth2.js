@@ -7,6 +7,9 @@ var global = (typeof window !== 'undefined') ? window : {},
   ([RFC 6749](http://tools.ietf.org/html/rfc6750)) in the request's
   `Authorization` header.
 
+  _The factory for this authorizer is registered as
+  `'authorizer:oauth2-bearer'` in Ember's container.
+
   @class OAuth2
   @namespace Authorizers
   @extends Base
