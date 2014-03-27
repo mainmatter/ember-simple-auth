@@ -1,7 +1,14 @@
-#### The RFC 6749 (OAuth 2.0) Authenticator
+__[The API docs for Ember.SimpleAuth OAuth 2.0 are available here](http://ember-simple-auth.simplabs.com/ember-simple-auth-oauth2-api-docs.html)__
 
-Ember.SimpleAuth's default authenticator (see the
-[API docs for `Authenticators.OAuth2`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authenticators-OAuth2))
+# Ember.SimpleAuth OAuth 2.0
+
+This is an extension to the Ember.SimpleAuth library that provides an
+authenticator and an authorizer that are compatible with OAuth 2.0.
+
+## The Authenticator
+
+The authenticator (see the
+[API docs for `Authenticators.OAuth2`](http://ember-simple-auth.simplabs.com/ember-simple-auth-oauth2-api-docs.html#Ember-SimpleAuth-Authenticators-OAuth2))
 is compliant with [RFC 6749 (OAuth 2.0)](http://tools.ietf.org/html/rfc6749),
 specifically the _"Resource Owner Password Credentials Grant Type"_. This grant
 type basically specifies that the client sends a set of credentials to a
@@ -15,8 +22,7 @@ Content-Type: application/x-www-form-urlencoded
 grant_type=password&username=johndoe&password=A3ddj3w
 ```
 
-and in exchange receives an `access_token` that is then used to identify the
-user in subsequent requests:
+and in exchange receives an `access_token`:
 
 ```
 HTTP/1.1 200 OK
@@ -30,11 +36,11 @@ Pragma: no-cache
 }
 ```
 
-__Ember.SimpleAuth's OAuth 2.0 authenticator also supports automatic token
-refreshing__ which is explained in more detail in
+__The OAuth 2.0 authenticator also supports automatic token refreshing__ which
+is explained in more detail in
 [section 6 of RFC 6749](http://tools.ietf.org/html/rfc6749#section-6).
 
-##### Using the RFC 6749 (OAuth 2.0) Authenticator
+### Using the RFC 6749 (OAuth 2.0) Authenticator
 
 In order to use the OAuth 2.0 authenticator the application needs to have a
 login route:
@@ -60,32 +66,63 @@ This route displays the login form with fields for `identification` and
 
 The `authenticate` action that is triggered by submitting the form is provided
 by the `LoginControllerMixin` that the respective controller in the application
-needs to include:
+needs to include. It also needs to specify the OAuth 2.0 authenticator to be
+used:
 
 ```js
-App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
+App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+  authenticatorFactory: 'authenticator:oauth2-password-grant'
+});
 ```
 
-The mixin will by default use the OAuth 2.0 authenticator to authenticate the
-session.
+### Compatible Middlewares
 
-##### Compatible Middlewares
+There are lots of middlewares for different server stacks that support OAuth
+2.0 and the _"Resource Owner Password Credentials Grant Type"_ and that can be
+used with this library:
 
-There is a whole bunch of middlewares for different languages and servers that
-implement OAuth 2.0 and can be used with Ember.SimpleAuth's OAuth 2.0
-authenticator. The
-[complete list can be found in the Wiki](https://github.com/simplabs/ember-simple-auth/wiki/OAuth-2.0-Middlewares).
+#### Ruby
 
+* rack-oauth2: https://github.com/nov/rack-oauth2
+* doorkeeper: https://github.com/applicake/doorkeeper
+* Rails app template: https://github.com/bazzel/rails-templates/blob/master/ember-simple-auth.rb
 
-#### The RFC 6750 Authorizer
+#### PHP
 
-Ember.SimpleAuth's default authorizer (see the
-[API docs for `Authorizers.OAuth2`](http://ember-simple-auth.simplabs.com/api.html#Ember-SimpleAuth-Authorizers-OAuth2))
+* oauth2-server: https://github.com/php-loep/oauth2-server
+* zfr-oauth2-server: https://github.com/zf-fr/zfr-oauth2-server
+* zfr-oauth2-server-module (for ZF2): https://github.com/zf-fr/zfr-oauth2-server-module
+
+#### Java
+
+* scribe-java: https://github.com/fernandezpablo85/scribe-java
+
+#### Node.js
+
+* oauth2orize: https://github.com/jaredhanson/oauth2orize
+
+## The Authorizer
+
+The authorizer (see the
+[API docs for `Authorizers.OAuth2`](http://ember-simple-auth.simplabs.com/ember-simple-auth-oauth2-api-docs.html#Ember-SimpleAuth-Authorizers-OAuth2))
 is compliant with [RFC 6750 (OAuth 2.0 Bearer Tokens)](http://tools.ietf.org/html/rfc6750)
-and thus fits the default OAuth 2.0 authenticator. It simply injects an
-`Authorization` header with the `access_token` that the authenticator acquired
-into all requests:
+and thus fits the OAuth 2.0 authenticator. It simply injects an `Authorization`
+header with the `access_token` that the authenticator acquired into all
+requests:
 
 ```
 Authorization: Bearer <access_token>
+```
+
+To use the authorizer, specify it during Ember.SimpleAuth's setup:
+
+```js
+Ember.Application.initializer({
+  name: 'authentication',
+  initialize: function(container, application) {
+    Ember.SimpleAuth.setup(container, application, {
+      authorizerFactory: 'authorizer:oauth2-bearer'
+    });
+  }
+});
 ```
