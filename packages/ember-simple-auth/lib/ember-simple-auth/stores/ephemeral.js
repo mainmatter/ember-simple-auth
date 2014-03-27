@@ -10,8 +10,8 @@ import { Base } from './base';
 
   __This store is mainly useful for testing.__
 
-  _The factory for this store is registered as 'session-store:ephemeral' in
-  Ember's cotnainer_
+  _The factory for this store is registered as `'session-store:ephemeral'` in
+  Ember's container._
 
   @class Ephemeral
   @namespace Stores

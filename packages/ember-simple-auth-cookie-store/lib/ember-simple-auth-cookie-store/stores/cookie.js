@@ -14,8 +14,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   This store will trigger the `'updated'` event when any of its cookies is
   changed from another tab or window.
 
-  _The factory for this store is registered as 'session-store:cookie' in
-  Ember's cotnainer_
+  _The factory for this store is registered as `'session-store:cookie'` in
+  Ember's container.
 
   @class Cookie
   @namespace Stores
