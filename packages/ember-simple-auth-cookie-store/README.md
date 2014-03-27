@@ -2,7 +2,7 @@ __[The API docs for `Stores.Cookie` are available here](http://ember-simple-auth
 
 #  Ember.SimpleAuth Cookie Store
 
-This is an extension to the standard Ember.SimpleAuth library that provides a
-__cookie based session store__. It offers the same functionality as the
-standard `localStorage` based store but __also supports older browsers__ that
-don't support the `locaStorage` API.
+This is an extension to the Ember.SimpleAuth library that provides a __cookie
+based session store__. It offers the same functionality as the standard
+`localStorage` based store but __also supports older browsers__ that don't
+support the `locaStorage` API.
