@@ -90,9 +90,9 @@ module.exports = function() {
     module.anchor    = anchorify(module.name);
   } else {
     module = {
-      invisibleModule: true,
-      name: this.project.module,
-      classes: this.classes
+      fakeModule: true,
+      name:       this.project.module,
+      classes:    this.classes
     };
   }
 
