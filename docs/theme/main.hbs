@@ -96,35 +96,37 @@
         </div>
       </header>
       <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="page-header">
-              <a id="{{anchor}}" class="symbol-anchor"></a>
-              <h1 class="class">{{name}}</h1>
+        {{#unless invisibleModule}}
+          <div class="row">
+            <div class="col-md-12">
+              <div class="page-header">
+                <a id="{{anchor}}" class="symbol-anchor"></a>
+                <h1 class="class">{{name}}</h1>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-9" id="main-content">
-            {{markdown description}}
-            {{#if properties}}
-              <h3 class="section">Properties</h3>
-              {{#each properties}}
-                {{> property}}
-              {{/each}}
-            {{/if}}
-            {{#if functions}}
-              <h3 class="section">Functions</h3>
-              {{#each functions}}
-                {{> method}}
-              {{/each}}
-            {{/if}}
+          <div class="row">
+            <div class="col-md-9" id="main-content">
+              {{markdown description}}
+              {{#if properties}}
+                <h3 class="section">Properties</h3>
+                {{#each properties}}
+                  {{> property}}
+                {{/each}}
+              {{/if}}
+              {{#if functions}}
+                <h3 class="section">Functions</h3>
+                {{#each functions}}
+                  {{> method}}
+                {{/each}}
+              {{/if}}
+            </div>
+            <div class="col-md-3 overview">
+              {{> sidebar-properties}}
+              {{> sidebar-functions}}
+            </div>
           </div>
-          <div class="col-md-3 overview">
-            {{> sidebar-properties}}
-            {{> sidebar-functions}}
-          </div>
-        </div>
+        {{/unless}}
         {{#each klasses}}
           <div class="row">
             <div class="col-md-12">

@@ -80,13 +80,21 @@ function cleanClassItems(items, module) {
 };
 
 module.exports = function() {
-  var _this       = this;
-  var module      = this.modules[this.project.module];
-  var moduleItems = this.classitems.filter(function(item) {
-    return item.namespace === '$mainModule' && item.access !== 'private';
-  });
-  module.functions = cleanModuleItems(extractFunctions(moduleItems), module.name);
-  module.anchor    = anchorify(module.name);
+  var _this  = this;
+  var module = this.modules[this.project.module];
+  if (!!module) {
+    var moduleItems = this.classitems.filter(function(item) {
+      return item.namespace === '$mainModule' && item.access !== 'private';
+    });
+    module.functions = cleanModuleItems(extractFunctions(moduleItems), module.name);
+    module.anchor    = anchorify(module.name);
+  } else {
+    module = {
+      invisibleModule: true,
+      name: this.project.module,
+      classes: this.classes
+    };
+  }
 
   var klassNames = [];
   module.klasses = [];
