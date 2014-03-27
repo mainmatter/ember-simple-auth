@@ -112,7 +112,7 @@ Ember.SimpleAuth does not include any authenticators in the base library but
 offers extension libraries that can be loaded in the application as needed:
 
 * [__ember-simple-auth-oauth2__](packages/ember-simple-auth-oauth2#readme) provides an OAuth 2.0 authenticator
-* [__ember-simple-auth-devise__]((packages/ember-simple-auth-devise#readme) provides an authenticator compatible with the popluar Ruby on Rails authentication plugin
+* [__ember-simple-auth-devise__](packages/ember-simple-auth-devise#readme) provides an authenticator compatible with the popluar Ruby on Rails authentication plugin
 
 #### Implementing a custom Authenticator
 
