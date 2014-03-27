@@ -4,16 +4,15 @@ var global = (typeof window !== 'undefined') ? window : {},
 /**
   Store that saves its data in session cookies.
 
-  __In order to keep multiple tabs/windows of your application in sync, this
+  __In order to keep multiple tabs/windows of an application in sync, this
   store has to periodically (every 500ms) check the cookies__ for changes as
   there are no events that notify of changes in cookies. The recommended
-  alternative is
-  [Ember.SimpleAuth.Stores.LocalStorage](#Ember-SimpleAuth-Stores-LocalStorage)
-  that also persistently stores data but instead of cookies relies on the
-  `localStorage` API and does not need to poll for external changes.
+  alternative is `Ember.SimpleAuth.Stores.LocalStorage` that also persistently
+  stores data but instead of cookies relies on the `localStorage` API and does
+  not need to poll for external changes.
 
-  This store will trigger the `'updated'` event when
-  any of its cookies is changed from another tab or window.
+  This store will trigger the `'updated'` event when any of its cookies is
+  changed from another tab or window.
 
   @class Cookie
   @namespace Stores
@@ -29,11 +28,13 @@ var Cookie = Ember.SimpleAuth.Stores.Base.extend({
     @default 'ember_simple_auth:'
   */
   cookieNamePrefix: 'ember_simple_auth:',
+
   /**
     @property _secureCookies
     @private
   */
   _secureCookies: window.location.protocol === 'https:',
+
   /**
     @property _syncDataTimeout
     @private
@@ -63,7 +64,9 @@ var Cookie = Ember.SimpleAuth.Stores.Base.extend({
 
   /**
     Restores all data currently saved in the session cookies identified by the
-    `cookieNamePrefix` as one plain object.
+    `cookieNamePrefix` (see
+    [Ember.SimpleAuth.Stores.Cookie#cookieNamePrefix](Ember-SimpleAuth-Stores-Cookie-cookieNamePrefix))
+    as a plain object.
 
     @method restore
     @return {Object} All data currently persisted in the session cookies
@@ -79,7 +82,8 @@ var Cookie = Ember.SimpleAuth.Stores.Base.extend({
 
   /**
     Clears the store by deleting all session cookies prefixed with the
-    `cookieNamePrefix`.
+    `cookieNamePrefix` (see
+    [Ember.SimpleAuth.Stores.Cookie#cookieNamePrefix](Ember-SimpleAuth-Stores-Cookie-cookieNamePrefix)).
 
     @method clear
   */
