@@ -178,6 +178,17 @@ Ember.SimpleAuth sets up an
 [`$.ajaxPrefilter`](http://api.jquery.com/jQuery.ajaxPrefilter/) that is used
 to authorize AJAX requests.
 
+```js
+Ember.Application.initializer({
+  name: 'authentication',
+  initialize: function(container, application) {
+    Ember.SimpleAuth.setup(container, application, {
+      authorizerFactory: 'authorizer:custom'
+    });
+  }
+});
+```
+
 While the authenticator acquires some sort of secret information from an
 authentication provider when it authenticates the session, __the authorizer
 uses that secret information to identify the user in subsequent requests__.
