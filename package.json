@@ -1,6 +1,5 @@
 {
   "name": "ember-simple-auth-meta",
-  "description": "Ember.SimpleAuth Meta Package",
   "author": "Marco Otte-Witte",
   "license": "MIT",
   "devDependencies": {
