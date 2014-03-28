@@ -22,7 +22,7 @@ Content-Type: application/x-www-form-urlencoded
 grant_type=password&username=johndoe&password=A3ddj3w
 ```
 
-and in exchange receives an `access_token`:
+and if those credentials are valid in exchange receives an `access_token`:
 
 ```
 HTTP/1.1 200 OK
@@ -78,8 +78,8 @@ App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMi
 ### Compatible Middlewares
 
 There are lots of middlewares for different server stacks that support OAuth
-2.0 and the _"Resource Owner Password Credentials Grant Type"_ and that can be
-used with this library:
+2.0 and the _"Resource Owner Password Credentials Grant Type"_ and that work
+with this library:
 
 #### Ruby
 
@@ -114,7 +114,7 @@ requests:
 Authorization: Bearer <access_token>
 ```
 
-To use the authorizer, specify it during Ember.SimpleAuth's setup:
+To use the authorizer, specify it for Ember.SimpleAuth's setup:
 
 ```js
 Ember.Application.initializer({
