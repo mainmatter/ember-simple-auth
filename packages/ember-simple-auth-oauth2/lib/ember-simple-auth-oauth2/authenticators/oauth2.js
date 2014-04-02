@@ -159,12 +159,13 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
     if (this.refreshAccessTokens) {
       var now = (new Date()).getTime();
       if (Ember.isEmpty(expiresAt) && !Ember.isEmpty(expiresIn)) {
-        expiresAt = new Date(now + (expiresIn - 5) * 1000).getTime();
+        expiresAt = new Date(now + expiresIn * 1000).getTime();
       }
-      if (!Ember.isEmpty(refreshToken) && !Ember.isEmpty(expiresAt) && expiresAt > now) {
+      var offset = Math.floor(Math.random() * 7) + 3;
+      if (!Ember.isEmpty(refreshToken) && !Ember.isEmpty(expiresAt) && expiresAt > now - offset) {
         Ember.run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
-        this._refreshTokenTimeout = Ember.run.later(this, this.refreshAccessToken, expiresIn, refreshToken, expiresAt - now);
+        this._refreshTokenTimeout = Ember.run.later(this, this.refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
       }
     }
   },
