@@ -161,7 +161,7 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
       if (Ember.isEmpty(expiresAt) && !Ember.isEmpty(expiresIn)) {
         expiresAt = new Date(now + expiresIn * 1000).getTime();
       }
-      var offset = Math.floor(Math.random() * 7) + 3;
+      var offset = (Math.floor(Math.random() * 15) + 5) * 1000;
       if (!Ember.isEmpty(refreshToken) && !Ember.isEmpty(expiresAt) && expiresAt > now - offset) {
         Ember.run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
