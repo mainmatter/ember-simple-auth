@@ -1,0 +1,6 @@
+{
+  "esnext": true,
+  "boss": true,
+  "debug": true,
+  "expr": true
+}

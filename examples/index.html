@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ember.SimpleAuth - examples</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
+    <script src="http://builds.emberjs.com/release/ember.js"></script>
+    <script src="../tmp/ember-simple-auth.js"></script>
+    <script src="../tmp/ember-simple-auth-cookie-store.js"></script>
+  </head>
+  <body style="padding-top: 50px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="list-group">
+            <a href="/examples/1-simple.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Simple OAuth 2.0 example</h4>
+              <p class="list-group-item-text">Simple example with OAuth 2.0 authentication.</p>
+            </a>
+            <a href="/examples/2-errors.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Example with error handling</h4>
+              <p class="list-group-item-text">Simple example with OAuth 2.0 authentication and error handling.</p>
+            </a>
+            <a href="/examples/3-token-refresh.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Example with OAuth 2.0 token refresh</h4>
+              <p class="list-group-item-text">Simple example with OAuth 2.0 authentication including automatic token refresh.</p>
+            </a>
+            <a href="/examples/4-authenticated-account.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Example with session account</h4>
+              <p class="list-group-item-text">Example with customized OAuth 2.0 authentication that also provides an authenticated account.</p>
+            </a>
+            <a href="/examples/5-ember-data.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Ember Data example</h4>
+              <p class="list-group-item-text">Example that uses ember-data.</p>
+            </a>
+            <a href="/examples/6-custom-server.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Custom Server example</h4>
+              <p class="list-group-item-text">An example with a custom authentication server.</p>
+            </a>
+            <a href="/examples/7-facebook-auth.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Facebook Auth example</h4>
+              <p class="list-group-item-text">Exampled where Facebook Auth is used to authenticate users instead of credentials-based authentication.</p>
+            </a>
+            <a href="/examples/8-cookie-store.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Cookie Store example</h4>
+              <p class="list-group-item-text">Simple example that uses the cookie store to persist the session.</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      Ember.$(document).ready(function() {
+        Ember.SimpleAuth.Stores.LocalStorage.create().clear();
+        Ember.SimpleAuth.Stores.Cookie.create().clear();
+      });
+    </script>
+  </body>
+</html>

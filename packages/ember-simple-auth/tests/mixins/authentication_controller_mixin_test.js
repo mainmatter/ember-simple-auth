@@ -1,68 +1,21 @@
-var AuthenticatorMock = Ember.Object.extend();
+import { AuthenticationControllerMixin } from 'ember-simple-auth/mixins/authentication_controller_mixin';
+import { Session } from 'ember-simple-auth/session';
+import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
 
-var testController;
-var TestController = Ember.Controller.extend(Ember.SimpleAuth.AuthenticationControllerMixin, {
-  authenticator: 'authenticators:test',
-  actions: {
-    sessionAuthenticationSucceeded: function() {
-      this.invokedSessionAuthenticationSucceeded = true;
-    },
-    sessionAuthenticationFailed: function(error) {
-      this.invokedSessionAuthenticationFailed     = true;
-      this.invokedSessionAuthenticationFailedWith = error;
-    }
-  }
-});
-
-var sessionMock;
-var SessionMock = Ember.Object.extend({
-  authenticate: function(authenticator, options) {
-    this.invokedAuthenticate     = true;
-    this.invokedAuthenticateWith = { authenticator: authenticator, options: options };
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!!SessionMock._resolve) {
-        resolve(SessionMock._resolve);
-      } else {
-        reject(SessionMock._reject);
-      }
+describe('AuthenticationControllerMixin', function() {
+  describe('the "authenticate" action', function() {
+    beforeEach(function() {
+      this.session    = Session.create({ store: EphemeralStore.create() });
+      this.controller = Ember.Controller.extend(AuthenticationControllerMixin, {
+        authenticatorFactory: 'authenticatorFactory'
+      }).create({ session: this.session });
     });
-  }
-});
 
-module('Ember.SimpleAuth.AuthenticationControllerMixin', {
-  setup: function() {
-    testController = TestController.create();
-    sessionMock    = SessionMock.create();
-    testController.set('session', sessionMock);
-  }
-});
+    it('authenticates the session', function() {
+      sinon.stub(this.session, 'authenticate');
+      this.controller._actions.authenticate.apply(this.controller, [{ some: 'options' }]);
 
-test('authenticates the session', function() {
-  Ember.run(function() {
-    testController.send('authenticate', { 'key': 'value' });
+      expect(this.session.authenticate).to.have.been.calledWith('authenticatorFactory', { some: 'options' });
+    });
   });
-
-  ok(sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session when authentication is triggered.');
-  equal(sessionMock.invokedAuthenticateWith.authenticator, 'authenticators:test', 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session with the correct authenticator.');
-  deepEqual(sessionMock.invokedAuthenticateWith.options, { 'key': 'value' }, 'Ember.SimpleAuth.AuthenticationControllerMixin authenticates the session with the correct options.');
-});
-
-test('triggers the authenticationSucceeded action when authentication is successful', function() {
-  SessionMock._resolve = true;
-  Ember.run(function() {
-    testController.send('authenticate');
-  });
-
-  ok(testController.invokedSessionAuthenticationSucceeded, 'Ember.SimpleAuth.AuthenticationControllerMixin triggers the sessionAuthenticationSucceeded action when authentication was successful.');
-});
-
-test('triggers the authenticationFailed action when authentication fails', function() {
-  SessionMock._resolve = false;
-  SessionMock._reject = 'error!';
-  Ember.run(function() {
-    testController.send('authenticate');
-  });
-
-  ok(testController.invokedSessionAuthenticationFailed, 'Ember.SimpleAuth.AuthenticationControllerMixin triggers the sessionAuthenticationFailed action when authentication fails.');
-  equal(testController.invokedSessionAuthenticationFailedWith, 'error!', 'Ember.SimpleAuth.AuthenticationControllerMixin triggers the sessionAuthenticationFailed action with the rejection value of the session.');
 });

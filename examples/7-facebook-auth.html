@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ember.SimpleAuth - examples</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
+    <script src="http://builds.emberjs.com/release/ember.js"></script>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script src="../tmp/ember-simple-auth.js"></script>
+  </head>
+  <body style="padding-top: 50px;">
+    <script type="text/x-handlebars">
+      <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+          {{#link-to 'index' classNames='navbar-brand'}}
+            Home
+          {{/link-to}}
+        </div>
+        <div class="collapse navbar-collapse navbar-ex5-collapse">
+          <ul class="nav navbar-nav">
+            {{#link-to 'protected' tagName='li'}}
+              <a style="cursor: pointer">Protected Page</a>
+            {{/link-to}}
+          </ul>
+          {{! display logout button when the session is authenticated, login button otherwise }}
+          {{#if session.isAuthenticated}}
+            <a {{ action 'invalidateSession' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
+          {{else}}
+            <a {{ action 'authenticateSession' }} class="btn btn-success navbar-btn navbar-right">Login</a>
+          {{/if}}
+        </div>
+      </nav>
+      <div class="container">
+        {{outlet}}
+      </div>
+      <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">&larr; back to examples list</a>
+        </div>
+      </nav>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="index">
+      <div class="page-header">
+        <h1>Facebook Auth example</h1>
+      </div>
+      {{#unless session.isAuthenticated}}
+        <div class="alert alert-info">
+          You can <a {{ action 'authenticateSession' }} class="alert-link" style="cursor: pointer;">log in</a> with your Facebook account.
+        </div>
+      {{/unless}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="protected">
+      <div class="page-header">
+        <h1>Protected Page</h1>
+      </div>
+      <div class="alert alert-warning">
+        This is a protected page only visible to authenticated users!
+      </div>
+    </script>
+
+    <script type="text/javascript">
+      // setup Facebook SDK
+      FB.init({ appId: '631252926924840' });
+
+      // setup Ember.SimpleAuth in an initializer
+      Ember.Application.initializer({
+        name: 'authentication',
+        initialize: function(container, application) {
+          // register the Facebook authenticator so the session can find it
+          container.register('authenticators:facebook', App.FacebookAuthenticator);
+          Ember.SimpleAuth.setup(container, application);
+        }
+      });
+
+      App = Ember.Application.create();
+
+      App.Router.reopen({
+        rootURL: '/examples/7-facebook-auth.html'
+      });
+
+      App.Router.map(function() {
+        // protected route that's inaccessible without authentication
+        this.route('protected');
+      });
+
+      // the custom authenticator that initiates the authentication process with Facebook
+      App.FacebookAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+        restore: function(properties) {
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            if (!Ember.isEmpty(properties.accessToken)) {
+              resolve(properties);
+            } else {
+              reject();
+            }
+          });
+        },
+        authenticate: function() {
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            FB.getLoginStatus(function(fbResponse) {
+              if (fbResponse.status === 'connected') {
+                Ember.run(function() {
+                  resolve({ accessToken: fbResponse.authResponse.accessToken });
+                });
+              } else if (fbResponse.status === 'not_authorized') {
+                reject();
+              } else {
+                FB.login(function(fbResponse) {
+                  if (fbResponse.authResponse) {
+                    Ember.run(function() {
+                      resolve({ accessToken: fbResponse.authResponse.accessToken });
+                    });
+                  } else {
+                    reject();
+                  }
+                });
+              }
+            });
+          });
+        },
+        invalidate: function() {
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            FB.logout(function(response) {
+              Ember.run(resolve);
+            });
+          });
+        }
+      });
+
+      // use the provided mixin in the application route
+      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+        actions: {
+          // override authenticateSession to instead of transitioning to a login route start authentication directly
+          authenticateSession: function() {
+            this.get('session').authenticate('authenticators:facebook', {});
+          }
+        }
+      });
+
+      // make this route protected
+      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+    </script>
+  </body>
+</html>

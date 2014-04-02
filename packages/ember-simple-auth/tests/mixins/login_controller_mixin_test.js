@@ -1,84 +1,49 @@
-var testController;
-var TestController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-  actions: {
-    sessionAuthenticationSucceeded: function() {
-      this.invokedSessionAuthenticationSucceeded = true;
-    },
-    sessionAuthenticationFailed: function(error) {
-      this.invokedSessionAuthenticationFailed     = true;
-      this.invokedSessionAuthenticationFailedWith = error;
-    }
-  }
-});
+import { LoginControllerMixin } from 'ember-simple-auth/mixins/login_controller_mixin';
+import { Session } from 'ember-simple-auth/session';
+import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
 
-var sessionMock;
-var SessionMock = Ember.Object.extend({
-  authenticate: function(authenticator, options) {
-    this.invokedAuthenticate     = true;
-    this.invokedAuthenticateWith = { authenticator: authenticator, options: options };
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!!SessionMock._resolve) {
-        resolve(SessionMock._resolve);
-      } else {
-        reject(SessionMock._reject);
-      }
+describe('LoginControllerMixin', function() {
+  beforeEach(function() {
+    this.session    = Session.create({ store: EphemeralStore.create() });
+    this.controller = Ember.Controller.extend(LoginControllerMixin).create({
+      authenticatorFactory: 'authenticatorFactory',
+      session:              this.session
     });
-  }
-});
-
-module('Ember.SimpleAuth.LoginControllerMixin', {
-  setup: function() {
-    testController = TestController.create();
-    sessionMock    = SessionMock.create();
-    testController.set('session', sessionMock);
-    testController.setProperties({ identification: 'identification', password: 'password', remember_me: false });
-  }
-});
-
-test('authenticates the session', function() {
-  Ember.run(function() {
-    testController.setProperties({ identification: 'identification', password: 'password', remember_me: false });
-    testController.send('authenticate');
   });
 
-  ok(sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.LoginControllerMixin authenticates the session when authentication is triggered.');
-  equal(sessionMock.invokedAuthenticateWith.authenticator, 'ember-simple-auth:authenticators:oauth2', 'Ember.SimpleAuth.LoginControllerMixin authenticates the session with the correct authenticator.');
-  deepEqual(sessionMock.invokedAuthenticateWith.options, { identification: 'identification', password: 'password', remember_me: false }, 'Ember.SimpleAuth.LoginControllerMixin authenticates the session with identification, password, and remember_me.');
-});
+  describe('the "authenticate" action', function() {
+    describe('when both identification and password are set on the controller', function() {
+      beforeEach(function() {
+        sinon.stub(this.session, 'authenticate');
+        this.controller.setProperties({
+          identification: 'identification',
+          password:       'password'
+        });
+      });
 
-test('does not authenticate the session when identification or password are empty', function() {
-  testController.setProperties({ identification: '', password: 'password' });
-  testController.send('authenticate');
+      it('unsets the password', function() {
+        this.controller._actions.authenticate.apply(this.controller);
 
-  ok(!sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.LoginControllerMixin does not authenticate the session when authentication is triggered but identification is empty.');
+        expect(this.controller.get('password')).to.be.null;
+      });
 
-  testController.setProperties({ identification: 'identification', password: '' });
-  testController.send('authenticate');
+      it('authenticates the session', function() {
+        this.controller._actions.authenticate.apply(this.controller);
 
-  ok(!sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.LoginControllerMixin does not authenticate the session when authentication is triggered but password is empty.');
+        expect(this.session.authenticate).to.have.been.calledWith(
+          'authenticatorFactory',
+          { identification: 'identification', password: 'password'
+        });
+      });
+    });
 
-  testController.setProperties({ identification: '', password: '' });
-  testController.send('authenticate');
+    describe('when both identification and password are set on the controller', function() {
+      it('does not authenticate the session', function() {
+        sinon.spy(this.session, 'authenticate');
+        this.controller._actions.authenticate.apply(this.controller);
 
-  ok(!sessionMock.invokedAuthenticate, 'Ember.SimpleAuth.LoginControllerMixin does not authenticate the session when authentication is triggered but identification and password are empty.');
-});
-
-test('triggers the authenticationSucceeded action when authentication is successful', function() {
-  SessionMock._resolve = true;
-  Ember.run(function() {
-    testController.send('authenticate');
+        expect(this.session.authenticate).to.not.have.been.called;
+      });
+    });
   });
-
-  ok(testController.invokedSessionAuthenticationSucceeded, 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationSucceeded action when authentication was successful.');
-});
-
-test('triggers the authenticationFailed action when authentication fails', function() {
-  SessionMock._resolve = false;
-  SessionMock._reject = 'error!';
-  Ember.run(function() {
-    testController.send('authenticate');
-  });
-
-  ok(testController.invokedSessionAuthenticationFailed, 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationFailed action when authentication fails.');
-  equal(testController.invokedSessionAuthenticationFailedWith, 'error!', 'Ember.SimpleAuth.LoginControllerMixin triggers the sessionAuthenticationFailed action with the rejection value of the session.');
 });

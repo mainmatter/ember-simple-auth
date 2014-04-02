@@ -1,62 +1,47 @@
-var testRoute;
-var TestRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+import { AuthenticatedRouteMixin } from 'ember-simple-auth/mixins/authenticated_route_mixin';
+import { Session } from 'ember-simple-auth/session';
+import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
 
-var containerMock;
-var ContainerMock = Ember.Object.extend({
-  lookup: function(name) {
-    return null;
-  }
-});
+describe('AuthenticatedRouteMixin', function() {
+  describe('#beforeModel', function() {
+    beforeEach(function() {
+      this.session    = Session.create({ store: EphemeralStore.create() });
+      this.transition = { abort: function() {}, send: function() {} };
+      this.route      = Ember.Route.extend(AuthenticatedRouteMixin).create({ session: this.session });
+      sinon.spy(this.transition, 'abort');
+      sinon.spy(this.transition, 'send');
+    });
 
-var attemptedTransitionMock;
-var AttemptedTransitionMock = Ember.Object.extend({
-  abort: function() {
-    this.aborted = true;
-  },
-  send: function(name) {
-    this.invokedAuthenticateSession = (name === 'authenticateSession');
-  }
-});
+    describe('if the session is authenticated', function() {
+      beforeEach(function() {
+        this.session.set('isAuthenticated', true);
+      });
 
-module('Ember.SimpleAuth.AuthenticatedRouteMixin', {
-  setup: function() {
-    testRoute               = TestRoute.create();
-    attemptedTransitionMock = AttemptedTransitionMock.create();
-    containerMock           = ContainerMock.create();
-    var session             = Ember.SimpleAuth.Session.create({ store: Ember.SimpleAuth.Stores.Ephemeral.create(), container: containerMock });
-    testRoute.set('session', session);
-  }
-});
+      it('does not abort the transition', function() {
+        this.route.beforeModel(this.transition);
 
-test('triggers authentication', function() {
-  testRoute.triggerSessionAuthentication(attemptedTransitionMock);
+        expect(this.transition.abort).to.not.have.been.called;
+      });
 
-  equal(testRoute.get('session.attemptedTransition'), attemptedTransitionMock, 'Ember.SimpleAuth.AuthenticatedRouteMixin saves the attempted transition in the session when session authentication is triggered.');
-  ok(attemptedTransitionMock.invokedAuthenticateSession, 'Ember.SimpleAuth.AuthenticatedRouteMixin invokes the authenticateSession action on the attempted transition when session authentication is triggered.');
-});
+      it('does not invoke the "authenticateSession" action', function() {
+        this.route.beforeModel(this.transition);
 
-test('triggers authentication when the session is not authenticated', function() {
-  testRoute.set('session.isAuthenticated', false);
-  testRoute.beforeModel(attemptedTransitionMock);
+        expect(this.transition.send).to.not.have.been.called;
+      });
+    });
 
-  ok(attemptedTransitionMock.invokedAuthenticateSession, 'Ember.SimpleAuth.AuthenticatedRouteMixin triggers authenticateSession in beforeModel when the session is not authenticated.');
+    describe('if the session is not authenticated', function() {
+      it('aborts the transition', function() {
+        this.route.beforeModel(this.transition);
 
-  testRoute.set('session.isAuthenticated', true);
-  attemptedTransitionMock.invokedAuthenticateSession = false;
-  testRoute.beforeModel(attemptedTransitionMock);
+        expect(this.transition.abort).to.have.been.called;
+      });
 
-  ok(!attemptedTransitionMock.invokedAuthenticateSession, 'Ember.SimpleAuth.AuthenticatedRouteMixin does not trigger authenticateSession in beforeModel when the session is authenticated.');
-});
+      it('invokes the "authenticateSession" action', function() {
+        this.route.beforeModel(this.transition);
 
-test('aborts the attempted transaction when the session is not authenticated', function() {
-  testRoute.set('session.isAuthenticated', false);
-  testRoute.beforeModel(attemptedTransitionMock);
-
-  ok(attemptedTransitionMock.aborted, 'Ember.SimpleAuth.AuthenticatedRouteMixin aborts the attempted transition in beforeModel when the session is not authenticated.');
-
-  testRoute.set('session.isAuthenticated', true);
-  attemptedTransitionMock.aborted = false;
-  testRoute.beforeModel(attemptedTransitionMock);
-
-  ok(!attemptedTransitionMock.aborted, 'Ember.SimpleAuth.AuthenticatedRouteMixin does not abort the attempted transition in beforeModel when the session is authenticated.');
+        expect(this.transition.send).to.have.been.calledWith('authenticateSession');
+      });
+    });
+  });
 });

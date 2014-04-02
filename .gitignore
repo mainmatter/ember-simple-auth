@@ -3,3 +3,4 @@ dist
 tmp
 docs/build
 .ruby-version
+node_modules
