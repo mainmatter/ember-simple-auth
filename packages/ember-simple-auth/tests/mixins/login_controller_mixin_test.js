@@ -32,7 +32,27 @@ describe('LoginControllerMixin', function() {
 
         expect(this.session.authenticate).to.have.been.calledWith(
           'authenticatorFactory',
-          { identification: 'identification', password: 'password'
+          { identification: 'identification', password: 'password', remember_me: undefined
+        });
+      });
+    });
+
+    describe('when the remember_me is also set on the controller', function() {
+      beforeEach(function() {
+        sinon.stub(this.session, 'authenticate');
+        this.controller.setProperties({
+          identification: 'identification',
+          password:       'password',
+          remember_me:    true
+        });
+      });
+
+      it('authenticates the session', function() {
+        this.controller._actions.authenticate.apply(this.controller);
+
+        expect(this.session.authenticate).to.have.been.calledWith(
+          'authenticatorFactory',
+          { identification: 'identification', password: 'password', remember_me: true
         });
       });
     });

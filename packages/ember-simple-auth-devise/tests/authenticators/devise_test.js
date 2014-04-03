@@ -1,108 +1,112 @@
 import { Devise } from 'ember-simple-auth-devise/authenticators/devise';
 
 describe('Devise', function() {
-/*
-  var authenticator;
-
-  var ajaxMock;
-  var AjaxMock = Ember.Object.extend({
-    ajaxCapture: function(options) {
-      this.requestOptions = options;
-      return {
-        then: function(success, fail) {
-          if (AjaxMock._resolve) {
-            success(AjaxMock._resolve);
-          } else if (AjaxMock._reject) {
-            fail(AjaxMock._reject);
-          }
-        }
-      };
-    }
+  beforeEach(function() {
+    this.authenticator = Devise.create();
   });
 
-  module('Ember.SimpleAuth.Authenticators.Devise', {
-    originalAjax: Ember.$.ajax,
-    setup: function() {
-      authenticator = Ember.SimpleAuth.Authenticators.Devise.create();
-      ajaxMock      = AjaxMock.create();
-      Ember.$.ajax  = Ember.$.proxy(ajaxMock.ajaxCapture, ajaxMock);
-    },
-    teardown: function() {
-      Ember.run.cancel(authenticator._refreshTokenTimeout);
-      Ember.$.ajax = this.originalAjax;
-    }
-  });
+  describe('#restore', function() {
+    beforeEach(function() {
+      this.xhr                = sinon.useFakeXMLHttpRequest();
+      this.server             = sinon.fakeServer.create();
+      this.server.autoRespond = true;
+      sinon.spy($, 'ajax');
 
-  test('restores the session', function() {
-    var rejected;
-    Ember.run(function() {
-      authenticator.restore({}).then(function() {}, function() {
-        rejected = true;
+      this.server.respondWith('POST', '/users/sign_in', [
+        201,
+        { 'Content-Type': 'application/json' },
+        '{ "remember_token": "secret token!" }'
+      ]);
+    });
+
+    describe('when the data contains a remember_token', function() {
+      it('resolves with the correct data', function(done) {
+        this.authenticator.restore({ "remember_token": 'secret token!' }).then(function(content){
+          expect(content).to.eql({ "remember_token": 'secret token!' });
+          done();
+        });
       });
     });
 
-    ok(rejected, 'Ember.SimpleAuth.Authenticators.Devise returns a rejecting promise when the properties it restores the session from do not include a remember_token.');
+    afterEach(function() {
+      this.xhr.restore();
+      $.ajax.restore();
+    });
+  });
 
-    rejected = false;
-    Ember.run(function() {
-      authenticator.restore({ remember_token: '' }).then(function() {}, function() {
-        rejected = true;
+  describe('#authenticate', function() {
+    beforeEach(function() {
+      this.xhr                = sinon.useFakeXMLHttpRequest();
+      this.server             = sinon.fakeServer.create();
+      this.server.autoRespond = true;
+      sinon.spy(Ember.$, 'ajax');
+    });
+
+    describe('when the authentication request is successful', function() {
+      beforeEach(function() {
+        this.server.respondWith('POST', '/users/sign_in', [
+          201,
+          { 'Content-Type': 'application/json' },
+          '{ "access_token": "secret token!" }'
+        ]);
+      });
+
+      it('resolves with the correct data', function(done) {
+        this.authenticator.authenticate({ email: 'email@address.com', password: 'password' }).then(function(data) {
+          expect(true).to.be.true;
+          expect(data).to.eql({ access_token: 'secret token!' });
+          done();
+        });
       });
     });
 
-    ok(rejected, 'Ember.SimpleAuth.Authenticators.Devise returns a rejecting promise when the properties it restores the session from include an empty remember_token.');
-  });
+    describe('when the authentication request has remember_me set to true', function() {
+      beforeEach(function() {
+        this.server.respondWith('POST', '/users/sign_in', [
+          201,
+          { 'Content-Type': 'application/json' },
+          '{ "access_token": "secret token!", "remember_token": "remember" }'
+        ]);
+      });
 
-  test('issues an AJAX request for authentication', function() {
-    Ember.run(function() {
-      authenticator.authenticate({ identification: 'identification', password: 'password', remember_me: false });
-    });
-
-    equal(ajaxMock.requestOptions.url, '/users/sign_in', 'Ember.SimpleAuth.Authenticators.Devise sends a request to the serverTokenEndpoint for authentication.');
-    equal(ajaxMock.requestOptions.type, 'POST', 'Ember.SimpleAuth.Authenticators.Devise sends a POST request for authentication.');
-    deepEqual(ajaxMock.requestOptions.data, { password: 'password', email: 'identification', remember_me: false }, 'Ember.SimpleAuth.Authenticators.Devise sends a request with the correct data for authentication.');
-    equal(ajaxMock.requestOptions.dataType, 'json', 'Ember.SimpleAuth.Authenticators.Devise sends a request with the data type "json" for authentication.');
-    equal(ajaxMock.requestOptions.contentType, 'application/x-www-form-urlencoded', 'Ember.SimpleAuth.Authenticators.Devise sends a request with the content type "application/x-www-form-urlencoded" for authentication.');
-  });
-
-  test('returns a promise on authentication', function() {
-    AjaxMock._resolve = { access_token: 'access_token', remember_token: 'remember_token' };
-    var resolved;
-    var resolvedWith;
-    Ember.run(function() {
-      authenticator.authenticate({}).then(function(properties) {
-        resolved     = true;
-        resolvedWith = properties;
+      it('resolves with the correct data', function(done) {
+        this.authenticator.authenticate({ email: 'email@address.com', password: 'password', remember_me: true }).then(function(data) {
+          expect(true).to.be.true;
+          expect(data).to.eql({ access_token: 'secret token!', remember_token: 'remember' });
+          done();
+        });
       });
     });
 
-    ok(resolved, 'Ember.SimpleAuth.Authenticators.Devise returns a resolving promise when the authentication AJAX request is successful.');
-    deepEqual(resolvedWith, { access_token: 'access_token', remember_token: 'remember_token' }, "Ember.SimpleAuth.Authenticators.Devise returns a promise that resolves with the server's response when the authentication AJAX request is successful.");
+    describe('when the authentication request fails', function() {
+      beforeEach(function() {
+        this.server.respondWith('POST', '/users/sign_in', [
+          400,
+          { 'Content-Type': 'application/json' },
+          '{ "error": "invalid_grant" }'
+        ]);
+      });
 
-    AjaxMock._resolve = false;
-    AjaxMock._reject  = { responseText: 'error' };
-    var rejected;
-    var rejectedWith;
-    Ember.run(function() {
-      authenticator.authenticate({}).then(function() {}, function(error) {
-        rejected     = true;
-        rejectedWith = error;
+      it('rejects with the correct error', function(done) {
+        this.authenticator.authenticate({ email: 'email@address.com', password: 'password' }).then(null, function(error) {
+          expect(error).to.eql('{ "error": "invalid_grant" }');
+          done();
+        });
       });
     });
 
-    ok(rejected, 'Ember.SimpleAuth.Authenticators.Devise returns a rejecting promise when the authentication AJAX request is not successful.');
-    deepEqual(rejectedWith, 'error', 'Ember.SimpleAuth.Authenticators.Devise returns a promise that rejects with the error message from the response when the authentication AJAX request is not successful.');
+    afterEach(function() {
+      this.xhr.restore();
+      Ember.$.ajax.restore();
+    });
   });
 
-  test('invalidates the session', function() {
-    var resolved;
-    Ember.run(function() {
-      authenticator.invalidate().then(function(error) {
-        resolved = true;
+  describe('#invalidate', function() {
+    it('returns a resolving promise', function(done) {
+      this.authenticator.invalidate().then(function() {
+        expect(true).to.be.true;
+        done();
       });
     });
-
-    ok(resolved, 'Ember.SimpleAuth.Authenticators.Devise returns a resolving promise for session invalidation.');
   });
-*/
 });
