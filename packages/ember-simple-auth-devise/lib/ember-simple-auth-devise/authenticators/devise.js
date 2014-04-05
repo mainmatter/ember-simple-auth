@@ -13,12 +13,12 @@ var global = (typeof window !== 'undefined') ? window : {},
 
 var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   /**
-    The endpoint on the server the authenticator acquires the access token
+    The endpoint on the server the authenticator acquires the auth token
     from.
 
     @property serverTokenEndpoint
     @type String
-    @default '/token'
+    @default '/users/sign_in'
   */
   serverTokenEndpoint: '/users/sign_in',
 
@@ -44,14 +44,14 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   /**
     Authenticates the session with the specified `credentials`; the credentials
     are `POST`ed to the `serverTokenEndpoint` and if they are valid the server
-    returns an access token in response . __If the credentials are
+    returns an auth token in response . __If the credentials are
     valid and authentication succeeds, a promise that resolves with the
     server's response is returned__, otherwise a promise that rejects with the
     error is returned.
 
     @method authenticate
     @param {Object} options The credentials to authenticate the session with
-    @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
+    @return {Ember.RSVP.Promise} A promise that resolves when an auth token is successfully acquired from the server and rejects otherwise
   */
   authenticate: function(credentials) {
     var _this = this;
