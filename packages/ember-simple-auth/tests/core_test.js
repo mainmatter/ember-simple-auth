@@ -23,11 +23,18 @@ describe('Configuration', function() {
 describe('setup', function() {
   beforeEach(function() {
     this.container     = { register: function() {}, injection: function() {}, lookup: function() {} };
-    this.application   = {};
+    this.application   = { deferReadiness: function() {}, advanceReadiness: function() {} };
     this.store         = Stores.LocalStorage.create();
     this.containerStub = sinon.stub(this.container, 'lookup');
     this.containerStub.withArgs('router:main').returns({ get: function() { return 'rootURL'; } });
     this.containerStub.withArgs('session-store:local-storage').returns(this.store);
+  });
+
+  it("defers the application's readiness", function() {
+    sinon.spy(this.application, 'deferReadiness');
+    setup(this.container, this.application, {});
+
+    expect(this.application.deferReadiness).to.have.been.calledOnce;
   });
 
   it('calls all registered extension initializers', function() {
@@ -103,6 +110,16 @@ describe('setup', function() {
       ['model', 'controller', 'view', 'route'].forEach(function(component) {
         expect(_this.container.injection).to.have.been.calledWith(component, 'session', 'session:main');
       });
+    });
+  });
+
+  it("advances the application's readiness", function(done) {
+    sinon.spy(this.application, 'advanceReadiness');
+    setup(this.container, this.application, {});
+
+    Ember.run.next(this, function() {
+      expect(this.application.advanceReadiness).to.have.been.calledOnce;
+      done();
     });
   });
 

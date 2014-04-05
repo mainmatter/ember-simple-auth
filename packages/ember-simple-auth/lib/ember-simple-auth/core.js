@@ -95,6 +95,7 @@ var Configuration = {
     @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js application was loaded from; to explicitely enable authorization for additional origins, whitelist those origins - defaults to `[]` _(beware that origins consist of protocol, host and port (port can be left out when it is 80 for HTTP or 443 for HTTPS))_
 **/
 var setup = function(container, application, options) {
+  application.deferReadiness();
   registerStores(container);
   extensionInitializers.forEach(function(initializer) {
     initializer(container, application, options);
@@ -130,6 +131,11 @@ var setup = function(container, application, options) {
   } else {
     Ember.Logger.debug('No authorizer factory was specified for Ember.SimpleAuth - specify one if backend requests need to be authorized.');
   }
+
+  var advanceReadiness = function() {
+    application.advanceReadiness();
+  };
+  session.restore().then(advanceReadiness, advanceReadiness);
 };
 
 /**

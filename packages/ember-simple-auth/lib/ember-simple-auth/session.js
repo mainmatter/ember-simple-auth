@@ -92,20 +92,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   init: function() {
-    var _this = this;
     this.bindToStoreEvents();
-    var restoredContent      = this.store.restore();
-    var authenticatorFactory = restoredContent.authenticatorFactory;
-    if (!!authenticatorFactory) {
-      delete restoredContent.authenticatorFactory;
-      this.container.lookup(authenticatorFactory).restore(restoredContent).then(function(content) {
-        _this.setup(authenticatorFactory, content);
-      }, function() {
-        _this.store.clear();
-      });
-    } else {
-      this.store.clear();
-    }
   },
 
   /**
@@ -169,6 +156,31 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
         _this.trigger('sessionInvalidationFailed', error);
         reject(error);
       });
+    });
+  },
+
+  /**
+    @method restore
+    @private
+  */
+  restore: function() {
+    var _this = this;
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      var restoredContent      = _this.store.restore();
+      var authenticatorFactory = restoredContent.authenticatorFactory;
+      if (!!authenticatorFactory) {
+        delete restoredContent.authenticatorFactory;
+        _this.container.lookup(authenticatorFactory).restore(restoredContent).then(function(content) {
+          _this.setup(authenticatorFactory, content);
+          resolve();
+        }, function() {
+          _this.store.clear();
+          reject();
+        });
+      } else {
+        _this.store.clear();
+        reject();
+      }
     });
   },
 
