@@ -24,7 +24,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
 
   /**
     Restores the session from a set of session properties; __will return a
-    resolving promise when there's a non-empty `remember_token` in the
+    resolving promise when there's a non-empty `auth_token` in the
     `properties`__ and a rejecting promise otherwise.
 
     @method restore
@@ -35,7 +35,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var data = {
-        remember_token: properties.remember_token
+        auth_token: properties.auth_token
       };
       return _this.makeRequest(data, resolve, reject);
     });
@@ -58,8 +58,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var data = {
         email: credentials.identification,
-        password: credentials.password,
-        remember_me: credentials.remember_me
+        password: credentials.password
       };
       return _this.makeRequest(data, resolve, reject);
     });
@@ -88,7 +87,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
 
     @method makeRequest
     @param {Object} data The data to send with the request, e.g. email and password or the auth_token
-    @return {Ember.RSVP.Promise} A promise that resolves when a remember_token is successfully acquired from the server and rejects otherwise
+    @return {Ember.RSVP.Promise} A promise that resolves when a auth_token is successfully acquired from the server and rejects otherwise
     @protected
   */
   makeRequest: function(data, resolve, reject) {
@@ -101,7 +100,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     }).then((function(response) {
       return Ember.run(function() {
         return resolve(Ember.$.extend(response, {
-          remember_token: response.remember_token
+          auth_token: response.auth_token
         }));
       });
     }), function(xhr, status, error) {

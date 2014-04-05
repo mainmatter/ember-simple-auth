@@ -15,14 +15,14 @@ describe('Devise', function() {
       this.server.respondWith('POST', '/users/sign_in', [
         201,
         { 'Content-Type': 'application/json' },
-        '{ "remember_token": "secret token!" }'
+        '{ "auth_token": "secret token!" }'
       ]);
     });
 
-    describe('when the data contains a remember_token', function() {
+    describe('when the data contains a auth_token', function() {
       it('resolves with the correct data', function(done) {
-        this.authenticator.restore({ "remember_token": 'secret token!' }).then(function(content){
-          expect(content).to.eql({ "remember_token": 'secret token!' });
+        this.authenticator.restore({ "auth_token": 'secret token!' }).then(function(content){
+          expect(content).to.eql({ "auth_token": 'secret token!' });
           done();
         });
       });
@@ -65,14 +65,14 @@ describe('Devise', function() {
         this.server.respondWith('POST', '/users/sign_in', [
           201,
           { 'Content-Type': 'application/json' },
-          '{ "access_token": "secret token!", "remember_token": "remember" }'
+          '{ "access_token": "secret token!", "auth_token": "remember" }'
         ]);
       });
 
       it('resolves with the correct data', function(done) {
         this.authenticator.authenticate({ email: 'email@address.com', password: 'password', remember_me: true }).then(function(data) {
           expect(true).to.be.true;
-          expect(data).to.eql({ access_token: 'secret token!', remember_token: 'remember' });
+          expect(data).to.eql({ access_token: 'secret token!', auth_token: 'remember' });
           done();
         });
       });
