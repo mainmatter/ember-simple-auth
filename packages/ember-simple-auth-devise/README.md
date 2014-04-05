@@ -10,21 +10,17 @@ App.Router.map(function() {
 ```
 
 This route displays the login form with fields for `identification`,
-`password`, and an optionally `remeber_me`:
+`password`:
 
 ```html
 <form {{action 'authenticate' on='submit'}}>
   <label for="identification">Login</label>
-  {{Ember.TextField id='identification' valueBinding="identification"}}
+  {{input id='identification' placeholder='Enter Login' value=identification}}
   <label for="password">Password</label>
-  {{Ember.TextField id='password' type='password' valueBinding="password"}}
-  <label for="remember_me">Remember Me</label>
-  {{Ember.Checkbox id='remember_me' checkedBinding="remember_me"}}
+  {{input id='password' placeholder='Enter Password' type='password' value=password}}
   <button type="submit">Login</button>
 </form>
 ```
-
-The `remember_me` checkbox is optional, depending on whether you have Devise's `rememberable` module activated.
 
 The `authenticate` action that is triggered by submitting the form is provided
 by the `LoginControllerMixin` that the respective controller in the application
