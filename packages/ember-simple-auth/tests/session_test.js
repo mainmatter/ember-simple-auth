@@ -88,6 +88,13 @@ describe('Session', function() {
     });
 
     function itDoesNotRestore() {
+      it('returns a rejecting promise', function(done) {
+        this.session.restore().then(null, function() {
+          expect(true).to.be.true;
+          done();
+        });
+      });
+
       it('is not authenticated', function(done) {
         var _this = this;
 
@@ -127,6 +134,13 @@ describe('Session', function() {
       describe('when the authenticator resolves restoration', function() {
         beforeEach(function() {
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'properties' }));
+        });
+
+        it('returns a resolving promise', function(done) {
+          this.session.restore().then(function() {
+            expect(true).to.be.true;
+            done();
+          });
         });
 
         it('is authenticated', function(done) {
