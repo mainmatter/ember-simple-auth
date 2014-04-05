@@ -114,7 +114,7 @@ var setup = function(container, application, options) {
   var session          = Session.create({ store: store, container: container });
 
   container.register('session:main', session, { instantiate: false });
-  Ember.A(['model', 'controller', 'view', 'route']).forEach(function(component) {
+  Ember.A(['controller', 'route']).forEach(function(component) {
     container.injection(component, 'session', 'session:main');
   });
 

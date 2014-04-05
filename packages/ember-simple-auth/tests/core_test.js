@@ -102,12 +102,12 @@ describe('setup', function() {
       expect(spyCall.args[1].constructor).to.eql(Session);
     });
 
-    it('is injected as "session" into all models, controllers, routes and views', function() {
+    it('is injected as "session" into all controllers and routes', function() {
       var _this = this;
       sinon.spy(this.container, 'injection');
       setup(this.container, this.application);
 
-      ['model', 'controller', 'view', 'route'].forEach(function(component) {
+      ['controller', 'route'].forEach(function(component) {
         expect(_this.container.injection).to.have.been.calledWith(component, 'session', 'session:main');
       });
     });
