@@ -1,3 +1,10 @@
+# 0.2.1
+
+* removed check for identification and password being present in `LoginControllerMixin` so an error is triggered with the server's response
+* serve both examples and tests with `grunt dev_server` task
+* README improvements
+* improved examples
+
 # 0.2.0
 
 * Ember.SimpleAuth now reloads the application's root page on logout so all sensitive in-memory data etc. gets cleared - this also works across tabs now, see #92

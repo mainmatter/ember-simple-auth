@@ -46,10 +46,8 @@ var LoginControllerMixin = Ember.Mixin.create(AuthenticationControllerMixin, {
     */
     authenticate: function() {
       var data = this.getProperties('identification', 'password');
-      if (!Ember.isEmpty(data.identification) && !Ember.isEmpty(data.password)) {
-        this.set('password', null);
-        this._super(data);
-      }
+      this.set('password', null);
+      this._super(data);
     }
   }
 });

@@ -53,7 +53,7 @@ var global = (typeof window !== 'undefined') ? window : {},
 var Base = Ember.Object.extend(Ember.Evented, {
   /**
     Restores the session from a set of properties. __This method is invoked by
-    the session either after the applciation starts up and session data was
+    the session either after the application starts up and session data was
     restored from the store__ or when properties in the store have changed due
     to external events (e.g. in another tab) and the new set of properties
     needs to be re-checked for whether it still constitutes an authenticated
