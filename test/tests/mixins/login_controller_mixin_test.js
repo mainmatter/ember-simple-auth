@@ -40,13 +40,5 @@ describe('LoginControllerMixin', function() {
       });
     });
 
-    describe('when both identification and password are set on the controller', function() {
-      it('does not authenticate the session', function() {
-        sinon.spy(this.session, 'authenticate');
-        this.controller._actions.authenticate.apply(this.controller);
-
-        expect(this.session.authenticate).to.not.have.been.called;
-      });
-    });
   });
 });
