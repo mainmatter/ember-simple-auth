@@ -142,7 +142,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.2.0"><span class="label label-primary">0.2.0</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.2.1"><span class="label label-primary">0.2.1</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -315,7 +315,7 @@ the method to override, e.g.:</strong></p>
 <pre><code class="lang-javascript">App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
   actions: {
     authenticateSession: function() {
-      this.get(&#39;session&#39;).authenticate(&#39;app:authenticators:custom&#39;, {});
+      this.get(&#39;session&#39;).authenticate(&#39;authenticators:custom&#39;, {});
     }
   }
 });
@@ -1205,7 +1205,7 @@ injection container</strong> so that the session can retrieve an instance, e.g.:
 Ember.Application.initializer({
   name: &#39;authentication&#39;,
   initialize: function(container, application) {
-    container.register(&#39;app:authenticators:custom&#39;, CustomAuthenticator);
+    container.register(&#39;authenticators:custom&#39;, CustomAuthenticator);
     Ember.SimpleAuth.setup(container, application);
   }
 });
@@ -1231,7 +1231,7 @@ Ember.Application.initializer({
   </div>
   <div class="panel-body">
     <p>Restores the session from a set of properties. <strong>This method is invoked by
-the session either after the applciation starts up and session data was
+the session either after the application starts up and session data was
 restored from the store</strong> or when properties in the store have changed due
 to external events (e.g. in another tab).</p>
 <p><strong>This method returns a promise. A resolving promise will result in the
@@ -1688,7 +1688,7 @@ point to e.g. add <em>&quot;Client Credentials&quot;</em> (see
             <div class="col-md-9" id="main-content">
               <p>The base for all authorizers. <strong>This serves as a starting point for
 implementing custom authorizers and must not be used directly.</strong></p>
-<p><strong>The authorizer preprocesses all XHR requests</strong> (expect ones to 3rd party
+<p><strong>The authorizer preprocesses all XHR requests</strong> (except ones to 3rd party
 origins, see <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>) and makes
 sure they have the required data attached that allows the server to identify
 the user making the request. This data might be a specific header, data in
