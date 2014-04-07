@@ -4,6 +4,7 @@
     <title>Ember.SimpleAuth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
     <script src="http://builds.emberjs.com/release/ember.js"></script>
@@ -28,7 +29,7 @@
           {{#if session.isAuthenticated}}
             <a {{ action 'invalidateSession' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
           {{else}}
-            <a {{ action 'authenticateSession' }} class="btn btn-success navbar-btn navbar-right">Login</a>
+            {{#link-to 'login' class="btn btn-success navbar-btn navbar-right"}}Login{{/link-to}}
           {{/if}}
         </div>
       </nav>
@@ -44,13 +45,22 @@
 
     <script type="text/x-handlebars" data-template-name="index">
       <div class="page-header">
-        <h1>Facebook Auth example</h1>
+        <h1>Multiple External Providers example</h1>
       </div>
       {{#unless session.isAuthenticated}}
         <div class="alert alert-info">
-          You can <a {{ action 'authenticateSession' }} class="alert-link" style="cursor: pointer;">log in</a> with your Facebook account.
+          You can {{#link-to 'login' class="alert-link"}}login{{/link-to}} with your Facebook or Google+ account.
         </div>
       {{/unless}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="login">
+      <div class="page-header">
+        <h1>Login</h1>
+        <div class="alert alert-info">
+          Login with <a {{ action 'authenticateWithFacebook' }} class="alert-link" style="cursor: pointer;"><i class="fa fa-facebook-square"></i> Facebook</a> or <a {{ action 'authenticateWithGooglePlus' }} class="alert-link" style="cursor: pointer;"><i class="fa fa-google-plus-square"></i> Google+</a>.
+        </div>
+      </div>
     </script>
 
     <script type="text/x-handlebars" data-template-name="protected">
@@ -66,12 +76,18 @@
       // setup Facebook SDK
       FB.init({ appId: '631252926924840' });
 
+      // setup (Google+ API)
+      function googleApiLoaded() {
+        gapi.client.setApiKey('AIzaSyBjyJkxZAiYXfcKABI43X3N8yl9Yzs2nE0');
+      };
+
       // setup Ember.SimpleAuth in an initializer
       Ember.Application.initializer({
         name: 'authentication',
         initialize: function(container, application) {
-          // register the Facebook authenticator so the session can find it
+          // register the Facebook and Google+ authenticators so the session can find them
           container.register('authenticator:facebook', App.FacebookAuthenticator);
+          container.register('authenticator:googleplus', App.GooglePlusAuthenticator);
           Ember.SimpleAuth.setup(container, application);
         }
       });
@@ -83,6 +99,8 @@
       });
 
       App.Router.map(function() {
+        // login route
+        this.route('login');
         // protected route that's inaccessible without authentication
         this.route('protected');
       });
@@ -130,12 +148,51 @@
         }
       });
 
+      // the custom authenticator that initiates the authentication process with Google+
+      App.GooglePlusAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+        restore: function(properties) {
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            if (!Ember.isEmpty(properties.access_token)) {
+              resolve(properties);
+            } else {
+              reject();
+            }
+          });
+        },
+        authenticate: function() {
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            gapi.auth.authorize({
+              client_id:        '694766332436-1g5bakjoo5flkfpv3t2mfsch9ghg7ggd.apps.googleusercontent.com',
+              scope:            ['https://www.googleapis.com/auth/plus.me'],
+              'approvalprompt': 'force',
+              immediate:        false
+            }, function(authResult) {
+              if (authResult && !authResult.error) {
+                  resolve({ access_token: authResult.access_token });
+                } else {
+                  reject((authResult || {}).error);
+                }
+            });
+          });
+        },
+        invalidate: function() {
+          return Ember.RSVP.resolve();
+        }
+      });
+
       // use the provided mixin in the application route
-      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
+
+      // define the login route that defines the authentication action
+      App.LoginRoute = Ember.Route.extend({
         actions: {
-          // override authenticateSession to instead of transitioning to a login route start authentication directly
-          authenticateSession: function() {
+          // action to trigger authentication with Facebook
+          authenticateWithFacebook: function() {
             this.get('session').authenticate('authenticator:facebook', {});
+          },
+          // action to trigger authentication with Google+
+          authenticateWithGooglePlus: function() {
+            this.get('session').authenticate('authenticator:googleplus', {});
           }
         }
       });
@@ -143,5 +200,6 @@
       // make this route protected
       App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
     </script>
+    <script src="https://apis.google.com/js/client.js?onload=googleApiLoaded"></script>
   </body>
 </html>
