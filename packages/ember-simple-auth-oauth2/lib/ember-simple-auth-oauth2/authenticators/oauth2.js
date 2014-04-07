@@ -62,7 +62,13 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
       if (!Ember.isEmpty(data.access_token)) {
         var now = (new Date()).getTime();
         if (!Ember.isEmpty(data.expires_at) && data.expires_at < now) {
-          reject();
+          if (_this.refreshAccessTokens) {
+            _this.refreshAccessToken(data.expires_in, data.refresh_token).then(function(data) {
+              resolve(data);
+            }, reject);
+          } else {
+            reject();
+          }
         } else {
           _this.scheduleAccessTokenRefresh(data.expires_in, data.expires_at, data.refresh_token);
           resolve(data);
@@ -186,7 +192,7 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
           var data      = Ember.$.extend(response, { expires_in: expiresIn, expires_at: expiresAt, refresh_token: refreshToken });
           _this.scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
           _this.trigger('updated', data);
-          resolve();
+          resolve(data);
         });
       }, function(xhr, status, error) {
         Ember.Logger.warn('Access token could not be refreshed - server responded with ' + error + '.');

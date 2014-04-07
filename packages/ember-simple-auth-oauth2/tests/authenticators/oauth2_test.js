@@ -2,7 +2,11 @@ import { OAuth2 } from 'ember-simple-auth-oauth2/authenticators/oauth2';
 
 describe('OAuth2', function() {
   beforeEach(function() {
-    this.authenticator = OAuth2.create();
+    this.authenticator      = OAuth2.create();
+    this.xhr                = sinon.useFakeXMLHttpRequest();
+    this.server             = sinon.fakeServer.create();
+    this.server.autoRespond = true;
+    sinon.spy(Ember.$, 'ajax');
   });
 
   describe('#restore', function() {
@@ -23,10 +27,46 @@ describe('OAuth2', function() {
         });
 
         describe('when the data includes an expiration time in the past', function() {
-          it('returns a rejecting promise', function(done) {
-            this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(null, function() {
-              expect(true).to.be.true;
-              done();
+          describe('when automatic token refreshing is enabled', function() {
+            describe('when the refresh request is successful', function() {
+              beforeEach(function() {
+                this.server.respondWith('POST', '/token', [
+                  200,
+                  { 'Content-Type': 'application/json' },
+                  '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }'
+                ]);
+              });
+
+              it('resolves with the correct data', function(done) {
+                this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(function(data) {
+                  expect(data.expires_at).to.be.greaterThan(new Date().getTime());
+                  delete data.expires_at;
+                  expect(data).to.eql({ access_token: 'secret token 2!', expires_in: 67890, refresh_token: 'refresh token 2!' });
+                  done();
+                });
+              });
+            });
+
+            describe('when the access token is not refreshed successfully', function() {
+              it('returns a rejecting promise', function(done) {
+                this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(null, function() {
+                  expect(true).to.be.true;
+                  done();
+                });
+              });
+            });
+          });
+
+          describe('when automatic token refreshing is disabled', function() {
+            beforeEach(function() {
+              this.authenticator.set('refreshAccessTokens', false);
+            });
+
+            it('returns a rejecting promise', function(done) {
+              this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(null, function() {
+                expect(true).to.be.true;
+                done();
+              });
             });
           });
         });
@@ -87,13 +127,6 @@ describe('OAuth2', function() {
   });
 
   describe('#authenticate', function() {
-    beforeEach(function() {
-      this.xhr                = sinon.useFakeXMLHttpRequest();
-      this.server             = sinon.fakeServer.create();
-      this.server.autoRespond = true;
-      sinon.spy(Ember.$, 'ajax');
-    });
-
     it('sends an AJAX request to the token endpoint', function(done) {
       this.authenticator.authenticate({ identification: 'username', password: 'password' });
 
@@ -140,9 +173,6 @@ describe('OAuth2', function() {
             expect(data.expires_at).to.be.greaterThan(new Date().getTime());
             delete data.expires_at;
             expect(data).to.eql({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' });
-            done();
-          }, function() {
-            expect(true).to.be.false;
             done();
           });
         });
@@ -208,11 +238,6 @@ describe('OAuth2', function() {
         });
       });
     });
-
-    afterEach(function() {
-      this.xhr.restore();
-      Ember.$.ajax.restore();
-    });
   });
 
   describe('#invalidate', function() {
@@ -226,13 +251,6 @@ describe('OAuth2', function() {
 
   // testing private API here ;(
   describe('#refreshAccessToken', function() {
-    beforeEach(function() {
-      this.xhr                = sinon.useFakeXMLHttpRequest();
-      this.server             = sinon.fakeServer.create();
-      this.server.autoRespond = true;
-      sinon.spy(Ember.$, 'ajax');
-    });
-
     it('sends an AJAX request to the token endpoint', function(done) {
       this.authenticator.refreshAccessToken(12345, 'refresh token!');
 
@@ -248,7 +266,7 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when the authentication request is successful', function() {
+    describe('when the refresh request is successful', function() {
       beforeEach(function() {
         this.server.respondWith('POST', '/token', [
           200,
@@ -293,10 +311,10 @@ describe('OAuth2', function() {
         });
       });
     });
+  });
 
-    afterEach(function() {
-      this.xhr.restore();
-      Ember.$.ajax.restore();
-    });
+  afterEach(function() {
+    this.xhr.restore();
+    Ember.$.ajax.restore();
   });
 });
