@@ -28,8 +28,8 @@ Here's a few steps to follow to make sure your pull request gets accepted:
 
 1. Fork the repository and implement your changes; also add tests for any added
   functionality - remember that untested code is broken code!
-2. Run the tests - pull requests with failing tests can't be accepted of course
-  - find instructions on how to run the tests in the
+2. Run the tests - pull requests with failing tests can't be accepted of
+  course - find instructions on how to run the tests in the
   [README](https://github.com/simplabs/ember-simple-auth#building)
 3. Adhere to Ember.SimpleAuth's coding style; while there's no official style
   guide it should be clear by looking at the existing code what the agreed upon
