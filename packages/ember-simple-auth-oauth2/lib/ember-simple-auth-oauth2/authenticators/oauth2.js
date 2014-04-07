@@ -177,16 +177,21 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
   refreshAccessToken: function(expiresIn, refreshToken) {
     var _this = this;
     var data  = { grant_type: 'refresh_token', refresh_token: refreshToken };
-    this.makeRequest(data).then(function(response) {
-      Ember.run(function() {
-        expiresIn     = response.expires_in || expiresIn;
-        refreshToken  = response.refresh_token || refreshToken;
-        var expiresAt = _this.absolutizeExpirationTime(expiresIn);
-        _this.scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
-        _this.trigger('updated', Ember.$.extend(response, { expires_in: expiresIn, expires_at: expiresAt, refresh_token: refreshToken }));
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      _this.makeRequest(data).then(function(response) {
+        Ember.run(function() {
+          expiresIn     = response.expires_in || expiresIn;
+          refreshToken  = response.refresh_token || refreshToken;
+          var expiresAt = _this.absolutizeExpirationTime(expiresIn);
+          var data      = Ember.$.extend(response, { expires_in: expiresIn, expires_at: expiresAt, refresh_token: refreshToken });
+          _this.scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
+          _this.trigger('updated', data);
+          resolve();
+        });
+      }, function(xhr, status, error) {
+        Ember.Logger.warn('Access token could not be refreshed - server responded with ' + error + '.');
+        reject();
       });
-    }, function(xhr, status, error) {
-      Ember.Logger.warn('Access token could not be refreshed - server responded with ' + error + '.');
     });
   },
 
