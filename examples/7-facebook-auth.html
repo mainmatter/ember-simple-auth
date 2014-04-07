@@ -71,7 +71,7 @@
         name: 'authentication',
         initialize: function(container, application) {
           // register the Facebook authenticator so the session can find it
-          container.register('authenticators:facebook', App.FacebookAuthenticator);
+          container.register('authenticator:facebook', App.FacebookAuthenticator);
           Ember.SimpleAuth.setup(container, application);
         }
       });
@@ -135,7 +135,7 @@
         actions: {
           // override authenticateSession to instead of transitioning to a login route start authentication directly
           authenticateSession: function() {
-            this.get('session').authenticate('authenticators:facebook', {});
+            this.get('session').authenticate('authenticator:facebook', {});
           }
         }
       });
