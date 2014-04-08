@@ -24,9 +24,10 @@ describe('setup', function() {
   beforeEach(function() {
     this.container     = { register: function() {}, injection: function() {}, lookup: function() {} };
     this.application   = { deferReadiness: function() {}, advanceReadiness: function() {} };
+    this.router        = { get: function() { return 'rootURL'; }, send: function() {} };
     this.store         = Stores.LocalStorage.create();
     this.containerStub = sinon.stub(this.container, 'lookup');
-    this.containerStub.withArgs('router:main').returns({ get: function() { return 'rootURL'; } });
+    this.containerStub.withArgs('router:main').returns(this.router);
     this.containerStub.withArgs('session-store:local-storage').returns(this.store);
   });
 
@@ -182,6 +183,52 @@ describe('setup', function() {
       setup(this.container, this.application);
 
       expect(Ember.$.ajaxPrefilter).to.not.have.been.called;
+    });
+  });
+
+  describe('session events', function() {
+    beforeEach(function() {
+      sinon.spy(this.router, 'send');
+      sinon.spy(this.container, 'register');
+      setup(this.container, this.application);
+      var spyCall  = this.container.register.getCall(2);
+      this.session = spyCall.args[1];
+    });
+
+    it('forwards the "sessionAuthenticationSucceeded" event to the router', function(done) {
+      this.session.trigger('sessionAuthenticationSucceeded');
+
+      Ember.run.next(this, function() {
+        expect(this.router.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
+        done();
+      });
+    });
+
+    it('forwards the "sessionAuthenticationFailed" event to the router', function(done) {
+      this.session.trigger('sessionAuthenticationFailed');
+
+      Ember.run.next(this, function() {
+        expect(this.router.send).to.have.been.calledWith('sessionAuthenticationFailed');
+        done();
+      });
+    });
+
+    it('forwards the "sessionInvalidationSucceeded" event to the router', function(done) {
+      this.session.trigger('sessionInvalidationSucceeded');
+
+      Ember.run.next(this, function() {
+        expect(this.router.send).to.have.been.calledWith('sessionInvalidationSucceeded');
+        done();
+      });
+    });
+
+    it('forwards the "sessionInvalidationFailed" to the router', function(done) {
+      this.session.trigger('sessionInvalidationFailed');
+
+      Ember.run.next(this, function() {
+        expect(this.router.send).to.have.been.calledWith('sessionInvalidationFailed');
+        done();
+      });
     });
   });
 });

@@ -27,6 +27,24 @@ function shouldAuthorizeRequest(url) {
   return crossOriginWhitelist.indexOf(urlOrigin) > -1 || urlOrigin === documentOrigin;
 }
 
+function setupSession(store, container) {
+  var session = Session.create({ store: store, container: container });
+  var router  = container.lookup('router:main');
+  session.on('sessionAuthenticationSucceeded', function() {
+    router.send('sessionAuthenticationSucceeded');
+  });
+  session.on('sessionAuthenticationFailed', function(error) {
+    router.send('sessionAuthenticationFailed', error);
+  });
+  session.on('sessionInvalidationSucceeded', function() {
+    router.send('sessionInvalidationSucceeded');
+  });
+  session.on('sessionInvalidationFailed', function(error) {
+    router.send('sessionInvalidationFailed', error);
+  });
+  return session;
+}
+
 var extensionInitializers = [];
 
 /**
@@ -111,7 +129,7 @@ var setup = function(container, application, options) {
 
   options.storeFactory = options.storeFactory || 'session-store:local-storage';
   var store            = container.lookup(options.storeFactory);
-  var session          = Session.create({ store: store, container: container });
+  var session          = setupSession(store, container);
 
   container.register('session:main', session, { instantiate: false });
   Ember.A(['controller', 'route']).forEach(function(component) {

@@ -14,49 +14,6 @@ describe('ApplicationRouteMixin', function() {
     }).create({ session: this.session });
   });
 
-  describe('session events', function() {
-    beforeEach(function() {
-      this.route.activate();
-      sinon.spy(this.route, 'send');
-    });
-
-    it('handles the "sessionAuthenticationSucceeded" of the session', function(done) {
-      this.session.trigger('sessionAuthenticationSucceeded');
-
-      Ember.run.next(this, function() {
-        expect(this.route.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
-        done();
-      });
-    });
-
-    it('handles the "sessionAuthenticationFailed" of the session', function(done) {
-      this.session.trigger('sessionAuthenticationFailed');
-
-      Ember.run.next(this, function() {
-        expect(this.route.send).to.have.been.calledWith('sessionAuthenticationFailed');
-        done();
-      });
-    });
-
-    it('handles the "sessionInvalidationSucceeded" of the session', function(done) {
-      this.session.trigger('sessionInvalidationSucceeded');
-
-      Ember.run.next(this, function() {
-        expect(this.route.send).to.have.been.calledWith('sessionInvalidationSucceeded');
-        done();
-      });
-    });
-
-    it('handles the "sessionInvalidationFailed" of the session', function(done) {
-      this.session.trigger('sessionInvalidationFailed');
-
-      Ember.run.next(this, function() {
-        expect(this.route.send).to.have.been.calledWith('sessionInvalidationFailed');
-        done();
-      });
-    });
-  });
-
   describe('the "authenticateSession" action', function() {
     beforeEach(function() {
       sinon.spy(this.route, 'transitionTo');
