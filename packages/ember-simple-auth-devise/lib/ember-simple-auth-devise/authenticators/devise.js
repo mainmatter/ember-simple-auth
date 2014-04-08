@@ -32,12 +32,15 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(properties) {
-    var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var data = {
-        auth_token: properties.auth_token
-      };
-      return _this.makeRequest(data, resolve, reject);
+      if (!Ember.isEmpty(properties.auth_token) && !Ember.isEmpty(properties.auth_email)){
+        return Ember.run(function() {
+          return resolve(properties);
+        });
+      }
+      else{
+        return reject();
+      }
     });
   },
 
@@ -99,9 +102,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
       contentType: "application/x-www-form-urlencoded"
     }).then((function(response) {
       return Ember.run(function() {
-        return resolve(Ember.$.extend(response, {
-          auth_token: response.auth_token
-        }));
+        return resolve(response);
       });
     }), function(xhr, status, error) {
       return Ember.run(function() {

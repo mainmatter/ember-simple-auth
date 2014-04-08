@@ -19,10 +19,10 @@ describe('Devise', function() {
       ]);
     });
 
-    describe('when the data contains a auth_token', function() {
+    describe('when the data contains an auth_token and auth_email', function() {
       it('resolves with the correct data', function(done) {
-        this.authenticator.restore({ "auth_token": 'secret token!' }).then(function(content){
-          expect(content).to.eql({ "auth_token": 'secret token!' });
+        this.authenticator.restore({ "auth_token": 'secret token!', "auth_email": "user@email.com" }).then(function(content){
+          expect(content).to.eql({ "auth_token": "secret token!", "auth_email": "user@email.com" });
           done();
         });
       });

@@ -26,13 +26,30 @@ describe('Devise', function() {
         this.authorizer.set('session.isAuthenticated', true);
       });
 
-      describe('when the session contains a non empty auth_token', function() {
+      describe('when the session contains a non empty auth_token and auth-email', function() {
         beforeEach(function() {
           this.authorizer.set('session.auth_token', 'secret token!');
+          this.authorizer.set('session.auth_email', 'user@email.com');
         });
 
-        it('adds the "auth-token" header to the request', function() {
+        it('adds the "auth-token" and "auth-email" headers to the request', function() {
           this.requestMock.expects('setRequestHeader').once().withArgs('auth-token', 'secret token!');
+          this.requestMock.expects('setRequestHeader').once().withArgs('auth-email', 'user@email.com');
+          this.authorizer.authorize(this.request, {});
+
+          this.requestMock.verify();
+        });
+      });
+
+      describe('when the session contains a non empty auth_token and auth-email', function() {
+        beforeEach(function() {
+          this.authorizer.set('session.auth_token', 'secret token!');
+          this.authorizer.set('session.auth_email', 'user@email.com');
+        });
+
+        it('adds the "auth-token" and "auth-email" headers to the request', function() {
+          this.requestMock.expects('setRequestHeader').once().withArgs('auth-token', 'secret token!');
+          this.requestMock.expects('setRequestHeader').once().withArgs('auth-email', 'user@email.com');
           this.authorizer.authorize(this.request, {});
 
           this.requestMock.verify();
@@ -42,6 +59,14 @@ describe('Devise', function() {
       describe('when the session does not contain an auth_token', function() {
         beforeEach(function() {
           this.authorizer.set('session.auth_token', null);
+        });
+
+        itDoesNotAuthorizeTheRequest();
+      });
+
+      describe('when the session does not contain an auth_email', function() {
+        beforeEach(function() {
+          this.authorizer.set('session.auth_email', null);
         });
 
         itDoesNotAuthorizeTheRequest();

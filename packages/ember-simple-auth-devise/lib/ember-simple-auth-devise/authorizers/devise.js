@@ -27,8 +27,9 @@ var Devise = Ember.SimpleAuth.Authorizers.Base.extend({
   */
 
   authorize: function(jqXHR, requestOptions) {
-    if (!Ember.isEmpty(this.get('session.auth_token'))) {
+    if (!Ember.isEmpty(this.get('session.auth_token')) && !Ember.isEmpty(this.get('session.auth_email'))) {
       jqXHR.setRequestHeader('auth-token', this.get('session.auth_token'));
+      jqXHR.setRequestHeader('auth-email', this.get('session.auth_email'));
     }
   }
 });

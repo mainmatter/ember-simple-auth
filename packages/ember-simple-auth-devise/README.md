@@ -58,10 +58,30 @@ class ApplicationController < ActionController::API
 
   def authenticate_user_from_token!
     token = request.headers['auth-token'].to_s
-    return unless token
+    email = request.headers['auth-email'].to_s
+    return unless token && email
 
-    user = User.find_by(authentication_token: token)
-    sign_in user if user
+    user = User.find_by_email(email)
+
+    if user && Devise.secure_compare(user.authentication_token, token)
+      sign_in user, store: false
+    end
   end
 end
+```
+
+(Note that for security reasons, we're authorizing the user by both email and authentication_token, as described [here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).)
+
+Finally, within your `DeviseSessionsController`, be sure to return the user's `auth_token`, `email`, and `id` like so:
+
+```ruby
+  def create
+    resource = resource_from_credentials
+    data = {
+      user_id: resource.id,
+      auth_token: resource.authentication_token,
+      auth_email: resource.email
+    }
+    render json: data, status: 201
+  end
 ```
