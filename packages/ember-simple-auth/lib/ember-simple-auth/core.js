@@ -30,17 +30,15 @@ function shouldAuthorizeRequest(url) {
 function setupSession(store, container) {
   var session = Session.create({ store: store, container: container });
   var router  = container.lookup('router:main');
-  session.on('sessionAuthenticationSucceeded', function() {
-    router.send('sessionAuthenticationSucceeded');
-  });
-  session.on('sessionAuthenticationFailed', function(error) {
-    router.send('sessionAuthenticationFailed', error);
-  });
-  session.on('sessionInvalidationSucceeded', function() {
-    router.send('sessionInvalidationSucceeded');
-  });
-  session.on('sessionInvalidationFailed', function(error) {
-    router.send('sessionInvalidationFailed', error);
+  Ember.A([
+    'sessionAuthenticationSucceeded',
+    'sessionAuthenticationFailed',
+    'sessionInvalidationSucceeded',
+    'sessionInvalidationFailed'
+  ]).forEach(function(event) {
+    session.on(event, function() {
+      router.send(event);
+    });
   });
   return session;
 }
