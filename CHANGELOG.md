@@ -1,3 +1,33 @@
+# 0.3.0
+
+* Ember.SimpleAuth has been split up into a base library and a set of extension
+  libraries - the OAuth 2.0 authenticator/authorizer, the cookie session store
+  as well as the new Devise authenticator/authorizer now reside in their own
+  extension libraries so everybody can include only what the need. __If you're
+  currently using the OAuth 2.0 authenticator and/or authorizer, you now need
+  to include the `ember-simple-auth-oauth2.js` file in your app! If you're
+  using the `Cookie` store you need to include
+  `ember-simple-auth-cookie-store.js`.__
+* the new Devise authenticator and authorizer have been added, see README
+  there.
+* it is now optional to specify an authorizer; if none is specified no requests
+  will be authorized. If you're currently using an authorized be sure to
+  specify it for `Ember.SimpleAuth.setup` now, e.g.:
+  ```js
+  Ember.SimpleAuth.setup(container, application, {
+    authorizerFactory: 'authorizer:oauth2-bearer'
+  });
+  ```
+* the session is no longer injected into models and views - it was probably not
+  working for both for some time anyway and it was also not a good idea to do
+  it in the first place as anything related to the session should be managed by
+  the routes and controllers; see #122.
+* the authenticator's update event is now handled correctly so that it might
+  lead to the session being invalidated, see #121.
+* examples have been updated
+* the OAuth 2.0 authenticator will now try to refresh an expired token on
+  refresh and only reject when that fails, see #102
+
 # 0.2.1
 
 * removed check for identification and password being present in
