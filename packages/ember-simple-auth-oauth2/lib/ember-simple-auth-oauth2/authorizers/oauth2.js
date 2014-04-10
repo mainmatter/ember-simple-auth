@@ -28,11 +28,12 @@ var OAuth2 = Ember.SimpleAuth.Authorizers.Base.extend({
     @param {Object} requestOptions The options as provided to the `$.ajax` method (see http://api.jquery.com/jQuery.ajaxPrefilter/)
   */
   authorize: function(jqXHR, requestOptions) {
-    if (this.get('session.isAuthenticated') && !Ember.isEmpty(this.get('session.access_token'))) {
+    var accessToken = this.get('session.access_token');
+    if (this.get('session.isAuthenticated') && !Ember.isEmpty(accessToken)) {
       if (!Ember.SimpleAuth.Utils.isSecureUrl(requestOptions.url)) {
         Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
       }
-      jqXHR.setRequestHeader('Authorization', 'Bearer ' + this.get('session.access_token'));
+      jqXHR.setRequestHeader('Authorization', 'Bearer ' + accessToken);
     }
   }
 });
