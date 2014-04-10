@@ -94,6 +94,9 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     @protected
   */
   makeRequest: function(data, resolve, reject) {
+    if (!Ember.SimpleAuth.Utils.isSecureUrl(this.serverTokenEndpoint)) {
+      Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
+    }
     return Ember.$.ajax({
       url:         this.serverTokenEndpoint,
       type:        'POST',
