@@ -75,11 +75,13 @@
           <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
               <li class="dropdown" id="classesDropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption">{{name}}</span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption"></span></a>
                 <ul class="dropdown-menu">
-                  <li>
-                    <a href="#{{anchor}}">{{name}}</a>
-                  </li>
+                  {{#unless fakeModule}}
+                    <li>
+                      <a href="#{{anchor}}">{{name}}</a>
+                    </li>
+                  {{/unless}}
                   {{#each klasses}}
                     <li>
                       <a href="#{{anchor}}">{{name}}</a>
@@ -90,41 +92,43 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="{{@root.project.githubUrl}}"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="{{@root.project.githubUrl}}/releases/tag/{{@root.project.version}}"><span class="label label-primary">{{@root.project.version}}</span></a></p></li>
+              <li><p class="navbar-text"><a href="{{@root.project.githubUrl}}/releases/tag/{{@root.version}}"><span class="label label-primary">{{@root.version}}</span></a></p></li>
             </ul>
           </div>
         </div>
       </header>
       <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="page-header">
-              <a id="{{anchor}}" class="symbol-anchor"></a>
-              <h1 class="class">{{name}}</h1>
+        {{#unless fakeModule}}
+          <div class="row">
+            <div class="col-md-12">
+              <div class="page-header">
+                <a id="{{anchor}}" class="symbol-anchor"></a>
+                <h1 class="class">{{name}}</h1>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-9" id="main-content">
-            {{markdown description}}
-            {{#if properties}}
-              <h3 class="section">Properties</h3>
-              {{#each properties}}
-                {{> property}}
-              {{/each}}
-            {{/if}}
-            {{#if functions}}
-              <h3 class="section">Functions</h3>
-              {{#each functions}}
-                {{> method}}
-              {{/each}}
-            {{/if}}
+          <div class="row">
+            <div class="col-md-9" id="main-content">
+              {{markdown description}}
+              {{#if properties}}
+                <h3 class="section">Properties</h3>
+                {{#each properties}}
+                  {{> property}}
+                {{/each}}
+              {{/if}}
+              {{#if functions}}
+                <h3 class="section">Functions</h3>
+                {{#each functions}}
+                  {{> method}}
+                {{/each}}
+              {{/if}}
+            </div>
+            <div class="col-md-3 overview">
+              {{> sidebar-properties}}
+              {{> sidebar-functions}}
+            </div>
           </div>
-          <div class="col-md-3 overview">
-            {{> sidebar-properties}}
-            {{> sidebar-functions}}
-          </div>
-        </div>
+        {{/unless}}
         {{#each klasses}}
           <div class="row">
             <div class="col-md-12">
@@ -188,7 +192,9 @@
           $('body').scrollspy({ target: '.navbar' }).on('activate.bs.scrollspy', function(e) {
             var link = $(e.target).find('.dropdown-menu li.active a');
             updateDropdownCaption(link.text());
-          })
+          });
+          var dropdownCaption = $('.navbar .dropdown li:first-child').text();
+          updateDropdownCaption(dropdownCaption);
         });
       </script>
     {{/with}}

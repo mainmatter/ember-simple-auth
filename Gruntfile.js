@@ -28,7 +28,7 @@ module.exports = function(grunt) {
     'lintspaces'
   ]);
 
-  this.registerTask('dev_server', 'Runs a development server', [
+  this.registerTask('server', 'Runs a development server', [
     'build_tests',
     'connect:dev',
     'watch'
@@ -43,13 +43,23 @@ module.exports = function(grunt) {
 
   this.registerTask('docs', 'Builds the documentation', [
     'yuidoc',
-    'compile-handlebars:docs',
+    'compile-handlebars',
     'copy:docs'
   ]);
 
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+  this.registerTask('copy:dist', 'Copies all distribution files to /dist', [
+    'copy:plain',
+    'copy:min',
+    'copy:amd'
+  ]);
 
+  var packages = grunt.file.expand('packages/*/package.json').reduce(function(acc, package) {
+    var packageContents = grunt.file.readJSON(package);
+    acc.push(packageContents);
+    return acc;
+  }, []);
+
+  grunt.initConfig({
     connect: {
       dev:{
         server: {},
@@ -80,100 +90,130 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      files: ['lib/**', 'test/**/*'],
+      files: ['packages/**/*'],
       tasks: ['build_tests', 'lint']
     },
 
     transpile: {
       amd: {
         type: 'amd',
-        files: [{
-          expand: true,
-          cwd: 'lib/',
-          src: ['**/*.js'],
-          dest: 'tmp/'
-        }]
+        files: packages.map(function(pkg) {
+          return {
+            expand: true,
+            cwd: 'packages/' + pkg.name + '/lib/',
+            src: ['**/*.js'],
+            dest: 'tmp/libs'
+          };
+        })
       },
       tests: {
         type: 'amd',
-        files: [{
-          expand: true,
-          cwd: 'test/',
-          src: ['test_helpers.js', 'tests.js', 'tests/**/*.js'],
-          dest: 'tmp/'
-        }]
+        files: packages.map(function(pkg) {
+          return {
+            expand: true,
+            cwd: 'packages/' + pkg.name,
+            src: ['tests/**/*.js'],
+            dest: 'tmp/tests/' + pkg.name
+          };
+        })
       }
     },
 
     concat: {
       amd: {
-        src: ['tmp/<%= pkg.name %>.js', 'tmp/<%= pkg.name %>/**/*.js'],
-        dest: 'tmp/<%= pkg.name %>.amd.js'
+        files: (function() {
+          var files = {};
+          packages.forEach(function(pkg) {
+            files['tmp/' + pkg.name + '.amd.js'] = ['tmp/libs/' + pkg.name + '.js', 'tmp/libs/' + pkg.name + '/**/*.js'];
+          });
+          return files;
+        })()
       },
       browser: {
-        src: [
-          'wrap/browser.start',
-          'vendor/loader.js',
-          'tmp/<%= pkg.name %>.js',
-          'tmp/<%= pkg.name %>/**/*.js',
-          'wrap/browser.end'
-        ],
-        dest: 'tmp/<%= pkg.name %>.js'
+        files: (function() {
+          var files = {};
+          packages.forEach(function(pkg) {
+            files['tmp/' + pkg.name + '.js'] = ['packages/' + pkg.name + '/wrap/browser.start', 'vendor/loader.js', 'tmp/libs/' + pkg.name + '.js', 'tmp/libs/' + pkg.name + '/**/*.js', 'packages/' + pkg.name + '/wrap/browser.end'];
+          });
+          return files;
+        })()
       },
       tests: {
-        src: ['tmp/tests/**/*.js'],
-        dest: 'tmp/<%= pkg.name %>-tests.amd.js'
-      }
-    },
-
-    copy: {
-      dist: {
-        files: [
-          {
-            src: ['tmp/<%= pkg.name %>.js'],
-            dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
-          },
-          {
-            src: ['tmp/<%= pkg.name %>.min.js'],
-            dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.min.js'
-          },{
-            src: ['tmp/<%= pkg.name %>.amd.min.js'],
-            dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.amd.min.js'
-          }
-        ]
-      },
-      docs: {
-        files: [{
-          src: ['tmp/api.html'],
-          dest: 'dist/<%= pkg.name %>-<%= pkg.version %>-api-docs.html'
-        }]
+        files: (function() {
+          var files = {};
+          packages.forEach(function(pkg) {
+            files['tmp/' + pkg.name + '-tests.amd.js'] = ['tmp/tests/' + pkg.name + '/**/*.js'];
+          });
+          return files;
+        })()
       }
     },
 
     uglify: {
       library: {
-        files: {
-          'tmp/<%= pkg.name %>.amd.min.js': ['tmp/<%= pkg.name %>.amd.js']
-        }
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg.name + '.amd.js'],
+            dest: 'tmp/' + pkg.name + '.amd.min.js'
+          };
+        })
       },
       browser: {
-        files: {
-          'tmp/<%= pkg.name %>.min.js': ['tmp/<%= pkg.name %>.js']
-        }
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg.name + '.js'],
+            dest: 'tmp/' + pkg.name + '.min.js'
+          };
+        })
+      }
+    },
+
+    copy: {
+      plain: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg.name + '.js'],
+            dest: 'dist/' + pkg.name + '-' + pkg.version + '.js'
+          };
+        })
+      },
+      min: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg.name + '.min.js'],
+            dest: 'dist/' + pkg.name + '-' + pkg.version + '.min.js'
+          };
+        })
+      },
+      amd: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg.name + '.amd.min.js'],
+            dest: 'dist/' + pkg.name + '-' + pkg.version + '.amd.min.js'
+          };
+        })
+      },
+      docs: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/docs/' + pkg.name + '/api.html'],
+            dest: 'dist/' + pkg.name + '-' + pkg.version + '-api-docs.html'
+          };
+        })
       }
     },
 
     jshint: {
-      library: 'lib/**/*.js',
+      library: 'packages/*/lib/**/*.js',
       options: {
         jshintrc: '.jshintrc'
       },
       tests: {
         files: {
-          src: ['test/tests/**/*.js']
+          src: ['packages/*/tests/**/*.js']
         },
         options: {
-          jshintrc: 'test/tests/.jshintrc'
+          jshintrc: '.jshintrc-tests'
         }
       }
     },
@@ -185,8 +225,7 @@ module.exports = function(grunt) {
         src: [
           'docs/theme/**/*',
           'examples/**/*',
-          'lib/**/*',
-          'test/tests/**/*',
+          'packages/**/*',
           'test/lib/**/*',
           'test/index.html',
           'wrap/**/*'
@@ -215,29 +254,31 @@ module.exports = function(grunt) {
       }
     },
 
-    yuidoc: {
-      compile: {
-        name: '<%= pkg.name %>',
-        description: '<%= pkg.description %>',
-        version: '<%= pkg.version %>',
+    yuidoc: packages.reduce(function(acc, pkg) {
+      acc[pkg.name] = {
+        name: pkg.name,
+        description: pkg.description,
+        version: pkg.version,
         options: {
           parseOnly: true,
-          paths: 'lib',
-          outdir: 'tmp'
+          paths: 'packages/' + pkg.name,
+          outdir: 'tmp/docs/' + pkg.name
         }
-      }
-    },
+      };
+      return acc;
+    }, {}),
 
-    'compile-handlebars': {
-      docs: {
+    'compile-handlebars': packages.reduce(function(acc, pkg) {
+      acc[pkg.name] = {
         template: 'docs/theme/main.hbs',
-        templateData: 'tmp/data.json',
-        globals: ['docs/config.json'],
+        templateData: 'tmp/docs/' + pkg.name +  '/data.json',
+        globals: ['docs/config.json', 'packages/' + pkg.name + '/package.json'],
         partials: 'docs/theme/partials/**/*.hbs',
         helpers: 'docs/theme/helpers/**/*.js',
-        output: 'tmp/api.html'
+        output: 'tmp/docs/' + pkg.name + '/api.html'
       }
-    }
+      return acc;
+    }, {})
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');

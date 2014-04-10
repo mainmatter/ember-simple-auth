@@ -1,7 +1,6 @@
 {
   "project": {
     "module": "Ember.SimpleAuth",
-    "version": "0.2.1",
     "githubUrl": "https://github.com/simplabs/ember-simple-auth"
   }
 }

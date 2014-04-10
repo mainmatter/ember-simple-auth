@@ -8,6 +8,7 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
     <script src="http://builds.emberjs.com/release/ember.js"></script>
     <script src="../tmp/ember-simple-auth.js"></script>
+    <script src="../tmp/ember-simple-auth-oauth2.js"></script>
   </head>
   <body style="padding-top: 50px;">
     <script type="text/x-handlebars">
@@ -104,7 +105,9 @@
 
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin);
+      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+        authenticatorFactory: 'authenticator:oauth2-password-grant'
+      });
 
       // make this route protected
       App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);

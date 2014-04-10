@@ -30,14 +30,13 @@ module.exports = function(request, response, next) {
   } else if (request.url === '/v2/token' && request.method === 'POST') {
     if (request.body.grant_type === 'password') {
       if (request.body.username === 'letme' && request.body.password === 'in') {
-        success('{ "access_token": "secret token - 1", "refresh_token": "secret refresh token!", "expires_in": 15 }');
+        success('{ "access_token": "secret token!", "refresh_token": "secret refresh token!", "expires_in": 15 }');
       } else {
         error(400, '{ "error": "invalid_grant" }');
       }
     } else if (request.body.grant_type === 'refresh_token') {
       if (request.body.refresh_token === 'secret refresh token!') {
-        var currentToken = parseInt((request.headers.authorization.match(/Bearer [^\d]*(\d+)/) || [])[1]);
-        success('{ "access_token": "secret token - ' + (currentToken + 1) + '" }');
+        success('{ "access_token": "' + Math.random().toString(36).substring(10) + '" }');
       } else {
         error(400, '{ "error": "invalid_grant" }');
       }
@@ -74,18 +73,24 @@ module.exports = function(request, response, next) {
     }
 
   // custom authentication endpoint with a completely non-standard interface
-  } else if (request.url === '/v4/token') {
-    if (request.method === 'PUT') {
-      if (request.body.SESSION.USER_NAME === 'letme' && request.body.SESSION.PASS === 'in') {
-        success('{ "SESSION": { "TOKEN": "secret token!", "AUTHENTICATED_USER": { "ID": 1 } } }');
+  } else if (request.url === '/v4/session') {
+    if (request.method === 'POST') {
+      if (request.body.session.identification === 'letme' && request.body.session.password === 'in') {
+        success('{ "session": { "token": "secret token!" } }');
       } else {
-        error(422, '{ "ERROR": { "MSG": "invalid credentials" } }');
+        error(422, '{ "error": "invalid credentials" }');
       }
     // callback that will be invoked when the user logs out
     } else if (request.method === 'DELETE') {
       success('');
     } else {
       next();
+    }
+  } else if (request.url === '/v4/data') {
+    if (request.headers.authorization === 'Token: secret token!') {
+      success('{ "some": "data" }');
+    } else {
+      error(401, '{}');
     }
 
   } else {
