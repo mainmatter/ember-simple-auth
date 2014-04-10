@@ -28,6 +28,25 @@ describe('Devise', function() {
   });
 
   describe('#authenticate', function() {
+    beforeEach(function() {
+      sinon.spy(Ember.$, 'ajax');
+    });
+
+    it('sends an AJAX request to the sign in endpoint', function(done) {
+      this.authenticator.authenticate({ identification: 'identification', password: 'password' });
+
+      Ember.run.next(function() {
+        expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
+          url:         '/users/sign_in',
+          type:        'POST',
+          data:        { email: 'identification', password: 'password' },
+          dataType:    'json',
+          contentType: 'application/x-www-form-urlencoded'
+        });
+        done();
+      });
+    });
+
     describe('when the authentication request is successful', function() {
       beforeEach(function() {
         this.server.respondWith('POST', '/users/sign_in', [
@@ -61,6 +80,10 @@ describe('Devise', function() {
           done();
         });
       });
+    });
+
+    afterEach(function() {
+      Ember.$.ajax.restore();
     });
   });
 
