@@ -8,8 +8,9 @@ installations of [Devise](https://github.com/plataformatec/devise).
 
 ## The Authenticator
 
-In order to use the Devise authenticator the application needs to have a login
-route:
+In order to use the Devise authenticator (see the
+[API docs for `Authenticators.Devise`](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html#Ember-SimpleAuth-Authenticators-Devise))
+the application needs to have a login route:
 
 ```js
 App.Router.map(function() {
@@ -59,8 +60,10 @@ end
 
 ## The Authorizer
 
-The authorizer authorizes requests by adding `auth_token` and `auth-email`
-headers. To use the authorizer, specify it for Ember.SimpleAuth's setup:
+The authorizer (see the
+[API docs for `Authorizers.Devise`](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html#Ember-SimpleAuth-Authorizers-Devise))
+authorizes requests by adding `auth_token` and `auth-email` headers. To use the
+authorizer, specify it for Ember.SimpleAuth's setup:
 
 ```js
 Ember.Application.initializer({
