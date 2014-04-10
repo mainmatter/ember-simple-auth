@@ -2,9 +2,13 @@ var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
 /**
-  Authenticator for use with Devise.
+  Authenticator that works with the Ruby gem
+  [Devise](https://github.com/plataformatec/devise).
 
-  This authenticator supports Devise's rememberable module.
+  As token authentication is not actually part of devise anymore, the server
+  needs to implement some customizations to work with this authenticator - see
+  the README and
+  [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
   @class Devise
   @namespace Authenticators
@@ -13,7 +17,7 @@ var global = (typeof window !== 'undefined') ? window : {},
 var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   /**
     The endpoint on the server the authenticator acquires the auth token
-    from.
+    and email from.
 
     @property serverTokenEndpoint
     @type String
@@ -23,8 +27,8 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
 
   /**
     Restores the session from a set of session properties; __will return a
-    resolving promise when there's a non-empty `auth_token` in the
-    `properties`__ and a rejecting promise otherwise.
+    resolving promise when there's a non-empty `auth_token` and a non-empty
+    `auth_email` in the `properties`__ and a rejecting promise otherwise.
 
     @method restore
     @param {Object} properties The properties to restore the session from
@@ -43,14 +47,14 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   /**
     Authenticates the session with the specified `credentials`; the credentials
     are `POST`ed to the `serverTokenEndpoint` and if they are valid the server
-    returns an auth token in response . __If the credentials are
+    returns an auth token and email in response . __If the credentials are
     valid and authentication succeeds, a promise that resolves with the
     server's response is returned__, otherwise a promise that rejects with the
     error is returned.
 
     @method authenticate
     @param {Object} options The credentials to authenticate the session with
-    @return {Ember.RSVP.Promise} A promise that resolves when an auth token is successfully acquired from the server and rejects otherwise
+    @return {Ember.RSVP.Promise} A promise that resolves when an auth token and email is successfully acquired from the server and rejects otherwise
   */
   authenticate: function(credentials) {
     var _this = this;
@@ -72,7 +76,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   },
 
   /**
-    Cancels any outstanding automatic token refreshes.
+    Does nothing
 
     @method invalidate
     @return {Ember.RSVP.Promise} A resolving promise
@@ -82,16 +86,8 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   },
 
   /**
-    Sends an `AJAX` request to the `serverTokenEndpoint`. This will always be a
-    _"POST_" request with content type _"application/x-www-form-urlencoded".
-
-    This method is not meant to be used directly but serves as an extension
-    point to e.g. add _"Client Credentials".
-
     @method makeRequest
-    @param {Object} data The data to send with the request, e.g. email and password or the auth_token
-    @return {Ember.RSVP.Promise} A promise that resolves when a auth_token is successfully acquired from the server and rejects otherwise
-    @protected
+    @private
   */
   makeRequest: function(data, resolve, reject) {
     if (!Ember.SimpleAuth.Utils.isSecureUrl(this.serverTokenEndpoint)) {

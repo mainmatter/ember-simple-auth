@@ -2,11 +2,17 @@ var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
 /**
-  Authorizer that conforms to Devise by sending an auth_token in the request's
-  `auth-token` header.
+  Authenticator that works with the Ruby gem
+  [Devise](https://github.com/plataformatec/devise) by adding `auth-token` and
+  `auth-email` headers to requests.
 
-  _The factory for this authorizer is registered as
-  `'authorizer:devise'` in Ember's container.
+  As token authentication is not actually part of devise anymore, the server
+  needs to implement some customizations to work with this authenticator - see
+  the README and
+  [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
+
+  _The factory for this authorizer is registered as `'authorizer:devise'` in
+  Ember's container.
 
   @class Devise
   @namespace Authorizers
@@ -14,11 +20,12 @@ var global = (typeof window !== 'undefined') ? window : {},
 */
 var Devise = Ember.SimpleAuth.Authorizers.Base.extend({
   /**
-    Authorizes an XHR request by sending the `auth_token` property from the
-    session as a bearer token in the `Authorization` header:
+    Authorizes an XHR request by sending the `auth_token` and `auth_email`
+    properties from the session in custom headers:
 
     ```
-    Authorization: Bearer <auth_token>
+    auth-token: <auth_token>
+    auth-email: <auth_email>
     ```
 
     @method authorize
