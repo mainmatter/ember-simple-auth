@@ -6,7 +6,6 @@ describe('Devise', function() {
     this.server             = sinon.fakeServer.create();
     this.server.autoRespond = true;
     this.authenticator      = Devise.create();
-    sinon.spy($, 'ajax');
   });
 
   describe('#restore', function() {
@@ -94,6 +93,5 @@ describe('Devise', function() {
 
   afterEach(function() {
     this.xhr.restore();
-    $.ajax.restore();
   });
 });
