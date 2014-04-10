@@ -95,11 +95,11 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   */
   makeRequest: function(data, resolve, reject) {
     return Ember.$.ajax({
-      url: this.serverTokenEndpoint,
-      type: "POST",
-      data: data,
-      dataType: "json",
-      contentType: "application/x-www-form-urlencoded"
+      url:         this.serverTokenEndpoint,
+      type:        'POST',
+      data:        data,
+      dataType:    'json',
+      contentType: 'application/x-www-form-urlencoded'
     });
   }
 });
