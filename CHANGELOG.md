@@ -3,7 +3,7 @@
 * Ember.SimpleAuth has been split up into a base library and a set of extension
   libraries - the OAuth 2.0 authenticator/authorizer, the cookie session store
   as well as the new Devise authenticator/authorizer now reside in their own
-  extension libraries so everybody can include only what the need. __If you're
+  extension libraries so everybody can include only what they need. __If you're
   currently using the OAuth 2.0 authenticator and/or authorizer, you now need
   to include the `ember-simple-auth-oauth2.js` file in your app! If you're
   using the `Cookie` store you need to include
