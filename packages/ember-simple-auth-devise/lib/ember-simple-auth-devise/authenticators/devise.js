@@ -34,7 +34,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     return new Ember.RSVP.Promise(function(resolve, reject) {
       if (!Ember.isEmpty(properties.auth_token) && !Ember.isEmpty(properties.auth_email)) {
         resolve(properties);
-        } else {
+      } else {
         reject();
       }
     });
