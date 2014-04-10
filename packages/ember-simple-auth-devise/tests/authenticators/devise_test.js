@@ -89,7 +89,7 @@ describe('Devise', function() {
 
       it('rejects with the correct error', function(done) {
         this.authenticator.authenticate({ email: 'email@address.com', password: 'password' }).then(null, function(error) {
-          expect(error).to.eql('{ "error": "invalid_grant" }');
+          expect(error).to.eql({ "error": "invalid_grant" });
           done();
         });
       });
