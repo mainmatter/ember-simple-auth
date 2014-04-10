@@ -1,7 +1,15 @@
-##### Using the Devise Authenticator
+__[The API docs for Ember.SimpleAuth Devise are available here](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html)__
 
-In order to use the Devise authenticator the application needs to have a
-login route:
+# Ember.SimpleAuth Devise
+
+This is an extension to the Ember.SimpleAuth library that provides an
+authenticator and an authorizer that are compatible with customized
+installations of [Devise](https://github.com/plataformatec/devise).
+
+## The Authenticator
+
+In order to use the Devise authenticator the application needs to have a login
+route:
 
 ```js
 App.Router.map(function() {
@@ -24,64 +32,68 @@ This route displays the login form with fields for `identification`,
 
 The `authenticate` action that is triggered by submitting the form is provided
 by the `LoginControllerMixin` that the respective controller in the application
-needs to include:
+needs to include. It also needs to specify the Devise authenticator to be used:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin,
   { authenticatorFactory: "authenticator:devise" });
 ```
 
-The mixin will by default use the OAuth 2.0 authenticator to authenticate the
-session, so be sure to set the authenticator to `authenticator:devise`.
+As token authentication is not actually part of Devise anymore, there are some
+customizations necessary on the server side. In order for the authentication to
+work it has to include the user's auth token and email in the JSON response for
+session creation:
 
-Next, you need to set the Devise authorizer in your EmberSimpleAuth initializer:
+```ruby
+class SessionsController < Devise::SessionsController
+  def create
+    resource = resource_from_credentials
+    data     = {
+      auth_token: resource.authentication_token,
+      auth_email: resource.email
+    }
+    render json: data, status: 201
+  end
+end
+```
+
+## The Authorizer
+
+The authorizer authorizes requests by adding `auth_token` and `auth-email`
+headers. To use the authorizer, specify it for Ember.SimpleAuth's setup:
 
 ```js
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
     Ember.SimpleAuth.setup(container, application, {
-      authorizer: "authorizer:devise"
+      authorizerFactory: 'authorizer:devise'
     });
   }
 });
 ```
 
-The authorizer will append the client's `auth_token` to the header of each request, so you'll have to grab it in Rails if you want to recognize them with functions like `current_user`. To do so, add an appropriate `before_filter` to your `application_controller`:
+As token authentication is not actually part of Devise anymore, the server
+needs to implement a custom authentication method that uses the provided email
+and token to look up the user (see
+[discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6)):
 
 ```ruby
-# app/controllers/application_controller.rb
 class ApplicationController < ActionController::API
   before_filter :authenticate_user_from_token!
 
   private
 
-  def authenticate_user_from_token!
-    token = request.headers['auth-token'].to_s
-    email = request.headers['auth-email'].to_s
-    return unless token && email
+    def authenticate_user_from_token!
+      token = request.headers['auth-token'].to_s
+      email = request.headers['auth-email'].to_s
+      return unless token && email
 
-    user = User.find_by_email(email)
+      user = User.find_by_email(email)
 
-    if user && Devise.secure_compare(user.authentication_token, token)
-      sign_in user, store: false
+      if user && Devise.secure_compare(user.authentication_token, token)
+        sign_in user, store: false
+      end
     end
-  end
 end
-```
-
-(Note that for security reasons, we're authorizing the user by both email and authentication_token, as described [here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).)
-
-Finally, within your `DeviseSessionsController`, be sure to return the user's `auth_token`, `email`, and `id` like so:
-
-```ruby
-  def create
-    resource = resource_from_credentials
-    data = {
-      user_id: resource.id,
-      auth_token: resource.authentication_token,
-      auth_email: resource.email
-    }
-    render json: data, status: 201
-  end
 ```
