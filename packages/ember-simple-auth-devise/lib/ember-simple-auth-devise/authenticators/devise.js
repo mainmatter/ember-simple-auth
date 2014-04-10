@@ -5,10 +5,13 @@ var global = (typeof window !== 'undefined') ? window : {},
   Authenticator that works with the Ruby gem
   [Devise](https://github.com/plataformatec/devise).
 
-  As token authentication is not actually part of devise anymore, the server
-  needs to implement some customizations to work with this authenticator - see
-  the README and
+  __As token authentication is not actually part of devise anymore, the server
+  needs to implement some customizations__ to work with this authenticator -
+  see the README and
   [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
+
+  _The factory for this authenticator is registered as `'authenticator:devise'`
+  in Ember's container._
 
   @class Devise
   @namespace Authenticators
