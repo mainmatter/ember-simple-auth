@@ -78,8 +78,6 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     @return {Ember.RSVP.Promise} A resolving promise
   */
   invalidate: function() {
-    Ember.run.cancel(this._refreshTokenTimeout);
-    delete this._refreshTokenTimeout;
     return Ember.RSVP.resolve();
   },
 
