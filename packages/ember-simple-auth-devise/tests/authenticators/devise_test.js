@@ -2,16 +2,15 @@ import { Devise } from 'ember-simple-auth-devise/authenticators/devise';
 
 describe('Devise', function() {
   beforeEach(function() {
-    this.authenticator = Devise.create();
+    this.xhr                = sinon.useFakeXMLHttpRequest();
+    this.server             = sinon.fakeServer.create();
+    this.server.autoRespond = true;
+    this.authenticator      = Devise.create();
+    sinon.spy($, 'ajax');
   });
 
   describe('#restore', function() {
     beforeEach(function() {
-      this.xhr                = sinon.useFakeXMLHttpRequest();
-      this.server             = sinon.fakeServer.create();
-      this.server.autoRespond = true;
-      sinon.spy($, 'ajax');
-
       this.server.respondWith('POST', '/users/sign_in', [
         201,
         { 'Content-Type': 'application/json' },
@@ -27,21 +26,9 @@ describe('Devise', function() {
         });
       });
     });
-
-    afterEach(function() {
-      this.xhr.restore();
-      $.ajax.restore();
-    });
   });
 
   describe('#authenticate', function() {
-    beforeEach(function() {
-      this.xhr                = sinon.useFakeXMLHttpRequest();
-      this.server             = sinon.fakeServer.create();
-      this.server.autoRespond = true;
-      sinon.spy(Ember.$, 'ajax');
-    });
-
     describe('when the authentication request is successful', function() {
       beforeEach(function() {
         this.server.respondWith('POST', '/users/sign_in', [
@@ -94,11 +81,6 @@ describe('Devise', function() {
         });
       });
     });
-
-    afterEach(function() {
-      this.xhr.restore();
-      Ember.$.ajax.restore();
-    });
   });
 
   describe('#invalidate', function() {
@@ -108,5 +90,10 @@ describe('Devise', function() {
         done();
       });
     });
+  });
+
+  afterEach(function() {
+    this.xhr.restore();
+    $.ajax.restore();
   });
 });
