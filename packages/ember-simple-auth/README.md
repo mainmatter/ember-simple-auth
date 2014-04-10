@@ -191,6 +191,7 @@ Ember.SimpleAuth does not include any authorizers in the base library but
 offers extension libraries that can be loaded in the application as needed:
 
 * [__ember-simple-auth-oauth2__](packages/ember-simple-auth-oauth2#readme) provides an OAuth 2.0 authorizer
+* [__ember-simple-auth-devise__](packages/ember-simple-auth-devise#readme) provides an authorizer compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
 
 #### Implementing a custom Authorizer
 
