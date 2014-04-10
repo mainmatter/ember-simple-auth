@@ -1,6 +1,10 @@
-global.Ember.SimpleAuth.Authenticators.Devise = requireModule('ember-simple-auth-devise');
+var devise = requireModule('ember-simple-auth-devise');
+
+global.Ember.SimpleAuth.Authenticators.Devise = devise.Authenticator;
+global.Ember.SimpleAuth.Authorizers.Devise    = devise.Authorizer;
 
 global.Ember.SimpleAuth.initializeExtension(function(container, application, options) {
+  container.register('authorizer:devise', global.Ember.SimpleAuth.Authorizers.Devise);
   container.register('authenticator:devise', global.Ember.SimpleAuth.Authenticators.Devise);
 });
 })((typeof global !== 'undefined') ? global : window);
