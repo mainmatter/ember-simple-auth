@@ -65,7 +65,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
         });
       }, function(xhr, status, error) {
         Ember.run(function() {
-          reject(xhr.responseText);
+          reject(xhr.responseJSON || xhr.responseText);
         });
       });
     });
