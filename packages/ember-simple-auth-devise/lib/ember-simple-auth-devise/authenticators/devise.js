@@ -10,7 +10,6 @@ var global = (typeof window !== 'undefined') ? window : {},
   @namespace Authenticators
   @extends Base
 */
-
 var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   /**
     The endpoint on the server the authenticator acquires the auth token
@@ -33,13 +32,10 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   */
   restore: function(properties) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(properties.auth_token) && !Ember.isEmpty(properties.auth_email)){
-        return Ember.run(function() {
-          return resolve(properties);
-        });
-      }
-      else{
-        return reject();
+      if (!Ember.isEmpty(properties.auth_token) && !Ember.isEmpty(properties.auth_email)) {
+        resolve(properties);
+        } else {
+        reject();
       }
     });
   },
@@ -60,10 +56,18 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var data = {
-        email: credentials.identification,
+        email:    credentials.identification,
         password: credentials.password
       };
-      return _this.makeRequest(data, resolve, reject);
+      _this.makeRequest(data).then(function(response) {
+        Ember.run(function() {
+          resolve(response);
+        });
+      }, function(xhr, status, error) {
+        Ember.run(function() {
+          reject(xhr.responseText);
+        });
+      });
     });
   },
 
@@ -76,9 +80,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   invalidate: function() {
     Ember.run.cancel(this._refreshTokenTimeout);
     delete this._refreshTokenTimeout;
-    return new Ember.RSVP.Promise(function(resolve) {
-      return resolve();
-    });
+    return Ember.RSVP.resolve();
   },
 
   /**
@@ -100,14 +102,6 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
       data: data,
       dataType: "json",
       contentType: "application/x-www-form-urlencoded"
-    }).then((function(response) {
-      return Ember.run(function() {
-        return resolve(response);
-      });
-    }), function(xhr, status, error) {
-      return Ember.run(function() {
-        return reject(xhr.responseText);
-      });
     });
   }
 });
