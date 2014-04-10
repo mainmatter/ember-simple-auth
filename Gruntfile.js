@@ -28,7 +28,7 @@ module.exports = function(grunt) {
     'lintspaces'
   ]);
 
-  this.registerTask('dev_server', 'Runs a development server', [
+  this.registerTask('server', 'Runs a development server', [
     'build_tests',
     'connect:dev',
     'watch'

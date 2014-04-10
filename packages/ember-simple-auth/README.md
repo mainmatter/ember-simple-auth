@@ -294,7 +294,7 @@ To run the examples you need to have [node.js](http://nodejs.org) and
 git clone https://github.com/simplabs/ember-simple-auth.git
 cd ember-simple-auth
 npm install
-grunt dev_server
+grunt server
 ```
 
 Open [http://localhost:8000/examples](http://localhost:8000/examples) to access
@@ -355,7 +355,7 @@ grunt test
 You can also start a development server by running
 
 ```bash
-grunt dev_server
+grunt server
 ```
 
 and then run the tests in the browser at
