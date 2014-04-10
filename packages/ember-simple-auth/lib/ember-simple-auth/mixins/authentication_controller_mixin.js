@@ -32,7 +32,6 @@ var AuthenticationControllerMixin = Ember.Mixin.create({
       @param {Object} options Any options the auhtenticator needs to authenticate the session
     */
     authenticate: function(options) {
-      var _this = this;
       this.get('session').authenticate(this.get('authenticatorFactory'), options);
     }
   }
