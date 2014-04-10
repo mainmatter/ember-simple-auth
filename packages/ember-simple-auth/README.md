@@ -308,7 +308,8 @@ the examples.
 
 ## Installation
 
-To install Ember.SimpleAuth in an Ember.js application you have several options:
+To install Ember.SimpleAuth and/or its extension libraries in an Ember.js
+application you have several options:
 
 * If you're using [Bower](http://bower.io), just add it to your
   `bower.json` file:
@@ -343,8 +344,8 @@ npm install
 grunt dist
 ```
 
-After running that you will find the compiled source file (including a minified
-version) in the `dist` directory.
+After running that you will find the compiled source files (including minified
+versions) in the `dist` directory.
 
 If you want to run the tests as well you also need
 [PhantomJS](http://phantomjs.org). You can run the tests with:
