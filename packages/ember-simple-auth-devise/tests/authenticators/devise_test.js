@@ -46,24 +46,6 @@ describe('Devise', function() {
       });
     });
 
-    describe('when the authentication request has remember_me set to true', function() {
-      beforeEach(function() {
-        this.server.respondWith('POST', '/users/sign_in', [
-          201,
-          { 'Content-Type': 'application/json' },
-          '{ "access_token": "secret token!", "auth_token": "remember" }'
-        ]);
-      });
-
-      it('resolves with the correct data', function(done) {
-        this.authenticator.authenticate({ email: 'email@address.com', password: 'password', remember_me: true }).then(function(data) {
-          expect(true).to.be.true;
-          expect(data).to.eql({ access_token: 'secret token!', auth_token: 'remember' });
-          done();
-        });
-      });
-    });
-
     describe('when the authentication request fails', function() {
       beforeEach(function() {
         this.server.respondWith('POST', '/users/sign_in', [
