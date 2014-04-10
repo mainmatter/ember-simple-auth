@@ -111,8 +111,8 @@ this.get('session').authenticate('authenticator:custom', {});
 Ember.SimpleAuth does not include any authenticators in the base library but
 offers extension libraries that can be loaded in the application as needed:
 
-* [__ember-simple-auth-oauth2__](packages/ember-simple-auth-oauth2#readme) provides an OAuth 2.0 authenticator
-* [__ember-simple-auth-devise__](packages/ember-simple-auth-devise#readme) provides an authenticator compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
+* [__ember-simple-auth-oauth2__](packages/ember-simple-auth-oauth2) provides an OAuth 2.0 authenticator
+* [__ember-simple-auth-devise__](packages/ember-simple-auth-devise) provides an authenticator compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
 
 #### Implementing a custom Authenticator
 
@@ -190,8 +190,8 @@ the two have to fit together.__
 Ember.SimpleAuth does not include any authorizers in the base library but
 offers extension libraries that can be loaded in the application as needed:
 
-* [__ember-simple-auth-oauth2__](packages/ember-simple-auth-oauth2#readme) provides an OAuth 2.0 authorizer
-* [__ember-simple-auth-devise__](packages/ember-simple-auth-devise#readme) provides an authorizer compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
+* [__ember-simple-auth-oauth2__](packages/ember-simple-auth-oauth2) provides an OAuth 2.0 authorizer
+* [__ember-simple-auth-devise__](packages/ember-simple-auth-devise) provides an authorizer compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
 
 #### Implementing a custom Authorizer
 
@@ -276,7 +276,7 @@ is mainly useful for testing. Also the ephemeral store cannot keep multiple
 tabs or windows in sync of course as these tabs/windows cannot share memory.
 
 A cookie based store is available in the extension library
-[__ember-simple-auth-cookie-store__](packages/ember-simple-auth-cookie-store#readme)
+[__ember-simple-auth-cookie-store__](packages/ember-simple-auth-cookie-store)
 which is not recommended to be used though as it has some drawbacks.
 
 #### Implementing a custom Store
