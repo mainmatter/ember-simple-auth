@@ -10,6 +10,9 @@ var global = (typeof window !== 'undefined') ? window : {},
   the README and
   [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
+  _The factory for this authenticator is registered as `'authenticator:devise'`
+  in Ember's container._
+
   @class Devise
   @namespace Authenticators
   @extends Base

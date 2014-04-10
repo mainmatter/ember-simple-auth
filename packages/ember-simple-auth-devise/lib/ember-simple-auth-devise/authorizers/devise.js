@@ -12,7 +12,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
   _The factory for this authorizer is registered as `'authorizer:devise'` in
-  Ember's container.
+  Ember's container._
 
   @class Devise
   @namespace Authorizers
