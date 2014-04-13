@@ -1,3 +1,8 @@
+# 0.3.1
+
+* Fixed a bug where the arguments from session events were not passed to router
+  actions.
+
 # 0.3.0
 
 * Ember.SimpleAuth has been split up into a base library and a set of extension
