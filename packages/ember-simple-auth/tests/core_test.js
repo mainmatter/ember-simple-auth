@@ -205,10 +205,10 @@ describe('setup', function() {
     });
 
     it('forwards the "sessionAuthenticationFailed" event to the router', function(done) {
-      this.session.trigger('sessionAuthenticationFailed');
+      this.session.trigger('sessionAuthenticationFailed', 'error');
 
       Ember.run.next(this, function() {
-        expect(this.router.send).to.have.been.calledWith('sessionAuthenticationFailed');
+        expect(this.router.send).to.have.been.calledWith('sessionAuthenticationFailed', 'error');
         done();
       });
     });
@@ -223,10 +223,10 @@ describe('setup', function() {
     });
 
     it('forwards the "sessionInvalidationFailed" to the router', function(done) {
-      this.session.trigger('sessionInvalidationFailed');
+      this.session.trigger('sessionInvalidationFailed', 'error');
 
       Ember.run.next(this, function() {
-        expect(this.router.send).to.have.been.calledWith('sessionInvalidationFailed');
+        expect(this.router.send).to.have.been.calledWith('sessionInvalidationFailed', 'error');
         done();
       });
     });

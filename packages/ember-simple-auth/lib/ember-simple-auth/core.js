@@ -37,7 +37,8 @@ function setupSession(store, container) {
     'sessionInvalidationFailed'
   ]).forEach(function(event) {
     session.on(event, function() {
-      router.send(event);
+      Array.prototype.unshift.call(arguments, event);
+      router.send.apply(router, arguments);
     });
   });
   return session;
