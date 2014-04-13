@@ -306,7 +306,7 @@ describe('Session', function() {
 
     describe('when the authenticator rejects authentication', function() {
       beforeEach(function() {
-        sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.reject());
+        sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.reject('error'));
       });
 
       it('is not authenticated', function(done) {
@@ -357,12 +357,14 @@ describe('Session', function() {
       });
 
       it('triggers the "sessionAuthenticationFailed" event', function(done) {
-        var triggered = false;
-        this.session.one('sessionAuthenticationFailed', function() { triggered = true; });
+        var triggered     = false;
+        var triggeredWith = null;
+        this.session.one('sessionAuthenticationFailed', function(error) { triggered = true; triggeredWith = error; });
         this.session.authenticate('authenticatorFactory');
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.true;
+          expect(triggeredWith).to.eql('error');
           done();
         });
       });
