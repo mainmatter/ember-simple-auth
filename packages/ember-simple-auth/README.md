@@ -204,13 +204,13 @@ To use a custom authorizer, register it with Ember's container and configure it
 in the initializer:
 
 ```js
-var CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+var CustomAuthorizer = Ember.SimpleAuth.Authorizers.Base.extend({
   ...
 });
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    container.register('authorizer:custom', CustomAuthenticator);
+    container.register('authorizer:custom', CustomAuthorizer);
     Ember.SimpleAuth.setup(container, application, {
       authorizerFactory: 'authorizer:custom'
     });
