@@ -36,9 +36,8 @@ function setupSession(store, container) {
     'sessionInvalidationSucceeded',
     'sessionInvalidationFailed'
   ]).forEach(function(event) {
-    session.on(event, function() {
-      Array.prototype.unshift.call(arguments, event);
-      router.send.apply(router, arguments);
+    session.on(event, function(error) {
+      router.send(event, error);
     });
   });
   return session;
