@@ -62,7 +62,7 @@ end
 
 The authorizer (see the
 [API docs for `Authorizers.Devise`](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html#Ember-SimpleAuth-Authorizers-Devise))
-authorizes requests by adding `auth_token` and `auth-email` headers. To use the
+authorizes requests by adding `auth-token` and `auth-email` headers. To use the
 authorizer, specify it for Ember.SimpleAuth's setup:
 
 ```js
