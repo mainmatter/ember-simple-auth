@@ -96,9 +96,9 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
   },
 
   /**
-    Authenticates the session with an `authenticator` and appropriate `options`.
-    __This delegates the actual authentication work to the `authenticator`__
-    and handles the returned promise accordingly (see
+    Authenticates the session with an `authenticator` and appropriate
+    `options`. __This delegates the actual authentication work to the
+    `authenticator`__ and handles the returned promise accordingly (see
     [Ember.SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)).
     All data the authenticator resolves with will be saved in the session.
 
