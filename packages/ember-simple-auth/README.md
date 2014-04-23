@@ -42,8 +42,7 @@ Ember.Application.initializer({
 
 This initializer sets up the session (see the
 [API docs for `Ember.SimpleAuth.Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#Ember-SimpleAuth-Session)
-and __makes it available as `session` in all routes, controllers, views and
-models__).
+and __makes it available as `session` in all routes and controllers__).
 
 The application route must include the respective mixin provided by
 Ember.SimpleAuth:
