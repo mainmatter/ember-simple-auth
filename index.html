@@ -71,10 +71,10 @@
 								</p>
                 <div class="code">
                   <pre><code class="handlebars">{{#if session.isAuthenticated}}
-                        &lt;a {{ action 'invalidateSession' }}&gt;Logout&lt;/a&gt;
-                      {{else}}
-                        &lt;a {{ action 'authenticateSession' }}&gt;Login&lt;/a&gt;
-                      {{/if}}
+  &lt;a {{ action 'invalidateSession' }}&gt;Logout&lt;/a&gt;
+{{else}}
+  &lt;a {{ action 'authenticateSession' }}&gt;Login&lt;/a&gt;
+{{/if}}
                   </code></pre>
                 </div>
 								<p>
@@ -82,11 +82,11 @@
 								</p>
                 <div class="code">
                   <pre><code class="javascript">App.Router.map(function() {
-                        this.route('login');
-                      });
-                      App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-                        authenticatorFactory: 'authenticator:oauth2-password-grant'
-                      });
+  this.route('login');
+});
+App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+  authenticatorFactory: 'authenticator:oauth2-password-grant'
+});
                   </code></pre>
                 </div>
 								<p>
@@ -94,12 +94,12 @@
 								</p>
                 <div class="code">
                   <pre><code class="handlebars">&lt;form {{action authenticate on='submit'}}&gt;
-                        &lt;label for="identification"&gt;Login&lt;/label&gt;
-                        {{input id='identification' placeholder='Enter Login' value=identification}}
-                        &lt;label for="password"&gt;Password&lt;/label&gt;
-                        {{input id='password' placeholder='Enter Password' type='password' value=password}}
-                        &lt;button type="submit"&gt;Login&lt;/button&gt;
-                      &lt;/form&gt;
+  &lt;label for="identification"&gt;Login&lt;/label&gt;
+  {{input id='identification' placeholder='Enter Login' value=identification}}
+  &lt;label for="password"&gt;Password&lt;/label&gt;
+  {{input id='password' placeholder='Enter Password' type='password' value=password}}
+  &lt;button type="submit"&gt;Login&lt;/button&gt;
+&lt;/form&gt;
                   </code></pre>
                 </div>
 								<p>
@@ -107,9 +107,9 @@
 								</p>
                 <div class="code">
                   <pre><code class="javascript">App.Router.map(function() {
-                        this.route('protected');
-                      });
-                      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+  this.route('protected');
+});
+App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
                   </code></pre>
                 </div>
                 <p>
