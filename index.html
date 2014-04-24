@@ -74,8 +74,7 @@
   &lt;a {{ action 'invalidateSession' }}&gt;Logout&lt;/a&gt;
 {{else}}
   &lt;a {{ action 'authenticateSession' }}&gt;Login&lt;/a&gt;
-{{/if}}
-                  </code></pre>
+{{/if}}</code></pre>
                 </div>
 								<p>
 									Setup the route for the login form and <strong>implement the Ember.SimpleAuth mixin in the login controller</strong>:
@@ -86,8 +85,7 @@
 });
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
   authenticatorFactory: 'authenticator:oauth2-password-grant'
-});
-                  </code></pre>
+});</code></pre>
                 </div>
 								<p>
 									Render the login form:
@@ -99,8 +97,7 @@ App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMi
   &lt;label for="password"&gt;Password&lt;/label&gt;
   {{input id='password' placeholder='Enter Password' type='password' value=password}}
   &lt;button type="submit"&gt;Login&lt;/button&gt;
-&lt;/form&gt;
-                  </code></pre>
+&lt;/form&gt;</code></pre>
                 </div>
 								<p>
 									Now you can <strong>make routes protected by simply implementing the mixin</strong>:
@@ -109,8 +106,7 @@ App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMi
                   <pre><code class="javascript">App.Router.map(function() {
   this.route('protected');
 });
-App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
-                  </code></pre>
+App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);</code></pre>
                 </div>
                 <p>
                   <a href="http://github.com/simplabs/ember-simple-auth" title="Ember.SimpleAuth @ github">Find more documentation, examples and of course the source on github</a>.
