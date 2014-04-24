@@ -53,60 +53,72 @@
 									<strong>Enable Ember.SimpleAuth in a custom initializer</strong> first:
 								</p>
                 <div class="code">
-                  <code class="javascript">Ember.Application.initializer({
-                      name: 'authentication',
-                      initialize: function(container, application) {
-                        Ember.SimpleAuth.setup(container, application);
-                      }
-                    });</code>
+                  <pre>
+                    <code class="javascript">Ember.Application.initializer({
+                        name: 'authentication',
+                        initialize: function(container, application) {
+                          Ember.SimpleAuth.setup(container, application);
+                        }
+                      });</code>
+                  </pre>
                 </div>
 								<p>
 									then <strong>implement the respective mixin in the application route</strong>:
 								</p>
                 <div class="code">
-                  <code class="javascript">App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);</code>
+                  <pre>
+                    <code class="javascript">App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);</code>
+                  </pre>
                 </div>
 								<p>
 									<strong>Render login/logout buttons</strong> in the template:
 								</p>
                 <div class="code">
-                  <code class="handlebars">{{#if session.isAuthenticated}}
-                      &lt;a {{ action 'invalidateSession' }}&gt;Logout&lt;/a&gt;
-                    {{else}}
-                      &lt;a {{ action 'authenticateSession' }}&gt;Login&lt;/a&gt;
-                    {{/if}}</code>
+                  <pre>
+                    <code class="handlebars">{{#if session.isAuthenticated}}
+                        &lt;a {{ action 'invalidateSession' }}&gt;Logout&lt;/a&gt;
+                      {{else}}
+                        &lt;a {{ action 'authenticateSession' }}&gt;Login&lt;/a&gt;
+                      {{/if}}</code>
+                  </pre>
                 </div>
 								<p>
 									Setup the route for the login form and <strong>implement the Ember.SimpleAuth mixin in the login controller</strong>:
 								</p>
                 <div class="code">
-                  <code class="javascript">App.Router.map(function() {
-                      this.route('login');
-                    });
-                    App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-                      authenticatorFactory: 'authenticator:oauth2-password-grant'
-                    });</code>
+                  <pre>
+                    <code class="javascript">App.Router.map(function() {
+                        this.route('login');
+                      });
+                      App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+                        authenticatorFactory: 'authenticator:oauth2-password-grant'
+                      });</code>
+                  </pre>
                 </div>
 								<p>
 									Render the login form:
 								</p>
                 <div class="code">
-                  <code class="handlebars">&lt;form {{action authenticate on='submit'}}&gt;
-                      &lt;label for="identification"&gt;Login&lt;/label&gt;
-                      {{input id='identification' placeholder='Enter Login' value=identification}}
-                      &lt;label for="password"&gt;Password&lt;/label&gt;
-                      {{input id='password' placeholder='Enter Password' type='password' value=password}}
-                      &lt;button type="submit"&gt;Login&lt;/button&gt;
-                    &lt;/form&gt;</code>
+                  <pre>
+                    <code class="handlebars">&lt;form {{action authenticate on='submit'}}&gt;
+                        &lt;label for="identification"&gt;Login&lt;/label&gt;
+                        {{input id='identification' placeholder='Enter Login' value=identification}}
+                        &lt;label for="password"&gt;Password&lt;/label&gt;
+                        {{input id='password' placeholder='Enter Password' type='password' value=password}}
+                        &lt;button type="submit"&gt;Login&lt;/button&gt;
+                      &lt;/form&gt;</code>
+                  </pre>
                 </div>
 								<p>
 									Now you can <strong>make routes protected by simply implementing the mixin</strong>:
 								</p>
                 <div class="code">
-                  <code class="javascript">App.Router.map(function() {
-                      this.route('protected');
-                    });
-                    App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);</code>
+                  <pre>
+                    <code class="javascript">App.Router.map(function() {
+                        this.route('protected');
+                      });
+                      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);</code>
+                  </pre>
                 </div>
                 <p>
                   <a href="http://github.com/simplabs/ember-simple-auth" title="Ember.SimpleAuth @ github">Find more documentation, examples and of course the source on github</a>.
