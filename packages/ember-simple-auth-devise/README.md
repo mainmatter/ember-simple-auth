@@ -57,7 +57,6 @@ class SessionsController < Devise::SessionsController
   def create
     self.resource = warden.authenticate!(auth_options)
     sign_in(resource_name, resource)
-    yield resource if block_given?
     response = {
       auth_token: resource.authentication_token,
       auth_email: resource.email
