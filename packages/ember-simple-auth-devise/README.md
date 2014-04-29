@@ -58,13 +58,11 @@ class SessionsController < Devise::SessionsController
     self.resource = warden.authenticate!(auth_options)
     sign_in(resource_name, resource)
     yield resource if block_given?
-    render json: resource, status: 201
-  end
-
-protected
-
-  def auth_options
-    { scope: resource_name, recall: "#{controller_path}#new" }
+    response = {
+      auth_token: resource.authentication_token,
+      auth_email: resource.email
+    }
+    render json: response, status: 201
   end
 end
 ```
