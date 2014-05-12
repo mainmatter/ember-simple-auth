@@ -1,6 +1,7 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
+import { Configuration } from './../core';
 import { AuthenticationControllerMixin } from './authentication_controller_mixin';
 
 /**

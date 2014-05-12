@@ -36,9 +36,8 @@ function setupSession(store, container) {
     'sessionInvalidationSucceeded',
     'sessionInvalidationFailed'
   ]).forEach(function(event) {
-    session.on(event, function() {
-      Array.prototype.unshift.call(arguments, event);
-      router.send.apply(router, arguments);
+    session.on(event, function(error) {
+      router.send(event, error);
     });
   });
   return session;
@@ -78,12 +77,25 @@ var Configuration = {
   routeAfterAuthentication: 'index',
 
   /**
+    The name of the property that the session is injected with into routes and
+    controllers; should be set through
+    [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
+
+    @property sessionPropertyName
+    @readOnly
+    @static
+    @type String
+    @default 'session'
+  */
+  sessionPropertyName: 'session',
+
+  /**
     @property applicationRootUrl
     @static
     @private
     @type String
   */
-  applicationRootUrl: null,
+  applicationRootUrl: null
 };
 
 /**
@@ -107,6 +119,7 @@ var Configuration = {
   @param {Object} options
     @param {String} [options.authorizerFactory] The authorizer factory to use as it is registered with Ember's container, see [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register); when the application does not interact with a server that requires authorized requests, no auzthorizer is needed
     @param {Object} [options.storeFactory] The store factory to use as it is registered with Ember's container, see [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register) - defaults to `session-stores:local-storage`
+    @param {Object} [options.sessionPropertyName] The name for the property that the session is injected with into routes and controllers - defaults to `session`
     @param {String} [options.authenticationRoute] route to transition to for authentication - defaults to `'login'`
     @param {String} [options.routeAfterAuthentication] route to transition to after successful authentication - defaults to `'index'`
     @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js application was loaded from; to explicitely enable authorization for additional origins, whitelist those origins - defaults to `[]` _(beware that origins consist of protocol, host and port (port can be left out when it is 80 for HTTP or 443 for HTTPS))_
@@ -121,18 +134,19 @@ var setup = function(container, application, options) {
   options                                = options || {};
   Configuration.routeAfterAuthentication = options.routeAfterAuthentication || Configuration.routeAfterAuthentication;
   Configuration.authenticationRoute      = options.authenticationRoute || Configuration.authenticationRoute;
+  Configuration.sessionPropertyName      = options.sessionPropertyName || Configuration.sessionPropertyName;
   Configuration.applicationRootUrl       = container.lookup('router:main').get('rootURL') || '/';
   crossOriginWhitelist                   = Ember.A(options.crossOriginWhitelist || []).map(function(origin) {
     return extractLocationOrigin(origin);
   });
 
-  options.storeFactory = options.storeFactory || 'session-store:local-storage';
+  options.storeFactory = options.storeFactory || 'ember-simple-auth-session-store:local-storage';
   var store            = container.lookup(options.storeFactory);
   var session          = setupSession(store, container);
 
-  container.register('session:main', session, { instantiate: false });
+  container.register('ember-simple-auth-session:main', session, { instantiate: false });
   Ember.A(['controller', 'route']).forEach(function(component) {
-    container.injection(component, 'session', 'session:main');
+    container.injection(component, Configuration.sessionPropertyName, 'ember-simple-auth-session:main');
   });
 
   if (!Ember.isEmpty(options.authorizerFactory)) {

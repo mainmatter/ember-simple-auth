@@ -446,7 +446,7 @@ describe('Session', function() {
 
     describe('when the authenticator rejects invalidation', function() {
       beforeEach(function() {
-        sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.reject());
+        sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.reject('error'));
       });
 
       it('stays authenticated', function(done) {
@@ -484,12 +484,14 @@ describe('Session', function() {
       });
 
       it('triggers the "sessionInvalidationFailed" event', function(done) {
-        var triggered = false;
-        this.session.one('sessionInvalidationFailed', function() { triggered = true; });
+        var triggered     = false;
+        var triggeredWith = null;
+        this.session.one('sessionInvalidationFailed', function(error) { triggered = true; triggeredWith = error; });
         this.session.invalidate();
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.true;
+          expect(triggeredWith).to.eql('error');
           done();
         });
       });

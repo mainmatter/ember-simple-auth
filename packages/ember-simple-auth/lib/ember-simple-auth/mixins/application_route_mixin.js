@@ -80,10 +80,10 @@ var ApplicationRouteMixin = Ember.Mixin.create({
       @method actions.sessionAuthenticationSucceeded
     */
     sessionAuthenticationSucceeded: function() {
-      var attemptedTransition = this.get('session.attemptedTransition');
+      var attemptedTransition = this.get(Configuration.sessionPropertyName).get('attemptedTransition');
       if (attemptedTransition) {
         attemptedTransition.retry();
-        this.set('session.attemptedTransition', null);
+        this.get(Configuration.sessionPropertyName).set('attemptedTransition', null);
       } else {
         this.transitionTo(Configuration.routeAfterAuthentication);
       }
@@ -122,7 +122,7 @@ var ApplicationRouteMixin = Ember.Mixin.create({
       @method actions.invalidateSession
     */
     invalidateSession: function() {
-      this.get('session').invalidate();
+      this.get(Configuration.sessionPropertyName).invalidate();
     },
 
     /**
@@ -159,7 +159,7 @@ var ApplicationRouteMixin = Ember.Mixin.create({
       @method actions.authorizationFailed
     */
     authorizationFailed: function() {
-      this.get('session').invalidate();
+      this.get(Configuration.sessionPropertyName).invalidate();
     },
 
     /**

@@ -71,7 +71,7 @@ used:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-  authenticatorFactory: 'authenticator:oauth2-password-grant'
+  authenticatorFactory: 'ember-simple-auth-authenticator:oauth2-password-grant'
 });
 ```
 
@@ -121,7 +121,7 @@ Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
     Ember.SimpleAuth.setup(container, application, {
-      authorizerFactory: 'authorizer:oauth2-bearer'
+      authorizerFactory: 'ember-simple-auth-authorizer:oauth2-bearer'
     });
   }
 });

@@ -1,6 +1,8 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
+import { Configuration } from './../core';
+
 /**
   The mixin for routes that require the session to be authenticated in order to
   be accessible. Including this mixin in a route automatically adds a hook that
@@ -36,9 +38,9 @@ var AuthenticatedRouteMixin = Ember.Mixin.create({
     @param {Transition} transition The transition that lead to this route
   */
   beforeModel: function(transition) {
-    if (!this.get('session.isAuthenticated')) {
+    if (!this.get(Configuration.sessionPropertyName).get('isAuthenticated')) {
       transition.abort();
-      this.set('session.attemptedTransition', transition);
+      this.get(Configuration.sessionPropertyName).set('attemptedTransition', transition);
       transition.send('authenticateSession');
     }
   }

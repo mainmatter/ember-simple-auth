@@ -113,6 +113,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     @return {Ember.RSVP.Promise} A promise that resolves when the session was authenticated successfully
   */
   authenticate: function(authenticatorFactory, options) {
+    Ember.assert('Session#authenticate requires the authenticator factory to be specified, was ' + authenticatorFactory, !Ember.isEmpty(authenticatorFactory));
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       _this.container.lookup(authenticatorFactory).authenticate(options).then(function(content) {

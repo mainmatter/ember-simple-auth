@@ -104,7 +104,7 @@
         initialize: function(container, application) {
           Ember.SimpleAuth.setup(container, application, {
             // configure an authorizer so that Ember Data requests get authorized
-            authorizerFactory: 'authorizer:oauth2-bearer'
+            authorizerFactory: 'ember-simple-auth-authorizer:oauth2-bearer'
           });
         }
       });
@@ -131,7 +131,7 @@
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
       App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'authenticator:oauth2-password-grant'
+        authenticatorFactory: 'ember-simple-auth-authenticator:oauth2-password-grant'
       });
 
       // make these routes protected

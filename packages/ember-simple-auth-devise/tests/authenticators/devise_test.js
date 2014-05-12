@@ -36,12 +36,13 @@ describe('Devise', function() {
       this.authenticator.authenticate({ identification: 'identification', password: 'password' });
 
       Ember.run.next(function() {
-        expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
-          url:         '/users/sign_in',
-          type:        'POST',
-          data:        { email: 'identification', password: 'password' },
-          dataType:    'json',
-          contentType: 'application/x-www-form-urlencoded'
+        var args = Ember.$.ajax.getCall(0).args[0];
+        delete args.beforeSend;
+        expect(args).to.eql({
+          url:      '/users/sign_in',
+          type:     'POST',
+          data:     { user: { email: 'identification', password: 'password' } },
+          dataType: 'json',
         });
         done();
       });

@@ -10,8 +10,8 @@ import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
   This store will trigger the `'updated'` event when any of the keys it manages
   is changed from another tab or window.
 
-  _The factory for this store is registered as `'session-store:local-storage'`
-  in Ember's container._
+  _The factory for this store is registered as
+  `'ember-simple-auth-session-store:local-storage'` in Ember's container._
 
   @class LocalStorage
   @namespace Stores

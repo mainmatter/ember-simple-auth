@@ -10,8 +10,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   see the README and
   [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
-  _The factory for this authenticator is registered as `'authenticator:devise'`
-  in Ember's container._
+  _The factory for this authenticator is registered as
+  `'ember-simple-auth-authenticator:devise'` in Ember's container._
 
   @class Devise
   @namespace Authenticators
@@ -27,6 +27,15 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     @default '/users/sign_in'
   */
   serverTokenEndpoint: '/users/sign_in',
+
+  /**
+    The devise resource name
+
+    @property resourceName
+    @type String
+    @default 'user'
+  */
+  resourceName: 'user',
 
   /**
     Restores the session from a set of session properties; __will return a
@@ -62,7 +71,8 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   authenticate: function(credentials) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var data = {
+      var data                 = {};
+      data[_this.resourceName] = {
         email:    credentials.identification,
         password: credentials.password
       };
@@ -97,11 +107,13 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
       Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
     }
     return Ember.$.ajax({
-      url:         this.serverTokenEndpoint,
-      type:        'POST',
-      data:        data,
-      dataType:    'json',
-      contentType: 'application/x-www-form-urlencoded'
+      url:        this.serverTokenEndpoint,
+      type:       'POST',
+      data:       data,
+      dataType:   'json',
+      beforeSend: function(xhr, settings) {
+        xhr.setRequestHeader('Accept', settings.accepts.json);
+      }
     });
   }
 });

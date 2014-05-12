@@ -3,16 +3,15 @@ var global = (typeof window !== 'undefined') ? window : {},
 
 /**
   Authenticator that works with the Ruby gem
-  [Devise](https://github.com/plataformatec/devise) by adding `auth-token` and
-  `auth-email` headers to requests.
+  [Devise](https://github.com/plataformatec/devise) by sending the `user_token`
+  and `user_email` properties from the session in the `Authorization` header.
 
   __As token authentication is not actually part of devise anymore, the server
   needs to implement some customizations__ to work with this authenticator -
-  see the README and
-  [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
+  see the README for more information.
 
-  _The factory for this authorizer is registered as `'authorizer:devise'` in
-  Ember's container._
+  _The factory for this authorizer is registered as
+  `'ember-simple-auth-authorizer:devise'` in Ember's container._
 
   @class Devise
   @namespace Authorizers
@@ -20,12 +19,11 @@ var global = (typeof window !== 'undefined') ? window : {},
 */
 var Devise = Ember.SimpleAuth.Authorizers.Base.extend({
   /**
-    Authorizes an XHR request by sending the `auth_token` and `auth_email`
-    properties from the session in custom headers:
+    Authorizes an XHR request by sending the `user_token` and `user_email`
+    properties from the session in the `Authorization` header:
 
     ```
-    auth-token: <auth_token>
-    auth-email: <auth_email>
+    Authorization: Token token="<user_token>", user_email="<user_email>"
     ```
 
     @method authorize
@@ -34,14 +32,14 @@ var Devise = Ember.SimpleAuth.Authorizers.Base.extend({
   */
 
   authorize: function(jqXHR, requestOptions) {
-    var authToken = this.get('session.auth_token');
-    var authEmail = this.get('session.auth_email');
-    if (this.get('session.isAuthenticated') && !Ember.isEmpty(authToken) && !Ember.isEmpty(authEmail)) {
+    var userToken = this.get('session.user_token');
+    var userEmail = this.get('session.user_email');
+    if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userEmail)) {
       if (!Ember.SimpleAuth.Utils.isSecureUrl(requestOptions.url)) {
         Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
       }
-      jqXHR.setRequestHeader('auth-token', authToken);
-      jqXHR.setRequestHeader('auth-email', authEmail);
+      var authData = 'token="' + userToken + '", user_email="' + userEmail + '"';
+      jqXHR.setRequestHeader('Authorization', 'Token ' + authData);
     }
   }
 });

@@ -1,6 +1,8 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
+import { Configuration } from './../core';
+
 /**
   The mixin for the controller that handles the `authenticationRoute` specified
   in [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)). It provides the
@@ -32,7 +34,7 @@ var AuthenticationControllerMixin = Ember.Mixin.create({
       @param {Object} options Any options the auhtenticator needs to authenticate the session
     */
     authenticate: function(options) {
-      this.get('session').authenticate(this.get('authenticatorFactory'), options);
+      this.get(Configuration.sessionPropertyName).authenticate(this.get('authenticatorFactory'), options);
     }
   }
 });
