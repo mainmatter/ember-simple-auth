@@ -200,7 +200,7 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
           var expiresAt = _this.absolutizeExpirationTime(expiresIn);
           var data      = Ember.$.extend(response, { expires_in: expiresIn, expires_at: expiresAt, refresh_token: refreshToken });
           _this.scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
-          _this.trigger('updated', data);
+          _this.trigger('sessionDataUpdated', data);
           resolve(data);
         });
       }, function(xhr, status, error) {

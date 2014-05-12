@@ -20,12 +20,6 @@ var global = (typeof window !== 'undefined') ? window : {},
   [Ember.SimpleAuth.Stores.Base](#Ember-SimpleAuth-Stores-Base)) is sufficient
   for the session to be authenticated or not.
 
-  Authenticators may trigger the `'updated'` and the `'invalidated'` events.
-  The `'updated'` event signals that the session data changed while the
-  `'ìnvalidated`' event signals that the authenticator decided that the
-  session became invalid. Both events are handled by the session automatically.
-  The `'updated'` event requires the complete session data as its argument.
-
   __Custom authenticators have to be registered with Ember's dependency
   injection container__ so that the session can retrieve an instance, e.g.:
 
@@ -59,7 +53,7 @@ var Base = Ember.Object.extend(Ember.Evented, {
     [Ember.SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)
     method and handles the result of that invocation accordingly.
 
-    @event updated
+    @event sessionDataUpdated
     @param {Object} data The updated session data
   */
 
