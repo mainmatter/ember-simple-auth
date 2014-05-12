@@ -107,11 +107,13 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
       Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
     }
     return Ember.$.ajax({
-      url:         this.serverTokenEndpoint,
-      type:        'POST',
-      data:        data,
-      dataType:    'json',
-      contentType: 'application/x-www-form-urlencoded'
+      url:        this.serverTokenEndpoint,
+      type:       'POST',
+      data:       data,
+      dataType:   'json',
+      beforeSend: function(xhr, settings) {
+        xhr.setRequestHeader('Accept', settings.accepts.json);
+      }
     });
   }
 });
