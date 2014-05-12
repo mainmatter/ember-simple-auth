@@ -7,7 +7,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   [Ember.SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)).
   It is created when Ember.SimpleAuth is set up (see
   [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)) and __injected into all
-  models, controllers, routes and views so that all parts of the application
+  controllers and routes so that these parts of the application
   can always access the current authentication state and other data__,
   depending on the used authenticator and whether the session is actually
   authenticated (see
