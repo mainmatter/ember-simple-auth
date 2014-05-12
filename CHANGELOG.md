@@ -4,7 +4,7 @@
   "namespaced" names with Ember's container to avoid conflicts, see #159;
   __this requires all references to these factories (e.g.
   `authenticatorFactory` in controllers to be prepended with
-  `'ember-simple-auth-'`).
+  `'ember-simple-auth-'`)__.
 * __[BREAKING]__ `Ember.SimpleAuth.Authorizers.Devise` now sends the user's
   token and email address in one header that's compatible to
   [Rails' token auth module](http://api.rubyonrails.org/classes/ActionController/HttpAuthentication/Token.html)
