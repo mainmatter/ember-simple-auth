@@ -92,7 +92,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.3.1"><span class="label label-primary">0.3.1</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.4.0"><span class="label label-primary">0.4.0</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -116,8 +116,8 @@
 needs to implement some customizations</strong> to work with this authenticator -
 see the README and
 <a href="https://gist.github.com/josevalim/fb706b1e933ef01e4fb6">discussion here</a>.</p>
-<p><em>The factory for this authenticator is registered as <code>&#39;authenticator:devise&#39;</code>
-in Ember&#39;s container.</em></p>
+<p><em>The factory for this authenticator is registered as
+<code>&#39;ember-simple-auth-authenticator:devise&#39;</code> in Ember&#39;s container.</em></p>
 
               
                 <h3 class="section">Properties</h3>
@@ -141,6 +141,24 @@ and email from.</p>
 </div>
 
                 
+                  <div class="panel panel-default">
+  <a id="Ember-SimpleAuth-Authenticators-Devise-resourceName" class="symbol-anchor"></a>
+  <div class="panel-heading">
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/ember-simple-auth-devise/authenticators/devise.js#L31"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    
+    
+    <h3 class="panel-title property">resourceName <span class="type">String</span></h3>
+  </div>
+  <div class="panel-body">
+    <p>The devise resource name</p>
+
+    
+      Defaults to <code>&#x27;user&#x27;</code>
+      
+  </div>
+</div>
+
+                
               
               
               
@@ -149,7 +167,7 @@ and email from.</p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Authenticators-Devise-restore" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/ember-simple-auth-devise/authenticators/devise.js#L31"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/ember-simple-auth-devise/authenticators/devise.js#L40"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -188,7 +206,7 @@ resolving promise when there&#39;s a non-empty <code>auth_token</code> and a non
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Authenticators-Devise-authenticate" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/ember-simple-auth-devise/authenticators/devise.js#L50"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/ember-simple-auth-devise/authenticators/devise.js#L59"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -230,7 +248,7 @@ error is returned.</p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Authenticators-Devise-invalidate" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/ember-simple-auth-devise/authenticators/devise.js#L81"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/ember-simple-auth-devise/authenticators/devise.js#L91"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -273,6 +291,10 @@ error is returned.</p>
         <a href="#Ember-SimpleAuth-Authenticators-Devise-serverTokenEndpoint">serverTokenEndpoint</a>
       </li>
     
+      <li>
+        <a href="#Ember-SimpleAuth-Authenticators-Devise-resourceName">resourceName</a>
+      </li>
+    
   </ul>
 
 
@@ -313,14 +335,13 @@ error is returned.</p>
           <div class="row">
             <div class="col-md-9" id="main-content">
               <p>Authenticator that works with the Ruby gem
-<a href="https://github.com/plataformatec/devise">Devise</a> by adding <code>auth-token</code> and
-<code>auth-email</code> headers to requests.</p>
+<a href="https://github.com/plataformatec/devise">Devise</a> by sending the <code>user_token</code>
+and <code>user_email</code> properties from the session in the <code>Authorization</code> header.</p>
 <p><strong>As token authentication is not actually part of devise anymore, the server
 needs to implement some customizations</strong> to work with this authenticator -
-see the README and
-<a href="https://gist.github.com/josevalim/fb706b1e933ef01e4fb6">discussion here</a>.</p>
-<p><em>The factory for this authorizer is registered as <code>&#39;authorizer:devise&#39;</code> in
-Ember&#39;s container.</em></p>
+see the README for more information.</p>
+<p><em>The factory for this authorizer is registered as
+<code>&#39;ember-simple-auth-authorizer:devise&#39;</code> in Ember&#39;s container.</em></p>
 
               
               
@@ -330,7 +351,7 @@ Ember&#39;s container.</em></p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Authorizers-Devise-authorize" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/ember-simple-auth-devise/authorizers/devise.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/ember-simple-auth-devise/authorizers/devise.js#L21"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -339,10 +360,9 @@ Ember&#39;s container.</em></p>
     </h3>
   </div>
   <div class="panel-body">
-    <p>Authorizes an XHR request by sending the <code>auth_token</code> and <code>auth_email</code>
-properties from the session in custom headers:</p>
-<pre><code>auth-token: &lt;auth_token&gt;
-auth-email: &lt;auth_email&gt;
+    <p>Authorizes an XHR request by sending the <code>user_token</code> and <code>user_email</code>
+properties from the session in the <code>Authorization</code> header:</p>
+<pre><code>Authorization: Token token=&quot;&lt;user_token&gt;&quot;, user_email=&quot;&lt;user_email&gt;&quot;
 </code></pre>
     
       <h4 class="subsection">Arguments</h4>
