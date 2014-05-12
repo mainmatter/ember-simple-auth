@@ -22,10 +22,10 @@ authorization mechanisms.
 
 Ember.SimpleAuth is built around the concept that __there is always an
 application session in whose context the user is using the application. This
-session can either be authenticated or not.__ Ember.SimpleAuth provides a
-number of classes and mixins that create that session, make it available
-throughout the application, provide methods for authenticating and invalidating
-it etc.
+session can either be authenticated or not.__ Ember.SimpleAuth creates that
+session, provides functionality to authenticate and invalidate it and also has
+a set of mixins that provide default implementations for common scenarios like
+redirecting users to the login if they access a restricted page etc.
 
 __To enable Ember.SimpleAuth in an application, simply add a custom
 initializer__ (also see the
@@ -44,8 +44,9 @@ This initializer sets up the session (see the
 [API docs for `Ember.SimpleAuth.Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#Ember-SimpleAuth-Session)
 and __makes it available as `session` in all routes and controllers__).
 
-The application route must include the respective mixin provided by
-Ember.SimpleAuth:
+While not necessary, the easiest way to use the session is to include the
+`ApplicationRouteMixin` mixin provided by Ember.SimpleAuth in the application's
+application route:
 
 ```js
 App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);

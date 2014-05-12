@@ -66,8 +66,10 @@ This route displays the login form with fields for `identification` and
 
 The `authenticate` action that is triggered by submitting the form is provided
 by the `LoginControllerMixin` that the respective controller in the application
-needs to include. It also needs to specify the OAuth 2.0 authenticator to be
-used:
+can include (the controller can also implement its own action and use the
+session API directly; see the
+[API docs for `Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#Ember-SimpleAuth-Session)).
+It then also needs to specify the OAuth 2.0 authenticator to be used:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
