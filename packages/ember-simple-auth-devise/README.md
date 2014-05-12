@@ -12,7 +12,7 @@ As token authentication is not actually part of Devise anymore, there are some
 customizations necessary on the server side (most of this is adapted from
 [José Valim's gist on token authentication](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6)).
 
-First, a new column for the authentication token must be added to the user
+First, a new column for the authentication token must be added to the users
 table:
 
 ```ruby
@@ -48,7 +48,8 @@ end
 
 By default, Devise's sessions controller only responds to HTML request. In
 order for it to work with Ember.SimpleAuth it must also respond to JSON. To
-achieve that, define a custom sessions controller:
+achieve that, define a custom sessions controller (_if HTML responses are not
+needed the format handling can be left out of course_):
 
 ```ruby
 class SessionsController < Devise::SessionsController
@@ -69,16 +70,16 @@ class SessionsController < Devise::SessionsController
 end
 ```
 
-and configure Devise to use it instead of the default one:
+and configure Devise to use that controller instead of the default one:
 
 ```ruby
 MyRailsApp::Application.routes.draw do
-  devise_for :users, controllers: {sessions: "sessions"}
+  devise_for :users, controllers: { sessions: 'sessions' }
 end
 ```
 
-Finally, the Rails application must authenticate users by the authentication
-token if present:
+Finally, the Rails application must authenticate users by their authentication
+token and email if present:
 
 ```ruby
 class ApplicationController < ActionController::Base
