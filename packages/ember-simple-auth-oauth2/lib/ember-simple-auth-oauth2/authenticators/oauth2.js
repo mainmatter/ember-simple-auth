@@ -10,7 +10,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   will trigger the `'updated'` event each time the token was refreshed.
 
   _The factory for this authenticator is registered as
-  `'authenticator:oauth2-password-grant'` in Ember's container._
+  `'ember-simple-auth-authenticator:oauth2-password-grant'` in Ember's
+  container._
 
   @class OAuth2
   @namespace Authenticators

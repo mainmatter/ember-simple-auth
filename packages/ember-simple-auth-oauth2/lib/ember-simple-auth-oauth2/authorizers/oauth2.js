@@ -8,7 +8,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   `Authorization` header.
 
   _The factory for this authorizer is registered as
-  `'authorizer:oauth2-bearer'` in Ember's container._
+  `'ember-simple-auth-authorizer:oauth2-bearer'` in Ember's container._
 
   @class OAuth2
   @namespace Authorizers

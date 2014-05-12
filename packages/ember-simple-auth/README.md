@@ -250,7 +250,7 @@ Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
     Ember.SimpleAuth.setup(container, application, {
-      storeFactory: 'session-store:local-storage'
+      storeFactory: 'ember-simple-auth-session-store:local-storage'
     });
   }
 });

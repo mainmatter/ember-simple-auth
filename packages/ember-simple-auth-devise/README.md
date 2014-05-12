@@ -37,7 +37,7 @@ needs to include. It also needs to specify the Devise authenticator to be used:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin,
-  { authenticatorFactory: "authenticator:devise" });
+  { authenticatorFactory: 'ember-simple-auth-authenticator:devise' });
 ```
 
 As token authentication is not actually part of Devise anymore, there are some
@@ -70,7 +70,7 @@ Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
     Ember.SimpleAuth.setup(container, application, {
-      authorizerFactory: 'authorizer:devise'
+      authorizerFactory: 'ember-simple-auth-authorizer:devise'
     });
   }
 });
