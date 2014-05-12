@@ -1,3 +1,22 @@
+# 0.4.0
+
+* __[BREAKING]__ Ember.SimpleAuth's factories are now registered with
+  "namespaced" names with Ember's container to avoid conflicts, see #159;
+  __this requires all references to these factories (e.g.
+  `authenticatorFactory` in controllers to be prepended with
+  `'ember-simple-auth-'`).
+* __[BREAKING]__ `Ember.SimpleAuth.Authorizers.Devise` now sends the user's
+  token and email address in one header that's compatible to
+  [Rails' token auth module](http://api.rubyonrails.org/classes/ActionController/HttpAuthentication/Token.html)
+* __[BREAKING]__ `Ember.SimpleAuth.Authenticators.Devise` now sends the
+  (configurable) resource name for session authentication, see #157
+* The name of the property that Ember.SimpleAuth injects the session with into
+  routes and controllers can now be customized, see #159
+* fixed `Ember.SimpleAuth.Utils.isSecureUrl` so that it checks the passed URL
+  not the current location
+* improved the instructions for server side setup for ember-simple-auth-devise,
+  see #155
+
 # 0.3.1
 
 * Fixed a bug where the arguments from session events were not passed to router
