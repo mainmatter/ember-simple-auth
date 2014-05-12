@@ -247,61 +247,6 @@ describe('setup', function() {
     });
   });
 
-  describe('session events', function() {
-    beforeEach(function() {
-      sinon.spy(this.router, 'send');
-      sinon.spy(this.container, 'register');
-      setup(this.container, this.application);
-      var spyCall  = this.container.register.getCall(2);
-      this.session = spyCall.args[1];
-    });
-
-    it('forwards the "sessionAuthenticationSucceeded" event to the router', function(done) {
-      this.session.trigger('sessionAuthenticationSucceeded');
-
-      Ember.run.next(this, function() {
-        expect(this.router.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
-        done();
-      });
-    });
-
-    it('forwards the "sessionAuthenticationFailed" event to the router', function(done) {
-      this.session.trigger('sessionAuthenticationFailed', 'error');
-
-      Ember.run.next(this, function() {
-        expect(this.router.send).to.have.been.calledWith('sessionAuthenticationFailed', 'error');
-        done();
-      });
-    });
-
-    it('forwards the "sessionInvalidationSucceeded" event to the router', function(done) {
-      this.session.trigger('sessionInvalidationSucceeded');
-
-      Ember.run.next(this, function() {
-        expect(this.router.send).to.have.been.calledWith('sessionInvalidationSucceeded');
-        done();
-      });
-    });
-
-    it('forwards the "sessionInvalidationFailed" event to the router', function(done) {
-      this.session.trigger('sessionInvalidationFailed', 'error');
-
-      Ember.run.next(this, function() {
-        expect(this.router.send).to.have.been.calledWith('sessionInvalidationFailed', 'error');
-        done();
-      });
-    });
-
-    it('forwards the "authorizationFailed" event to the router', function(done) {
-      this.session.trigger('authorizationFailed');
-
-      Ember.run.next(this, function() {
-        expect(this.router.send).to.have.been.calledWith('authorizationFailed');
-        done();
-      });
-    });
-  });
-
   after(function() {
     //reset default configuration values
     Configuration.authenticationRoute      = 'login';

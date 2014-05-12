@@ -14,6 +14,58 @@ describe('ApplicationRouteMixin', function() {
     }).create({ session: this.session });
   });
 
+  describe('activate', function() {
+    beforeEach(function() {
+      this.route.activate();
+      sinon.spy(this.route, 'send');
+    });
+
+    it("translates the session's 'sessionAuthenticationSucceeded' event into an action invocation", function(done) {
+      this.session.trigger('sessionAuthenticationSucceeded');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
+        done();
+      });
+    });
+
+    it("translates the session's 'sessionAuthenticationFailed' event into an action invocation", function(done) {
+      this.session.trigger('sessionAuthenticationFailed', 'error');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send).to.have.been.calledWith('sessionAuthenticationFailed', 'error');
+        done();
+      });
+    });
+
+    it("translates the session's 'sessionInvalidationSucceeded' event into an action invocation", function(done) {
+      this.session.trigger('sessionInvalidationSucceeded');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send).to.have.been.calledWith('sessionInvalidationSucceeded');
+        done();
+      });
+    });
+
+    it("translates the session's 'sessionInvalidationFailed' event into an action invocation", function(done) {
+      this.session.trigger('sessionInvalidationFailed', 'error');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send).to.have.been.calledWith('sessionInvalidationFailed', 'error');
+        done();
+      });
+    });
+
+    it("translates the session's 'authorizationFailed' event into an action invocation", function(done) {
+      this.session.trigger('authorizationFailed');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send).to.have.been.calledWith('authorizationFailed');
+        done();
+      });
+    });
+  });
+
   describe('the "authenticateSession" action', function() {
     beforeEach(function() {
       sinon.spy(this.route, 'transitionTo');

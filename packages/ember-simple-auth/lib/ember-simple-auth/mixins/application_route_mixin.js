@@ -39,6 +39,22 @@ import { Configuration } from './../core';
   @static
 */
 var ApplicationRouteMixin = Ember.Mixin.create({
+  activate: function() {
+    var _this = this;
+    Ember.A([
+      'sessionAuthenticationSucceeded',
+      'sessionAuthenticationFailed',
+      'sessionInvalidationSucceeded',
+      'sessionInvalidationFailed',
+      'authorizationFailed'
+    ]).forEach(function(event) {
+      _this.get('session').on(event, function(error) {
+        Array.prototype.unshift.call(arguments, event);
+        _this.send.apply(_this, arguments);
+      });
+    });
+  },
+
   actions: {
     /**
       This action triggers transition to the `authenticationRoute` specified in
