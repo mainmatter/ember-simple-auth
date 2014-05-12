@@ -183,6 +183,56 @@ describe('setup', function() {
       });
     });
 
+    describe('the AJAX error handler', function() {
+      beforeEach(function() {
+        this.xhr                = sinon.useFakeXMLHttpRequest();
+        this.server             = sinon.fakeServer.create();
+        this.server.autoRespond = true;
+        sinon.spy(this.container, 'register');
+        setup(this.container, this.application, { authorizerFactory: 'authorizerFactory' });
+        var spyCall  = this.container.register.getCall(2);
+        this.session = spyCall.args[1];
+      });
+
+      describe("when the request's status is 401", function() {
+        beforeEach(function() {
+          this.server.respondWith('GET', '/data', [401, {}, '']);
+        });
+
+        it("triggers the session's authorizationFailed event", function(done) {
+          var triggered = false;
+          this.session.one('authorizationFailed', function() { triggered = true; });
+          Ember.$.get('/data');
+
+          Ember.run.later(function() {
+            expect(triggered).to.be.true;
+            done();
+          }, 100);
+        });
+      });
+
+      describe("when the request's status is not 401", function() {
+        beforeEach(function() {
+          this.server.respondWith('GET', '/data', [500, {}, '']);
+        });
+
+        it("does not trigger the session's authorizationFailed event", function(done) {
+          var triggered = false;
+          this.session.one('authorizationFailed', function() { triggered = true; });
+          Ember.$.get('/data');
+
+          Ember.run.later(function() {
+            expect(triggered).to.be.false;
+            done();
+          }, 100);
+        });
+      });
+
+      afterEach(function() {
+        this.xhr.restore();
+      });
+    });
+
     afterEach(function() {
       Ember.$.ajaxPrefilter.restore();
     });
@@ -233,11 +283,20 @@ describe('setup', function() {
       });
     });
 
-    it('forwards the "sessionInvalidationFailed" to the router', function(done) {
+    it('forwards the "sessionInvalidationFailed" event to the router', function(done) {
       this.session.trigger('sessionInvalidationFailed', 'error');
 
       Ember.run.next(this, function() {
         expect(this.router.send).to.have.been.calledWith('sessionInvalidationFailed', 'error');
+        done();
+      });
+    });
+
+    it('forwards the "authorizationFailed" event to the router', function(done) {
+      this.session.trigger('authorizationFailed');
+
+      Ember.run.next(this, function() {
+        expect(this.router.send).to.have.been.calledWith('authorizationFailed');
         done();
       });
     });

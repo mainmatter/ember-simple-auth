@@ -79,38 +79,4 @@ describe('ApplicationRouteMixin', function() {
       expect(this.session.invalidate).to.have.been.calledOnce;
     });
   });
-
-  describe('the "error" action', function() {
-    beforeEach(function() {
-      sinon.spy(this.route, 'send');
-    });
-
-    describe('when the error reason is status 401', function() {
-      it('invokes the "authorizationFailed" action', function() {
-        this.route._actions.error.apply(this.route, [{ status: 401 }]);
-
-        expect(this.route.send).to.have.been.calledWith('authorizationFailed');
-      });
-
-      it('returns true', function() {
-        var returnValue = this.route._actions.error.apply(this.route, [{ status: 401 }]);
-
-        expect(returnValue).to.be.true;
-      });
-    });
-
-    describe('when the error reason is not status 401', function() {
-      it('does not invoke the "authorizationFailed" action', function() {
-        this.route._actions.error.apply(this.route, [{ status: 500 }]);
-
-        expect(this.route.send).to.not.have.been.called;
-      });
-
-      it('returns true', function() {
-        var returnValue = this.route._actions.error.apply(this.route, [{ status: 500 }]);
-
-        expect(returnValue).to.be.true;
-      });
-    });
-  });
 });

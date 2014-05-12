@@ -160,17 +160,6 @@ var ApplicationRouteMixin = Ember.Mixin.create({
     */
     authorizationFailed: function() {
       this.get(Configuration.sessionPropertyName).invalidate();
-    },
-
-    /**
-      @method actions.error
-      @private
-    */
-    error: function(reason) {
-      if (reason.status === 401) {
-        this.send('authorizationFailed');
-      }
-      return true;
     }
   }
 });

@@ -34,7 +34,8 @@ function setupSession(store, container) {
     'sessionAuthenticationSucceeded',
     'sessionAuthenticationFailed',
     'sessionInvalidationSucceeded',
-    'sessionInvalidationFailed'
+    'sessionInvalidationFailed',
+    'authorizationFailed'
   ]).forEach(function(event) {
     session.on(event, function(error) {
       router.send(event, error);
@@ -156,6 +157,11 @@ var setup = function(container, application, options) {
       Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
         if (shouldAuthorizeRequest(options.url)) {
           authorizer.authorize(jqXHR, options);
+        }
+      });
+      Ember.$(document).ajaxError(function(event, jqXHR, setting, exception) {
+        if (jqXHR.status === 401) {
+          session.trigger('authorizationFailed');
         }
       });
     }
