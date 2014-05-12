@@ -39,7 +39,7 @@ describe('Devise', function() {
         expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
           url:         '/users/sign_in',
           type:        'POST',
-          data:        { email: 'identification', password: 'password' },
+          data:        { user: { email: 'identification', password: 'password' } },
           dataType:    'json',
           contentType: 'application/x-www-form-urlencoded'
         });
