@@ -48,12 +48,22 @@ var Base = Ember.Object.extend(Ember.Evented, {
   /**
     __Triggered when the data that constitutes the session is updated by the
     authenticator__. This might happen e.g. because the authenticator refreshes
-    it or the data's validity period expires. The session automatically catches
-    that event, passes the updated data back to the authenticator's
+    it or an event from is triggered from an external authentication provider.
+    The session automatically catches that event, passes the updated data back
+    to the authenticator's
     [Ember.SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)
     method and handles the result of that invocation accordingly.
 
     @event sessionDataUpdated
+    @param {Object} data The updated session data
+  */
+  /**
+    __Triggered when the data that constitutes the session is invalidated by
+    the authenticator__. This might happen e.g. because the date expires or an
+    event is triggered from an external authentication provider. The session
+    automatically catches that event and invalidates itself.
+
+    @event sessionDataInvalidated
     @param {Object} data The updated session data
   */
 
