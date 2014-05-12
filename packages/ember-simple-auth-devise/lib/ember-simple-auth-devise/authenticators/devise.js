@@ -29,6 +29,15 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   serverTokenEndpoint: '/users/sign_in',
 
   /**
+    The devise resource (admin, user etc) to authenticate against
+
+    @property deviseResource
+    @type String
+    @default 'user'
+  */
+  deviseResource: 'user',
+
+  /**
     Restores the session from a set of session properties; __will return a
     resolving promise when there's a non-empty `auth_token` and a non-empty
     `auth_email` in the `properties`__ and a rejecting promise otherwise.
@@ -96,10 +105,12 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     if (!Ember.SimpleAuth.Utils.isSecureUrl(this.serverTokenEndpoint)) {
       Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
     }
+    var requestData = {};
+    requestData[this.deviseResource] = data;
     return Ember.$.ajax({
       url:         this.serverTokenEndpoint,
       type:        'POST',
-      data:        data,
+      data:        requestData,
       dataType:    'json',
       contentType: 'application/x-www-form-urlencoded'
     });
