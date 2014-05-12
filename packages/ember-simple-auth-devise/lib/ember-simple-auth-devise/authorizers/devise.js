@@ -34,14 +34,14 @@ var Devise = Ember.SimpleAuth.Authorizers.Base.extend({
   */
 
   authorize: function(jqXHR, requestOptions) {
-    var authToken = this.get('session.auth_token');
-    var authEmail = this.get('session.auth_email');
-    if (this.get('session.isAuthenticated') && !Ember.isEmpty(authToken) && !Ember.isEmpty(authEmail)) {
+    var userToken = this.get('session.user_token');
+    var userEmail = this.get('session.user_email');
+    if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userEmail)) {
       if (!Ember.SimpleAuth.Utils.isSecureUrl(requestOptions.url)) {
         Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
       }
-      jqXHR.setRequestHeader('auth-token', authToken);
-      jqXHR.setRequestHeader('auth-email', authEmail);
+      jqXHR.setRequestHeader('user_token', userToken);
+      jqXHR.setRequestHeader('user_email', userEmail);
     }
   }
 });
