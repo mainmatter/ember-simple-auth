@@ -71,7 +71,8 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   authenticate: function(credentials) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var data = {
+      var data                 = {};
+      data[_this.resourceName] = {
         email:    credentials.identification,
         password: credentials.password
       };
@@ -105,12 +106,10 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     if (!Ember.SimpleAuth.Utils.isSecureUrl(this.serverTokenEndpoint)) {
       Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
     }
-    var requestData = {};
-    requestData[this.resourceName] = data;
     return Ember.$.ajax({
       url:         this.serverTokenEndpoint,
       type:        'POST',
-      data:        requestData,
+      data:        data,
       dataType:    'json',
       contentType: 'application/x-www-form-urlencoded'
     });
