@@ -87,11 +87,13 @@ class ApplicationController < ActionController::Base
   private
 
     def authenticate_user_from_token!
-      user_email = params[:user_email].presence
-      user       = user_email && User.find_by_email(user_email)
+      authenticate_with_http_token do |token, options|
+        user_email = options[:user_email].presence
+        user       = user_email && User.find_by_email(user_email)
 
-      if user && Devise.secure_compare(user.authentication_token, params[:user_token])
-        sign_in user, store: false
+        if user && Devise.secure_compare(user.authentication_token, token)
+          sign_in user, store: false
+        end
       end
     end
 end
@@ -136,8 +138,14 @@ App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMi
 
 The authorizer (see the
 [API docs for `Authorizers.Devise`](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html#Ember-SimpleAuth-Authorizers-Devise))
-authorizes requests by adding `user_token` and `user_email` fields to the query
-string. To use the authorizer, specify it for Ember.SimpleAuth's setup:
+authorizes requests by adding `user_token` and `user_email` properties from the
+session in the `Authorization` header:
+
+```
+Authorization: Token token="<user_token>", user_email="<user_email>"
+```
+
+To use the authorizer, specify it for Ember.SimpleAuth's setup:
 
 ```js
 Ember.Application.initializer({

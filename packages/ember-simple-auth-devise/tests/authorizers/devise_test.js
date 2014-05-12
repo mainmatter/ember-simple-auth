@@ -32,9 +32,8 @@ describe('Devise', function() {
           this.authorizer.set('session.user_email', 'user@email.com');
         });
 
-        it('adds the "user_token" and "user_email" headers to the request', function() {
-          this.requestMock.expects('setRequestHeader').once().withArgs('user_token', 'secret token!');
-          this.requestMock.expects('setRequestHeader').once().withArgs('user_email', 'user@email.com');
+        it('adds the "user_token" and "user_email" query string fields to the request', function() {
+          this.requestMock.expects('setRequestHeader').once().withArgs('Authorization', 'Token user_email="user@email.com", user_token="user@email.com"');
           this.authorizer.authorize(this.request, {});
 
           this.requestMock.verify();
