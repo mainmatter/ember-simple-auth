@@ -27,10 +27,10 @@ import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
 */
 var Base = Ember.Object.extend(Ember.Evented, {
   /**
-    Triggered when the data that constitutes the session changes in the store.
-    This usually happens because the session is authenticated or invalidated in
-    another tab or window. The session automatically catches that event, passes
-    the updated data to the authenticator's
+    __Triggered when the data that constitutes the session changes in the
+    store. This usually happens because the session is authenticated or
+    invalidated in another tab or window.__ The session automatically catches
+    that event, passes the updated data to the authenticator's
     [Ember.SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-restore)
     method and handles the result of that invocation accordingly.
 
