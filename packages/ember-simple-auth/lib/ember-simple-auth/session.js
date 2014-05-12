@@ -191,6 +191,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
   */
   setup: function(authenticatorFactory, content, trigger) {
     trigger = !!trigger && !this.get('isAuthenticated');
+    this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated:      true,
       authenticatorFactory: authenticatorFactory,
@@ -199,6 +200,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     this.bindToAuthenticatorEvents();
     var data = Ember.$.extend({ authenticatorFactory: authenticatorFactory }, this.content);
     this.store.replace(data);
+    this.endPropertyChanges();
     if (trigger) {
       this.trigger('sessionAuthenticationSucceeded');
     }
@@ -210,12 +212,14 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
   */
   clear: function(trigger) {
     trigger = !!trigger && this.get('isAuthenticated');
+    this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated:      false,
       authenticatorFactory: null,
       content:              {}
     });
     this.store.clear();
+    this.endPropertyChanges();
     if (trigger) {
       this.trigger('sessionInvalidationSucceeded');
     }
