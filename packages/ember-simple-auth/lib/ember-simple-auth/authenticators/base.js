@@ -52,6 +52,18 @@ var global = (typeof window !== 'undefined') ? window : {},
 */
 var Base = Ember.Object.extend(Ember.Evented, {
   /**
+    Triggered when the data that constitutes the session is updated by the
+    authenticator. This might happen e.g. because the authenticator refreshes
+    it or the data's validity period expires. The session automatically catches
+    that event, passes the updated data back to the authenticator's
+    [Ember.SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)
+    method and handles the result of that invocation accordingly.
+
+    @event updated
+    @param {Object} data The updated session data
+  */
+
+  /**
     Restores the session from a set of properties. __This method is invoked by
     the session either after the application starts up and session data was
     restored from the store__ or when properties in the store have changed due

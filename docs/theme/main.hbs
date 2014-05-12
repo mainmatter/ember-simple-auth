@@ -165,6 +165,12 @@
                   {{> action}}
                 {{/each}}
               {{/if}}
+              {{#if events}}
+                <h3 class="section">Events</h3>
+                {{#each events}}
+                  {{> event}}
+                {{/each}}
+              {{/if}}
             </div>
             <div class="col-md-3 overview">
               {{> sidebar-extends}}
@@ -173,6 +179,7 @@
               {{> sidebar-functions}}
               {{> sidebar-methods}}
               {{> sidebar-actions}}
+              {{> sidebar-events}}
             </div>
           </div>
         {{/each}}

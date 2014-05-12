@@ -47,6 +47,50 @@ var global = (typeof window !== 'undefined') ? window : {},
 */
 var Session = Ember.ObjectProxy.extend(Ember.Evented, {
   /**
+    Triggered whenever the session is successfully authenticated. When the
+    application uses the mixin,
+    [Ember.SimpleAuth.ApplicationRouteMixin.actions#sessionAuthenticationSucceeded](#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationSucceeded)
+    will be invoked whenever this event is triggered.
+
+    @event sessionAuthenticationSucceeded
+  */
+  /**
+    Triggered whenever an attempt to authenticate the session fails. When the
+    application uses the mixin,
+    [Ember.SimpleAuth.ApplicationRouteMixin.actions#sessionAuthenticationFailed](#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationFailed)
+    will be invoked whenever this event is triggered.
+
+    @event sessionAuthenticationFailed
+    @param {Object} error The error object; this depends on the authenticator in use, see [Ember.SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)
+  */
+  /**
+    Triggered whenever the session is successfully invalidated. When the
+    application uses the mixin,
+    [Ember.SimpleAuth.ApplicationRouteMixin.actions#sessionInvalidationSucceeded](#Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)
+    will be invoked whenever this event is triggered.
+
+    @event sessionInvalidationSucceeded
+  */
+  /**
+    Triggered whenever an attempt to invalidate the session fails. When the
+    application uses the mixin,
+    [Ember.SimpleAuth.ApplicationRouteMixin.actions#sessionInvalidationFailed](#Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationFailed)
+    will be invoked whenever this event is triggered.
+
+    @event sessionInvalidationFailed
+    @param {Object} error The error object; this depends on the authenticator in use, see [Ember.SimpleAuth.Authenticators.Base#invalidate](#Ember-SimpleAuth-Authenticators-Base-invalidate)
+  */
+  /**
+    Triggered whenever the server rejects the authorization information passed
+    with a request and responds with status 401. When the application uses the
+    mixin,
+    [Ember.SimpleAuth.ApplicationRouteMixin.actions#authorizationFailed](#Ember-SimpleAuth-ApplicationRouteMixin-authorizationFailed)
+    will be invoked whenever this event is triggered.
+
+    @event authorizationFailed
+  */
+
+  /**
     The authenticator factory used to authenticate the session. This is only
     set when the session is currently authenticated.
 

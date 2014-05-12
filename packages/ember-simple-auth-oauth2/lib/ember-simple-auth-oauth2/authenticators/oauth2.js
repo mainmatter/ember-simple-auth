@@ -6,8 +6,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Resource
   Owner Password Credentials Grant Type"_.
 
-  This authenticator supports refreshing the access token automatically and
-  will trigger the `'updated'` event each time the token was refreshed.
+  This authenticator supports access token refresh (see
+  [RFC 6740, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
 
   _The factory for this authenticator is registered as
   `'ember-simple-auth-authenticator:oauth2-password-grant'` in Ember's
@@ -18,6 +18,14 @@ var global = (typeof window !== 'undefined') ? window : {},
   @extends Base
 */
 var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
+  /**
+    Triggered when the authenticator refreshes the access token (see
+    [RFC 6740, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
+
+    @event updated
+    @param {Object} data The updated session data
+  */
+
   /**
     The endpoint on the server the authenticator acquires the access token
     from.
