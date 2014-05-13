@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ember.SimpleAuth - examples</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
+    <script src="http://builds.emberjs.com/release/ember.js"></script>
+    <script src="../tmp/ember-simple-auth.js"></script>
+    <script src="../tmp/ember-simple-auth-oauth2.js"></script>
+  </head>
+  <body style="padding-top: 50px;">
+    <script type="text/x-handlebars">
+      <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+          {{#link-to 'index' classNames='navbar-brand'}}
+            Home
+          {{/link-to}}
+        </div>
+        <div class="collapse navbar-collapse navbar-ex5-collapse">
+          <ul class="nav navbar-nav">
+            {{#link-to 'protected' tagName='li'}}
+              <a style="cursor: pointer">Protected Page</a>
+            {{/link-to}}
+          </ul>
+          {{! display logout button when the session is authenticated, login button otherwise }}
+          {{#if session.isAuthenticated}}
+            <a {{ action 'logout' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
+          {{else}}
+            {{#link-to 'login' class="btn btn-success navbar-btn navbar-right"}}Login{{/link-to}}
+          {{/if}}
+        </div>
+      </nav>
+      <div class="container">
+        {{outlet}}
+      </div>
+      <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">&larr; back to examples list</a>
+        </div>
+      </nav>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="index">
+      <div class="page-header">
+        <h1>Custom example</h1>
+      </div>
+      {{#unless session.isAuthenticated}}
+        <div class="alert alert-info">
+          You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
+        </div>
+      {{/unless}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="login">
+      <div class="page-header">
+        <h1>Login</h1>
+      </div>
+      {{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
+      <form {{action 'login' on='submit'}}>
+        <div class="form-group">
+          <label for="identification">Login</label>
+          {{input id='identification' placeholder='Enter Login' class='form-control' value=identification}}
+
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          {{input id='password' placeholder='Enter Password' class='form-control' type='password' value=password}}
+        </div>
+        <button type="submit" class="btn btn-default">Login</button>
+      </form>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="protected">
+      <div class="page-header">
+        <h1>Protected Page</h1>
+      </div>
+      <div class="alert alert-warning">
+        This is a protected page only visible to authenticated users!
+      </div>
+    </script>
+
+    <script type="text/javascript">
+      // setup Ember.SimpleAuth in an initializer
+      Ember.Application.initializer({
+        name: 'authentication',
+        initialize: function(container, application) {
+          Ember.SimpleAuth.setup(container, application);
+          var applicationRoute = container.lookup('route:application');
+          var session          = container.lookup('ember-simple-auth-session:main');
+          // handle the session events
+          session.on('sessionAuthenticationSucceeded', function() {
+            applicationRoute.transitionTo('index');
+          });
+          session.on('sessionAuthenticationFailed', function() {
+            Ember.Logger.debug('Session authentication failed!');
+          });
+          session.on('sessionInvalidationSucceeded', function() {
+            applicationRoute.transitionTo('index');
+          });
+          session.on('sessionInvalidationFailed', function() {
+            Ember.Logger.debug('Session invalidation failed!');
+          });
+        }
+      });
+
+      App = Ember.Application.create({});
+
+      App.Router.reopen({
+        rootURL: '/examples/9-custom.html'
+      });
+
+      App.Router.map(function() {
+        // login route
+        this.route('login');
+        // protected route that's inaccessible without authentication
+        this.route('protected');
+      });
+
+      // define a globally available logout action
+      App.ApplicationRoute = Ember.Route.extend({
+        actions: {
+          logout: function() {
+            this.get('session').invalidate();
+          }
+        }
+      });
+
+      // handle the authenticate action from the login form
+      App.LoginController = Ember.Controller.extend({
+        actions: {
+          login: function() {
+            var data = this.getProperties('identification', 'password');
+            this.set('password', null);
+            this.get('session').authenticate('ember-simple-auth-authenticator:oauth2-password-grant', data);
+          }
+        }
+      });
+
+      // make this route protected
+      App.ProtectedRoute = Ember.Route.extend({
+        beforeModel: function(transition) {
+          if (!this.get('session').get('isAuthenticated')) {
+            transition.abort();
+            this.transitionTo('login');
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
