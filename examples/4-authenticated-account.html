@@ -17,7 +17,7 @@
         <div class="navbar-header">
           {{#link-to 'index' classNames='navbar-brand'}}
             Home
-          {{/link-to}}
+          {{/link-to}}e
         </div>
         <div class="collapse navbar-collapse navbar-ex5-collapse">
           <ul class="nav navbar-nav">
@@ -137,7 +137,7 @@
       App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.OAuth2.extend({
         authenticate: function(credentials) {
           return new Ember.RSVP.Promise(function(resolve, reject) {
-            // make the request to authenticate the user at endoint /v3/token
+            // make the request to authenticate the user at endpoint /v3/token
             Ember.$.ajax({
               url:  '/v3/token',
               type: 'POST',
