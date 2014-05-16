@@ -18,3 +18,5 @@ env:
     - BUNDLE="ember=1.3.2&jQuery=2.0.3"
     - BUNDLE="ember=1.4.0&jQuery=1.11.1"
     - BUNDLE="ember=1.4.0&jQuery=2.1.1"
+    - BUNDLE="ember=1.5.0&jQuery=1.11.1"
+    - BUNDLE="ember=1.5.0&jQuery=2.1.1"
