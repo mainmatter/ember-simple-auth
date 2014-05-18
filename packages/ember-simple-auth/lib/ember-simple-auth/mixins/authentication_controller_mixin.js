@@ -31,10 +31,10 @@ var AuthenticationControllerMixin = Ember.Mixin.create({
       [Ember.SimpleAuth.Session#authenticate](#Ember-SimpleAuth-Session-authenticate)).
 
       @method actions.authenticate
-      @param {Object} options Any options the auhtenticator needs to authenticate the session
+      @param {Object} options Any options the authenticator needs to authenticate the session
     */
     authenticate: function(options) {
-      this.get(Configuration.sessionPropertyName).authenticate(this.get('authenticatorFactory'), options);
+      return this.get(Configuration.sessionPropertyName).authenticate(this.get('authenticatorFactory'), options);
     }
   }
 });
