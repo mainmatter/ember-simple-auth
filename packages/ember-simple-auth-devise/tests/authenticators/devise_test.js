@@ -13,14 +13,14 @@ describe('Devise', function() {
       this.server.respondWith('POST', '/users/sign_in', [
         201,
         { 'Content-Type': 'application/json' },
-        '{ "auth_token": "secret token!" }'
+        '{ "user_token": "secret token!" }'
       ]);
     });
 
-    describe('when the data contains an auth_token and auth_email', function() {
+    describe('when the data contains an user_token and user_email', function() {
       it('resolves with the correct data', function(done) {
-        this.authenticator.restore({ "auth_token": 'secret token!', "auth_email": "user@email.com" }).then(function(content){
-          expect(content).to.eql({ "auth_token": "secret token!", "auth_email": "user@email.com" });
+        this.authenticator.restore({ "user_token": 'secret token!', "user_email": "user@email.com" }).then(function(content){
+          expect(content).to.eql({ "user_token": "secret token!", "user_email": "user@email.com" });
           done();
         });
       });
