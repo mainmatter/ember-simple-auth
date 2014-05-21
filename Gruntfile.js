@@ -50,7 +50,8 @@ module.exports = function(grunt) {
   this.registerTask('copy:dist', 'Copies all distribution files to /dist', [
     'copy:plain',
     'copy:min',
-    'copy:amd'
+    'copy:amd',
+    'copy:amd_min'
   ]);
 
   var packages = grunt.file.expand('packages/*/package.json').reduce(function(acc, package) {
@@ -186,6 +187,14 @@ module.exports = function(grunt) {
         })
       },
       amd: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg.name + '.amd.min.js'],
+            dest: 'dist/' + pkg.name + '-' + pkg.version + '.amd.js'
+          };
+        })
+      },
+      amd_min: {
         files: packages.map(function(pkg) {
           return {
             src: ['tmp/' + pkg.name + '.amd.min.js'],
