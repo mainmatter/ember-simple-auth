@@ -39,8 +39,8 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
 
   /**
     Restores the session from a set of session properties; __will return a
-    resolving promise when there's a non-empty `auth_token` and a non-empty
-    `auth_email` in the `properties`__ and a rejecting promise otherwise.
+    resolving promise when there's a non-empty `user_token` and a non-empty
+    `user_email` in the `properties`__ and a rejecting promise otherwise.
 
     @method restore
     @param {Object} properties The properties to restore the session from
@@ -48,7 +48,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
   */
   restore: function(properties) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(properties.auth_token) && !Ember.isEmpty(properties.auth_email)) {
+      if (!Ember.isEmpty(properties.user_token) && !Ember.isEmpty(properties.user_email)) {
         resolve(properties);
       } else {
         reject();
