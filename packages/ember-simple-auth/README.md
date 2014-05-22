@@ -104,7 +104,7 @@ only authenticated with one authenticator at a time (see the
 The authenticator to use is chosen when authentication is triggered:
 
 ```js
-this.get('session').authenticate('authenticator:custom', {});
+this.get('session').authenticate('ember-simple-auth-authenticator:custom', {});
 ```
 
 Ember.SimpleAuth does not include any authenticators in the base library but
@@ -131,7 +131,7 @@ var CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    container.register('authenticator:custom', CustomAuthenticator);
+    container.register('ember-simple-auth-authenticator:custom', CustomAuthenticator);
     Ember.SimpleAuth.setup(container, application);
   }
 });
@@ -141,14 +141,14 @@ To authenticate the session with a custom authenticator, simply pass the
 registered factory's name::
 
 ```js
-this.get('session').authenticate('authenticator:custom', {});
+this.get('session').authenticate('ember-simple-auth-authenticator:custom', {});
 ```
 
 or when using one of the controller mixins:
 
 ```js
 App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-  authenticatorFactory: 'authenticator:custom'
+  authenticatorFactory: 'ember-simple-auth-authenticator:custom'
 });
 ```
 
@@ -172,7 +172,7 @@ Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
     Ember.SimpleAuth.setup(container, application, {
-      authorizerFactory: 'authorizer:custom'
+      authorizerFactory: 'ember-simple-auth-authorizer:custom'
     });
   }
 });
@@ -209,9 +209,9 @@ var CustomAuthorizer = Ember.SimpleAuth.Authorizers.Base.extend({
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-    container.register('authorizer:custom', CustomAuthorizer);
+    container.register('ember-simple-auth-authorizer:custom', CustomAuthorizer);
     Ember.SimpleAuth.setup(container, application, {
-      authorizerFactory: 'authorizer:custom'
+      authorizerFactory: 'ember-simple-auth-authorizer:custom'
     });
   }
 });
