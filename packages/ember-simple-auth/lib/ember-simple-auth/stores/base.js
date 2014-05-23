@@ -13,19 +13,24 @@ import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
   Ember.SimpleAuth's setup
   (see [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)).
 
-  Stores may trigger the `'updated'` event when their data changed due to
-  external actions (e.g. from another tab). The session listens to that event
-  and will handle the changes accordingly. Whenever the event is triggered by
-  the store, the session will forward the data to its authenticator which
-  decides whether the session is still valid (see
-  [Ember.SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)).
-
   @class Base
   @namespace Stores
   @extends Ember.Object
   @uses Ember.Evented
 */
 var Base = Ember.Object.extend(Ember.Evented, {
+  /**
+    __Triggered when the data that constitutes the session changes in the
+    store. This usually happens because the session is authenticated or
+    invalidated in another tab or window.__ The session automatically catches
+    that event, passes the updated data to its authenticator's
+    [Ember.SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)
+    method and handles the result of that invocation accordingly.
+
+    @event sessionDataUpdated
+    @param {Object} data The updated session data
+  */
+
   /**
     Persists the `data` in the store.
 

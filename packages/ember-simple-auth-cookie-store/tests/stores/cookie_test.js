@@ -18,7 +18,7 @@ describe('Stores.Cookie', function() {
       var _this = this;
       _this.triggered = false;
       this.store.persist({ key: 'value' });
-      _this.store.one('updated', function() {
+      _this.store.one('sessionDataUpdated', function() {
         _this.triggered = true;
       });
     });

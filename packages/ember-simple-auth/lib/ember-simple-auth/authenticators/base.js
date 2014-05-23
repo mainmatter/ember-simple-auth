@@ -20,12 +20,6 @@ var global = (typeof window !== 'undefined') ? window : {},
   [Ember.SimpleAuth.Stores.Base](#Ember-SimpleAuth-Stores-Base)) is sufficient
   for the session to be authenticated or not.
 
-  Authenticators may trigger the `'updated'` and the `'invalidated'` events.
-  The `'updated'` event signals that the session data changed while the
-  `'ìnvalidated`' event signals that the authenticator decided that the
-  session became invalid. Both events are handled by the session automatically.
-  The `'updated'` event requires the complete session data as its argument.
-
   __Custom authenticators have to be registered with Ember's dependency
   injection container__ so that the session can retrieve an instance, e.g.:
 
@@ -51,6 +45,28 @@ var global = (typeof window !== 'undefined') ? window : {},
   @uses Ember.Evented
 */
 var Base = Ember.Object.extend(Ember.Evented, {
+  /**
+    __Triggered when the data that constitutes the session is updated by the
+    authenticator__. This might happen e.g. because the authenticator refreshes
+    it or an event from is triggered from an external authentication provider.
+    The session automatically catches that event, passes the updated data back
+    to the authenticator's
+    [Ember.SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)
+    method and handles the result of that invocation accordingly.
+
+    @event sessionDataUpdated
+    @param {Object} data The updated session data
+  */
+  /**
+    __Triggered when the data that constitutes the session is invalidated by
+    the authenticator__. This might happen e.g. because the date expires or an
+    event is triggered from an external authentication provider. The session
+    automatically catches that event and invalidates itself.
+
+    @event sessionDataInvalidated
+    @param {Object} data The updated session data
+  */
+
   /**
     Restores the session from a set of properties. __This method is invoked by
     the session either after the application starts up and session data was

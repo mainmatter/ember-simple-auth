@@ -17,7 +17,7 @@ var itBehavesLikeAStore = function(options) {
 
     it('does not trigger the "updated" event', function(done) {
       var triggered = false;
-      this.store.one('updated', function() {
+      this.store.one('sessionDataUpdated', function() {
         triggered = true;
       });
       this.store.persist({ key: 'other value' });

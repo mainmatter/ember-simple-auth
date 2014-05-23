@@ -277,7 +277,7 @@ describe('OAuth2', function() {
 
       it('triggers the "updated" event', function(done) {
         var triggeredWith = false;
-        this.authenticator.one('updated', function(data) { triggeredWith = data; });
+        this.authenticator.one('sessionDataUpdated', function(data) { triggeredWith = data; });
         this.authenticator.refreshAccessToken(12345, 'refresh token!');
 
         Ember.run.later(function() {
@@ -299,7 +299,7 @@ describe('OAuth2', function() {
 
         it('triggers the "updated" event with the correct data', function(done) {
           var triggeredWith = false;
-          this.authenticator.one('updated', function(data) { triggeredWith = data; });
+          this.authenticator.one('sessionDataUpdated', function(data) { triggeredWith = data; });
           this.authenticator.refreshAccessToken(12345, 'refresh token!');
 
           Ember.run.later(function() {

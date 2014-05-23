@@ -14,6 +14,58 @@ describe('ApplicationRouteMixin', function() {
     }).create({ session: this.session });
   });
 
+  describe('activate', function() {
+    beforeEach(function() {
+      this.route.activate();
+      sinon.spy(this.route, 'send');
+    });
+
+    it("translates the session's 'sessionAuthenticationSucceeded' event into an action invocation", function(done) {
+      this.session.trigger('sessionAuthenticationSucceeded');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
+        done();
+      });
+    });
+
+    it("translates the session's 'sessionAuthenticationFailed' event into an action invocation", function(done) {
+      this.session.trigger('sessionAuthenticationFailed', 'error');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send).to.have.been.calledWith('sessionAuthenticationFailed', 'error');
+        done();
+      });
+    });
+
+    it("translates the session's 'sessionInvalidationSucceeded' event into an action invocation", function(done) {
+      this.session.trigger('sessionInvalidationSucceeded');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send).to.have.been.calledWith('sessionInvalidationSucceeded');
+        done();
+      });
+    });
+
+    it("translates the session's 'sessionInvalidationFailed' event into an action invocation", function(done) {
+      this.session.trigger('sessionInvalidationFailed', 'error');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send).to.have.been.calledWith('sessionInvalidationFailed', 'error');
+        done();
+      });
+    });
+
+    it("translates the session's 'authorizationFailed' event into an action invocation", function(done) {
+      this.session.trigger('authorizationFailed');
+
+      Ember.run.next(this, function() {
+        expect(this.route.send).to.have.been.calledWith('authorizationFailed');
+        done();
+      });
+    });
+  });
+
   describe('the "authenticateSession" action', function() {
     beforeEach(function() {
       sinon.spy(this.route, 'transitionTo');
@@ -77,40 +129,6 @@ describe('ApplicationRouteMixin', function() {
       this.route._actions.authorizationFailed.apply(this.route);
 
       expect(this.session.invalidate).to.have.been.calledOnce;
-    });
-  });
-
-  describe('the "error" action', function() {
-    beforeEach(function() {
-      sinon.spy(this.route, 'send');
-    });
-
-    describe('when the error reason is status 401', function() {
-      it('invokes the "authorizationFailed" action', function() {
-        this.route._actions.error.apply(this.route, [{ status: 401 }]);
-
-        expect(this.route.send).to.have.been.calledWith('authorizationFailed');
-      });
-
-      it('returns true', function() {
-        var returnValue = this.route._actions.error.apply(this.route, [{ status: 401 }]);
-
-        expect(returnValue).to.be.true;
-      });
-    });
-
-    describe('when the error reason is not status 401', function() {
-      it('does not invoke the "authorizationFailed" action', function() {
-        this.route._actions.error.apply(this.route, [{ status: 500 }]);
-
-        expect(this.route.send).to.not.have.been.called;
-      });
-
-      it('returns true', function() {
-        var returnValue = this.route._actions.error.apply(this.route, [{ status: 500 }]);
-
-        expect(returnValue).to.be.true;
-      });
     });
   });
 });

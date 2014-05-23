@@ -33,12 +33,35 @@ import { Configuration } from './../core';
   invalidation fails. These actions provide a good starting point for adding
   custom behavior to these events.
 
+  _When this mixin is used and the application's ApplicationRoute defines the
+  `acticate` method, that method has to call `_super`._
+
   @class ApplicationRouteMixin
   @namespace $mainModule
   @extends Ember.Mixin
   @static
 */
 var ApplicationRouteMixin = Ember.Mixin.create({
+  /**
+    @method activate
+    @private
+  */
+  activate: function() {
+    var _this = this;
+    Ember.A([
+      'sessionAuthenticationSucceeded',
+      'sessionAuthenticationFailed',
+      'sessionInvalidationSucceeded',
+      'sessionInvalidationFailed',
+      'authorizationFailed'
+    ]).forEach(function(event) {
+      _this.get('session').on(event, function(error) {
+        Array.prototype.unshift.call(arguments, event);
+        _this.send.apply(_this, arguments);
+      });
+    });
+  },
+
   actions: {
     /**
       This action triggers transition to the `authenticationRoute` specified in
@@ -160,17 +183,6 @@ var ApplicationRouteMixin = Ember.Mixin.create({
     */
     authorizationFailed: function() {
       this.get(Configuration.sessionPropertyName).invalidate();
-    },
-
-    /**
-      @method actions.error
-      @private
-    */
-    error: function(reason) {
-      if (reason.status === 401) {
-        this.send('authorizationFailed');
-      }
-      return true;
     }
   }
 });

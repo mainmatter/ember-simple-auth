@@ -56,6 +56,15 @@ function extractActions(items) {
   }));
 }
 
+function extractEvents(items) {
+  return items.filter(function(item) {
+    return item.itemtype === 'event'
+  }).map(function(event) {
+    event.signature = event.name
+    return event;
+  });
+}
+
 function extractProperties(items) {
   return processFunctions(items.filter(function(item) {
     return item.itemtype === 'property';
@@ -110,6 +119,7 @@ module.exports = function() {
     klass.properties = cleanClassItems(extractProperties(klassItems), module.name);
     klass.methods    = cleanClassItems(extractMethods(klassItems), module.name);
     klass.actions    = cleanClassItems(extractActions(klassItems), module.name);
+    klass.events     = cleanClassItems(extractEvents(klassItems), module.name);
     klass.uses       = (klass.uses || []).map(function(name) {
       return cleanElementName(name, module.name);
     });
