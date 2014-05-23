@@ -39,6 +39,10 @@ import { Configuration } from './../core';
   @static
 */
 var ApplicationRouteMixin = Ember.Mixin.create({
+  /**
+    @method activate
+    @private
+  */
   activate: function() {
     var _this = this;
     Ember.A([
