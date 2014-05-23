@@ -92,7 +92,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.4.0"><span class="label label-primary">0.4.0</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.5.0"><span class="label label-primary">0.5.0</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -113,8 +113,8 @@
               <p>Authenticator that conforms to OAuth 2
 (<a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>), specifically the <em>&quot;Resource
 Owner Password Credentials Grant Type&quot;</em>.</p>
-<p>This authenticator supports refreshing the access token automatically and
-will trigger the <code>&#39;updated&#39;</code> event each time the token was refreshed.</p>
+<p>This authenticator supports access token refresh (see
+<a href="http://tools.ietf.org/html/rfc6749#section-6">RFC 6740, section 6</a>).</p>
 <p><em>The factory for this authenticator is registered as
 <code>&#39;ember-simple-auth-authenticator:oauth2-password-grant&#39;</code> in Ember&#39;s
 container.</em></p>
@@ -125,7 +125,7 @@ container.</em></p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L21"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L29"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title property">serverTokenEndpoint <span class="type">String</span></h3>
@@ -144,7 +144,7 @@ from.</p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Authenticators-OAuth2-refreshAccessTokens" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L31"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L39"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title property">refreshAccessTokens <span class="type">Boolean</span></h3>
@@ -167,7 +167,7 @@ from.</p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Authenticators-OAuth2-restore" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L46"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L54"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -210,7 +210,7 @@ refreshing is not disabled (see
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Authenticators-OAuth2-authenticate" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L83"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L91"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -258,7 +258,7 @@ token refreshing is not disabled (see
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Authenticators-OAuth2-invalidate" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L120"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L128"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -286,7 +286,7 @@ promise.</p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Authenticators-OAuth2-makeRequest" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L133"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L141"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -326,6 +326,36 @@ point to e.g. add <em>&quot;Client Credentials&quot;</em> (see
 
                 
               
+              
+              
+                <h3 class="section">Events</h3>
+                
+                  <div class="panel panel-default">
+  <a id="Ember-SimpleAuth-Authenticators-OAuth2-updated" class="symbol-anchor"></a>
+  <div class="panel-heading">
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/ember-simple-auth-oauth2/authenticators/oauth2.js#L21"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <h3 class="panel-title method">
+      updated
+    </h3>
+  </div>
+  <div class="panel-body">
+    <p>Triggered when the authenticator refreshes the access token (see
+<a href="http://tools.ietf.org/html/rfc6749#section-6">RFC 6740, section 6</a>).</p>
+
+    
+      <h4 class="subsection">Parameters</h4>
+      <dl class="params">
+        
+          <dt>data <span class="type">Object</span></dt>
+          <dd><p>The updated session data</p>
+</dd>
+        
+      </dl>
+    
+  </div>
+</div>
+
+                
               
             </div>
             <div class="col-md-3 overview">
@@ -377,6 +407,17 @@ point to e.g. add <em>&quot;Client Credentials&quot;</em> (see
 
 
               
+
+              
+  <h4>Events</h4>
+  <ul class="list-unstyled">
+    
+      <li>
+        <a href="#Ember-SimpleAuth-Authenticators-OAuth2-updated">updated</a>
+      </li>
+    
+  </ul>
+
 
             </div>
           </div>
@@ -442,6 +483,7 @@ session as a bearer token in the <code>Authorization</code> header:</p>
                 
               
               
+              
             </div>
             <div class="col-md-3 overview">
               
@@ -465,6 +507,8 @@ session as a bearer token in the <code>Authorization</code> header:</p>
     
   </ul>
 
+
+              
 
               
 

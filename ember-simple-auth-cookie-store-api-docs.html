@@ -88,7 +88,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.4.0"><span class="label label-primary">0.4.0</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.5.0"><span class="label label-primary">0.5.0</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -113,8 +113,6 @@ there are no events that notify of changes in cookies. The recommended
 alternative is <code>Ember.SimpleAuth.Stores.LocalStorage</code> that also persistently
 stores data but instead of cookies relies on the <code>localStorage</code> API and does
 not need to poll for external changes.</p>
-<p>This store will trigger the <code>&#39;updated&#39;</code> event when any of its cookies is
-changed from another tab or window.</p>
 <p><em>The factory for this store is registered as
 <code>&#39;ember-simple-auth-session-store:cookie&#39;</code> in Ember&#39;s container.</em></p>
 
@@ -124,7 +122,7 @@ changed from another tab or window.</p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Stores-Cookie-cookieNamePrefix" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L25"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title property">cookieNamePrefix <span class="type">String</span></h3>
@@ -148,7 +146,7 @@ from other cookies.</p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Stores-Cookie-persist" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L55"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L52"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -178,7 +176,7 @@ from other cookies.</p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Stores-Cookie-restore" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L68"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L65"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -208,7 +206,7 @@ as a plain object.</p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Stores-Cookie-clear" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L86"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L83"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -227,6 +225,7 @@ as a plain object.</p>
 </div>
 
                 
+              
               
               
             </div>
@@ -269,6 +268,8 @@ as a plain object.</p>
     
   </ul>
 
+
+              
 
               
 
