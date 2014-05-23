@@ -1,6 +1,6 @@
 {
   "name": "ember-simple-auth",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "A lightweight library for implementing authentication/authorization with Ember.js applications.",
   "author": "Marco Otte-Witte",
   "license": "MIT"
