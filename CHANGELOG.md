@@ -1,12 +1,12 @@
 # 0.5.0
 
-* Using any of the mixins is now completely optional; Ember.SimpleAuth will
+* __Using any of the mixins is now completely optional__; Ember.SimpleAuth will
   work without the mixins as well (see example 9).
-* The session's `authorizationFailed` event will now be triggered for any
-  failed XHRs and not only for those made in routes' `model` hooks.
+* __The session's `authorizationFailed` event will now be triggered for any
+  failed XHRs__ and not only for those made in routes' `model` hooks.
+* Fixed the Devise authenticator's `restore` method, see #171
 * The `AuthenticationControllerMixin`'s `authenticate` action now returns the
   promise that's returned from the session's `authenticate` action.
-* Fixed the Devise authenticator's `restore` method, see #171
 * The authenticator's `'updated'` event was renamed to `'sessionDataUpdated'`.
 * The store's `'updated'` event was renamed to `'sessionDataUpdated'`.
 * The API docs now include the events an object might trigger.
