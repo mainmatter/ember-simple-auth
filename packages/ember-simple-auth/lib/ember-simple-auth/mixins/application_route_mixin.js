@@ -33,8 +33,8 @@ import { Configuration } from './../core';
   invalidation fails. These actions provide a good starting point for adding
   custom behavior to these events.
 
-  _When this mixin is used and the application's ApplicationRoute defines the
-  `acticate` method, that method has to call `_super`._
+  __When this mixin is used and the application's ApplicationRoute defines the
+  `acticate` method, that method has to call `_super`.__
 
   @class ApplicationRouteMixin
   @namespace $mainModule
