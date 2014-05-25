@@ -34,7 +34,7 @@ import { Configuration } from './../core';
   custom behavior to these events.
 
   __When this mixin is used and the application's `ApplicationRoute` defines
-  the `acticate` method, that method has to call `_super`.__
+  the `activate` method, that method has to call `_super`.__
 
   @class ApplicationRouteMixin
   @namespace $mainModule
