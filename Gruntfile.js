@@ -189,7 +189,7 @@ module.exports = function(grunt) {
       amd: {
         files: packages.map(function(pkg) {
           return {
-            src: ['tmp/' + pkg.name + '.amd.min.js'],
+            src: ['tmp/' + pkg.name + '.amd.js'],
             dest: 'dist/' + pkg.name + '-' + pkg.version + '.amd.js'
           };
         })
