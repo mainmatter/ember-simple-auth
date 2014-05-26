@@ -331,6 +331,14 @@ application you have several options:
 gem 'ember_simple_auth-rails'
 ```
 
+* When using [ember-cli](https://github.com/stefanpenner/ember-cli), add
+  Ember.SimpleAuth to the `bower.json` file as described above and add the
+  following line to the `Brocfile.js`:
+
+  ```js
+  app.import('vendor/ember-simple-auth/ember-simple-auth.js');
+  ```
+
 ## Building
 
 To build Ember.SimpleAuth yourself you need to have [node.js](http://nodejs.org)
