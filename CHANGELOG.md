@@ -1,3 +1,8 @@
+# 0.5.1
+
+* The OAuth 2.0 authenticator does not schedule automatic token refreshs in the
+  test environment anymore, see #181.
+
 # 0.5.0
 
 * __Using any of the mixins is now completely optional__; Ember.SimpleAuth will
