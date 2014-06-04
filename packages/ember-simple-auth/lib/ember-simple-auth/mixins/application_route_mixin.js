@@ -182,7 +182,9 @@ var ApplicationRouteMixin = Ember.Mixin.create({
       @method actions.authorizationFailed
     */
     authorizationFailed: function() {
-      this.get(Configuration.sessionPropertyName).invalidate();
+      if (this.get(Configuration.sessionPropertyName).get('isAuthenticated')) {
+        this.get(Configuration.sessionPropertyName).invalidate();
+      }
     }
   }
 });
