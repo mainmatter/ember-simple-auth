@@ -124,11 +124,26 @@ describe('ApplicationRouteMixin', function() {
   });
 
   describe('the "authorizationFailed" action', function() {
-    it('invalidates the session', function() {
-      sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
-      this.route._actions.authorizationFailed.apply(this.route);
+    describe('when the session is authenticated', function() {
+      beforeEach(function() {
+        this.session.set('isAuthenticated', true);
+      });
 
-      expect(this.session.invalidate).to.have.been.calledOnce;
+      it('invalidates the session', function() {
+        sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
+        this.route._actions.authorizationFailed.apply(this.route);
+
+        expect(this.session.invalidate).to.have.been.calledOnce;
+      });
+    });
+
+    describe('when the session is not authenticated', function() {
+      it('does not try to invalidate the session', function() {
+        sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
+        this.route._actions.authorizationFailed.apply(this.route);
+
+        expect(this.session.invalidate).to.not.have.been.calledOnce;
+      });
     });
   });
 });
