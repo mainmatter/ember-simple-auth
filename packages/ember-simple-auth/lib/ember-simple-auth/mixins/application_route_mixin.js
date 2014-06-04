@@ -55,7 +55,7 @@ var ApplicationRouteMixin = Ember.Mixin.create({
       'sessionInvalidationFailed',
       'authorizationFailed'
     ]).forEach(function(event) {
-      _this.get('session').on(event, function(error) {
+      _this.get(Configuration.sessionPropertyName).on(event, function(error) {
         Array.prototype.unshift.call(arguments, event);
         _this.send.apply(_this, arguments);
       });
