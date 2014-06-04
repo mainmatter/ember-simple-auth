@@ -1,3 +1,10 @@
+# 0.5.2
+
+* The `ApplicationRouteMixin` now uses the configured session property name,
+  see #184.
+* The `ApplicationRouteMixin` will not try to invalidate a session that is not
+  authenticated and thus cannot be invalidated, see #185.
+
 # 0.5.1
 
 * The OAuth 2.0 authenticator does not schedule automatic token refreshs in the
