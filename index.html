@@ -36,6 +36,11 @@
         border-radius: 3px;
         margin: 1em 0;
       }
+      div.code pre {
+        margin: 0;
+        border: none;
+        background-color: transparent;
+      }
     </style>
   </head>
 	<body>
@@ -52,11 +57,7 @@
           </p>
           <h2>What does it do?</h2>
           <ul>
-            it manages authentication state, synchronizes it across tabs/windows
-            it authenticates users against the application's own server, external providers like Facebook etc.
-            it authorizes requests to the backend server
-            it has a simple customization API
-            <li>it <strong>manages session state</strong>, synchronizes it across tabs/windows</li>
+            <li>it <strong>manages authentication state</strong>, synchronizes it across tabs/windows</li>
             <li>it <strong>authenticates users</strong> against the application's own server, external providers like Facebook etc.</li>
             <li>it <strong>authorizes requests</strong> to the backend server</li>
             <li>it has a simple customization API</li>
