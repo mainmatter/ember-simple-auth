@@ -1,3 +1,6 @@
+import { Base } from 'ember-simple-auth/stores/base';
+import { flatObjectsAreEqual } from 'ember-simple-auth/utils/flat_objects_are_equal';
+
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
@@ -18,7 +21,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   @namespace Stores
   @extends Stores.Base
 */
-var Cookie = Ember.SimpleAuth.Stores.Base.extend({
+var Cookie = Base.extend({
   /**
     The prefix to use for the store's cookie names so they can be distinguished
     from other cookies.
@@ -133,7 +136,7 @@ var Cookie = Ember.SimpleAuth.Stores.Base.extend({
   */
   syncData: function() {
     var data = this.restore();
-    if (!Ember.SimpleAuth.Utils.flatObjectsAreEqual(data, this._lastData)) {
+    if (!flatObjectsAreEqual(data, this._lastData)) {
       this._lastData = data;
       this.trigger('sessionDataUpdated', data);
     }

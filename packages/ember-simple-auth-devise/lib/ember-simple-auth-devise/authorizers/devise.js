@@ -1,3 +1,6 @@
+import { Base } from 'ember-simple-auth/authorizers/base';
+import { isSecureUrl } from 'ember-simple-auth/utils/is_secure_url';
+
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
@@ -17,7 +20,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   @namespace Authorizers
   @extends Base
 */
-var Devise = Ember.SimpleAuth.Authorizers.Base.extend({
+var Devise = Base.extend({
   /**
     Authorizes an XHR request by sending the `user_token` and `user_email`
     properties from the session in the `Authorization` header:
@@ -35,7 +38,7 @@ var Devise = Ember.SimpleAuth.Authorizers.Base.extend({
     var userToken = this.get('session.user_token');
     var userEmail = this.get('session.user_email');
     if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userEmail)) {
-      if (!Ember.SimpleAuth.Utils.isSecureUrl(requestOptions.url)) {
+      if (!isSecureUrl(requestOptions.url)) {
         Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
       }
       var authData = 'token="' + userToken + '", user_email="' + userEmail + '"';
