@@ -245,9 +245,7 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     var data = Ember.$.extend({ authenticatorFactory: authenticatorFactory }, this.content);
     this.store.replace(data);
     this.endPropertyChanges();
-    if (trigger) {
-      this.trigger('sessionAuthenticationSucceeded');
-    }
+    this.trigger('sessionAuthenticationSucceeded');
   },
 
   /**
