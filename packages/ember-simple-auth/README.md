@@ -321,6 +321,8 @@ application you have several options:
 }
 ```
 
+  The bower distribution contains browserified as well as AMD versions of the
+  library.
 * Download a prebuilt version from
   [the releases page](https://github.com/simplabs/ember-simple-auth/releases)
 * [Build it yourself](#building)
@@ -337,6 +339,17 @@ gem 'ember_simple_auth-rails'
 
   ```js
   app.import('vendor/ember-simple-auth/ember-simple-auth.js');
+  ```
+
+  You can also use the AMD version in which case you have to list all the
+  modules and exports you want to use:
+
+  ```js
+  app.import('vendor/ember-simple-auth/amd/ember-simple-auth.js', {
+    'ember-simple-auth/session': ['default'],
+    'ember-simple-auth/setup': ['default'],
+    ...
+  });
   ```
 
 ## Building
