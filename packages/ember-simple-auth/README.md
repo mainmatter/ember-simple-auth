@@ -313,13 +313,13 @@ application you have several options:
 * If you're using [Bower](http://bower.io), just add it to your
   `bower.json` file:
 
-```js
-{
-  "dependencies": {
-    "ember-simple-auth": "https://github.com/simplabs/ember-simple-auth-component.git"
+  ```js
+  {
+    "dependencies": {
+      "ember-simple-auth": "https://github.com/simplabs/ember-simple-auth-component.git"
+    }
   }
-}
-```
+  ```
 
   The bower distribution contains browserified as well as AMD versions of the
   library.
@@ -329,9 +329,9 @@ application you have several options:
 * If you're using Ruby on Rails, you can add the (unofficial) source gem that
   supports the Ruby on Rails asset pipeline by adding it to your `Gemfile`:
 
-```ruby
-gem 'ember_simple_auth-rails'
-```
+  ```ruby
+  gem 'ember_simple_auth-rails'
+  ```
 
 * When using [ember-cli](https://github.com/stefanpenner/ember-cli), add
   Ember.SimpleAuth to the `bower.json` file as described above and add the
