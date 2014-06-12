@@ -5,7 +5,8 @@ define('ember-simple-auth/utils/flat_objects_are_equal',  ['exports'], function(
   __exports__['default'] = global.Ember.SimpleAuth.Utils.flatObjectsAreEqual;
 });
 
-global.Ember.SimpleAuth.Stores.Cookie = requireModule('ember-simple-auth-cookie-store').default;
+var Cookie = requireModule('ember-simple-auth-cookie-store/stores/cookie').default;
+global.Ember.SimpleAuth.Stores.Cookie = Cookie;
 
 global.Ember.SimpleAuth.initializeExtension(function(container, application, options) {
   container.register('ember-simple-auth-session-store:cookie', global.Ember.SimpleAuth.Stores.Cookie);
