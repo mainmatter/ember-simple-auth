@@ -1,6 +1,9 @@
-import { setup, initializeExtension, Configuration } from 'ember-simple-auth/core';
-import { Stores } from 'ember-simple-auth/stores';
-import { Session } from 'ember-simple-auth/session';
+import setup from 'ember-simple-auth/setup';
+import initializeExtension from 'ember-simple-auth/initialize_extension';
+import Configuration from 'ember-simple-auth/configuration';
+import Session from 'ember-simple-auth/session';
+import LocalStorageStore from 'ember-simple-auth/stores/local_storage';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('Configuration', function() {
   describe('authenticationRoute', function() {
@@ -30,7 +33,7 @@ describe('setup', function() {
     this.container     = { register: function() {}, injection: function() {}, lookup: function() {} };
     this.application   = { deferReadiness: function() {}, advanceReadiness: function() {} };
     this.router        = { get: function() { return 'rootURL'; }, send: function() {} };
-    this.store         = Stores.LocalStorage.create();
+    this.store         = LocalStorageStore.create();
     this.containerStub = sinon.stub(this.container, 'lookup');
     this.containerStub.withArgs('router:main').returns(this.router);
     this.containerStub.withArgs('ember-simple-auth-session-store:local-storage').returns(this.store);
@@ -91,7 +94,7 @@ describe('setup', function() {
     });
 
     it('uses a custom store if specified', function() {
-      var store = Stores.Ephemeral.create();
+      var store = EphemeralStore.create();
       this.containerStub.withArgs('ember-simple-auth-session-store:ephemeral').returns(store);
       setup(this.container, this.application, { storeFactory: 'ember-simple-auth-session-store:ephemeral' });
       var spyCall = this.container.register.getCall(2);

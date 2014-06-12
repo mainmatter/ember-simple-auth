@@ -1,5 +1,5 @@
-import { Base } from 'ember-simple-auth/authorizers/base';
-import { isSecureUrl } from 'ember-simple-auth/utils/is_secure_url';
+import Base from 'ember-simple-auth/authorizers/base';
+import isSecureUrl from 'ember-simple-auth/utils/is_secure_url';
 
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
@@ -20,7 +20,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   @namespace Authorizers
   @extends Base
 */
-var Devise = Base.extend({
+export default Base.extend({
   /**
     Authorizes an XHR request by sending the `user_token` and `user_email`
     properties from the session in the `Authorization` header:
@@ -46,5 +46,3 @@ var Devise = Base.extend({
     }
   }
 });
-
-export { Devise };

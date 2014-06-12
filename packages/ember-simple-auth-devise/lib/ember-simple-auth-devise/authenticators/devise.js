@@ -1,5 +1,5 @@
-import { Base } from 'ember-simple-auth/authenticators/base';
-import { isSecureUrl } from 'ember-simple-auth/utils/is_secure_url';
+import Base from 'ember-simple-auth/authenticators/base';
+import isSecureUrl from 'ember-simple-auth/utils/is_secure_url';
 
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
@@ -20,7 +20,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   @namespace Authenticators
   @extends Base
 */
-var Devise = Base.extend({
+export default Base.extend({
   /**
     The endpoint on the server the authenticator acquires the auth token
     and email from.
@@ -120,5 +120,3 @@ var Devise = Base.extend({
     });
   }
 });
-
-export { Devise };

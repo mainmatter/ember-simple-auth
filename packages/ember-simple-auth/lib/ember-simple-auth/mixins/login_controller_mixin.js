@@ -1,8 +1,8 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { Configuration } from './../core';
-import { AuthenticationControllerMixin } from './authentication_controller_mixin';
+import Configuration from './../configuration';
+import AuthenticationControllerMixin from './authentication_controller_mixin';
 
 /**
   The mixin to use with the controller that handles the `authenticationRoute`
@@ -31,7 +31,7 @@ import { AuthenticationControllerMixin } from './authentication_controller_mixin
   @class LoginControllerMixin
   @extends Ember.SimpleAuth.AuthenticationControllerMixin
 */
-var LoginControllerMixin = Ember.Mixin.create(AuthenticationControllerMixin, {
+export default Ember.Mixin.create(AuthenticationControllerMixin, {
   actions: {
     /**
       This action will authenticate the session with the configured
@@ -52,5 +52,3 @@ var LoginControllerMixin = Ember.Mixin.create(AuthenticationControllerMixin, {
     }
   }
 });
-
-export { LoginControllerMixin };

@@ -1,4 +1,4 @@
-import { isSecureUrl } from 'ember-simple-auth/utils/is_secure_url';
+import isSecureUrl from 'ember-simple-auth/utils/is_secure_url';
 
 describe('Utils.isSecureUrl', function() {
   it('is true for "https://example.com"', function() {

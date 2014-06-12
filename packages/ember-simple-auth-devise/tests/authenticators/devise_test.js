@@ -1,4 +1,4 @@
-import { Devise } from 'ember-simple-auth-devise/authenticators/devise';
+import Devise from 'ember-simple-auth-devise/authenticators/devise';
 
 describe('Devise', function() {
   beforeEach(function() {

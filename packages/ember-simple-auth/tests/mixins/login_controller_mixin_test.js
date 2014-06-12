@@ -1,6 +1,6 @@
-import { LoginControllerMixin } from 'ember-simple-auth/mixins/login_controller_mixin';
-import { Session } from 'ember-simple-auth/session';
-import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
+import LoginControllerMixin from 'ember-simple-auth/mixins/login_controller_mixin';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('LoginControllerMixin', function() {
   beforeEach(function() {

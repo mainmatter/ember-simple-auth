@@ -44,7 +44,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   @extends Ember.Object
   @uses Ember.Evented
 */
-var Base = Ember.Object.extend(Ember.Evented, {
+export default Ember.Object.extend(Ember.Evented, {
   /**
     __Triggered when the data that constitutes the session is updated by the
     authenticator__. This might happen e.g. because the authenticator refreshes
@@ -137,5 +137,3 @@ var Base = Ember.Object.extend(Ember.Evented, {
     return new Ember.RSVP.resolve();
   }
 });
-
-export { Base };

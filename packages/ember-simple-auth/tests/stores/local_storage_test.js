@@ -1,5 +1,5 @@
-import { LocalStorage } from 'ember-simple-auth/stores/local_storage';
-import { itBehavesLikeAStore } from './shared/store_behavior';
+import LocalStorage from 'ember-simple-auth/stores/local_storage';
+import itBehavesLikeAStore from './shared/store_behavior';
 
 describe('Stores.LocalStorage', function() {
   beforeEach(function() {

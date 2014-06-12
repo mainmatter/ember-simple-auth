@@ -1,6 +1,6 @@
-import { AuthenticatedRouteMixin } from 'ember-simple-auth/mixins/authenticated_route_mixin';
-import { Session } from 'ember-simple-auth/session';
-import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated_route_mixin';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('AuthenticatedRouteMixin', function() {
   describe('#beforeModel', function() {

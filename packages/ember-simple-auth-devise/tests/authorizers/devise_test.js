@@ -1,6 +1,6 @@
-import { Devise } from 'ember-simple-auth-devise/authorizers/devise';
-import { Session } from 'ember-simple-auth/session';
-import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
+import Devise from 'ember-simple-auth-devise/authorizers/devise';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('Devise', function() {
   beforeEach(function() {

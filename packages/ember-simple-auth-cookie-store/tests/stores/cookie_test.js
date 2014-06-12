@@ -1,5 +1,5 @@
-import { Cookie } from 'ember-simple-auth-cookie-store/stores/cookie';
-import { itBehavesLikeAStore } from '/tests/stores/shared/store_behavior';
+import Cookie from 'ember-simple-auth-cookie-store/stores/cookie';
+import itBehavesLikeAStore from '/tests/stores/shared/store_behavior';
 
 describe('Stores.Cookie', function() {
   beforeEach(function() {

@@ -1,2 +1,2 @@
-global.Ember.SimpleAuth = requireModule('ember-simple-auth');
+global.Ember.SimpleAuth = requireModule('ember-simple-auth').default;
 })((typeof global !== 'undefined') ? global : window);

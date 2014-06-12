@@ -1,7 +1,7 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { Configuration } from './../core';
+import Configuration from './../configuration';
 
 /**
   The mixin for routes that require the session to be authenticated in order to
@@ -24,7 +24,7 @@ import { Configuration } from './../core';
   @extends Ember.Mixin
   @static
 */
-var AuthenticatedRouteMixin = Ember.Mixin.create({
+export default Ember.Mixin.create({
   /**
     This method implements the enforcement of the session being authenticated.
     If the session is not authenticated, the current transition will be aborted
@@ -45,5 +45,3 @@ var AuthenticatedRouteMixin = Ember.Mixin.create({
     }
   }
 });
-
-export { AuthenticatedRouteMixin };

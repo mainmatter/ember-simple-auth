@@ -1,4 +1,4 @@
-import { flatObjectsAreEqual } from 'ember-simple-auth/utils/flat_objects_are_equal';
+import flatObjectsAreEqual from 'ember-simple-auth/utils/flat_objects_are_equal';
 
 describe('Utils.flatObjectsAreEqual', function() {
   it('is true for equal objects', function() {
