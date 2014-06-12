@@ -342,7 +342,7 @@ application you have several options:
   ```
 
   You can also use the AMD version in which case you have to list all the
-  modules and exports you want to use:
+  modules and exports (which are all `default`) you want to use:
 
   ```js
   app.import('vendor/ember-simple-auth/amd/ember-simple-auth.js', {
