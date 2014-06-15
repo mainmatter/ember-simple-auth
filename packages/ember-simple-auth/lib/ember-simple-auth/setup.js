@@ -93,6 +93,7 @@ export default function(container, application, options) {
     if (!!authorizer) {
       authorizer.set('session', session);
       Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+        if (authorizer.isDestroyed) { return; }
         if (shouldAuthorizeRequest(options.url, options)) {
           authorizer.authorize(jqXHR, options);
         }
