@@ -132,7 +132,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.5.2"><span class="label label-primary">0.5.2</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.5.3"><span class="label label-primary">0.5.3</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -156,9 +156,44 @@
                 <h3 class="section">Functions</h3>
                 
                   <div class="panel panel-default">
+  <a id="Ember-SimpleAuth-initializeExtension" class="symbol-anchor"></a>
+  <div class="panel-heading">
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/ember-simple-auth/initialize_extension.js#L3"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    
+      <span class="label label-info pull-right">static</span>
+    
+    
+    <h3 class="panel-title method">
+      initializeExtension(initializer)
+      
+    </h3>
+  </div>
+  <div class="panel-body">
+    <p>Registers an extension initializer to be invoked when
+<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a> is invoked. <strong>This is used
+by extensions</strong> to the base Ember.SimpleAuth library that can e.g. register
+factories with the Ember.js dependency injection container here etc.</p>
+
+    
+      <h4 class="subsection">Arguments</h4>
+      <dl class="params">
+        
+          <dt>initializer <span class="type">Function</span></dt>
+          <dd><p>The initializer to be invoked when <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a> is invoked; this will receive the same arguments as <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
+</dd>
+          
+        
+      </dl>
+    
+    
+  </div>
+</div>
+
+                
+                  <div class="panel panel-default">
   <a id="Ember-SimpleAuth-setup" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/ember-simple-auth/core.js#L85"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/ember-simple-auth/setup.js#L38"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
       <span class="label label-info pull-right">static</span>
     
@@ -232,41 +267,6 @@ in a custom initializer</strong> like this:</p>
 </div>
 
                 
-                  <div class="panel panel-default">
-  <a id="Ember-SimpleAuth-initializeExtension" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/ember-simple-auth/core.js#L161"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-      <span class="label label-info pull-right">static</span>
-    
-    
-    <h3 class="panel-title method">
-      initializeExtension(initializer)
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    <p>Registers an extension initializer to be invoked when
-<a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a> is invoked. <strong>This is used
-by extensions</strong> to the base Ember.SimpleAuth library that can e.g. register
-factories with the Ember.js dependency injection container here etc.</p>
-
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>initializer <span class="type">Function</span></dt>
-          <dd><p>The initializer to be invoked when <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a> is invoked; this will receive the same arguments as <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
-</dd>
-          
-        
-      </dl>
-    
-    
-  </div>
-</div>
-
-                
               
             </div>
             <div class="col-md-3 overview">
@@ -277,11 +277,11 @@ factories with the Ember.js dependency injection container here etc.</p>
   <ul class="list-unstyled">
     
       <li>
-        <a href="#Ember-SimpleAuth-setup">setup</a>
+        <a href="#Ember-SimpleAuth-initializeExtension">initializeExtension</a>
       </li>
     
       <li>
-        <a href="#Ember-SimpleAuth-initializeExtension">initializeExtension</a>
+        <a href="#Ember-SimpleAuth-setup">setup</a>
       </li>
     
   </ul>
@@ -798,7 +798,7 @@ authenticator (see
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Configuration-authenticationRoute" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/ember-simple-auth/core.js#L39"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/ember-simple-auth/configuration.js#L8"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -819,7 +819,7 @@ authenticator (see
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Configuration-routeAfterAuthentication" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/ember-simple-auth/core.js#L51"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/ember-simple-auth/configuration.js#L20"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -840,7 +840,7 @@ through <a href="#Ember-SimpleAuth-setup">Ember.SimpleAuth.setup</a>.</p>
                   <div class="panel panel-default">
   <a id="Ember-SimpleAuth-Configuration-sessionPropertyName" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/ember-simple-auth/core.js#L63"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/ember-simple-auth/configuration.js#L32"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
