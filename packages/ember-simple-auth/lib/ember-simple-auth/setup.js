@@ -1,5 +1,8 @@
-import { Session } from './session';
-import { registerStores } from './stores';
+import Configuration from './configuration';
+import Session from './session';
+import LocalStorage from './stores/local_storage';
+import Ephemeral from './stores/ephemeral';
+import initializeExtension from './initialize_extension';
 
 function extractLocationOrigin(location) {
   if (Ember.typeOf(location) === 'string') {
@@ -27,60 +30,10 @@ function shouldAuthorizeRequest(url) {
   return crossOriginWhitelist.indexOf(urlOrigin) > -1 || urlOrigin === documentOrigin;
 }
 
-var extensionInitializers = [];
-
-/**
-  Ember.SimpleAuth's configuration object.
-
-  @class Configuration
-  @namespace $mainModule
-*/
-var Configuration = {
-  /**
-    The route to transition to for authentication; should be set through
-    [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
-
-    @property authenticationRoute
-    @readOnly
-    @static
-    @type String
-    @default 'login'
-  */
-  authenticationRoute: 'login',
-
-  /**
-    The route to transition to after successful authentication; should be set
-    through [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
-
-    @property routeAfterAuthentication
-    @readOnly
-    @static
-    @type String
-    @default 'index'
-  */
-  routeAfterAuthentication: 'index',
-
-  /**
-    The name of the property that the session is injected with into routes and
-    controllers; should be set through
-    [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
-
-    @property sessionPropertyName
-    @readOnly
-    @static
-    @type String
-    @default 'session'
-  */
-  sessionPropertyName: 'session',
-
-  /**
-    @property applicationRootUrl
-    @static
-    @private
-    @type String
-  */
-  applicationRootUrl: null
-};
+function registerStores(container) {
+  container.register('ember-simple-auth-session-store:local-storage', LocalStorage);
+  container.register('ember-simple-auth-session-store:ephemeral', Ephemeral);
+}
 
 /**
   Sets up Ember.SimpleAuth for the application; this method __should be invoked
@@ -108,10 +61,10 @@ var Configuration = {
     @param {String} [options.routeAfterAuthentication] route to transition to after successful authentication - defaults to `'index'`
     @param {Array[String]} [options.crossOriginWhitelist] Ember.SimpleAuth will never authorize requests going to a different origin than the one the Ember.js application was loaded from; to explicitely enable authorization for additional origins, whitelist those origins - defaults to `[]` _(beware that origins consist of protocol, host and port (port can be left out when it is 80 for HTTP or 443 for HTTPS))_
 **/
-var setup = function(container, application, options) {
+export default function(container, application, options) {
   application.deferReadiness();
   registerStores(container);
-  extensionInitializers.forEach(function(initializer) {
+  Configuration.extensionInitializers.forEach(function(initializer) {
     initializer(container, application, options);
   });
 
@@ -156,21 +109,4 @@ var setup = function(container, application, options) {
     application.advanceReadiness();
   };
   session.restore().then(advanceReadiness, advanceReadiness);
-};
-
-/**
-  Registers an extension initializer to be invoked when
-  [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup) is invoked. __This is used
-  by extensions__ to the base Ember.SimpleAuth library that can e.g. register
-  factories with the Ember.js dependency injection container here etc.
-
-  @method initializeExtension
-  @namespace $mainModule
-  @static
-  @param {Function} initializer The initializer to be invoked when [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup) is invoked; this will receive the same arguments as [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup).
-*/
-var initializeExtension = function(initializer) {
-  extensionInitializers.push(initializer);
-};
-
-export { setup, initializeExtension, Configuration };
+}

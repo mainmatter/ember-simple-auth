@@ -1,7 +1,7 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
+import flatObjectsAreEqual from '../utils/flat_objects_are_equal';
 
 /**
   The base for all store types. __This serves as a starting point for
@@ -18,7 +18,7 @@ import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
   @extends Ember.Object
   @uses Ember.Evented
 */
-var Base = Ember.Object.extend(Ember.Evented, {
+export default Ember.Object.extend(Ember.Evented, {
   /**
     __Triggered when the data that constitutes the session changes in the
     store. This usually happens because the session is authenticated or
@@ -82,5 +82,3 @@ var Base = Ember.Object.extend(Ember.Evented, {
   clear: function() {
   }
 });
-
-export { Base };

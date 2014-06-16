@@ -1,4 +1,4 @@
-var itBehavesLikeAStore = function(options) {
+export default function(options) {
   var syncExternalChanges = (options || {}).syncExternalChanges || Ember.K;
 
   describe('#persist', function() {
@@ -88,6 +88,4 @@ var itBehavesLikeAStore = function(options) {
       expect(this.store.restore()).to.eql({});
     });
   });
-};
-
-export { itBehavesLikeAStore };
+}

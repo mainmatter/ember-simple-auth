@@ -1,7 +1,18 @@
-var oauth2 = requireModule('ember-simple-auth-oauth2');
+define('ember-simple-auth/authenticators/base',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.Ember.SimpleAuth.Authenticators.Base;
+});
+define('ember-simple-auth/authorizers/base',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.Ember.SimpleAuth.Authorizers.Base;
+});
+define('ember-simple-auth/utils/is_secure_url',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.Ember.SimpleAuth.Utils.isSecureUrl;
+});
 
-global.Ember.SimpleAuth.Authenticators.OAuth2 = oauth2.Authenticator;
-global.Ember.SimpleAuth.Authorizers.OAuth2    = oauth2.Authorizer;
+var Authenticator = requireModule('ember-simple-auth-oauth2/authenticators/oauth2').default;
+var Authorizer = requireModule('ember-simple-auth-oauth2/authorizers/oauth2').default;
+
+global.Ember.SimpleAuth.Authenticators.OAuth2 = Authenticator;
+global.Ember.SimpleAuth.Authorizers.OAuth2    = Authorizer;
 
 global.Ember.SimpleAuth.initializeExtension(function(container, application, options) {
   container.register('ember-simple-auth-authorizer:oauth2-bearer', global.Ember.SimpleAuth.Authorizers.OAuth2);

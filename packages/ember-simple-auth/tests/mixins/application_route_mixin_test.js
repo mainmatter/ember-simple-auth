@@ -1,7 +1,7 @@
-import { ApplicationRouteMixin } from 'ember-simple-auth/mixins/application_route_mixin';
-import { Session } from 'ember-simple-auth/session';
-import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
-import { Configuration } from 'ember-simple-auth/core';
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application_route_mixin';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
+import Configuration from 'ember-simple-auth/configuration';
 
 var TestRoute = Ember.Route.extend(ApplicationRouteMixin);
 

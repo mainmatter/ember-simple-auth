@@ -1,2 +1,48 @@
-global.Ember.SimpleAuth = requireModule('ember-simple-auth');
+var setup                         = requireModule('ember-simple-auth/setup').default;
+var initializeExtension           = requireModule('ember-simple-auth/initialize_extension').default;
+var Configuration                 = requireModule('ember-simple-auth/configuration').default;
+var Session                       = requireModule('ember-simple-auth/session').default;
+var BaseAuthenticator             = requireModule('ember-simple-auth/authenticators/base').default;
+var BaseAuthorizer                = requireModule('ember-simple-auth/authorizers/base').default;
+var BaseStore                     = requireModule('ember-simple-auth/stores/base').default;
+var LocalStorageStore             = requireModule('ember-simple-auth/stores/local_storage').default;
+var EphemeralStore                = requireModule('ember-simple-auth/stores/ephemeral').default;
+var flatObjectsAreEqual           = requireModule('ember-simple-auth/utils/flat_objects_are_equal').default;
+var isSecureUrl                   = requireModule('ember-simple-auth/utils/is_secure_url').default;
+var ApplicationRouteMixin         = requireModule('ember-simple-auth/mixins/application_route_mixin').default;
+var AuthenticatedRouteMixin       = requireModule('ember-simple-auth/mixins/authenticated_route_mixin').default;
+var AuthenticationControllerMixin = requireModule('ember-simple-auth/mixins/authentication_controller_mixin').default;
+var LoginControllerMixin          = requireModule('ember-simple-auth/mixins/login_controller_mixin').default;
+
+global.Ember.SimpleAuth = {
+  setup: setup,
+
+  initializeExtension: initializeExtension,
+
+  Session: Session,
+
+  Authenticators: {
+    Base: BaseAuthenticator
+  },
+
+  Authorizers: {
+    Base: BaseAuthorizer
+  },
+
+  Stores: {
+    Base: BaseStore,
+    LocalStorage: LocalStorageStore,
+    Ephemeral: EphemeralStore
+  },
+
+  Utils: {
+    flatObjectsAreEqual: flatObjectsAreEqual,
+    isSecureUrl: isSecureUrl
+  },
+
+  ApplicationRouteMixin:         ApplicationRouteMixin,
+  AuthenticatedRouteMixin:       AuthenticatedRouteMixin,
+  AuthenticationControllerMixin: AuthenticationControllerMixin,
+  LoginControllerMixin:          LoginControllerMixin
+};
 })((typeof global !== 'undefined') ? global : window);

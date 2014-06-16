@@ -2,7 +2,7 @@
   @method flatObjectsAreEqual
   @private
 */
-var flatObjectsAreEqual = function(a, b) {
+export default function(a, b) {
   function sortObject(object) {
     var array = [];
     for (var property in object) {
@@ -19,6 +19,4 @@ var flatObjectsAreEqual = function(a, b) {
     });
   }
   return JSON.stringify(sortObject(a)) === JSON.stringify(sortObject(b));
-};
-
-export { flatObjectsAreEqual };
+}

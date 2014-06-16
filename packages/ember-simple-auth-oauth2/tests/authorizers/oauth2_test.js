@@ -1,6 +1,6 @@
-import { OAuth2 } from 'ember-simple-auth-oauth2/authorizers/oauth2';
-import { Session } from 'ember-simple-auth/session';
-import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
+import OAuth2 from 'ember-simple-auth-oauth2/authorizers/oauth2';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('OAuth2', function() {
   beforeEach(function() {

@@ -1,6 +1,6 @@
-import { AuthenticationControllerMixin } from 'ember-simple-auth/mixins/authentication_controller_mixin';
-import { Session } from 'ember-simple-auth/session';
-import { Ephemeral as EphemeralStore } from 'ember-simple-auth/stores/ephemeral';
+import AuthenticationControllerMixin from 'ember-simple-auth/mixins/authentication_controller_mixin';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('AuthenticationControllerMixin', function() {
   describe('the "authenticate" action', function() {

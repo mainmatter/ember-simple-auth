@@ -19,7 +19,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   @namespace Authorizers
   @extends Ember.Object
 */
-var Base = Ember.Object.extend({
+export default Ember.Object.extend({
   /**
     The session the authorizer gets the data it needs to authorize requests
     from (see [Ember.SimpleAuth.Session](#Ember-SimpleAuth-Session)).
@@ -45,5 +45,3 @@ var Base = Ember.Object.extend({
   authorize: function(jqXHR, requestOptions) {
   }
 });
-
-export { Base };

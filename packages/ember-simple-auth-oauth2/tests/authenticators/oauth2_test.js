@@ -1,4 +1,4 @@
-import { OAuth2 } from 'ember-simple-auth-oauth2/authenticators/oauth2';
+import OAuth2 from 'ember-simple-auth-oauth2/authenticators/oauth2';
 
 describe('OAuth2', function() {
   beforeEach(function() {

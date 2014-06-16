@@ -1,7 +1,7 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { Base } from './base';
+import Base from './base';
 
 /**
   Store that saves its data in memory and thus __is not actually persistent__.
@@ -17,7 +17,7 @@ import { Base } from './base';
   @namespace Stores
   @extends Stores.Base
 */
-var Ephemeral = Base.extend({
+export default Base.extend({
   /**
     @method init
     @private
@@ -56,5 +56,3 @@ var Ephemeral = Base.extend({
     this._data = {};
   }
 });
-
-export { Ephemeral };

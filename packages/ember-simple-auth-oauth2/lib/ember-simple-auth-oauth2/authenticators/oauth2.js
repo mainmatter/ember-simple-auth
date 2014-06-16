@@ -1,3 +1,6 @@
+import Base from 'ember-simple-auth/authenticators/base';
+import isSecureUrl from 'ember-simple-auth/utils/is_secure_url';
+
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
@@ -17,7 +20,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   @namespace Authenticators
   @extends Base
 */
-var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
+export default Base.extend({
   /**
     Triggered when the authenticator refreshes the access token (see
     [RFC 6740, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
@@ -153,7 +156,7 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
     @protected
   */
   makeRequest: function(data) {
-    if (!Ember.SimpleAuth.Utils.isSecureUrl(this.serverTokenEndpoint)) {
+    if (!isSecureUrl(this.serverTokenEndpoint)) {
       Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
     }
     return Ember.$.ajax({
@@ -222,5 +225,3 @@ var OAuth2 = Ember.SimpleAuth.Authenticators.Base.extend({
     }
   }
 });
-
-export { OAuth2 };

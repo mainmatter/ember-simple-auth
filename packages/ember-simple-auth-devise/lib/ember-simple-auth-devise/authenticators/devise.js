@@ -1,3 +1,6 @@
+import Base from 'ember-simple-auth/authenticators/base';
+import isSecureUrl from 'ember-simple-auth/utils/is_secure_url';
+
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
@@ -17,7 +20,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   @namespace Authenticators
   @extends Base
 */
-var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
+export default Base.extend({
   /**
     The endpoint on the server the authenticator acquires the auth token
     and email from.
@@ -103,7 +106,7 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     @private
   */
   makeRequest: function(data, resolve, reject) {
-    if (!Ember.SimpleAuth.Utils.isSecureUrl(this.serverTokenEndpoint)) {
+    if (!isSecureUrl(this.serverTokenEndpoint)) {
       Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
     }
     return Ember.$.ajax({
@@ -117,5 +120,3 @@ var Devise = Ember.SimpleAuth.Authenticators.Base.extend({
     });
   }
 });
-
-export { Devise };

@@ -93,6 +93,24 @@ module.exports = function(request, response, next) {
       error(401, '{}');
     }
 
+  // endpoint for the devise example
+  } else if (request.url === '/v5/users/sign_in') {
+    if (request.method === 'POST') {
+      if (request.body.user.email === 'letme' && request.body.user.password === 'in') {
+        success('{ "user_email": "letme", "user_token": "secret token!" }');
+      } else {
+        error(422, '');
+      }
+    } else {
+      next();
+    }
+  } else if (request.url === '/v5/data') {
+    if (request.headers.authorization === 'Token token="secret token!", user_email="letme"') {
+      success('{ "some": "data" }');
+    } else {
+      error(401, '{}');
+    }
+
   } else {
     next();
   }

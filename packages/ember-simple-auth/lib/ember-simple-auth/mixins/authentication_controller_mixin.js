@@ -1,7 +1,7 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { Configuration } from './../core';
+import Configuration from './../configuration';
 
 /**
   The mixin for the controller that handles the `authenticationRoute` specified
@@ -13,7 +13,7 @@ import { Configuration } from './../core';
   @class AuthenticationControllerMixin
   @extends Ember.Mixin
 */
-var AuthenticationControllerMixin = Ember.Mixin.create({
+export default Ember.Mixin.create({
   /**
     The authenticator used to authenticate the session.
 
@@ -38,5 +38,3 @@ var AuthenticationControllerMixin = Ember.Mixin.create({
     }
   }
 });
-
-export { AuthenticationControllerMixin };

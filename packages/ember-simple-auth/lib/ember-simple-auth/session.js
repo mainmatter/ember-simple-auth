@@ -45,7 +45,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   @extends Ember.ObjectProxy
   @uses Ember.Evented
 */
-var Session = Ember.ObjectProxy.extend(Ember.Evented, {
+export default Ember.ObjectProxy.extend(Ember.Evented, {
   /**
     Triggered __whenever the session is successfully authenticated__. When the
     application uses the mixin,
@@ -307,5 +307,3 @@ var Session = Ember.ObjectProxy.extend(Ember.Evented, {
     });
   }
 });
-
-export { Session };

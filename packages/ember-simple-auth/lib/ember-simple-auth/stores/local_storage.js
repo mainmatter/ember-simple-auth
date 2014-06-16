@@ -1,8 +1,8 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import { Base } from './base';
-import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
+import Base from './base';
+import flatObjectsAreEqual from '../utils/flat_objects_are_equal';
 
 /**
   Store that saves its data in the browser's `localStorage`.
@@ -14,7 +14,7 @@ import { flatObjectsAreEqual } from '../utils/flat_objects_are_equal';
   @namespace Stores
   @extends Stores.Base
 */
-var LocalStorage = Base.extend({
+export default Base.extend({
   /**
     The prefix to use for the store's keys so they can be distinguished from
     others.
@@ -124,5 +124,3 @@ var LocalStorage = Base.extend({
     });
   }
 });
-
-export { LocalStorage };

@@ -1,7 +1,7 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember  = global.Ember;
 
-import { Configuration } from './../core';
+import Configuration from './../configuration';
 
 /**
   The mixin for the application route. This defines actions to authenticate the
@@ -41,7 +41,7 @@ import { Configuration } from './../core';
   @extends Ember.Mixin
   @static
 */
-var ApplicationRouteMixin = Ember.Mixin.create({
+export default Ember.Mixin.create({
   /**
     @method activate
     @private
@@ -188,5 +188,3 @@ var ApplicationRouteMixin = Ember.Mixin.create({
     }
   }
 });
-
-export { ApplicationRouteMixin };
