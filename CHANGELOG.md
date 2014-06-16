@@ -1,3 +1,11 @@
+# 0.5.3
+
+* fixed the AMD build so it does not depend on the Ember.SimpleAuth global, see
+  #183.
+* Added an example for the devise extension library, see #188.
+* Cleaned up the AMD structure so it can better be used with ember-cli, see
+  #189 (all files export the default export now).
+
 # 0.5.2
 
 * The `ApplicationRouteMixin` now uses the configured session property name,
