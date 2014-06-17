@@ -157,6 +157,14 @@ describe('setup', function() {
         expect(this.authorizer.authorize).to.have.been.calledOnce;
       });
 
+      it('does not use destroyed authorizers', function() {
+        this.authorizer.isDestroyed = true;
+        setup(this.container, this.application, { authorizerFactory: 'authorizerFactory' });
+        Ember.$.get(window.location);
+
+        expect(this.authorizer.authorize).to.not.have.been.called;
+      });
+
       it('does not authorize requests going to a foreign origin', function() {
         setup(this.container, this.application, { authorizerFactory: 'authorizerFactory' });
         Ember.$.get('http://other-domain.com');
