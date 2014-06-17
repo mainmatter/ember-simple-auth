@@ -24,11 +24,11 @@ function extractLocationOrigin(location) {
 
 var urlOrigins     = {};
 var crossOriginWhitelist;
-function shouldAuthorizeRequest(url, options) {
+function shouldAuthorizeRequest(options) {
   if (options.crossDomain === false) {
     return true;
   }
-  var urlOrigin = urlOrigins[url] = urlOrigins[url] || extractLocationOrigin(url);
+  var urlOrigin = urlOrigins[options.url] = urlOrigins[options.url] || extractLocationOrigin(options.url);
   return crossOriginWhitelist.indexOf(urlOrigin) > -1;
 }
 
@@ -93,8 +93,7 @@ export default function(container, application, options) {
     if (!!authorizer) {
       authorizer.set('session', session);
       Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-        if (authorizer.isDestroyed) { return; }
-        if (shouldAuthorizeRequest(options.url, options)) {
+        if (!authorizer.isDestroyed && shouldAuthorizeRequest(options)) {
           authorizer.authorize(jqXHR, options);
         }
       });
