@@ -23,11 +23,11 @@ function extractLocationOrigin(location) {
 }
 
 var urlOrigins     = {};
-var documentOrigin = extractLocationOrigin(window.location);
 var crossOriginWhitelist;
-function shouldAuthorizeRequest(url) {
+function shouldAuthorizeRequest(url, options) {
+  if (options.crossDomain === false) { return true; }
   var urlOrigin = urlOrigins[url] = urlOrigins[url] || extractLocationOrigin(url);
-  return crossOriginWhitelist.indexOf(urlOrigin) > -1 || urlOrigin === documentOrigin;
+  return crossOriginWhitelist.indexOf(urlOrigin) > -1;
 }
 
 function registerStores(container) {
@@ -91,7 +91,7 @@ export default function(container, application, options) {
     if (!!authorizer) {
       authorizer.set('session', session);
       Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-        if (shouldAuthorizeRequest(options.url)) {
+        if (shouldAuthorizeRequest(options.url, options)) {
           authorizer.authorize(jqXHR, options);
         }
       });
