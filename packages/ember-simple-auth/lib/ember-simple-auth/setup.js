@@ -25,7 +25,9 @@ function extractLocationOrigin(location) {
 var urlOrigins     = {};
 var crossOriginWhitelist;
 function shouldAuthorizeRequest(url, options) {
-  if (options.crossDomain === false) { return true; }
+  if (options.crossDomain === false) {
+    return true;
+  }
   var urlOrigin = urlOrigins[url] = urlOrigins[url] || extractLocationOrigin(url);
   return crossOriginWhitelist.indexOf(urlOrigin) > -1;
 }
