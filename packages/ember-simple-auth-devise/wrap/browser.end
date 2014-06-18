@@ -15,7 +15,7 @@ global.Ember.SimpleAuth.Authenticators.Devise = Authenticator;
 global.Ember.SimpleAuth.Authorizers.Devise    = Authorizer;
 
 global.Ember.SimpleAuth.initializeExtension(function(container, application, options) {
-  container.register('ember-simple-auth-authorizer:devise', global.Ember.SimpleAuth.Authorizers.Devise);
-  container.register('ember-simple-auth-authenticator:devise', global.Ember.SimpleAuth.Authenticators.Devise);
+  container.register('ember-simple-auth-authorizer:devise', Authenticator);
+  container.register('ember-simple-auth-authenticator:devise', Authorizer);
 });
 })((typeof global !== 'undefined') ? global : window);
