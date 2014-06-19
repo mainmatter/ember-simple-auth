@@ -43,10 +43,10 @@ import Configuration from './../configuration';
 */
 export default Ember.Mixin.create({
   /**
-    @method activate
+    @method init
     @private
   */
-  activate: function() {
+  init: function() {
     var _this = this;
     Ember.A([
       'sessionAuthenticationSucceeded',

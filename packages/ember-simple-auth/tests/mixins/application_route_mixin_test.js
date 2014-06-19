@@ -14,9 +14,8 @@ describe('ApplicationRouteMixin', function() {
     }).create({ session: this.session });
   });
 
-  describe('activate', function() {
+  describe('intialization', function() {
     beforeEach(function() {
-      this.route.activate();
       sinon.spy(this.route, 'send');
     });
 
