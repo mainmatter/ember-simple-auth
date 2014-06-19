@@ -15,7 +15,7 @@ global.Ember.SimpleAuth.Authenticators.OAuth2 = Authenticator;
 global.Ember.SimpleAuth.Authorizers.OAuth2    = Authorizer;
 
 global.Ember.SimpleAuth.initializeExtension(function(container, application, options) {
-  container.register('ember-simple-auth-authorizer:oauth2-bearer', Authenticator);
-  container.register('ember-simple-auth-authenticator:oauth2-password-grant', Authorizer);
+  container.register('ember-simple-auth-authorizer:oauth2-bearer', Authorizer);
+  container.register('ember-simple-auth-authenticator:oauth2-password-grant', Authenticator);
 });
 })((typeof global !== 'undefined') ? global : window);
