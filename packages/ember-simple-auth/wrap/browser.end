@@ -19,6 +19,8 @@ global.Ember.SimpleAuth = {
 
   initializeExtension: initializeExtension,
 
+  Configuration: Configuration,
+
   Session: Session,
 
   Authenticators: {
