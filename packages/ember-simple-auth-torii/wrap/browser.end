@@ -1,0 +1,13 @@
+define('ember-simple-auth/authenticators/base',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.Ember.SimpleAuth.Authenticators.Base;
+});
+
+var Authenticator = requireModule('ember-simple-auth-torii/authenticators/torii').default;
+
+global.Ember.SimpleAuth.Authenticators.Torii = Authenticator;
+
+global.Ember.SimpleAuth.initializeExtension(function(container, application, options) {
+  var torii = container.lookup('torii:main');
+  container.register('ember-simple-auth-authenticator:torii', Authenticator.create({ torii: torii }), { instantiate: false });
+});
+})((typeof global !== 'undefined') ? global : window);
