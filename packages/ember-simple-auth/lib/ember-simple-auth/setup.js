@@ -57,13 +57,12 @@ function registerStores(container) {
   @param {Ember.Application} application The Ember.js application instance
 **/
 export default function(container, application) {
+  Configuration.load(container);
   application.deferReadiness();
   registerStores(container);
   Configuration.extensionInitializers.forEach(function(initializer) {
     initializer(container, application);
   });
-
-  Configuration.applicationRootUrl = container.lookup('router:main').get('rootURL') || '/';
 
   var store            = container.lookup(Configuration.storeFactory);
   var session          = Session.create({ store: store, container: container });

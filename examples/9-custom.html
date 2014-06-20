@@ -89,11 +89,10 @@
     </script>
 
     <script type="text/javascript">
-      // setup Ember.SimpleAuth in an initializer
       Ember.Application.initializer({
         name: 'authentication',
+        after: 'ember-simple-auth',
         initialize: function(container, application) {
-          Ember.SimpleAuth.setup(container, application);
           var applicationRoute = container.lookup('route:application');
           var session          = container.lookup('ember-simple-auth-session:main');
           // handle the session events

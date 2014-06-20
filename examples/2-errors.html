@@ -107,15 +107,11 @@
     </script>
 
     <script type="text/javascript">
-      // setup Ember.SimpleAuth in an initializer
-      Ember.Application.initializer({
-        name: 'authentication',
-        initialize: function(container, application) {
-          Ember.SimpleAuth.setup(container, application, {
-            authorizerFactory: 'ember-simple-auth-authorizer:oauth2-bearer'
-          });
-        }
-      });
+      // configure an authorizer to be used
+      window.ENV = window.ENV || {};
+      window.ENV['ember-simple-auth'] = {
+        authorizerFactory: 'ember-simple-auth-authorizer:oauth2-bearer'
+      };
 
       App = Ember.Application.create({});
 

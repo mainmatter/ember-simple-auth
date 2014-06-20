@@ -81,14 +81,13 @@
         gapi.client.setApiKey('AIzaSyBjyJkxZAiYXfcKABI43X3N8yl9Yzs2nE0');
       };
 
-      // setup Ember.SimpleAuth in an initializer
       Ember.Application.initializer({
         name: 'authentication',
+        before: 'ember-simple-auth',
         initialize: function(container, application) {
           // register the Facebook and Google+ authenticators so the session can find them
           container.register('authenticator:facebook', App.FacebookAuthenticator);
           container.register('authenticator:googleplus', App.GooglePlusAuthenticator);
-          Ember.SimpleAuth.setup(container, application);
         }
       });
 

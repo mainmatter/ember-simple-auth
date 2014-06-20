@@ -1,5 +1,3 @@
-var globalConfig = (global.ENV || {})['ember-simple-auth'] || {};
-
 /**
   Ember.SimpleAuth's configuration object.
 
@@ -17,7 +15,7 @@ export default {
     @type String
     @default 'login'
   */
-  authenticationRoute: globalConfig.authenticationRoute || 'login',
+  authenticationRoute: 'login',
 
   /**
     The route to transition to after successful authentication; should be set
@@ -29,7 +27,7 @@ export default {
     @type String
     @default 'index'
   */
-  routeAfterAuthentication: globalConfig.routeAfterAuthentication || 'index',
+  routeAfterAuthentication: 'index',
 
   /**
     The name of the property that the session is injected with into routes and
@@ -42,7 +40,7 @@ export default {
     @type String
     @default 'session'
   */
-  sessionPropertyName: globalConfig.sessionPropertyName || 'session',
+  sessionPropertyName: 'session',
 
   /**
     The authorizer factory to use as it is registered with Ember's container,
@@ -57,7 +55,7 @@ export default {
     @type String
     @default null
   */
-  authorizerFactory: globalConfig.authorizerFactory || null,
+  authorizerFactory: null,
 
   /**
     The store factory to use as it is registered with Ember's container, see
@@ -69,7 +67,7 @@ export default {
     @type String
     @default ember-simple-auth-session-store:local-storage
   */
-  storeFactory: globalConfig.storeFactory || 'ember-simple-auth-session-store:local-storage',
+  storeFactory: 'ember-simple-auth-session-store:local-storage',
 
   /**
     Ember.SimpleAuth will never authorize requests going to a different origin
@@ -84,21 +82,31 @@ export default {
     @type Array
     @default []
   */
-  crossOriginWhitelist: globalConfig.crossOriginWhitelist || [],
+  crossOriginWhitelist: [],
 
   /**
     @property applicationRootUrl
-    @static
     @private
-    @type String
   */
   applicationRootUrl: null,
 
   /**
     @property extensionInitializers
-    @static
     @private
-    @type Array
   */
-  extensionInitializers: []
+  extensionInitializers: [],
+
+  /**
+    @method load
+    @private
+  */
+  load: function(container) {
+    var globalConfig = (global.ENV || {})['ember-simple-auth'] || {};
+    this.authenticationRoute      = globalConfig.authenticationRoute || this.authenticationRoute;
+    this.routeAfterAuthentication = globalConfig.routeAfterAuthentication || this.routeAfterAuthentication;
+    this.sessionPropertyName      = globalConfig.sessionPropertyName || this.sessionPropertyName;
+    this.authorizerFactory        = globalConfig.authorizerFactory || this.authorizerFactory;
+    this.storeFactory             = globalConfig.storeFactory || this.storeFactory;
+    this.applicationRootUrl       = container.lookup('router:main').get('rootURL') || '/';
+  }
 };

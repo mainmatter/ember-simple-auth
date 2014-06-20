@@ -81,15 +81,17 @@
     </script>
 
     <script type="text/javascript">
-      // setup Ember.SimpleAuth in an initializer
+      // configure the devise authorizer to be used
+      window.ENV = window.ENV || {};
+      window.ENV['ember-simple-auth'] = {
+        authorizerFactory: 'ember-simple-auth-authorizer:devise'
+      };
       Ember.Application.initializer({
         name: 'authentication',
+        before: 'ember-simple-auth',
         initialize: function(container, application) {
           Ember.SimpleAuth.Authenticators.Devise.reopen({
             serverTokenEndpoint: '/v5/users/sign_in',
-          });
-          Ember.SimpleAuth.setup(container, application, {
-            authorizerFactory: 'ember-simple-auth-authorizer:devise'
           });
         }
       });

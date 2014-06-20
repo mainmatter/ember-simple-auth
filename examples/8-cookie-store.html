@@ -83,15 +83,11 @@
     </script>
 
     <script type="text/javascript">
-      // setup Ember.SimpleAuth in an initializer
-      Ember.Application.initializer({
-        name: 'authentication',
-        initialize: function(container, application) {
-          Ember.SimpleAuth.setup(container, application, {
-            storeFactory: 'ember-simple-auth-session-store:cookie'
-          });
-        }
-      });
+      // configure the cookie store to be used
+      window.ENV = window.ENV || {};
+      window.ENV['ember-simple-auth'] = {
+        storeFactory: 'ember-simple-auth-session-store:cookie'
+      };
 
       App = Ember.Application.create({});
 

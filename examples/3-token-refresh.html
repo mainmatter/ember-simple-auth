@@ -90,14 +90,14 @@
     </script>
 
     <script type="text/javascript">
-      // setup Ember.SimpleAuth in an initializer
+      // configure a custom server endpoint
       Ember.Application.initializer({
         name: 'authentication',
+        before: 'ember-simple-auth',
         initialize: function(container, application) {
           Ember.SimpleAuth.Authenticators.OAuth2.reopen({
             serverTokenEndpoint: '/v2/token'
           });
-          Ember.SimpleAuth.setup(container, application);
         }
       });
 
