@@ -100,6 +100,25 @@ class ApplicationController < ActionController::Base
 end
 ```
 
+The Rails application should also not issue session cookies but authentication
+should be done exclusively via the authentication token as described above. The
+easiest way to disable sessions in Rails is to add an initializer
+`config/initializers/session_store.rb` and disable the session store in that:
+
+```rb
+Rails.application.config.session_store :disabled
+```
+
+If disabling sessions completely is not an option, make sure no session cookies
+are sent for JSON requests as
+[described here](https://github.com/plataformatec/devise/issues/285).
+
+__If the server sends session cookies to the Ember frontend this will lead to
+the situation that the user is actually still logged in after Ember.SimpleAuth
+invalidates the session__ as the Rails session cookie will still be present
+because Ember.SimpleAuth does not know anything about that cookie and will not
+delete it on session invalidation!
+
 ## The Authenticator
 
 In order to use the Devise authenticator (see the
