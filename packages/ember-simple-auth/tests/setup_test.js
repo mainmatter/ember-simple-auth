@@ -1,5 +1,4 @@
 import setup from 'ember-simple-auth/setup';
-import initializeExtension from 'ember-simple-auth/initialize_extension';
 import Configuration from 'ember-simple-auth/configuration';
 import Session from 'ember-simple-auth/session';
 import LocalStorageStore from 'ember-simple-auth/stores/local_storage';
@@ -21,17 +20,6 @@ describe('setup', function() {
     setup(this.container, this.application, {});
 
     expect(this.application.deferReadiness).to.have.been.calledOnce;
-  });
-
-  it('calls all registered extension initializers', function() {
-    var initializer1 = sinon.spy();
-    var initializer2 = sinon.spy();
-    initializeExtension(initializer1);
-    initializeExtension(initializer2);
-    setup(this.container, this.application, {});
-
-    expect(initializer1).to.have.been.calledOnce;
-    expect(initializer2).to.have.been.calledOnce;
   });
 
   it("sets applicationRootUrl to the application's root URL", function() {

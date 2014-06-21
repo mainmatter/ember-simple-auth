@@ -91,12 +91,6 @@ export default {
   applicationRootUrl: null,
 
   /**
-    @property extensionInitializers
-    @private
-  */
-  extensionInitializers: [],
-
-  /**
     @method load
     @private
   */

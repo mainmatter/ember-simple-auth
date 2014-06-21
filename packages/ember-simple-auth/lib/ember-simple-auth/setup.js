@@ -2,7 +2,6 @@ import Configuration from './configuration';
 import Session from './session';
 import LocalStorage from './stores/local_storage';
 import Ephemeral from './stores/ephemeral';
-import initializeExtension from './initialize_extension';
 
 function extractLocationOrigin(location) {
   if (Ember.typeOf(location) === 'string') {
@@ -60,9 +59,6 @@ export default function(container, application) {
   Configuration.load(container);
   application.deferReadiness();
   registerStores(container);
-  Configuration.extensionInitializers.forEach(function(initializer) {
-    initializer(container, application);
-  });
 
   var store            = container.lookup(Configuration.storeFactory);
   var session          = Session.create({ store: store, container: container });
