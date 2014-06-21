@@ -112,8 +112,8 @@ module.exports = function(grunt) {
         files: packages.map(function(pkg) {
           return {
             expand: true,
-            cwd: 'packages/' + pkg.name,
-            src: ['tests/**/*.js'],
+            cwd: 'packages/',
+            src: [pkg.name + '/tests/**/*.js'],
             dest: 'tmp/tests/' + pkg.name
           };
         })
