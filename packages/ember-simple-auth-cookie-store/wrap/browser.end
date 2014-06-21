@@ -5,11 +5,12 @@ define('ember-simple-auth/utils/flat_objects_are_equal',  ['exports'], function(
   __exports__['default'] = global.Ember.SimpleAuth.Utils.flatObjectsAreEqual;
 });
 
-var Cookie = requireModule('ember-simple-auth-cookie-store/stores/cookie').default;
+var initializer = requireModule('ember-simple-auth-cookie-store/initializer').default;
+var Cookie      = requireModule('ember-simple-auth-cookie-store/stores/cookie').default;
 
 global.Ember.SimpleAuth.Stores.Cookie = Cookie;
 
-global.Ember.SimpleAuth.initializeExtension(function(container, application, options) {
-  container.register('ember-simple-auth-session-store:cookie', Cookie);
+Ember.onLoad('Ember.Application', function(Application) {
+  Application.initializer(initializer);
 });
 })((typeof global !== 'undefined') ? global : window);

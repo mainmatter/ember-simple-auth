@@ -4,7 +4,7 @@ var global = (typeof window !== 'undefined') ? window : {},
 import setup from './setup';
 
 export default {
-  name: 'ember-simple-auth',
+  name:       'ember-simple-auth',
   initialize: function(container, application) {
     setup(container, application);
   }
