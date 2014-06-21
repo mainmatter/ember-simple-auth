@@ -46,7 +46,5 @@ global.Ember.SimpleAuth = {
   LoginControllerMixin:          LoginControllerMixin
 };
 
-Ember.onLoad('Ember.Application', function(Application) {
-  Application.initializer(initializer);
-});
+requireModule('ember-simple-auth/ember');
 })((typeof global !== 'undefined') ? global : window);

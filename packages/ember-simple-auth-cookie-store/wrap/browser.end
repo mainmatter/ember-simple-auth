@@ -10,7 +10,5 @@ var Cookie      = requireModule('ember-simple-auth-cookie-store/stores/cookie').
 
 global.Ember.SimpleAuth.Stores.Cookie = Cookie;
 
-Ember.onLoad('Ember.Application', function(Application) {
-  Application.initializer(initializer);
-});
+requireModule('ember-simple-auth-cookie-store/ember');
 })((typeof global !== 'undefined') ? global : window);

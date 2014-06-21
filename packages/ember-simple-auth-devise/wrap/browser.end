@@ -15,7 +15,5 @@ var Authorizer    = requireModule('ember-simple-auth-devise/authorizers/devise')
 global.Ember.SimpleAuth.Authenticators.Devise = Authenticator;
 global.Ember.SimpleAuth.Authorizers.Devise    = Authorizer;
 
-Ember.onLoad('Ember.Application', function(Application) {
-  Application.initializer(initializer);
-});
+requireModule('ember-simple-auth-devise/ember');
 })((typeof global !== 'undefined') ? global : window);

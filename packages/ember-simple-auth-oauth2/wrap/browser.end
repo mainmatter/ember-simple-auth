@@ -15,7 +15,5 @@ var Authorizer    = requireModule('ember-simple-auth-oauth2/authorizers/oauth2')
 global.Ember.SimpleAuth.Authenticators.OAuth2 = Authenticator;
 global.Ember.SimpleAuth.Authorizers.OAuth2    = Authorizer;
 
-Ember.onLoad('Ember.Application', function(Application) {
-  Application.initializer(initializer);
-});
+requireModule('ember-simple-auth-oauth2/ember');
 })((typeof global !== 'undefined') ? global : window);
