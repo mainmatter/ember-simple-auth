@@ -33,6 +33,17 @@ export default Base.extend({
   cookieNamePrefix: 'ember_simple_auth:',
 
   /**
+    The expiration time in seconds to use for the cookies. A value of `null`
+    will make the cookies session cookies that expire when the browser is
+    closed.
+
+    @property cookieExpirationTime
+    @type Integer
+    @default null
+  */
+  cookieExpirationTime: null,
+
+  /**
     @property _secureCookies
     @private
   */
@@ -60,7 +71,7 @@ export default Base.extend({
   */
   persist: function(data) {
     for (var property in data) {
-      this.write(property, data[property], null);
+      this.write(property, data[property], !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : null);
     }
     this._lastData = this.restore();
   },
@@ -93,7 +104,7 @@ export default Base.extend({
   clear: function() {
     var _this = this;
     this.knownCookies().forEach(function(cookie) {
-      _this.write(cookie, null, (new Date(0)).toGMTString());
+      _this.write(cookie, null, 0);
     });
     this._lastData = null;
   },
@@ -112,7 +123,7 @@ export default Base.extend({
     @private
   */
   write: function(name, value, expiration) {
-    var expires = Ember.isEmpty(expiration) ? '' : '; expires=' + expiration;
+    var expires = Ember.isEmpty(expiration) ? '' : '; expires=' + new Date(expiration).toUTCString();
     var secure  = !!this._secureCookies ? ';secure' : '';
     document.cookie = this.cookieNamePrefix + name + '=' + encodeURIComponent(value) + expires + secure;
   },

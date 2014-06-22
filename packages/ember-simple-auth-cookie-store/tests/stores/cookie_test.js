@@ -13,6 +13,16 @@ describe('Stores.Cookie', function() {
     }
   });
 
+  describe('#persist', function() {
+    it('respects the configured cookieNamePrefix', function() {
+      this.store = Cookie.create();
+      this.store.cookieNamePrefix = 'test:';
+      this.store.persist({ key: 'value' });
+
+      expect(document.cookie).to.contain('test:key=value');
+    });
+  });
+
   describe('the "updated" event', function() {
     beforeEach(function() {
       var _this = this;
