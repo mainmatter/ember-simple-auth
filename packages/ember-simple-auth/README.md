@@ -339,7 +339,7 @@ application you have several options:
   following line to the `Brocfile.js`:
 
   ```js
-  app.import('vendor/ember-simple-auth/packages/ember-simple-auth/lib/ember-simple-auth.js');
+  app.import('vendor/ember-simple-auth/ember-simple-auth.js');
   ```
 
   You can also use the AMD version in which case you have to list all the
