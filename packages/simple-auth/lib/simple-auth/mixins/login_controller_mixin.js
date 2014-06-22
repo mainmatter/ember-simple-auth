@@ -29,6 +29,8 @@ import AuthenticationControllerMixin from './authentication_controller_mixin';
   ```
 
   @class LoginControllerMixin
+  @namespace SimpleAuth
+  @module simple-auth/mixins/login_controller_mixin
   @extends SimpleAuth.AuthenticationControllerMixin
 */
 export default Ember.Mixin.create(AuthenticationControllerMixin, {

@@ -14,7 +14,8 @@ import flatObjectsAreEqual from '../utils/flat_objects_are_equal';
   (see [SimpleAuth.setup](#Ember-SimpleAuth-setup)).
 
   @class Base
-  @namespace Stores
+  @namespace SimpleAuth.Stores
+  @module simple-auth/stores/base
   @extends Ember.Object
   @uses Ember.Evented
 */

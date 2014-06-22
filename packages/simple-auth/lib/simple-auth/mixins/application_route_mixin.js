@@ -37,7 +37,8 @@ import Configuration from './../configuration';
   the `activate` method, that method has to call `_super`.__
 
   @class ApplicationRouteMixin
-  @namespace $root
+  @namespace SimpleAuth
+  @module simple-auth/mixins/application_route_mixin
   @extends Ember.Mixin
   @static
 */

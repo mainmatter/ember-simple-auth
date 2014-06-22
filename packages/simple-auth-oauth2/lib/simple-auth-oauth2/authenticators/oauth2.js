@@ -17,7 +17,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   container._
 
   @class OAuth2
-  @namespace Authenticators
+  @namespace SimpleAuth.Authenticators
+  @module simple-auth-oauth2/authenticators/oauth2
   @extends Base
 */
 export default Base.extend({

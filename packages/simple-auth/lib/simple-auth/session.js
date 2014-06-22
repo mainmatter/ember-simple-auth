@@ -24,11 +24,11 @@ var global = (typeof window !== 'undefined') ? window : {},
   authenticator needs to authenticate the session:
 
   ```javascript
-    this.get('session').authenticate('authenticatorFactory', { some: 'option' }).then(function() {
-      // authentication was successful
-    }, function() {
-      // authentication failed
-    });
+  this.get('session').authenticate('authenticatorFactory', { some: 'option' }).then(function() {
+    // authentication was successful
+  }, function() {
+    // authentication failed
+  });
   ```
 
   When the session's authentication state changes or an attempt to change it
@@ -42,6 +42,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   end [SimpleAuth.Stores.Base](#Ember-SimpleAuth-Stores-Base)).
 
   @class Session
+  @namespace SimpleAuth
+  @module simple-auth/session
   @extends Ember.ObjectProxy
   @uses Ember.Evented
 */

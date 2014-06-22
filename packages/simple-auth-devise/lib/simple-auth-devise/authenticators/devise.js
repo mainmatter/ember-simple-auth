@@ -17,7 +17,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   `'simple-auth-authenticator:devise'` in Ember's container._
 
   @class Devise
-  @namespace Authenticators
+  @namespace SimpleAuth.Authenticators
+  @module simple-auth-devise/authenticators/devise
   @extends Base
 */
 export default Base.extend({

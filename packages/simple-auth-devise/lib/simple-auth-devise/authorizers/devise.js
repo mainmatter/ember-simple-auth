@@ -17,7 +17,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   `'simple-auth-authorizer:devise'` in Ember's container._
 
   @class Devise
-  @namespace Authorizers
+  @namespace SimpleAuth.Authorizers
+  @module simple-auth-devise/authorizers/devise
   @extends Base
 */
 export default Base.extend({

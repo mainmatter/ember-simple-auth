@@ -40,7 +40,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   ```
 
   @class Base
-  @namespace Authenticators
+  @namespace SimpleAuth.Authenticators
+  @module simple-auth/authenticators/base
   @extends Ember.Object
   @uses Ember.Evented
 */

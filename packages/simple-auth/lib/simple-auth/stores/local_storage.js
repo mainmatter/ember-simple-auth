@@ -11,7 +11,8 @@ import flatObjectsAreEqual from '../utils/flat_objects_are_equal';
   `'simple-auth-session-store:local-storage'` in Ember's container._
 
   @class LocalStorage
-  @namespace Stores
+  @namespace SimpleAuth.Stores
+  @module simple-auth/stores/local_storage
   @extends Stores.Base
 */
 export default Base.extend({

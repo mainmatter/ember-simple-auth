@@ -11,6 +11,8 @@ import Configuration from './../configuration';
   [SimpleAuth.AuthenticationControllerMixin#authenticatorFactory](#Ember-SimpleAuth-AuthenticationControllerMixin-authenticatorFactory)).
 
   @class AuthenticationControllerMixin
+  @namespace SimpleAuth
+  @module simple-auth/mixins/authentication_controller_mixin
   @extends Ember.Mixin
 */
 export default Ember.Mixin.create({

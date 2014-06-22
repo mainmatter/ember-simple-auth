@@ -16,7 +16,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   and that it makes available through the session.
 
   @class Base
-  @namespace Authorizers
+  @namespace SimpleAuth.Authorizers
+  @module simple-auth/authorizers/base
   @extends Ember.Object
 */
 export default Ember.Object.extend({

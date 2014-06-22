@@ -11,7 +11,7 @@ import Configuration from './../configuration';
   [SimpleAuth.setup](#Ember-SimpleAuth-setup) if it is not.
 
   ```javascript
-    App.ProtectedRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin);
+  App.ProtectedRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin);
   ```
 
   `SimpleAuth.AuthenticatedRouteMixin` performs the redirect in the
@@ -21,6 +21,8 @@ import Configuration from './../configuration';
   session enforcement code is actually executed.
 
   @class AuthenticatedRouteMixin
+  @namespace SimpleAuth
+  @module simple-auth/mixins/authenticated_route_mixin
   @extends Ember.Mixin
   @static
 */

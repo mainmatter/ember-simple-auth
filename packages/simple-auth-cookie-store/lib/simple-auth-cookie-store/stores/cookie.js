@@ -18,7 +18,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   `'simple-auth-session-store:cookie'` in Ember's container._
 
   @class Cookie
-  @namespace Stores
+  @namespace SimpleAuth.Stores
+  @module simple-auth-cookie-store/stores/cookie
   @extends Stores.Base
 */
 export default Base.extend({

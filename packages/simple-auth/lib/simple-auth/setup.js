@@ -37,23 +37,8 @@ function registerStores(container) {
 }
 
 /**
-  Sets up SimpleAuth for the application; this method __should be invoked
-  in a custom initializer__ like this:
-
-  ```javascript
-  Ember.Application.initializer({
-    name: 'authentication',
-    initialize: function(container, application) {
-      SimpleAuth.setup(container, application);
-    }
-  });
-  ```
-
   @method setup
-  @namespace $root
-  @static
-  @param {Container} container The Ember.js application's dependency injection container
-  @param {Ember.Application} application The Ember.js application instance
+  @private
 **/
 export default function(container, application) {
   Configuration.load(container);

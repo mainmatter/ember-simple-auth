@@ -14,7 +14,8 @@ var global = (typeof window !== 'undefined') ? window : {},
   `'simple-auth-authorizer:oauth2-bearer'` in Ember's container._
 
   @class OAuth2
-  @namespace Authorizers
+  @namespace SimpleAuth.Authorizers
+  @module simple-auth-devise/authorizers/oauth2
   @extends Base
 */
 export default Base.extend({
