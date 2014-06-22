@@ -347,9 +347,19 @@ application you have several options:
 
   ```js
   app.import('vendor/ember-simple-auth/amd/ember-simple-auth.js', {
+    'ember-simple-auth/configuration': ['default'],
+    'ember-simple-auth/initializer': ['default'],
     'ember-simple-auth/session': ['default'],
     'ember-simple-auth/setup': ['default'],
-    ...
+    'ember-simple-auth/authenticators/base': ['default'],
+    'ember-simple-auth/authorizers/base': ['default'],
+    'ember-simple-auth/mixins/application_route_mixin': ['default'],
+    'ember-simple-auth/mixins/authenticated_route_mixin': ['default'],
+    'ember-simple-auth/mixins/authentication_controller_mixin': ['default'],
+    'ember-simple-auth/mixins/login_controller_mixin': ['default'],
+    'ember-simple-auth/stores/base': ['default'],
+    'ember-simple-auth/stores/ephemeral': ['default'],
+    'ember-simple-auth/stores/local_storage': ['default'],
   });
   ```
 
