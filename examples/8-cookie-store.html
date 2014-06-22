@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ember.SimpleAuth - examples</title>
+    <title>SimpleAuth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
     <script src="http://builds.emberjs.com/release/ember.js"></script>
-    <script src="../tmp/ember-simple-auth.js"></script>
-    <script src="../tmp/ember-simple-auth-oauth2.js"></script>
-    <script src="../tmp/ember-simple-auth-cookie-store.js"></script>
+    <script src="../tmp/simple-auth.js"></script>
+    <script src="../tmp/simple-auth-oauth2.js"></script>
+    <script src="../tmp/simple-auth-cookie-store.js"></script>
   </head>
   <body style="padding-top: 50px;">
     <script type="text/x-handlebars">
@@ -89,8 +89,8 @@
     <script type="text/javascript">
       // configure the cookie store to be used
       window.ENV = window.ENV || {};
-      window.ENV['ember-simple-auth'] = {
-        storeFactory: 'ember-simple-auth-session-store:cookie'
+      window.ENV['simple-auth'] = {
+        storeFactory: 'simple-auth-session-store:cookie'
       };
 
       App = Ember.Application.create({});
@@ -107,9 +107,9 @@
       });
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'ember-simple-auth-authenticator:oauth2-password-grant',
+      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
+      App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
+        authenticatorFactory: 'simple-auth-authenticator:oauth2-password-grant',
         rememberMe:           false,
 
         // change the store's cookie expiration time depending on whether "remember me" is checked or not
@@ -119,7 +119,7 @@
       });
 
       // make this route protected
-      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+      App.ProtectedRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin);
     </script>
   </body>
 </html>
