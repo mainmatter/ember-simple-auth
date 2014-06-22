@@ -2,7 +2,7 @@
   SimpleAuth's configuration object.
 
   @class Configuration
-  @namespace $mainModule
+  @namespace $root
 */
 export default {
   /**

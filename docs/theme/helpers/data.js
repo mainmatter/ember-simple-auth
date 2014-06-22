@@ -20,7 +20,7 @@ function buildSignature(method) {
 }
 
 function cleanElementName(name, module) {
-  return name.replace(/^(\$mainModule)?\./, module + '.');
+  return name.replace(/^(\$root)?\./, module + '.');
 }
 
 function modulizeName(name, module) {
@@ -93,7 +93,7 @@ module.exports = function() {
   var module = this.modules[this.project.module];
   if (!!module) {
     var moduleItems = this.classitems.filter(function(item) {
-      return item.namespace === '$mainModule' && item.access !== 'private';
+      return item.namespace === '$root' && item.access !== 'private';
     });
     module.functions = cleanModuleItems(extractFunctions(moduleItems), module.name);
     module.anchor    = anchorify(module.name);

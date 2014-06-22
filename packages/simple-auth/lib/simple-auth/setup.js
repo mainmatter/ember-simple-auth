@@ -50,7 +50,7 @@ function registerStores(container) {
   ```
 
   @method setup
-  @namespace $mainModule
+  @namespace $root
   @static
   @param {Container} container The Ember.js application's dependency injection container
   @param {Ember.Application} application The Ember.js application instance

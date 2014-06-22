@@ -37,7 +37,7 @@ import Configuration from './../configuration';
   the `activate` method, that method has to call `_super`.__
 
   @class ApplicationRouteMixin
-  @namespace $mainModule
+  @namespace $root
   @extends Ember.Mixin
   @static
 */
