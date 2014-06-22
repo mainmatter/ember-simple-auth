@@ -14,9 +14,10 @@ describe('ApplicationRouteMixin', function() {
     }).create({ session: this.session });
   });
 
-  describe('intialization', function() {
+  describe('#beforeModel', function() {
     beforeEach(function() {
       sinon.spy(this.route, 'send');
+      this.route.beforeModel();
     });
 
     it("translates the session's 'sessionAuthenticationSucceeded' event into an action invocation", function(done) {

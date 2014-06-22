@@ -43,10 +43,10 @@ import Configuration from './../configuration';
 */
 export default Ember.Mixin.create({
   /**
-    @method init
+    @method beforeModel
     @private
   */
-  init: function() {
+  beforeModel: function(transition) {
     var _this = this;
     Ember.A([
       'sessionAuthenticationSucceeded',
