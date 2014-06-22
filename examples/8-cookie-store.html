@@ -112,8 +112,9 @@
         authenticatorFactory: 'ember-simple-auth-authenticator:oauth2-password-grant',
         rememberMe:           false,
 
+        // change the store's cookie expiration time depending on whether "remember me" is checked or not
         rememberMeChanged: function() {
-          this.get('session.store').cookieExpirationTime = 1209600;
+          this.get('session.store').cookieExpirationTime = this.get('rememberMe') ? 1209600 : null;
         }.observes('rememberMe')
       });
 
