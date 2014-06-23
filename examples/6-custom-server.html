@@ -86,17 +86,18 @@
     </script>
 
     <script type="text/javascript">
-      // setup Ember.SimpleAuth in an initializer
+      // configure an authorizer to be used
+      window.ENV = window.ENV || {};
+      window.ENV['ember-simple-auth'] = {
+        authorizerFactory: 'authorizer:custom'
+      };
       Ember.Application.initializer({
         name: 'authentication',
+        before: 'ember-simple-auth',
         initialize: function(container, application) {
           // register the custom authenticator and authorizer so Ember.SimpleAuth can find them
           container.register('authenticator:custom', App.CustomAuthenticator);
           container.register('authorizer:custom', App.CustomAuthorizer);
-          Ember.SimpleAuth.setup(container, application, {
-            // configure the custom authorizer
-            authorizerFactory: 'authorizer:custom'
-          });
         }
       });
 

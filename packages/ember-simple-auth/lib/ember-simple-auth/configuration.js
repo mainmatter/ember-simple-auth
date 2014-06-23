@@ -1,3 +1,6 @@
+var global = (typeof window !== 'undefined') ? window : {},
+    Ember = global.Ember;
+
 /**
   Ember.SimpleAuth's configuration object.
 
@@ -43,18 +46,64 @@ export default {
   sessionPropertyName: 'session',
 
   /**
-    @property applicationRootUrl
+    The authorizer factory to use as it is registered with Ember's container,
+    see
+    [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register);
+    when the application does not interact with a server that requires
+    authorized requests, no auzthorizer is needed.
+
+    @property sessionPropertyName
+    @readOnly
     @static
-    @private
     @type String
+    @default null
+  */
+  authorizerFactory: null,
+
+  /**
+    The store factory to use as it is registered with Ember's container, see
+    [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register).
+
+    @property storeFactory
+    @readOnly
+    @static
+    @type String
+    @default ember-simple-auth-session-store:local-storage
+  */
+  storeFactory: 'ember-simple-auth-session-store:local-storage',
+
+  /**
+    Ember.SimpleAuth will never authorize requests going to a different origin
+    than the one the Ember.js application was loaded from; to explicitely
+    enable authorization for additional origins, whitelist those origins with
+    this setting. _Beware that origins consist of protocol, host and port (port
+    can be left out when it is 80 for HTTP or 443 for HTTPS)_
+
+    @property crossOriginWhitelist
+    @readOnly
+    @static
+    @type Array
+    @default []
+  */
+  crossOriginWhitelist: [],
+
+  /**
+    @property applicationRootUrl
+    @private
   */
   applicationRootUrl: null,
 
   /**
-    @property extensionInitializers
-    @static
+    @method load
     @private
-    @type Array
   */
-  extensionInitializers: []
+  load: function(container) {
+    var globalConfig = (global.ENV || {})['ember-simple-auth'] || {};
+    this.authenticationRoute      = globalConfig.authenticationRoute || this.authenticationRoute;
+    this.routeAfterAuthentication = globalConfig.routeAfterAuthentication || this.routeAfterAuthentication;
+    this.sessionPropertyName      = globalConfig.sessionPropertyName || this.sessionPropertyName;
+    this.authorizerFactory        = globalConfig.authorizerFactory || this.authorizerFactory;
+    this.storeFactory             = globalConfig.storeFactory || this.storeFactory;
+    this.applicationRootUrl       = container.lookup('router:main').get('rootURL') || '/';
+  }
 };

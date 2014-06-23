@@ -93,9 +93,14 @@
     </script>
 
     <script type="text/javascript">
-      // setup Ember.SimpleAuth in an initializer
+      // configure an authorizer to be used
+      window.ENV = window.ENV || {};
+      window.ENV['ember-simple-auth'] = {
+        authorizerFactory: 'ember-simple-auth-authorizer:oauth2-bearer'
+      };
       Ember.Application.initializer({
         name: 'authentication',
+        before: 'ember-simple-auth',
         initialize: function(container, application) {
           // customize the session so that it allows access to the account object
           Ember.SimpleAuth.Session.reopen({
@@ -108,10 +113,6 @@
           });
           // register the custom authenticator so the session can find it
           container.register('authenticator:custom', App.CustomAuthenticator);
-          Ember.SimpleAuth.setup(container, application, {
-            // configure an authorizer so the accound model can be read from the server
-            authorizerFactory: 'ember-simple-auth-authorizer:oauth2-bearer'
-          });
         }
       });
 

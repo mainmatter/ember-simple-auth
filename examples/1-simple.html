@@ -81,14 +81,6 @@
     </script>
 
     <script type="text/javascript">
-      // setup Ember.SimpleAuth in an initializer
-      Ember.Application.initializer({
-        name: 'authentication',
-        initialize: function(container, application) {
-          Ember.SimpleAuth.setup(container, application);
-        }
-      });
-
       App = Ember.Application.create({});
 
       App.Router.reopen({

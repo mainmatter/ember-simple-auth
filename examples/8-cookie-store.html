@@ -63,11 +63,15 @@
         <div class="form-group">
           <label for="identification">Login</label>
           {{input id='identification' placeholder='Enter Login' class='form-control' value=identification}}
-
         </div>
         <div class="form-group">
           <label for="password">Password</label>
           {{input id='password' placeholder='Enter Password' class='form-control' type='password' value=password}}
+        </div>
+        <div class="checkbox">
+          <label>
+            {{input id='remember_me' type='checkbox' checked=rememberMe}} Remember me for 2 weeks
+          </label>
         </div>
         <button type="submit" class="btn btn-default">Login</button>
       </form>
@@ -83,15 +87,11 @@
     </script>
 
     <script type="text/javascript">
-      // setup Ember.SimpleAuth in an initializer
-      Ember.Application.initializer({
-        name: 'authentication',
-        initialize: function(container, application) {
-          Ember.SimpleAuth.setup(container, application, {
-            storeFactory: 'ember-simple-auth-session-store:cookie'
-          });
-        }
-      });
+      // configure the cookie store to be used
+      window.ENV = window.ENV || {};
+      window.ENV['ember-simple-auth'] = {
+        storeFactory: 'ember-simple-auth-session-store:cookie'
+      };
 
       App = Ember.Application.create({});
 
@@ -109,7 +109,13 @@
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
       App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'ember-simple-auth-authenticator:oauth2-password-grant'
+        authenticatorFactory: 'ember-simple-auth-authenticator:oauth2-password-grant',
+        rememberMe:           false,
+
+        // change the store's cookie expiration time depending on whether "remember me" is checked or not
+        rememberMeChanged: function() {
+          this.get('session.store').cookieExpirationTime = this.get('rememberMe') ? 1209600 : null;
+        }.observes('rememberMe')
       });
 
       // make this route protected

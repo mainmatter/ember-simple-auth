@@ -8,14 +8,12 @@ define('ember-simple-auth/utils/is_secure_url',  ['exports'], function(__exports
   __exports__['default'] = global.Ember.SimpleAuth.Utils.isSecureUrl;
 });
 
+var initializer   = requireModule('ember-simple-auth-oauth2/initializer').default;
 var Authenticator = requireModule('ember-simple-auth-oauth2/authenticators/oauth2').default;
-var Authorizer = requireModule('ember-simple-auth-oauth2/authorizers/oauth2').default;
+var Authorizer    = requireModule('ember-simple-auth-oauth2/authorizers/oauth2').default;
 
 global.Ember.SimpleAuth.Authenticators.OAuth2 = Authenticator;
 global.Ember.SimpleAuth.Authorizers.OAuth2    = Authorizer;
 
-global.Ember.SimpleAuth.initializeExtension(function(container, application, options) {
-  container.register('ember-simple-auth-authorizer:oauth2-bearer', Authenticator);
-  container.register('ember-simple-auth-authenticator:oauth2-password-grant', Authorizer);
-});
+requireModule('ember-simple-auth-oauth2/ember');
 })((typeof global !== 'undefined') ? global : window);

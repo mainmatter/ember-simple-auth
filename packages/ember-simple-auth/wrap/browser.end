@@ -1,5 +1,5 @@
+var initializer                   = requireModule('ember-simple-auth/initializer').default;
 var setup                         = requireModule('ember-simple-auth/setup').default;
-var initializeExtension           = requireModule('ember-simple-auth/initialize_extension').default;
 var Configuration                 = requireModule('ember-simple-auth/configuration').default;
 var Session                       = requireModule('ember-simple-auth/session').default;
 var BaseAuthenticator             = requireModule('ember-simple-auth/authenticators/base').default;
@@ -17,7 +17,7 @@ var LoginControllerMixin          = requireModule('ember-simple-auth/mixins/logi
 global.Ember.SimpleAuth = {
   setup: setup,
 
-  initializeExtension: initializeExtension,
+  Configuration: Configuration,
 
   Session: Session,
 
@@ -45,4 +45,6 @@ global.Ember.SimpleAuth = {
   AuthenticationControllerMixin: AuthenticationControllerMixin,
   LoginControllerMixin:          LoginControllerMixin
 };
+
+requireModule('ember-simple-auth/ember');
 })((typeof global !== 'undefined') ? global : window);

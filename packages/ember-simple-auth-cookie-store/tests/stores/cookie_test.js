@@ -1,5 +1,5 @@
 import Cookie from 'ember-simple-auth-cookie-store/stores/cookie';
-import itBehavesLikeAStore from '/tests/stores/shared/store_behavior';
+import itBehavesLikeAStore from 'ember-simple-auth/tests/stores/shared/store_behavior';
 
 describe('Stores.Cookie', function() {
   beforeEach(function() {
@@ -11,6 +11,16 @@ describe('Stores.Cookie', function() {
     syncExternalChanges: function() {
       this.store.syncData();
     }
+  });
+
+  describe('#persist', function() {
+    it('respects the configured cookieNamePrefix', function() {
+      this.store = Cookie.create();
+      this.store.cookieNamePrefix = 'test:';
+      this.store.persist({ key: 'value' });
+
+      expect(document.cookie).to.contain('test:key=value');
+    });
   });
 
   describe('the "updated" event', function() {

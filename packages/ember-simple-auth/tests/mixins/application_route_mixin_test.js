@@ -14,10 +14,12 @@ describe('ApplicationRouteMixin', function() {
     }).create({ session: this.session });
   });
 
-  describe('activate', function() {
+  describe('#beforeModel', function() {
     beforeEach(function() {
-      this.route.activate();
+      this.transition = { send: function() {}, isActive: false };
       sinon.spy(this.route, 'send');
+      sinon.spy(this.transition, 'send');
+      this.route.beforeModel(this.transition);
     });
 
     it("translates the session's 'sessionAuthenticationSucceeded' event into an action invocation", function(done) {
@@ -62,6 +64,18 @@ describe('ApplicationRouteMixin', function() {
       Ember.run.next(this, function() {
         expect(this.route.send).to.have.been.calledWith('authorizationFailed');
         done();
+      });
+    });
+
+    describe('when the initial transition is still active', function() {
+      it('invokes the action on the transition', function(done) {
+        this.transition.isActive = true;
+        this.session.trigger('sessionAuthenticationSucceeded');
+
+        Ember.run.next(this, function() {
+          expect(this.transition.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
+          done();
+        });
       });
     });
   });
