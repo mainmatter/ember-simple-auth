@@ -233,7 +233,7 @@ module.exports = function(grunt) {
       all: {
         src: [
           'docs/theme/**/*',
-          'examples/**/*',
+          'examples/*',
           'packages/**/*',
           'test/lib/**/*',
           'test/index.html',
