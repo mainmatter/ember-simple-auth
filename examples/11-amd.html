@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SimpleAuth - examples</title>
+    <title>Ember.SimpleAuth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
     <script src="http://builds.emberjs.com/release/ember.js"></script>
-    <script src="../tmp/simple-auth.js"></script>
-    <script src="../tmp/simple-auth-devise.js"></script>
+    <script src="../vendor/loader.js"></script>
+    <script src="../tmp/ember-simple-auth.amd.js"></script>
+    <script src="../tmp/ember-simple-auth-oauth2.amd.js"></script>
   </head>
   <body style="padding-top: 50px;">
     <script type="text/x-handlebars">
@@ -44,7 +45,7 @@
 
     <script type="text/x-handlebars" data-template-name="index">
       <div class="page-header">
-        <h1>Devise example</h1>
+        <h1>AMD example</h1>
       </div>
       {{#unless session.isAuthenticated}}
         <div class="alert alert-info">
@@ -81,25 +82,16 @@
     </script>
 
     <script type="text/javascript">
-      // configure the devise authorizer to be used
-      window.ENV = window.ENV || {};
-      window.ENV['simple-auth'] = {
-        authorizerFactory: 'simple-auth-authorizer:devise'
-      };
-      Ember.Application.initializer({
-        name: 'authentication',
-        before: 'simple-auth',
-        initialize: function(container, application) {
-          SimpleAuth.Authenticators.Devise.reopen({
-            serverTokenEndpoint: '/v5/users/sign_in',
-          });
-        }
-      });
-
       App = Ember.Application.create({});
 
+      var baseInitializer   = requireModule('ember-simple-auth/initializer').default;
+      var oauth2Initializer = requireModule('ember-simple-auth-oauth2/initializer').default;
+
+      App.initializer(baseInitializer);
+      App.initializer(oauth2Initializer);
+
       App.Router.reopen({
-        rootURL: '/examples/10-devise.html'
+        rootURL: '/examples/11-amd.html'
       });
 
       App.Router.map(function() {
@@ -109,23 +101,18 @@
         this.route('protected');
       });
 
+      var ApplicationRouteMixin   = requireModule('ember-simple-auth/mixins/application_route_mixin').default;
+      var LoginControllerMixin    = requireModule('ember-simple-auth/mixins/login_controller_mixin').default;
+      var AuthenticatedRouteMixin = requireModule('ember-simple-auth/mixins/authenticated_route_mixin').default;
+
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'simple-auth-authenticator:devise'
+      App.ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin);
+      App.LoginController  = Ember.Controller.extend(LoginControllerMixin, {
+        authenticatorFactory: 'ember-simple-auth-authenticator:oauth2-password-grant'
       });
 
       // make this route protected
-      App.ProtectedRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin, {
-        // request some data from the server so that the authorizer authorizes that request
-        model: function() {
-          return new Ember.RSVP.Promise(function(resolve, reject) {
-            Ember.$.get('/v5/data').then(function(response) {
-              resolve(JSON.stringify(response));
-            });
-          });
-        }
-      });
+      App.ProtectedRoute = Ember.Route.extend(AuthenticatedRouteMixin);
     </script>
   </body>
 </html>

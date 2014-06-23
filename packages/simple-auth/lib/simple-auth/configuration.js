@@ -1,3 +1,6 @@
+var global = (typeof window !== 'undefined') ? window : {},
+    Ember = global.Ember;
+
 /**
   SimpleAuth's configuration object.
 
