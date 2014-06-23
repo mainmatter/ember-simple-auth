@@ -57,7 +57,8 @@ export default Ember.Mixin.create({
     ]).forEach(function(event) {
       _this.get(Configuration.sessionPropertyName).on(event, function(error) {
         Array.prototype.unshift.call(arguments, event);
-        _this.send.apply(_this, arguments);
+        var target = transition.isActive ? transition : _this;
+        target.send.apply(target, arguments);
       });
     });
   },
