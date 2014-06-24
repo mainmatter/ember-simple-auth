@@ -7,6 +7,9 @@ define('simple-auth/authorizers/base',  ['exports'], function(__exports__) {
 define('simple-auth/utils/is_secure_url',  ['exports'], function(__exports__) {
   __exports__['default'] = global.SimpleAuth.Utils.isSecureUrl;
 });
+define('simple-auth/utils/get-global-config',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.SimpleAuth.Utils.getGlobalConfig;
+});
 
 var initializer   = requireModule('simple-auth-oauth2/initializer').default;
 var Authenticator = requireModule('simple-auth-oauth2/authenticators/oauth2').default;
