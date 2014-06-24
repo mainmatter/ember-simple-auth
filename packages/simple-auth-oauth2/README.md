@@ -127,3 +127,39 @@ window.ENV['simple-auth'] = {
   authorizerFactory: 'simple-auth-authorizer:oauth2-bearer'
 }
 ```
+
+## Installation
+
+To install Ember Simple Auth OAuth 2.0 in an Ember.js application there are
+several options:
+
+* If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
+  add Ember Simple Auth to the `bower.json` file:
+
+  ```js
+  {
+    "dependencies": {
+      "simple-auth": "https://github.com/simplabs/ember-simple-auth-component.git"
+    }
+  }
+  ```
+
+  and import the library to the `Brocfile.js`:
+
+  ```js
+  app.import('vendor/ember-simple-auth/amd/simle-auth-oauth2.amd.js', {
+    // whitelist all modules you want to use, e.g.
+    //
+    // 'simple-auth/authorizers/oauth2': ['default']
+  });
+  ```
+
+* The bower component also includes a browserified version that can simply be
+  loaded in the Ember.js application:
+
+  ```html
+  <script src="vendor/ember-simple-auth/simple-auth-oauth2.js"></script>
+  ```
+
+* Download a prebuilt version from
+  [the releases page](https://github.com/simplabs/ember-simple-auth/releases)
