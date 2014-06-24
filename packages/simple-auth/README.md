@@ -304,12 +304,12 @@ the examples.
 ### Other Examples
 
 * Ember App Kit: https://github.com/erkarl/ember-app-kit-simple-auth
-* SimpleAuth with Rails 4: https://github.com/ugisozols/simple-auth-rails-demo
-* SimpleAuth with ember-cli and the Devise authenticator/authorizer: https://github.com/givanse/ember-cli-simple-auth-devise
+* Ember Simple Auth with Rails 4: https://github.com/ugisozols/simple-auth-rails-demo
+* Ember Simple Auth with ember-cli and the Devise authenticator/authorizer: https://github.com/givanse/ember-cli-simple-auth-devise
 
 ## Installation
 
-To install SimpleAuth in an Ember.js application there are several options:
+To install Ember Simple Auth in an Ember.js application there are several options:
 
 * If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
   add Ember Simple Auth yo the `bower.json` file:
