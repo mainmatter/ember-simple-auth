@@ -1,5 +1,4 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
+import getGlobalConfig from './utils/get-global-config';
 
 /**
   Ember Simple Auth's configuration object.
@@ -106,7 +105,7 @@ export default {
     @private
   */
   load: function(container) {
-    var globalConfig = (global.ENV || {})['simple-auth'] || {};
+    var globalConfig              = getGlobalConfig('simple-auth');
     this.authenticationRoute      = globalConfig.authenticationRoute || this.authenticationRoute;
     this.routeAfterAuthentication = globalConfig.routeAfterAuthentication || this.routeAfterAuthentication;
     this.sessionPropertyName      = globalConfig.sessionPropertyName || this.sessionPropertyName;
