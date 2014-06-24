@@ -83,8 +83,10 @@ module.exports = function() {
     klass.events     = cleanClassItems(extractEvents(klassItems));
     klass.uses       = (klass.uses || []);
     klass.name       = klass.name;
+    klass.shortname  = klass.name.replace(klass.namespace + '.', '');
     klass.anchor     = anchorify(klass.name);
     klasses.push(klass);
   }
+  console.log(klasses);
   return klasses;
 };
