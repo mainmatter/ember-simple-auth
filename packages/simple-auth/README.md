@@ -48,7 +48,7 @@ __will be available in all routes and controllers__ of the application.
 
 While not necessary, the easiest way to use the session is to include the
 `ApplicationRouteMixin` mixin provided by Ember Simple Auth in the
-application's application route:
+application route:
 
 ```js
 // app/routes/application.js
@@ -166,16 +166,17 @@ export default Ember.Controller.extend(LoginControllerMixin, {
 
 Also see the
 [API docs for `Session#authenticate`](http://simple-auth.simplabs.com/simple-auth-api-docs.html#Ember-SimpleAuth-Session-authenticate),
-[LoginControllerMixin](http://simple-auth.simplabs.com/simple-auth-api-docs.html#Ember-SimpleAuth-LoginControllerMixin)
+[`LoginControllerMixin`](http://simple-auth.simplabs.com/simple-auth-api-docs.html#Ember-SimpleAuth-LoginControllerMixin)
 and
-[AuthenticationControllerMixin](http://simple-auth.simplabs.com/simple-auth-api-docs.html#Ember-SimpleAuth-AuthenticationControllerMixin).
+[`AuthenticationControllerMixin`](http://simple-auth.simplabs.com/simple-auth-api-docs.html#Ember-SimpleAuth-AuthenticationControllerMixin).
 
 ### Authorizers
 
 If the Ember.js application makes requests to a backend server that requires
 authorization and an authorizer is configured, Ember Simple Auth sets up an
 [`$.ajaxPrefilter`](http://api.jquery.com/jQuery.ajaxPrefilter/) that is used
-to authorize AJAX requests.
+to authorize AJAX requests. An authorizer can be configured in the global
+configuration object:
 
 ```js
 window.ENV = window.ENV || {};
@@ -186,9 +187,9 @@ window.ENV['simple-auth'] = {
 
 While the authenticator acquires some sort of secret information from an
 authentication provider when it authenticates the session, __the authorizer
-uses that secret information to authorize subsequent requests__, thus the
-authenticator and authorizer have to fit together. An application always only
-has one authorizer.
+uses that secret information acquired by the authenticator to authorize
+subsequent requests, thus the authenticator and authorizer have to fit
+together__. An application always only has one authorizer.
 
 Ember Simple Auth does not include any authorizers in the base library but
 offers extension libraries that can be loaded in the application as needed:
@@ -199,12 +200,12 @@ offers extension libraries that can be loaded in the application as needed:
 #### Implementing a custom Authorizer
 
 Besides the option to use one of the predefined authorizers from the extension
-libraries, it is easy to implement custom authorizers as well. All that is
-necessary is to extend the base authorizer and implement one method (see the
+libraries, it is easy to implement custom authorizers as well. All you have to
+do is to extend the base authorizer and implement one method (see the
 [API docs for `Authorizers.Base`](http://simple-auth.simplabs.com/simple-auth-api-docs.html#Ember-SimpleAuth-Authorizers-Base)).
 
 To use a custom authorizer, register it with Ember's container and configure it
-in the global configuration hash:
+in the global configuration object:
 
 ```js
 import Base from 'simple-auth/authorizers/base';
@@ -248,7 +249,7 @@ window.ENV['simple-auth'] = {
 
 Ember Simple Auth __persists the session state so it survives page reloads__.
 There is only one store per application that can be configured in the global
-configuration hash:
+configuration object:
 
 ```js
 window.ENV = window.ENV || {};
@@ -261,13 +262,13 @@ window.ENV['simple-auth'] = {
 
 Ember Simple Auth comes with 2 bundled stores:
 
-##### `Stores.LocalStorage`
+##### `localStorage` Store
 
 The `localStorage` store (see the
 [API docs for `Stores.LocalStorage`](http://simple-auth.simplabs.com/simple-auth-api-docs.html#Ember-SimpleAuth-Stores-LocalStorage))
 stores its data in the browser's `localStorage`; __this is the default store__.
 
-##### `Stores.Ephemeral`
+##### Ephemeral Store
 
 The ephemeral store (see the
 [API docs for `Stores.Ephemeral`](http://simple-auth.simplabs.com/simple-auth-api-docs.html#Ember-SimpleAuth-Stores-Ephemeral))
@@ -281,8 +282,8 @@ A cookie based store is available in the extension library
 #### Implementing a custom Store
 
 Implementing a custom store is as easy as implementing custom authenticators or
-authorizers. All that is necessary is to extend the base store and implement
-three methods (see the
+authorizers. All you have to do is to extend the base store and implement three
+methods (see the
 [API docs for `Stores.Base`](http://simple-auth.simplabs.com/simple-auth-api-docs.html#Ember-SimpleAuth-Stores-Base)).
 
 ## Examples
@@ -308,8 +309,7 @@ the examples.
 
 ## Installation
 
-To install SimpleAuth and/or its extension libraries in an Ember.js
-application you have several options:
+To install SimpleAuth in an Ember.js application there are several options:
 
 * If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
   add Ember Simple Auth yo the `bower.json` file:
@@ -322,18 +322,25 @@ application you have several options:
   }
   ```
 
-  and add the dependency to the `Brocfile.js`:
+  and import the library to the `Brocfile.js`:
 
   ```js
-  app.import('vendor/simple-auth/amd/simle-auth.amd.js', {
+  app.import('vendor/ember-simple-auth/amd/simle-auth.amd.js', {
     // whitelist all modules you want to use, e.g.
     //
     // 'simple-auth/authorizers/base': ['default']
   });
   ```
 
+* The bower component also includes a browserified version that can simply be
+  loaded in the Ember.js application:
+
+  ```html
+  <script src="vendor/ember-simple-auth/simple-auth.js"></script>
+  ```
+
 * Download a prebuilt version from
-  [the releases page](https://github.com/simplabs/simple-auth/releases)
+  [the releases page](https://github.com/simplabs/ember-simple-auth/releases)
 * [Build it yourself](#building)
 * If you're using Ruby on Rails, you can add the (unofficial) source gem that
   supports the Ruby on Rails asset pipeline by adding it to your `Gemfile`:
