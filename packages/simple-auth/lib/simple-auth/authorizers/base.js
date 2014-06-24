@@ -6,14 +6,14 @@ var global = (typeof window !== 'undefined') ? window : {},
   implementing custom authorizers and must not be used directly.__
 
   __The authorizer preprocesses all XHR requests__ (except ones to 3rd party
-  origins, see [SimpleAuth.setup](#Ember-SimpleAuth-setup)) and makes
-  sure they have the required data attached that allows the server to identify
-  the user making the request. This data might be a specific header, data in
-  the query part of the URL, cookies etc. __The authorizer has to fit the
-  authenticator__ (see
-  [SimpleAuth.Authenticators.Base](#Ember-SimpleAuth-Authenticators-Base))
-  as it relies on data that the authenticator retrieved during authentication
-  and that it makes available through the session.
+  origins, see
+  [Configuration.crossOriginWhitelist](#SimpleAuth-Configuration-crossOriginWhitelist))
+  and makes sure they have the required data attached that allows the server to
+  identify the user making the request. This data might be an HTTP header,
+  query string parameters in the URL, cookies etc. __The authorizer has to fit
+  the authenticator__ (see
+  [SimpleAuth.Authenticators.Base](#SimpleAuth-Authenticators-Base))
+  as it relies on data that the authenticator acquires during authentication.
 
   @class Base
   @namespace SimpleAuth.Authorizers
@@ -23,12 +23,12 @@ var global = (typeof window !== 'undefined') ? window : {},
 export default Ember.Object.extend({
   /**
     The session the authorizer gets the data it needs to authorize requests
-    from (see [SimpleAuth.Session](#Ember-SimpleAuth-Session)).
+    from.
 
     @property session
     @readOnly
     @type SimpleAuth.Session
-    @default the session instance that is created during SimpleAuth' setup (see [SimpleAuth.setup](#Ember-SimpleAuth-setup))
+    @default the session instance
   */
   session: null,
 
