@@ -211,7 +211,7 @@ several options:
   and import the library to the `Brocfile.js`:
 
   ```js
-  app.import('vendor/ember-simple-auth/amd/simle-auth-devise.amd.js', {
+  app.import('vendor/ember-simple-auth/amd/simple-auth-devise.amd.js', {
     // whitelist all modules you want to use, e.g.
     //
     // 'simple-auth/authorizers/devise': ['default']
