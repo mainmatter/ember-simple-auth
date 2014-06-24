@@ -4,22 +4,20 @@ var global = (typeof window !== 'undefined') ? window : {},
 /**
   __The session provides access to the current authentication state as well as
   any data the authenticator resolved with__ (see
-  [SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)).
-  It is created when SimpleAuth is set up (see
-  [SimpleAuth.setup](#Ember-SimpleAuth-setup)) and __injected into all
-  controllers and routes so that these parts of the application
-  can always access the current authentication state and other data__,
-  depending on the used authenticator and whether the session is actually
-  authenticated (see
-  [SimpleAuth.Authenticators.Base](#Ember-SimpleAuth-Authenticators-Base))).
+  [`Authenticators.Base#authenticate`](#SimpleAuth-Authenticators-Base-authenticate)).
+  It is created when Ember Simple Auth is set up and __injected into all
+  controllers and routes so that these parts of the application can always
+  access the current authentication state and other data__, depending on the
+  authenticator in use and whether the session is actually authenticated (see
+  [`Authenticators.Base`](#SimpleAuth-Authenticators-Base)).
 
-  The session also provides methods to authenticate it and to invalidate itself
+  The session also provides methods to authenticate and to invalidate itself
   (see
-  [SimpleAuth.Session#authenticate](#Ember-SimpleAuth-Session-authenticate),
-  [SimpleAuth.Session#invaldiate](#Ember-SimpleAuth-Session-invaldiate)).
+  [`Session#authenticate`](#SimpleAuth-Session-authenticate),
+  [`Session#invaldiate`](#SimpleAuth-Session-invaldiate)).
   These methods are usually invoked through actions from routes or controllers.
   To authenticate the session manually, simple call the
-  [SimpleAuth.Session#authenticate](#Ember-SimpleAuth-Session-authenticate)
+  [`Session#authenticate`](#SimpleAuth-Session-authenticate)
   method with the authenticator factory to use as well as any options the
   authenticator needs to authenticate the session:
 
@@ -31,15 +29,10 @@ var global = (typeof window !== 'undefined') ? window : {},
   });
   ```
 
-  When the session's authentication state changes or an attempt to change it
-  fails, it will trigger the `'sessionAuthenticationSucceeded'`,
-  `'sessionAuthenticationFailed'`, `'sessionInvalidationSucceeded'` or
-  `'sessionInvalidationFailed'` events.
-
   The session also observes the store and - if it is authenticated - the
   authenticator for changes (see
-  [SimpleAuth.Authenticators.Base](#Ember-SimpleAuth-Authenticators-Base)
-  end [SimpleAuth.Stores.Base](#Ember-SimpleAuth-Stores-Base)).
+  [`Authenticators.Base`](#SimpleAuth-Authenticators-Base)
+  end [`Stores.Base`](#SimpleAuth-Stores-Base)).
 
   @class Session
   @namespace SimpleAuth
@@ -50,43 +43,48 @@ var global = (typeof window !== 'undefined') ? window : {},
 export default Ember.ObjectProxy.extend(Ember.Evented, {
   /**
     Triggered __whenever the session is successfully authenticated__. When the
-    application uses the mixin,
-    [SimpleAuth.ApplicationRouteMixin.actions#sessionAuthenticationSucceeded](#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationSucceeded)
+    application uses the
+    [`ApplicationRouteMixin` mixin](#SimpleAuth-ApplicationRouteMixin),
+    [`ApplicationRouteMixin.actions#sessionAuthenticationSucceeded`](#SimpleAuth-ApplicationRouteMixin-sessionAuthenticationSucceeded)
     will be invoked whenever this event is triggered.
 
     @event sessionAuthenticationSucceeded
   */
   /**
     Triggered __whenever an attempt to authenticate the session fails__. When
-    the application uses the mixin,
-    [SimpleAuth.ApplicationRouteMixin.actions#sessionAuthenticationFailed](#Ember-SimpleAuth-ApplicationRouteMixin-sessionAuthenticationFailed)
+    the application uses the
+    [`ApplicationRouteMixin` mixin](#SimpleAuth-ApplicationRouteMixin),
+    [`ApplicationRouteMixin.actions#sessionAuthenticationFailed`](#SimpleAuth-ApplicationRouteMixin-sessionAuthenticationFailed)
     will be invoked whenever this event is triggered.
 
     @event sessionAuthenticationFailed
-    @param {Object} error The error object; this depends on the authenticator in use, see [SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)
+    @param {Object} error The error object; this depends on the authenticator in use, see [SimpleAuth.Authenticators.Base#authenticate](#SimpleAuth-Authenticators-Base-authenticate)
   */
   /**
     Triggered __whenever the session is successfully invalidated__. When the
-    application uses the mixin,
-    [SimpleAuth.ApplicationRouteMixin.actions#sessionInvalidationSucceeded](#Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)
+    application uses the
+    [`ApplicationRouteMixin` mixin](#SimpleAuth-ApplicationRouteMixin),
+    [`ApplicationRouteMixin.actions#sessionInvalidationSucceeded`](#SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)
     will be invoked whenever this event is triggered.
 
     @event sessionInvalidationSucceeded
   */
   /**
     Triggered __whenever an attempt to invalidate the session fails__. When the
-    application uses the mixin,
-    [SimpleAuth.ApplicationRouteMixin.actions#sessionInvalidationFailed](#Ember-SimpleAuth-ApplicationRouteMixin-sessionInvalidationFailed)
+    application uses the
+    [`ApplicationRouteMixin` mixin](#SimpleAuth-ApplicationRouteMixin),
+    [`ApplicationRouteMixin.actions#sessionInvalidationFailed`](#SimpleAuth-ApplicationRouteMixin-sessionInvalidationFailed)
     will be invoked whenever this event is triggered.
 
     @event sessionInvalidationFailed
-    @param {Object} error The error object; this depends on the authenticator in use, see [SimpleAuth.Authenticators.Base#invalidate](#Ember-SimpleAuth-Authenticators-Base-invalidate)
+    @param {Object} error The error object; this depends on the authenticator in use, see [SimpleAuth.Authenticators.Base#invalidate](#SimpleAuth-Authenticators-Base-invalidate)
   */
   /**
     Triggered __whenever the server rejects the authorization information
     passed with a request and responds with status 401__. When the application
-    uses the mixin,
-    [SimpleAuth.ApplicationRouteMixin.actions#authorizationFailed](#Ember-SimpleAuth-ApplicationRouteMixin-authorizationFailed)
+    uses the
+    [`ApplicationRouteMixin` mixin](#SimpleAuth-ApplicationRouteMixin),
+    [`ApplicationRouteMixin.actions#authorizationFailed`](#SimpleAuth-ApplicationRouteMixin-authorizationFailed)
     will be invoked whenever this event is triggered.
 
     @event authorizationFailed
@@ -103,9 +101,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   */
   authenticatorFactory: null,
   /**
-    The store used to persist session properties. This is assigned during
-    SimpleAuth's setup and can be configured there
-    (see [SimpleAuth.setup](#Ember-SimpleAuth-setup)).
+    The store used to persist session properties.
 
     @property store
     @type SimpleAuth.Stores.Base
@@ -145,7 +141,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     Authenticates the session with an `authenticator` and appropriate
     `options`. __This delegates the actual authentication work to the
     `authenticator`__ and handles the returned promise accordingly (see
-    [SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)).
+    [`Authenticators.Base#authenticate`](#SimpleAuth-Authenticators-Base-authenticate)).
     All data the authenticator resolves with will be saved in the session.
 
     __This method returns a promise itself. A resolving promise indicates that
@@ -176,10 +172,10 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   /**
     Invalidates the session with the authenticator it is currently
     authenticated with (see
-    [SimpleAuth.Session#authenticatorFactory](#Ember-SimpleAuth-Session-authenticatorFactory)).
+    [`Session#authenticatorFactory`](#SimpleAuth-Session-authenticatorFactory)).
     __This invokes the authenticator's `invalidate` method and handles the
     returned promise accordingly__ (see
-    [SimpleAuth.Authenticators.Base#invalidate](#Ember-SimpleAuth-Authenticators-Base-invalidate)).
+    [`Authenticators.Base#invalidate`](#SimpleAuth-Authenticators-Base-invalidate)).
 
     __This method returns a promise itself. A resolving promise indicates that
     the session was successfully invalidated__ while a rejecting promise
