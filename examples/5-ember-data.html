@@ -133,7 +133,7 @@
       App.ProtectedRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin);
       App.PostsRoute     = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin, {
         model: function() {
-          // SimpleAuth adds the "Authorization" header to this AJAX request automatically
+          // Ember Simple Auth adds the "Authorization" header to this AJAX request automatically
           return this.get('store').findAll('post');
         }
       });

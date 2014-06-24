@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
   this.registerTask('default', ['test']);
 
-  this.registerTask('dist', 'Builds a distributable version of SimpleAuth', [
+  this.registerTask('dist', 'Builds a distributable version of Ember Simple Auth', [
     'lint',
     'build',
     'uglify:library',
@@ -10,14 +10,14 @@ module.exports = function(grunt) {
     'docs'
   ]);
 
-  this.registerTask('build', 'Builds SimpleAuth', [
+  this.registerTask('build', 'Builds Ember Simple Auth', [
     'clean',
     'transpile:amd',
     'concat:amd',
     'concat:browser'
   ]);
 
-  this.registerTask('build_tests', "Builds SimpleAuth's tests", [
+  this.registerTask('build_tests', "Builds Ember Simple Auth's tests", [
     'build',
     'transpile:tests',
     'concat:tests',
