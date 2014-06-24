@@ -36,6 +36,8 @@ export default Ember.Mixin.create({
       @param {Object} options Any options the authenticator needs to authenticate the session
     */
     authenticate: function(options) {
+      var authenticatorFactory = this.get('authenticatorFactory');
+      Ember.assert('AuthenticationControllerMixin/LoginControllerMixin require the authenticatorFactory property to be set on the controller', !Ember.isEmpty(authenticatorFactory));
       return this.get(Configuration.sessionPropertyName).authenticate(this.get('authenticatorFactory'), options);
     }
   }
