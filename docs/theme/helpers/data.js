@@ -87,6 +87,5 @@ module.exports = function() {
     klass.anchor     = anchorify(klass.name);
     klasses.push(klass);
   }
-  console.log(klasses);
   return klasses;
 };
