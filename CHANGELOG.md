@@ -1,3 +1,39 @@
+# 0.6.0
+
+* __[BREAKING]__ Ember Simple Auth's `SimpleAuth` object is no longer attached
+  to the `Ember` global but is now a global itself (in the browserified
+  distribution that exports that global). When you were referring to e.g.
+  `Ember.SimpleAuth.ApplicationRouteMixin` you now have to change that to
+  just `SimpleAuth.ApplicationRouteMixin`.
+* __[BREAKING]__ The requirement for defining an initializer and call
+  `SimpleAuth.setup` in that has been dropped. Ember Simple Auth will now
+  setup itself once it is loaded. Existing Ember Simple Auth initializers
+  should be removed.
+* __[BREAKING]__ As `SimpleAuth.setup` was removed there now is a new way to
+  configure Ember Simple Auth. Instead of passing configuration values to the
+  `setup` method, these values are now defined on `window.ENV['simple-auth']`
+  (and `window.ENV['simple-auth-oauth']` etc. for the extension libraries).
+  See the
+  [API Docs for `Configuration`](http://ember-simple-auth.simplabs.com/simple-auth-api-docs.html#SimpleAuth-Configuration)
+  for more information.
+* __[BREAKING]__ The "namespace" for all components that Ember Simple Auth
+  registers in Ember's container has been changed from 'ember-simple-auth-' to
+  just 'simple-auth-'.
+* __[BREAKING]__ All underscores have been replaced with dashes in filenames.
+  This only affects users that were using the AMD build.
+* __[BREAKING]__ The AMD builds are no longer distributed in the 'amd/'
+  subfolder but in the root level along with the browserified versions.
+* The `ApplicationRouteMixin` now subscribes to the session's events in the
+  `beforeModel` method, see #199.
+* Added documentation on how to disable server sessions when using the Devise
+  extension library, see #204.
+* The authorizer will not be used if it is destroyed already, see #191.
+* The check for cross origin requests has been simplified, see #190.
+* Most of the examples in the READMEs and API docs have been rewritten to focus
+  on Ember CLI and ES6 modules instead of the browserified distribution.
+* The cookie store example now implements "remember me" functionality.
+* There is a new example that uses the AMD distribution.
+
 # 0.5.3
 
 * fixed the AMD build so it does not depend on the Ember.SimpleAuth global, see
