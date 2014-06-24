@@ -62,11 +62,12 @@ export default Base.extend({
 
   /**
     Authenticates the session with the specified `credentials`; the credentials
-    are `POST`ed to the `serverTokenEndpoint` and if they are valid the server
-    returns an auth token and email in response . __If the credentials are
-    valid and authentication succeeds, a promise that resolves with the
-    server's response is returned__, otherwise a promise that rejects with the
-    error is returned.
+    are `POST`ed to the
+    [`Authenticators.Devise#serverTokenEndpoint`](#SimpleAuth-Authenticators-Devise-serverTokenEndpoint)
+    and if they are valid the server returns an auth token and email in
+    response. __If the credentials are valid and authentication succeeds, a
+    promise that resolves with the server's response is returned__, otherwise a
+    promise that rejects with the server error is returned.
 
     @method authenticate
     @param {Object} options The credentials to authenticate the session with
