@@ -11,30 +11,38 @@ var global = (typeof window !== 'undefined') ? window : {},
   provider like Facebook etc. and depends on the specific authenticator. Any
   data that the authenticator receives upon successful authentication and
   resolves with from the
-  [SimpleAuth.Authenticators.Base#authenticate](#Ember-SimpleAuth-Authenticators-Base-authenticate)
+  [`Authenticators.Base#authenticate`](#SimpleAuth-Authenticators-Base-authenticate)
   method is stored in the session and can then be used by the authorizer (see
-  [SimpleAuth.Authorizers.Base](#Ember-SimpleAuth-Authorizers-Base)).
+  [`Authorizers.Base`](#SimpleAuth-Authorizers-Base)).
 
   The authenticator also decides whether a set of data that was restored from
   the session store (see
-  [SimpleAuth.Stores.Base](#Ember-SimpleAuth-Stores-Base)) is sufficient
-  for the session to be authenticated or not.
+  [`Stores.Base`](#SimpleAuth-Stores-Base)) is sufficient for the session to be
+  authenticated or not.
 
   __Custom authenticators have to be registered with Ember's dependency
   injection container__ so that the session can retrieve an instance, e.g.:
 
   ```javascript
-  var CustomAuthenticator = SimpleAuth.Authenticators.Base.extend({
+  import Base from 'simple-auth/authenticators/base';
+
+  var CustomAuthenticator = Base.extend({
     ...
   });
+
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
       container.register('authenticator:custom', CustomAuthenticator);
-      SimpleAuth.setup(container, application);
     }
   });
-  App.AuthenticationController  = Ember.Controller.extend(SimpleAuth.AuthenticationControllerMixin, {
+  ```
+
+  ```javascript
+  // app/controllers/login.js
+  import AuthenticationControllerMixin from 'simple-auth/mixins/authentication_controller_mixin';
+
+  export default Ember.Controller.extend(AuthenticationControllerMixin, {
     authenticatorFactory: 'authenticator:custom'
   });
   ```
@@ -52,7 +60,7 @@ export default Ember.Object.extend(Ember.Evented, {
     it or an event from is triggered from an external authentication provider.
     The session automatically catches that event, passes the updated data back
     to the authenticator's
-    [SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)
+    [SimpleAuth.Authenticators.Base#restore](#SimpleAuth-Authenticators-Base-restore)
     method and handles the result of that invocation accordingly.
 
     @event sessionDataUpdated
@@ -99,7 +107,7 @@ export default Ember.Object.extend(Ember.Evented, {
     implements (e.g. a set of credentials or a Facebook account id etc.). __The
     session will invoke this method when an action in the appliaction triggers
     authentication__ (see
-    [SimpleAuth.AuthenticationControllerMixin.actions#authenticate](#Ember-SimpleAuth-AuthenticationControllerMixin-authenticate)).
+    [SimpleAuth.AuthenticationControllerMixin.actions#authenticate](#SimpleAuth-AuthenticationControllerMixin-authenticate)).
 
     __This method returns a promise. A resolving promise will result in the
     session being authenticated.__ Any properties the promise resolves with
