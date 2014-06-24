@@ -55,7 +55,7 @@ import Configuration from './../configuration';
 
   @class ApplicationRouteMixin
   @namespace SimpleAuth
-  @module simple-auth/mixins/application_route_mixin
+  @module simple-auth/mixins/application-route-mixin
   @extends Ember.Mixin
   @static
 */

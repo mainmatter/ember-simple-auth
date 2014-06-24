@@ -56,7 +56,7 @@ application route:
 
 ```js
 // app/routes/application.js
-import ApplicationRouteMixin from 'simple-auth/mixins/application_route_mixin';
+import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
 
 export default Ember.Route.extend(ApplicationRouteMixin);
 ```
@@ -84,7 +84,7 @@ the respective route (see the
 
 ```js
 // app/routes/protected.js
-import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated_route_mixin';
+import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin);
 ```
@@ -151,7 +151,7 @@ or when using one of the controller mixins:
 
 ```js
 // app/controllers/login.js
-import LoginControllerMixin from 'simple-auth/mixins/login_controller_mixin';
+import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
 
 export default Ember.Controller.extend(LoginControllerMixin, {
   authenticatorFactory: 'authenticator:custom'

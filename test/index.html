@@ -7,7 +7,7 @@
 </head>
 <body>
   <div id="mocha"></div>
-  <script src="lib/dependencies_loader.js"></script>
+  <script src="lib/dependencies-loader.js"></script>
   <script src="lib/shims.js"></script>
   <script src="vendor/chai.js"></script>
   <script src="vendor/sinon-chai.js"></script>
@@ -26,7 +26,7 @@
   <script type="text/javascript">
     Ember.Logger.warn = Ember.K;
     for (var key in requireModule.registry) {
-      if (/_test$/.test(key)) {
+      if (/-test$/.test(key)) {
         requireModule(key);
       }
     }

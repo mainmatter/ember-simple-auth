@@ -1,5 +1,5 @@
 import Base from 'simple-auth/authenticators/base';
-import isSecureUrl from 'simple-auth/utils/is_secure_url';
+import isSecureUrl from 'simple-auth/utils/is-secure-url';
 import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
 var global = (typeof window !== 'undefined') ? window : {},

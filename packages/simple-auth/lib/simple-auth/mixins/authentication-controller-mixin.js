@@ -12,7 +12,7 @@ import Configuration from './../configuration';
 
   @class AuthenticationControllerMixin
   @namespace SimpleAuth
-  @module simple-auth/mixins/authentication_controller_mixin
+  @module simple-auth/mixins/authentication-controller-mixin
   @extends Ember.Mixin
 */
 export default Ember.Mixin.create({

@@ -101,9 +101,9 @@
         this.route('protected');
       });
 
-      var ApplicationRouteMixin   = requireModule('simple-auth/mixins/application_route_mixin').default;
-      var LoginControllerMixin    = requireModule('simple-auth/mixins/login_controller_mixin').default;
-      var AuthenticatedRouteMixin = requireModule('simple-auth/mixins/authenticated_route_mixin').default;
+      var ApplicationRouteMixin   = requireModule('simple-auth/mixins/application-route-mixin').default;
+      var LoginControllerMixin    = requireModule('simple-auth/mixins/login-controller-mixin').default;
+      var AuthenticatedRouteMixin = requireModule('simple-auth/mixins/authenticated-route-mixin').default;
 
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin);

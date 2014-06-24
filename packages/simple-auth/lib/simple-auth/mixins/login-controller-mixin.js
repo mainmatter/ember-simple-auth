@@ -2,7 +2,7 @@ var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
 import Configuration from './../configuration';
-import AuthenticationControllerMixin from './authentication_controller_mixin';
+import AuthenticationControllerMixin from './authentication-controller-mixin';
 
 /**
   This mixin is for the controller that handles the
@@ -30,7 +30,7 @@ import AuthenticationControllerMixin from './authentication_controller_mixin';
 
   @class LoginControllerMixin
   @namespace SimpleAuth
-  @module simple-auth/mixins/login_controller_mixin
+  @module simple-auth/mixins/login-controller-mixin
   @extends SimpleAuth.AuthenticationControllerMixin
 */
 export default Ember.Mixin.create(AuthenticationControllerMixin, {

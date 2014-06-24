@@ -1,5 +1,5 @@
-import LocalStorage from 'simple-auth/stores/local_storage';
-import itBehavesLikeAStore from './shared/store_behavior';
+import LocalStorage from 'simple-auth/stores/local-storage';
+import itBehavesLikeAStore from './shared/store-behavior';
 
 describe('Stores.LocalStorage', function() {
   beforeEach(function() {

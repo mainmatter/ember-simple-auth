@@ -1,5 +1,5 @@
 import Ephemeral from 'simple-auth/stores/ephemeral';
-import itBehavesLikeAStore from './shared/store_behavior';
+import itBehavesLikeAStore from './shared/store-behavior';
 
 describe('Stores.Ephemeral', function() {
   beforeEach(function() {

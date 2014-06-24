@@ -5,15 +5,15 @@ var Session                       = requireModule('simple-auth/session').default
 var BaseAuthenticator             = requireModule('simple-auth/authenticators/base').default;
 var BaseAuthorizer                = requireModule('simple-auth/authorizers/base').default;
 var BaseStore                     = requireModule('simple-auth/stores/base').default;
-var LocalStorageStore             = requireModule('simple-auth/stores/local_storage').default;
+var LocalStorageStore             = requireModule('simple-auth/stores/local-storage').default;
 var EphemeralStore                = requireModule('simple-auth/stores/ephemeral').default;
-var flatObjectsAreEqual           = requireModule('simple-auth/utils/flat_objects_are_equal').default;
-var isSecureUrl                   = requireModule('simple-auth/utils/is_secure_url').default;
+var flatObjectsAreEqual           = requireModule('simple-auth/utils/flat-objects-are-equal').default;
+var isSecureUrl                   = requireModule('simple-auth/utils/is-secure-url').default;
 var getGlobalConfig               = requireModule('simple-auth/utils/get-global-config').default;
-var ApplicationRouteMixin         = requireModule('simple-auth/mixins/application_route_mixin').default;
-var AuthenticatedRouteMixin       = requireModule('simple-auth/mixins/authenticated_route_mixin').default;
-var AuthenticationControllerMixin = requireModule('simple-auth/mixins/authentication_controller_mixin').default;
-var LoginControllerMixin          = requireModule('simple-auth/mixins/login_controller_mixin').default;
+var ApplicationRouteMixin         = requireModule('simple-auth/mixins/application-route-mixin').default;
+var AuthenticatedRouteMixin       = requireModule('simple-auth/mixins/authenticated-route-mixin').default;
+var AuthenticationControllerMixin = requireModule('simple-auth/mixins/authentication-controller-mixin').default;
+var LoginControllerMixin          = requireModule('simple-auth/mixins/login-controller-mixin').default;
 
 global.SimpleAuth = {
   setup: setup,

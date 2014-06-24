@@ -1,5 +1,5 @@
 import Base from 'simple-auth/authorizers/base';
-import isSecureUrl from 'simple-auth/utils/is_secure_url';
+import isSecureUrl from 'simple-auth/utils/is-secure-url';
 
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;

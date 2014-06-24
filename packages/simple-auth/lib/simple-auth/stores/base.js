@@ -1,7 +1,7 @@
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
-import flatObjectsAreEqual from '../utils/flat_objects_are_equal';
+import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
 
 /**
   The base for all store types. __This serves as a starting point for

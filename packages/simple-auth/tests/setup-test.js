@@ -1,7 +1,7 @@
 import setup from 'simple-auth/setup';
 import Configuration from 'simple-auth/configuration';
 import Session from 'simple-auth/session';
-import LocalStorageStore from 'simple-auth/stores/local_storage';
+import LocalStorageStore from 'simple-auth/stores/local-storage';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
 
 describe('setup', function() {

@@ -1,7 +1,7 @@
 define('simple-auth/stores/base',  ['exports'], function(__exports__) {
   __exports__['default'] = global.SimpleAuth.Stores.Base;
 });
-define('simple-auth/utils/flat_objects_are_equal',  ['exports'], function(__exports__) {
+define('simple-auth/utils/flat-objects-are-equal',  ['exports'], function(__exports__) {
   __exports__['default'] = global.SimpleAuth.Utils.flatObjectsAreEqual;
 });
 define('simple-auth/utils/get-global-config',  ['exports'], function(__exports__) {

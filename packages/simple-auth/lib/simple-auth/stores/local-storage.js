@@ -2,7 +2,7 @@ var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
 import Base from './base';
-import flatObjectsAreEqual from '../utils/flat_objects_are_equal';
+import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
 
 /**
   Store that saves its data in the browser's `localStorage`.
@@ -14,7 +14,7 @@ import flatObjectsAreEqual from '../utils/flat_objects_are_equal';
 
   @class LocalStorage
   @namespace SimpleAuth.Stores
-  @module simple-auth/stores/local_storage
+  @module simple-auth/stores/local-storage
   @extends Stores.Base
 */
 export default Base.extend({

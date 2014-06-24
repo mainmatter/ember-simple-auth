@@ -40,7 +40,7 @@ var global = (typeof window !== 'undefined') ? window : {},
 
   ```javascript
   // app/controllers/login.js
-  import AuthenticationControllerMixin from 'simple-auth/mixins/authentication_controller_mixin';
+  import AuthenticationControllerMixin from 'simple-auth/mixins/authentication-controller-mixin';
 
   export default Ember.Controller.extend(AuthenticationControllerMixin, {
     authenticatorFactory: 'authenticator:custom'

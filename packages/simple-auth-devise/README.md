@@ -165,7 +165,7 @@ It then also needs to specify the Devise authenticator to be used:
 
 ```js
 // app/controllers/login.js
-import LoginControllerMixin from 'simple-auth/mixins/login_controller_mixin'
+import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin'
 
 export default Ember.Controller.extend(LoginControllerMixin, {
   authenticatorFactory: 'simple-auth-authenticator:devise'

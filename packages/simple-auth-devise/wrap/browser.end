@@ -4,7 +4,7 @@ define('simple-auth/authenticators/base',  ['exports'], function(__exports__) {
 define('simple-auth/authorizers/base',  ['exports'], function(__exports__) {
   __exports__['default'] = global.SimpleAuth.Authorizers.Base;
 });
-define('simple-auth/utils/is_secure_url',  ['exports'], function(__exports__) {
+define('simple-auth/utils/is-secure-url',  ['exports'], function(__exports__) {
   __exports__['default'] = global.SimpleAuth.Utils.isSecureUrl;
 });
 define('simple-auth/utils/get-global-config',  ['exports'], function(__exports__) {

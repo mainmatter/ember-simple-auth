@@ -1,5 +1,5 @@
 import Cookie from 'simple-auth-cookie-store/stores/cookie';
-import itBehavesLikeAStore from 'simple-auth/tests/stores/shared/store_behavior';
+import itBehavesLikeAStore from 'simple-auth/tests/stores/shared/store-behavior';
 
 describe('Stores.Cookie', function() {
   beforeEach(function() {

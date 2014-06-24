@@ -1,4 +1,4 @@
-import LoginControllerMixin from 'simple-auth/mixins/login_controller_mixin';
+import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
 import Session from 'simple-auth/session';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
 

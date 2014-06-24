@@ -1,5 +1,5 @@
 import Base from 'simple-auth/stores/base';
-import flatObjectsAreEqual from 'simple-auth/utils/flat_objects_are_equal';
+import flatObjectsAreEqual from 'simple-auth/utils/flat-objects-are-equal';
 import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
 var global = (typeof window !== 'undefined') ? window : {},
@@ -25,7 +25,7 @@ var global = (typeof window !== 'undefined') ? window : {},
 
   ```js
   // app/controllers/login.js
-  import LoginControllerMixin from 'simple-auth/mixins/login_controller_mixin';
+  import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
 
   export default Ember.Controller.extend(LoginControllerMixin, {
     rememberMe: false,

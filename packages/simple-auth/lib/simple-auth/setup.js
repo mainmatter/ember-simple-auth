@@ -1,6 +1,6 @@
 import Configuration from './configuration';
 import Session from './session';
-import LocalStorage from './stores/local_storage';
+import LocalStorage from './stores/local-storage';
 import Ephemeral from './stores/ephemeral';
 
 function extractLocationOrigin(location) {

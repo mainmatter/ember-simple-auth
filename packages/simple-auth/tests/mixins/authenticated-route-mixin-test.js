@@ -1,4 +1,4 @@
-import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated_route_mixin';
+import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
 import Session from 'simple-auth/session';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
 
