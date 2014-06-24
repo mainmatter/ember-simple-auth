@@ -13,6 +13,10 @@ To enable the OAuth 2.0 extension library, simply require its autoloader:
 import _ from 'simple-auth-oauth2/ember';
 ```
 
+which sets up an
+[initializer](http://emberjs.com/api/classes/Ember.Application.html#toc_initializers)
+named `'simple-auth-oauth2'`;
+
 ## The Authenticator
 
 The authenticator (see the

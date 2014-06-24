@@ -15,7 +15,9 @@ To use the cookie store, simply require its autoloader:
 import _ from 'simple-auth-cookie-store/ember';
 ```
 
-and configure it in the global configuration hash:
+which sets up an
+[initializer](http://emberjs.com/api/classes/Ember.Application.html#toc_initializers)
+named `'simple-auth-cookie-store'`, and configure it in the global configuration hash:
 
 ```js
 window.ENV = window.ENV || {};

@@ -40,6 +40,10 @@ autoloader:__
 import _ from 'simple-auth/ember';
 ```
 
+which sets up an
+[initializer](http://emberjs.com/api/classes/Ember.Application.html#toc_initializers)
+named `'simple-auth'`;
+
 If you're not using the AMD build it's enough to simply load the browserified
 distribution of Ember Simple Auth and it will setup itself. Once Ember Simple
 Auth was set up, the session (see the

@@ -127,6 +127,10 @@ To enable the Devise extension library, simply import its autoloader:
 import _ from 'simple-auth-devise/ember';
 ```
 
+which sets up an
+[initializer](http://emberjs.com/api/classes/Ember.Application.html#toc_initializers)
+named `'simple-auth-devise'`.
+
 ## The Authenticator
 
 In order to use the Devise authenticator (see the
