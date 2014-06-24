@@ -73,16 +73,6 @@ authentication state then is as easy as:
 {{#if session.isAuthenticated}}
   <a {{ action 'invalidateSession' }}>Logout</a>
 {{else}}
-  <a {{ action 'authenticateSession' }}>Login</a>
-{{/if}}
-```
-
-or in the case that the application uses a dedicated route for logging in:
-
-```html
-{{#if session.isAuthenticated}}
-  <a {{ action 'invalidateSession' }}>Logout</a>
-{{else}}
   {{#link-to 'login'}}Login{{/link-to}}
 {{/if}}
 ```
