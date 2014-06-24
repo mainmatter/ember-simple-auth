@@ -86,15 +86,10 @@
       window.ENV['simple-auth'] = {
         authorizerFactory: 'simple-auth-authorizer:devise'
       };
-      Ember.Application.initializer({
-        name: 'authentication',
-        before: 'simple-auth',
-        initialize: function(container, application) {
-          SimpleAuth.Authenticators.Devise.reopen({
-            serverTokenEndpoint: '/v5/users/sign_in',
-          });
-        }
-      });
+      // configure the endpoint for the devise authenticator
+      window.ENV['simple-auth-devise'] = {
+        serverTokenEndpoint: '/v5/users/sign_in',
+      };
 
       App = Ember.Application.create({});
 

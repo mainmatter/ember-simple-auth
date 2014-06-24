@@ -90,16 +90,11 @@
     </script>
 
     <script type="text/javascript">
-      // configure a custom server endpoint
-      Ember.Application.initializer({
-        name: 'authentication',
-        before: 'simple-auth',
-        initialize: function(container, application) {
-          SimpleAuth.Authenticators.OAuth2.reopen({
-            serverTokenEndpoint: '/v2/token'
-          });
-        }
-      });
+      // configure the endpoint for the OAuth 2.0 authenticator
+      window.ENV = window.ENV || {};
+      window.ENV['simple-auth-oauth2'] = {
+        serverTokenEndpoint: '/v2/token'
+      };
 
       App = Ember.Application.create({});
 
