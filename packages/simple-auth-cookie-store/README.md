@@ -12,7 +12,7 @@ support the `locaStorage` API.
 To use the cookie store, simply require its autoloader:
 
 ```js
-import _ from 'simple-auth-cookie-store/ember';
+require('simple-auth-cookie-store/ember');
 ```
 
 which sets up an

@@ -124,7 +124,7 @@ delete it on session invalidation!
 To enable the Devise extension library, simply import its autoloader:
 
 ```js
-import _ from 'simple-auth-devise/ember';
+require('simple-auth-devise/ember');
 ```
 
 which sets up an

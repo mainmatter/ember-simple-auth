@@ -37,7 +37,7 @@ __To enable Ember Simple Auth in an application, simply require its
 autoloader:__
 
 ```js
-import _ from 'simple-auth/ember';
+require('simple-auth/ember');
 ```
 
 which sets up an

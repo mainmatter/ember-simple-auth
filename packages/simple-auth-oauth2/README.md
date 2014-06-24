@@ -10,7 +10,7 @@ authenticator and an authorizer that are compatible with OAuth 2.0.
 To enable the OAuth 2.0 extension library, simply require its autoloader:
 
 ```js
-import _ from 'simple-auth-oauth2/ember';
+require('simple-auth-oauth2/ember');
 ```
 
 which sets up an
