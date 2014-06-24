@@ -25,7 +25,6 @@
   <script src="../tmp/simple-auth-devise-tests.amd.js"></script>
   <script type="text/javascript">
     Ember.Logger.warn = Ember.K;
-    SimpleAuth  = requireModule('simple-auth');
     for (var key in requireModule.registry) {
       if (/_test$/.test(key)) {
         requireModule(key);
