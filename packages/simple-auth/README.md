@@ -312,7 +312,7 @@ the examples.
 To install Ember Simple Auth in an Ember.js application there are several options:
 
 * If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
-  add Ember Simple Auth yo the `bower.json` file:
+  add Ember Simple Auth to the `bower.json` file:
 
   ```js
   {
