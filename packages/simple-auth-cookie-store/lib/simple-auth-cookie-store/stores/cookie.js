@@ -5,14 +5,35 @@ var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
 /**
-  Store that saves its data in session cookies.
+  Store that saves its data in cookies.
 
   __In order to keep multiple tabs/windows of an application in sync, this
   store has to periodically (every 500ms) check the cookies__ for changes as
   there are no events that notify of changes in cookies. The recommended
-  alternative is `SimpleAuth.Stores.LocalStorage` that also persistently
-  stores data but instead of cookies relies on the `localStorage` API and does
-  not need to poll for external changes.
+  alternative is `Stores.LocalStorage` that also persistently stores data but
+  instead of cookies relies on the `localStorage` API and does not need to poll
+  for external changes.
+
+  By default the cookie store will use session cookies that expire and are
+  deleted when the browser is closed. The cookie expiration period can be
+  configured via setting
+  [`Stores.Cooke#cookieExpirationTime`](#SimpleAuth-Stores-Cookie-cookieExpirationTime)
+  though. This can also be used to implement "remember me" functionality that
+  will either store the session persistently or in a session cookie depending
+  whether the user opted in or not:
+
+  ```js
+  // app/controllers/login.js
+  import LoginControllerMixin from 'simple-auth/mixins/login_controller_mixin';
+
+  export default Ember.Controller.extend(LoginControllerMixin, {
+    rememberMe: false,
+
+    rememberMeChanged: function() {
+      this.get('session.store').cookieExpirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;
+    }.observes('rememberMe')
+  });
+  ```
 
   _The factory for this store is registered as
   `'simple-auth-session-store:cookie'` in Ember's container._
@@ -80,7 +101,7 @@ export default Base.extend({
   /**
     Restores all data currently saved in the session cookies identified by the
     `cookieNamePrefix` (see
-    [SimpleAuth.Stores.Cookie#cookieNamePrefix](Ember-SimpleAuth-Stores-Cookie-cookieNamePrefix))
+    [`Stores.Cookie#cookieNamePrefix`](#SimpleAuth-Stores-Cookie-cookieNamePrefix))
     as a plain object.
 
     @method restore
@@ -98,7 +119,7 @@ export default Base.extend({
   /**
     Clears the store by deleting all session cookies prefixed with the
     `cookieNamePrefix` (see
-    [SimpleAuth.Stores.Cookie#cookieNamePrefix](Ember-SimpleAuth-Stores-Cookie-cookieNamePrefix)).
+    [`SimpleAuth.Stores.Cookie#cookieNamePrefix`](#SimpleAuth-Stores-Cookie-cookieNamePrefix)).
 
     @method clear
   */
