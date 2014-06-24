@@ -13,6 +13,40 @@ describe('Stores.Cookie', function() {
     }
   });
 
+  describe('initilization', function() {
+    describe('when no global configuration is defined', function() {
+      it('defaults cookieNamePrefix to "ember_simple_auth:"', function() {
+        expect(Cookie.create().cookieNamePrefix).to.eq('ember_simple_auth:');
+      });
+
+      it('defaults cookieExpirationTime to null', function() {
+        expect(Cookie.create().cookieExpirationTime).to.be.null;
+      });
+    });
+
+    describe('when global configuration is defined', function() {
+      beforeEach(function() {
+        window.ENV = window.ENV || {};
+        window.ENV['simple-auth-cookie-store'] = {
+          cookieNamePrefix:     'cookieNamePrefix',
+          cookieExpirationTime: 1
+        };
+      });
+
+      it('uses the defined value for cookieNamePrefix', function() {
+        expect(Cookie.create().cookieNamePrefix).to.eq('cookieNamePrefix');
+      });
+
+      it('uses the defined value for cookieExpirationTime', function() {
+        expect(Cookie.create().cookieExpirationTime).to.eq(1);
+      });
+
+      afterEach(function() {
+        delete window.ENV['simple-auth-cookie-store'];
+      });
+    });
+  });
+
   describe('#persist', function() {
     it('respects the configured cookieNamePrefix', function() {
       this.store = Cookie.create();

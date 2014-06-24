@@ -1,5 +1,6 @@
 import Base from 'simple-auth/authenticators/base';
 import isSecureUrl from 'simple-auth/utils/is_secure_url';
+import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
@@ -26,6 +27,15 @@ export default Base.extend({
     The endpoint on the server the authenticator acquires the auth token
     and email from.
 
+    This value can be configured via the global configuration object:
+
+    ```js
+    window.ENV = window.ENV || {};
+    window.ENV['simple-auth-devise'] = {
+      serverTokenEndpoint: '/some/other/endpoint'
+    }
+    ```
+
     @property serverTokenEndpoint
     @type String
     @default '/users/sign_in'
@@ -35,11 +45,30 @@ export default Base.extend({
   /**
     The devise resource name
 
+    This value can be configured via the global configuration object:
+
+    ```js
+    window.ENV = window.ENV || {};
+    window.ENV['simple-auth-devise'] = {
+      resourceName: 'account'
+    }
+    ```
+
     @property resourceName
     @type String
     @default 'user'
   */
   resourceName: 'user',
+
+  /**
+    @method init
+    @private
+  */
+  init: function() {
+    var globalConfig         = getGlobalConfig('simple-auth-devise');
+    this.serverTokenEndpoint = globalConfig.serverTokenEndpoint || this.serverTokenEndpoint;
+    this.resourceName        = globalConfig.resourceName || this.resourceName;
+  },
 
   /**
     Restores the session from a set of session properties; __will return a

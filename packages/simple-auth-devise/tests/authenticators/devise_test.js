@@ -8,6 +8,40 @@ describe('Devise', function() {
     this.authenticator      = Devise.create();
   });
 
+  describe('initilization', function() {
+    describe('when no global configuration is defined', function() {
+      it('defaults serverTokenEndpoint to "/users/sign_in"', function() {
+        expect(Devise.create().serverTokenEndpoint).to.eq('/users/sign_in');
+      });
+
+      it('defaults resourceName to "user"', function() {
+        expect(Devise.create().resourceName).to.eq('user');
+      });
+    });
+
+    describe('when global configuration is defined', function() {
+      beforeEach(function() {
+        window.ENV = window.ENV || {};
+        window.ENV['simple-auth-devise'] = {
+          serverTokenEndpoint: 'serverTokenEndpoint',
+          resourceName:        'resourceName'
+        };
+      });
+
+      it('uses the defined value for serverTokenEndpoint', function() {
+        expect(Devise.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
+      });
+
+      it('uses the defined value for cookieExpirationTime', function() {
+        expect(Devise.create().resourceName).to.eq('resourceName');
+      });
+
+      afterEach(function() {
+        delete window.ENV['simple-auth-devise'];
+      });
+    });
+  });
+
   describe('#restore', function() {
     beforeEach(function() {
       this.server.respondWith('POST', '/users/sign_in', [

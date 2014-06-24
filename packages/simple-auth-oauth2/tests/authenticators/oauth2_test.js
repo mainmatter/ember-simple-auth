@@ -9,6 +9,40 @@ describe('OAuth2', function() {
     sinon.spy(Ember.$, 'ajax');
   });
 
+  describe('initilization', function() {
+    describe('when no global configuration is defined', function() {
+      it('defaults serverTokenEndpoint to "/token"', function() {
+        expect(OAuth2.create().serverTokenEndpoint).to.eq('/token');
+      });
+
+      it('defaults refreshAccessTokens to true', function() {
+        expect(OAuth2.create().refreshAccessTokens).to.be.true;
+      });
+    });
+
+    describe('when global configuration is defined', function() {
+      beforeEach(function() {
+        window.ENV = window.ENV || {};
+        window.ENV['simple-auth-oauth2'] = {
+          serverTokenEndpoint: 'serverTokenEndpoint',
+          refreshAccessTokens: false
+        };
+      });
+
+      it('uses the defined value for serverTokenEndpoint', function() {
+        expect(OAuth2.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
+      });
+
+      it('uses the defined value for refreshAccessTokens', function() {
+        expect(OAuth2.create().refreshAccessTokens).to.be-false;
+      });
+
+      afterEach(function() {
+        delete window.ENV['simple-auth-oauth2'];
+      });
+    });
+  });
+
   describe('#restore', function() {
     describe('when the data contains an access_token', function() {
       it('resolves with the correct data', function(done) {

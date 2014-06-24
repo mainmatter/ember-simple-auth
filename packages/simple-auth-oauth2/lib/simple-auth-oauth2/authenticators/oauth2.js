@@ -1,5 +1,6 @@
 import Base from 'simple-auth/authenticators/base';
 import isSecureUrl from 'simple-auth/utils/is_secure_url';
+import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
@@ -34,6 +35,15 @@ export default Base.extend({
     The endpoint on the server the authenticator acquires the access token
     from.
 
+    This value can be configured via the global configuration object:
+
+    ```js
+    window.ENV = window.ENV || {};
+    window.ENV['simple-auth-oauth2'] = {
+      serverTokenEndpoint: '/some/custom/endpoint'
+    }
+    ```
+
     @property serverTokenEndpoint
     @type String
     @default '/token'
@@ -42,6 +52,15 @@ export default Base.extend({
 
   /**
     Sets whether the authenticator automatically refreshes access tokens.
+
+    This value can be configured via the global configuration object:
+
+    ```js
+    window.ENV = window.ENV || {};
+    window.ENV['simple-auth-oauth2'] = {
+      refreshAccessTokens: false
+    }
+    ```
 
     @property refreshAccessTokens
     @type Boolean
@@ -54,6 +73,16 @@ export default Base.extend({
     @private
   */
   _refreshTokenTimeout: null,
+
+  /**
+    @method init
+    @private
+  */
+  init: function() {
+    var globalConfig         = getGlobalConfig('simple-auth-oauth2');
+    this.serverTokenEndpoint = globalConfig.serverTokenEndpoint || this.serverTokenEndpoint;
+    this.refreshAccessTokens = globalConfig.refreshAccessTokens || this.refreshAccessTokens;
+  },
 
   /**
     Restores the session from a set of session properties; __will return a

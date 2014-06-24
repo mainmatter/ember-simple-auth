@@ -1,5 +1,6 @@
 import Base from 'simple-auth/stores/base';
 import flatObjectsAreEqual from 'simple-auth/utils/flat_objects_are_equal';
+import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
@@ -48,6 +49,15 @@ export default Base.extend({
     The prefix to use for the store's cookie names so they can be distinguished
     from other cookies.
 
+    This value can be configured via the global configuration object:
+
+    ```js
+    window.ENV = window.ENV || {};
+    window.ENV['simple-auth-cookie-store'] = {
+      cookieNamePrefix: 'my_app_auth_'
+    }
+    ```
+
     @property cookieNamePrefix
     @type String
     @default 'ember_simple_auth:'
@@ -58,6 +68,15 @@ export default Base.extend({
     The expiration time in seconds to use for the cookies. A value of `null`
     will make the cookies session cookies that expire when the browser is
     closed.
+
+    This value can be configured via the global configuration object:
+
+    ```js
+    window.ENV = window.ENV || {};
+    window.ENV['simple-auth-cookie-store'] = {
+      cookieExpirationTime: 24 * 60 * 60
+    }
+    ```
 
     @property cookieExpirationTime
     @type Integer
@@ -82,6 +101,9 @@ export default Base.extend({
     @private
   */
   init: function() {
+    var globalConfig          = getGlobalConfig('simple-auth-cookie-store');
+    this.cookieNamePrefix     = globalConfig.cookieNamePrefix || this.cookieNamePrefix;
+    this.cookieExpirationTime = globalConfig.cookieExpirationTime || this.cookieExpirationTime;
     this.syncData();
   },
 

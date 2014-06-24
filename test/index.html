@@ -13,7 +13,7 @@
   <script src="vendor/sinon-chai.js"></script>
   <script src="vendor/sinon.js"></script>
   <script src="vendor/mocha.js"></script>
-  <script>mocha.setup('bdd')</script>
+  <script>mocha.setup('bdd');</script>
   <script src="../vendor/loader.js"></script>
   <script src="../tmp/simple-auth.amd.js"></script>
   <script src="../tmp/simple-auth-oauth2.amd.js"></script>
@@ -35,7 +35,7 @@
     chai.Assertion.includeStack = true;
 
     mocha.checkLeaks();
-    mocha.globals(['jQuery', 'Ember', 'Handlebars']);
+    mocha.globals(['jQuery', 'Ember', 'Handlebars', 'ENV']);
     if (navigator.userAgent.indexOf('PhantomJS') < 0) {
       mocha.run();
     }
