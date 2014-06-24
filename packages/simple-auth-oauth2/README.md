@@ -5,6 +5,14 @@ __[The API docs for Ember Simple Auth OAuth 2.0 are available here](http://ember
 This is an extension to the Ember Simple Auth library that provides an
 authenticator and an authorizer that are compatible with OAuth 2.0.
 
+## Enabling Ember Simple Auth OAuth 2.0
+
+To enable the OAuth 2.0 extension library, simply require its autoloader:
+
+```js
+import _ from 'simple-auth-oauth2/ember';
+```
+
 ## The Authenticator
 
 The authenticator (see the

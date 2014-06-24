@@ -7,7 +7,15 @@ based session store__. It offers the same functionality as the standard
 `localStorage` based store but __also supports older browsers__ that don't
 support the `locaStorage` API.
 
-To use the cookie store, configure it in the global configuration hash:
+## Using the Cookie Store
+
+To use the cookie store, simply require its autoloader:
+
+```js
+import _ from 'simple-auth-cookie-store/ember';
+```
+
+and configure it in the global configuration hash:
 
 ```js
 window.ENV = window.ENV || {};

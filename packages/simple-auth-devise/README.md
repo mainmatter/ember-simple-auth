@@ -119,6 +119,14 @@ invalidates the session__ as the Rails session cookie will still be present
 because Ember Simple Auth does not know anything about that cookie and will not
 delete it on session invalidation!
 
+## Client Side Setup
+
+To enable the Devise extension library, simply import its autoloader:
+
+```js
+import _ from 'simple-auth-devise/ember';
+```
+
 ## The Authenticator
 
 In order to use the Devise authenticator (see the
