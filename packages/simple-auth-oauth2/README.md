@@ -131,7 +131,7 @@ requests:
 Authorization: Bearer <access_token>
 ```
 
-To use the authorizer, configure it in the global configuration object:
+To use the authorizer, configure it in the global environment object:
 
 ```js
 window.ENV = window.ENV || {};

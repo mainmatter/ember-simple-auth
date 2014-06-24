@@ -35,7 +35,7 @@ export default Base.extend({
     The endpoint on the server the authenticator acquires the access token
     from.
 
-    This value can be configured via the global configuration object:
+    This value can be configured via the global environment object:
 
     ```js
     window.ENV = window.ENV || {};
@@ -53,7 +53,7 @@ export default Base.extend({
   /**
     Sets whether the authenticator automatically refreshes access tokens.
 
-    This value can be configured via the global configuration object:
+    This value can be configured via the global environment object:
 
     ```js
     window.ENV = window.ENV || {};

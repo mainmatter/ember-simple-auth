@@ -17,7 +17,8 @@ import _ from 'simple-auth-cookie-store/ember';
 
 which sets up an
 [initializer](http://emberjs.com/api/classes/Ember.Application.html#toc_initializers)
-named `'simple-auth-cookie-store'`, and configure it in the global configuration hash:
+named `'simple-auth-cookie-store'`, and configure it in the global environment
+object:
 
 ```js
 window.ENV = window.ENV || {};

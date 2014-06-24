@@ -14,7 +14,7 @@ describe('Stores.Cookie', function() {
   });
 
   describe('initilization', function() {
-    describe('when no global configuration is defined', function() {
+    describe('when no global environment object is defined', function() {
       it('defaults cookieNamePrefix to "ember_simple_auth:"', function() {
         expect(Cookie.create().cookieNamePrefix).to.eq('ember_simple_auth:');
       });
@@ -24,7 +24,7 @@ describe('Stores.Cookie', function() {
       });
     });
 
-    describe('when global configuration is defined', function() {
+    describe('when global environment object is defined', function() {
       beforeEach(function() {
         window.ENV = window.ENV || {};
         window.ENV['simple-auth-cookie-store'] = {

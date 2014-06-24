@@ -199,7 +199,7 @@ do is to extend the base authorizer and implement one method (see the
 [API docs for `Authorizers.Base`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Authorizers-Base)).
 
 To use a custom authorizer, register it with Ember's container and configure it
-in the global configuration object:
+in the global environment object:
 
 ```js
 import Base from 'simple-auth/authorizers/base';

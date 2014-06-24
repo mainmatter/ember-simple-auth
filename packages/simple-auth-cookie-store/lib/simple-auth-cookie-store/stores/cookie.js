@@ -49,7 +49,7 @@ export default Base.extend({
     The prefix to use for the store's cookie names so they can be distinguished
     from other cookies.
 
-    This value can be configured via the global configuration object:
+    This value can be configured via the global environment object:
 
     ```js
     window.ENV = window.ENV || {};
@@ -69,7 +69,7 @@ export default Base.extend({
     will make the cookies session cookies that expire when the browser is
     closed.
 
-    This value can be configured via the global configuration object:
+    This value can be configured via the global environment object:
 
     ```js
     window.ENV = window.ENV || {};

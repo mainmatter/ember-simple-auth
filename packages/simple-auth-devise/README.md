@@ -183,7 +183,7 @@ session in the `Authorization` header:
 Authorization: Token token="<user_token>", user_email="<user_email>"
 ```
 
-To use the authorizer, configure it in the global configuration object:
+To use the authorizer, configure it in the global environment object:
 
 ```js
 window.ENV = window.ENV || {};

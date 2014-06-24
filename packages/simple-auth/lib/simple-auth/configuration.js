@@ -3,7 +3,7 @@ import getGlobalConfig from './utils/get-global-config';
 /**
   Ember Simple Auth's configuration object.
 
-  To change any of these values, define a global configuration object for Ember
+  To change any of these values, define a global environment object for Ember
   Simple Auth and define the values there:
 
   ```javascript

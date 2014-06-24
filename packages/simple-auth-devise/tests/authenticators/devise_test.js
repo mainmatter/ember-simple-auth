@@ -9,7 +9,7 @@ describe('Devise', function() {
   });
 
   describe('initilization', function() {
-    describe('when no global configuration is defined', function() {
+    describe('when no global environment object is defined', function() {
       it('defaults serverTokenEndpoint to "/users/sign_in"', function() {
         expect(Devise.create().serverTokenEndpoint).to.eq('/users/sign_in');
       });
@@ -19,7 +19,7 @@ describe('Devise', function() {
       });
     });
 
-    describe('when global configuration is defined', function() {
+    describe('when global environment object is defined', function() {
       beforeEach(function() {
         window.ENV = window.ENV || {};
         window.ENV['simple-auth-devise'] = {

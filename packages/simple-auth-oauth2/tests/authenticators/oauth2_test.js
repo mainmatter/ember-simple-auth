@@ -10,7 +10,7 @@ describe('OAuth2', function() {
   });
 
   describe('initilization', function() {
-    describe('when no global configuration is defined', function() {
+    describe('when no global environment object is defined', function() {
       it('defaults serverTokenEndpoint to "/token"', function() {
         expect(OAuth2.create().serverTokenEndpoint).to.eq('/token');
       });
@@ -20,7 +20,7 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when global configuration is defined', function() {
+    describe('when global environment object is defined', function() {
       beforeEach(function() {
         window.ENV = window.ENV || {};
         window.ENV['simple-auth-oauth2'] = {

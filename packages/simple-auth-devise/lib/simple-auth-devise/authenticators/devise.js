@@ -27,7 +27,7 @@ export default Base.extend({
     The endpoint on the server the authenticator acquires the auth token
     and email from.
 
-    This value can be configured via the global configuration object:
+    This value can be configured via the global environment object:
 
     ```js
     window.ENV = window.ENV || {};
@@ -45,7 +45,7 @@ export default Base.extend({
   /**
     The devise resource name
 
-    This value can be configured via the global configuration object:
+    This value can be configured via the global environment object:
 
     ```js
     window.ENV = window.ENV || {};
