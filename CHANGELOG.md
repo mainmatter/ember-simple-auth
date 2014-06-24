@@ -5,6 +5,11 @@
   distribution that exports that global). When you were referring to e.g.
   `Ember.SimpleAuth.ApplicationRouteMixin` you now have to change that to
   just `SimpleAuth.ApplicationRouteMixin`.
+* __[BREAKING]__ The "namespace" for all components that Ember Simple Auth
+  registers in Ember's container has been changed from 'ember-simple-auth-' to
+  just 'simple-auth-'.
+* __[BREAKING]__ The names of the distributed files has changed from
+  "ember-simple-auth-…" to "simple-auth-…".
 * __[BREAKING]__ The requirement for defining an initializer and call
   `SimpleAuth.setup` in that has been dropped. Ember Simple Auth will now
   setup itself once it is loaded. Existing Ember Simple Auth initializers
@@ -16,9 +21,6 @@
   See the
   [API Docs for `Configuration`](http://ember-simple-auth.simplabs.com/simple-auth-api-docs.html#SimpleAuth-Configuration)
   for more information.
-* __[BREAKING]__ The "namespace" for all components that Ember Simple Auth
-  registers in Ember's container has been changed from 'ember-simple-auth-' to
-  just 'simple-auth-'.
 * __[BREAKING]__ All underscores have been replaced with dashes in filenames.
   This only affects users that were using the AMD build.
 * __[BREAKING]__ The AMD builds are no longer distributed in the 'amd/'
