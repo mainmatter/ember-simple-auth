@@ -319,7 +319,7 @@ To install Ember Simple Auth in an Ember.js application there are several option
   and import the library to the `Brocfile.js`:
 
   ```js
-  app.import('vendor/ember-simple-auth/amd/simple-auth.amd.js', {
+  app.import('vendor/ember-simple-auth/simple-auth.amd.js', {
     // whitelist all modules you want to use, e.g.
     //
     // 'simple-auth/authorizers/base': ['default']
