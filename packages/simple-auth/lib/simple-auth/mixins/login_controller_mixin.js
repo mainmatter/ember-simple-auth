@@ -5,13 +5,13 @@ import Configuration from './../configuration';
 import AuthenticationControllerMixin from './authentication_controller_mixin';
 
 /**
-  The mixin to use with the controller that handles the `authenticationRoute`
-  specified in
-  [SimpleAuth.setup](#Ember-SimpleAuth-setup) if the used authentication
-  mechanism works with a login form that asks for user credentials. It provides
-  the `authenticate` action that will authenticate the session with the
-  configured authenticator when invoked. __This is a specialization of
-  [SimpleAuth.AuthenticationControllerMixin](#Ember-SimpleAuth-AuthenticationControllerMixin).__
+  This mixin is for the controller that handles the
+  [`Configuration.authenticationRoute`](#SimpleAuth-Configuration-authenticationRoute)
+  if the used authentication mechanism works with a login form that asks for
+  user credentials. It provides the `authenticate` action that will
+  authenticate the session with the configured authenticator when invoked.
+  __This is a specialization of
+  [`AuthenticationControllerMixin`](#SimpleAuth-AuthenticationControllerMixin).__
 
   Accompanying the controller that this mixin is mixed in the application needs
   to have a `login` template with the fields `identification` and `password` as
@@ -38,7 +38,7 @@ export default Ember.Mixin.create(AuthenticationControllerMixin, {
     /**
       This action will authenticate the session with the configured
       authenticator (see
-      [SimpleAuth.LoginControllerMixin#authenticatorFactory](#Ember-SimpleAuth-LoginControllerMixin-authenticatorFactory))
+      [AuthenticationControllerMixin#authenticatorFactory](#SimpleAuth-Authentication-authenticatorFactory))
       if both `identification` and `password` are non-empty. It passes both
       values to the authenticator.
 
