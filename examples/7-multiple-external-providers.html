@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ember.SimpleAuth - examples</title>
+    <title>SimpleAuth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
@@ -9,7 +9,7 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
     <script src="http://builds.emberjs.com/release/ember.js"></script>
     <script src="http://connect.facebook.net/en_US/all.js"></script>
-    <script src="../tmp/ember-simple-auth.js"></script>
+    <script src="../tmp/simple-auth.js"></script>
   </head>
   <body style="padding-top: 50px;">
     <script type="text/x-handlebars">
@@ -83,7 +83,7 @@
 
       Ember.Application.initializer({
         name: 'authentication',
-        before: 'ember-simple-auth',
+        before: 'simple-auth',
         initialize: function(container, application) {
           // register the Facebook and Google+ authenticators so the session can find them
           container.register('authenticator:facebook', App.FacebookAuthenticator);
@@ -105,7 +105,7 @@
       });
 
       // the custom authenticator that initiates the authentication process with Facebook
-      App.FacebookAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+      App.FacebookAuthenticator = SimpleAuth.Authenticators.Base.extend({
         restore: function(properties) {
           return new Ember.RSVP.Promise(function(resolve, reject) {
             if (!Ember.isEmpty(properties.accessToken)) {
@@ -148,7 +148,7 @@
       });
 
       // the custom authenticator that initiates the authentication process with Google+
-      App.GooglePlusAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+      App.GooglePlusAuthenticator = SimpleAuth.Authenticators.Base.extend({
         restore: function(properties) {
           return new Ember.RSVP.Promise(function(resolve, reject) {
             if (!Ember.isEmpty(properties.access_token)) {
@@ -180,7 +180,7 @@
       });
 
       // use the provided mixin in the application route
-      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
+      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
 
       // define the login route that defines the authentication action
       App.LoginRoute = Ember.Route.extend({
@@ -197,7 +197,7 @@
       });
 
       // make this route protected
-      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+      App.ProtectedRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin);
     </script>
     <script src="https://apis.google.com/js/client.js?onload=googleApiLoaded"></script>
   </body>

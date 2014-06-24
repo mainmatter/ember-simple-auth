@@ -38,7 +38,7 @@
   "namespaced" names with Ember's container to avoid conflicts, see #159;
   __this requires all references to these factories (e.g.
   `authenticatorFactory` in controllers to be prepended with
-  `'ember-simple-auth-'`)__.
+  `'simple-auth-'`)__.
 * __[BREAKING]__ `Ember.SimpleAuth.Authorizers.Devise` now sends the user's
   token and email address in one header that's compatible to
   [Rails' token auth module](http://api.rubyonrails.org/classes/ActionController/HttpAuthentication/Token.html)
@@ -48,7 +48,7 @@
   routes and controllers can now be customized, see #159
 * fixed `Ember.SimpleAuth.Utils.isSecureUrl` so that it checks the passed URL
   not the current location
-* improved the instructions for server side setup for ember-simple-auth-devise,
+* improved the instructions for server side setup for simple-auth-devise,
   see #155
 
 # 0.3.1
@@ -63,9 +63,9 @@
   as well as the new Devise authenticator/authorizer now reside in their own
   extension libraries so everybody can include only what they need. __If you're
   currently using the OAuth 2.0 authenticator and/or authorizer, you now need
-  to include the `ember-simple-auth-oauth2.js` file in your app! If you're
+  to include the `simple-auth-oauth2.js` file in your app! If you're
   using the `Cookie` store you need to include
-  `ember-simple-auth-cookie-store.js`.__
+  `simple-auth-cookie-store.js`.__
 * the new Devise authenticator and authorizer have been added, see README
   there.
 * it is now optional to specify an authorizer; if none is specified no requests
@@ -132,8 +132,8 @@
 # 0.1.0
 
 The Big Rewrite™, see the
-[README](https://github.com/simplabs/ember-simple-auth#readme) and the
-[release notes](https://github.com/simplabs/ember-simple-auth/releases/tag/0.1.0).
+[README](https://github.com/simplabs/simple-auth#readme) and the
+[release notes](https://github.com/simplabs/simple-auth/releases/tag/0.1.0).
 
 The main changes are:
 

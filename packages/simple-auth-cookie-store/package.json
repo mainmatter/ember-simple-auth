@@ -1,0 +1,7 @@
+{
+  "name": "simple-auth-cookie-store",
+  "version": "0.5.3",
+  "description": "A Cookie based store for SimpleAuth.",
+  "author": "Marco Otte-Witte",
+  "license": "MIT"
+}

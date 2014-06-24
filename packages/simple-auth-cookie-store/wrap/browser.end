@@ -1,0 +1,14 @@
+define('simple-auth/stores/base',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.SimpleAuth.Stores.Base;
+});
+define('simple-auth/utils/flat_objects_are_equal',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.SimpleAuth.Utils.flatObjectsAreEqual;
+});
+
+var initializer = requireModule('simple-auth-cookie-store/initializer').default;
+var Cookie      = requireModule('simple-auth-cookie-store/stores/cookie').default;
+
+global.SimpleAuth.Stores.Cookie = Cookie;
+
+requireModule('simple-auth-cookie-store/ember');
+})((typeof global !== 'undefined') ? global : window);

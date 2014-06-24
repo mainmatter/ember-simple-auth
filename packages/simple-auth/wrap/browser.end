@@ -1,0 +1,50 @@
+var initializer                   = requireModule('simple-auth/initializer').default;
+var setup                         = requireModule('simple-auth/setup').default;
+var Configuration                 = requireModule('simple-auth/configuration').default;
+var Session                       = requireModule('simple-auth/session').default;
+var BaseAuthenticator             = requireModule('simple-auth/authenticators/base').default;
+var BaseAuthorizer                = requireModule('simple-auth/authorizers/base').default;
+var BaseStore                     = requireModule('simple-auth/stores/base').default;
+var LocalStorageStore             = requireModule('simple-auth/stores/local_storage').default;
+var EphemeralStore                = requireModule('simple-auth/stores/ephemeral').default;
+var flatObjectsAreEqual           = requireModule('simple-auth/utils/flat_objects_are_equal').default;
+var isSecureUrl                   = requireModule('simple-auth/utils/is_secure_url').default;
+var ApplicationRouteMixin         = requireModule('simple-auth/mixins/application_route_mixin').default;
+var AuthenticatedRouteMixin       = requireModule('simple-auth/mixins/authenticated_route_mixin').default;
+var AuthenticationControllerMixin = requireModule('simple-auth/mixins/authentication_controller_mixin').default;
+var LoginControllerMixin          = requireModule('simple-auth/mixins/login_controller_mixin').default;
+
+global.SimpleAuth = {
+  setup: setup,
+
+  Configuration: Configuration,
+
+  Session: Session,
+
+  Authenticators: {
+    Base: BaseAuthenticator
+  },
+
+  Authorizers: {
+    Base: BaseAuthorizer
+  },
+
+  Stores: {
+    Base: BaseStore,
+    LocalStorage: LocalStorageStore,
+    Ephemeral: EphemeralStore
+  },
+
+  Utils: {
+    flatObjectsAreEqual: flatObjectsAreEqual,
+    isSecureUrl: isSecureUrl
+  },
+
+  ApplicationRouteMixin:         ApplicationRouteMixin,
+  AuthenticatedRouteMixin:       AuthenticatedRouteMixin,
+  AuthenticationControllerMixin: AuthenticationControllerMixin,
+  LoginControllerMixin:          LoginControllerMixin
+};
+
+requireModule('simple-auth/ember');
+})((typeof global !== 'undefined') ? global : window);

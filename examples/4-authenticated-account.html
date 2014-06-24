@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ember.SimpleAuth - examples</title>
+    <title>SimpleAuth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
     <script src="http://builds.emberjs.com/release/ember.js"></script>
     <script src="http://builds.emberjs.com/beta/ember-data.js"></script>
-    <script src="../tmp/ember-simple-auth.js"></script>
-    <script src="../tmp/ember-simple-auth-oauth2.js"></script>
+    <script src="../tmp/simple-auth.js"></script>
+    <script src="../tmp/simple-auth-oauth2.js"></script>
   </head>
   <body style="padding-top: 50px;">
     <script type="text/x-handlebars">
@@ -95,15 +95,15 @@
     <script type="text/javascript">
       // configure an authorizer to be used
       window.ENV = window.ENV || {};
-      window.ENV['ember-simple-auth'] = {
-        authorizerFactory: 'ember-simple-auth-authorizer:oauth2-bearer'
+      window.ENV['simple-auth'] = {
+        authorizerFactory: 'simple-auth-authorizer:oauth2-bearer'
       };
       Ember.Application.initializer({
         name: 'authentication',
-        before: 'ember-simple-auth',
+        before: 'simple-auth',
         initialize: function(container, application) {
           // customize the session so that it allows access to the account object
-          Ember.SimpleAuth.Session.reopen({
+          SimpleAuth.Session.reopen({
             account: function() {
               var accountId = this.get('account_id');
               if (!Ember.isEmpty(accountId)) {
@@ -135,7 +135,7 @@
       });
 
       // the custom authenticator that handles the authenticated account
-      App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.OAuth2.extend({
+      App.CustomAuthenticator = SimpleAuth.Authenticators.OAuth2.extend({
         authenticate: function(credentials) {
           return new Ember.RSVP.Promise(function(resolve, reject) {
             // make the request to authenticate the user at endpoint /v3/token
@@ -159,8 +159,8 @@
       });
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
+      App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
         authenticatorFactory: 'authenticator:custom'
       });
 
@@ -172,7 +172,7 @@
       });
 
       // make these routes protected
-      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+      App.ProtectedRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin);
     </script>
   </body>
 </html>

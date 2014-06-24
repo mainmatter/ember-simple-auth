@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ember.SimpleAuth - examples</title>
+    <title>SimpleAuth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
     <script src="http://builds.emberjs.com/release/ember.js"></script>
     <script src="http://builds.emberjs.com/beta/ember-data.js"></script>
-    <script src="../tmp/ember-simple-auth.js"></script>
+    <script src="../tmp/simple-auth.js"></script>
   </head>
   <body style="padding-top: 50px;">
     <script type="text/x-handlebars">
@@ -88,14 +88,14 @@
     <script type="text/javascript">
       // configure an authorizer to be used
       window.ENV = window.ENV || {};
-      window.ENV['ember-simple-auth'] = {
+      window.ENV['simple-auth'] = {
         authorizerFactory: 'authorizer:custom'
       };
       Ember.Application.initializer({
         name: 'authentication',
-        before: 'ember-simple-auth',
+        before: 'simple-auth',
         initialize: function(container, application) {
-          // register the custom authenticator and authorizer so Ember.SimpleAuth can find them
+          // register the custom authenticator and authorizer so SimpleAuth can find them
           container.register('authenticator:custom', App.CustomAuthenticator);
           container.register('authorizer:custom', App.CustomAuthorizer);
         }
@@ -115,7 +115,7 @@
       });
 
       // the custom authenticator that authenticates the session against the custom server
-      App.CustomAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+      App.CustomAuthenticator = SimpleAuth.Authenticators.Base.extend({
         tokenEndpoint: '/v4/session',
 
         restore: function(data) {
@@ -160,7 +160,7 @@
       });
 
       // the custom authorizer that authorizes requests against the custom server
-      App.CustomAuthorizer = Ember.SimpleAuth.Authorizers.Base.extend({
+      App.CustomAuthorizer = SimpleAuth.Authorizers.Base.extend({
         authorize: function(jqXHR, requestOptions) {
           if (this.get('session.isAuthenticated') && !Ember.isEmpty(this.get('session.token'))) {
             jqXHR.setRequestHeader('Authorization', 'Token: ' + this.get('session.token'));
@@ -169,7 +169,7 @@
       });
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
+      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
       App.LoginRoute       = Ember.Route.extend({
         // clear a potentially stale error message from previous login attempts
         setupController: function(controller, model) {
@@ -182,12 +182,12 @@
           }
         }
       });
-      App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
+      App.LoginController = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
         authenticatorFactory: 'authenticator:custom'
       });
 
       // make these route protected
-      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+      App.ProtectedRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin, {
         // request some data from the server so that the authorizer authorizes that request
         model: function() {
           return new Ember.RSVP.Promise(function(resolve, reject) {
