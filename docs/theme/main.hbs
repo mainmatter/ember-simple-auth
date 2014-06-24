@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{project.root}} API</title>
+    <title>{{project.title}} API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://yandex.st/highlightjs/7.4/styles/github.min.css">
@@ -57,8 +57,8 @@
         color: #333;
         background: #f8f8ff;
       }
-      body .container .page-header:first-child {
-        margin-top: 55px;
+      body .container .alert:first-child {
+        margin-top: 70px;
       }
       a.symbol-anchor {
         display: block;
@@ -93,6 +93,9 @@
         </div>
       </header>
       <div class="container">
+        <div class="row">
+          <div class="alert alert-info">For a general overview of how Ember Simple Auth works, see the <a href="{{@root.project.githubUrl}}#readme" title="Ember Simple Auth's README github" class="alert-link">README</a></div>
+        </div>
         {{#each}}
           <div class="row">
             <div class="col-md-12">

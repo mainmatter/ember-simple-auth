@@ -62,7 +62,6 @@ function extractProperties(items) {
 
 function cleanClassItems(items) {
   return items.map(function(item) {
-    item.class  = item.class;
     item.anchor = anchorify(item.class + '-' + item.name);
     return item;
   });
@@ -77,11 +76,11 @@ module.exports = function() {
     var klassItems = _this.classitems.filter(function(classitem) {
       return classitem.class === klass.name && classitem.access !== 'private';
     });
-    klass.functions  = cleanClassItems(extractFunctions(klassItems), _this.project.root);
-    klass.properties = cleanClassItems(extractProperties(klassItems), _this.project.root);
-    klass.methods    = cleanClassItems(extractMethods(klassItems), _this.project.root);
-    klass.actions    = cleanClassItems(extractActions(klassItems), _this.project.root);
-    klass.events     = cleanClassItems(extractEvents(klassItems), _this.project.root);
+    klass.functions  = cleanClassItems(extractFunctions(klassItems));
+    klass.properties = cleanClassItems(extractProperties(klassItems));
+    klass.methods    = cleanClassItems(extractMethods(klassItems));
+    klass.actions    = cleanClassItems(extractActions(klassItems));
+    klass.events     = cleanClassItems(extractEvents(klassItems));
     klass.uses       = (klass.uses || []);
     klass.name       = klass.name;
     klass.anchor     = anchorify(klass.name);
