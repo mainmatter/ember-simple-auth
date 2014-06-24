@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ember.SimpleAuth API</title>
+    <title>Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://yandex.st/highlightjs/7.4/styles/github.min.css">
@@ -57,8 +57,11 @@
         color: #333;
         background: #f8f8ff;
       }
-      body .container .page-header:first-child {
-        margin-top: 55px;
+      a code {
+        color: #428bca;
+      }
+      body .container .alert:first-child {
+        margin-top: 70px;
       }
       a.symbol-anchor {
         display: block;
@@ -78,9 +81,8 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption"></span></a>
                 <ul class="dropdown-menu">
                   
-                  
                     <li>
-                      <a href="#Ember-SimpleAuth-Stores-Cookie">Ember.SimpleAuth.Stores.Cookie</a>
+                      <a href="#SimpleAuth-Stores-Cookie">SimpleAuth.Stores.Cookie</a>
                     </li>
                   
                 </ul>
@@ -88,41 +90,72 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.5.3"><span class="label label-primary">0.5.3</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.6.0"><span class="label label-primary">0.6.0</span></a></p></li>
             </ul>
           </div>
         </div>
       </header>
       <div class="container">
-        
+        <div class="row">
+          <div class="alert alert-info">For a general overview of how Ember Simple Auth works, see the <a href="https://github.com/simplabs/ember-simple-auth#readme" title="Ember Simple Auth's README github" class="alert-link">README</a></div>
+        </div>
         
           <div class="row">
             <div class="col-md-12">
               <div class="page-header">
-                <a id="Ember-SimpleAuth-Stores-Cookie" class="symbol-anchor"></a>
-                <h1 class="class">Ember.SimpleAuth.Stores.Cookie</h1>
+                <a id="SimpleAuth-Stores-Cookie" class="symbol-anchor"></a>
+                <h1 class="class">SimpleAuth.Stores.Cookie</h1>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-9" id="main-content">
-              <p>Store that saves its data in session cookies.</p>
+              <p>Store that saves its data in cookies.</p>
 <p><strong>In order to keep multiple tabs/windows of an application in sync, this
 store has to periodically (every 500ms) check the cookies</strong> for changes as
 there are no events that notify of changes in cookies. The recommended
-alternative is <code>Ember.SimpleAuth.Stores.LocalStorage</code> that also persistently
-stores data but instead of cookies relies on the <code>localStorage</code> API and does
-not need to poll for external changes.</p>
-<p><em>The factory for this store is registered as
-<code>&#39;ember-simple-auth-session-store:cookie&#39;</code> in Ember&#39;s container.</em></p>
+alternative is <code>Stores.LocalStorage</code> that also persistently stores data but
+instead of cookies relies on the <code>localStorage</code> API and does not need to poll
+for external changes.</p>
+<p>By default the cookie store will use session cookies that expire and are
+deleted when the browser is closed. The cookie expiration period can be
+configured via setting
+<a href="#SimpleAuth-Stores-Cookie-cookieExpirationTime"><code>Stores.Cooke#cookieExpirationTime</code></a>
+though. This can also be used to implement &quot;remember me&quot; functionality that
+will either store the session persistently or in a session cookie depending
+whether the user opted in or not:</p>
+<pre><code class="lang-js">// app/controllers/login.js
+import LoginControllerMixin from &#39;simple-auth/mixins/login-controller-mixin&#39;;
 
+export default Ember.Controller.extend(LoginControllerMixin, {
+  rememberMe: false,
+
+  rememberMeChanged: function() {
+    this.get(&#39;session.store&#39;).cookieExpirationTime = this.get(&#39;rememberMe&#39;) ? (14 * 24 * 60 * 60) : null;
+  }.observes(&#39;rememberMe&#39;)
+});
+</code></pre>
+<p><em>The factory for this store is registered as
+<code>&#39;simple-auth-session-store:cookie&#39;</code> in Ember&#39;s container.</em></p>
+
+              <h4 class="section">Importing</h4>
+              <dl>
+                <dt>ES6 modules<dt>
+                <dd>
+                  <pre><code class="lang-javascript javascript">import Cookie from 'simple-auth-cookie-store/stores/cookie';</code></pre>
+                </dd>
+                <dt>Standard AMD<dt>
+                <dd>
+                  <pre><code class="lang-javascript javascript">var Cookie = requireModule('simple-auth-cookie-store/stores/cookie').default;</code></pre>
+                </dd>
+              </dl>
               
                 <h3 class="section">Properties</h3>
                 
                   <div class="panel panel-default">
-  <a id="Ember-SimpleAuth-Stores-Cookie-cookieNamePrefix" class="symbol-anchor"></a>
+  <a id="SimpleAuth-Stores-Cookie-cookieNamePrefix" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L25"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L48"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title property">cookieNamePrefix <span class="type">String</span></h3>
@@ -130,9 +163,41 @@ not need to poll for external changes.</p>
   <div class="panel-body">
     <p>The prefix to use for the store&#39;s cookie names so they can be distinguished
 from other cookies.</p>
+<p>This value can be configured via the global environment object:</p>
+<pre><code class="lang-js">window.ENV = window.ENV || {};
+window.ENV[&#39;simple-auth-cookie-store&#39;] = {
+  cookieNamePrefix: &#39;my_app_auth_&#39;
+}
+</code></pre>
 
     
       Defaults to <code>&#x27;ember_simple_auth:&#x27;</code>
+      
+  </div>
+</div>
+
+                
+                  <div class="panel panel-default">
+  <a id="SimpleAuth-Stores-Cookie-cookieExpirationTime" class="symbol-anchor"></a>
+  <div class="panel-heading">
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L67"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    
+    
+    <h3 class="panel-title property">cookieExpirationTime <span class="type">Integer</span></h3>
+  </div>
+  <div class="panel-body">
+    <p>The expiration time in seconds to use for the cookies. A value of <code>null</code>
+will make the cookies session cookies that expire when the browser is
+closed.</p>
+<p>This value can be configured via the global environment object:</p>
+<pre><code class="lang-js">window.ENV = window.ENV || {};
+window.ENV[&#39;simple-auth-cookie-store&#39;] = {
+  cookieExpirationTime: 24 * 60 * 60
+}
+</code></pre>
+
+    
+      Defaults to <code>null</code>
       
   </div>
 </div>
@@ -144,9 +209,9 @@ from other cookies.</p>
                 <h3 class="section">Methods</h3>
                 
                   <div class="panel panel-default">
-  <a id="Ember-SimpleAuth-Stores-Cookie-persist" class="symbol-anchor"></a>
+  <a id="SimpleAuth-Stores-Cookie-persist" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L55"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L110"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -174,9 +239,9 @@ from other cookies.</p>
 
                 
                   <div class="panel panel-default">
-  <a id="Ember-SimpleAuth-Stores-Cookie-restore" class="symbol-anchor"></a>
+  <a id="SimpleAuth-Stores-Cookie-restore" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L68"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L123"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -189,7 +254,7 @@ from other cookies.</p>
   <div class="panel-body">
     <p>Restores all data currently saved in the session cookies identified by the
 <code>cookieNamePrefix</code> (see
-<a href="Ember-SimpleAuth-Stores-Cookie-cookieNamePrefix">Ember.SimpleAuth.Stores.Cookie#cookieNamePrefix</a>)
+<a href="#SimpleAuth-Stores-Cookie-cookieNamePrefix"><code>Stores.Cookie#cookieNamePrefix</code></a>)
 as a plain object.</p>
 
     
@@ -204,9 +269,9 @@ as a plain object.</p>
 
                 
                   <div class="panel panel-default">
-  <a id="Ember-SimpleAuth-Stores-Cookie-clear" class="symbol-anchor"></a>
+  <a id="SimpleAuth-Stores-Cookie-clear" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/ember-simple-auth-cookie-store/stores/cookie.js#L86"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L141"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -217,7 +282,7 @@ as a plain object.</p>
   <div class="panel-body">
     <p>Clears the store by deleting all session cookies prefixed with the
 <code>cookieNamePrefix</code> (see
-<a href="Ember-SimpleAuth-Stores-Cookie-cookieNamePrefix">Ember.SimpleAuth.Stores.Cookie#cookieNamePrefix</a>).</p>
+<a href="#SimpleAuth-Stores-Cookie-cookieNamePrefix"><code>SimpleAuth.Stores.Cookie#cookieNamePrefix</code></a>).</p>
 
     
     
@@ -242,7 +307,11 @@ as a plain object.</p>
   <ul class="list-unstyled">
     
       <li>
-        <a href="#Ember-SimpleAuth-Stores-Cookie-cookieNamePrefix">cookieNamePrefix</a>
+        <a href="#SimpleAuth-Stores-Cookie-cookieNamePrefix">cookieNamePrefix</a>
+      </li>
+    
+      <li>
+        <a href="#SimpleAuth-Stores-Cookie-cookieExpirationTime">cookieExpirationTime</a>
       </li>
     
   </ul>
@@ -255,15 +324,15 @@ as a plain object.</p>
   <ul class="list-unstyled">
     
       <li>
-        <a href="#Ember-SimpleAuth-Stores-Cookie-persist">persist</a>
+        <a href="#SimpleAuth-Stores-Cookie-persist">persist</a>
       </li>
     
       <li>
-        <a href="#Ember-SimpleAuth-Stores-Cookie-restore">restore</a>
+        <a href="#SimpleAuth-Stores-Cookie-restore">restore</a>
       </li>
     
       <li>
-        <a href="#Ember-SimpleAuth-Stores-Cookie-clear">clear</a>
+        <a href="#SimpleAuth-Stores-Cookie-clear">clear</a>
       </li>
     
   </ul>
