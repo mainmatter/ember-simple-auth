@@ -4,8 +4,6 @@ module.exports = function(grunt) {
   this.registerTask('dist', 'Builds a distributable version of Ember Simple Auth', [
     'lint',
     'build',
-    'uglify:library',
-    'uglify:browser',
     'copy:dist',
     'docs'
   ]);
@@ -49,9 +47,7 @@ module.exports = function(grunt) {
 
   this.registerTask('copy:dist', 'Copies all distribution files to /dist', [
     'copy:plain',
-    'copy:min',
-    'copy:amd',
-    'copy:amd_min'
+    'copy:amd'
   ]);
 
   var packages = grunt.file.expand('packages/*/package.json').reduce(function(acc, package) {
@@ -150,25 +146,6 @@ module.exports = function(grunt) {
       }
     },
 
-    uglify: {
-      library: {
-        files: packages.map(function(pkg) {
-          return {
-            src: ['tmp/' + pkg.name + '.amd.js'],
-            dest: 'tmp/' + pkg.name + '.amd.min.js'
-          };
-        })
-      },
-      browser: {
-        files: packages.map(function(pkg) {
-          return {
-            src: ['tmp/' + pkg.name + '.js'],
-            dest: 'tmp/' + pkg.name + '.min.js'
-          };
-        })
-      }
-    },
-
     copy: {
       plain: {
         files: packages.map(function(pkg) {
@@ -178,27 +155,11 @@ module.exports = function(grunt) {
           };
         })
       },
-      min: {
-        files: packages.map(function(pkg) {
-          return {
-            src: ['tmp/' + pkg.name + '.min.js'],
-            dest: 'dist/' + pkg.name + '-' + pkg.version + '.min.js'
-          };
-        })
-      },
       amd: {
         files: packages.map(function(pkg) {
           return {
             src: ['tmp/' + pkg.name + '.amd.js'],
             dest: 'dist/' + pkg.name + '-' + pkg.version + '.amd.js'
-          };
-        })
-      },
-      amd_min: {
-        files: packages.map(function(pkg) {
-          return {
-            src: ['tmp/' + pkg.name + '.amd.min.js'],
-            dest: 'dist/' + pkg.name + '-' + pkg.version + '.amd.min.js'
           };
         })
       },
@@ -297,7 +258,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-es6-module-transpiler');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-compile-handlebars');
