@@ -63,7 +63,7 @@ export default Base.extend({
     This method also schedules automatic token refreshing when there are values
     for `refresh_token` and `expires_in` in the `data` and automatic token
     refreshing is not disabled (see
-    [SimpleAuth.Authenticators.OAuth2#refreshAccessTokens](#Ember-SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
+    [`Authenticators.OAuth2#refreshAccessTokens`](#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
 
     @method restore
     @param {Object} data The data to restore the session from
@@ -94,8 +94,8 @@ export default Base.extend({
 
   /**
     Authenticates the session with the specified `credentials`; the credentials
-    are `POST`ed to the `serverTokenEndpoint` (see
-    [SimpleAuth.Authenticators.OAuth2#serverTokenEndpoint](#Ember-SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint))
+    are send via a _"POST"_ request to the
+    [`Authenticators.OAuth2#serverTokenEndpoint`](#SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint)
     and if they are valid the server returns an access token in response (see
     http://tools.ietf.org/html/rfc6749#section-4.3). __If the credentials are
     valid and authentication succeeds, a promise that resolves with the
@@ -105,7 +105,7 @@ export default Base.extend({
     This method also schedules automatic token refreshing when there are values
     for `refresh_token` and `expires_in` in the server response and automatic
     token refreshing is not disabled (see
-    [SimpleAuth.Authenticators.OAuth2#refreshAccessTokens](#Ember-SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
+    [`Authenticators.OAuth2#refreshAccessTokens`](#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
 
     @method authenticate
     @param {Object} credentials The credentials to authenticate the session with
@@ -144,7 +144,7 @@ export default Base.extend({
 
   /**
     Sends an `AJAX` request to the `serverTokenEndpoint`. This will always be a
-    _"POST_" request with content type _"application/x-www-form-urlencoded"_ as
+    _"POST"_ request with content type _"application/x-www-form-urlencoded"_ as
     specified in [RFC 6749](http://tools.ietf.org/html/rfc6749).
 
     This method is not meant to be used directly but serves as an extension

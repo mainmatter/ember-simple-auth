@@ -80,7 +80,7 @@ The `authenticate` action that is triggered by submitting the form is provided
 by the `LoginControllerMixin` that the respective controller in the application
 can include (the controller can also implement its own action and use the
 session API directly; see the
-[API docs for `Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#Ember-SimpleAuth-Session)).
+[API docs for `Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Session)).
 It then also needs to specify the OAuth 2.0 authenticator to be used:
 
 ```js
@@ -121,7 +121,7 @@ with this library:
 ## The Authorizer
 
 The authorizer (see the
-[API docs for `Authorizers.OAuth2`](http://ember-simple-auth.simplabs.com/simple-auth-oauth2-api-docs.html#Ember-SimpleAuth-Authorizers-OAuth2))
+[API docs for `Authorizers.OAuth2`](http://ember-simple-auth.simplabs.com/simple-auth-oauth2-api-docs.html#SimpleAuth-Authorizers-OAuth2))
 is compliant with [RFC 6750 (OAuth 2.0 Bearer Tokens)](http://tools.ietf.org/html/rfc6750)
 and thus fits the OAuth 2.0 authenticator. It simply injects an `Authorization`
 header with the `access_token` that the authenticator acquired into all
