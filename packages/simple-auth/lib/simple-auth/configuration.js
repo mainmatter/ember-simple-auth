@@ -2,7 +2,17 @@ var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
 /**
-  SimpleAuth's configuration object.
+  Ember Simple Auth's configuration object.
+
+  To change any of these values, define a global configuration object for Ember
+  Simple Auth and define the values there:
+
+  ```javascript
+  window.ENV = window.ENV || {};
+  window.ENV['simple-auth'] = {
+    authenticationRoute: 'sign-in'
+  };
+  ```
 
   @class Configuration
   @namespace SimpleAuth
@@ -10,8 +20,7 @@ var global = (typeof window !== 'undefined') ? window : {},
 */
 export default {
   /**
-    The route to transition to for authentication; should be set through
-    [SimpleAuth.setup](#Ember-SimpleAuth-setup).
+    The route to transition to for authentication.
 
     @property authenticationRoute
     @readOnly
@@ -22,8 +31,7 @@ export default {
   authenticationRoute: 'login',
 
   /**
-    The route to transition to after successful authentication; should be set
-    through [SimpleAuth.setup](#Ember-SimpleAuth-setup).
+    The route to transition to after successful authentication.
 
     @property routeAfterAuthentication
     @readOnly
@@ -35,8 +43,7 @@ export default {
 
   /**
     The name of the property that the session is injected with into routes and
-    controllers; should be set through
-    [SimpleAuth.setup](#Ember-SimpleAuth-setup).
+    controllers.
 
     @property sessionPropertyName
     @readOnly
@@ -74,7 +81,7 @@ export default {
   storeFactory: 'simple-auth-session-store:local-storage',
 
   /**
-    SimpleAuth will never authorize requests going to a different origin
+    Ember Simple Auth will never authorize requests going to a different origin
     than the one the Ember.js application was loaded from; to explicitely
     enable authorization for additional origins, whitelist those origins with
     this setting. _Beware that origins consist of protocol, host and port (port
