@@ -9,9 +9,15 @@ import flatObjectsAreEqual from '../utils/flat_objects_are_equal';
 
   Stores are used to persist the session's state so it survives a page reload
   and is synchronized across multiple tabs or windows of the same application.
-  The store to be used with the application can be configured during
-  SimpleAuth's setup
-  (see [SimpleAuth.setup](#Ember-SimpleAuth-setup)).
+  The store to be used with the application can be configured in the global
+  configuration object:
+
+  ```js
+  window.ENV = window.ENV || {};
+  window.ENV['simple-auth'] = {
+    storeFactory: 'simple-auth-session-store:local-storage'
+  }
+  ```
 
   @class Base
   @namespace SimpleAuth.Stores
@@ -25,7 +31,7 @@ export default Ember.Object.extend(Ember.Evented, {
     store. This usually happens because the session is authenticated or
     invalidated in another tab or window.__ The session automatically catches
     that event, passes the updated data to its authenticator's
-    [SimpleAuth.Authenticators.Base#restore](#Ember-SimpleAuth-Authenticators-Base-restore)
+    [`Authenticators.Base#restore`](#SimpleAuth-Authenticators-Base-restore)
     method and handles the result of that invocation accordingly.
 
     @event sessionDataUpdated
@@ -35,7 +41,7 @@ export default Ember.Object.extend(Ember.Evented, {
   /**
     Persists the `data` in the store.
 
-    `SimpleAuth.Stores.Base`'s implementation does nothing.
+    `Stores.Base`'s implementation does nothing.
 
     @method persist
     @param {Object} data The data to persist
@@ -46,8 +52,7 @@ export default Ember.Object.extend(Ember.Evented, {
   /**
     Restores all data currently saved in the store as a plain object.
 
-    `SimpleAuth.Stores.Base`'s implementation always returns an empty
-    plain Object.
+    `Stores.Base`'s implementation always returns an empty plain Object.
 
     @method restore
     @return {Object} The data currently persisted in the store.
@@ -59,9 +64,9 @@ export default Ember.Object.extend(Ember.Evented, {
   /**
     Replaces all data currently saved in the store with the specified `data`.
 
-    `SimpleAuth.Stores.Base`'s implementation clears the store, then
-    persists the specified `data`. If the store's current content is equal to
-    the specified `data`, nothing is done.
+    `Stores.Base`'s implementation clears the store, then persists the
+    specified `data`. If the store's current content is equal to the specified
+    `data`, nothing is done.
 
     @method replace
     @param {Object} data The data to replace the store's content with
@@ -76,7 +81,7 @@ export default Ember.Object.extend(Ember.Evented, {
   /**
     Clears the store.
 
-    `SimpleAuth.Stores.Base`'s implementation does nothing.
+    `Stores.Base`'s implementation does nothing.
 
     @method clear
   */

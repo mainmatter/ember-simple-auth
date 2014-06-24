@@ -10,6 +10,8 @@ import flatObjectsAreEqual from '../utils/flat_objects_are_equal';
   _The factory for this store is registered as
   `'simple-auth-session-store:local-storage'` in Ember's container._
 
+  __`Stores.LocalStorage` is Ember Simple Auth's default store.__
+
   @class LocalStorage
   @namespace SimpleAuth.Stores
   @module simple-auth/stores/local_storage
