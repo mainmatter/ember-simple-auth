@@ -1,1 +1,1 @@
-packages/ember-simple-auth/README.md
+packages/simple-auth/README.md
