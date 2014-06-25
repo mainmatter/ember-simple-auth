@@ -1,3 +1,13 @@
+# 0.6.1
+
+* __[BREAKING] All factory properties that previously had a "Factory" suffix
+  have been renamed to not include the suffix anymore__. If you're currently
+  setting `storeFactory` or `authorizerFactory` in the configuration be sure to
+  change these to `store` and `authorizer`. Also change `authenticatorFactory`
+  in the login controller to `authenticator`.
+* The file names of the download distribution have been changed to have the
+  "ember-" prefix again.
+
 # 0.6.0
 
 * __[BREAKING]__ Ember Simple Auth's `SimpleAuth` object is no longer attached
