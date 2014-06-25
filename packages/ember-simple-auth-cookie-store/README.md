@@ -1,4 +1,4 @@
-__[The API docs for the cookie store are available here](http://ember-simple-auth.simplabs.com/simple-auth-cookie-store-api-docs.html)__
+__[The API docs for the cookie store are available here](http://ember-simple-auth.simplabs.com/ember-simple-auth-cookie-store-api-docs.html)__
 
 #  Ember Simple Auth Cookie Store
 
