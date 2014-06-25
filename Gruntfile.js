@@ -167,7 +167,7 @@ module.exports = function(grunt) {
         files: packages.map(function(pkg) {
           return {
             src: ['tmp/docs/' + pkg.name + '/api.html'],
-            dest: 'dist/' + pkg.name + '-' + pkg.version + '-api-docs.html'
+            dest: 'dist/docs/' + pkg.name + '-api-docs.html'
           };
         })
       }
