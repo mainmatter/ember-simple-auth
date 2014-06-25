@@ -1,3 +1,8 @@
+# 0.6.2
+
+* The `crossOriginWhitelist` is now loaded from `window.ENV` correctly, see
+  #218.
+
 # 0.6.1
 
 * __[BREAKING] All factory properties that previously had a "Factory" suffix
