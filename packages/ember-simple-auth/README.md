@@ -47,7 +47,7 @@ named `'simple-auth'`;
 If you're not using the AMD build it's enough to simply load the browserified
 distribution of Ember Simple Auth and it will setup itself. Once Ember Simple
 Auth was set up, the session (see the
-[API docs for `SimpleAuth.Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Session))
+[API docs for `Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Session))
 __will be available in all routes and controllers__ of the application.
 
 While not necessary, the easiest way to use the session is to include the

@@ -75,7 +75,7 @@ It then also needs to specify the OAuth 2.0 authenticator to be used:
 // app/controllers/login.js
 import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
 
-export default Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
+export default Ember.Controller.extend(LoginControllerMixin, {
   authenticator: 'simple-auth-authenticator:oauth2-password-grant'
 });
 ```
