@@ -306,42 +306,22 @@ the examples.
 To install Ember Simple Auth in an Ember.js application there are several options:
 
 * If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
-  add Ember Simple Auth to the `bower.json` file:
+  add one of the Ember CLI Addons to your project:
+  * https://github.com/simplabs/ember-cli-simple-auth
+  * https://github.com/simplabs/ember-cli-simple-auth-oauth2
+  * https://github.com/simplabs/ember-cli-simple-auth-devise
+  * https://github.com/simplabs/ember-cli-simple-auth-cookie-store
+* Ember Simple Auth is also available in the _"ember-simple-auth"_ bower
+  package which includes both a browserified version as well as an AMD build.
+  If you're using the AMD build from bower be sure to require the autoloader:
 
   ```js
-  {
-    "dependencies": {
-      "ember-simple-auth": *
-    }
-  }
-  ```
-
-  and import the library to the `Brocfile.js`:
-
-  ```js
-  app.import('vendor/ember-simple-auth/simple-auth.amd.js', {
-    // whitelist all modules you want to use, e.g.
-    //
-    // 'simple-auth/authorizers/base': ['default']
-  });
-  ```
-
-* The bower component also includes a browserified version that can simply be
-  loaded in the Ember.js application:
-
-  ```html
-  <script src="vendor/ember-simple-auth/simple-auth.js"></script>
+  require('simple-auth/ember');
   ```
 
 * Download a prebuilt version from
   [the releases page](https://github.com/simplabs/ember-simple-auth/releases)
 * [Build it yourself](#building)
-* If you're using Ruby on Rails, you can add the (unofficial) source gem that
-  supports the Ruby on Rails asset pipeline by adding it to your `Gemfile`:
-
-  ```ruby
-  gem 'ember_simple_auth-rails'
-  ```
 
 ## Building
 

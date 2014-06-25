@@ -119,18 +119,6 @@ invalidates the session__ as the Rails session cookie will still be present
 because Ember Simple Auth does not know anything about that cookie and will not
 delete it on session invalidation!
 
-## Client Side Setup
-
-To enable the Devise extension library, simply import its autoloader:
-
-```js
-require('simple-auth-devise/ember');
-```
-
-which sets up an
-[initializer](http://emberjs.com/api/classes/Ember.Application.html#toc_initializers)
-named `'simple-auth-devise'`.
-
 ## The Authenticator
 
 In order to use the Devise authenticator (see the
@@ -198,31 +186,16 @@ To install Ember Simple Auth Devise in an Ember.js application there are
 several options:
 
 * If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
-  add Ember Simple Auth to the `bower.json` file:
+  add the
+  [Ember CLI Addon](https://github.com/simplabs/ember-cli-simple-auth-devise)
+  to your project
+* The Ember Simple Auth Devise extenion library is also included in the
+  _"ember-simple-auth"_ bower package both in a browserified version as well as
+  an AMD build. If you're using the AMD build from bower be sure to require the
+  autoloader:
 
   ```js
-  {
-    "dependencies": {
-      "simple-auth": "https://github.com/simplabs/ember-simple-auth-component.git"
-    }
-  }
-  ```
-
-  and import the library to the `Brocfile.js`:
-
-  ```js
-  app.import('vendor/ember-simple-auth/amd/simple-auth-devise.amd.js', {
-    // whitelist all modules you want to use, e.g.
-    //
-    // 'simple-auth/authorizers/devise': ['default']
-  });
-  ```
-
-* The bower component also includes a browserified version that can simply be
-  loaded in the Ember.js application:
-
-  ```html
-  <script src="vendor/ember-simple-auth/simple-auth-devise.js"></script>
+  require('simple-auth-devise/ember');
   ```
 
 * Download a prebuilt version from

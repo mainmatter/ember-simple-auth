@@ -7,18 +7,9 @@ based session store__. It offers the same functionality as the standard
 `localStorage` based store but __also supports older browsers__ that don't
 support the `locaStorage` API.
 
-## Using the Cookie Store
+## Configuration
 
-To use the cookie store, simply require its autoloader:
-
-```js
-require('simple-auth-cookie-store/ember');
-```
-
-which sets up an
-[initializer](http://emberjs.com/api/classes/Ember.Application.html#toc_initializers)
-named `'simple-auth-cookie-store'`, and configure it in the global environment
-object:
+The Cookie Store can be configured via the global environment object:
 
 ```js
 window.ENV = window.ENV || {};
@@ -33,31 +24,16 @@ To install Ember Simple Auth Cookie Store in an Ember.js application there are
 several options:
 
 * If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
-  add Ember Simple Auth to the `bower.json` file:
+  add the
+  [Ember CLI Addon](https://github.com/simplabs/ember-cli-simple-auth-cookie-store)
+  to your project
+* The Ember Simple Auth Cookie Store extenion library is also included in the
+  _"ember-simple-auth"_ bower package both in a browserified version as well as
+  an AMD build. If you're using the AMD build from bower be sure to require the
+  autoloader:
 
   ```js
-  {
-    "dependencies": {
-      "simple-auth": "https://github.com/simplabs/ember-simple-auth-component.git"
-    }
-  }
-  ```
-
-  and import the library to the `Brocfile.js`:
-
-  ```js
-  app.import('vendor/ember-simple-auth/amd/simple-auth-cookie-store.amd.js', {
-    // whitelist all modules you want to use, e.g.
-    //
-    // 'simple-auth/stores/cookie': ['default']
-  });
-  ```
-
-* The bower component also includes a browserified version that can simply be
-  loaded in the Ember.js application:
-
-  ```html
-  <script src="vendor/ember-simple-auth/simple-auth-cookie-store.js"></script>
+  require('simple-auth-cookie-store/ember');
   ```
 
 * Download a prebuilt version from
