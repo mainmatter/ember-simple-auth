@@ -41,13 +41,13 @@ module.exports = function(grunt) {
 
   this.registerTask('docs', 'Builds the documentation', [
     'yuidoc',
-    'compile-handlebars',
-    'copy:docs'
+    'compile-handlebars'
   ]);
 
   this.registerTask('copy:dist', 'Copies all distribution files to /dist', [
     'copy:plain',
-    'copy:amd'
+    'copy:amd',
+    'copy:docs'
   ]);
 
   var packages = grunt.file.expand('packages/*/package.json').reduce(function(acc, package) {
