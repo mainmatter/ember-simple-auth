@@ -311,7 +311,7 @@ To install Ember Simple Auth in an Ember.js application there are several option
   ```js
   {
     "dependencies": {
-      "simple-auth": "https://github.com/simplabs/ember-simple-auth-component.git"
+      "ember-simple-auth": *
     }
   }
   ```
