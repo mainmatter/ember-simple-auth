@@ -108,8 +108,8 @@ module.exports = function(grunt) {
         files: packages.map(function(pkg) {
           return {
             expand: true,
-            cwd: 'packages/',
-            src: [pkg.name + '/tests/**/*.js'],
+            cwd: 'packages/' + pkg.name + '/',
+            src: ['tests/' + pkg.main + '/**/*.js'],
             dest: 'tmp/tests/' + pkg.name
           };
         })
@@ -121,7 +121,7 @@ module.exports = function(grunt) {
         files: (function() {
           var files = {};
           packages.forEach(function(pkg) {
-            files['tmp/' + pkg.name + '.amd.js'] = ['tmp/libs/' + pkg.name + '.js', 'tmp/libs/' + pkg.name + '/**/*.js'];
+            files['tmp/' + pkg.name + '.amd.js'] = ['tmp/libs/' + pkg.main + '.js', 'tmp/libs/' + pkg.main + '/**/*.js'];
           });
           return files;
         })()
@@ -130,7 +130,7 @@ module.exports = function(grunt) {
         files: (function() {
           var files = {};
           packages.forEach(function(pkg) {
-            files['tmp/' + pkg.name + '.js'] = ['packages/' + pkg.name + '/wrap/browser.start', 'vendor/loader.js', 'tmp/libs/' + pkg.name + '.js', 'tmp/libs/' + pkg.name + '/**/*.js', 'packages/' + pkg.name + '/wrap/browser.end'];
+            files['tmp/' + pkg.name + '.js'] = ['packages/' + pkg.name + '/wrap/browser.start', 'vendor/loader.js', 'tmp/libs/' + pkg.main + '.js', 'tmp/libs/' + pkg.main + '/**/*.js', 'packages/' + pkg.name + '/wrap/browser.end'];
           });
           return files;
         })()

@@ -1,5 +1,6 @@
 {
-  "name": "simple-auth-devise",
+  "name": "ember-simple-auth-devise",
+  "main": "simple-auth-devise",
   "version": "0.6.0",
   "description": "An authenticator and authorizer for Ember Simple Auth that is compatible with the Ruby on Rails plugin devise.",
   "author": "Timothy Baron, Marco Otte-Witte",
