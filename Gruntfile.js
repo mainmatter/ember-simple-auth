@@ -4,8 +4,8 @@ module.exports = function(grunt) {
   this.registerTask('dist', 'Builds a distributable version of Ember Simple Auth', [
     'lint',
     'build',
-    'copy:dist',
-    'docs'
+    'docs',
+    'copy:dist'
   ]);
 
   this.registerTask('build', 'Builds Ember Simple Auth', [
@@ -45,8 +45,10 @@ module.exports = function(grunt) {
   ]);
 
   this.registerTask('copy:dist', 'Copies all distribution files to /dist', [
-    'copy:plain',
-    'copy:amd',
+    'copy:plain_download',
+    'copy:plain_bower',
+    'copy:amd_download',
+    'copy:amd_bower',
     'copy:docs'
   ]);
 
@@ -147,19 +149,35 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      plain: {
+      plain_download: {
         files: packages.map(function(pkg) {
           return {
             src: ['tmp/' + pkg.name + '.js'],
-            dest: 'dist/' + pkg.name + '-' + pkg.version + '.js'
+            dest: 'dist/download/' + pkg.name + '-' + pkg.version + '.js'
           };
         })
       },
-      amd: {
+      plain_bower: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg.name + '.js'],
+            dest: 'dist/bower/' + pkg.main + '.js'
+          };
+        })
+      },
+      amd_download: {
         files: packages.map(function(pkg) {
           return {
             src: ['tmp/' + pkg.name + '.amd.js'],
-            dest: 'dist/' + pkg.name + '-' + pkg.version + '.amd.js'
+            dest: 'dist/download/' + pkg.name + '-' + pkg.version + '.amd.js'
+          };
+        })
+      },
+      amd_bower: {
+        files: packages.map(function(pkg) {
+          return {
+            src: ['tmp/' + pkg.name + '.amd.js'],
+            dest: 'dist/bower/' + pkg.main + '.amd.js'
           };
         })
       },
