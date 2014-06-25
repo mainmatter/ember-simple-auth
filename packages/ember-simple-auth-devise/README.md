@@ -168,7 +168,7 @@ It then also needs to specify the Devise authenticator to be used:
 import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin'
 
 export default Ember.Controller.extend(LoginControllerMixin, {
-  authenticatorFactory: 'simple-auth-authenticator:devise'
+  authenticator: 'simple-auth-authenticator:devise'
 });
 ```
 
@@ -188,7 +188,7 @@ To use the authorizer, configure it in the global environment object:
 ```js
 window.ENV = window.ENV || {};
 window.ENV['simple-auth'] = {
-  authorizerFactory: 'simple-auth-authorizer:devise'
+  authorizer: 'simple-auth-authorizer:devise'
 }
 ```
 

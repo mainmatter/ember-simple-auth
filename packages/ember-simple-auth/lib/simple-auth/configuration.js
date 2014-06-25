@@ -59,25 +59,25 @@ export default {
     when the application does not interact with a server that requires
     authorized requests, no auzthorizer is needed.
 
-    @property sessionPropertyName
+    @property authorizer
     @readOnly
     @static
     @type String
     @default null
   */
-  authorizerFactory: null,
+  authorizer: null,
 
   /**
     The store factory to use as it is registered with Ember's container, see
     [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register).
 
-    @property storeFactory
+    @property store
     @readOnly
     @static
     @type String
     @default simple-auth-session-store:local-storage
   */
-  storeFactory: 'simple-auth-session-store:local-storage',
+  store: 'simple-auth-session-store:local-storage',
 
   /**
     Ember Simple Auth will never authorize requests going to a different origin
@@ -109,8 +109,8 @@ export default {
     this.authenticationRoute      = globalConfig.authenticationRoute || this.authenticationRoute;
     this.routeAfterAuthentication = globalConfig.routeAfterAuthentication || this.routeAfterAuthentication;
     this.sessionPropertyName      = globalConfig.sessionPropertyName || this.sessionPropertyName;
-    this.authorizerFactory        = globalConfig.authorizerFactory || this.authorizerFactory;
-    this.storeFactory             = globalConfig.storeFactory || this.storeFactory;
+    this.authorizer               = globalConfig.authorizer || this.authorizer;
+    this.store                    = globalConfig.store || this.store;
     this.applicationRootUrl       = container.lookup('router:main').get('rootURL') || '/';
   }
 };

@@ -90,7 +90,7 @@
       // configure the cookie store to be used
       window.ENV = window.ENV || {};
       window.ENV['simple-auth'] = {
-        storeFactory: 'simple-auth-session-store:cookie'
+        store: 'simple-auth-session-store:cookie'
       };
 
       App = Ember.Application.create({});
@@ -109,8 +109,8 @@
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
       App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'simple-auth-authenticator:oauth2-password-grant',
-        rememberMe:           false,
+        authenticator: 'simple-auth-authenticator:oauth2-password-grant',
+        rememberMe:    false,
 
         // change the store's cookie expiration time depending on whether "remember me" is checked or not
         rememberMeChanged: function() {

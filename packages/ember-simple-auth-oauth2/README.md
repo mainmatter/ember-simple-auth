@@ -88,7 +88,7 @@ It then also needs to specify the OAuth 2.0 authenticator to be used:
 import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
 
 export default Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
-  authenticatorFactory: 'simple-auth-authenticator:oauth2-password-grant'
+  authenticator: 'simple-auth-authenticator:oauth2-password-grant'
 });
 ```
 
@@ -136,7 +136,7 @@ To use the authorizer, configure it in the global environment object:
 ```js
 window.ENV = window.ENV || {};
 window.ENV['simple-auth'] = {
-  authorizerFactory: 'simple-auth-authorizer:oauth2-bearer'
+  authorizer: 'simple-auth-authorizer:oauth2-bearer'
 }
 ```
 

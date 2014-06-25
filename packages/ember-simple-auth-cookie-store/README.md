@@ -23,7 +23,7 @@ object:
 ```js
 window.ENV = window.ENV || {};
 window.ENV['simple-auth'] = {
-  storeFactory: 'simple-auth-session-store:cookie'
+  store: 'simple-auth-session-store:cookie'
 }
 ```
 

@@ -84,7 +84,7 @@
       // configure the devise authorizer to be used
       window.ENV = window.ENV || {};
       window.ENV['simple-auth'] = {
-        authorizerFactory: 'simple-auth-authorizer:devise'
+        authorizer: 'simple-auth-authorizer:devise'
       };
       // configure the endpoint for the devise authenticator
       window.ENV['simple-auth-devise'] = {
@@ -107,7 +107,7 @@
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
       App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'simple-auth-authenticator:devise'
+        authenticator: 'simple-auth-authenticator:devise'
       });
 
       // make this route protected

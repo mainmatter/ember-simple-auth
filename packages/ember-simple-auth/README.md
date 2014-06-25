@@ -154,7 +154,7 @@ or when using one of the controller mixins:
 import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
 
 export default Ember.Controller.extend(LoginControllerMixin, {
-  authenticatorFactory: 'authenticator:custom'
+  authenticator: 'authenticator:custom'
 });
 ```
 
@@ -175,7 +175,7 @@ configuration object:
 ```js
 window.ENV = window.ENV || {};
 window.ENV['simple-auth'] = {
-  authorizerFactory: 'authorizer:custom'
+  authorizer: 'authorizer:custom'
 }
 ```
 
@@ -218,7 +218,7 @@ Ember.Application.initializer({
 
 window.ENV = window.ENV || {};
 window.ENV['simple-auth'] = {
-  authorizerFactory: 'authorizer:custom'
+  authorizer: 'authorizer:custom'
 }
 ```
 
@@ -248,7 +248,7 @@ configuration object:
 ```js
 window.ENV = window.ENV || {};
 window.ENV['simple-auth'] = {
-  storeFactory: 'simple-auth-session-store:local-storage'
+  store: 'simple-auth-session-store:local-storage'
 }
 ```
 

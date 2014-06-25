@@ -7,7 +7,7 @@ describe('AuthenticationControllerMixin', function() {
     beforeEach(function() {
       this.session    = Session.create({ store: EphemeralStore.create() });
       this.controller = Ember.Controller.extend(AuthenticationControllerMixin, {
-        authenticatorFactory: 'authenticatorFactory'
+        authenticator: 'authenticator'
       }).create({ session: this.session });
     });
 
@@ -15,7 +15,7 @@ describe('AuthenticationControllerMixin', function() {
       sinon.stub(this.session, 'authenticate');
       this.controller._actions.authenticate.apply(this.controller, [{ some: 'options' }]);
 
-      expect(this.session.authenticate).to.have.been.calledWith('authenticatorFactory', { some: 'options' });
+      expect(this.session.authenticate).to.have.been.calledWith('authenticator', { some: 'options' });
     });
 
     it('returns the prmoise returned by the session', function() {

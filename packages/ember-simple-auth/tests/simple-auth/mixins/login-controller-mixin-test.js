@@ -6,8 +6,8 @@ describe('LoginControllerMixin', function() {
   beforeEach(function() {
     this.session    = Session.create({ store: EphemeralStore.create() });
     this.controller = Ember.Controller.extend(LoginControllerMixin).create({
-      authenticatorFactory: 'authenticatorFactory',
-      session:              this.session
+      authenticator: 'authenticator',
+      session:       this.session
     });
   });
 
@@ -31,7 +31,7 @@ describe('LoginControllerMixin', function() {
         this.controller._actions.authenticate.apply(this.controller);
 
         expect(this.session.authenticate).to.have.been.calledWith(
-          'authenticatorFactory',
+          'authenticator',
           { identification: 'identification', password: 'password'
         });
       });

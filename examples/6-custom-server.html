@@ -89,7 +89,7 @@
       // configure an authorizer to be used
       window.ENV = window.ENV || {};
       window.ENV['simple-auth'] = {
-        authorizerFactory: 'authorizer:custom'
+        authorizer: 'authorizer:custom'
       };
       Ember.Application.initializer({
         name: 'authentication',
@@ -183,7 +183,7 @@
         }
       });
       App.LoginController = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'authenticator:custom'
+        authenticator: 'authenticator:custom'
       });
 
       // make these route protected

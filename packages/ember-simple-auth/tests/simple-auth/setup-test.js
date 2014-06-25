@@ -30,7 +30,7 @@ describe('setup', function() {
 
   describe('the session instance', function() {
     beforeEach(function() {
-      Configuration.storeFactory = 'simple-auth-session-store:local-storage';
+      Configuration.store = 'simple-auth-session-store:local-storage';
       sinon.spy(this.container, 'register');
     });
 
@@ -42,7 +42,7 @@ describe('setup', function() {
     });
 
     it('uses a custom store if specified', function() {
-      Configuration.storeFactory = 'simple-auth-session-store:ephemeral';
+      Configuration.store = 'simple-auth-session-store:ephemeral';
       var store = EphemeralStore.create();
       this.containerStub.withArgs('simple-auth-session-store:ephemeral').returns(store);
       setup(this.container, this.application);
@@ -89,9 +89,9 @@ describe('setup', function() {
 
   describe('when an authorizer factory is specified', function() {
     beforeEach(function() {
-      Configuration.authorizerFactory = 'authorizerFactory';
+      Configuration.authorizer = 'authorizer';
       this.authorizer = { set: function() {}, authorize: function() {} };
-      this.containerStub.withArgs('authorizerFactory').returns(this.authorizer);
+      this.containerStub.withArgs('authorizer').returns(this.authorizer);
       sinon.spy(this.authorizer, 'authorize');
       sinon.spy(Ember.$, 'ajaxPrefilter');
     });

@@ -38,7 +38,7 @@ export default Ember.Mixin.create(AuthenticationControllerMixin, {
     /**
       This action will authenticate the session with the configured
       authenticator (see
-      [AuthenticationControllerMixin#authenticatorFactory](#SimpleAuth-Authentication-authenticatorFactory))
+      [AuthenticationControllerMixin#authenticator](#SimpleAuth-Authentication-authenticator))
       if both `identification` and `password` are non-empty. It passes both
       values to the authenticator.
 

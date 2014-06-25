@@ -43,7 +43,7 @@ var global = (typeof window !== 'undefined') ? window : {},
   import AuthenticationControllerMixin from 'simple-auth/mixins/authentication-controller-mixin';
 
   export default Ember.Controller.extend(AuthenticationControllerMixin, {
-    authenticatorFactory: 'authenticator:custom'
+    authenticator: 'authenticator:custom'
   });
   ```
 

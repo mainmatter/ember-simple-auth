@@ -112,7 +112,7 @@
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
       App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'simple-auth-authenticator:oauth2-password-grant'
+        authenticator: 'simple-auth-authenticator:oauth2-password-grant'
       });
 
       // make this route protected

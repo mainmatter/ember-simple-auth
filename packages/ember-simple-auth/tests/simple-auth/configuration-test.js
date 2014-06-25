@@ -25,15 +25,15 @@ describe('Configuration', function() {
     });
   });
 
-  describe('authorizerFactory', function() {
+  describe('authorizer', function() {
     it('defaults to null', function() {
-      expect(Configuration.authorizerFactory).to.be.null;
+      expect(Configuration.authorizer).to.be.null;
     });
   });
 
-  describe('storeFactory', function() {
+  describe('store', function() {
     it('defaults to "simple-auth-session-store:local-storage"', function() {
-      expect(Configuration.storeFactory).to.eq('simple-auth-session-store:local-storage');
+      expect(Configuration.store).to.eq('simple-auth-session-store:local-storage');
     });
   });
 

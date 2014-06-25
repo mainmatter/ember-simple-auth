@@ -15,7 +15,7 @@ import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
   ```js
   window.ENV = window.ENV || {};
   window.ENV['simple-auth'] = {
-    storeFactory: 'simple-auth-session-store:local-storage'
+    store: 'simple-auth-session-store:local-storage'
   }
   ```
 

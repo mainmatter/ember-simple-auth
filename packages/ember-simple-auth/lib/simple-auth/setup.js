@@ -45,7 +45,7 @@ export default function(container, application) {
   application.deferReadiness();
   registerStores(container);
 
-  var store            = container.lookup(Configuration.storeFactory);
+  var store            = container.lookup(Configuration.store);
   var session          = Session.create({ store: store, container: container });
   crossOriginWhitelist = Ember.A(Configuration.crossOriginWhitelist).map(function(origin) {
     return extractLocationOrigin(origin);
@@ -56,8 +56,8 @@ export default function(container, application) {
     container.injection(component, Configuration.sessionPropertyName, 'simple-auth-session:main');
   });
 
-  if (!Ember.isEmpty(Configuration.authorizerFactory)) {
-    var authorizer = container.lookup(Configuration.authorizerFactory);
+  if (!Ember.isEmpty(Configuration.authorizer)) {
+    var authorizer = container.lookup(Configuration.authorizer);
     if (!!authorizer) {
       authorizer.set('session', session);
       Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {

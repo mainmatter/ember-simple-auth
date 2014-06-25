@@ -96,7 +96,7 @@
       // configure an authorizer to be used
       window.ENV = window.ENV || {};
       window.ENV['simple-auth'] = {
-        authorizerFactory: 'simple-auth-authorizer:oauth2-bearer'
+        authorizer: 'simple-auth-authorizer:oauth2-bearer'
       };
       Ember.Application.initializer({
         name: 'authentication',
@@ -161,7 +161,7 @@
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
       App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'authenticator:custom'
+        authenticator: 'authenticator:custom'
       });
 
       // clear a potentially stale error message from previous login attempts
