@@ -1,4 +1,4 @@
-import Base from 'ember-simple-auth/authenticators/base';
+import Base from 'simple-auth/authenticators/base';
 
 var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
@@ -18,7 +18,7 @@ export default Base.extend({
   torii: null,
 
   /**
-    @provider provider
+    @property provider
     @private
   */
   provider: null,

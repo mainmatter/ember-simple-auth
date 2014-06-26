@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ember.SimpleAuth - examples</title>
+    <title>Ember Simple Auth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
-    <script src="http://builds.emberjs.com/release/ember.js"></script>
+    <script src="http://builds.emberjs.com/canary/ember.js"></script>
     <script src="../vendor/loader.js"></script>
     <script src="vendor/torii.amd.js"></script>
     <script src="../tmp/ember-simple-auth.js"></script>
@@ -50,7 +51,7 @@
       </div>
       {{#unless session.isAuthenticated}}
         <div class="alert alert-info">
-          You can {{#link-to 'login' class="alert-link"}}login{{/link-to}} with your Facebook or Google+ account.
+          You can {{#link-to 'login' class="alert-link"}}login{{/link-to}} with your <i class="fa fa-facebook-square"></i> Facebook or <i class="fa fa-google-plus-square"></i> Google+ account.
         </div>
       {{/unless}}
     </script>
@@ -83,7 +84,7 @@
             redirectUri: document.location.href
           },
           'google-oauth2': {
-            apiKey:      'AIzaSyBjyJkxZAiYXfcKABI43X3N8yl9Yzs2nE0',
+            apiKey:      '694766332436-1g5bakjoo5flkfpv3t2mfsch9ghg7ggd.apps.googleusercontent.com',
             redirectUri: document.location.href
           }
         }
@@ -106,24 +107,24 @@
       });
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
+      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
 
       // define the login route that defines the authentication actions
       App.LoginRoute = Ember.Route.extend({
         actions: {
           // action to trigger authentication with Facebook
           authenticateWithFacebook: function() {
-            this.get('session').authenticate('ember-simple-auth-authenticator:torii', { torii: this.get('torii'), provider: 'facebook-oauth2' });
+            this.get('session').authenticate('simple-auth-authenticator:torii', { torii: this.get('torii'), provider: 'facebook-oauth2' });
           },
           // action to trigger authentication with Google+
           authenticateWithGooglePlus: function() {
-            this.get('session').authenticate('ember-simple-auth-authenticator:torii', { torii: this.get('torii'), provider: 'google-oauth2' });
+            this.get('session').authenticate('simple-auth-authenticator:torii', { torii: this.get('torii'), provider: 'google-oauth2' });
           }
         }
       });
 
       // make this route protected
-      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+      App.ProtectedRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin);
     </script>
   </body>
 </html>
