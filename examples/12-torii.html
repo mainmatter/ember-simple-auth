@@ -114,11 +114,11 @@
         actions: {
           // action to trigger authentication with Facebook
           authenticateWithFacebook: function() {
-            this.get('session').authenticate('simple-auth-authenticator:torii', { torii: this.get('torii'), provider: 'facebook-oauth2' });
+            this.get('session').authenticate('simple-auth-authenticator:torii', 'facebook-oauth2');
           },
           // action to trigger authentication with Google+
           authenticateWithGooglePlus: function() {
-            this.get('session').authenticate('simple-auth-authenticator:torii', { torii: this.get('torii'), provider: 'google-oauth2' });
+            this.get('session').authenticate('simple-auth-authenticator:torii', 'google-oauth2');
           }
         }
       });

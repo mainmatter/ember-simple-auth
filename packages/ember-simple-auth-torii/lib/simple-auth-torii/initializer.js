@@ -8,6 +8,8 @@ export default {
   before: 'simple-auth',
   after:  'torii',
   initialize: function(container, application) {
-    container.register('simple-auth-authenticator:torii', Authenticator);
+    var torii         = container.lookup('torii:main');
+    var authenticator = Authenticator.create({ torii: torii });
+    container.register('simple-auth-authenticator:torii', authenticator, { instantiate: false });
   }
 };

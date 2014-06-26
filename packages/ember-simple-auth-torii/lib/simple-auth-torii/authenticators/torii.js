@@ -37,12 +37,11 @@ export default Base.extend({
     @param {Object} options The options to authenticate the session with; this must be an object with a `torii` property containing the torii object and a `provider` property containg the provider to use
     @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
   */
-  authenticate: function(options) {
+  authenticate: function(provider) {
     var _this = this;
-    this.torii = options.torii;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      _this.torii.open(options.provider).then(function(data) {
-        _this.provider = options.provider;
+      _this.torii.open(provider).then(function(data) {
+        _this.provider = provider;
         resolve(data);
       }, reject);
     });
