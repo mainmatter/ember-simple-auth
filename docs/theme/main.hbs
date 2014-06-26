@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{project.module}} API</title>
+    <title>{{project.title}} API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://yandex.st/highlightjs/7.4/styles/github.min.css">
@@ -57,8 +57,11 @@
         color: #333;
         background: #f8f8ff;
       }
-      body .container .page-header:first-child {
-        margin-top: 55px;
+      a code {
+        color: #428bca;
+      }
+      body .container .alert:first-child {
+        margin-top: 70px;
       }
       a.symbol-anchor {
         display: block;
@@ -77,12 +80,7 @@
               <li class="dropdown" id="classesDropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption"></span></a>
                 <ul class="dropdown-menu">
-                  {{#unless fakeModule}}
-                    <li>
-                      <a href="#{{anchor}}">{{name}}</a>
-                    </li>
-                  {{/unless}}
-                  {{#each klasses}}
+                  {{#each}}
                     <li>
                       <a href="#{{anchor}}">{{name}}</a>
                     </li>
@@ -98,7 +96,10 @@
         </div>
       </header>
       <div class="container">
-        {{#unless fakeModule}}
+        <div class="row">
+          <div class="alert alert-info">For a general overview of how Ember Simple Auth works, see the <a href="{{@root.project.githubUrl}}#readme" title="Ember Simple Auth's README github" class="alert-link">README</a></div>
+        </div>
+        {{#each}}
           <div class="row">
             <div class="col-md-12">
               <div class="page-header">
@@ -110,37 +111,17 @@
           <div class="row">
             <div class="col-md-9" id="main-content">
               {{markdown description}}
-              {{#if properties}}
-                <h3 class="section">Properties</h3>
-                {{#each properties}}
-                  {{> property}}
-                {{/each}}
-              {{/if}}
-              {{#if functions}}
-                <h3 class="section">Functions</h3>
-                {{#each functions}}
-                  {{> method}}
-                {{/each}}
-              {{/if}}
-            </div>
-            <div class="col-md-3 overview">
-              {{> sidebar-properties}}
-              {{> sidebar-functions}}
-            </div>
-          </div>
-        {{/unless}}
-        {{#each klasses}}
-          <div class="row">
-            <div class="col-md-12">
-              <div class="page-header">
-                <a id="{{anchor}}" class="symbol-anchor"></a>
-                <h1 class="class">{{name}}</h1>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-9" id="main-content">
-              {{markdown description}}
+              <h4 class="section">Importing</h4>
+              <dl>
+                <dt>ES6 modules<dt>
+                <dd>
+                  <pre><code class="lang-javascript javascript">import {{shortname}} from '{{module}}';</code></pre>
+                </dd>
+                <dt>Standard AMD<dt>
+                <dd>
+                  <pre><code class="lang-javascript javascript">var {{shortname}} = requireModule('{{module}}').default;</code></pre>
+                </dd>
+              </dl>
               {{#if properties}}
                 <h3 class="section">Properties</h3>
                 {{#each properties}}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ember.SimpleAuth - examples</title>
+    <title>Ember Simple Auth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -89,8 +89,8 @@
     <script type="text/javascript">
       // configure the cookie store to be used
       window.ENV = window.ENV || {};
-      window.ENV['ember-simple-auth'] = {
-        storeFactory: 'ember-simple-auth-session-store:cookie'
+      window.ENV['simple-auth'] = {
+        store: 'simple-auth-session-store:cookie'
       };
 
       App = Ember.Application.create({});
@@ -107,10 +107,10 @@
       });
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'ember-simple-auth-authenticator:oauth2-password-grant',
-        rememberMe:           false,
+      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
+      App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
+        authenticator: 'simple-auth-authenticator:oauth2-password-grant',
+        rememberMe:    false,
 
         // change the store's cookie expiration time depending on whether "remember me" is checked or not
         rememberMeChanged: function() {
@@ -119,7 +119,7 @@
       });
 
       // make this route protected
-      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+      App.ProtectedRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin);
     </script>
   </body>
 </html>

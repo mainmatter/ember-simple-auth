@@ -1,14 +1,17 @@
-define('ember-simple-auth/stores/base',  ['exports'], function(__exports__) {
-  __exports__['default'] = global.Ember.SimpleAuth.Stores.Base;
+define('simple-auth/stores/base',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.SimpleAuth.Stores.Base;
 });
-define('ember-simple-auth/utils/flat_objects_are_equal',  ['exports'], function(__exports__) {
-  __exports__['default'] = global.Ember.SimpleAuth.Utils.flatObjectsAreEqual;
+define('simple-auth/utils/flat-objects-are-equal',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.SimpleAuth.Utils.flatObjectsAreEqual;
+});
+define('simple-auth/utils/get-global-config',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.SimpleAuth.Utils.getGlobalConfig;
 });
 
-var initializer = requireModule('ember-simple-auth-cookie-store/initializer').default;
-var Cookie      = requireModule('ember-simple-auth-cookie-store/stores/cookie').default;
+var initializer = requireModule('simple-auth-cookie-store/initializer').default;
+var Cookie      = requireModule('simple-auth-cookie-store/stores/cookie').default;
 
-global.Ember.SimpleAuth.Stores.Cookie = Cookie;
+global.SimpleAuth.Stores.Cookie = Cookie;
 
-requireModule('ember-simple-auth-cookie-store/ember');
+requireModule('simple-auth-cookie-store/ember');
 })((typeof global !== 'undefined') ? global : window);

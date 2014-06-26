@@ -1,3 +1,56 @@
+# 0.6.2
+
+* The `crossOriginWhitelist` is now loaded from `window.ENV` correctly, see
+  #218.
+
+# 0.6.1
+
+* __[BREAKING] All factory properties that previously had a "Factory" suffix
+  have been renamed to not include the suffix anymore__. If you're currently
+  setting `storeFactory` or `authorizerFactory` in the configuration be sure to
+  change these to `store` and `authorizer`. Also change `authenticatorFactory`
+  in the login controller to `authenticator`.
+* The file names of the download distribution have been changed to have the
+  "ember-" prefix again.
+
+# 0.6.0
+
+* __[BREAKING]__ Ember Simple Auth's `SimpleAuth` object is no longer attached
+  to the `Ember` global but is now a global itself (in the browserified
+  distribution that exports that global). When you were referring to e.g.
+  `Ember.SimpleAuth.ApplicationRouteMixin` you now have to change that to
+  just `SimpleAuth.ApplicationRouteMixin`.
+* __[BREAKING]__ The "namespace" for all components that Ember Simple Auth
+  registers in Ember's container has been changed from 'ember-simple-auth-' to
+  just 'simple-auth-'.
+* __[BREAKING]__ The names of the distributed files has changed from
+  "ember-simple-auth-…" to "simple-auth-…".
+* __[BREAKING]__ The requirement for defining an initializer and call
+  `SimpleAuth.setup` in that has been dropped. Ember Simple Auth will now
+  setup itself once it is loaded. Existing Ember Simple Auth initializers
+  should be removed.
+* __[BREAKING]__ As `SimpleAuth.setup` was removed there now is a new way to
+  configure Ember Simple Auth. Instead of passing configuration values to the
+  `setup` method, these values are now defined on `window.ENV['simple-auth']`
+  (and `window.ENV['simple-auth-oauth']` etc. for the extension libraries).
+  See the
+  [API Docs for `Configuration`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Configuration)
+  for more information.
+* __[BREAKING]__ All underscores have been replaced with dashes in filenames.
+  This only affects users that were using the AMD build.
+* __[BREAKING]__ The AMD builds are no longer distributed in the 'amd/'
+  subfolder but in the root level along with the browserified versions.
+* The `ApplicationRouteMixin` now subscribes to the session's events in the
+  `beforeModel` method, see #199.
+* Added documentation on how to disable server sessions when using the Devise
+  extension library, see #204.
+* The authorizer will not be used if it is destroyed already, see #191.
+* The check for cross origin requests has been simplified, see #190.
+* Most of the examples in the READMEs and API docs have been rewritten to focus
+  on Ember CLI and ES6 modules instead of the browserified distribution.
+* The cookie store example now implements "remember me" functionality.
+* There is a new example that uses the AMD distribution.
+
 # 0.5.3
 
 * fixed the AMD build so it does not depend on the Ember.SimpleAuth global, see
@@ -20,8 +73,8 @@
 
 # 0.5.0
 
-* __Using any of the mixins is now completely optional__; Ember.SimpleAuth will
-  work without the mixins as well (see example 9).
+* __Using any of the mixins is now completely optional__; Ember Simple Auth
+  will work without the mixins as well (see example 9).
 * __The session's `authorizationFailed` event will now be triggered for any
   failed XHRs__ and not only for those made in routes' `model` hooks.
 * Fixed the Devise authenticator's `restore` method, see #171
@@ -34,7 +87,7 @@
 
 # 0.4.0
 
-* __[BREAKING]__ Ember.SimpleAuth's factories are now registered with
+* __[BREAKING]__ Ember Simple Auth's factories are now registered with
   "namespaced" names with Ember's container to avoid conflicts, see #159;
   __this requires all references to these factories (e.g.
   `authenticatorFactory` in controllers to be prepended with
@@ -58,13 +111,13 @@
 
 # 0.3.0
 
-* Ember.SimpleAuth has been split up into a base library and a set of extension
-  libraries - the OAuth 2.0 authenticator/authorizer, the cookie session store
-  as well as the new Devise authenticator/authorizer now reside in their own
-  extension libraries so everybody can include only what they need. __If you're
-  currently using the OAuth 2.0 authenticator and/or authorizer, you now need
-  to include the `ember-simple-auth-oauth2.js` file in your app! If you're
-  using the `Cookie` store you need to include
+* Ember Simple Auth has been split up into a base library and a set of
+  extension libraries - the OAuth 2.0 authenticator/authorizer, the cookie
+  session store as well as the new Devise authenticator/authorizer now reside
+  in their own extension libraries so everybody can include only what they
+  need. __If you're currently using the OAuth 2.0 authenticator and/or
+  authorizer, you now need to include the `ember-simple-auth-oauth2.js` file in
+  your app! If you're using the `Cookie` store you need to include
   `ember-simple-auth-cookie-store.js`.__
 * the new Devise authenticator and authorizer have been added, see README
   there.
@@ -96,7 +149,7 @@
 
 # 0.2.0
 
-* Ember.SimpleAuth now reloads the application's root page on logout so all
+* Ember Simple Auth now reloads the application's root page on logout so all
   sensitive in-memory data etc. gets cleared - this also works across tabs now,
   see #92
 * the OAuth 2.0 authenticator rejects restoration when the access token is
@@ -113,12 +166,12 @@
 
 # 0.1.2
 
-* Ember.SimpleAuth.setup now **expects the container and the application as
+* `Ember.SimpleAuth.setup` now **expects the container and the application as
   arguments** (`Ember.SimpleAuth.setup(container, application);`)
 * the authenticator to use is now looked up via Ember's container instead of
   the class name which fixes all sorts of problems especially when using Ember
   AppKit with the new ES6 modules lookup
-* the examples will now always build a new release of Ember.SimpleAuth when
+* the examples will now always build a new release of Ember Simple Auth when
   starting
 * origin validation now works in IE, see #84
 
@@ -141,7 +194,7 @@ The main changes are:
   was moved into strategy classes (see e.g. Authenticators.OAuth2, Authorizers.OAuth2)
 * instead of persisting the session in cookies, the default store is now
   `localStorage`
-* Ember.SimpleAuth.setup does not expect the container as first argument
+* `Ember.SimpleAuth.setup` does not expect the container as first argument
   anymore, now takes only the application object
 * the terms login/logout were replaced by session authentication/session
   invalidation

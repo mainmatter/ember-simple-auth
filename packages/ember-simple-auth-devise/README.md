@@ -1,8 +1,8 @@
-__[The API docs for Ember.SimpleAuth Devise are available here](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html)__
+__[The API docs for Ember Simple Auth Devise are available here](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html)__
 
-# Ember.SimpleAuth Devise
+# Ember Simple Auth Devise
 
-This is an extension to the Ember.SimpleAuth library that provides an
+This is an extension to the Ember Simple Auth library that provides an
 authenticator and an authorizer that are compatible with customized
 installations of [Devise](https://github.com/plataformatec/devise).
 
@@ -47,7 +47,7 @@ end
 ```
 
 By default, Devise's sessions controller only responds to HTML request. In
-order for it to work with Ember.SimpleAuth it must also respond to JSON. To
+order for it to work with Ember Simple Auth it must also respond to JSON. To
 achieve that, define a custom sessions controller (_if HTML responses are not
 needed the format handling can be left out of course_):
 
@@ -114,15 +114,15 @@ are sent for JSON requests as
 [described here](https://github.com/plataformatec/devise/issues/285).
 
 __If the server sends session cookies to the Ember frontend this will lead to
-the situation that the user is actually still logged in after Ember.SimpleAuth
+the situation that the user is actually still logged in after Ember Simple Auth
 invalidates the session__ as the Rails session cookie will still be present
-because Ember.SimpleAuth does not know anything about that cookie and will not
+because Ember Simple Auth does not know anything about that cookie and will not
 delete it on session invalidation!
 
 ## The Authenticator
 
 In order to use the Devise authenticator (see the
-[API docs for `Authenticators.Devise`](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html#Ember-SimpleAuth-Authenticators-Devise))
+[API docs for `Authenticators.Devise`](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html#SimpleAuth-Authenticators-Devise))
 the application needs to have a login route:
 
 ```js
@@ -148,19 +148,22 @@ The `authenticate` action that is triggered by submitting the form is provided
 by the `LoginControllerMixin` that the respective controller in the application
 can include (the controller can also implement its own action and use the
 session API directly; see the
-[API docs for `Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#Ember-SimpleAuth-Session)).
+[API docs for `Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Session)).
 It then also needs to specify the Devise authenticator to be used:
 
 ```js
-App.LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-  authenticatorFactory: 'ember-simple-auth-authenticator:devise'
+// app/controllers/login.js
+import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin'
+
+export default Ember.Controller.extend(LoginControllerMixin, {
+  authenticator: 'simple-auth-authenticator:devise'
 });
 ```
 
 ## The Authorizer
 
 The authorizer (see the
-[API docs for `Authorizers.Devise`](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html#Ember-SimpleAuth-Authorizers-Devise))
+[API docs for `Authorizers.Devise`](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html#SimpleAuth-Authorizers-Devise))
 authorizes requests by adding `user_token` and `user_email` properties from the
 session in the `Authorization` header:
 
@@ -168,15 +171,32 @@ session in the `Authorization` header:
 Authorization: Token token="<user_token>", user_email="<user_email>"
 ```
 
-To use the authorizer, specify it for Ember.SimpleAuth's setup:
+To use the authorizer, configure it in the global environment object:
 
 ```js
-Ember.Application.initializer({
-  name: 'authentication',
-  initialize: function(container, application) {
-    Ember.SimpleAuth.setup(container, application, {
-      authorizerFactory: 'ember-simple-auth-authorizer:devise'
-    });
-  }
-});
+window.ENV = window.ENV || {};
+window.ENV['simple-auth'] = {
+  authorizer: 'simple-auth-authorizer:devise'
+}
 ```
+
+## Installation
+
+To install Ember Simple Auth Devise in an Ember.js application there are
+several options:
+
+* If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
+  add the
+  [Ember CLI Addon](https://github.com/simplabs/ember-cli-simple-auth-devise)
+  to your project.
+* The Ember Simple Auth Devise extenion library is also included in the
+  _"ember-simple-auth"_ bower package both in a browserified version as well as
+  an AMD build. If you're using the AMD build from bower be sure to require the
+  autoloader:
+
+  ```js
+  require('simple-auth-devise/ember');
+  ```
+
+* Download a prebuilt version from
+  [the releases page](https://github.com/simplabs/ember-simple-auth/releases)

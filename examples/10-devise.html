@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ember.SimpleAuth - examples</title>
+    <title>Ember Simple Auth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -83,18 +83,13 @@
     <script type="text/javascript">
       // configure the devise authorizer to be used
       window.ENV = window.ENV || {};
-      window.ENV['ember-simple-auth'] = {
-        authorizerFactory: 'ember-simple-auth-authorizer:devise'
+      window.ENV['simple-auth'] = {
+        authorizer: 'simple-auth-authorizer:devise'
       };
-      Ember.Application.initializer({
-        name: 'authentication',
-        before: 'ember-simple-auth',
-        initialize: function(container, application) {
-          Ember.SimpleAuth.Authenticators.Devise.reopen({
-            serverTokenEndpoint: '/v5/users/sign_in',
-          });
-        }
-      });
+      // configure the endpoint for the devise authenticator
+      window.ENV['simple-auth-devise'] = {
+        serverTokenEndpoint: '/v5/users/sign_in',
+      };
 
       App = Ember.Application.create({});
 
@@ -110,13 +105,13 @@
       });
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-        authenticatorFactory: 'ember-simple-auth-authenticator:devise'
+      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
+      App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
+        authenticator: 'simple-auth-authenticator:devise'
       });
 
       // make this route protected
-      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+      App.ProtectedRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin, {
         // request some data from the server so that the authorizer authorizes that request
         model: function() {
           return new Ember.RSVP.Promise(function(resolve, reject) {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ember.SimpleAuth - examples</title>
+    <title>Ember Simple Auth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -84,8 +84,8 @@
     <script type="text/javascript">
       App = Ember.Application.create({});
 
-      var baseInitializer   = requireModule('ember-simple-auth/initializer').default;
-      var oauth2Initializer = requireModule('ember-simple-auth-oauth2/initializer').default;
+      var baseInitializer   = requireModule('simple-auth/initializer').default;
+      var oauth2Initializer = requireModule('simple-auth-oauth2/initializer').default;
 
       App.initializer(baseInitializer);
       App.initializer(oauth2Initializer);
@@ -101,14 +101,14 @@
         this.route('protected');
       });
 
-      var ApplicationRouteMixin   = requireModule('ember-simple-auth/mixins/application_route_mixin').default;
-      var LoginControllerMixin    = requireModule('ember-simple-auth/mixins/login_controller_mixin').default;
-      var AuthenticatedRouteMixin = requireModule('ember-simple-auth/mixins/authenticated_route_mixin').default;
+      var ApplicationRouteMixin   = requireModule('simple-auth/mixins/application-route-mixin').default;
+      var LoginControllerMixin    = requireModule('simple-auth/mixins/login-controller-mixin').default;
+      var AuthenticatedRouteMixin = requireModule('simple-auth/mixins/authenticated-route-mixin').default;
 
       // use the provided mixins in the application route and login controller
       App.ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin);
       App.LoginController  = Ember.Controller.extend(LoginControllerMixin, {
-        authenticatorFactory: 'ember-simple-auth-authenticator:oauth2-password-grant'
+        authenticator: 'simple-auth-authenticator:oauth2-password-grant'
       });
 
       // make this route protected

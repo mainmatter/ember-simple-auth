@@ -1,23 +1,21 @@
 module.exports = function(grunt) {
   this.registerTask('default', ['test']);
 
-  this.registerTask('dist', 'Builds a distributable version of Ember.SimpleAuth', [
+  this.registerTask('dist', 'Builds a distributable version of Ember Simple Auth', [
     'lint',
     'build',
-    'uglify:library',
-    'uglify:browser',
-    'copy:dist',
-    'docs'
+    'docs',
+    'copy:dist'
   ]);
 
-  this.registerTask('build', 'Builds Ember.SimpleAuth', [
+  this.registerTask('build', 'Builds Ember Simple Auth', [
     'clean',
     'transpile:amd',
     'concat:amd',
     'concat:browser'
   ]);
 
-  this.registerTask('build_tests', "Builds Ember.SimpleAuth's tests", [
+  this.registerTask('build_tests', "Builds Ember Simple Auth's tests", [
     'build',
     'transpile:tests',
     'concat:tests',
@@ -43,15 +41,15 @@ module.exports = function(grunt) {
 
   this.registerTask('docs', 'Builds the documentation', [
     'yuidoc',
-    'compile-handlebars',
-    'copy:docs'
+    'compile-handlebars'
   ]);
 
   this.registerTask('copy:dist', 'Copies all distribution files to /dist', [
-    'copy:plain',
-    'copy:min',
-    'copy:amd',
-    'copy:amd_min'
+    'copy:plain_download',
+    'copy:plain_bower',
+    'copy:amd_download',
+    'copy:amd_bower',
+    'copy:docs'
   ]);
 
   var packages = grunt.file.expand('packages/*/package.json').reduce(function(acc, package) {
@@ -112,8 +110,8 @@ module.exports = function(grunt) {
         files: packages.map(function(pkg) {
           return {
             expand: true,
-            cwd: 'packages/',
-            src: [pkg.name + '/tests/**/*.js'],
+            cwd: 'packages/' + pkg.name + '/',
+            src: ['tests/' + pkg.main + '/**/*.js'],
             dest: 'tmp/tests/' + pkg.name
           };
         })
@@ -125,7 +123,7 @@ module.exports = function(grunt) {
         files: (function() {
           var files = {};
           packages.forEach(function(pkg) {
-            files['tmp/' + pkg.name + '.amd.js'] = ['tmp/libs/' + pkg.name + '.js', 'tmp/libs/' + pkg.name + '/**/*.js'];
+            files['tmp/' + pkg.name + '.amd.js'] = ['tmp/libs/' + pkg.main + '.js', 'tmp/libs/' + pkg.main + '/**/*.js'];
           });
           return files;
         })()
@@ -134,7 +132,7 @@ module.exports = function(grunt) {
         files: (function() {
           var files = {};
           packages.forEach(function(pkg) {
-            files['tmp/' + pkg.name + '.js'] = ['packages/' + pkg.name + '/wrap/browser.start', 'vendor/loader.js', 'tmp/libs/' + pkg.name + '.js', 'tmp/libs/' + pkg.name + '/**/*.js', 'packages/' + pkg.name + '/wrap/browser.end'];
+            files['tmp/' + pkg.name + '.js'] = ['packages/' + pkg.name + '/wrap/browser.start', 'vendor/loader.js', 'tmp/libs/' + pkg.main + '.js', 'tmp/libs/' + pkg.main + '/**/*.js', 'packages/' + pkg.name + '/wrap/browser.end'];
           });
           return files;
         })()
@@ -150,55 +148,36 @@ module.exports = function(grunt) {
       }
     },
 
-    uglify: {
-      library: {
-        files: packages.map(function(pkg) {
-          return {
-            src: ['tmp/' + pkg.name + '.amd.js'],
-            dest: 'tmp/' + pkg.name + '.amd.min.js'
-          };
-        })
-      },
-      browser: {
-        files: packages.map(function(pkg) {
-          return {
-            src: ['tmp/' + pkg.name + '.js'],
-            dest: 'tmp/' + pkg.name + '.min.js'
-          };
-        })
-      }
-    },
-
     copy: {
-      plain: {
+      plain_download: {
         files: packages.map(function(pkg) {
           return {
             src: ['tmp/' + pkg.name + '.js'],
-            dest: 'dist/' + pkg.name + '-' + pkg.version + '.js'
+            dest: 'dist/download/' + pkg.name + '-' + pkg.version + '.js'
           };
         })
       },
-      min: {
+      plain_bower: {
         files: packages.map(function(pkg) {
           return {
-            src: ['tmp/' + pkg.name + '.min.js'],
-            dest: 'dist/' + pkg.name + '-' + pkg.version + '.min.js'
+            src: ['tmp/' + pkg.name + '.js'],
+            dest: 'dist/bower/' + pkg.main + '.js'
           };
         })
       },
-      amd: {
+      amd_download: {
         files: packages.map(function(pkg) {
           return {
             src: ['tmp/' + pkg.name + '.amd.js'],
-            dest: 'dist/' + pkg.name + '-' + pkg.version + '.amd.js'
+            dest: 'dist/download/' + pkg.name + '-' + pkg.version + '.amd.js'
           };
         })
       },
-      amd_min: {
+      amd_bower: {
         files: packages.map(function(pkg) {
           return {
-            src: ['tmp/' + pkg.name + '.amd.min.js'],
-            dest: 'dist/' + pkg.name + '-' + pkg.version + '.amd.min.js'
+            src: ['tmp/' + pkg.name + '.amd.js'],
+            dest: 'dist/bower/' + pkg.main + '.amd.js'
           };
         })
       },
@@ -206,7 +185,7 @@ module.exports = function(grunt) {
         files: packages.map(function(pkg) {
           return {
             src: ['tmp/docs/' + pkg.name + '/api.html'],
-            dest: 'dist/' + pkg.name + '-' + pkg.version + '-api-docs.html'
+            dest: 'dist/docs/' + pkg.name + '-api-docs.html'
           };
         })
       }
@@ -297,7 +276,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-es6-module-transpiler');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-compile-handlebars');

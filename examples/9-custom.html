@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ember.SimpleAuth - examples</title>
+    <title>Ember Simple Auth - examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -91,10 +91,10 @@
     <script type="text/javascript">
       Ember.Application.initializer({
         name: 'authentication',
-        after: 'ember-simple-auth',
+        after: 'simple-auth',
         initialize: function(container, application) {
           var applicationRoute = container.lookup('route:application');
-          var session          = container.lookup('ember-simple-auth-session:main');
+          var session          = container.lookup('simple-auth-session:main');
           // handle the session events
           session.on('sessionAuthenticationSucceeded', function() {
             applicationRoute.transitionTo('index');
@@ -147,7 +147,7 @@
             var _this = this;
             var data = this.getProperties('identification', 'password');
             this.set('password', null);
-            this.get('session').authenticate('ember-simple-auth-authenticator:oauth2-password-grant', data).then(null, function(error) {
+            this.get('session').authenticate('simple-auth-authenticator:oauth2-password-grant', data).then(null, function(error) {
               _this.set('errorMessage', error);
             });
           }
