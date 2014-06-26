@@ -65,14 +65,11 @@
           </ul>
           <h2>How to use it</h2>
           <p>
-          	<strong>To use Ember Simple Auth, just require its autoloader if you're using <a href="https://github.com/stefanpenner/ember-app-kit" title="Ember App Kit @ github">Ember App Kit</a> or <a href="https://github.com/stefanpenner/ember-cli" title="Ember CLI @ github">Ember CLI</a>:</strong>
+          	<strong>Ember Simple Auth is best used with <a href="https://github.com/stefanpenner/ember-cli" title="Ember CLI @ github">Ember CLI</a></strong>. Simply add it to the project by installing the Ember CLI Addon from npm:
           </p>
           <div class="code">
-            <pre><code class="javascript">require('simple-auth/ember');</code></pre>
+            <pre><code class="javascript">npm install --save-dev ember-cli-simple-auth</code></pre>
           </div>
-          <p>
-            If you're using the browserified version of the library, Ember Simple Auth will set up itself once it is loaded.
-          </p>
           <p>
           	Then <strong>implement the respective mixin in the application route</strong>:
           </p>
@@ -130,7 +127,7 @@ import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixi
 export default Ember.Route.extend(AuthenticatedRouteMixin);</code></pre>
           </div>
           <p>
-            <a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Find more documentation, examples and of course the source on github</a>.
+            <a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Find more documentation, examples for using the library without Ember CLI and of course the source on github</a>.
           </p>
           <h2>Copyright</h2>
           <p>
