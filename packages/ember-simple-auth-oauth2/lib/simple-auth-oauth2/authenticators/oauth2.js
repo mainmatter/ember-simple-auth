@@ -51,6 +51,25 @@ export default Base.extend({
   serverTokenEndpoint: '/token',
 
   /**
+    The endpoint on the server the authenticator uses to revoke tokens. Only
+    set this if the server actually supports token revokation.
+
+    This value can be configured via the global environment object:
+
+    ```js
+    window.ENV = window.ENV || {};
+    window.ENV['simple-auth-oauth2'] = {
+      serverTokenRevokationEndpoint: '/some/custom/endpoint'
+    }
+    ```
+
+    @property serverTokenRevokationEndpoint
+    @type String
+    @default null
+  */
+  serverTokenRevokationEndpoint: null,
+
+  /**
     Sets whether the authenticator automatically refreshes access tokens.
 
     This value can be configured via the global environment object:

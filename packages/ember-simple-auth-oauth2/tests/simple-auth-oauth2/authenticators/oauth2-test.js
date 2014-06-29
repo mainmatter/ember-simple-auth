@@ -15,6 +15,10 @@ describe('OAuth2', function() {
         expect(OAuth2.create().serverTokenEndpoint).to.eq('/token');
       });
 
+      it('defaults serverTokenRevokationEndpoint to null', function() {
+        expect(OAuth2.create().serverTokenRevokationEndpoint).to.be.null;
+      });
+
       it('defaults refreshAccessTokens to true', function() {
         expect(OAuth2.create().refreshAccessTokens).to.be.true;
       });
