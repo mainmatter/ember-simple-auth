@@ -28,13 +28,18 @@ describe('OAuth2', function() {
       beforeEach(function() {
         window.ENV = window.ENV || {};
         window.ENV['simple-auth-oauth2'] = {
-          serverTokenEndpoint: 'serverTokenEndpoint',
-          refreshAccessTokens: false
+          serverTokenEndpoint:           'serverTokenEndpoint',
+          serverTokenRevokationEndpoint: 'serverTokenRevokationEndpoint',
+          refreshAccessTokens:           false
         };
       });
 
       it('uses the defined value for serverTokenEndpoint', function() {
         expect(OAuth2.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
+      });
+
+      it('uses the defined value for serverTokenRevokationEndpoint', function() {
+        expect(OAuth2.create().serverTokenRevokationEndpoint).to.eq('serverTokenRevokationEndpoint');
       });
 
       it('uses the defined value for refreshAccessTokens', function() {
@@ -279,11 +284,74 @@ describe('OAuth2', function() {
   });
 
   describe('#invalidate', function() {
-    it('returns a resolving promise', function(done) {
-      this.authenticator.invalidate().then(function() {
-        expect(true).to.be.true;
-        done();
+    function itSuccessfullyInvalidatesTheSession() {
+      it('returns a resolving promise', function(done) {
+        this.authenticator.invalidate({ access_token: 'access token!' }).then(function() {
+          expect(true).to.be.true;
+          done();
+        });
       });
+    }
+
+    describe('when token revokation is enabled', function() {
+      beforeEach(function() {
+        this.authenticator = OAuth2.create({
+          serverTokenRevokationEndpoint: '/revoke'
+        });
+      });
+
+      it('sends an AJAX request to the revokation endpoint', function(done) {
+        this.authenticator.invalidate({ access_token: 'access token!' });
+
+        Ember.run.next(function() {
+          expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
+            url:         '/revoke',
+            type:        'POST',
+            data:        { token_type_hint: 'access_token', token: 'access token!' },
+            dataType:    'json',
+            contentType: 'application/x-www-form-urlencoded'
+          });
+          done();
+        });
+      });
+
+      describe('when the revokation request is successful', function() {
+        beforeEach(function() {
+          this.server.respondWith('POST', '/revoke', [200, { 'Content-Type': 'application/json' }, '']);
+        });
+
+        itSuccessfullyInvalidatesTheSession();
+      });
+
+      describe('when the revokation request fails', function() {
+        beforeEach(function() {
+          this.server.respondWith('POST', '/revoke', [400, { 'Content-Type': 'application/json' },
+          '{ "error": "unsupported_grant_type" }']);
+        });
+
+        itSuccessfullyInvalidatesTheSession();
+      });
+
+      describe('when a refresh token is set', function() {
+        it('sends an AJAX request to invalidate the refresh token', function(done) {
+          this.authenticator.invalidate({ access_token: 'access token!', refresh_token: 'refresh token!' });
+
+          Ember.run.next(function() {
+            expect(Ember.$.ajax.getCall(1).args[0]).to.eql({
+              url:         '/revoke',
+              type:        'POST',
+              data:        { token_type_hint: 'refresh_token', token: 'refresh token!' },
+              dataType:    'json',
+              contentType: 'application/x-www-form-urlencoded'
+            });
+            done();
+          });
+        });
+      });
+    });
+
+    describe('when token revokation is not enabled', function() {
+      itSuccessfullyInvalidatesTheSession();
     });
   });
 
