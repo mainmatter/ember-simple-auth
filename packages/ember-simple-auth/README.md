@@ -109,8 +109,8 @@ this.get('session').authenticate('authenticator:custom', {});
 Ember Simple Auth does not include any authenticators in the base library but
 has extension libraries that can be loaded as needed:
 
-* [__simple-auth-oauth2__](packages/simple-auth-oauth2) provides an OAuth 2.0 authenticator
-* [__simple-auth-devise__](packages/simple-auth-devise) provides an authenticator compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
+* [__simple-auth-oauth2__](packages/ember-simple-auth-oauth2) provides an OAuth 2.0 authenticator
+* [__simple-auth-devise__](packages/ember-simple-auth-devise) provides an authenticator compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
 
 #### Implementing a custom Authenticator
 
@@ -188,8 +188,8 @@ together__. An application always only has one authorizer.
 Ember Simple Auth does not include any authorizers in the base library but
 offers extension libraries that can be loaded in the application as needed:
 
-* [__simple-auth-oauth2__](packages/simple-auth-oauth2) provides an OAuth 2.0 authorizer
-* [__simple-auth-devise__](packages/simple-auth-devise) provides an authorizer compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
+* [__simple-auth-oauth2__](packages/ember-simple-auth-oauth2) provides an OAuth 2.0 authorizer
+* [__simple-auth-devise__](packages/ember-simple-auth-devise) provides an authorizer compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
 
 #### Implementing a custom Authorizer
 
@@ -271,7 +271,7 @@ is mainly useful for testing. Also the ephemeral store cannot keep multiple
 tabs or windows in sync as tabs/windows cannot share memory.
 
 A cookie based store is available in the extension library
-[__simple-auth-cookie-store__](packages/simple-auth-cookie-store).
+[__simple-auth-cookie-store__](packages/ember-simple-auth-cookie-store).
 
 #### Implementing a custom Store
 
