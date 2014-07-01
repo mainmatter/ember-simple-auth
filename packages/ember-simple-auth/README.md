@@ -286,8 +286,8 @@ To run the examples you need to have [node.js](http://nodejs.org) and
 [grunt](http://gruntjs.com) installed. If you have those, simply run:
 
 ```bash
-git clone https://github.com/simplabs/simple-auth.git
-cd simple-auth
+git clone https://github.com/simplabs/ember-simple-auth.git
+cd ember-simple-auth
 npm install
 grunt server
 ```
