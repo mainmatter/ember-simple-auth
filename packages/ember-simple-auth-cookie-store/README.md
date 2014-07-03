@@ -36,7 +36,7 @@ several options:
   require('simple-auth-cookie-store/ember');
   ```
 
-  The browserified will, like the Ember CLI addon, also setup itself once it is
-  loaded in the application.
+  The browserified version will, like the Ember CLI addon, also setup itself
+  once it is loaded in the application.
 * Download a prebuilt version from
   [the releases page](https://github.com/simplabs/ember-simple-auth/releases)
