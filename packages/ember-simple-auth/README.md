@@ -19,7 +19,7 @@ authorization mechanisms.
 * it __authorizes requests__ to the backend server
 * it is easily customizable and extensible
 
-## How can I use it?
+## How do I use it?
 
 Ember Simple Auth is built around the fundamental idea that __users are always
 using the application in the context of a (client side) session. This session
