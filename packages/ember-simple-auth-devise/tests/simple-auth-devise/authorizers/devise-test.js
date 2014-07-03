@@ -6,18 +6,16 @@ describe('Devise', function() {
   beforeEach(function() {
     this.authorizer  = Devise.create();
     this.request     = { setRequestHeader: function() {} };
-    this.requestMock = sinon.mock(this.request);
     this.authorizer.set('session', Session.create({ store: EphemeralStore.create() }));
+    sinon.spy(this.request, 'setRequestHeader');
   });
 
   describe('#authorize', function() {
     function itDoesNotAuthorizeTheRequest() {
       it('does not add the "user-token" header to the request', function() {
-        this.requestMock.expects('setRequestHeader').never();
-
         this.authorizer.authorize(this.request, {});
 
-        this.requestMock.verify();
+        expect(this.request.setRequestHeader).to.not.have.been.called;
       });
     }
 
@@ -33,10 +31,9 @@ describe('Devise', function() {
         });
 
         it('adds the "user_token" and "user_email" query string fields to the request', function() {
-          this.requestMock.expects('setRequestHeader').once().withArgs('Authorization', 'Token token="secret token!", user_email="user@email.com"');
           this.authorizer.authorize(this.request, {});
 
-          this.requestMock.verify();
+          expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Token token="secret token!", user_email="user@email.com"');
         });
       });
 
