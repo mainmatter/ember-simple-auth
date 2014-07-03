@@ -6,18 +6,16 @@ describe('OAuth2', function() {
   beforeEach(function() {
     this.authorizer  = OAuth2.create();
     this.request     = { setRequestHeader: function() {} };
-    this.requestMock = sinon.mock(this.request);
     this.authorizer.set('session', Session.create({ store: EphemeralStore.create() }));
+    sinon.spy(this.request, 'setRequestHeader');
   });
 
   describe('#authorize', function() {
     function itDoesNotAuthorizeTheRequest() {
       it('does not add the "Authorization" header to the request', function() {
-        this.requestMock.expects('setRequestHeader').never();
-
         this.authorizer.authorize(this.request, {});
 
-        this.requestMock.verify();
+        expect(this.request.setRequestHeader).to.not.have.been.called;
       });
     }
 
@@ -32,10 +30,9 @@ describe('OAuth2', function() {
         });
 
         it('adds the "Authorization" header to the request', function() {
-          this.requestMock.expects('setRequestHeader').once().withArgs('Authorization', 'Bearer secret token!');
           this.authorizer.authorize(this.request, {});
 
-          this.requestMock.verify();
+          expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Bearer secret token!');
         });
       });
 

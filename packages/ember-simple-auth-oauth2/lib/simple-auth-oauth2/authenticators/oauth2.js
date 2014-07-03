@@ -51,6 +51,25 @@ export default Base.extend({
   serverTokenEndpoint: '/token',
 
   /**
+    The endpoint on the server the authenticator uses to revoke tokens. Only
+    set this if the server actually supports token revokation.
+
+    This value can be configured via the global environment object:
+
+    ```js
+    window.ENV = window.ENV || {};
+    window.ENV['simple-auth-oauth2'] = {
+      serverTokenRevokationEndpoint: '/some/custom/endpoint'
+    }
+    ```
+
+    @property serverTokenRevokationEndpoint
+    @type String
+    @default null
+  */
+  serverTokenRevokationEndpoint: null,
+
+  /**
     Sets whether the authenticator automatically refreshes access tokens.
 
     This value can be configured via the global environment object:
@@ -79,9 +98,10 @@ export default Base.extend({
     @private
   */
   init: function() {
-    var globalConfig         = getGlobalConfig('simple-auth-oauth2');
-    this.serverTokenEndpoint = globalConfig.serverTokenEndpoint || this.serverTokenEndpoint;
-    this.refreshAccessTokens = globalConfig.refreshAccessTokens || this.refreshAccessTokens;
+    var globalConfig                   = getGlobalConfig('simple-auth-oauth2');
+    this.serverTokenEndpoint           = globalConfig.serverTokenEndpoint || this.serverTokenEndpoint;
+    this.serverTokenRevokationEndpoint = globalConfig.serverTokenRevokationEndpoint || this.serverTokenRevokationEndpoint;
+    this.refreshAccessTokens           = globalConfig.refreshAccessTokens || this.refreshAccessTokens;
   },
 
   /**
@@ -144,7 +164,7 @@ export default Base.extend({
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var data = { grant_type: 'password', username: credentials.identification, password: credentials.password };
-      _this.makeRequest(data).then(function(response) {
+      _this.makeRequest(_this.serverTokenEndpoint, data).then(function(response) {
         Ember.run(function() {
           var expiresAt = _this.absolutizeExpirationTime(response.expires_in);
           _this.scheduleAccessTokenRefresh(response.expires_in, expiresAt, response.refresh_token);
@@ -163,17 +183,38 @@ export default Base.extend({
     promise.
 
     @method invalidate
+    @param {Object} data The data of the session to be invalidated
     @return {Ember.RSVP.Promise} A resolving promise
   */
-  invalidate: function() {
-    Ember.run.cancel(this._refreshTokenTimeout);
-    delete this._refreshTokenTimeout;
-    return new Ember.RSVP.resolve();
+  invalidate: function(data) {
+    var _this = this;
+    function success(resolve) {
+      Ember.run.cancel(_this._refreshTokenTimeout);
+      delete _this._refreshTokenTimeout;
+      resolve();
+    }
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      if (!Ember.isEmpty(_this.serverTokenRevokationEndpoint)) {
+        var requests = [];
+        Ember.A(['access_token', 'refresh_token']).forEach(function(tokenType) {
+          if (!Ember.isEmpty(data[tokenType])) {
+            requests.push(_this.makeRequest(_this.serverTokenRevokationEndpoint, {
+              token_type_hint: tokenType, token: data[tokenType]
+            }));
+          }
+        });
+        Ember.$.when.apply(Ember.$, requests).always(function(responses) {
+          success(resolve);
+        });
+      } else {
+        success(resolve);
+      }
+    });
   },
 
   /**
-    Sends an `AJAX` request to the `serverTokenEndpoint`. This will always be a
-    _"POST"_ request with content type _"application/x-www-form-urlencoded"_ as
+    Sends an `AJAX` request to the `url`. This will always be a _"POST"_
+    request with content type _"application/x-www-form-urlencoded"_ as
     specified in [RFC 6749](http://tools.ietf.org/html/rfc6749).
 
     This method is not meant to be used directly but serves as an extension
@@ -181,16 +222,17 @@ export default Base.extend({
     [RFC 6749, section 2.3](http://tools.ietf.org/html/rfc6749#section-2.3)).
 
     @method makeRequest
+    @param {Object} url The url to send the request to
     @param {Object} data The data to send with the request, e.g. username and password or the refresh token
     @return {Deferred object} A Deferred object (see [the jQuery docs](http://api.jquery.com/category/deferred-object/)) that is compatible to Ember.RSVP.Promise; will resolve if the request succeeds, reject otherwise
     @protected
   */
-  makeRequest: function(data) {
-    if (!isSecureUrl(this.serverTokenEndpoint)) {
+  makeRequest: function(url, data) {
+    if (!isSecureUrl(url)) {
       Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
     }
     return Ember.$.ajax({
-      url:         this.serverTokenEndpoint,
+      url:         url,
       type:        'POST',
       data:        data,
       dataType:    'json',
@@ -228,7 +270,7 @@ export default Base.extend({
     var _this = this;
     var data  = { grant_type: 'refresh_token', refresh_token: refreshToken };
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      _this.makeRequest(data).then(function(response) {
+      _this.makeRequest(_this.serverTokenEndpoint, data).then(function(response) {
         Ember.run(function() {
           expiresIn     = response.expires_in || expiresIn;
           refreshToken  = response.refresh_token || refreshToken;

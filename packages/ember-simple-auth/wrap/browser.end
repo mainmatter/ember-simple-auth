@@ -1,5 +1,4 @@
 var initializer                   = requireModule('simple-auth/initializer').default;
-var setup                         = requireModule('simple-auth/setup').default;
 var Configuration                 = requireModule('simple-auth/configuration').default;
 var Session                       = requireModule('simple-auth/session').default;
 var BaseAuthenticator             = requireModule('simple-auth/authenticators/base').default;
@@ -16,8 +15,6 @@ var AuthenticationControllerMixin = requireModule('simple-auth/mixins/authentica
 var LoginControllerMixin          = requireModule('simple-auth/mixins/login-controller-mixin').default;
 
 global.SimpleAuth = {
-  setup: setup,
-
   Configuration: Configuration,
 
   Session: Session,

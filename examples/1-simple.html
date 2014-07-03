@@ -81,6 +81,11 @@
     </script>
 
     <script type="text/javascript">
+      // enable token revokation
+      window.ENV = window.ENV || {};
+      window.ENV['simple-auth-oauth2'] = {
+        serverTokenRevokationEndpoint: '/revoke',
+      };
       App = Ember.Application.create({});
 
       App.Router.reopen({
