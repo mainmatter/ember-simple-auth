@@ -1,3 +1,15 @@
+# 0.6.3
+
+* added new extension library
+  [Ember Simple Auth Torii](https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-torii)
+* Added support for
+  [OAuth 2.0 token revocation](https://tools.ietf.org/html/rfc7009)
+  in the Ember Simple Auth OAuth 2.0 extension library, see #228
+* The browserified distribution does not export the `setup` function anymore,
+  see #235.
+* All standard Ember methods that are defined in the mixins will now call
+  `this._super`, see #232.
+
 # 0.6.2
 
 * The `crossOriginWhitelist` is now loaded from `window.ENV` correctly, see
