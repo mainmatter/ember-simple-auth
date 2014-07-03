@@ -43,6 +43,7 @@ export default Ember.Mixin.create({
     @param {Transition} transition The transition that lead to this route
   */
   beforeModel: function(transition) {
+    this._super(transition);
     if (!this.get(Configuration.sessionPropertyName).get('isAuthenticated')) {
       transition.abort();
       this.get(Configuration.sessionPropertyName).set('attemptedTransition', transition);

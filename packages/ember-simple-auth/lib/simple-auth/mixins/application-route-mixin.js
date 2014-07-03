@@ -65,6 +65,7 @@ export default Ember.Mixin.create({
     @private
   */
   beforeModel: function(transition) {
+    this._super(transition);
     var _this = this;
     Ember.A([
       'sessionAuthenticationSucceeded',
