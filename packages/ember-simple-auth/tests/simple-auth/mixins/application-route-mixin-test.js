@@ -104,12 +104,11 @@ describe('ApplicationRouteMixin', function() {
       });
 
       it('retries that transition', function() {
-        var attemptedTransitionMock = sinon.mock(this.attemptedTransition);
-        attemptedTransitionMock.expects('retry').once();
+        sinon.spy(this.attemptedTransition, 'retry');
 
         this.route._actions.sessionAuthenticationSucceeded.apply(this.route);
 
-        attemptedTransitionMock.verify();
+        expect(this.attemptedTransition.retry).to.have.been.calledOnce;
       });
 
       it('removes it from the session', function() {

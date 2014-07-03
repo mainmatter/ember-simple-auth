@@ -19,7 +19,7 @@ authorization mechanisms.
 * it __authorizes requests__ to the backend server
 * it is easily customizable and extensible
 
-## How does it work?
+## How do I use it?
 
 Ember Simple Auth is built around the fundamental idea that __users are always
 using the application in the context of a (client side) session. This session
@@ -29,24 +29,15 @@ mixins that provide default implementations for common scenarios like
 redirecting users to the login if they access a restricted page etc.
 
 _Ember Simple Auth can be used as a browserified version that exports a global
-as well as as an AMD build that can be used e.g. with Ember App Kit or Ember
-CLI. This README covers usage with Ember CLI; using it with Ember App Kit or
-via the browserified distribution is analogous._
+as well as as an AMD build that can be used e.g. with or Ember CLI. This README
+covers usage with Ember CLI; using it with Ember App Kit or via the
+browserified distribution is analogous._
 
-__To enable Ember Simple Auth in an application, simply require its
-autoloader:__
-
-```js
-require('simple-auth/ember');
-```
-
-which sets up an
+When Ember Simple Auth is included in an application (see the
+[Installation instructions](#installation) for documentation on the various
+options for including it into all types of Ember applications), it registers an
 [initializer](http://emberjs.com/api/classes/Ember.Application.html#toc_initializers)
-named `'simple-auth'`;
-
-If you're not using the AMD build it's enough to simply load the browserified
-distribution of Ember Simple Auth and it will setup itself. Once Ember Simple
-Auth was set up, the session (see the
+named `'simple-auth'`. Once that initializer has run, the session (see the
 [API docs for `Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Session))
 __will be available in all routes and controllers__ of the application.
 
@@ -286,8 +277,8 @@ To run the examples you need to have [node.js](http://nodejs.org) and
 [grunt](http://gruntjs.com) installed. If you have those, simply run:
 
 ```bash
-git clone https://github.com/simplabs/simple-auth.git
-cd simple-auth
+git clone https://github.com/simplabs/ember-simple-auth.git
+cd ember-simple-auth
 npm install
 grunt server
 ```
@@ -308,8 +299,8 @@ To install Ember Simple Auth in an Ember.js application there are several option
 * If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
   add the
   [Ember CLI Addon](https://github.com/simplabs/ember-cli-simple-auth)
-  to your project. In addition you can add the Ember CLI Addons for the
-  extension libraries as well:
+  to your project and Ember Simple Auth will setup itself. In addition you can
+  add the Ember CLI Addons for the extension libraries as well:
   * https://github.com/simplabs/ember-cli-simple-auth-oauth2
   * https://github.com/simplabs/ember-cli-simple-auth-devise
   * https://github.com/simplabs/ember-cli-simple-auth-cookie-store
@@ -321,6 +312,8 @@ To install Ember Simple Auth in an Ember.js application there are several option
   require('simple-auth/ember');
   ```
 
+  The browserified will, like the Ember CLI addon, also setup itself once it is
+  loaded in the application.
 * Download a prebuilt version from
   [the releases page](https://github.com/simplabs/ember-simple-auth/releases)
 * [Build it yourself](#building)
