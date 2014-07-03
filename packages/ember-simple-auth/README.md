@@ -19,7 +19,7 @@ authorization mechanisms.
 * it __authorizes requests__ to the backend server
 * it is easily customizable and extensible
 
-## How does it work?
+## How can I use it?
 
 Ember Simple Auth is built around the fundamental idea that __users are always
 using the application in the context of a (client side) session. This session
@@ -29,9 +29,9 @@ mixins that provide default implementations for common scenarios like
 redirecting users to the login if they access a restricted page etc.
 
 _Ember Simple Auth can be used as a browserified version that exports a global
-as well as as an AMD build that can be used e.g. with Ember App Kit or Ember
-CLI. This README covers usage with Ember CLI; using it with Ember App Kit or
-via the browserified distribution is analogous._
+as well as as an AMD build that can be used e.g. with or Ember CLI. This README
+covers usage with Ember CLI; using it with Ember App Kit or via the
+browserified distribution is analogous._
 
 When Ember Simple Auth is included in an application (see the
 [Installation instructions](#installation) for documentation on the various
