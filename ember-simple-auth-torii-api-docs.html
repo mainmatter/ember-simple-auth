@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ember Simple Auth API</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/7.4/styles/github.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+    <script src="http://yandex.st/highlightjs/7.4/highlight.min.js"></script>
+    <style type="text/css" media="screen">
+      .navbar-nav > .active > a {
+        background: transparent !important;
+      }
+      .navbar .dropdown > a {
+        padding: 15px 10px 15px 0;
+      }
+      .navbar .navbar-collapse {
+        padding-left: 0;
+      }
+      h1.class, h3.property, h3.method, dl.params dt, span.type {
+        font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+        font-weight: bold;
+      }
+      p {
+        text-align: justify;
+      }
+      span.type {
+        color: #999;
+      }
+      span.type.return {
+        font-weight:bold
+      }
+      .overview h4:first-child {
+        margin-top: 0;
+      }
+      h3.section, h4.subsection {
+        padding-bottom: 5px;
+        border-bottom: 1px dotted #eee;
+      }
+      .panel-heading span.pull-right {
+        margin-left: 5px;
+      }
+      dl.params dl.props {
+        margin-left: 3em;
+        margin-top: 5px;
+      }
+      strong {
+        background-color: #fffebb;
+        font-weight: normal;
+        padding: 2px;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+      }
+      pre, code {
+        color: #333;
+        background: #f8f8ff;
+      }
+      a code {
+        color: #428bca;
+      }
+      body .container .alert:first-child {
+        margin-top: 70px;
+      }
+      a.symbol-anchor {
+        display: block;
+        position: relative;
+        top: -55px;
+        height: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    
+      <header class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li class="dropdown" id="classesDropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption"></span></a>
+                <ul class="dropdown-menu">
+                  
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-Torii">SimpleAuth.Authenticators.Torii</a>
+                    </li>
+                  
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.6.3"><span class="label label-primary">0.6.3</span></a></p></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container">
+        <div class="row">
+          <div class="alert alert-info">For a general overview of how Ember Simple Auth works, see the <a href="https://github.com/simplabs/ember-simple-auth#readme" title="Ember Simple Auth's README github" class="alert-link">README</a></div>
+        </div>
+        
+          <div class="row">
+            <div class="col-md-12">
+              <div class="page-header">
+                <a id="SimpleAuth-Authenticators-Torii" class="symbol-anchor"></a>
+                <h1 class="class">SimpleAuth.Authenticators.Torii</h1>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-9" id="main-content">
+              <p>Authenticator that wraps the
+<a href="https://github.com/Vestorly/torii">Torii library</a>.</p>
+<p><em>The factory for this authenticator is registered as
+<code>&#39;simple-auth-authenticator:torii&#39;</code> in Ember&#39;s container.</em></p>
+
+              <h4 class="section">Importing</h4>
+              <dl>
+                <dt>ES6 modules<dt>
+                <dd>
+                  <pre><code class="lang-javascript javascript">import Torii from 'simple-auth-torii/authenticators/torii';</code></pre>
+                </dd>
+                <dt>Standard AMD<dt>
+                <dd>
+                  <pre><code class="lang-javascript javascript">var Torii = requireModule('simple-auth-torii/authenticators/torii').default;</code></pre>
+                </dd>
+              </dl>
+              
+              
+              
+                <h3 class="section">Methods</h3>
+                
+                  <div class="panel panel-default">
+  <a id="SimpleAuth-Authenticators-Torii-restore" class="symbol-anchor"></a>
+  <div class="panel-heading">
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-torii/lib/simple-auth-torii/authenticators/torii.js#L31"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    
+    
+    <h3 class="panel-title method">
+      restore(data)
+      
+        <span class="type">&rarr; Ember.RSVP.Promise</span>
+      
+    </h3>
+  </div>
+  <div class="panel-body">
+    <p>Restores the session by calling the torii provider&#39;s <code>fetch</code> method.</p>
+
+    
+      <h4 class="subsection">Arguments</h4>
+      <dl class="params">
+        
+          <dt>data <span class="type">Object</span></dt>
+          <dd><p>The data to restore the session from</p>
+</dd>
+          
+        
+      </dl>
+    
+    
+      <h4 class="subsection">Returns</h4>
+      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+      <p>A promise that when it resolves results in the session being authenticated</p>
+
+    
+  </div>
+</div>
+
+                
+                  <div class="panel panel-default">
+  <a id="SimpleAuth-Authenticators-Torii-authenticate" class="symbol-anchor"></a>
+  <div class="panel-heading">
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-torii/lib/simple-auth-torii/authenticators/torii.js#L57"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    
+    
+    <h3 class="panel-title method">
+      authenticate(provider)
+      
+        <span class="type">&rarr; Ember.RSVP.Promise</span>
+      
+    </h3>
+  </div>
+  <div class="panel-body">
+    <p>Authenticates the session by opening the torii provider. For more
+documentation on torii, see the
+<a href="https://github.com/Vestorly/torii#readme">project&#39;s README</a>.</p>
+
+    
+      <h4 class="subsection">Arguments</h4>
+      <dl class="params">
+        
+          <dt>provider <span class="type">String</span></dt>
+          <dd><p>The provider to authenticate the session with</p>
+</dd>
+          
+        
+      </dl>
+    
+    
+      <h4 class="subsection">Returns</h4>
+      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+      <p>A promise that resolves when the provider successfully authenticates a user and rejects otherwise</p>
+
+    
+  </div>
+</div>
+
+                
+                  <div class="panel panel-default">
+  <a id="SimpleAuth-Authenticators-Torii-invalidate" class="symbol-anchor"></a>
+  <div class="panel-heading">
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-torii/lib/simple-auth-torii/authenticators/torii.js#L75"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    
+    
+    <h3 class="panel-title method">
+      invalidate(data)
+      
+        <span class="type">&rarr; Ember.RSVP.Promise</span>
+      
+    </h3>
+  </div>
+  <div class="panel-body">
+    <p>Closes the torii provider.</p>
+
+    
+      <h4 class="subsection">Arguments</h4>
+      <dl class="params">
+        
+          <dt>data <span class="type">Object</span></dt>
+          <dd><p>The data that&#39;s stored in the session</p>
+</dd>
+          
+        
+      </dl>
+    
+    
+      <h4 class="subsection">Returns</h4>
+      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+      <p>A promise that resolves when the provider successfully closes and rejects otherwise</p>
+
+    
+  </div>
+</div>
+
+                
+              
+              
+              
+            </div>
+            <div class="col-md-3 overview">
+              
+  <h4>Extends</h4>
+  <p><span class="type">Base</span></p>
+
+
+              
+
+              
+
+              
+
+              
+  <h4>Methods</h4>
+  <ul class="list-unstyled">
+    
+      <li>
+        <a href="#SimpleAuth-Authenticators-Torii-restore">restore</a>
+      </li>
+    
+      <li>
+        <a href="#SimpleAuth-Authenticators-Torii-authenticate">authenticate</a>
+      </li>
+    
+      <li>
+        <a href="#SimpleAuth-Authenticators-Torii-invalidate">invalidate</a>
+      </li>
+    
+  </ul>
+
+
+              
+
+              
+
+            </div>
+          </div>
+        
+      </div>
+      <script type="text/javascript" charset="utf-8">
+        $(function() {
+          hljs.initHighlightingOnLoad();
+          function updateDropdownCaption(text) {
+            if (!!text) {
+              $('.navbar .dropdown .dropdown-toggle .caption').text(text);
+            }
+          }
+          $('.navbar .dropdown a[class!="dropdown-toggle"]').on('click', function() {
+            updateDropdownCaption($(this).text());
+          });
+          updateDropdownCaption($('.navbar .dropdown a[href="' + document.location.hash + '"]').text());
+          $('body').scrollspy({ target: '.navbar' }).on('activate.bs.scrollspy', function(e) {
+            var link = $(e.target).find('.dropdown-menu li.active a');
+            updateDropdownCaption(link.text());
+          });
+          var dropdownCaption = $('.navbar .dropdown li:first-child').text();
+          updateDropdownCaption(dropdownCaption);
+        });
+      </script>
+    
+  </body>
+</html>
