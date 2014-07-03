@@ -1,3 +1,7 @@
+/**
+ * Torii version: 0.1.0
+ * Built: Wed Jul 02 2014 16:01:44 GMT-0400 (EDT)
+ */
 define("torii/adapters/application",
   ["exports"],
   function(__exports__) {
@@ -30,7 +34,7 @@ define("torii/adapters/application",
     __exports__["default"] = ApplicationAdapter;
   });
 define("torii/bootstrap",
-  ["torii","torii/providers/linked-in-oauth2","torii/providers/google-oauth2","torii/providers/facebook-connect","torii/providers/facebook-oauth2","torii/adapters/application","torii/providers/twitter-oauth1","torii/services/popup","exports"],
+  ["torii/torii","torii/providers/linked-in-oauth2","torii/providers/google-oauth2","torii/providers/facebook-connect","torii/providers/facebook-oauth2","torii/adapters/application","torii/providers/twitter-oauth1","torii/services/popup","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __exports__) {
     "use strict";
     var Torii = __dependency1__["default"];
@@ -55,6 +59,11 @@ define("torii/bootstrap",
       container.register('torii-service:popup', PopupService);
 
       container.injection('torii-provider', 'popup', 'torii-service:popup');
+
+      if (window.DS) {
+        container.injection('torii-provider', 'store', 'store:main');
+        container.injection('torii-adapter', 'store', 'store:main');
+      }
 
       return container;
     }
@@ -92,66 +101,87 @@ define("torii/configuration",
 
     __exports__["default"] = configuration;
   });
-define("torii/ember",
-  ["torii/bootstrap","torii/redirect-handler","torii/session","torii","torii/configuration","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __exports__) {
+define("torii/initializers/initialize-torii-callback",
+  ["torii/redirect-handler","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var RedirectHandler = __dependency1__["default"];
+
+    __exports__["default"] = {
+      name: 'torii-callback',
+      before: 'torii',
+      initialize: function(container, app){
+        app.deferReadiness();
+        RedirectHandler.handle(window.location.toString()).catch(function(){
+          app.advanceReadiness();
+        });
+      }
+    };
+  });
+define("torii/initializers/initialize-torii-session",
+  ["torii/configuration","torii/session","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
+    "use strict";
+    var configuration = __dependency1__["default"];
+    var Session = __dependency2__["default"];
+
+    __exports__["default"] = {
+      name: 'torii-session',
+      after: 'torii',
+
+      initialize: function(container, app){
+
+        if (configuration.sessionServiceName) {
+          var sessionName = configuration.sessionServiceName;
+          app.register('torii:session', Session);
+          app.inject('torii:session', 'torii', 'torii:main');
+          app.inject('route',      sessionName, 'torii:session');
+          app.inject('controller', sessionName, 'torii:session');
+        }
+      }
+    };
+  });
+define("torii/initializers/initialize-torii",
+  ["torii/bootstrap","torii/configuration","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var bootstrapTorii = __dependency1__["default"];
-    var RedirectHandler = __dependency2__["default"];
-    var Session = __dependency3__["default"];
-    var Torii = __dependency4__["default"];
+    var configuration = __dependency2__["default"];
 
-    var configuration = __dependency5__["default"];
+    var initializer = {
+      name: 'torii',
+      initialize: function(container, app){
+        bootstrapTorii(container);
 
-    Ember.onLoad('Ember.Application', function(Application){
-
-      Application.initializer({
-        name: 'torii-callback',
-        initialize: function(container, app){
-          app.deferReadiness();
-          RedirectHandler.handle(window.location.toString()).catch(function(){
-            app.advanceReadiness();
-          });
-        }
-      });
-
-      Application.initializer({
-        name: 'torii',
-        after: 'torii-callback',
-        initialize: function(container, app){
-          bootstrapTorii(container);
-
-          // Walk all configured providers and eagerly instantiate
-          // them. This gives providers with initialization side effects
-          // like facebook-connect a chance to load up assets.
-          for (var key in  configuration.providers) {
-            if (configuration.providers.hasOwnProperty(key)) {
-              container.lookup('torii-provider:'+key);
-            }
-          }
-
-          app.inject('route', 'torii', 'torii:main');
-        }
-      });
-
-      Application.initializer({
-        name: 'torii-session',
-        after: 'torii',
-
-        initialize: function(container, app){
-
-          if (configuration.sessionServiceName) {
-            var sessionName = configuration.sessionServiceName;
-            app.register('torii:session', Session);
-            app.inject('torii:session', 'torii', 'torii:main');
-            app.inject('route',      sessionName, 'torii:session');
-            app.inject('controller', sessionName, 'torii:session');
+        // Walk all configured providers and eagerly instantiate
+        // them. This gives providers with initialization side effects
+        // like facebook-connect a chance to load up assets.
+        for (var key in  configuration.providers) {
+          if (configuration.providers.hasOwnProperty(key)) {
+            container.lookup('torii-provider:'+key);
           }
         }
-      });
-    });
 
-    __exports__["default"] = Torii;
+        app.inject('route', 'torii', 'torii:main');
+      }
+    };
+
+    if (window.DS) {
+      initializer.after = 'store';
+    }
+
+    __exports__["default"] = initializer;
+  });
+define("torii/lib/load-initializer",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    /* global Ember */
+    __exports__["default"] = function(initializer){
+      Ember.onLoad('Ember.Application', function(Application){
+        Application.initializer(initializer);
+      });
+    }
   });
 define("torii/lib/parse-query-string",
   ["exports"],
@@ -543,6 +573,21 @@ define("torii/lib/state-machine",
 
     __exports__["default"] = StateMachine;
   });
+define("torii/load-initializers",
+  ["torii/lib/load-initializer","torii/initializers/initialize-torii","torii/initializers/initialize-torii-callback","torii/initializers/initialize-torii-session","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __exports__) {
+    "use strict";
+    var loadInitializer = __dependency1__["default"];
+    var initializeTorii = __dependency2__["default"];
+    var initializeToriiCallback = __dependency3__["default"];
+    var initializeToriiSession = __dependency4__["default"];
+
+    __exports__["default"] = function(){
+      loadInitializer(initializeToriiCallback);
+      loadInitializer(initializeTorii);
+      loadInitializer(initializeToriiSession);
+    }
+  });
 define("torii/providers/base",
   ["torii/lib/required-property","exports"],
   function(__dependency1__, __exports__) {
@@ -645,7 +690,7 @@ define("torii/providers/facebook-connect",
       // click itself.
       loadFbLogin: function(){
         fbLoad( this.settings() );
-      }.on('init'),
+      }.on('init')
 
     });
 
@@ -1243,7 +1288,7 @@ define("torii/session/state-machine",
       return sm;
     }
   });
-define("torii",
+define("torii/torii",
   ["exports"],
   function(__exports__) {
     "use strict";
@@ -1251,19 +1296,26 @@ define("torii",
       return container.lookup('torii-provider:'+providerName);
     }
 
-    function proxyToProvider(methodName){
+    function proxyToProvider(methodName, requireMethod){
       return function(providerName, options){
-        var provider = lookupProvider(this.container, providerName);
+        var container = this.container;
+        var provider = lookupProvider(container, providerName);
         if (!provider) {
           throw new Error("Expected a provider named '"+providerName+"' " +
                           ", did you forget to register it?");
         }
 
         if (!provider[methodName]) {
-          throw new Error("Expected provider '"+providerName+"' to define " +
-                          "the '"+methodName+"' method.");
+          if (requireMethod) {
+            throw new Error("Expected provider '"+providerName+"' to define " +
+                            "the '"+methodName+"' method.");
+          } else {
+            return new Ember.RSVP.Promise(function(resolve){ resolve({}); });
+          }
         }
-        return provider[methodName](options);
+        return new Ember.RSVP.Promise(function(resolve, reject){
+          resolve( provider[methodName](options) );
+        });
       };
     }
 
@@ -1294,7 +1346,7 @@ define("torii",
        * @param {String} providerName The provider to open
        * @return {Ember.RSVP.Promise} Promise resolving to an authentication object
        */
-      open:  proxyToProvider('open'),
+      open:  proxyToProvider('open', true),
 
       /**
        * Return a promise which will resolve if the provider has

@@ -102,6 +102,7 @@ has extension libraries that can be loaded as needed:
 
 * [__simple-auth-oauth2__](packages/ember-simple-auth-oauth2) provides an OAuth 2.0 authenticator
 * [__simple-auth-devise__](packages/ember-simple-auth-devise) provides an authenticator compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
+* [__simple-auth-torii__](packages/ember-simple-auth-torii) provides an authenticator that wraps the [torii library](https://github.com/Vestorly/torii)
 
 #### Implementing a custom Authenticator
 

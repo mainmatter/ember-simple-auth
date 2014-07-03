@@ -137,7 +137,7 @@ several options:
   add the
   [Ember CLI Addon](https://github.com/simplabs/ember-cli-simple-auth-oauth2)
   to your project.
-* The Ember Simple Auth OAuth 2.0 extenion library is also included in the
+* The Ember Simple Auth OAuth 2.0 extension library is also included in the
   _"ember-simple-auth"_ bower package both in a browserified version as well as
   an AMD build. If you're using the AMD build from bower be sure to require the
   autoloader:

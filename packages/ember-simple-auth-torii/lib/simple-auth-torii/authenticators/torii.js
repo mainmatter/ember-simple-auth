@@ -4,10 +4,15 @@ var global = (typeof window !== 'undefined') ? window : {},
     Ember = global.Ember;
 
 /**
-  Authenticator that uses the awesome Torii library.
+  Authenticator that wraps the
+  [Torii library](https://github.com/Vestorly/torii).
+
+  _The factory for this authenticator is registered as
+  `'simple-auth-authenticator:torii'` in Ember's container._
 
   @class Torii
-  @namespace Authenticators
+  @namespace SimpleAuth.Authenticators
+  @module simple-auth-torii/authenticators/torii
   @extends Base
 */
 export default Base.extend({
@@ -24,38 +29,74 @@ export default Base.extend({
   provider: null,
 
   /**
+    Restores the session by calling the torii provider's `fetch` method.
+
     @method restore
     @param {Object} data The data to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(data) {
-    return this.torii.fetch(this.provider);
+    var _this = this;
+    data      = data || {};
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      if (!Ember.isEmpty(data.provider)) {
+        var provider = data.provider;
+        _this.torii.fetch(data.provider, data).then(function(data) {
+          _this.resolveWith(provider, data, resolve);
+        }, function() {
+          delete _this.provider;
+          reject();
+        });
+      } else {
+        delete _this.provider;
+        reject();
+      }
+    });
   },
 
   /**
+    Authenticates the session by opening the torii provider. For more
+    documentation on torii, see the
+    [project's README](https://github.com/Vestorly/torii#readme).
+
     @method authenticate
-    @param {Object} options The options to authenticate the session with; this must be an object with a `torii` property containing the torii object and a `provider` property containg the provider to use
-    @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
+    @param {String} provider The provider to authenticate the session with
+    @return {Ember.RSVP.Promise} A promise that resolves when the provider successfully authenticates a user and rejects otherwise
   */
   authenticate: function(provider) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       _this.torii.open(provider).then(function(data) {
-        _this.provider = provider;
-        resolve(data);
+        _this.resolveWith(provider, data, resolve);
       }, reject);
     });
   },
 
   /**
-    Cancels any outstanding automatic token refreshes and returns a resolving
-    promise.
+    Closes the torii provider.
 
     @method invalidate
-    @return {Ember.RSVP.Promise} A resolving promise
+    @param {Object} data The data that's stored in the session
+    @return {Ember.RSVP.Promise} A promise that resolves when the provider successfully closes and rejects otherwise
   */
-  invalidate: function() {
-    return this.torii.close(this.provider);
+  invalidate: function(data) {
+    var _this = this;
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      _this.torii.close(_this.provider).then(function() {
+        delete _this.provider;
+        resolve();
+      }, reject);
+    });
+  },
+
+  /**
+    @method resolveWith
+    @private
+  */
+  resolveWith: function(provider, data, resolve) {
+    data.provider = provider;
+    this.provider = data.provider;
+    resolve(data);
   }
 
 });
