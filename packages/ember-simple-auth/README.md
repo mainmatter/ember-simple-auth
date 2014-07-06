@@ -290,7 +290,7 @@ the examples.
 ### Other Examples
 
 * Ember App Kit: https://github.com/erkarl/ember-app-kit-simple-auth
-* Ember Simple Auth with Rails 4: https://github.com/ugisozols/simple-auth-rails-demo
+* Ember Simple Auth with Rails 4: https://github.com/ugisozols/ember-simple-auth-rails-demo
 * Ember Simple Auth with ember-cli and the Devise authenticator/authorizer: https://github.com/givanse/ember-cli-simple-auth-devise
 
 ## Installation
