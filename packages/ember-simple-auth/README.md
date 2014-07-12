@@ -289,32 +289,42 @@ the examples.
 
 ### Other Examples
 
-* Ember App Kit: https://github.com/erkarl/ember-app-kit-simple-auth
-* Ember Simple Auth with Rails 4: https://github.com/ugisozols/ember-simple-auth-rails-demo
-* Ember Simple Auth with ember-cli and the Devise authenticator/authorizer: https://github.com/givanse/ember-cli-simple-auth-devise
+* [Ember App Kit](https://github.com/erkarl/ember-app-kit-simple-auth)
+* [Ember Simple Auth with Rails 4](https://github.com/ugisozols/ember-simple-auth-rails-demo)
+* [Ember Simple Auth with ember-cli and the Devise authenticator/authorizer](https://github.com/givanse/ember-cli-simple-auth-devise)
 
 ## Installation
 
 To install Ember Simple Auth in an Ember.js application there are several options:
 
-* If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
-  add the
-  [Ember CLI Addon](https://github.com/simplabs/ember-cli-simple-auth)
-  to your project and Ember Simple Auth will setup itself. In addition you can
-  add the Ember CLI Addons for the extension libraries as well:
-  * https://github.com/simplabs/ember-cli-simple-auth-oauth2
-  * https://github.com/simplabs/ember-cli-simple-auth-devise
-  * https://github.com/simplabs/ember-cli-simple-auth-cookie-store
-* Ember Simple Auth is also available in the _"ember-simple-auth"_ bower
-  package which includes both a browserified version as well as an AMD build.
-  If you're using the AMD build from bower be sure to require the autoloader:
+### Ember CLI
 
-  ```js
-  require('simple-auth/ember');
-  ```
+If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just add
+the [Ember CLI Addon](https://github.com/simplabs/ember-cli-simple-auth) to your
+project and Ember Simple Auth will setup itself.
 
-  The browserified version will, like the Ember CLI addon, also setup itself
-  once it is loaded in the application.
+The Ember Simple Auth extension libraries are also available as Ember CLI Addons:
+
+* [ember-cli-simple-auth-oauth2](https://github.com/simplabs/ember-cli-simple-auth-oauth2)
+* [ember-cli-simple-auth-devise](https://github.com/simplabs/ember-cli-simple-auth-devise)
+* [ember-cli-simple-auth-cookie-store](https://github.com/simplabs/ember-cli-simple-auth-cookie-store)
+* [ember-cli-simple-auth-torii](https://github.com/simplabs/ember-cli-simple-auth-torii)
+
+### Bower
+
+Ember Simple Auth is also available in the _"ember-simple-auth"_ bower
+package which includes both a browserified version as well as an AMD build.
+If you're using the AMD build from bower be sure to require the autoloader:
+
+```js
+require('simple-auth/ember');
+```
+
+The browserified version will, like the Ember CLI addon, also setup itself
+once it is loaded in the application.
+
+### Other Options
+
 * Download a prebuilt version from
   [the releases page](https://github.com/simplabs/ember-simple-auth/releases)
 * [Build it yourself](#building)
