@@ -295,15 +295,18 @@ the examples.
 
 ## Installation
 
-To install Ember Simple Auth in an Ember.js application there are several options:
+To install Ember Simple Auth in an Ember.js application there are several
+options:
 
 ### Ember CLI
 
-If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just add
-the [Ember CLI Addon](https://github.com/simplabs/ember-cli-simple-auth) to your
-project and Ember Simple Auth will setup itself.
+If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
+add the
+[ember-cli-simple-auth](https://github.com/simplabs/ember-cli-simple-auth)
+Ember CLI Addon to your project and Ember Simple Auth will setup itself.
 
-The Ember Simple Auth extension libraries are also available as Ember CLI Addons:
+The Ember Simple Auth extension libraries are also available as Ember CLI
+Addons:
 
 * [ember-cli-simple-auth-oauth2](https://github.com/simplabs/ember-cli-simple-auth-oauth2)
 * [ember-cli-simple-auth-devise](https://github.com/simplabs/ember-cli-simple-auth-devise)
