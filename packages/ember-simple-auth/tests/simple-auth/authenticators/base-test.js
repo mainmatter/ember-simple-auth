@@ -24,7 +24,7 @@ describe('Authenticators.Base', function() {
   });
 
   describe('#invalidate', function() {
-    it('returns a rejecting promise', function(done) {
+    it('returns a resolving promise', function(done) {
       this.authenticator.invalidate().then(function() {
         expect(true).to.be.true;
         done();
