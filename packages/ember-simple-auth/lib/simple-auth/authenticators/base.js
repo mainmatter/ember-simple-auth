@@ -140,9 +140,10 @@ export default Ember.Object.extend(Ember.Evented, {
     resolving promise and thus never intercepts session invalidation.
 
     @method invalidate
+    @param {Object} data The data that the session currently holds
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
   */
-  invalidate: function() {
+  invalidate: function(data) {
     return new Ember.RSVP.resolve();
   }
 });
