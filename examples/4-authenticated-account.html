@@ -109,7 +109,7 @@
               if (!Ember.isEmpty(accountId)) {
                 return container.lookup('store:main').find('account', accountId);
               }
-            }.property('accountId')
+            }.property('account_id')
           });
           // register the custom authenticator so the session can find it
           container.register('authenticator:custom', App.CustomAuthenticator);
