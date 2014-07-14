@@ -71,7 +71,8 @@ module.exports = function(grunt) {
               connect.logger('short'),
               connect.json(),
               connect.query(),
-              require('body-parser')(),
+              require('body-parser').urlencoded({ extended: true }),
+              require('body-parser').json(),
               require('connect-redirection')(),
               function(request, response, next) {
                 if (request.url === '/') {
