@@ -90,7 +90,7 @@ with this library:
 
 * rack-oauth2: https://github.com/nov/rack-oauth2
 * doorkeeper: https://github.com/applicake/doorkeeper
-* Rails app template: https://github.com/bazzel/rails-templates/blob/master/simple-auth.rb
+* Rails app template: https://github.com/bazzel/rails-templates/blob/master/ember-simple-auth.rb
 
 #### PHP
 
