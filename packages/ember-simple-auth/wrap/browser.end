@@ -46,4 +46,9 @@ global.SimpleAuth = {
 };
 
 requireModule('simple-auth/ember');
+
+if (Ember.testing) {
+  requireModule('simple-auth/test-helpers/authenticate-session');
+  requireModule('simple-auth/test-helpers/invalidate-session');
+}
 })((typeof global !== 'undefined') ? global : window);
