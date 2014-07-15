@@ -107,8 +107,8 @@ export default Base.extend({
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var data                 = {};
       data[_this.resourceName] = {
-        email:    credentials.identification,
-        password: credentials.password
+        email:    credentials.identification ?  credentials.identification : undefined,
+        password: credentials.password ?        credentials.password       : undefined
       };
       _this.makeRequest(data).then(function(response) {
         Ember.run(function() {
