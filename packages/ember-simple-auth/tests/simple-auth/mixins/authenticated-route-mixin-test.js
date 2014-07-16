@@ -5,7 +5,8 @@ import EphemeralStore from 'simple-auth/stores/ephemeral';
 describe('AuthenticatedRouteMixin', function() {
   describe('#beforeModel', function() {
     beforeEach(function() {
-      this.session    = Session.create({ store: EphemeralStore.create() });
+      this.session = Session.create();
+      this.session.setProperties({ store: EphemeralStore.create() });
       this.transition = { abort: function() {}, send: function() {} };
       this.route      = Ember.Route.extend(AuthenticatedRouteMixin).create({ session: this.session });
       sinon.spy(this.transition, 'abort');

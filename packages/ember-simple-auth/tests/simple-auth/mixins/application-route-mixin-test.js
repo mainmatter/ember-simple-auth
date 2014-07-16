@@ -7,8 +7,9 @@ var TestRoute = Ember.Route.extend(ApplicationRouteMixin);
 
 describe('ApplicationRouteMixin', function() {
   beforeEach(function() {
-    this.session = Session.create({ store: EphemeralStore.create() });
-    this.route   = Ember.Route.extend(ApplicationRouteMixin, {
+    this.session = Session.create();
+    this.session.setProperties({ store: EphemeralStore.create() });
+    this.route = Ember.Route.extend(ApplicationRouteMixin, {
       send: function() {},
       transitionTo: function() {}
     }).create({ session: this.session });

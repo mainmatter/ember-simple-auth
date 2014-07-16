@@ -9,10 +9,13 @@ describe('setup', function() {
     this.container     = { register: function() {}, injection: function() {}, lookup: function() {} };
     this.application   = { deferReadiness: function() {}, advanceReadiness: function() {} };
     this.router        = { get: function() { return 'rootURL'; }, send: function() {} };
-    this.store         = LocalStorageStore.create();
+    this.store         = EphemeralStore.create();
+    this.session       = Session.create();
+    this.session.setProperties({ store: this.store, container: this.container });
     this.containerStub = sinon.stub(this.container, 'lookup');
     this.containerStub.withArgs('router:main').returns(this.router);
     this.containerStub.withArgs('simple-auth-session-store:local-storage').returns(this.store);
+    this.containerStub.withArgs('simple-auth-session:main').returns(this.session);
   });
 
   it("defers the application's readiness", function() {
@@ -31,14 +34,33 @@ describe('setup', function() {
   describe('the session instance', function() {
     beforeEach(function() {
       Configuration.store = 'simple-auth-session-store:local-storage';
-      sinon.spy(this.container, 'register');
+    });
+
+    context('when a custom session class is configured', function() {
+      beforeEach(function() {
+        this.originalSessionFactory = Configuration.session;
+        Configuration.session       = 'session:custom';
+        this.otherSession           = Session.extend().create({ store: this.store, container: this.container });
+        this.containerStub.withArgs('session:custom').returns(this.otherSession);
+        sinon.spy(this.container, 'injection');
+      });
+
+      it('is of that class', function() {
+        setup(this.container, this.application);
+
+        var spyCall = this.container.injection.getCall(0);
+        expect(spyCall.args[2]).to.eql('session:custom');
+      });
+
+      afterEach(function() {
+        Configuration.session = this.originalSessionFactory;
+      });
     });
 
     it('uses the LocalStorage store by default', function() {
       setup(this.container, this.application);
-      var spyCall = this.container.register.getCall(2);
 
-      expect(spyCall.args[1].store).to.eql(this.store);
+      expect(this.session.store).to.eql(this.store);
     });
 
     it('uses a custom store if specified', function() {
@@ -46,24 +68,23 @@ describe('setup', function() {
       var store = EphemeralStore.create();
       this.containerStub.withArgs('simple-auth-session-store:ephemeral').returns(store);
       setup(this.container, this.application);
-      var spyCall = this.container.register.getCall(2);
 
-      expect(spyCall.args[1].store).to.eql(store);
+      expect(this.session.store).to.eql(store);
     });
 
     it("uses the app's container", function() {
       setup(this.container, this.application);
-      var spyCall = this.container.register.getCall(2);
 
-      expect(spyCall.args[1].container).to.eql(this.container);
+      expect(this.session.container).to.eql(this.container);
     });
 
     it('is registered with the Ember container', function() {
+      sinon.spy(this.container, 'register');
       setup(this.container, this.application);
       var spyCall = this.container.register.getCall(2);
 
       expect(spyCall.args[0]).to.eql('simple-auth-session:main');
-      expect(spyCall.args[1].constructor).to.eql(Session);
+      expect(spyCall.args[1]).to.eql(Session);
     });
 
     it('is injected into all controllers and routes', function() {
@@ -147,10 +168,7 @@ describe('setup', function() {
         this.xhr                = sinon.useFakeXMLHttpRequest();
         this.server             = sinon.fakeServer.create();
         this.server.autoRespond = true;
-        sinon.spy(this.container, 'register');
         setup(this.container, this.application);
-        var spyCall  = this.container.register.getCall(2);
-        this.session = spyCall.args[1];
       });
 
       describe("when the request's status is 401", function() {

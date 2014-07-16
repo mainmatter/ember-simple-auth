@@ -4,7 +4,8 @@ import EphemeralStore from 'simple-auth/stores/ephemeral';
 
 describe('LoginControllerMixin', function() {
   beforeEach(function() {
-    this.session    = Session.create({ store: EphemeralStore.create() });
+    this.session = Session.create();
+    this.session.setProperties({ store: EphemeralStore.create() });
     this.controller = Ember.Controller.extend(LoginControllerMixin).create({
       authenticator: 'authenticator',
       session:       this.session

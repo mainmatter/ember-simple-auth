@@ -31,9 +31,10 @@ function shouldAuthorizeRequest(options) {
   return crossOriginWhitelist.indexOf(urlOrigin) > -1;
 }
 
-function registerStores(container) {
+function registerFactories(container) {
   container.register('simple-auth-session-store:local-storage', LocalStorage);
   container.register('simple-auth-session-store:ephemeral', Ephemeral);
+  container.register('simple-auth-session:main', Session);
 }
 
 /**
@@ -43,17 +44,17 @@ function registerStores(container) {
 export default function(container, application) {
   Configuration.load(container);
   application.deferReadiness();
-  registerStores(container);
+  registerFactories(container);
 
-  var store            = container.lookup(Configuration.store);
-  var session          = Session.create({ store: store, container: container });
-  crossOriginWhitelist = Ember.A(Configuration.crossOriginWhitelist).map(function(origin) {
-    return extractLocationOrigin(origin);
+  var store   = container.lookup(Configuration.store);
+  var session = container.lookup(Configuration.session);
+  session.setProperties({ store: store, container: container });
+  Ember.A(['controller', 'route']).forEach(function(component) {
+    container.injection(component, Configuration.sessionPropertyName, Configuration.session);
   });
 
-  container.register('simple-auth-session:main', session, { instantiate: false });
-  Ember.A(['controller', 'route']).forEach(function(component) {
-    container.injection(component, Configuration.sessionPropertyName, 'simple-auth-session:main');
+  crossOriginWhitelist = Ember.A(Configuration.crossOriginWhitelist).map(function(origin) {
+    return extractLocationOrigin(origin);
   });
 
   if (!Ember.isEmpty(Configuration.authorizer)) {

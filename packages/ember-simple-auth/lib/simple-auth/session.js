@@ -112,6 +112,15 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   */
   store: null,
   /**
+    The Ember.js container,
+
+    @property container
+    @type Container
+    @readOnly
+    @default null
+  */
+  container: null,
+  /**
     Returns whether the session is currently authenticated.
 
     @property isAuthenticated
@@ -298,5 +307,5 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         _this.clear(true);
       }
     });
-  }.observes('store').on('init')
+  }.observes('store')
 });

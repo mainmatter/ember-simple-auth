@@ -73,7 +73,8 @@ describe('Session', function() {
 
   describe('restore', function() {
     beforeEach(function() {
-      this.session = Session.create({ store: this.store, container: this.container });
+      this.session = Session.create();
+      this.session.setProperties({ store: this.store, container: this.container });
     });
 
     function itDoesNotRestore() {
@@ -210,7 +211,8 @@ describe('Session', function() {
 
   describe('authentication', function() {
     beforeEach(function() {
-      this.session = Session.create({ store: this.store, container: this.container });
+      this.session = Session.create();
+      this.session.setProperties({ store: this.store, container: this.container });
     });
 
     describe('when the authenticator resolves authentication', function() {
@@ -362,7 +364,8 @@ describe('Session', function() {
 
   describe('invalidation', function() {
     beforeEach(function(done) {
-      this.session = Session.create({ store: this.store, container: this.container });
+      this.session = Session.create();
+      this.session.setProperties({ store: this.store, container: this.container });
       sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'property' }));
       this.session.authenticate('authenticator').then(function() {
         done();
@@ -504,7 +507,8 @@ describe('Session', function() {
 
   describe('when the store triggers the "updated" event', function() {
     beforeEach(function() {
-      this.session = Session.create({ store: this.store, container: this.container });
+      this.session = Session.create();
+      this.session.setProperties({ store: this.store, container: this.container });
     });
 
     describe('when there is an authenticator factory in the event data', function() {
