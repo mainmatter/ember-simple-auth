@@ -190,6 +190,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully
   */
   invalidate: function() {
+    Ember.assert('Session#invalidate requires the session to be authenticated', this.get('isAuthenticated'));
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var authenticator = _this.container.lookup(_this.authenticator);
