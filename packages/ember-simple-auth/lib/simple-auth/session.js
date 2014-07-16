@@ -132,14 +132,6 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   content: {},
 
   /**
-    @method init
-    @private
-  */
-  init: function() {
-    this.bindToStoreEvents();
-  },
-
-  /**
     Authenticates the session with an `authenticator` and appropriate
     `options`. __This delegates the actual authentication work to the
     `authenticator`__ and handles the returned promise accordingly (see
@@ -306,5 +298,5 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         _this.clear(true);
       }
     });
-  }
+  }.observes('store').on('init')
 });
