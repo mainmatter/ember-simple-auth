@@ -5,7 +5,7 @@
   }
 
   var jQueryVersion     = parseVersion('jQuery') || '2.1.1';
-  var emberVersion      = parseVersion('ember') || '1.5.1';
+  var emberVersion      = parseVersion('ember') || '1.6.1';
 
   document.write('<script src="vendor/jquery-' + jQueryVersion + '.js"></script>');
   document.write('<script src="vendor/handlebars.js"></script>');
