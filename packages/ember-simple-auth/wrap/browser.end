@@ -47,7 +47,7 @@ global.SimpleAuth = {
 
 requireModule('simple-auth/ember');
 
-if (Ember.testing) {
+if (global.Ember.testing) {
   requireModule('simple-auth/test-helpers/authenticate-session');
   requireModule('simple-auth/test-helpers/invalidate-session');
 }
