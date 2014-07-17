@@ -3,6 +3,7 @@ import Configuration from 'simple-auth/configuration';
 import Session from 'simple-auth/session';
 import LocalStorageStore from 'simple-auth/stores/local-storage';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
+import TestAuthenticator from 'simple-auth/authenticators/test';
 
 describe('setup', function() {
   beforeEach(function() {
@@ -29,6 +30,53 @@ describe('setup', function() {
     setup(this.container, this.application);
 
     expect(Configuration.applicationRootUrl).to.eql('rootURL');
+  });
+
+  it('registers the LocalStorage store', function() {
+    sinon.spy(this.container, 'register');
+    setup(this.container, this.application);
+
+    expect(this.container.register).to.have.been.calledWith('simple-auth-session-store:local-storage', LocalStorageStore);
+  });
+
+  it('registers the Ephemeral store', function() {
+    sinon.spy(this.container, 'register');
+    setup(this.container, this.application);
+
+    expect(this.container.register).to.have.been.calledWith('simple-auth-session-store:ephemeral', EphemeralStore);
+  });
+
+  it('registers the Session', function() {
+    sinon.spy(this.container, 'register');
+    setup(this.container, this.application);
+
+    expect(this.container.register).to.have.been.calledWith('simple-auth-session:main', Session);
+  });
+
+  describe('when Ember.testing is true', function() {
+    beforeEach(function() {
+      Ember.testing = true;
+    });
+
+    it('registers the Test authenticator', function() {
+      sinon.spy(this.container, 'register');
+      setup(this.container, this.application);
+
+      expect(this.container.register).to.have.been.calledWith('simple-auth-authenticator:test', TestAuthenticator);
+    });
+  });
+
+  describe('when Ember.testing is false', function() {
+    beforeEach(function() {
+      Ember.testing = false;
+    });
+
+    it('registers the Test authenticator', function() {
+      sinon.spy(this.container, 'register');
+      setup(this.container, this.application);
+
+      expect(this.container.register).to.not.have.been.calledWith('simple-auth-authenticator:test', TestAuthenticator);
+    });
   });
 
   describe('the session instance', function() {
@@ -78,22 +126,13 @@ describe('setup', function() {
       expect(this.session.container).to.eql(this.container);
     });
 
-    it('is registered with the Ember container', function() {
-      sinon.spy(this.container, 'register');
-      setup(this.container, this.application);
-      var spyCall = this.container.register.getCall(2);
-
-      expect(spyCall.args[0]).to.eql('simple-auth-session:main');
-      expect(spyCall.args[1]).to.eql(Session);
-    });
-
     it('is injected into all controllers and routes', function() {
       var _this = this;
       sinon.spy(this.container, 'injection');
       setup(this.container, this.application);
 
       ['controller', 'route'].forEach(function(component) {
-        expect(_this.container.injection).to.have.been.calledWith(component, Configuration.sessionPropertyName, 'simple-auth-session:main');
+        expect(_this.container.injection).to.have.been.calledWith(component, Configuration.sessionPropertyName, Configuration.session);
       });
     });
   });
