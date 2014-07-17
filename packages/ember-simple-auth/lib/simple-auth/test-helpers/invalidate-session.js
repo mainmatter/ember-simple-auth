@@ -1,3 +1,6 @@
+var global = (typeof window !== 'undefined') ? window : {},
+    Ember = global.Ember;
+
 export default Ember.Test.registerAsyncHelper('invalidateSession', function(app) {
   var session = app.__container__.lookup('simple-auth-session:main');
   if (session.get('isAuthenticated')) {
