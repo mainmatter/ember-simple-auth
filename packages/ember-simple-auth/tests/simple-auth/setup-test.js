@@ -7,11 +7,11 @@ import TestAuthenticator from 'simple-auth/authenticators/test';
 
 describe('setup', function() {
   beforeEach(function() {
-    this.container     = { register: function() {}, injection: function() {}, lookup: function() {} };
-    this.application   = { deferReadiness: function() {}, advanceReadiness: function() {} };
-    this.router        = { get: function() { return 'rootURL'; }, send: function() {} };
-    this.store         = EphemeralStore.create();
-    this.session       = Session.create();
+    this.container   = { register: function() {}, injection: function() {}, lookup: function() {} };
+    this.application = { deferReadiness: function() {}, advanceReadiness: function() {} };
+    this.router      = { get: function() { return 'rootURL'; }, send: function() {} };
+    this.store       = EphemeralStore.create();
+    this.session     = Session.create();
     this.session.setProperties({ store: this.store, container: this.container });
     this.containerStub = sinon.stub(this.container, 'lookup');
     this.containerStub.withArgs('router:main').returns(this.router);
