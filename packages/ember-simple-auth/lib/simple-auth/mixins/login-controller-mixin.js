@@ -50,7 +50,7 @@ export default Ember.Mixin.create(AuthenticationControllerMixin, {
     authenticate: function() {
       var data = this.getProperties('identification', 'password');
       this.set('password', null);
-      this._super(data);
+      return this._super(data);
     }
   }
 });
