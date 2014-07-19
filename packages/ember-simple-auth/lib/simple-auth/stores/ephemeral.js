@@ -34,7 +34,7 @@ export default Base.extend({
     @param {Object} data The data to persist
   */
   persist: function(data) {
-    this._data = Ember.$.extend(data, this._data);
+    this._data = JSON.stringify(data || {});
   },
 
   /**
@@ -44,7 +44,7 @@ export default Base.extend({
     @return {Object} All data currently persisted
   */
   restore: function() {
-    return Ember.$.extend({}, this._data);
+    return JSON.parse(this._data) || {};
   },
 
   /**
@@ -54,6 +54,6 @@ export default Base.extend({
   */
   clear: function() {
     delete this._data;
-    this._data = {};
+    this._data = '{}';
   }
 });

@@ -245,7 +245,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     });
     this.bindToAuthenticatorEvents();
     var data = Ember.$.extend({ authenticator: authenticator }, this.content);
-    this.store.replace(data);
+    this.store.persist(data);
     this.endPropertyChanges();
     if (trigger) {
       this.trigger('sessionAuthenticationSucceeded');

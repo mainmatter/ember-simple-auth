@@ -15,8 +15,8 @@ describe('Stores.Cookie', function() {
 
   describe('initilization', function() {
     describe('when no global environment object is defined', function() {
-      it('defaults cookieNamePrefix to "ember_simple_auth:"', function() {
-        expect(Cookie.create().cookieNamePrefix).to.eq('ember_simple_auth:');
+      it('defaults cookieName to "ember_simple_auth:session"', function() {
+        expect(Cookie.create().cookieName).to.eq('ember_simple_auth:session');
       });
 
       it('defaults cookieExpirationTime to null', function() {
@@ -28,13 +28,13 @@ describe('Stores.Cookie', function() {
       beforeEach(function() {
         window.ENV = window.ENV || {};
         window.ENV['simple-auth-cookie-store'] = {
-          cookieNamePrefix:     'cookieNamePrefix',
+          cookieName:           'cookieName',
           cookieExpirationTime: 1
         };
       });
 
-      it('uses the defined value for cookieNamePrefix', function() {
-        expect(Cookie.create().cookieNamePrefix).to.eq('cookieNamePrefix');
+      it('uses the defined value for cookieName', function() {
+        expect(Cookie.create().cookieName).to.eq('cookieName');
       });
 
       it('uses the defined value for cookieExpirationTime', function() {
@@ -48,12 +48,12 @@ describe('Stores.Cookie', function() {
   });
 
   describe('#persist', function() {
-    it('respects the configured cookieNamePrefix', function() {
+    it('respects the configured cookieName', function() {
       this.store = Cookie.create();
-      this.store.cookieNamePrefix = 'test:';
+      this.store.cookieName = 'test:session';
       this.store.persist({ key: 'value' });
 
-      expect(document.cookie).to.contain('test:key=value');
+      expect(document.cookie).to.contain('test:session=%7B%22key%22%3A%22value%22%7D');
     });
   });
 
@@ -68,7 +68,7 @@ describe('Stores.Cookie', function() {
     });
 
     it('is not triggered when the cookie has not actually changed', function(done) {
-      document.cookie = 'ember_simple_auth:key=value;';
+      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22value%22%7D;';
       this.store.syncData();
 
       Ember.run.next(this, function() {
@@ -78,7 +78,7 @@ describe('Stores.Cookie', function() {
     });
 
     it('is triggered when the cookie changed', function(done) {
-      document.cookie = 'ember_simple_auth:key=other value;';
+      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22other%20value%22%7D;';
       this.store.syncData();
 
       Ember.run.next(this, function() {
