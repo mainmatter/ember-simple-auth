@@ -78,6 +78,21 @@ describe('ApplicationRouteMixin', function() {
           done();
         });
       });
+
+      describe('and "beforeModel" was triggered multiple times due to an aborted initial transition', function() {
+        it('the action is only invoked on the transition once', function(done) {
+          this.route.beforeModel(this.transition);
+
+          this.transition.isActive = true;
+          this.session.trigger('sessionAuthenticationSucceeded');
+
+          Ember.run.next(this, function() {
+            expect(this.transition.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
+            expect(this.transition.send).to.have.been.calledOnce;
+            done();
+          });
+        });
+      });
     });
   });
 
