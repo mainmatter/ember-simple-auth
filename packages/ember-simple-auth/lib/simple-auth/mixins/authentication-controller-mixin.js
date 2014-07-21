@@ -40,7 +40,6 @@ export default Ember.Mixin.create({
     authenticate: function(options) {
       var authenticator = this.get('authenticator');
       Ember.assert('AuthenticationControllerMixin/LoginControllerMixin require the authenticator property to be set on the controller', !Ember.isEmpty(authenticator));
-      console.log('here');
       return this.get(Configuration.sessionPropertyName).authenticate(this.get('authenticator'), options);
     }
   }
