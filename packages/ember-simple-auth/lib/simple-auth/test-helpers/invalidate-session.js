@@ -1,6 +1,3 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 import Configuration from '../configuration';
 
 export default Ember.Test.registerAsyncHelper('invalidateSession', function(app) {

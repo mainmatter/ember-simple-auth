@@ -2,9 +2,6 @@ import Base from 'simple-auth/stores/base';
 import flatObjectsAreEqual from 'simple-auth/utils/flat-objects-are-equal';
 import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 /**
   Store that saves its data in a cookie.
 

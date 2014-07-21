@@ -1,6 +1,3 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 import Store from 'simple-auth-cookie-store/stores/cookie';
 
 export default {

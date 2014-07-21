@@ -1,8 +1,5 @@
 import Base from 'simple-auth/authenticators/base';
 
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 /**
   Authenticator that wraps the
   [Torii library](https://github.com/Vestorly/torii).
