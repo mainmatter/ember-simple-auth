@@ -66,6 +66,8 @@ export default Ember.Mixin.create({
   */
   beforeModel: function(transition) {
     this._super(transition);
+    if (this.get('_authEventListenersAssigned')) return;
+    this.set('_authEventListenersAssigned', true);
     var _this = this;
     Ember.A([
       'sessionAuthenticationSucceeded',
