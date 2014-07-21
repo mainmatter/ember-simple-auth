@@ -53,58 +53,36 @@ describe('OAuth2', function() {
   });
 
   describe('#restore', function() {
-    describe('when the data contains an access_token', function() {
+    describe('when the data includes expiration data', function() {
       it('resolves with the correct data', function(done) {
-        this.authenticator.restore({ access_token: 'secret token!' }).then(function(data) {
-          expect(data).to.eql({ access_token: 'secret token!' });
+        this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
+          expect(data).to.eql({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' });
           done();
         });
       });
 
-      describe('when the data includes expiration data', function() {
-        it('resolves with the correct data', function(done) {
-          this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
-            expect(data).to.eql({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' });
-            done();
-          });
-        });
-
-        describe('when the data includes an expiration time in the past', function() {
-          describe('when automatic token refreshing is enabled', function() {
-            describe('when the refresh request is successful', function() {
-              beforeEach(function() {
-                this.server.respondWith('POST', '/token', [
-                  200,
-                  { 'Content-Type': 'application/json' },
-                  '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }'
-                ]);
-              });
-
-              it('resolves with the correct data', function(done) {
-                this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(function(data) {
-                  expect(data.expires_at).to.be.greaterThan(new Date().getTime());
-                  delete data.expires_at;
-                  expect(data).to.eql({ access_token: 'secret token 2!', expires_in: 67890, refresh_token: 'refresh token 2!' });
-                  done();
-                });
-              });
-            });
-
-            describe('when the access token is not refreshed successfully', function() {
-              it('returns a rejecting promise', function(done) {
-                this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(null, function() {
-                  expect(true).to.be.true;
-                  done();
-                });
-              });
-            });
-          });
-
-          describe('when automatic token refreshing is disabled', function() {
+      describe('when the data includes an expiration time in the past', function() {
+        describe('when automatic token refreshing is enabled', function() {
+          describe('when the refresh request is successful', function() {
             beforeEach(function() {
-              this.authenticator.set('refreshAccessTokens', false);
+              this.server.respondWith('POST', '/token', [
+                200,
+                { 'Content-Type': 'application/json' },
+                '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }'
+              ]);
             });
 
+            it('resolves with the correct data', function(done) {
+              this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(function(data) {
+                expect(data.expires_at).to.be.greaterThan(new Date().getTime());
+                delete data.expires_at;
+                expect(data).to.eql({ access_token: 'secret token 2!', expires_in: 67890, refresh_token: 'refresh token 2!' });
+                done();
+              });
+            });
+          });
+
+          describe('when the access token is not refreshed successfully', function() {
             it('returns a rejecting promise', function(done) {
               this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(null, function() {
                 expect(true).to.be.true;
@@ -114,57 +92,81 @@ describe('OAuth2', function() {
           });
         });
 
-        describe('when automatic token refreshing is enabled', function() {
-          beforeEach(function() {
-            sinon.spy(Ember.run, 'later');
-          });
-
-          it('schedules a token refresh', function(done) {
-            var _this = this;
-
-            this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
-              var spyCall = Ember.run.later.getCall(0);
-
-              expect(spyCall.args[1]).to.eql(_this.authenticator.refreshAccessToken);
-              expect(spyCall.args[2]).to.eql(12345);
-              expect(spyCall.args[3]).to.eql('refresh token!');
-              done();
-            });
-          });
-
-          afterEach(function() {
-            Ember.run.later.restore();
-          });
-        });
-
         describe('when automatic token refreshing is disabled', function() {
           beforeEach(function() {
             this.authenticator.set('refreshAccessTokens', false);
-            sinon.spy(Ember.run, 'later');
           });
 
-          it('does not schedule a token refresh', function(done) {
-            var _this = this;
-
-            this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
-              expect(Ember.run.later).to.not.have.been.called;
+          it('returns a rejecting promise', function(done) {
+            this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(null, function() {
+              expect(true).to.be.true;
               done();
             });
-          });
-
-          afterEach(function() {
-            Ember.run.later.restore();
           });
         });
       });
     });
 
-    describe('when the data does not contain an access_token', function() {
-      it('returns a rejecting promise', function(done) {
-        this.authenticator.restore().then(null, function() {
-          expect(true).to.be.true;
+    describe('when the data does not include expiration data', function() {
+      describe('when the data contains an access_token', function() {
+        it('resolves with the correct data', function(done) {
+          this.authenticator.restore({ access_token: 'secret token!' }).then(function(data) {
+            expect(data).to.eql({ access_token: 'secret token!' });
+            done();
+          });
+        });
+      });
+
+      describe('when the data does not contain an access_token', function() {
+        it('returns a rejecting promise', function(done) {
+          this.authenticator.restore().then(null, function() {
+            expect(true).to.be.true;
+            done();
+          });
+        });
+      });
+    });
+
+    describe('when automatic token refreshing is enabled', function() {
+      beforeEach(function() {
+        sinon.spy(Ember.run, 'later');
+      });
+
+      it('schedules a token refresh', function(done) {
+        var _this = this;
+
+        this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
+          var spyCall = Ember.run.later.getCall(0);
+
+          expect(spyCall.args[1]).to.eql(_this.authenticator.refreshAccessToken);
+          expect(spyCall.args[2]).to.eql(12345);
+          expect(spyCall.args[3]).to.eql('refresh token!');
           done();
         });
+      });
+
+      afterEach(function() {
+        Ember.run.later.restore();
+      });
+    });
+
+    describe('when automatic token refreshing is disabled', function() {
+      beforeEach(function() {
+        this.authenticator.set('refreshAccessTokens', false);
+        sinon.spy(Ember.run, 'later');
+      });
+
+      it('does not schedule a token refresh', function(done) {
+        var _this = this;
+
+        this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
+          expect(Ember.run.later).to.not.have.been.called;
+          done();
+        });
+      });
+
+      afterEach(function() {
+        Ember.run.later.restore();
       });
     });
   });
