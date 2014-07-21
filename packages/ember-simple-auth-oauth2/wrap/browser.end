@@ -19,4 +19,6 @@ global.SimpleAuth.Authenticators.OAuth2 = Authenticator;
 global.SimpleAuth.Authorizers.OAuth2    = Authorizer;
 
 requireModule('simple-auth-oauth2/ember');
+
+Ember.libraries.register('Ember Simple Auth OAuth 2.0', '{{ VERSION }}');
 })((typeof global !== 'undefined') ? global : window);

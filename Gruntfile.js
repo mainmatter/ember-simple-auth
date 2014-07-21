@@ -12,7 +12,8 @@ module.exports = function(grunt) {
     'clean',
     'transpile:amd',
     'concat:amd',
-    'concat:browser'
+    'concat:browser',
+    'string-replace:version'
   ]);
 
   this.registerTask('build_tests', "Builds Ember Simple Auth's tests", [
@@ -149,6 +150,22 @@ module.exports = function(grunt) {
       }
     },
 
+    'string-replace': {
+      version: {
+        files: {
+          'tmp/': 'tmp/*.js'
+        },
+        options: {
+          replacements: packages.map(function(pkg) {
+            return {
+              pattern: '{{ VERSION }}',
+              replacement: pkg.version
+            };
+          })
+        }
+      }
+    },
+
     copy: {
       plain_download: {
         files: packages.map(function(pkg) {
@@ -281,4 +298,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-compile-handlebars');
   grunt.loadNpmTasks('grunt-lintspaces');
+  grunt.loadNpmTasks('grunt-string-replace');
 };
