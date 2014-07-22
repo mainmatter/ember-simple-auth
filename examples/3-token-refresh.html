@@ -48,7 +48,7 @@
       </div>
       {{#if session.isAuthenticated}}
       <div class="alert alert-info">
-        The token is automatically refreshed every 10 seconds, it currently is: <code>{{ session.access_token }}</code>.
+        The token is automatically refreshed every 5 to 10 seconds, it currently is: <code>{{ session.access_token }}</code>.
       </div>
       {{else}}
         <div class="alert alert-info">
