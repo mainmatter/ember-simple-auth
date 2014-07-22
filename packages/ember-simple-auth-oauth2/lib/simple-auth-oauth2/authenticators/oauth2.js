@@ -118,22 +118,22 @@ export default Base.extend({
   restore: function(data) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(data.access_token)) {
-        var now = (new Date()).getTime();
-        if (!Ember.isEmpty(data.expires_at) && data.expires_at < now) {
-          if (_this.refreshAccessTokens) {
-            _this.refreshAccessToken(data.expires_in, data.refresh_token).then(function(data) {
-              resolve(data);
-            }, reject);
-          } else {
-            reject();
-          }
+      var now = (new Date()).getTime();
+      if (!Ember.isEmpty(data.expires_at) && data.expires_at < now) {
+        if (_this.refreshAccessTokens) {
+          _this.refreshAccessToken(data.expires_in, data.refresh_token).then(function(data) {
+            resolve(data);
+          }, reject);
+        } else {
+          reject();
+        }
+      } else {
+        if (Ember.isEmpty(data.access_token)) {
+          reject();
         } else {
           _this.scheduleAccessTokenRefresh(data.expires_in, data.expires_at, data.refresh_token);
           resolve(data);
         }
-      } else {
-        reject();
       }
     });
   },
