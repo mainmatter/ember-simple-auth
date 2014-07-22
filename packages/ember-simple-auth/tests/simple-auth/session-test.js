@@ -505,6 +505,43 @@ describe('Session', function() {
     });
   });
 
+  describe("when the session's content changes", function() {
+    describe('when a single property is set', function() {
+      beforeEach(function() {
+        this.session = Session.create({ store: this.store });
+        this.session.set('some', 'property');
+      });
+
+      it('persists its content in the store', function(done) {
+        Ember.run.next(this, function() {
+          var properties = this.store.restore();
+          delete properties.authenticator;
+
+          expect(properties).to.eql({ some: 'property' });
+          done();
+        });
+      });
+    });
+
+    describe('when multiple properties are set at once', function() {
+      beforeEach(function() {
+        this.session = Session.create({ store: this.store });
+        this.session.set('some', 'property');
+        this.session.setProperties({ multiple: 'properties' });
+      });
+
+      it('persists its content in the store', function(done) {
+        Ember.run.next(this, function() {
+          var properties = this.store.restore();
+          delete properties.authenticator;
+
+          expect(properties).to.eql({ some: 'property', multiple: 'properties' });
+          done();
+        });
+      });
+    });
+  });
+
   describe('when the store triggers the "updated" event', function() {
     beforeEach(function() {
       this.session = Session.create();

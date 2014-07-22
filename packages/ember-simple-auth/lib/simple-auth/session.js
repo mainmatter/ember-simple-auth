@@ -244,8 +244,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       content:         content
     });
     this.bindToAuthenticatorEvents();
-    var data = Ember.$.extend({ authenticator: authenticator }, this.content);
-    this.store.persist(data);
+    this.updateStore();
     this.endPropertyChanges();
     if (trigger) {
       this.trigger('sessionAuthenticationSucceeded');
@@ -268,6 +267,30 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     this.endPropertyChanges();
     if (trigger) {
       this.trigger('sessionInvalidationSucceeded');
+    }
+  },
+
+  /**
+    @method setUnknownProperty
+    @private
+  */
+  setUnknownProperty: function(key, value) {
+    var result = this._super(key, value);
+    this.updateStore();
+    return result;
+  },
+
+  /**
+    @method updateStore
+    @private
+  */
+  updateStore: function() {
+    var data = this.content;
+    if (!Ember.isEmpty(this.authenticator)) {
+      data = Ember.$.extend({ authenticator: this.authenticator }, data);
+    }
+    if (!Ember.isEmpty(data)) {
+      this.store.persist(data);
     }
   },
 
