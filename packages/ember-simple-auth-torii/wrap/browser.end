@@ -7,6 +7,4 @@ var Authenticator = requireModule('simple-auth-torii/authenticators/torii').defa
 global.SimpleAuth.Authenticators.Torii = Authenticator;
 
 requireModule('simple-auth-torii/ember');
-
-Ember.libraries.register('Ember Simple Auth Torii', '{{ VERSION }}');
 })((typeof global !== 'undefined') ? global : window);

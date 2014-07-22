@@ -51,6 +51,4 @@ if (global.Ember.testing) {
   requireModule('simple-auth/test-helpers/authenticate-session');
   requireModule('simple-auth/test-helpers/invalidate-session');
 }
-
-Ember.libraries.register('Ember Simple Auth', '{{ VERSION }}');
 })((typeof global !== 'undefined') ? global : window);

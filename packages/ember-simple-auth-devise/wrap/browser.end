@@ -19,6 +19,4 @@ global.SimpleAuth.Authenticators.Devise = Authenticator;
 global.SimpleAuth.Authorizers.Devise    = Authorizer;
 
 requireModule('simple-auth-devise/ember');
-
-Ember.libraries.register('Ember Simple Auth Devise', '{{ VERSION }}');
 })((typeof global !== 'undefined') ? global : window);
