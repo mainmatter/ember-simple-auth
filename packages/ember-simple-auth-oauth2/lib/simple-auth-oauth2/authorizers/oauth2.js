@@ -1,9 +1,6 @@
 import Base from 'simple-auth/authorizers/base';
 import isSecureUrl from 'simple-auth/utils/is-secure-url';
 
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 /**
   Authorizer that conforms to OAuth 2
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)) by sending a bearer token

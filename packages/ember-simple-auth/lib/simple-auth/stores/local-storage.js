@@ -1,6 +1,3 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 import Base from './base';
 import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
 

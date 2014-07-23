@@ -1,6 +1,3 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 /**
   __The session provides access to the current authentication state as well as
   any data the authenticator resolved with__ (see

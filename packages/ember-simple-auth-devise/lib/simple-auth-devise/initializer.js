@@ -1,6 +1,3 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 import Authenticator from 'simple-auth-devise/authenticators/devise';
 import Authorizer    from 'simple-auth-devise/authorizers/devise';
 
