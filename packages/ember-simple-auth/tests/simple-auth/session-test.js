@@ -26,11 +26,11 @@ describe('Session', function() {
       });
 
       it('retains custom content on update', function(done) {
-        this.content = {existing: "property"};
+        this.session.set('content', {existing: "property"});
         this.authenticator.trigger('sessionDataUpdated', { some: 'other property' });
 
         Ember.run.next(this, function() {
-          expect(this.session.get('content')).to.eql({ existing: "property", some: 'other property' });
+          expect(this.session.get('content')).to.eql({ some: 'other property' });
           done();
         });
       });
@@ -580,7 +580,7 @@ describe('Session', function() {
             var properties = this.store.restore();
             delete properties.authenticator;
 
-            expect(this.session.get('content')).to.eql({ some: 'other property' });
+            expect(this.session.get('content')).to.eql({ some: 'other property', multiple: 'properties' });
             done();
           });
         });
@@ -592,19 +592,7 @@ describe('Session', function() {
             var properties = this.store.restore();
             delete properties.authenticator;
 
-            expect(properties).to.eql({ some: 'other property' });
-            done();
-          });
-        });
-
-        it('persists its content in the store', function(done) {
-          this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
-
-          Ember.run.next(this, function() {
-            var properties = this.store.restore();
-            delete properties.authenticator;
-
-            expect(properties).to.eql({ some: 'other property' });
+            expect(properties).to.eql({ some: 'other property', multiple: 'properties' });
             done();
           });
         });
