@@ -236,13 +236,13 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   setup: function(authenticator, content, trigger) {
-    var content = Ember.$.extend(this.content, content);
+    var _content = Ember.$.extend(this.content, content);
     trigger = !!trigger && !this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated: true,
       authenticator:   authenticator,
-      content:         content
+      content:         _content
     });
     this.bindToAuthenticatorEvents();
     this.updateStore();

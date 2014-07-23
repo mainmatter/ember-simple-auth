@@ -24,6 +24,16 @@ describe('Session', function() {
           done();
         });
       });
+
+      it('retains custom content on update', function(done) {
+        this.content = {existing: "property"};
+        this.authenticator.trigger('sessionDataUpdated', { some: 'other property' });
+
+        Ember.run.next(this, function() {
+          expect(this.session.get('content')).to.eql({ existing: "property", some: 'other property' });
+          done();
+        });
+      });
     });
 
     describe('when the authenticator triggers the "invalidated" event', function() {
