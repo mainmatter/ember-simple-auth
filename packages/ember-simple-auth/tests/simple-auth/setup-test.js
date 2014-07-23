@@ -3,7 +3,6 @@ import Configuration from 'simple-auth/configuration';
 import Session from 'simple-auth/session';
 import LocalStorageStore from 'simple-auth/stores/local-storage';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
-import TestAuthenticator from 'simple-auth/authenticators/test';
 
 describe('setup', function() {
   beforeEach(function() {
@@ -51,32 +50,6 @@ describe('setup', function() {
     setup(this.container, this.application);
 
     expect(this.container.register).to.have.been.calledWith('simple-auth-session:main', Session);
-  });
-
-  describe('when Ember.testing is true', function() {
-    beforeEach(function() {
-      Ember.testing = true;
-    });
-
-    it('registers the Test authenticator', function() {
-      sinon.spy(this.container, 'register');
-      setup(this.container, this.application);
-
-      expect(this.container.register).to.have.been.calledWith('simple-auth-authenticator:test', TestAuthenticator);
-    });
-  });
-
-  describe('when Ember.testing is false', function() {
-    beforeEach(function() {
-      Ember.testing = false;
-    });
-
-    it('registers the Test authenticator', function() {
-      sinon.spy(this.container, 'register');
-      setup(this.container, this.application);
-
-      expect(this.container.register).to.not.have.been.calledWith('simple-auth-authenticator:test', TestAuthenticator);
-    });
   });
 
   describe('the session instance', function() {

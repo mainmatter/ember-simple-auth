@@ -1,4 +1,4 @@
-import Base from './base';
+import Base from 'simple-auth/authenticators/base';
 
 export default Base.extend({
   restore: function(data) {

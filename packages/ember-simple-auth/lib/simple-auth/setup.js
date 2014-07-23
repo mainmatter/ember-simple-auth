@@ -2,7 +2,6 @@ import Configuration from './configuration';
 import Session from './session';
 import LocalStorage from './stores/local-storage';
 import Ephemeral from './stores/ephemeral';
-import TestAuthenticator from 'simple-auth/authenticators/test';
 
 function extractLocationOrigin(location) {
   if (Ember.typeOf(location) === 'string') {
@@ -36,9 +35,6 @@ function registerFactories(container) {
   container.register('simple-auth-session-store:local-storage', LocalStorage);
   container.register('simple-auth-session-store:ephemeral', Ephemeral);
   container.register('simple-auth-session:main', Session);
-  if (Ember.testing) {
-    container.register('simple-auth-authenticator:test', TestAuthenticator);
-  }
 }
 
 /**

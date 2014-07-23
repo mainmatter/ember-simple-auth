@@ -1,4 +1,4 @@
-import Test from 'simple-auth/authenticators/test';
+import Test from 'simple-auth-testing/authenticators/test';
 
 describe('Authenticators.Test', function() {
   beforeEach(function() {
