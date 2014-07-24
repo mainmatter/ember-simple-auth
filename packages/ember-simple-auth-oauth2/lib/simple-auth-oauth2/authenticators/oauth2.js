@@ -165,7 +165,10 @@ export default Base.extend({
         Ember.run(function() {
           var expiresAt = _this.absolutizeExpirationTime(response.expires_in);
           _this.scheduleAccessTokenRefresh(response.expires_in, expiresAt, response.refresh_token);
-          resolve(Ember.$.extend(response, { expires_at: expiresAt }));
+          if (!Ember.isEmpty(expiresAt)) {
+            response = Ember.merge(response, { expires_at: expiresAt });
+          }
+          resolve(response);
         });
       }, function(xhr, status, error) {
         Ember.run(function() {
@@ -272,7 +275,7 @@ export default Base.extend({
           expiresIn     = response.expires_in || expiresIn;
           refreshToken  = response.refresh_token || refreshToken;
           var expiresAt = _this.absolutizeExpirationTime(expiresIn);
-          var data      = Ember.$.extend(response, { expires_in: expiresIn, expires_at: expiresAt, refresh_token: refreshToken });
+          var data      = Ember.merge(response, { expires_in: expiresIn, expires_at: expiresAt, refresh_token: refreshToken });
           _this.scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
           _this.trigger('sessionDataUpdated', data);
           resolve(data);

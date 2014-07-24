@@ -233,7 +233,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   setup: function(authenticator, content, trigger) {
-    content = Ember.$.extend(this.content, content);
+    content = Ember.merge(this.content, content);
     trigger = !!trigger && !this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
@@ -285,7 +285,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   updateStore: function() {
     var data = this.content;
     if (!Ember.isEmpty(this.authenticator)) {
-      data = Ember.$.extend({ authenticator: this.authenticator }, data);
+      data = Ember.merge({ authenticator: this.authenticator }, data);
     }
     if (!Ember.isEmpty(data)) {
       this.store.persist(data);
