@@ -16,16 +16,7 @@ describe('Session', function() {
         preparation.apply(this, [done]);
       });
 
-      it('updates its content', function(done) {
-        this.authenticator.trigger('sessionDataUpdated', { some: 'other property' });
-
-        Ember.run.next(this, function() {
-          expect(this.session.get('content')).to.eql({ some: 'other property' });
-          done();
-        });
-      });
-
-      it('retains custom content on update', function(done) {
+      it('merges its content to the data the event is triggered with', function(done) {
         this.session.set('content', { existing: 'property' });
         this.authenticator.trigger('sessionDataUpdated', { some: 'other property' });
 
