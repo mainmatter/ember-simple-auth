@@ -233,7 +233,6 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   setup: function(authenticator, content, trigger) {
-    console.log('SERUP!');
     content = Ember.$.extend(this.content, content);
     trigger = !!trigger && !this.get('isAuthenticated');
     this.beginPropertyChanges();
@@ -317,7 +316,6 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   bindToStoreEvents: function() {
     var _this = this;
     this.store.on('sessionDataUpdated', function(content) {
-      console.log('STORE EVENT');
       var authenticator = content.authenticator;
       if (!!authenticator) {
         delete content.authenticator;
