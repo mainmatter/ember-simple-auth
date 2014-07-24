@@ -17,7 +17,7 @@ describe('Session', function() {
       });
 
       it('merges its content to the data the event is triggered with', function(done) {
-        this.session.set('content', { existing: 'property' });
+        this.session.set('existing', 'property');
         this.authenticator.trigger('sessionDataUpdated', { some: 'other property' });
 
         Ember.run.next(this, function() {
@@ -75,6 +75,7 @@ describe('Session', function() {
   describe('restore', function() {
     beforeEach(function() {
       this.session = Session.create();
+      this.session.set('content', {});
       this.session.setProperties({ store: this.store, container: this.container });
     });
 
@@ -145,7 +146,8 @@ describe('Session', function() {
 
         it('merges its content to the data the authenticator resolves with', function(done) {
           var _this = this;
-          this.session.set('content', { existing: 'property' });
+          this.session.set('existing', 'property');
+          this.store.persist({ authenticator: 'authenticator' });
 
           this.session.restore().then(function() {
             var properties = _this.store.restore();
@@ -214,6 +216,7 @@ describe('Session', function() {
   describe('authentication', function() {
     beforeEach(function() {
       this.session = Session.create();
+      this.session.set('content', {});
       this.session.setProperties({ store: this.store, container: this.container });
     });
 
@@ -240,7 +243,7 @@ describe('Session', function() {
 
       it('merges its content to the data the authenticator resolves with', function(done) {
         var _this = this;
-        this.session.set('content', { existing: 'property' });
+        this.session.set('existing', 'property');
 
         this.session.authenticate('authenticator').then(function() {
           expect(_this.session.get('content')).to.eql({ existing: 'property', some: 'properties' });
@@ -368,6 +371,7 @@ describe('Session', function() {
   describe('invalidation', function() {
     beforeEach(function(done) {
       this.session = Session.create();
+      this.session.set('content', {});
       this.session.setProperties({ store: this.store, container: this.container });
       sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'property' }));
       this.session.authenticate('authenticator').then(function() {
