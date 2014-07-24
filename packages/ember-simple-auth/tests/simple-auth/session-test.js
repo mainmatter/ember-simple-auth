@@ -26,11 +26,11 @@ describe('Session', function() {
       });
 
       it('retains custom content on update', function(done) {
-        this.session.set('content', {existing: "property"});
+        this.session.set('content', { existing: 'property' });
         this.authenticator.trigger('sessionDataUpdated', { some: 'other property' });
 
         Ember.run.next(this, function() {
-          expect(this.session.get('content')).to.eql({ some: 'other property' });
+          expect(this.session.get('content')).to.eql({ existing: 'property', some: 'other property' });
           done();
         });
       });
@@ -152,14 +152,15 @@ describe('Session', function() {
           });
         });
 
-        it('sets its content to the data the authenticator resolves with', function(done) {
+        it('merges its content to the data the authenticator resolves with', function(done) {
           var _this = this;
+          this.session.set('content', { existing: 'property' });
 
           this.session.restore().then(function() {
             var properties = _this.store.restore();
             delete properties.authenticator;
 
-            expect(_this.session.get('content')).to.eql({ some: 'properties' });
+            expect(_this.session.get('content')).to.eql({ existing: 'property', some: 'properties' });
             done();
           });
         });
@@ -246,11 +247,12 @@ describe('Session', function() {
         });
       });
 
-      it('sets its content to the data the authenticator resolves with', function(done) {
+      it('merges its content to the data the authenticator resolves with', function(done) {
         var _this = this;
+        this.session.set('content', { existing: 'property' });
 
         this.session.authenticate('authenticator').then(function() {
-          expect(_this.session.get('content')).to.eql({ some: 'properties' });
+          expect(_this.session.get('content')).to.eql({ existing: 'property', some: 'properties' });
           done();
         });
       });
@@ -573,7 +575,7 @@ describe('Session', function() {
           });
         });
 
-        it('sets its content to the data the authenticator resolves with', function(done) {
+        it('merges its content to the data the authenticator resolves with', function(done) {
           this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
 
           Ember.run.next(this, function() {

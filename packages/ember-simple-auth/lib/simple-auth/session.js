@@ -305,7 +305,6 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     authenticator.off('sessionDataUpdated');
     authenticator.off('sessionDataInvalidated');
     authenticator.on('sessionDataUpdated', function(content) {
-      _this.set('content', {});
       _this.setup(_this.authenticator, content);
     });
     authenticator.on('sessionDataInvalidated', function(content) {
