@@ -233,7 +233,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   setup: function(authenticator, content, trigger) {
-    content = Ember.merge(this.content, content);
+    content = Ember.merge(Ember.merge({}, this.content), content);
     trigger = !!trigger && !this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
