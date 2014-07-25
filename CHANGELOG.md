@@ -1,3 +1,91 @@
+# 0.6.4
+
+* __The new package `ember-simple-auth-testing` was added that contains test
+  helpers__ that simplify testing of authenticated routes, e.g.:
+
+  ```js
+  test('a protected route is accessible when the session is authenticated', function() {
+    expect(1);
+    authenticateSession(); // <--
+    visit('/protected');
+
+    andThen(function() {
+      equal(currentRouteName(), 'protected');
+    });
+  });
+  ```
+
+* __Ember Simple Auth now allows to define a custom session class__ which e.g.
+  makes adding custom methods to the session much simpler, e.g.:
+
+  ```js
+  App.CustomSession = SimpleAuth.Session.extend({
+    account: function() {
+      var accountId = this.get('account_id');
+      if (!Ember.isEmpty(accountId)) {
+        return this.container.lookup('store:main').find('account', accountId);
+      }
+    }.property('account_id')
+  });
+  …
+  container.register('session:custom', App.CustomSession);
+  …
+  window.ENV['simple-auth'] = {
+    session: 'session:custom',
+  }
+  ```
+
+* __A race condition was fixed that could have broken synchronization of
+  multiple tabs or windows__, see #254. The stores will now only store one
+  cookie, one `localStorage` key etc. holding a JSON representation of the
+  session's data instead of one cookie, `localStorage` key etc. per property.
+  __This change includes 2 breaking changes:__
+    * The cookie store's `cookieNamePrefix` property is now just `cookieName`
+      as there's only one cookie now.
+    * The `localStorage` store's `keyPrefix` property is now just `key` as
+      there's only one key now.
+* The session will now persist custom content that is assigned manually without
+  the authenticator, see #260.
+* A bug was fixed that caused session events to trigger multiple action
+  invocations when the application was started via a deep link to an
+  authenticated route, see #257.
+* The AMD distribution does no longer require the `Ember` global but will try
+  to require it with `require('ember')` if the global does not exist, see #255.
+* The used Ember Simple Auth libraries and their respective will now be logged
+  on application startup together with the Ember core libraries, e.g.:
+
+  ```
+  [Debug] DEBUG: -------------------------------
+  [Debug] DEBUG: Ember                       : 1.6.1
+  [Debug] DEBUG: Handlebars                  : 1.0.0
+  [Debug] DEBUG: jQuery                      : 1.9.1
+  [Debug] DEBUG: Ember Simple Auth           : 0.6.4
+  [Debug] DEBUG: Ember Simple Auth OAuth 2.0 : 0.6.4
+  [Debug] DEBUG: -------------------------------
+  ```
+* The `LoginControllerMixin`'s `authenticate` action now returns the promise
+  returned by the session so that controllers can use that to handle successful
+  authentication or authentication errors, e.g.:
+
+  ```js
+  App.LoginController = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
+    authenticator: 'simple-auth-authenticator:oauth2-password-grant',
+    actions: {
+      authenticate: function() {
+        this._super().then(function() {
+          // authentication succeeded
+        },
+        function(error) {
+          // authentication failed
+        });
+      }
+    }
+  });
+  ```
+
+* Fixed a bug where the OAuth 1.0 authenticator would not try to refresh the
+  token on restore in some situations, see #249.
+
 # 0.6.3
 
 * added new extension library
