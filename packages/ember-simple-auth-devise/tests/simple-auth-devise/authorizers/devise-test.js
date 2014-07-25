@@ -4,9 +4,11 @@ import EphemeralStore from 'simple-auth/stores/ephemeral';
 
 describe('Devise', function() {
   beforeEach(function() {
-    this.authorizer  = Devise.create();
-    this.request     = { setRequestHeader: function() {} };
-    this.authorizer.set('session', Session.create({ store: EphemeralStore.create() }));
+    this.authorizer = Devise.create();
+    this.request    = { setRequestHeader: function() {} };
+    var session     = Session.create();
+    session.setProperties({ store: EphemeralStore.create() });
+    this.authorizer.set('session', session);
     sinon.spy(this.request, 'setRequestHeader');
   });
 

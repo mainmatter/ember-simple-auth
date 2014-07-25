@@ -46,4 +46,6 @@ global.SimpleAuth = {
 };
 
 requireModule('simple-auth/ember');
+
+Ember.libraries.register('Ember Simple Auth', '{{ VERSION }}');
 })((typeof global !== 'undefined') ? global : window);

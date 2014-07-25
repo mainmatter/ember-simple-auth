@@ -1,0 +1,11 @@
+define('simple-auth/authenticators/base',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.SimpleAuth.Authenticators.Base;
+});
+
+requireModule('simple-auth-testing/ember');
+
+if (global.Ember.testing) {
+  requireModule('simple-auth/test-helpers/authenticate-session');
+  requireModule('simple-auth/test-helpers/invalidate-session');
+}
+})((typeof global !== 'undefined') ? global : window);

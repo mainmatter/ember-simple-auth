@@ -12,7 +12,8 @@ module.exports = function(grunt) {
     'clean',
     'transpile:amd',
     'concat:amd',
-    'concat:browser'
+    'concat:browser',
+    'string-replace:version'
   ]);
 
   this.registerTask('build_tests', "Builds Ember Simple Auth's tests", [
@@ -124,7 +125,7 @@ module.exports = function(grunt) {
         files: (function() {
           var files = {};
           packages.forEach(function(pkg) {
-            files['tmp/' + pkg.name + '.amd.js'] = ['tmp/libs/' + pkg.main + '.js', 'tmp/libs/' + pkg.main + '/**/*.js'];
+            files['tmp/' + pkg.name + '.amd.js'] = ['packages/' + pkg.name + '/wrap/amd.start', 'packages/' + pkg.name + '/wrap/register-library', 'tmp/libs/' + pkg.main + '.js', 'tmp/libs/' + pkg.main + '/**/*.js', 'packages/' + pkg.name + '/wrap/amd.end'];
           });
           return files;
         })()
@@ -133,7 +134,7 @@ module.exports = function(grunt) {
         files: (function() {
           var files = {};
           packages.forEach(function(pkg) {
-            files['tmp/' + pkg.name + '.js'] = ['packages/' + pkg.name + '/wrap/browser.start', 'vendor/loader.js', 'tmp/libs/' + pkg.main + '.js', 'tmp/libs/' + pkg.main + '/**/*.js', 'packages/' + pkg.name + '/wrap/browser.end'];
+            files['tmp/' + pkg.name + '.js'] = ['packages/' + pkg.name + '/wrap/browser.start', 'packages/' + pkg.name + '/wrap/register-library', 'vendor/loader.js', 'tmp/libs/' + pkg.main + '.js', 'tmp/libs/' + pkg.main + '/**/*.js', 'packages/' + pkg.name + '/wrap/browser.end'];
           });
           return files;
         })()
@@ -142,10 +143,26 @@ module.exports = function(grunt) {
         files: (function() {
           var files = {};
           packages.forEach(function(pkg) {
-            files['tmp/' + pkg.name + '-tests.amd.js'] = ['tmp/tests/' + pkg.name + '/**/*.js'];
+            files['tmp/' + pkg.name + '-tests.amd.js'] = ['packages/' + pkg.name + '/wrap/amd.start', 'packages/' + pkg.name + '/wrap/register-library', 'tmp/tests/' + pkg.name + '/**/*.js', 'packages/' + pkg.name + '/wrap/amd.end'];
           });
           return files;
         })()
+      }
+    },
+
+    'string-replace': {
+      version: {
+        files: {
+          'tmp/': 'tmp/*.js'
+        },
+        options: {
+          replacements: packages.map(function(pkg) {
+            return {
+              pattern: '{{ VERSION }}',
+              replacement: pkg.version
+            };
+          })
+        }
       }
     },
 
@@ -281,4 +298,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-compile-handlebars');
   grunt.loadNpmTasks('grunt-lintspaces');
+  grunt.loadNpmTasks('grunt-string-replace');
 };

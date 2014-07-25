@@ -2,9 +2,6 @@ import Base from 'simple-auth/authenticators/base';
 import isSecureUrl from 'simple-auth/utils/is-secure-url';
 import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 /**
   Authenticator that conforms to OAuth 2
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Resource
@@ -121,22 +118,22 @@ export default Base.extend({
   restore: function(data) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(data.access_token)) {
-        var now = (new Date()).getTime();
-        if (!Ember.isEmpty(data.expires_at) && data.expires_at < now) {
-          if (_this.refreshAccessTokens) {
-            _this.refreshAccessToken(data.expires_in, data.refresh_token).then(function(data) {
-              resolve(data);
-            }, reject);
-          } else {
-            reject();
-          }
+      var now = (new Date()).getTime();
+      if (!Ember.isEmpty(data.expires_at) && data.expires_at < now) {
+        if (_this.refreshAccessTokens) {
+          _this.refreshAccessToken(data.expires_in, data.refresh_token).then(function(data) {
+            resolve(data);
+          }, reject);
+        } else {
+          reject();
+        }
+      } else {
+        if (Ember.isEmpty(data.access_token)) {
+          reject();
         } else {
           _this.scheduleAccessTokenRefresh(data.expires_in, data.expires_at, data.refresh_token);
           resolve(data);
         }
-      } else {
-        reject();
       }
     });
   },
@@ -168,7 +165,10 @@ export default Base.extend({
         Ember.run(function() {
           var expiresAt = _this.absolutizeExpirationTime(response.expires_in);
           _this.scheduleAccessTokenRefresh(response.expires_in, expiresAt, response.refresh_token);
-          resolve(Ember.$.extend(response, { expires_at: expiresAt }));
+          if (!Ember.isEmpty(expiresAt)) {
+            response = Ember.merge(response, { expires_at: expiresAt });
+          }
+          resolve(response);
         });
       }, function(xhr, status, error) {
         Ember.run(function() {
@@ -251,7 +251,7 @@ export default Base.extend({
       if (Ember.isEmpty(expiresAt) && !Ember.isEmpty(expiresIn)) {
         expiresAt = new Date(now + expiresIn * 1000).getTime();
       }
-      var offset = (Math.floor(Math.random() * 15) + 5) * 1000;
+      var offset = (Math.floor(Math.random() * 5) + 5) * 1000;
       if (!Ember.isEmpty(refreshToken) && !Ember.isEmpty(expiresAt) && expiresAt > now - offset) {
         Ember.run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
@@ -275,7 +275,7 @@ export default Base.extend({
           expiresIn     = response.expires_in || expiresIn;
           refreshToken  = response.refresh_token || refreshToken;
           var expiresAt = _this.absolutizeExpirationTime(expiresIn);
-          var data      = Ember.$.extend(response, { expires_in: expiresIn, expires_at: expiresAt, refresh_token: refreshToken });
+          var data      = Ember.merge(response, { expires_in: expiresIn, expires_at: expiresAt, refresh_token: refreshToken });
           _this.scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
           _this.trigger('sessionDataUpdated', data);
           resolve(data);
@@ -293,7 +293,7 @@ export default Base.extend({
   */
   absolutizeExpirationTime: function(expiresIn) {
     if (!Ember.isEmpty(expiresIn)) {
-      return new Date((new Date().getTime()) + (expiresIn - 5) * 1000).getTime();
+      return new Date((new Date().getTime()) + expiresIn * 1000).getTime();
     }
   }
 });

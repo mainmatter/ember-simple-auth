@@ -1,6 +1,3 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
 
 /**
@@ -39,7 +36,8 @@ export default Ember.Object.extend(Ember.Evented, {
   */
 
   /**
-    Persists the `data` in the store.
+    Persists the `data` in the store. This actually replaces all currently
+    stored data.
 
     `Stores.Base`'s implementation does nothing.
 
@@ -59,23 +57,6 @@ export default Ember.Object.extend(Ember.Evented, {
   */
   restore: function() {
     return {};
-  },
-
-  /**
-    Replaces all data currently saved in the store with the specified `data`.
-
-    `Stores.Base`'s implementation clears the store, then persists the
-    specified `data`. If the store's current content is equal to the specified
-    `data`, nothing is done.
-
-    @method replace
-    @param {Object} data The data to replace the store's content with
-  */
-  replace: function(data) {
-    if (!flatObjectsAreEqual(data, this.restore())) {
-      this.clear();
-      this.persist(data);
-    }
   },
 
   /**

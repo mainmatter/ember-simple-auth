@@ -8,11 +8,11 @@ export default function(options) {
       expect(this.store.restore()).to.eql({ key: 'value' });
     });
 
-    it('does not override existing data', function() {
+    it('overrides existing data', function() {
       this.store.persist({ key1: 'value1' });
       this.store.persist({ key2: 'value2' });
 
-      expect(this.store.restore()).to.eql({ key1: 'value1', key2: 'value2' });
+      expect(this.store.restore()).to.eql({ key2: 'value2' });
     });
 
     it('does not trigger the "updated" event', function(done) {
@@ -51,31 +51,6 @@ export default function(options) {
         data.key1 = 'another value!';
 
         expect(this.store.restore()).to.eql({ key1: 'value1', key2: 'value2' });
-      });
-    });
-  });
-
-  describe('#replace', function() {
-    beforeEach(function() {
-      this.store.persist({ key: 'value' });
-    });
-
-    describe("when the store's content and the specified data are equal", function() {
-      it('does not do anything', function() {
-        sinon.spy(this.store, 'clear');
-        sinon.spy(this.store, 'persist');
-        this.store.replace({ key: 'value' });
-
-        expect(this.store.clear).to.not.have.been.called;
-        expect(this.store.persist).to.not.have.been.called;
-      });
-    });
-
-    describe("when the store's content and the specified data are not equal", function() {
-      it('replaces all existing data in the store', function() {
-        this.store.replace({ otherKey: 'other value' });
-
-        expect(this.store.restore()).to.eql({ otherKey: 'other value' });
       });
     });
   });

@@ -2,9 +2,6 @@ import Base from 'simple-auth/authenticators/base';
 import isSecureUrl from 'simple-auth/utils/is-secure-url';
 import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 /**
   Authenticator that works with the Ruby gem
   [Devise](https://github.com/plataformatec/devise).

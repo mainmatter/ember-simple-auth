@@ -1,6 +1,3 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 import Configuration from './../configuration';
 import AuthenticationControllerMixin from './authentication-controller-mixin';
 
@@ -50,7 +47,7 @@ export default Ember.Mixin.create(AuthenticationControllerMixin, {
     authenticate: function() {
       var data = this.getProperties('identification', 'password');
       this.set('password', null);
-      this._super(data);
+      return this._super(data);
     }
   }
 });

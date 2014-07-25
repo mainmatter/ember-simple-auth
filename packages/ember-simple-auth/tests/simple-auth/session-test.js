@@ -16,11 +16,12 @@ describe('Session', function() {
         preparation.apply(this, [done]);
       });
 
-      it('updates its content', function(done) {
+      it('merges its content to the data the event is triggered with', function(done) {
+        this.session.set('existing', 'property');
         this.authenticator.trigger('sessionDataUpdated', { some: 'other property' });
 
         Ember.run.next(this, function() {
-          expect(this.session.get('content')).to.eql({ some: 'other property' });
+          expect(this.session.get('content')).to.eql({ existing: 'property', some: 'other property' });
           done();
         });
       });
@@ -73,7 +74,9 @@ describe('Session', function() {
 
   describe('restore', function() {
     beforeEach(function() {
-      this.session = Session.create({ store: this.store, container: this.container });
+      this.session = Session.create();
+      this.session.set('content', {});
+      this.session.setProperties({ store: this.store, container: this.container });
     });
 
     function itDoesNotRestore() {
@@ -141,14 +144,16 @@ describe('Session', function() {
           });
         });
 
-        it('sets its content to the data the authenticator resolves with', function(done) {
+        it('merges its content to the data the authenticator resolves with', function(done) {
           var _this = this;
+          this.session.set('existing', 'property');
+          this.store.persist({ authenticator: 'authenticator' });
 
           this.session.restore().then(function() {
             var properties = _this.store.restore();
             delete properties.authenticator;
 
-            expect(_this.session.get('content')).to.eql({ some: 'properties' });
+            expect(_this.session.get('content')).to.eql({ existing: 'property', some: 'properties' });
             done();
           });
         });
@@ -210,7 +215,9 @@ describe('Session', function() {
 
   describe('authentication', function() {
     beforeEach(function() {
-      this.session = Session.create({ store: this.store, container: this.container });
+      this.session = Session.create();
+      this.session.set('content', {});
+      this.session.setProperties({ store: this.store, container: this.container });
     });
 
     describe('when the authenticator resolves authentication', function() {
@@ -234,11 +241,12 @@ describe('Session', function() {
         });
       });
 
-      it('sets its content to the data the authenticator resolves with', function(done) {
+      it('merges its content to the data the authenticator resolves with', function(done) {
         var _this = this;
+        this.session.set('existing', 'property');
 
         this.session.authenticate('authenticator').then(function() {
-          expect(_this.session.get('content')).to.eql({ some: 'properties' });
+          expect(_this.session.get('content')).to.eql({ existing: 'property', some: 'properties' });
           done();
         });
       });
@@ -362,7 +370,9 @@ describe('Session', function() {
 
   describe('invalidation', function() {
     beforeEach(function(done) {
-      this.session = Session.create({ store: this.store, container: this.container });
+      this.session = Session.create();
+      this.session.set('content', {});
+      this.session.setProperties({ store: this.store, container: this.container });
       sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'property' }));
       this.session.authenticate('authenticator').then(function() {
         done();
@@ -502,9 +512,47 @@ describe('Session', function() {
     });
   });
 
+  describe("when the session's content changes", function() {
+    describe('when a single property is set', function() {
+      beforeEach(function() {
+        this.session = Session.create({ store: this.store });
+        this.session.set('some', 'property');
+      });
+
+      it('persists its content in the store', function(done) {
+        Ember.run.next(this, function() {
+          var properties = this.store.restore();
+          delete properties.authenticator;
+
+          expect(properties).to.eql({ some: 'property' });
+          done();
+        });
+      });
+    });
+
+    describe('when multiple properties are set at once', function() {
+      beforeEach(function() {
+        this.session = Session.create({ store: this.store });
+        this.session.set('some', 'property');
+        this.session.setProperties({ multiple: 'properties' });
+      });
+
+      it('persists its content in the store', function(done) {
+        Ember.run.next(this, function() {
+          var properties = this.store.restore();
+          delete properties.authenticator;
+
+          expect(properties).to.eql({ some: 'property', multiple: 'properties' });
+          done();
+        });
+      });
+    });
+  });
+
   describe('when the store triggers the "updated" event', function() {
     beforeEach(function() {
-      this.session = Session.create({ store: this.store, container: this.container });
+      this.session = Session.create();
+      this.session.setProperties({ store: this.store, container: this.container });
     });
 
     describe('when there is an authenticator factory in the event data', function() {
@@ -522,14 +570,14 @@ describe('Session', function() {
           });
         });
 
-        it('sets its content to the data the authenticator resolves with', function(done) {
+        it('merges its content to the data the authenticator resolves with', function(done) {
           this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
 
           Ember.run.next(this, function() {
             var properties = this.store.restore();
             delete properties.authenticator;
 
-            expect(this.session.get('content')).to.eql({ some: 'other property' });
+            expect(this.session.get('content')).to.eql({ some: 'other property', multiple: 'properties' });
             done();
           });
         });
@@ -541,19 +589,7 @@ describe('Session', function() {
             var properties = this.store.restore();
             delete properties.authenticator;
 
-            expect(properties).to.eql({ some: 'other property' });
-            done();
-          });
-        });
-
-        it('persists its content in the store', function(done) {
-          this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
-
-          Ember.run.next(this, function() {
-            var properties = this.store.restore();
-            delete properties.authenticator;
-
-            expect(properties).to.eql({ some: 'other property' });
+            expect(properties).to.eql({ some: 'other property', multiple: 'properties' });
             done();
           });
         });

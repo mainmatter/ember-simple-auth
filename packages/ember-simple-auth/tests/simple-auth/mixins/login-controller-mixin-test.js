@@ -4,7 +4,8 @@ import EphemeralStore from 'simple-auth/stores/ephemeral';
 
 describe('LoginControllerMixin', function() {
   beforeEach(function() {
-    this.session    = Session.create({ store: EphemeralStore.create() });
+    this.session = Session.create();
+    this.session.setProperties({ store: EphemeralStore.create() });
     this.controller = Ember.Controller.extend(LoginControllerMixin).create({
       authenticator: 'authenticator',
       session:       this.session
@@ -34,6 +35,14 @@ describe('LoginControllerMixin', function() {
           'authenticator',
           { identification: 'identification', password: 'password'
         });
+      });
+
+      it('returns the promise returned by the session', function() {
+        var promise = new Ember.RSVP.Promise(function() {});
+        this.session.authenticate.restore();
+        sinon.stub(this.session, 'authenticate').returns(promise);
+
+        expect(this.controller._actions.authenticate.apply(this.controller, [{ some: 'options' }])).to.eq(promise);
       });
     });
 

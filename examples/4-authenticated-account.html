@@ -96,21 +96,15 @@
       // configure an authorizer to be used
       window.ENV = window.ENV || {};
       window.ENV['simple-auth'] = {
+        session:    'session:custom',
         authorizer: 'simple-auth-authorizer:oauth2-bearer'
       };
       Ember.Application.initializer({
-        name: 'authentication',
-        before: 'simple-auth',
+        name:       'authentication',
+        before:     'simple-auth',
         initialize: function(container, application) {
-          // customize the session so that it allows access to the account object
-          SimpleAuth.Session.reopen({
-            account: function() {
-              var accountId = this.get('account_id');
-              if (!Ember.isEmpty(accountId)) {
-                return container.lookup('store:main').find('account', accountId);
-              }
-            }.property('account_id')
-          });
+          // register the custom session so Ember Simple Auth can find it
+          container.register('session:custom', App.CustomSession);
           // register the custom authenticator so the session can find it
           container.register('authenticator:custom', App.CustomAuthenticator);
         }
@@ -132,6 +126,16 @@
         this.route('login');
         // protected routes that are inaccessible without authentication
         this.route('protected');
+      });
+
+      // the custom session that handles an authenticated account
+      App.CustomSession = SimpleAuth.Session.extend({
+        account: function() {
+          var accountId = this.get('account_id');
+          if (!Ember.isEmpty(accountId)) {
+            return this.container.lookup('store:main').find('account', accountId);
+          }
+        }.property('account_id')
       });
 
       // the custom authenticator that handles the authenticated account

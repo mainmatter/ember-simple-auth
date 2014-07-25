@@ -1,7 +1,7 @@
 {
   "name": "ember-simple-auth-oauth2",
   "main": "simple-auth-oauth2",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "An authenticator and authorizer for Ember Simple Auth that implement RFC 6749 OAuth 2.0 and RFC 6750 (Bearer Tokens).",
   "author": "Marco Otte-Witte",
   "license": "MIT"

@@ -1,7 +1,7 @@
 {
   "name": "ember-simple-auth-cookie-store",
   "main": "simple-auth-cookie-store",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "A Cookie based store for Ember Simple Auth.",
   "author": "Marco Otte-Witte",
   "license": "MIT"

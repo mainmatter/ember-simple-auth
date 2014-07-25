@@ -1,6 +1,3 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 /**
   The base for all authenticators. __This serves as a starting point for
   implementing custom authenticators and must not be used directly.__

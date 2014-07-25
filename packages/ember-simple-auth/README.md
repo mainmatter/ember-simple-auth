@@ -272,6 +272,12 @@ authorizers. All you have to do is to extend the base store and implement three
 methods (see the
 [API docs for `Stores.Base`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Stores-Base)).
 
+## Testing
+
+The
+[Ember Simple Auth Testing extension library](packages/ember-simple-auth-testing)
+provides test helpers for testing applications using Ember Simple Auth.
+
 ## Examples
 
 To run the examples you need to have [node.js](http://nodejs.org) and

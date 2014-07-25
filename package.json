@@ -14,6 +14,7 @@
     "grunt-contrib-copy": "^0.5.0",
     "grunt-contrib-concat": "^0.3.0",
     "grunt-contrib-yuidoc": "^0.5.1",
+    "grunt-string-replace": "^0.2.7",
     "yuidocjs": "^0.3.49",
     "grunt-compile-handlebars": "^0.6.3",
     "grunt-lintspaces": "^0.4.1",

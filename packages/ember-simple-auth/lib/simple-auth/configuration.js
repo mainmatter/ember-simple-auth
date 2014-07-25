@@ -68,6 +68,19 @@ export default {
   authorizer: null,
 
   /**
+    The session factory to use as it is registered with Ember's container,
+    see
+    [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register).
+
+    @property session
+    @readOnly
+    @static
+    @type String
+    @default 'simple-auth-session:main'
+  */
+  session: 'simple-auth-session:main',
+
+  /**
     The store factory to use as it is registered with Ember's container, see
     [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register).
 
@@ -110,6 +123,7 @@ export default {
     this.routeAfterAuthentication = globalConfig.routeAfterAuthentication || this.routeAfterAuthentication;
     this.sessionPropertyName      = globalConfig.sessionPropertyName || this.sessionPropertyName;
     this.authorizer               = globalConfig.authorizer || this.authorizer;
+    this.session                  = globalConfig.session || this.session;
     this.store                    = globalConfig.store || this.store;
     this.crossOriginWhitelist     = globalConfig.crossOriginWhitelist || this.crossOriginWhitelist;
     this.applicationRootUrl       = container.lookup('router:main').get('rootURL') || '/';

@@ -174,16 +174,19 @@
         // clear a potentially stale error message from previous login attempts
         setupController: function(controller, model) {
           controller.set('errorMessage', null);
-        },
-        actions: {
-          // display an error when authentication fails
-          sessionAuthenticationFailed: function(message) {
-            this.controller.set('errorMessage', message);
-          }
         }
       });
       App.LoginController = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
-        authenticator: 'authenticator:custom'
+        authenticator: 'authenticator:custom',
+        actions: {
+          // display an error when authentication fails
+          authenticate: function() {
+            var _this = this;
+            this._super().then(null, function(message) {
+              _this.set('errorMessage', message);
+            });
+          }
+        }
       });
 
       // make these route protected

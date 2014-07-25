@@ -1,6 +1,3 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 import Base from './base';
 import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
 
@@ -19,20 +16,13 @@ import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
 */
 export default Base.extend({
   /**
-    The prefix to use for the store's keys so they can be distinguished from
-    others.
+    The key the store stores the data in.
 
-    @property keyPrefix
+    @property key
     @type String
-    @default 'ember_simple_auth:'
+    @default 'ember_simple_auth:session'
   */
-  keyPrefix: 'ember_simple_auth:',
-
-  /**
-    @property _triggerChangeEventTimeout
-    @private
-  */
-  _triggerChangeEventTimeout: null,
+  key: 'ember_simple_auth:session',
 
   /**
     @method init
@@ -49,10 +39,8 @@ export default Base.extend({
     @param {Object} data The data to persist
   */
   persist: function(data) {
-    for (var property in data) {
-      var key = this.buildStorageKey(property);
-      localStorage.setItem(key, data[property]);
-    }
+    data = JSON.stringify(data || {});
+    localStorage.setItem(this.key, data);
     this._lastData = this.restore();
   },
 
@@ -64,13 +52,8 @@ export default Base.extend({
     @return {Object} All data currently persisted in the `localStorage`
   */
   restore: function() {
-    var _this = this;
-    var data = {};
-    this.knownKeys().forEach(function(key) {
-      var originalKey = key.replace(_this.keyPrefix, '');
-      data[originalKey] = localStorage.getItem(key);
-    });
-    return data;
+    var data = localStorage.getItem(this.key);
+    return JSON.parse(data) || {};
   },
 
   /**
@@ -80,33 +63,8 @@ export default Base.extend({
     @method clear
   */
   clear: function() {
-    this.knownKeys().forEach(function(key) {
-      localStorage.removeItem(key);
-    });
+    localStorage.removeItem(this.key);
     this._lastData = null;
-  },
-
-  /**
-    @method buildStorageKey
-    @private
-  */
-  buildStorageKey: function(property) {
-    return this.keyPrefix + property;
-  },
-
-  /**
-    @method knownKeys
-    @private
-  */
-  knownKeys: function(callback) {
-    var keys = Ember.A([]);
-    for (var i = 0, l = localStorage.length; i < l; i++) {
-      var key = localStorage.key(i);
-      if (key.indexOf(this.keyPrefix) === 0) {
-        keys.push(key);
-      }
-    }
-    return keys;
   },
 
   /**
@@ -119,10 +77,7 @@ export default Base.extend({
       var data = _this.restore();
       if (!flatObjectsAreEqual(data, _this._lastData)) {
         _this._lastData = data;
-        Ember.run.cancel(_this._triggerChangeEventTimeout);
-        _this._triggerChangeEventTimeout = Ember.run.next(_this, function() {
-          this.trigger('sessionDataUpdated', data);
-        });
+        _this.trigger('sessionDataUpdated', data);
       }
     });
   }

@@ -1,6 +1,3 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 /**
   The base for all authorizers. __This serves as a starting point for
   implementing custom authorizers and must not be used directly.__

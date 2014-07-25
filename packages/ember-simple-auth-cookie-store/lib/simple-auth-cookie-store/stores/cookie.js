@@ -2,20 +2,17 @@ import Base from 'simple-auth/stores/base';
 import flatObjectsAreEqual from 'simple-auth/utils/flat-objects-are-equal';
 import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 /**
-  Store that saves its data in cookies.
+  Store that saves its data in a cookie.
 
   __In order to keep multiple tabs/windows of an application in sync, this
-  store has to periodically (every 500ms) check the cookies__ for changes as
+  store has to periodically (every 500ms) check the cookie__ for changes as
   there are no events that notify of changes in cookies. The recommended
   alternative is `Stores.LocalStorage` that also persistently stores data but
   instead of cookies relies on the `localStorage` API and does not need to poll
   for external changes.
 
-  By default the cookie store will use session cookies that expire and are
+  By default the cookie store will use a session cookie that expires and is
   deleted when the browser is closed. The cookie expiration period can be
   configured via setting
   [`Stores.Cooke#cookieExpirationTime`](#SimpleAuth-Stores-Cookie-cookieExpirationTime)
@@ -46,27 +43,26 @@ var global = (typeof window !== 'undefined') ? window : {},
 */
 export default Base.extend({
   /**
-    The prefix to use for the store's cookie names so they can be distinguished
-    from other cookies.
+    The name of the cookie the store stores its data in.
 
     This value can be configured via the global environment object:
 
     ```js
     window.ENV = window.ENV || {};
     window.ENV['simple-auth-cookie-store'] = {
-      cookieNamePrefix: 'my_app_auth_'
+      cookieName: 'my_app_auth_session'
     }
     ```
 
-    @property cookieNamePrefix
+    @property cookieName
     @type String
     @default 'ember_simple_auth:'
   */
-  cookieNamePrefix: 'ember_simple_auth:',
+  cookieName: 'ember_simple_auth:session',
 
   /**
-    The expiration time in seconds to use for the cookies. A value of `null`
-    will make the cookies session cookies that expire when the browser is
+    The expiration time in seconds to use for the cookie. A value of `null`
+    will make the cookie a session cookie that expires when the browser is
     closed.
 
     This value can be configured via the global environment object:
@@ -102,7 +98,7 @@ export default Base.extend({
   */
   init: function() {
     var globalConfig          = getGlobalConfig('simple-auth-cookie-store');
-    this.cookieNamePrefix     = globalConfig.cookieNamePrefix || this.cookieNamePrefix;
+    this.cookieName           = globalConfig.cookieName || this.cookieName;
     this.cookieExpirationTime = globalConfig.cookieExpirationTime || this.cookieExpirationTime;
     this.syncData();
   },
@@ -114,42 +110,36 @@ export default Base.extend({
     @param {Object} data The data to persist
   */
   persist: function(data) {
-    for (var property in data) {
-      this.write(property, data[property], !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : null);
-    }
+    data           = JSON.stringify(data || {});
+    var expiration = !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : null;
+    this.write(data, expiration);
     this._lastData = this.restore();
   },
 
   /**
-    Restores all data currently saved in the session cookies identified by the
-    `cookieNamePrefix` (see
-    [`Stores.Cookie#cookieNamePrefix`](#SimpleAuth-Stores-Cookie-cookieNamePrefix))
-    as a plain object.
+    Restores all data currently saved in the cookie as a plain object.
 
     @method restore
-    @return {Object} All data currently persisted in the session cookies
+    @return {Object} All data currently persisted in the cookie
   */
   restore: function() {
-    var _this = this;
-    var data  = {};
-    this.knownCookies().forEach(function(cookie) {
-      data[cookie] = _this.read(cookie);
-    });
-    return data;
+    var data = this.read();
+    if (Ember.isEmpty(data)) {
+      return {};
+    } else {
+      return JSON.parse(data);
+    }
   },
 
   /**
     Clears the store by deleting all session cookies prefixed with the
-    `cookieNamePrefix` (see
-    [`SimpleAuth.Stores.Cookie#cookieNamePrefix`](#SimpleAuth-Stores-Cookie-cookieNamePrefix)).
+    `cookieName` (see
+    [`SimpleAuth.Stores.Cookie#cookieName`](#SimpleAuth-Stores-Cookie-cookieName)).
 
     @method clear
   */
   clear: function() {
-    var _this = this;
-    this.knownCookies().forEach(function(cookie) {
-      _this.write(cookie, null, 0);
-    });
+    this.write(null, 0);
     this._lastData = null;
   },
 
@@ -157,8 +147,8 @@ export default Base.extend({
     @method read
     @private
   */
-  read: function(name) {
-    var value = document.cookie.match(new RegExp(this.cookieNamePrefix + name + '=([^;]+)')) || [];
+  read: function() {
+    var value = document.cookie.match(new RegExp(this.cookieName + name + '=([^;]+)')) || [];
     return decodeURIComponent(value[1] || '');
   },
 
@@ -166,23 +156,10 @@ export default Base.extend({
     @method write
     @private
   */
-  write: function(name, value, expiration) {
+  write: function(value, expiration) {
     var expires = Ember.isEmpty(expiration) ? '' : '; expires=' + new Date(expiration).toUTCString();
     var secure  = !!this._secureCookies ? ';secure' : '';
-    document.cookie = this.cookieNamePrefix + name + '=' + encodeURIComponent(value) + expires + secure;
-  },
-
-  /**
-    @method knownCookies
-    @private
-  */
-  knownCookies: function() {
-    var _this = this;
-    return Ember.A(document.cookie.split(/[=;\s]+/)).filter(function(element) {
-      return new RegExp('^' + _this.cookieNamePrefix).test(element);
-    }).map(function(cookie) {
-      return cookie.replace(_this.cookieNamePrefix, '');
-    });
+    document.cookie = this.cookieName + '=' + encodeURIComponent(value) + expires + secure;
   },
 
   /**

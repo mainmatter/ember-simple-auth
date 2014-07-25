@@ -1,6 +1,3 @@
-var global = (typeof window !== 'undefined') ? window : {},
-    Ember = global.Ember;
-
 /**
   __The session provides access to the current authentication state as well as
   any data the authenticator resolved with__ (see
@@ -112,6 +109,15 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   */
   store: null,
   /**
+    The Ember.js container,
+
+    @property container
+    @type Container
+    @readOnly
+    @default null
+  */
+  container: null,
+  /**
     Returns whether the session is currently authenticated.
 
     @property isAuthenticated
@@ -130,14 +136,6 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   content: {},
-
-  /**
-    @method init
-    @private
-  */
-  init: function() {
-    this.bindToStoreEvents();
-  },
 
   /**
     Authenticates the session with an `authenticator` and appropriate
@@ -190,6 +188,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully
   */
   invalidate: function() {
+    Ember.assert('Session#invalidate requires the session to be authenticated', this.get('isAuthenticated'));
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var authenticator = _this.container.lookup(_this.authenticator);
@@ -234,6 +233,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   setup: function(authenticator, content, trigger) {
+    content = Ember.merge(Ember.merge({}, this.content), content);
     trigger = !!trigger && !this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
@@ -242,8 +242,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       content:         content
     });
     this.bindToAuthenticatorEvents();
-    var data = Ember.$.extend({ authenticator: authenticator }, this.content);
-    this.store.replace(data);
+    this.updateStore();
     this.endPropertyChanges();
     if (trigger) {
       this.trigger('sessionAuthenticationSucceeded');
@@ -266,6 +265,30 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     this.endPropertyChanges();
     if (trigger) {
       this.trigger('sessionInvalidationSucceeded');
+    }
+  },
+
+  /**
+    @method setUnknownProperty
+    @private
+  */
+  setUnknownProperty: function(key, value) {
+    var result = this._super(key, value);
+    this.updateStore();
+    return result;
+  },
+
+  /**
+    @method updateStore
+    @private
+  */
+  updateStore: function() {
+    var data = this.content;
+    if (!Ember.isEmpty(this.authenticator)) {
+      data = Ember.merge({ authenticator: this.authenticator }, data);
+    }
+    if (!Ember.isEmpty(data)) {
+      this.store.persist(data);
     }
   },
 
@@ -305,5 +328,5 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         _this.clear(true);
       }
     });
-  }
+  }.observes('store')
 });

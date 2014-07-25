@@ -31,6 +31,12 @@ describe('Configuration', function() {
     });
   });
 
+  describe('session', function() {
+    it('defaults to "simple-auth-session:main"', function() {
+      expect(Configuration.session).to.eq('simple-auth-session:main');
+    });
+  });
+
   describe('store', function() {
     it('defaults to "simple-auth-session-store:local-storage"', function() {
       expect(Configuration.store).to.eq('simple-auth-session-store:local-storage');

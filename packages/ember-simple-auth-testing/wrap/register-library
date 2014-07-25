@@ -1,0 +1,1 @@
+Ember.libraries.register('Ember Simple Auth Testing', '{{ VERSION }}');
