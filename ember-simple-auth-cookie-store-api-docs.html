@@ -90,7 +90,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.6.3"><span class="label label-primary">0.6.3</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.6.4"><span class="label label-primary">0.6.4</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -110,14 +110,14 @@
           </div>
           <div class="row">
             <div class="col-md-9" id="main-content">
-              <p>Store that saves its data in cookies.</p>
+              <p>Store that saves its data in a cookie.</p>
 <p><strong>In order to keep multiple tabs/windows of an application in sync, this
-store has to periodically (every 500ms) check the cookies</strong> for changes as
+store has to periodically (every 500ms) check the cookie</strong> for changes as
 there are no events that notify of changes in cookies. The recommended
 alternative is <code>Stores.LocalStorage</code> that also persistently stores data but
 instead of cookies relies on the <code>localStorage</code> API and does not need to poll
 for external changes.</p>
-<p>By default the cookie store will use session cookies that expire and are
+<p>By default the cookie store will use a session cookie that expires and is
 deleted when the browser is closed. The cookie expiration period can be
 configured via setting
 <a href="#SimpleAuth-Stores-Cookie-cookieExpirationTime"><code>Stores.Cooke#cookieExpirationTime</code></a>
@@ -153,20 +153,19 @@ export default Ember.Controller.extend(LoginControllerMixin, {
                 <h3 class="section">Properties</h3>
                 
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Stores-Cookie-cookieNamePrefix" class="symbol-anchor"></a>
+  <a id="SimpleAuth-Stores-Cookie-cookieName" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L48"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L45"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
-    <h3 class="panel-title property">cookieNamePrefix <span class="type">String</span></h3>
+    <h3 class="panel-title property">cookieName <span class="type">String</span></h3>
   </div>
   <div class="panel-body">
-    <p>The prefix to use for the store&#39;s cookie names so they can be distinguished
-from other cookies.</p>
+    <p>The name of the cookie the store stores its data in.</p>
 <p>This value can be configured via the global environment object:</p>
 <pre><code class="lang-js">window.ENV = window.ENV || {};
 window.ENV[&#39;simple-auth-cookie-store&#39;] = {
-  cookieNamePrefix: &#39;my_app_auth_&#39;
+  cookieName: &#39;my_app_auth_session&#39;
 }
 </code></pre>
 
@@ -180,14 +179,14 @@ window.ENV[&#39;simple-auth-cookie-store&#39;] = {
                   <div class="panel panel-default">
   <a id="SimpleAuth-Stores-Cookie-cookieExpirationTime" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L67"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L63"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title property">cookieExpirationTime <span class="type">Integer</span></h3>
   </div>
   <div class="panel-body">
-    <p>The expiration time in seconds to use for the cookies. A value of <code>null</code>
-will make the cookies session cookies that expire when the browser is
+    <p>The expiration time in seconds to use for the cookie. A value of <code>null</code>
+will make the cookie a session cookie that expires when the browser is
 closed.</p>
 <p>This value can be configured via the global environment object:</p>
 <pre><code class="lang-js">window.ENV = window.ENV || {};
@@ -211,7 +210,7 @@ window.ENV[&#39;simple-auth-cookie-store&#39;] = {
                   <div class="panel panel-default">
   <a id="SimpleAuth-Stores-Cookie-persist" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L110"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L106"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -241,7 +240,7 @@ window.ENV[&#39;simple-auth-cookie-store&#39;] = {
                   <div class="panel panel-default">
   <a id="SimpleAuth-Stores-Cookie-restore" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L123"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L119"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -252,16 +251,13 @@ window.ENV[&#39;simple-auth-cookie-store&#39;] = {
     </h3>
   </div>
   <div class="panel-body">
-    <p>Restores all data currently saved in the session cookies identified by the
-<code>cookieNamePrefix</code> (see
-<a href="#SimpleAuth-Stores-Cookie-cookieNamePrefix"><code>Stores.Cookie#cookieNamePrefix</code></a>)
-as a plain object.</p>
+    <p>Restores all data currently saved in the cookie as a plain object.</p>
 
     
     
       <h4 class="subsection">Returns</h4>
       <p><span class="type return">&rarr; Object</span></p>
-      <p>All data currently persisted in the session cookies</p>
+      <p>All data currently persisted in the cookie</p>
 
     
   </div>
@@ -271,7 +267,7 @@ as a plain object.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Stores-Cookie-clear" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L141"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-cookie-store/lib/simple-auth-cookie-store/stores/cookie.js#L134"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -281,8 +277,8 @@ as a plain object.</p>
   </div>
   <div class="panel-body">
     <p>Clears the store by deleting all session cookies prefixed with the
-<code>cookieNamePrefix</code> (see
-<a href="#SimpleAuth-Stores-Cookie-cookieNamePrefix"><code>SimpleAuth.Stores.Cookie#cookieNamePrefix</code></a>).</p>
+<code>cookieName</code> (see
+<a href="#SimpleAuth-Stores-Cookie-cookieName"><code>SimpleAuth.Stores.Cookie#cookieName</code></a>).</p>
 
     
     
@@ -307,7 +303,7 @@ as a plain object.</p>
   <ul class="list-unstyled">
     
       <li>
-        <a href="#SimpleAuth-Stores-Cookie-cookieNamePrefix">cookieNamePrefix</a>
+        <a href="#SimpleAuth-Stores-Cookie-cookieName">cookieName</a>
       </li>
     
       <li>
