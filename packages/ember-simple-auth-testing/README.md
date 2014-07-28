@@ -53,6 +53,9 @@ several options:
   …
   ```
 
+  And add `"authenticateSession"` and `"invalidateSession"` to
+  the `"predef"` section of `tests/.jshintrc`.
+
 * The Ember Simple Auth testing extension library is also included in the
   _"ember-simple-auth"_ bower package both in a browserified version as well as
   an AMD build. If you're using the AMD build from bower be sure to require the
