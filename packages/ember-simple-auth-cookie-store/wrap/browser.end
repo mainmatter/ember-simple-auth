@@ -8,8 +8,8 @@ define('simple-auth/utils/get-global-config',  ['exports'], function(__exports__
   __exports__['default'] = global.SimpleAuth.Utils.getGlobalConfig;
 });
 
-var initializer = requireModule('simple-auth-cookie-store/initializer').default;
-var Cookie      = requireModule('simple-auth-cookie-store/stores/cookie').default;
+var initializer = requireModule('simple-auth-cookie-store/initializer')['default'];
+var Cookie      = requireModule('simple-auth-cookie-store/stores/cookie')['default'];
 
 global.SimpleAuth.Stores.Cookie = Cookie;
 

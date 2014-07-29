@@ -1,18 +1,18 @@
-var initializer                   = requireModule('simple-auth/initializer').default;
-var Configuration                 = requireModule('simple-auth/configuration').default;
-var Session                       = requireModule('simple-auth/session').default;
-var BaseAuthenticator             = requireModule('simple-auth/authenticators/base').default;
-var BaseAuthorizer                = requireModule('simple-auth/authorizers/base').default;
-var BaseStore                     = requireModule('simple-auth/stores/base').default;
-var LocalStorageStore             = requireModule('simple-auth/stores/local-storage').default;
-var EphemeralStore                = requireModule('simple-auth/stores/ephemeral').default;
-var flatObjectsAreEqual           = requireModule('simple-auth/utils/flat-objects-are-equal').default;
-var isSecureUrl                   = requireModule('simple-auth/utils/is-secure-url').default;
-var getGlobalConfig               = requireModule('simple-auth/utils/get-global-config').default;
-var ApplicationRouteMixin         = requireModule('simple-auth/mixins/application-route-mixin').default;
-var AuthenticatedRouteMixin       = requireModule('simple-auth/mixins/authenticated-route-mixin').default;
-var AuthenticationControllerMixin = requireModule('simple-auth/mixins/authentication-controller-mixin').default;
-var LoginControllerMixin          = requireModule('simple-auth/mixins/login-controller-mixin').default;
+var initializer                   = requireModule('simple-auth/initializer')['default'];
+var Configuration                 = requireModule('simple-auth/configuration')['default'];
+var Session                       = requireModule('simple-auth/session')['default'];
+var BaseAuthenticator             = requireModule('simple-auth/authenticators/base')['default'];
+var BaseAuthorizer                = requireModule('simple-auth/authorizers/base')['default'];
+var BaseStore                     = requireModule('simple-auth/stores/base')['default'];
+var LocalStorageStore             = requireModule('simple-auth/stores/local-storage')['default'];
+var EphemeralStore                = requireModule('simple-auth/stores/ephemeral')['default'];
+var flatObjectsAreEqual           = requireModule('simple-auth/utils/flat-objects-are-equal')['default'];
+var isSecureUrl                   = requireModule('simple-auth/utils/is-secure-url')['default'];
+var getGlobalConfig               = requireModule('simple-auth/utils/get-global-config')['default'];
+var ApplicationRouteMixin         = requireModule('simple-auth/mixins/application-route-mixin')['default'];
+var AuthenticatedRouteMixin       = requireModule('simple-auth/mixins/authenticated-route-mixin')['default'];
+var AuthenticationControllerMixin = requireModule('simple-auth/mixins/authentication-controller-mixin')['default'];
+var LoginControllerMixin          = requireModule('simple-auth/mixins/login-controller-mixin')['default'];
 
 global.SimpleAuth = {
   Configuration: Configuration,
