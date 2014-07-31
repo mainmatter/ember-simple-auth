@@ -65,11 +65,11 @@
       <form {{action 'authenticate' on='submit'}}>
         <div class="form-group">
           <label for="identification">Login</label>
-          {{input id='identification' placeholder='Enter Login' class='form-control' value=identification}}
+          {{input value=identification placeholder='Enter Login' class='form-control'}}
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          {{input id='password' placeholder='Enter Password' class='form-control' type='password' value=password}}
+          {{input value=password placeholder='Enter Password' class='form-control' type='password'}}
         </div>
         <button type="submit" class="btn btn-default">Login</button>
       </form>
