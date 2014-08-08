@@ -5,9 +5,8 @@ define('simple-auth/configuration',  ['exports'], function(__exports__) {
   __exports__['default'] = global.SimpleAuth.Configuration;
 });
 
-requireModule('simple-auth-testing/ember');
-
 if (global.Ember.testing) {
-  requireModule('simple-auth/test-helpers');
+  requireModule('simple-auth-testing/ember');
+  requireModule('simple-auth-testing/test-helpers');
 }
 })((typeof global !== 'undefined') ? global : window);
