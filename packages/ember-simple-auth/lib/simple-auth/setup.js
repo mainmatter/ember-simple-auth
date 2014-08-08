@@ -63,11 +63,12 @@ export default function(container, application) {
       authorizer.set('session', session);
       Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
         if (!authorizer.isDestroyed && shouldAuthorizeRequest(options)) {
+          jqXHR.__simple_auth_authorized__ = true;
           authorizer.authorize(jqXHR, options);
         }
       });
       Ember.$(document).ajaxError(function(event, jqXHR, setting, exception) {
-        if (jqXHR.status === 401) {
+        if (!!jqXHR.__simple_auth_authorized__ && jqXHR.status === 401) {
           session.trigger('authorizationFailed');
         }
       });
