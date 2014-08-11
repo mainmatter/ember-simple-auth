@@ -41,6 +41,18 @@ export default {
   routeAfterAuthentication: 'index',
 
   /**
+    The route to transition to if a route with UnauthenticatedRouteMixin is
+    accessed after the session is authenticated.
+
+    @property isAuthenticatedRoute
+    @readOnly
+    @static
+    @type String
+    @default 'index'
+  */
+  isAuthenticatedRoute: 'index',
+
+  /**
     The name of the property that the session is injected with into routes and
     controllers.
 
@@ -121,6 +133,7 @@ export default {
     var globalConfig              = getGlobalConfig('simple-auth');
     this.authenticationRoute      = globalConfig.authenticationRoute || this.authenticationRoute;
     this.routeAfterAuthentication = globalConfig.routeAfterAuthentication || this.routeAfterAuthentication;
+    this.isAuthenticatedRoute     = globalConfig.isAuthenticatedRoute || this.isAuthenticatedRoute;
     this.sessionPropertyName      = globalConfig.sessionPropertyName || this.sessionPropertyName;
     this.authorizer               = globalConfig.authorizer || this.authorizer;
     this.session                  = globalConfig.session || this.session;
