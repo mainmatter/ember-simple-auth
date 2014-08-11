@@ -44,13 +44,13 @@ export default {
     The route to transition to if a route with UnauthenticatedRouteMixin is
     accessed after the session is authenticated.
 
-    @property alreadyAuthenticatedRoute
+    @property isAuthenticatedRoute
     @readOnly
     @static
     @type String
-    @default `routeAfterAuthentication`
+    @default 'index'
   */
-  alreadyAuthenticatedRoute: this.routeAfterAuthentication,
+  isAuthenticatedRoute: 'index',
 
   /**
     The name of the property that the session is injected with into routes and
@@ -117,14 +117,14 @@ export default {
     @private
   */
   load: function(container) {
-    var globalConfig               = getGlobalConfig('simple-auth');
-    this.authenticationRoute       = globalConfig.authenticationRoute || this.authenticationRoute;
-    this.routeAfterAuthentication  = globalConfig.routeAfterAuthentication || this.routeAfterAuthentication;
-    this.alreadyAuthenticatedRoute = globalConfig.alreadyAuthenticatedRoute || this.alreadyAuthenticatedRoute;
-    this.sessionPropertyName       = globalConfig.sessionPropertyName || this.sessionPropertyName;
-    this.authorizer                = globalConfig.authorizer || this.authorizer;
-    this.store                     = globalConfig.store || this.store;
-    this.crossOriginWhitelist      = globalConfig.crossOriginWhitelist || this.crossOriginWhitelist;
-    this.applicationRootUrl        = container.lookup('router:main').get('rootURL') || '/';
+    var globalConfig              = getGlobalConfig('simple-auth');
+    this.authenticationRoute      = globalConfig.authenticationRoute || this.authenticationRoute;
+    this.routeAfterAuthentication = globalConfig.routeAfterAuthentication || this.routeAfterAuthentication;
+    this.isAuthenticatedRoute     = globalConfig.isAuthenticatedRoute || this.isAuthenticatedRoute;
+    this.sessionPropertyName      = globalConfig.sessionPropertyName || this.sessionPropertyName;
+    this.authorizer               = globalConfig.authorizer || this.authorizer;
+    this.store                    = globalConfig.store || this.store;
+    this.crossOriginWhitelist     = globalConfig.crossOriginWhitelist || this.crossOriginWhitelist;
+    this.applicationRootUrl       = container.lookup('router:main').get('rootURL') || '/';
   }
 };
