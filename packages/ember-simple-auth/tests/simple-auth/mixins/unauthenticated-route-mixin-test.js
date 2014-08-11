@@ -40,7 +40,7 @@ describe('UnauthenticatedRouteMixin', function() {
         expect(this.transition.abort).to.not.have.been.called;
       });
 
-      it('', function() {
+      it('does not call route transitionTo', function() {
         this.route.beforeModel(this.transition);
 
         expect(this.route.transitionTo).to.not.have.been.called;
