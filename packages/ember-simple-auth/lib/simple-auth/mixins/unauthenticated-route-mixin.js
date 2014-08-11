@@ -8,7 +8,7 @@ import Configuration from './../configuration';
   not authenticated. For example, you might want the login page to redirect to the
   index page if the session is authenticated. Including this mixin in a route
   automatically adds a hook that redirects to the
-  [`Configuration.alreadyAuthenticatedRoute`](#SimpleAuth-Configuration-alreadyAuthenticatedRoute),
+  [`Configuration.isAuthenticatedRoute`](#SimpleAuth-Configuration-isAuthenticatedRoute),
   which defaults to the
   [`Configuration.routeAfterAuthentication`](#SimpleAuth-Configuration-routeAfterAuthentication).
 
@@ -34,7 +34,7 @@ export default Ember.Mixin.create({
     This method implements the enforcement of the session being unauthenticated.
     If the session is authenticated, the current transition will be aborted
     and a redirect will be triggered to the
-    [`Configuration.alreadyAuthenticatedRoute`](#SimpleAuth-Configuration-alreadyAuthenticatedRoute).
+    [`Configuration.isAuthenticatedRoute`](#SimpleAuth-Configuration-isAuthenticatedRoute).
 
     @method beforeModel
     @param {Transition} transition The transition that lead to this route
@@ -42,7 +42,7 @@ export default Ember.Mixin.create({
   beforeModel: function(transition) {
     if (this.get(Configuration.sessionPropertyName).get('isAuthenticated')) {
       transition.abort();
-      this.transitionTo(Configuration.alreadyAuthenticatedRoute);
+      this.transitionTo(Configuration.isAuthenticatedRoute);
     }
   }
 });
