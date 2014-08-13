@@ -41,8 +41,9 @@ export default {
   routeAfterAuthentication: 'index',
 
   /**
-    The route to transition to if a route with UnauthenticatedRouteMixin is
-    accessed after the session is authenticated.
+    The route to transition to if a route that implements
+    [`UnauthenticatedRouteMixin`](#SimpleAuth-UnauthenticatedRouteMixin) is
+    accessed when the session is authenticated.
 
     @property isAuthenticatedRoute
     @readOnly
