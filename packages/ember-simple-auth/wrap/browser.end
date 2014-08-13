@@ -13,6 +13,7 @@ var ApplicationRouteMixin         = requireModule('simple-auth/mixins/applicatio
 var AuthenticatedRouteMixin       = requireModule('simple-auth/mixins/authenticated-route-mixin')['default'];
 var AuthenticationControllerMixin = requireModule('simple-auth/mixins/authentication-controller-mixin')['default'];
 var LoginControllerMixin          = requireModule('simple-auth/mixins/login-controller-mixin')['default'];
+var UnauthenticatedRouteMixin     = requireModule('simple-auth/mixins/unauthenticated-route-mixin')['default'];
 
 global.SimpleAuth = {
   Configuration: Configuration,
@@ -42,7 +43,8 @@ global.SimpleAuth = {
   ApplicationRouteMixin:         ApplicationRouteMixin,
   AuthenticatedRouteMixin:       AuthenticatedRouteMixin,
   AuthenticationControllerMixin: AuthenticationControllerMixin,
-  LoginControllerMixin:          LoginControllerMixin
+  LoginControllerMixin:          LoginControllerMixin,
+  UnauthenticatedRouteMixin:     UnauthenticatedRouteMixin
 };
 
 requireModule('simple-auth/ember');
