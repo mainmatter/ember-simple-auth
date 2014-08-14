@@ -160,7 +160,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       _this.container.lookup(authenticator).authenticate(options).then(function(content) {
         _this.setup(authenticator, content, true);
-        resolve();
+        resolve(content);
       }, function(error) {
         _this.clear();
         _this.trigger('sessionAuthenticationFailed', error);
