@@ -18,9 +18,9 @@ import AuthenticationControllerMixin from './authentication-controller-mixin';
   ```handlebars
   <form {{action 'authenticate' on='submit'}}>
     <label for="identification">Login</label>
-    {{input id='identification' placeholder='Enter Login' value=identification}}
+    {{input value=identification placeholder='Enter Login'}}
     <label for="password">Password</label>
-    {{input id='password' placeholder='Enter Password' type='password' value=password}}
+    {{input value=password placeholder='Enter Password' type='password'}}
     <button type="submit">Login</button>
   </form>
   ```

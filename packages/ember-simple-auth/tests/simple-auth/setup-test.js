@@ -184,19 +184,39 @@ describe('setup', function() {
       });
 
       describe("when the request's status is 401", function() {
-        beforeEach(function() {
-          this.server.respondWith('GET', '/data', [401, {}, '']);
+        describe('when the XHR was authorized by the authorizer', function() {
+          beforeEach(function() {
+            this.server.respondWith('GET', '/data', [401, {}, '']);
+          });
+
+          it("triggers the session's authorizationFailed event", function(done) {
+            var triggered = false;
+            this.session.one('authorizationFailed', function() { triggered = true; });
+            Ember.$.get('/data');
+
+            Ember.run.later(function() {
+              expect(triggered).to.be.true;
+              done();
+            }, 100);
+          });
         });
 
-        it("triggers the session's authorizationFailed event", function(done) {
-          var triggered = false;
-          this.session.one('authorizationFailed', function() { triggered = true; });
-          Ember.$.get('/data');
+        describe('when the XHR was not authorized by the authorizer', function() {
+          beforeEach(function() {
+            this.server.respondWith('GET', 'http://other.origin/data', [401, {}, '']);
+          });
 
-          Ember.run.later(function() {
-            expect(triggered).to.be.true;
-            done();
-          }, 100);
+          it("does not trigger the session's authorizationFailed event", function(done) {
+            var triggered = false;
+            this.session.one('authorizationFailed', function() { triggered = true; });
+            // as this is a different origin that's not whitelisted the request will not be authorized
+            Ember.$.get('http://other.origin/data');
+
+            Ember.run.later(function() {
+              expect(triggered).to.be.false;
+              done();
+            }, 100);
+          });
         });
       });
 

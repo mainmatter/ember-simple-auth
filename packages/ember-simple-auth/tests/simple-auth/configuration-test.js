@@ -13,6 +13,12 @@ describe('Configuration', function() {
     });
   });
 
+  describe('isAuthenticatedRoute', function() {
+    it('defaults to "index"', function() {
+      expect(Configuration.isAuthenticatedRoute).to.eql('index');
+    });
+  });
+
   describe('sessionPropertyName', function() {
     it('defaults to "session"', function() {
       expect(Configuration.sessionPropertyName).to.eql('session');
