@@ -2,12 +2,12 @@ import Base from 'simple-auth/authorizers/base';
 import isSecureUrl from 'simple-auth/utils/is-secure-url';
 
 /**
-  Authenticator that works with the Ruby gem
+  Authorizer that works with the Ruby gem
   [Devise](https://github.com/plataformatec/devise) by sending the `user_token`
   and `user_email` properties from the session in the `Authorization` header.
 
-  __As token authentication is not actually part of devise anymore, the server
-  needs to implement some customizations__ to work with this authenticator -
+  __As token authentication is not actually part of Devise anymore, the server
+  needs to implement some customizations__ to work with this authorizer -
   see the README for more information.
 
   _The factory for this authorizer is registered as
