@@ -160,7 +160,7 @@ export default Base.extend({
   authenticate: function(credentials) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var data = { grant_type: 'password', username: credentials.identification, password: credentials.password };
+      var data = _this.buildData(credentials);
       _this.makeRequest(_this.serverTokenEndpoint, data).then(function(response) {
         Ember.run(function() {
           var expiresAt = _this.absolutizeExpirationTime(response.expires_in);
@@ -295,5 +295,19 @@ export default Base.extend({
     if (!Ember.isEmpty(expiresIn)) {
       return new Date((new Date().getTime()) + expiresIn * 1000).getTime();
     }
+  },
+
+  /**
+    Constructs the data that will be sent to the server.
+    You can override this method in a custom authenticator extending OAuth2 Authenticator.
+
+    @method buildData
+    @param {Object} data used to construct
+    @return {Object} data constructed
+    @protected
+  */
+  buildData: function(data) {
+    return { grant_type: 'password', username: data.identification, password: data.password };
   }
+
 });
