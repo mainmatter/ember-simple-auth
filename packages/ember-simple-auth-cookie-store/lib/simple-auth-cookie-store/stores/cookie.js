@@ -157,9 +157,10 @@ export default Base.extend({
     @private
   */
   write: function(value, expiration) {
+    var path = '; path=/';
     var expires = Ember.isEmpty(expiration) ? '' : '; expires=' + new Date(expiration).toUTCString();
     var secure  = !!this._secureCookies ? ';secure' : '';
-    document.cookie = this.cookieName + '=' + encodeURIComponent(value) + expires + secure;
+    document.cookie = this.cookieName + '=' + encodeURIComponent(value) + path + expires + secure;
   },
 
   /**
