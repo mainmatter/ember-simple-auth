@@ -40,12 +40,8 @@ export default Ember.Mixin.create({
   beforeModel: function(transition) {
     if (this.get(Configuration.sessionPropertyName).get('isAuthenticated')) {
       transition.abort();
-      if (this.get('routeName') === Configuration.isAuthenticatedRoute) {
-        Ember.Logger.error('Circular redirection detected - UnauthenticatedRouteMixin has been included in the route set in `Configuration.isAuthenticatedRoute`.');
-      }
-      else {
-        this.transitionTo(Configuration.isAuthenticatedRoute);
-      }
+      Ember.assert('Configuration.isAuthenticatedRoute cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite redirection loop.', this.get('routeName') !== Configuration.isAuthenticatedRoute);
+      this.transitionTo(Configuration.isAuthenticatedRoute);
     }
   }
 });

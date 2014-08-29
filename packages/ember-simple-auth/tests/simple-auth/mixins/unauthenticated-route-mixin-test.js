@@ -35,7 +35,12 @@ describe('UnauthenticatedRouteMixin', function() {
       it('errors if current route matches isAuthenticatedRoute', function() {
         this.route.routeName = Configuration.isAuthenticatedRoute;
 
-        this.route.beforeModel(this.transition);
+        try {
+            this.route.beforeModel(this.transition);
+        }
+        catch(err) {
+            // Code generates an Exception, we should catch this.
+        }
 
         expect(this.route.transitionTo).to.not.have.been.called;
       });
