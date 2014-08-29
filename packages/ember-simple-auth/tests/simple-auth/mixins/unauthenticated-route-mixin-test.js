@@ -31,6 +31,14 @@ describe('UnauthenticatedRouteMixin', function() {
 
         expect(this.route.transitionTo).to.have.been.calledWith(Configuration.isAuthenticatedRoute);
       });
+
+      it('errors if current route matches isAuthenticatedRoute', function() {
+        this.route.routeName = Configuration.isAuthenticatedRoute;
+
+        this.route.beforeModel(this.transition);
+
+        expect(this.route.transitionTo).to.not.have.been.called;
+      });
     });
 
     describe('if the session is not authenticated', function() {

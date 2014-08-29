@@ -32,13 +32,20 @@ export default Ember.Mixin.create({
     be aborted and a redirect will be triggered to the
     [`Configuration.isAuthenticatedRoute`](#SimpleAuth-Configuration-isAuthenticatedRoute).
 
+    This method also checks for a circular transition.
+
     @method beforeModel
     @param {Transition} transition The transition that lead to this route
   */
   beforeModel: function(transition) {
     if (this.get(Configuration.sessionPropertyName).get('isAuthenticated')) {
       transition.abort();
-      this.transitionTo(Configuration.isAuthenticatedRoute);
+      if (this.get('routeName') === Configuration.isAuthenticatedRoute) {
+        Ember.Logger.error('Circular redirection detected - UnauthenticatedRouteMixin has been included in the route set in `Configuration.isAuthenticatedRoute`.');
+      }
+      else {
+        this.transitionTo(Configuration.isAuthenticatedRoute);
+      }
     }
   }
 });
