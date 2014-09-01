@@ -1,6 +1,5 @@
 import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
 import Session from 'simple-auth/session';
-import Configuration from 'simple-auth/configuration';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
 
 describe('AuthenticatedRouteMixin', function() {
@@ -12,7 +11,6 @@ describe('AuthenticatedRouteMixin', function() {
       this.route      = Ember.Route.extend(AuthenticatedRouteMixin).create({ session: this.session });
       sinon.spy(this.transition, 'abort');
       sinon.spy(this.transition, 'send');
-      sinon.spy(this.route, 'transitionTo');
     });
 
     describe('if the session is authenticated', function() {
@@ -44,19 +42,6 @@ describe('AuthenticatedRouteMixin', function() {
         this.route.beforeModel(this.transition);
 
         expect(this.transition.send).to.have.been.calledWith('authenticateSession');
-      });
-
-      it('errors if current route matches authenticationRoute', function() {
-        this.route.routeName = Configuration.authenticationRoute;
-
-        try {
-            this.route.beforeModel(this.transition);
-        }
-        catch(err) {
-            // Code generates an Exception, we should catch this.
-        }
-
-        expect(this.route.transitionTo).to.not.have.been.called;
       });
     });
   });

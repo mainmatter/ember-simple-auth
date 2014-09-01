@@ -31,19 +31,6 @@ describe('UnauthenticatedRouteMixin', function() {
 
         expect(this.route.transitionTo).to.have.been.calledWith(Configuration.isAuthenticatedRoute);
       });
-
-      it('errors if current route matches isAuthenticatedRoute', function() {
-        this.route.routeName = Configuration.isAuthenticatedRoute;
-
-        try {
-            this.route.beforeModel(this.transition);
-        }
-        catch(err) {
-            // Code generates an Exception, we should catch this.
-        }
-
-        expect(this.route.transitionTo).to.not.have.been.called;
-      });
     });
 
     describe('if the session is not authenticated', function() {

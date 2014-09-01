@@ -32,8 +32,6 @@ export default Ember.Mixin.create({
     be aborted and a redirect will be triggered to the
     [`Configuration.isAuthenticatedRoute`](#SimpleAuth-Configuration-isAuthenticatedRoute).
 
-    This method also checks for a circular transition.
-
     @method beforeModel
     @param {Transition} transition The transition that lead to this route
   */
