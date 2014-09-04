@@ -15,8 +15,8 @@ describe('OAuth2', function() {
         expect(OAuth2.create().serverTokenEndpoint).to.eq('/token');
       });
 
-      it('defaults serverTokenRevokationEndpoint to null', function() {
-        expect(OAuth2.create().serverTokenRevokationEndpoint).to.be.null;
+      it('defaults serverTokenRevocationEndpoint to null', function() {
+        expect(OAuth2.create().serverTokenRevocationEndpoint).to.be.null;
       });
 
       it('defaults refreshAccessTokens to true', function() {
@@ -29,7 +29,7 @@ describe('OAuth2', function() {
         window.ENV = window.ENV || {};
         window.ENV['simple-auth-oauth2'] = {
           serverTokenEndpoint:           'serverTokenEndpoint',
-          serverTokenRevokationEndpoint: 'serverTokenRevokationEndpoint',
+          serverTokenRevocationEndpoint: 'serverTokenRevocationEndpoint',
           refreshAccessTokens:           false
         };
       });
@@ -38,8 +38,8 @@ describe('OAuth2', function() {
         expect(OAuth2.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
       });
 
-      it('uses the defined value for serverTokenRevokationEndpoint', function() {
-        expect(OAuth2.create().serverTokenRevokationEndpoint).to.eq('serverTokenRevokationEndpoint');
+      it('uses the defined value for serverTokenRevocationEndpoint', function() {
+        expect(OAuth2.create().serverTokenRevocationEndpoint).to.eq('serverTokenRevocationEndpoint');
       });
 
       it('uses the defined value for refreshAccessTokens', function() {
@@ -295,14 +295,14 @@ describe('OAuth2', function() {
       });
     }
 
-    describe('when token revokation is enabled', function() {
+    describe('when token revocation is enabled', function() {
       beforeEach(function() {
         this.authenticator = OAuth2.create({
-          serverTokenRevokationEndpoint: '/revoke'
+          serverTokenRevocationEndpoint: '/revoke'
         });
       });
 
-      it('sends an AJAX request to the revokation endpoint', function(done) {
+      it('sends an AJAX request to the revocation endpoint', function(done) {
         this.authenticator.invalidate({ access_token: 'access token!' });
 
         Ember.run.next(function() {
@@ -317,7 +317,7 @@ describe('OAuth2', function() {
         });
       });
 
-      describe('when the revokation request is successful', function() {
+      describe('when the revocation request is successful', function() {
         beforeEach(function() {
           this.server.respondWith('POST', '/revoke', [200, { 'Content-Type': 'application/json' }, '']);
         });
@@ -325,7 +325,7 @@ describe('OAuth2', function() {
         itSuccessfullyInvalidatesTheSession();
       });
 
-      describe('when the revokation request fails', function() {
+      describe('when the revocation request fails', function() {
         beforeEach(function() {
           this.server.respondWith('POST', '/revoke', [400, { 'Content-Type': 'application/json' },
           '{ "error": "unsupported_grant_type" }']);
@@ -352,7 +352,7 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when token revokation is not enabled', function() {
+    describe('when token revocation is not enabled', function() {
       itSuccessfullyInvalidatesTheSession();
     });
   });
