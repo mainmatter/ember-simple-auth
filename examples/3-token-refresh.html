@@ -90,11 +90,11 @@
     </script>
 
     <script type="text/javascript">
-      // configure the endpoint for the OAuth 2.0 authenticator and enable token revokation
+      // configure the endpoint for the OAuth 2.0 authenticator and enable token revocation
       window.ENV = window.ENV || {};
       window.ENV['simple-auth-oauth2'] = {
         serverTokenEndpoint: '/v2/token',
-        serverTokenRevokationEndpoint: '/revoke',
+        serverTokenRevocationEndpoint: '/revoke',
       };
 
       App = Ember.Application.create({});

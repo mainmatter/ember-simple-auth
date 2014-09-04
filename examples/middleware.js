@@ -22,7 +22,7 @@ module.exports = function(request, response, next) {
       error(400, '{ "error": "unsupported_grant_type" }');
     }
 
-  // endpoint for token revokation
+  // endpoint for token revocation
   } else if (request.url === '/revoke' && request.method === 'POST') {
     if (request.body.token_type_hint === 'access_token' || request.body.token_type_hint === 'refresh_token') {
       success('');

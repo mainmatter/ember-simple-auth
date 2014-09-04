@@ -49,22 +49,22 @@ export default Base.extend({
 
   /**
     The endpoint on the server the authenticator uses to revoke tokens. Only
-    set this if the server actually supports token revokation.
+    set this if the server actually supports token revocation.
 
     This value can be configured via the global environment object:
 
     ```js
     window.ENV = window.ENV || {};
     window.ENV['simple-auth-oauth2'] = {
-      serverTokenRevokationEndpoint: '/some/custom/endpoint'
+      serverTokenRevocationEndpoint: '/some/custom/endpoint'
     }
     ```
 
-    @property serverTokenRevokationEndpoint
+    @property serverTokenRevocationEndpoint
     @type String
     @default null
   */
-  serverTokenRevokationEndpoint: null,
+  serverTokenRevocationEndpoint: null,
 
   /**
     Sets whether the authenticator automatically refreshes access tokens.
@@ -97,7 +97,7 @@ export default Base.extend({
   init: function() {
     var globalConfig                   = getGlobalConfig('simple-auth-oauth2');
     this.serverTokenEndpoint           = globalConfig.serverTokenEndpoint || this.serverTokenEndpoint;
-    this.serverTokenRevokationEndpoint = globalConfig.serverTokenRevokationEndpoint || this.serverTokenRevokationEndpoint;
+    this.serverTokenRevocationEndpoint = globalConfig.serverTokenRevocationEndpoint || this.serverTokenRevocationEndpoint;
     this.refreshAccessTokens           = globalConfig.refreshAccessTokens || this.refreshAccessTokens;
   },
 
@@ -194,11 +194,11 @@ export default Base.extend({
       resolve();
     }
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(_this.serverTokenRevokationEndpoint)) {
+      if (!Ember.isEmpty(_this.serverTokenRevocationEndpoint)) {
         var requests = [];
         Ember.A(['access_token', 'refresh_token']).forEach(function(tokenType) {
           if (!Ember.isEmpty(data[tokenType])) {
-            requests.push(_this.makeRequest(_this.serverTokenRevokationEndpoint, {
+            requests.push(_this.makeRequest(_this.serverTokenRevocationEndpoint, {
               token_type_hint: tokenType, token: data[tokenType]
             }));
           }
