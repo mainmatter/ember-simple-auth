@@ -74,7 +74,7 @@ export default function(container, application) {
       });
     }
   } else {
-    Ember.Logger.debug('No authorizer factory was configured for Ember Simple Auth - specify one if backend requests need to be authorized.');
+    Ember.Logger.info('No authorizer was configured for Ember Simple Auth - specify one if backend requests need to be authorized.');
   }
 
   var advanceReadiness = function() {
