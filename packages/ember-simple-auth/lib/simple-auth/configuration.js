@@ -45,13 +45,13 @@ export default {
     [`UnauthenticatedRouteMixin`](#SimpleAuth-UnauthenticatedRouteMixin) is
     accessed when the session is authenticated.
 
-    @property isAuthenticatedRoute
+    @property routeIfAlreadyAuthenticated
     @readOnly
     @static
     @type String
     @default 'index'
   */
-  isAuthenticatedRoute: 'index',
+  routeIfAlreadyAuthenticated: 'index',
 
   /**
     The name of the property that the session is injected with into routes and
@@ -134,7 +134,7 @@ export default {
     var globalConfig              = getGlobalConfig('simple-auth');
     this.authenticationRoute      = globalConfig.authenticationRoute || this.authenticationRoute;
     this.routeAfterAuthentication = globalConfig.routeAfterAuthentication || this.routeAfterAuthentication;
-    this.isAuthenticatedRoute     = globalConfig.isAuthenticatedRoute || this.isAuthenticatedRoute;
+    this.routeIfAlreadyAuthenticated     = globalConfig.routeIfAlreadyAuthenticated || this.routeIfAlreadyAuthenticated;
     this.sessionPropertyName      = globalConfig.sessionPropertyName || this.sessionPropertyName;
     this.authorizer               = globalConfig.authorizer || this.authorizer;
     this.session                  = globalConfig.session || this.session;

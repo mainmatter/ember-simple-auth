@@ -26,10 +26,10 @@ describe('UnauthenticatedRouteMixin', function() {
         expect(this.transition.abort).to.have.been.called;
       });
 
-      it('transitions to isAuthenticatedRoute', function() {
+      it('transitions to routeIfAlreadyAuthenticated', function() {
         this.route.beforeModel(this.transition);
 
-        expect(this.route.transitionTo).to.have.been.calledWith(Configuration.isAuthenticatedRoute);
+        expect(this.route.transitionTo).to.have.been.calledWith(Configuration.routeIfAlreadyAuthenticated);
       });
     });
 

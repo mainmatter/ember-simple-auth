@@ -5,7 +5,7 @@ import Configuration from './../configuration';
   not authenticated. This is e.g. the case for the login route that should not
   be accessible when the session is already authenticated. Including this mixin
   in a route automatically adds a hook that redirects to the
-  [`Configuration.isAuthenticatedRoute`](#SimpleAuth-Configuration-isAuthenticatedRoute),
+  [`Configuration.routeIfAlreadyAuthenticated`](#SimpleAuth-Configuration-routeIfAlreadyAuthenticated),
   which defaults to `'index'`.
 
   ```javascript
@@ -30,7 +30,7 @@ export default Ember.Mixin.create({
     This method implements the enforcement of the session not being
     authenticated. If the session is authenticated, the current transition will
     be aborted and a redirect will be triggered to the
-    [`Configuration.isAuthenticatedRoute`](#SimpleAuth-Configuration-isAuthenticatedRoute).
+    [`Configuration.routeIfAlreadyAuthenticated`](#SimpleAuth-Configuration-routeIfAlreadyAuthenticated).
 
     @method beforeModel
     @param {Transition} transition The transition that lead to this route
@@ -38,8 +38,8 @@ export default Ember.Mixin.create({
   beforeModel: function(transition) {
     if (this.get(Configuration.sessionPropertyName).get('isAuthenticated')) {
       transition.abort();
-      Ember.assert('The route configured as Configuration.isAuthenticatedRoute cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop.', this.get('routeName') !== Configuration.isAuthenticatedRoute);
-      this.transitionTo(Configuration.isAuthenticatedRoute);
+      Ember.assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop.', this.get('routeName') !== Configuration.routeIfAlreadyAuthenticated);
+      this.transitionTo(Configuration.routeIfAlreadyAuthenticated);
     }
   }
 });

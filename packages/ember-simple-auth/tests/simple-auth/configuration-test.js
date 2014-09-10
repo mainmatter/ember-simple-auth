@@ -13,9 +13,9 @@ describe('Configuration', function() {
     });
   });
 
-  describe('isAuthenticatedRoute', function() {
+  describe('routeIfAlreadyAuthenticated', function() {
     it('defaults to "index"', function() {
-      expect(Configuration.isAuthenticatedRoute).to.eql('index');
+      expect(Configuration.routeIfAlreadyAuthenticated).to.eql('index');
     });
   });
 
