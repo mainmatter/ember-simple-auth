@@ -1,3 +1,8 @@
+# 0.6.6
+
+This release fixes the Ember CLI Addon packages that were (again) published
+incorrectly to npm...
+
 # 0.6.5
 
 * __[BREAKING]__: The OAuth 2.0 authenticator's `serverTokenRevocationEndpoint`
