@@ -30,8 +30,8 @@ export default Base.extend({
     @private
   */
   init: function() {
-    var globalConfig   = getGlobalConfig('simple-auth');
-    this.key           = globalConfig.localStorageKey || this.key;
+    var globalConfig = getGlobalConfig('simple-auth');
+    this.key         = globalConfig.localStorageKey || this.key;
 
     this.bindToStorageEvents();
   },
