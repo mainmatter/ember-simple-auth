@@ -1,3 +1,23 @@
+# 0.6.5
+
+* __[BREAKING]__: The OAuth 2.0 authenticator's `serverTokenRevocationEndpoint`
+  property has been renamed to `serverTokenRevocationEndpoint`
+  (_"k"_ to _"c"_).
+* The new `UnauthenticatedRouteMixin` mixin can be used for routes that do not
+  allow the session to be authenticated like the login route, see #236.
+* The `localStorage` store's `localStorageKey` property can now be configured,
+  see #300.
+* The `AuthenticatedRouteMixin` and `UnauthenticatedRouteMixin` will now check
+  for infinite redirection loops, see #293.
+* The cookie store now sets `path=/` for its cookies so that there is only one
+  Ember Simple Auth cookie per application, see #288.
+* The browserified distribution does not correctly export the test helpers, see
+  #283.
+* `authorizationFailed` will now only be triggered for requests that were
+  actually authenticate by Ember Simple Auth, see #271.
+* Fixed a bug that prevented the browserified version from being used in older
+  versions of Internet Explorer, see #266.
+
 # 0.6.4
 
 * __The new package `ember-simple-auth-testing` was added that contains test
