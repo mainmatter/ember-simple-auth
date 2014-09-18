@@ -4,6 +4,9 @@ import LocalStorage from './stores/local-storage';
 import Ephemeral from './stores/ephemeral';
 
 function extractLocationOrigin(location) {
+  if (location === '*'){
+      return location;
+  }
   if (Ember.typeOf(location) === 'string') {
     var link = document.createElement('a');
     link.href = location;
