@@ -1,6 +1,6 @@
 import Base from 'simple-auth/authenticators/base';
 import isSecureUrl from 'simple-auth/utils/is-secure-url';
-import getGlobalConfig from 'simple-auth/utils/get-global-config';
+import getConfig from 'simple-auth/utils/get-config';
 
 /**
   Authenticator that conforms to OAuth 2
@@ -95,10 +95,10 @@ export default Base.extend({
     @private
   */
   init: function() {
-    var globalConfig                   = getGlobalConfig('simple-auth-oauth2');
-    this.serverTokenEndpoint           = globalConfig.serverTokenEndpoint || this.serverTokenEndpoint;
-    this.serverTokenRevocationEndpoint = globalConfig.serverTokenRevocationEndpoint || this.serverTokenRevocationEndpoint;
-    this.refreshAccessTokens           = globalConfig.refreshAccessTokens || this.refreshAccessTokens;
+    var config                         = getConfig('simple-auth-oauth2');
+    this.serverTokenEndpoint           = config.serverTokenEndpoint || this.serverTokenEndpoint;
+    this.serverTokenRevocationEndpoint = config.serverTokenRevocationEndpoint || this.serverTokenRevocationEndpoint;
+    this.refreshAccessTokens           = config.refreshAccessTokens || this.refreshAccessTokens;
   },
 
   /**

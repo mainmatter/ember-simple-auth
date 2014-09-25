@@ -1,4 +1,4 @@
-import getGlobalConfig from './utils/get-global-config';
+import getConfig from './utils/get-config';
 
 /**
   Ember Simple Auth's configuration object.
@@ -131,15 +131,15 @@ export default {
     @private
   */
   load: function(container) {
-    var globalConfig              = getGlobalConfig('simple-auth');
-    this.authenticationRoute      = globalConfig.authenticationRoute || this.authenticationRoute;
-    this.routeAfterAuthentication = globalConfig.routeAfterAuthentication || this.routeAfterAuthentication;
-    this.routeIfAlreadyAuthenticated     = globalConfig.routeIfAlreadyAuthenticated || this.routeIfAlreadyAuthenticated;
-    this.sessionPropertyName      = globalConfig.sessionPropertyName || this.sessionPropertyName;
-    this.authorizer               = globalConfig.authorizer || this.authorizer;
-    this.session                  = globalConfig.session || this.session;
-    this.store                    = globalConfig.store || this.store;
-    this.crossOriginWhitelist     = globalConfig.crossOriginWhitelist || this.crossOriginWhitelist;
-    this.applicationRootUrl       = container.lookup('router:main').get('rootURL') || '/';
+    var config                       = getConfig('simple-auth');
+    this.authenticationRoute         = config.authenticationRoute || this.authenticationRoute;
+    this.routeAfterAuthentication    = config.routeAfterAuthentication || this.routeAfterAuthentication;
+    this.routeIfAlreadyAuthenticated = config.routeIfAlreadyAuthenticated || this.routeIfAlreadyAuthenticated;
+    this.sessionPropertyName         = config.sessionPropertyName || this.sessionPropertyName;
+    this.authorizer                  = config.authorizer || this.authorizer;
+    this.session                     = config.session || this.session;
+    this.store                       = config.store || this.store;
+    this.crossOriginWhitelist        = config.crossOriginWhitelist || this.crossOriginWhitelist;
+    this.applicationRootUrl          = container.lookup('router:main').get('rootURL') || '/';
   }
 };

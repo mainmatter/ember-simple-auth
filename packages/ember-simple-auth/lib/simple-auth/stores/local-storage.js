@@ -1,6 +1,6 @@
 import Base from './base';
 import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
-import getGlobalConfig from 'simple-auth/utils/get-global-config';
+import getConfig from 'simple-auth/utils/get-config';
 
 /**
   Store that saves its data in the browser's `localStorage`.
@@ -30,8 +30,8 @@ export default Base.extend({
     @private
   */
   init: function() {
-    var globalConfig = getGlobalConfig('simple-auth');
-    this.key         = globalConfig.localStorageKey || this.key;
+    var config = getConfig('simple-auth');
+    this.key   = config.localStorageKey || this.key;
 
     this.bindToStorageEvents();
   },
