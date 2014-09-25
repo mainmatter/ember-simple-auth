@@ -4,7 +4,6 @@ import itBehavesLikeAStore from 'tests/simple-auth/stores/shared/store-behavior'
 describe('Stores.Cookie', function() {
   beforeEach(function() {
     this.store = Cookie.create();
-    this.store.clear();
   });
 
   itBehavesLikeAStore({
@@ -68,7 +67,7 @@ describe('Stores.Cookie', function() {
     });
 
     it('is not triggered when the cookie has not actually changed', function(done) {
-      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22value%22%7D;';
+      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22value%22%7D;path=/;';
       this.store.syncData();
 
       Ember.run.next(this, function() {
@@ -78,7 +77,7 @@ describe('Stores.Cookie', function() {
     });
 
     it('is triggered when the cookie changed', function(done) {
-      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22other%20value%22%7D;';
+      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22other%20value%22%7D;path=/;';
       this.store.syncData();
 
       Ember.run.next(this, function() {
@@ -86,5 +85,9 @@ describe('Stores.Cookie', function() {
         done();
       });
     });
+  });
+
+  afterEach(function() {
+    this.store.clear();
   });
 });
