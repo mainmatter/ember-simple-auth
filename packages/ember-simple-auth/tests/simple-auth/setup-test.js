@@ -25,12 +25,6 @@ describe('setup', function() {
     expect(this.application.deferReadiness).to.have.been.calledOnce;
   });
 
-  it("sets applicationRootUrl to the application's root URL", function() {
-    setup(this.container, this.application);
-
-    expect(Configuration.applicationRootUrl).to.eql('rootURL');
-  });
-
   it('registers the LocalStorage store', function() {
     sinon.spy(this.container, 'register');
     setup(this.container, this.application);

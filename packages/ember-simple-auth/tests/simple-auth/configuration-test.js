@@ -55,4 +55,19 @@ describe('Configuration', function() {
       expect(Configuration.crossOriginWhitelist).to.be.empty;
     });
   });
+
+  describe('.load', function() {
+    beforeEach(function() {
+      this.container   = { lookup: function() {} };
+      this.router      = { get: function() { return 'rootURL'; } };
+      this.containerStub = sinon.stub(this.container, 'lookup');
+      this.containerStub.withArgs('router:main').returns(this.router);
+    });
+
+    it("sets applicationRootUrl to the application's root URL", function() {
+      Configuration.load(this.container);
+
+      expect(Configuration.applicationRootUrl).to.eql('rootURL');
+    });
+  });
 });
