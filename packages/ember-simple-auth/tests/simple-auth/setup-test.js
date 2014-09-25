@@ -6,6 +6,9 @@ import EphemeralStore from 'simple-auth/stores/ephemeral';
 
 describe('setup', function() {
   beforeEach(function() {
+    window.ENV                = window.ENV || {};
+    window.ENV['simple-auth'] = {};
+
     this.container   = { register: function() {}, injection: function() {}, lookup: function() {} };
     this.application = { deferReadiness: function() {}, advanceReadiness: function() {} };
     this.router      = { get: function() { return 'rootURL'; }, send: function() {} };
@@ -48,14 +51,13 @@ describe('setup', function() {
 
   describe('the session instance', function() {
     beforeEach(function() {
-      Configuration.store = 'simple-auth-session-store:local-storage';
+      window.ENV['simple-auth'].store = 'simple-auth-session-store:local-storage';
     });
 
     context('when a custom session class is configured', function() {
       beforeEach(function() {
-        this.originalSessionFactory = Configuration.session;
-        Configuration.session       = 'session:custom';
-        this.otherSession           = Session.extend().create({ store: this.store, container: this.container });
+        window.ENV['simple-auth'].session = 'session:custom';
+        this.otherSession                 = Session.extend().create({ store: this.store, container: this.container });
         this.containerStub.withArgs('session:custom').returns(this.otherSession);
         sinon.spy(this.container, 'injection');
       });
@@ -66,10 +68,6 @@ describe('setup', function() {
         var spyCall = this.container.injection.getCall(0);
         expect(spyCall.args[2]).to.eql('session:custom');
       });
-
-      afterEach(function() {
-        Configuration.session = this.originalSessionFactory;
-      });
     });
 
     it('uses the LocalStorage store by default', function() {
@@ -79,7 +77,7 @@ describe('setup', function() {
     });
 
     it('uses a custom store if specified', function() {
-      Configuration.store = 'simple-auth-session-store:ephemeral';
+      window.ENV['simple-auth'].store = 'simple-auth-session-store:ephemeral';
       var store = EphemeralStore.create();
       this.containerStub.withArgs('simple-auth-session-store:ephemeral').returns(store);
       setup(this.container, this.application);
@@ -114,10 +112,10 @@ describe('setup', function() {
     });
   });
 
-  describe('when an authorizer factory is specified', function() {
+  describe('when an authorizer is specified', function() {
     beforeEach(function() {
-      Configuration.authorizer = 'authorizer';
-      this.authorizer = { set: function() {}, authorize: function() {} };
+      window.ENV['simple-auth'].authorizer = 'authorizer';
+      this.authorizer                      = { set: function() {}, authorize: function() {} };
       this.containerStub.withArgs('authorizer').returns(this.authorizer);
       sinon.spy(this.authorizer, 'authorize');
       sinon.spy(Ember.$, 'ajaxPrefilter');
@@ -153,7 +151,7 @@ describe('setup', function() {
       });
 
       it('authorizes requests going to a foreign origin if the origin is whitelisted', function() {
-        Configuration.crossOriginWhitelist = ['http://other-domain.com', 'https://another-port.net:4567'];
+        window.ENV['simple-auth'].crossOriginWhitelist = ['http://other-domain.com', 'https://another-port.net:4567'];
         setup(this.container, this.application);
         Ember.$.get('http://other-domain.com/path/query=string');
 
@@ -241,7 +239,7 @@ describe('setup', function() {
     });
   });
 
-  describe('when no authorizer factory is specified', function() {
+  describe('when no authorizer is specified', function() {
     it('does not register an AJAX prefilter', function() {
       sinon.spy(Ember.$, 'ajaxPrefilter');
       setup(this.container, this.application);
@@ -250,10 +248,8 @@ describe('setup', function() {
     });
   });
 
-  after(function() {
-    //reset default configuration values
-    Configuration.authenticationRoute      = 'login';
-    Configuration.routeAfterAuthentication = 'index';
-    Configuration.sessionPropertyName      = 'session';
+  afterEach(function() {
+    delete window.ENV['simple-auth'];
+    Configuration.load(this.container);
   });
 });

@@ -1,5 +1,17 @@
 import getConfig from './utils/get-config';
 
+var defaults = {
+  authenticationRoute:         'login',
+  routeAfterAuthentication:    'index',
+  routeIfAlreadyAuthenticated: 'index',
+  sessionPropertyName:         'session',
+  authorizer:                  null,
+  session:                     'simple-auth-session:main',
+  store:                       'simple-auth-session-store:local-storage',
+  crossOriginWhitelist:        [],
+  applicationRootUrl:          null
+};
+
 /**
   Ember Simple Auth's configuration object.
 
@@ -27,7 +39,7 @@ export default {
     @type String
     @default 'login'
   */
-  authenticationRoute: 'login',
+  authenticationRoute: defaults.authenticationRoute,
 
   /**
     The route to transition to after successful authentication.
@@ -38,7 +50,7 @@ export default {
     @type String
     @default 'index'
   */
-  routeAfterAuthentication: 'index',
+  routeAfterAuthentication: defaults.routeAfterAuthentication,
 
   /**
     The route to transition to if a route that implements
@@ -51,7 +63,7 @@ export default {
     @type String
     @default 'index'
   */
-  routeIfAlreadyAuthenticated: 'index',
+  routeIfAlreadyAuthenticated: defaults.routeIfAlreadyAuthenticated,
 
   /**
     The name of the property that the session is injected with into routes and
@@ -63,7 +75,7 @@ export default {
     @type String
     @default 'session'
   */
-  sessionPropertyName: 'session',
+  sessionPropertyName: defaults.sessionPropertyName,
 
   /**
     The authorizer factory to use as it is registered with Ember's container,
@@ -78,7 +90,7 @@ export default {
     @type String
     @default null
   */
-  authorizer: null,
+  authorizer: defaults.authorizer,
 
   /**
     The session factory to use as it is registered with Ember's container,
@@ -91,7 +103,7 @@ export default {
     @type String
     @default 'simple-auth-session:main'
   */
-  session: 'simple-auth-session:main',
+  session: defaults.session,
 
   /**
     The store factory to use as it is registered with Ember's container, see
@@ -103,7 +115,7 @@ export default {
     @type String
     @default simple-auth-session-store:local-storage
   */
-  store: 'simple-auth-session-store:local-storage',
+  store: defaults.store,
 
   /**
     Ember Simple Auth will never authorize requests going to a different origin
@@ -118,13 +130,13 @@ export default {
     @type Array
     @default []
   */
-  crossOriginWhitelist: [],
+  crossOriginWhitelist: defaults.crossOriginWhitelist,
 
   /**
     @property applicationRootUrl
     @private
   */
-  applicationRootUrl: null,
+  applicationRootUrl: defaults.applicationRootUrl,
 
   /**
     @method load
@@ -132,14 +144,14 @@ export default {
   */
   load: function(container) {
     var config                       = getConfig('simple-auth');
-    this.authenticationRoute         = config.authenticationRoute || this.authenticationRoute;
-    this.routeAfterAuthentication    = config.routeAfterAuthentication || this.routeAfterAuthentication;
-    this.routeIfAlreadyAuthenticated = config.routeIfAlreadyAuthenticated || this.routeIfAlreadyAuthenticated;
-    this.sessionPropertyName         = config.sessionPropertyName || this.sessionPropertyName;
-    this.authorizer                  = config.authorizer || this.authorizer;
-    this.session                     = config.session || this.session;
-    this.store                       = config.store || this.store;
-    this.crossOriginWhitelist        = config.crossOriginWhitelist || this.crossOriginWhitelist;
+    this.authenticationRoute         = config.authenticationRoute || defaults.authenticationRoute;
+    this.routeAfterAuthentication    = config.routeAfterAuthentication || defaults.routeAfterAuthentication;
+    this.routeIfAlreadyAuthenticated = config.routeIfAlreadyAuthenticated || defaults.routeIfAlreadyAuthenticated;
+    this.sessionPropertyName         = config.sessionPropertyName || defaults.sessionPropertyName;
+    this.authorizer                  = config.authorizer || defaults.authorizer;
+    this.session                     = config.session || defaults.session;
+    this.store                       = config.store || defaults.store;
+    this.crossOriginWhitelist        = config.crossOriginWhitelist || defaults.crossOriginWhitelist;
     this.applicationRootUrl          = container.lookup('router:main').get('rootURL') || '/';
   }
 };
