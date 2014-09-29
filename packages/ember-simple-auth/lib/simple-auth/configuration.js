@@ -1,3 +1,5 @@
+import loadConfig from 'simple-auth/utils/load-config';
+
 var defaults = {
   authenticationRoute:         'login',
   routeAfterAuthentication:    'index',
@@ -140,15 +142,7 @@ export default {
     @method load
     @private
   */
-  load: function(container, config) {
-    this.authenticationRoute         = config.authenticationRoute || defaults.authenticationRoute;
-    this.routeAfterAuthentication    = config.routeAfterAuthentication || defaults.routeAfterAuthentication;
-    this.routeIfAlreadyAuthenticated = config.routeIfAlreadyAuthenticated || defaults.routeIfAlreadyAuthenticated;
-    this.sessionPropertyName         = config.sessionPropertyName || defaults.sessionPropertyName;
-    this.authorizer                  = config.authorizer || defaults.authorizer;
-    this.session                     = config.session || defaults.session;
-    this.store                       = config.store || defaults.store;
-    this.crossOriginWhitelist        = config.crossOriginWhitelist || defaults.crossOriginWhitelist;
-    this.applicationRootUrl          = container.lookup('router:main').get('rootURL') || '/';
-  }
+  load: loadConfig(defaults, function(container, config) {
+    this.applicationRootUrl = container.lookup('router:main').get('rootURL') || '/';
+  })
 };

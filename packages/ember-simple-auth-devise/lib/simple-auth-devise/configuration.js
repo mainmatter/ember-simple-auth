@@ -1,3 +1,5 @@
+import loadConfig from 'simple-auth/utils/load-config';
+
 var defaults = {
   serverTokenEndpoint: '/users/sign_in',
   resourceName:        'user'
@@ -48,8 +50,5 @@ export default {
     @method load
     @private
   */
-  load: function(container, config) {
-    this.serverTokenEndpoint = config.serverTokenEndpoint || defaults.serverTokenEndpoint;
-    this.resourceName        = config.resourceName || defaults.resourceName;
-  }
+  load: loadConfig(defaults)
 };

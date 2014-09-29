@@ -1,3 +1,5 @@
+import loadConfig from 'simple-auth/utils/load-config';
+
 var defaults = {
   serverTokenEndpoint:           '/token',
   serverTokenRevocationEndpoint: null,
@@ -61,9 +63,5 @@ export default {
     @method load
     @private
   */
-  load: function(container, config) {
-    this.serverTokenEndpoint           = config.serverTokenEndpoint || defaults.serverTokenEndpoint;
-    this.serverTokenRevocationEndpoint = config.serverTokenRevocationEndpoint || defaults.serverTokenRevocationEndpoint;
-    this.refreshAccessTokens           = config.hasOwnProperty('refreshAccessTokens') ? config.refreshAccessTokens : defaults.refreshAccessTokens;
-  }
+  load: loadConfig(defaults)
 };

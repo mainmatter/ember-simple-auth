@@ -1,3 +1,5 @@
+import loadConfig from 'simple-auth/utils/load-config';
+
 var defaults = {
   cookieName:           'ember_simple_auth:session',
   cookieExpirationTime: null
@@ -49,8 +51,5 @@ export default {
     @method load
     @private
   */
-  load: function(container, config) {
-    this.cookieName           = config.cookieName || defaults.cookieName;
-    this.cookieExpirationTime = config.cookieExpirationTime || defaults.cookieExpirationTime;
-  }
+  load: loadConfig(defaults)
 };
