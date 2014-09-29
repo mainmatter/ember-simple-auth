@@ -4,6 +4,9 @@ import LocalStorage from './stores/local-storage';
 import Ephemeral from './stores/ephemeral';
 
 function extractLocationOrigin(location) {
+  if (location === '*'){
+      return location;
+  }
   if (Ember.typeOf(location) === 'string') {
     var link = document.createElement('a');
     link.href = location;
@@ -24,7 +27,7 @@ function extractLocationOrigin(location) {
 var urlOrigins     = {};
 var crossOriginWhitelist;
 function shouldAuthorizeRequest(options) {
-  if (options.crossDomain === false) {
+  if (options.crossDomain === false || crossOriginWhitelist.indexOf('*') > -1) {
     return true;
   }
   var urlOrigin = urlOrigins[options.url] = urlOrigins[options.url] || extractLocationOrigin(options.url);
