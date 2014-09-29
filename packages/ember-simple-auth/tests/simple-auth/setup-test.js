@@ -250,6 +250,6 @@ describe('setup', function() {
 
   afterEach(function() {
     delete window.ENV['simple-auth'];
-    Configuration.load(this.container);
+    Configuration.load(this.container, {});
   });
 });

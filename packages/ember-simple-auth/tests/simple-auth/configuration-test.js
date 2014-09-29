@@ -2,9 +2,6 @@ import Configuration from 'simple-auth/configuration';
 
 describe('Configuration', function() {
   beforeEach(function() {
-    window.ENV                = window.ENV || {};
-    window.ENV['simple-auth'] = {};
-
     this.container     = { lookup: function() {} };
     this.router        = { get: function() { return 'rootURL'; } };
     this.containerStub = sinon.stub(this.container, 'lookup');
@@ -69,70 +66,61 @@ describe('Configuration', function() {
     });
 
     it("sets applicationRootUrl to the application's root URL", function() {
-      Configuration.load(this.container);
+      Configuration.load(this.container, {});
 
       expect(Configuration.applicationRootUrl).to.eql('rootURL');
     });
 
     it('sets authenticationRoute correctly', function() {
-      window.ENV['simple-auth'].authenticationRoute = 'authenticationRoute';
-      Configuration.load(this.container);
+      Configuration.load(this.container, { authenticationRoute: 'authenticationRoute' });
 
       expect(Configuration.authenticationRoute).to.eql('authenticationRoute');
     });
 
     it('sets routeAfterAuthentication correctly', function() {
-      window.ENV['simple-auth'].routeAfterAuthentication = 'routeAfterAuthentication';
-      Configuration.load(this.container);
+      Configuration.load(this.container, { routeAfterAuthentication: 'routeAfterAuthentication' });
 
       expect(Configuration.routeAfterAuthentication).to.eql('routeAfterAuthentication');
     });
 
     it('sets routeIfAlreadyAuthenticated correctly', function() {
-      window.ENV['simple-auth'].routeIfAlreadyAuthenticated = 'routeIfAlreadyAuthenticated';
-      Configuration.load(this.container);
+      Configuration.load(this.container, { routeIfAlreadyAuthenticated: 'routeIfAlreadyAuthenticated' });
 
       expect(Configuration.routeIfAlreadyAuthenticated).to.eql('routeIfAlreadyAuthenticated');
     });
 
     it('sets sessionPropertyName correctly', function() {
-      window.ENV['simple-auth'].sessionPropertyName = 'sessionPropertyName';
-      Configuration.load(this.container);
+      Configuration.load(this.container, { sessionPropertyName: 'sessionPropertyName' });
 
       expect(Configuration.sessionPropertyName).to.eql('sessionPropertyName');
     });
 
     it('sets authorizer correctly', function() {
-      window.ENV['simple-auth'].authorizer = 'authorizer';
-      Configuration.load(this.container);
+      Configuration.load(this.container, { authorizer: 'authorizer' });
 
       expect(Configuration.authorizer).to.eql('authorizer');
     });
 
     it('sets session correctly', function() {
-      window.ENV['simple-auth'].session = 'session';
-      Configuration.load(this.container);
+      Configuration.load(this.container, { session: 'session' });
 
       expect(Configuration.session).to.eql('session');
     });
 
     it('sets store correctly', function() {
-      window.ENV['simple-auth'].store = 'store';
-      Configuration.load(this.container);
+      Configuration.load(this.container, { store: 'store' });
 
       expect(Configuration.store).to.eql('store');
     });
 
     it('sets crossOriginWhitelist correctly', function() {
-      window.ENV['simple-auth'].crossOriginWhitelist = ['https://some.origin:1234'];
-      Configuration.load(this.container);
+      Configuration.load(this.container, { crossOriginWhitelist: ['https://some.origin:1234'] });
 
       expect(Configuration.crossOriginWhitelist).to.eql(['https://some.origin:1234']);
     });
   });
 
   afterEach(function() {
-    delete window.ENV['simple-auth'];
-    Configuration.load(this.container);
+    Configuration.load(this.container, {});
   });
 });

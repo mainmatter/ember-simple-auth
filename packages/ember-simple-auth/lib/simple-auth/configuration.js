@@ -1,5 +1,3 @@
-import getConfig from './utils/get-config';
-
 var defaults = {
   authenticationRoute:         'login',
   routeAfterAuthentication:    'index',
@@ -142,8 +140,7 @@ export default {
     @method load
     @private
   */
-  load: function(container) {
-    var config                       = getConfig('simple-auth');
+  load: function(container, config) {
     this.authenticationRoute         = config.authenticationRoute || defaults.authenticationRoute;
     this.routeAfterAuthentication    = config.routeAfterAuthentication || defaults.routeAfterAuthentication;
     this.routeIfAlreadyAuthenticated = config.routeIfAlreadyAuthenticated || defaults.routeIfAlreadyAuthenticated;
