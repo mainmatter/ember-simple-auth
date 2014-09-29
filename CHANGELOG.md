@@ -1,3 +1,11 @@
+# 0.6.7
+
+* The Ember CLI Addons will now use the project's configuration as defined in
+  `config/environment.js` and do not depend on `window.ENV` anymore, see
+  [simplabs/ember-cli-simple-auth#21]https://github.com/simplabs/ember-cli-simple-auth/issues/21.
+* All configuration data is now held in configuration objects for the
+  OAuth 2.0, cookie store and devise extension libraries as well.
+
 # 0.6.6
 
 This release fixes the Ember CLI Addon packages that were (again) published
