@@ -1,6 +1,6 @@
 import Base from 'simple-auth/authenticators/base';
 import isSecureUrl from 'simple-auth/utils/is-secure-url';
-import getGlobalConfig from 'simple-auth/utils/get-global-config';
+import Configuration from './../configuration';
 
 /**
   Authenticator that works with the Ruby gem
@@ -24,14 +24,8 @@ export default Base.extend({
     The endpoint on the server the authenticator acquires the auth token
     and email from.
 
-    This value can be configured via the global environment object:
-
-    ```js
-    window.ENV = window.ENV || {};
-    window.ENV['simple-auth-devise'] = {
-      serverTokenEndpoint: '/some/other/endpoint'
-    }
-    ```
+    This value can be configured via
+    [`SimpleAuth.Configuration.Devise#serverTokenEndpoint`](#SimpleAuth-Configuration-Devise-serverTokenEndpoint).
 
     @property serverTokenEndpoint
     @type String
@@ -42,14 +36,8 @@ export default Base.extend({
   /**
     The devise resource name
 
-    This value can be configured via the global environment object:
-
-    ```js
-    window.ENV = window.ENV || {};
-    window.ENV['simple-auth-devise'] = {
-      resourceName: 'account'
-    }
-    ```
+    This value can be configured via
+    [`SimpleAuth.Configuration.Devise#resourceName`](#SimpleAuth-Configuration-Devise-resourceName).
 
     @property resourceName
     @type String
@@ -62,9 +50,8 @@ export default Base.extend({
     @private
   */
   init: function() {
-    var globalConfig         = getGlobalConfig('simple-auth-devise');
-    this.serverTokenEndpoint = globalConfig.serverTokenEndpoint || this.serverTokenEndpoint;
-    this.resourceName        = globalConfig.resourceName || this.resourceName;
+    this.serverTokenEndpoint = Configuration.serverTokenEndpoint;
+    this.resourceName        = Configuration.resourceName;
   },
 
   /**

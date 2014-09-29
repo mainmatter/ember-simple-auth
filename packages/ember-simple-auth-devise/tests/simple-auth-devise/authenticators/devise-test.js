@@ -1,4 +1,5 @@
 import Devise from 'simple-auth-devise/authenticators/devise';
+import Configuration from 'simple-auth-devise/configuration';
 
 describe('Devise', function() {
   beforeEach(function() {
@@ -9,36 +10,20 @@ describe('Devise', function() {
   });
 
   describe('initilization', function() {
-    describe('when no global environment object is defined', function() {
-      it('defaults serverTokenEndpoint to "/users/sign_in"', function() {
-        expect(Devise.create().serverTokenEndpoint).to.eq('/users/sign_in');
-      });
+    it('assigns serverTokenEndpoint from the configuration object', function() {
+      Configuration.serverTokenEndpoint = 'serverTokenEndpoint';
 
-      it('defaults resourceName to "user"', function() {
-        expect(Devise.create().resourceName).to.eq('user');
-      });
+      expect(Devise.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
     });
 
-    describe('when global environment object is defined', function() {
-      beforeEach(function() {
-        window.ENV = window.ENV || {};
-        window.ENV['simple-auth-devise'] = {
-          serverTokenEndpoint: 'serverTokenEndpoint',
-          resourceName:        'resourceName'
-        };
-      });
+    it('assigns resourceName from the configuration object', function() {
+      Configuration.resourceName = 'resourceName';
 
-      it('uses the defined value for serverTokenEndpoint', function() {
-        expect(Devise.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
-      });
+      expect(Devise.create().resourceName).to.eq('resourceName');
+    });
 
-      it('uses the defined value for cookieExpirationTime', function() {
-        expect(Devise.create().resourceName).to.eq('resourceName');
-      });
-
-      afterEach(function() {
-        delete window.ENV['simple-auth-devise'];
-      });
+    afterEach(function() {
+      Configuration.load({}, {});
     });
   });
 
