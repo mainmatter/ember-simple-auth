@@ -12,7 +12,7 @@ define('simple-auth/utils/get-global-config',  ['exports'], function(__exports__
 });
 
 var initializer   = requireModule('simple-auth-devise/initializer')['default'];
-var Configuration = requireModule('simple-auth-cookie-store/configuration')['default'];
+var Configuration = requireModule('simple-auth-devise/configuration')['default'];
 var Authenticator = requireModule('simple-auth-devise/authenticators/devise')['default'];
 var Authorizer    = requireModule('simple-auth-devise/authorizers/devise')['default'];
 
