@@ -8,7 +8,7 @@ var LocalStorageStore             = requireModule('simple-auth/stores/local-stor
 var EphemeralStore                = requireModule('simple-auth/stores/ephemeral')['default'];
 var flatObjectsAreEqual           = requireModule('simple-auth/utils/flat-objects-are-equal')['default'];
 var isSecureUrl                   = requireModule('simple-auth/utils/is-secure-url')['default'];
-var getConfig                     = requireModule('simple-auth/utils/get-config')['default'];
+var getGlobalConfig               = requireModule('simple-auth/utils/get-global-config')['default'];
 var ApplicationRouteMixin         = requireModule('simple-auth/mixins/application-route-mixin')['default'];
 var AuthenticatedRouteMixin       = requireModule('simple-auth/mixins/authenticated-route-mixin')['default'];
 var AuthenticationControllerMixin = requireModule('simple-auth/mixins/authentication-controller-mixin')['default'];
@@ -37,7 +37,7 @@ global.SimpleAuth = {
   Utils: {
     flatObjectsAreEqual: flatObjectsAreEqual,
     isSecureUrl:         isSecureUrl,
-    getConfig:           getConfig
+    getGlobalConfig:     getGlobalConfig
   },
 
   ApplicationRouteMixin:         ApplicationRouteMixin,

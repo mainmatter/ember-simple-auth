@@ -1,5 +1,5 @@
 import Configuration from './configuration';
-import getConfig from './utils/get-config';
+import getGlobalConfig from './utils/get-global-config';
 import Session from './session';
 import LocalStorage from './stores/local-storage';
 import Ephemeral from './stores/ephemeral';
@@ -43,7 +43,7 @@ function registerFactories(container) {
   @private
 **/
 export default function(container, application) {
-  var config = getConfig('simple-auth');
+  var config = getGlobalConfig('simple-auth');
   Configuration.load(container, config);
   application.deferReadiness();
   registerFactories(container);

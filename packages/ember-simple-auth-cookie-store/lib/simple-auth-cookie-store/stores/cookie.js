@@ -1,6 +1,6 @@
 import Base from 'simple-auth/stores/base';
 import flatObjectsAreEqual from 'simple-auth/utils/flat-objects-are-equal';
-import getConfig from 'simple-auth/utils/get-config';
+import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
 /**
   Store that saves its data in a cookie.
@@ -97,9 +97,9 @@ export default Base.extend({
     @private
   */
   init: function() {
-    var config                = getConfig('simple-auth-cookie-store');
-    this.cookieName           = config.cookieName || this.cookieName;
-    this.cookieExpirationTime = config.cookieExpirationTime || this.cookieExpirationTime;
+    var globalConfig          = getGlobalConfig('simple-auth-cookie-store');
+    this.cookieName           = globalConfig.cookieName || this.cookieName;
+    this.cookieExpirationTime = globalConfig.cookieExpirationTime || this.cookieExpirationTime;
     this.syncData();
   },
 

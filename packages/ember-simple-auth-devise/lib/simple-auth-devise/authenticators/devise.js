@@ -1,6 +1,6 @@
 import Base from 'simple-auth/authenticators/base';
 import isSecureUrl from 'simple-auth/utils/is-secure-url';
-import getConfig from 'simple-auth/utils/get-config';
+import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
 /**
   Authenticator that works with the Ruby gem
@@ -62,9 +62,9 @@ export default Base.extend({
     @private
   */
   init: function() {
-    var config               = getConfig('simple-auth-devise');
-    this.serverTokenEndpoint = config.serverTokenEndpoint || this.serverTokenEndpoint;
-    this.resourceName        = config.resourceName || this.resourceName;
+    var globalConfig         = getGlobalConfig('simple-auth-devise');
+    this.serverTokenEndpoint = globalConfig.serverTokenEndpoint || this.serverTokenEndpoint;
+    this.resourceName        = globalConfig.resourceName || this.resourceName;
   },
 
   /**
