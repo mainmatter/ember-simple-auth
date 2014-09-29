@@ -6,9 +6,6 @@ import EphemeralStore from 'simple-auth/stores/ephemeral';
 
 describe('setup', function() {
   beforeEach(function() {
-    window.ENV                = window.ENV || {};
-    window.ENV['simple-auth'] = {};
-
     this.container   = { register: function() {}, injection: function() {}, lookup: function() {} };
     this.application = { deferReadiness: function() {}, advanceReadiness: function() {} };
     this.router      = { get: function() { return 'rootURL'; }, send: function() {} };
@@ -51,12 +48,12 @@ describe('setup', function() {
 
   describe('the session instance', function() {
     beforeEach(function() {
-      window.ENV['simple-auth'].store = 'simple-auth-session-store:local-storage';
+      Configuration.store = 'simple-auth-session-store:local-storage';
     });
 
     context('when a custom session class is configured', function() {
       beforeEach(function() {
-        window.ENV['simple-auth'].session = 'session:custom';
+        Configuration.session             = 'session:custom';
         this.otherSession                 = Session.extend().create({ store: this.store, container: this.container });
         this.containerStub.withArgs('session:custom').returns(this.otherSession);
         sinon.spy(this.container, 'injection');
@@ -77,7 +74,7 @@ describe('setup', function() {
     });
 
     it('uses a custom store if specified', function() {
-      window.ENV['simple-auth'].store = 'simple-auth-session-store:ephemeral';
+      Configuration.store = 'simple-auth-session-store:ephemeral';
       var store = EphemeralStore.create();
       this.containerStub.withArgs('simple-auth-session-store:ephemeral').returns(store);
       setup(this.container, this.application);
@@ -114,7 +111,7 @@ describe('setup', function() {
 
   describe('when an authorizer is specified', function() {
     beforeEach(function() {
-      window.ENV['simple-auth'].authorizer = 'authorizer';
+      Configuration.authorizer = 'authorizer';
       this.authorizer                      = { set: function() {}, authorize: function() {} };
       this.containerStub.withArgs('authorizer').returns(this.authorizer);
       sinon.spy(this.authorizer, 'authorize');
@@ -151,7 +148,7 @@ describe('setup', function() {
       });
 
       it('authorizes requests going to a foreign origin if the origin is whitelisted', function() {
-        window.ENV['simple-auth'].crossOriginWhitelist = ['http://other-domain.com', 'https://another-port.net:4567'];
+        Configuration.crossOriginWhitelist = ['http://other-domain.com', 'https://another-port.net:4567'];
         setup(this.container, this.application);
         Ember.$.get('http://other-domain.com/path/query=string');
 
@@ -249,7 +246,6 @@ describe('setup', function() {
   });
 
   afterEach(function() {
-    delete window.ENV['simple-auth'];
     Configuration.load(this.container, {});
   });
 });
