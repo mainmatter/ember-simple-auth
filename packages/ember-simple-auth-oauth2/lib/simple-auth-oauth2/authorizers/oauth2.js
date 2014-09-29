@@ -12,7 +12,7 @@ import isSecureUrl from 'simple-auth/utils/is-secure-url';
 
   @class OAuth2
   @namespace SimpleAuth.Authorizers
-  @module simple-auth-devise/authorizers/oauth2
+  @module simple-auth-oauth2/authorizers/oauth2
   @extends Base
 */
 export default Base.extend({

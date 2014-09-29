@@ -1,0 +1,69 @@
+var defaults = {
+  serverTokenEndpoint:           '/token',
+  serverTokenRevocationEndpoint: null,
+  refreshAccessTokens:           true
+};
+
+/**
+  Ember Simple Auth OAuth2's configuration object.
+
+  To change any of these values, define a global environment object for Ember
+  Simple Auth and define the values there:
+
+  ```js
+  window.ENV = window.ENV || {};
+  window.ENV['simple-auth-oauth2'] = {
+    serverTokenEndpoint: '/some/custom/endpoint'
+  }
+  ```
+
+  @class OAuth2
+  @namespace SimpleAuth.Configuration
+  @module simple-auth/configuration
+*/
+export default {
+  /**
+    The endpoint on the server the authenticator acquires the access token
+    from.
+
+    @property serverTokenEndpoint
+    @readOnly
+    @static
+    @type String
+    @default '/token'
+  */
+  serverTokenEndpoint: defaults.serverTokenEndpoint,
+
+  /**
+    The endpoint on the server the authenticator uses to revoke tokens. Only
+    set this if the server actually supports token revokation.
+
+    @property serverTokenRevocationEndpoint
+    @readOnly
+    @static
+    @type String
+    @default null
+  */
+  serverTokenRevocationEndpoint: defaults.serverTokenRevocationEndpoint,
+
+  /**
+    Sets whether the authenticator automatically refreshes access tokens.
+
+    @property refreshAccessTokens
+    @readOnly
+    @static
+    @type Boolean
+    @default true
+  */
+  refreshAccessTokens: defaults.refreshAccessTokens,
+
+  /**
+    @method load
+    @private
+  */
+  load: function(container, config) {
+    this.serverTokenEndpoint           = config.serverTokenEndpoint || defaults.serverTokenEndpoint;
+    this.serverTokenRevocationEndpoint = config.serverTokenRevocationEndpoint || defaults.serverTokenRevocationEndpoint;
+    this.refreshAccessTokens           = config.hasOwnProperty('refreshAccessTokens') ? config.refreshAccessTokens : defaults.refreshAccessTokens;
+  }
+};

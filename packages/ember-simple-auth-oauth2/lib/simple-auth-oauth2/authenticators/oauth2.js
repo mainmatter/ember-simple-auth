@@ -1,6 +1,6 @@
 import Base from 'simple-auth/authenticators/base';
 import isSecureUrl from 'simple-auth/utils/is-secure-url';
-import getGlobalConfig from 'simple-auth/utils/get-global-config';
+import Configuration from './../configuration';
 
 /**
   Authenticator that conforms to OAuth 2
@@ -32,14 +32,8 @@ export default Base.extend({
     The endpoint on the server the authenticator acquires the access token
     from.
 
-    This value can be configured via the global environment object:
-
-    ```js
-    window.ENV = window.ENV || {};
-    window.ENV['simple-auth-oauth2'] = {
-      serverTokenEndpoint: '/some/custom/endpoint'
-    }
-    ```
+    This value can be configured via
+    [`SimpleAuth.Configuration.OAuth2#serverTokenEndpoint`](#SimpleAuth-Configuration-OAuth2-serverTokenEndpoint).
 
     @property serverTokenEndpoint
     @type String
@@ -51,14 +45,8 @@ export default Base.extend({
     The endpoint on the server the authenticator uses to revoke tokens. Only
     set this if the server actually supports token revokation.
 
-    This value can be configured via the global environment object:
-
-    ```js
-    window.ENV = window.ENV || {};
-    window.ENV['simple-auth-oauth2'] = {
-      serverTokenRevocationEndpoint: '/some/custom/endpoint'
-    }
-    ```
+    This value can be configured via
+    [`SimpleAuth.Configuration.OAuth2#serverTokenRevocationEndpoint`](#SimpleAuth-Configuration-OAuth2-serverTokenRevocationEndpoint).
 
     @property serverTokenRevocationEndpoint
     @type String
@@ -69,14 +57,8 @@ export default Base.extend({
   /**
     Sets whether the authenticator automatically refreshes access tokens.
 
-    This value can be configured via the global environment object:
-
-    ```js
-    window.ENV = window.ENV || {};
-    window.ENV['simple-auth-oauth2'] = {
-      refreshAccessTokens: false
-    }
-    ```
+    This value can be configured via
+    [`SimpleAuth.Configuration.OAuth2#refreshAccessTokens`](#SimpleAuth-Configuration-OAuth2-refreshAccessTokens).
 
     @property refreshAccessTokens
     @type Boolean
@@ -95,10 +77,9 @@ export default Base.extend({
     @private
   */
   init: function() {
-    var globalConfig                   = getGlobalConfig('simple-auth-oauth2');
-    this.serverTokenEndpoint           = globalConfig.serverTokenEndpoint || this.serverTokenEndpoint;
-    this.serverTokenRevocationEndpoint = globalConfig.serverTokenRevocationEndpoint || this.serverTokenRevocationEndpoint;
-    this.refreshAccessTokens           = globalConfig.refreshAccessTokens || this.refreshAccessTokens;
+    this.serverTokenEndpoint           = Configuration.serverTokenEndpoint;
+    this.serverTokenRevocationEndpoint = Configuration.serverTokenRevocationEndpoint;
+    this.refreshAccessTokens           = Configuration.refreshAccessTokens;
   },
 
   /**

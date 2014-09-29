@@ -12,9 +12,11 @@ define('simple-auth/utils/get-global-config',  ['exports'], function(__exports__
 });
 
 var initializer   = requireModule('simple-auth-oauth2/initializer')['default'];
+var Configuration = requireModule('simple-auth-oauth2/configuration')['default'];
 var Authenticator = requireModule('simple-auth-oauth2/authenticators/oauth2')['default'];
 var Authorizer    = requireModule('simple-auth-oauth2/authorizers/oauth2')['default'];
 
+global.SimpleAuth.Configuration.OAuth2  = Configuration;
 global.SimpleAuth.Authenticators.OAuth2 = Authenticator;
 global.SimpleAuth.Authorizers.OAuth2    = Authorizer;
 

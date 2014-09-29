@@ -1,4 +1,5 @@
 import OAuth2 from 'simple-auth-oauth2/authenticators/oauth2';
+import Configuration from 'simple-auth-oauth2/configuration';
 
 describe('OAuth2', function() {
   beforeEach(function() {
@@ -10,45 +11,26 @@ describe('OAuth2', function() {
   });
 
   describe('initilization', function() {
-    describe('when no global environment object is defined', function() {
-      it('defaults serverTokenEndpoint to "/token"', function() {
-        expect(OAuth2.create().serverTokenEndpoint).to.eq('/token');
-      });
+    it('assigns serverTokenEndpoint from the configuration object', function() {
+      Configuration.serverTokenEndpoint = 'serverTokenEndpoint';
 
-      it('defaults serverTokenRevocationEndpoint to null', function() {
-        expect(OAuth2.create().serverTokenRevocationEndpoint).to.be.null;
-      });
-
-      it('defaults refreshAccessTokens to true', function() {
-        expect(OAuth2.create().refreshAccessTokens).to.be.true;
-      });
+      expect(OAuth2.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
     });
 
-    describe('when global environment object is defined', function() {
-      beforeEach(function() {
-        window.ENV = window.ENV || {};
-        window.ENV['simple-auth-oauth2'] = {
-          serverTokenEndpoint:           'serverTokenEndpoint',
-          serverTokenRevocationEndpoint: 'serverTokenRevocationEndpoint',
-          refreshAccessTokens:           false
-        };
-      });
+    it('assigns serverTokenRevocationEndpoint from the configuration object', function() {
+      Configuration.serverTokenRevocationEndpoint = 'serverTokenRevocationEndpoint';
 
-      it('uses the defined value for serverTokenEndpoint', function() {
-        expect(OAuth2.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
-      });
+      expect(OAuth2.create().serverTokenRevocationEndpoint).to.eq('serverTokenRevocationEndpoint');
+    });
 
-      it('uses the defined value for serverTokenRevocationEndpoint', function() {
-        expect(OAuth2.create().serverTokenRevocationEndpoint).to.eq('serverTokenRevocationEndpoint');
-      });
+    it('assigns refreshAccessTokens from the configuration object', function() {
+      Configuration.refreshAccessTokens = false;
 
-      it('uses the defined value for refreshAccessTokens', function() {
-        expect(OAuth2.create().refreshAccessTokens).to.be-false;
-      });
+      expect(OAuth2.create().refreshAccessTokens).to.be.false;
+    });
 
-      afterEach(function() {
-        delete window.ENV['simple-auth-oauth2'];
-      });
+    afterEach(function() {
+      Configuration.load({}, {});
     });
   });
 
@@ -297,9 +279,7 @@ describe('OAuth2', function() {
 
     describe('when token revokation is enabled', function() {
       beforeEach(function() {
-        this.authenticator = OAuth2.create({
-          serverTokenRevocationEndpoint: '/revoke'
-        });
+        this.authenticator.serverTokenRevocationEndpoint = '/revoke';
       });
 
       it('sends an AJAX request to the revokation endpoint', function(done) {
