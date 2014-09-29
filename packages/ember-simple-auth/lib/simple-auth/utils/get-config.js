@@ -1,5 +1,5 @@
 var global = (typeof window !== 'undefined') ? window : {};
 
 export default function(scope) {
-  return(global.ENV || {})[scope] || {};
+  return Ember.get(global, 'ENV.' + scope) || {};
 }
