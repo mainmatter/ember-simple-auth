@@ -46,7 +46,7 @@ export default Base.extend({
     The name of the cookie the store stores its data in.
 
     This value can be configured via
-    [`SimpleAuth.Configuration.CookieStore#cookieName`](#SimpleAuth-Configuration-CookieStore-cookieName)).
+    [`SimpleAuth.Configuration.CookieStore#cookieName`](#SimpleAuth-Configuration-CookieStore-cookieName).
 
     @property cookieName
     @readOnly
@@ -60,7 +60,7 @@ export default Base.extend({
     closed.
 
     This value can be configured via
-    [`SimpleAuth.Configuration.CookieStore#cookieExpirationTime`](#SimpleAuth-Configuration-CookieStore-cookieExpirationTime)).
+    [`SimpleAuth.Configuration.CookieStore#cookieExpirationTime`](#SimpleAuth-Configuration-CookieStore-cookieExpirationTime).
 
     @property cookieExpirationTime
     @readOnly
