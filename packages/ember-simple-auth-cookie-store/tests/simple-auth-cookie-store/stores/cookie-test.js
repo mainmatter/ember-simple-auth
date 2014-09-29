@@ -1,4 +1,5 @@
 import Cookie from 'simple-auth-cookie-store/stores/cookie';
+import Configuration from 'simple-auth-cookie-store/configuration';
 import itBehavesLikeAStore from 'tests/simple-auth/stores/shared/store-behavior';
 
 describe('Stores.Cookie', function() {
@@ -13,36 +14,20 @@ describe('Stores.Cookie', function() {
   });
 
   describe('initilization', function() {
-    describe('when no global environment object is defined', function() {
-      it('defaults cookieName to "ember_simple_auth:session"', function() {
-        expect(Cookie.create().cookieName).to.eq('ember_simple_auth:session');
-      });
+    it('assigns cookieName from the configuration object', function() {
+      Configuration.cookieName = 'cookieName';
 
-      it('defaults cookieExpirationTime to null', function() {
-        expect(Cookie.create().cookieExpirationTime).to.be.null;
-      });
+      expect(Cookie.create().cookieName).to.eq('cookieName');
     });
 
-    describe('when global environment object is defined', function() {
-      beforeEach(function() {
-        window.ENV = window.ENV || {};
-        window.ENV['simple-auth-cookie-store'] = {
-          cookieName:           'cookieName',
-          cookieExpirationTime: 1
-        };
-      });
+    it('assigns cookieExpirationTime from the configuration object', function() {
+      Configuration.cookieExpirationTime = 123;
 
-      it('uses the defined value for cookieName', function() {
-        expect(Cookie.create().cookieName).to.eq('cookieName');
-      });
+      expect(Cookie.create().cookieExpirationTime).to.eq(123);
+    });
 
-      it('uses the defined value for cookieExpirationTime', function() {
-        expect(Cookie.create().cookieExpirationTime).to.eq(1);
-      });
-
-      afterEach(function() {
-        delete window.ENV['simple-auth-cookie-store'];
-      });
+    afterEach(function() {
+      Configuration.load({}, {});
     });
   });
 

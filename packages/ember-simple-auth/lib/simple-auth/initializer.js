@@ -1,5 +1,6 @@
-import setup from './setup';
+import Configuration from './configuration';
 import getGlobalConfig from './utils/get-global-config';
+import setup from './setup';
 
 export default {
   name:       'simple-auth',

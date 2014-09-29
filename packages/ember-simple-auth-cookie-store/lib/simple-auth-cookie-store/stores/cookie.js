@@ -1,6 +1,6 @@
 import Base from 'simple-auth/stores/base';
 import flatObjectsAreEqual from 'simple-auth/utils/flat-objects-are-equal';
-import getGlobalConfig from 'simple-auth/utils/get-global-config';
+import Configuration from './../configuration';
 
 /**
   Store that saves its data in a cookie.
@@ -45,18 +45,12 @@ export default Base.extend({
   /**
     The name of the cookie the store stores its data in.
 
-    This value can be configured via the global environment object:
-
-    ```js
-    window.ENV = window.ENV || {};
-    window.ENV['simple-auth-cookie-store'] = {
-      cookieName: 'my_app_auth_session'
-    }
-    ```
+    This value can be configured via
+    [`SimpleAuth.Configuration.CookieStore#cookieName`](#SimpleAuth-Configuration-CookieStore-cookieName)).
 
     @property cookieName
+    @readOnly
     @type String
-    @default 'ember_simple_auth:'
   */
   cookieName: 'ember_simple_auth:session',
 
@@ -65,18 +59,12 @@ export default Base.extend({
     will make the cookie a session cookie that expires when the browser is
     closed.
 
-    This value can be configured via the global environment object:
-
-    ```js
-    window.ENV = window.ENV || {};
-    window.ENV['simple-auth-cookie-store'] = {
-      cookieExpirationTime: 24 * 60 * 60
-    }
-    ```
+    This value can be configured via
+    [`SimpleAuth.Configuration.CookieStore#cookieExpirationTime`](#SimpleAuth-Configuration-CookieStore-cookieExpirationTime)).
 
     @property cookieExpirationTime
+    @readOnly
     @type Integer
-    @default null
   */
   cookieExpirationTime: null,
 
@@ -97,9 +85,8 @@ export default Base.extend({
     @private
   */
   init: function() {
-    var globalConfig          = getGlobalConfig('simple-auth-cookie-store');
-    this.cookieName           = globalConfig.cookieName || this.cookieName;
-    this.cookieExpirationTime = globalConfig.cookieExpirationTime || this.cookieExpirationTime;
+    this.cookieName           = Configuration.cookieName;
+    this.cookieExpirationTime = Configuration.cookieExpirationTime;
     this.syncData();
   },
 
@@ -123,6 +110,7 @@ export default Base.extend({
     @return {Object} All data currently persisted in the cookie
   */
   restore: function() {
+
     var data = this.read();
     if (Ember.isEmpty(data)) {
       return {};
