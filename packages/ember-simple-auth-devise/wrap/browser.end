@@ -10,6 +10,9 @@ define('simple-auth/utils/is-secure-url',  ['exports'], function(__exports__) {
 define('simple-auth/utils/get-global-config',  ['exports'], function(__exports__) {
   __exports__['default'] = global.SimpleAuth.Utils.getGlobalConfig;
 });
+define('simple-auth/utils/load-config',  ['exports'], function(__exports__) {
+  __exports__['default'] = global.SimpleAuth.Utils.loadConfig;
+});
 
 var initializer   = requireModule('simple-auth-devise/initializer')['default'];
 var Configuration = requireModule('simple-auth-devise/configuration')['default'];
