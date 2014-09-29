@@ -134,7 +134,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.6.6"><span class="label label-primary">0.6.6</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.6.7"><span class="label label-primary">0.6.7</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -179,7 +179,7 @@ the <code>beforeModel</code> method, that method has to call <code>_super</code>
 <p>Using this mixin is optional. Without using it, the session&#39;s events will not
 be automatically translated into route actions but would have to be handled
 inidivially, e.g. in an initializer:</p>
-<pre><code class="lang-javascript">Ember.Application.initializer({
+<pre><code class="lang-js">Ember.Application.initializer({
   name:       &#39;authentication&#39;,
   after:      &#39;simple-auth&#39;,
   initialize: function(container, application) {
@@ -201,7 +201,7 @@ inidivially, e.g. in an initializer:</p>
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var ApplicationRouteMixin = requireModule('simple-auth/mixins/application-route-mixin').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var ApplicationRouteMixin = requireModule('simple-auth/mixins/application-route-mixin')['default'];</code></pre>
                 </dd>
               </dl>
               
@@ -229,7 +229,7 @@ currently authenticated.</p>
 <p><strong>For an application that works without an authentication route (e.g.
 because it opens a new window to handle authentication there), this is
 the action to override, e.g.:</strong></p>
-<pre><code class="lang-javascript">App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin, {
+<pre><code class="lang-js">App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin, {
   actions: {
     authenticateSession: function() {
       this.get(&#39;session&#39;).authenticate(&#39;authenticator:custom&#39;, {});
@@ -279,7 +279,7 @@ to the
 returns rejects with. (see
 <a href="#SimpleAuth-Authenticators-Base-authenticate"><code>Authenticators.Base#authenticate</code></a>).</p>
 <p>It can be overridden to display error messages etc.:</p>
-<pre><code class="lang-javascript">App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin, {
+<pre><code class="lang-js">App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin, {
   actions: {
     sessionAuthenticationFailed: function(error) {
       this.controllerFor(&#39;application&#39;).set(&#39;loginErrorMessage&#39;, error.message);
@@ -462,7 +462,7 @@ accessible. Including this mixin in a route automatically adds a hook that
 enforces the session to be authenticated and redirects to the
 <a href="#SimpleAuth-Configuration-authenticationRoute"><code>Configuration.authenticationRoute</code></a>
 if it is not.</p>
-<pre><code class="lang-javascript">// app/routes/protected.js
+<pre><code class="lang-js">// app/routes/protected.js
 import AuthenticatedRouteMixin from &#39;simple-auth/mixins/authenticated-route-mixin&#39;;
 
 export default Ember.Route.extend(AuthenticatedRouteMixin);
@@ -481,7 +481,7 @@ enforcement code is actually executed.</p>
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var AuthenticatedRouteMixin = requireModule('simple-auth/mixins/authenticated-route-mixin').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var AuthenticatedRouteMixin = requireModule('simple-auth/mixins/authenticated-route-mixin')['default'];</code></pre>
                 </dd>
               </dl>
               
@@ -583,7 +583,7 @@ the configured authenticator (see
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var AuthenticationControllerMixin = requireModule('simple-auth/mixins/authentication-controller-mixin').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var AuthenticationControllerMixin = requireModule('simple-auth/mixins/authentication-controller-mixin')['default'];</code></pre>
                 </dd>
               </dl>
               
@@ -713,7 +713,7 @@ the session store (see
 authenticated or not.</p>
 <p><strong>Custom authenticators have to be registered with Ember&#39;s dependency
 injection container</strong> so that the session can retrieve an instance, e.g.:</p>
-<pre><code class="lang-javascript">import Base from &#39;simple-auth/authenticators/base&#39;;
+<pre><code class="lang-js">import Base from &#39;simple-auth/authenticators/base&#39;;
 
 var CustomAuthenticator = Base.extend({
   ...
@@ -726,7 +726,7 @@ Ember.Application.initializer({
   }
 });
 </code></pre>
-<pre><code class="lang-javascript">// app/controllers/login.js
+<pre><code class="lang-js">// app/controllers/login.js
 import AuthenticationControllerMixin from &#39;simple-auth/mixins/authentication-controller-mixin&#39;;
 
 export default Ember.Controller.extend(AuthenticationControllerMixin, {
@@ -742,7 +742,7 @@ export default Ember.Controller.extend(AuthenticationControllerMixin, {
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var Base = requireModule('simple-auth/authenticators/base').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var Base = requireModule('simple-auth/authenticators/base')['default'];</code></pre>
                 </dd>
               </dl>
               
@@ -1049,7 +1049,7 @@ as it relies on data that the authenticator acquires during authentication.</p>
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var Base = requireModule('simple-auth/authorizers/base').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var Base = requireModule('simple-auth/authorizers/base')['default'];</code></pre>
                 </dd>
               </dl>
               
@@ -1173,7 +1173,7 @@ the <code>Authorization</code> header or some other secret in the query string e
               <p>Ember Simple Auth&#39;s configuration object.</p>
 <p>To change any of these values, define a global environment object for Ember
 Simple Auth and define the values there:</p>
-<pre><code class="lang-javascript">window.ENV = window.ENV || {};
+<pre><code class="lang-js">window.ENV = window.ENV || {};
 window.ENV[&#39;simple-auth&#39;] = {
   authenticationRoute: &#39;sign-in&#39;
 };
@@ -1187,7 +1187,7 @@ window.ENV[&#39;simple-auth&#39;] = {
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var Configuration = requireModule('simple-auth/configuration').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var Configuration = requireModule('simple-auth/configuration')['default'];</code></pre>
                 </dd>
               </dl>
               
@@ -1196,7 +1196,7 @@ window.ENV[&#39;simple-auth&#39;] = {
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-authenticationRoute" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L21"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L33"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1216,7 +1216,7 @@ window.ENV[&#39;simple-auth&#39;] = {
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-routeAfterAuthentication" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L32"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L44"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1236,7 +1236,7 @@ window.ENV[&#39;simple-auth&#39;] = {
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-routeIfAlreadyAuthenticated" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L43"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L55"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1258,7 +1258,7 @@ accessed when the session is authenticated.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-sessionPropertyName" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L56"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L68"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1279,7 +1279,7 @@ controllers.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-authorizer" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L68"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L80"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1303,7 +1303,7 @@ authorized requests, no auzthorizer is needed.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-session" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L83"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L95"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1325,7 +1325,7 @@ see
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-store" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L96"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L108"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1346,7 +1346,7 @@ see
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-crossOriginWhitelist" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L108"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L120"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1466,7 +1466,7 @@ e.g.:</p>
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var LoginControllerMixin = requireModule('simple-auth/mixins/login-controller-mixin').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var LoginControllerMixin = requireModule('simple-auth/mixins/login-controller-mixin')['default'];</code></pre>
                 </dd>
               </dl>
               
@@ -1557,7 +1557,7 @@ To authenticate the session manually, simple call the
 <a href="#SimpleAuth-Session-authenticate"><code>Session#authenticate</code></a>
 method with the authenticator factory to use as well as any options the
 authenticator needs to authenticate the session:</p>
-<pre><code class="lang-javascript">this.get(&#39;session&#39;).authenticate(&#39;authenticator:custom&#39;, { some: &#39;option&#39; }).then(function() {
+<pre><code class="lang-js">this.get(&#39;session&#39;).authenticate(&#39;authenticator:custom&#39;, { some: &#39;option&#39; }).then(function() {
   // authentication was successful
 }, function() {
   // authentication failed
@@ -1576,7 +1576,7 @@ end <a href="#SimpleAuth-Stores-Base"><code>Stores.Base</code></a>).</p>
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var Session = requireModule('simple-auth/session').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var Session = requireModule('simple-auth/session')['default'];</code></pre>
                 </dd>
               </dl>
               
@@ -1995,7 +1995,7 @@ window.ENV[&#39;simple-auth&#39;] = {
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var Base = requireModule('simple-auth/stores/base').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var Base = requireModule('simple-auth/stores/base')['default'];</code></pre>
                 </dd>
               </dl>
               
@@ -2202,7 +2202,7 @@ windows as those cannot share memory.</p>
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var Ephemeral = requireModule('simple-auth/stores/ephemeral').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var Ephemeral = requireModule('simple-auth/stores/ephemeral')['default'];</code></pre>
                 </dd>
               </dl>
               
@@ -2352,7 +2352,7 @@ windows as those cannot share memory.</p>
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var LocalStorage = requireModule('simple-auth/stores/local-storage').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var LocalStorage = requireModule('simple-auth/stores/local-storage')['default'];</code></pre>
                 </dd>
               </dl>
               
@@ -2527,7 +2527,7 @@ be accessible when the session is already authenticated. Including this mixin
 in a route automatically adds a hook that redirects to the
 <a href="#SimpleAuth-Configuration-routeIfAlreadyAuthenticated"><code>Configuration.routeIfAlreadyAuthenticated</code></a>,
 which defaults to <code>&#39;index&#39;</code>.</p>
-<pre><code class="lang-javascript">// app/routes/login.js
+<pre><code class="lang-js">// app/routes/login.js
 import UnauthenticatedRouteMixin from &#39;simple-auth/mixins/unauthenticated-route-mixin&#39;;
 
 export default Ember.Route.extend(UnauthenticatedRouteMixin);
@@ -2544,7 +2544,7 @@ implementation calls <code>this._super(transition)</code></strong>.</p>
                 </dd>
                 <dt>Standard AMD<dt>
                 <dd>
-                  <pre><code class="lang-javascript javascript">var UnauthenticatedRouteMixin = requireModule('simple-auth/mixins/unauthenticated-route-mixin').default;</code></pre>
+                  <pre><code class="lang-javascript javascript">var UnauthenticatedRouteMixin = requireModule('simple-auth/mixins/unauthenticated-route-mixin')['default'];</code></pre>
                 </dd>
               </dl>
               
