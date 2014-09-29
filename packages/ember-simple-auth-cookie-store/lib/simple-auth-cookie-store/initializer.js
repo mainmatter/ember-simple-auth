@@ -6,7 +6,7 @@ export default {
   name:       'simple-auth-cookie-store',
   before:     'simple-auth',
   initialize: function(container, application) {
-    var config = getGlobalConfig('simple-auth');
+    var config = getGlobalConfig('simple-auth-cookie-store');
     Configuration.load(container, config);
     container.register('simple-auth-session-store:cookie', Store);
   }
