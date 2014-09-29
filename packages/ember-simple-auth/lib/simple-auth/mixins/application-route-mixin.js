@@ -35,7 +35,7 @@ import Configuration from './../configuration';
   be automatically translated into route actions but would have to be handled
   inidivially, e.g. in an initializer:
 
-  ```javascript
+  ```js
   Ember.Application.initializer({
     name:       'authentication',
     after:      'simple-auth',
@@ -95,7 +95,7 @@ export default Ember.Mixin.create({
       because it opens a new window to handle authentication there), this is
       the action to override, e.g.:__
 
-      ```javascript
+      ```js
       App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin, {
         actions: {
           authenticateSession: function() {
@@ -140,7 +140,7 @@ export default Ember.Mixin.create({
 
       It can be overridden to display error messages etc.:
 
-      ```javascript
+      ```js
       App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin, {
         actions: {
           sessionAuthenticationFailed: function(error) {

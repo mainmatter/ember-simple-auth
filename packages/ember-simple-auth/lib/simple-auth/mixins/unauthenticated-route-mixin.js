@@ -8,7 +8,7 @@ import Configuration from './../configuration';
   [`Configuration.routeIfAlreadyAuthenticated`](#SimpleAuth-Configuration-routeIfAlreadyAuthenticated),
   which defaults to `'index'`.
 
-  ```javascript
+  ```js
   // app/routes/login.js
   import UnauthenticatedRouteMixin from 'simple-auth/mixins/unauthenticated-route-mixin';
 

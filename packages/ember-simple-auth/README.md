@@ -115,7 +115,7 @@ methods (see the
 __Custom authenticators have to be registered with Ember's dependency injection
 container__ so that the session can retrieve an instance, e.g.:
 
-```javascript
+```js
 import Base from 'simple-auth/authenticators/base';
 
 var CustomAuthenticator = Base.extend({

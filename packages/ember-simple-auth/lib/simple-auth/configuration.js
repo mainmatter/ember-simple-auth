@@ -16,7 +16,7 @@ var defaults = {
   To change any of these values, define a global environment object for Ember
   Simple Auth and define the values there:
 
-  ```javascript
+  ```js
   window.ENV = window.ENV || {};
   window.ENV['simple-auth'] = {
     authenticationRoute: 'sign-in'

@@ -18,7 +18,7 @@
   method with the authenticator factory to use as well as any options the
   authenticator needs to authenticate the session:
 
-  ```javascript
+  ```js
   this.get('session').authenticate('authenticator:custom', { some: 'option' }).then(function() {
     // authentication was successful
   }, function() {

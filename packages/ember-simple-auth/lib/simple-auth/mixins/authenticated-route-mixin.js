@@ -7,7 +7,7 @@ import Configuration from './../configuration';
   [`Configuration.authenticationRoute`](#SimpleAuth-Configuration-authenticationRoute)
   if it is not.
 
-  ```javascript
+  ```js
   // app/routes/protected.js
   import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
 
