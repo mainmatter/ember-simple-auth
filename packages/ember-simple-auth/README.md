@@ -338,6 +338,25 @@ once it is loaded in the application.
   [the releases page](https://github.com/simplabs/ember-simple-auth/releases)
 * [Build it yourself](#building)
 
+### Important Cordova/PhoneGap caveat
+
+When used with a Cordova app, the default Ember Simple Auth behavior will crash the app on logout. This is because Ember Simple Auth reloads the page to clear any user data, but the URL to reload is different on every platform. To work around this, you must specify your own `sessionInvalidationSucceeded` behavior in your `application` route. For example, if you are using hash-style URLs, you could do something like:
+
+```js
+import Ember from 'ember';
+import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
+
+export default Ember.Route.extend(ApplicationRouteMixin, {
+  actions: {
+    sessionInvalidationSucceeded: function() {
+      window.location.replace(window.location.href.split('#')[0]);
+    }
+  }
+});
+```
+
+Another approach is to reload the current URL, and rely on your use of the `AuthenticatedRouteMixin` to transition the user to the login page. You could also use `App.reset()` to reset your Ember app, but this method was designed for testing purposes, and it's unclear if it will completely clear all data (it definitely will not clear any global variables).
+
 ## Building
 
 To build Ember Simple Auth yourself you need to have
