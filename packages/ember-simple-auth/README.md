@@ -216,7 +216,7 @@ window.ENV['simple-auth'] = {
 
 #### Cross Origin Authorization
 
-Ember Simple Auth __will never authorize cross origin requests__ so that no
+Ember Simple Auth __will only authorize cross origin requests when you whitelist the endpoint beforehand__ so that no
 secret information gets exposed to third parties. To enable authorization for
 additional origins (for example if the REST API of the application runs on a
 different domain than the one the Ember.js application is served from),
@@ -230,6 +230,7 @@ window.ENV['simple-auth'] = {
   crossOriginWhitelist: ['http://some.other.domain:1234']
 }
 ```
+Use of * is allowed to allow all domains to be whitelisted.
 
 ### Stores
 
