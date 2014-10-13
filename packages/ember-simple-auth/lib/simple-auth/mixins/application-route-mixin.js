@@ -176,6 +176,11 @@ export default Ember.Mixin.create({
       the Ember.js application's router (see
       http://emberjs.com/guides/routing/#toc_specifying-a-root-url).
 
+      If your Ember.js application will be used in an environment where the
+      users don't have direct access to any data stored on the client (e.g.
+      [cordova](http://cordova.apache.org)) this action can be overridden to
+      simply transition to the `'index'` route.
+
       @method actions.sessionInvalidationSucceeded
     */
     sessionInvalidationSucceeded: function() {
