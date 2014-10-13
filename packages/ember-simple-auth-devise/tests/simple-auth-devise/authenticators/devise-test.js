@@ -44,6 +44,22 @@ describe('Devise', function() {
         });
       });
     });
+
+    describe('when the data contains an custom token and email attribute', function() {
+      beforeEach(function() {
+        Configuration.tokenAttributeName = 'employee_token';
+        Configuration.emailAttributeName = 'employee_email';
+        this.customAttributesAuthenticator = Devise.create();
+        Configuration.load({}, {});
+      });
+
+      it('resolves with the correct data', function(done) {
+        this.customAttributesAuthenticator.restore({ "employee_token": 'secret token!', "employee_email": "user@email.com" }).then(function(content){
+          expect(content).to.eql({ "employee_token": "secret token!", "employee_email": "user@email.com" });
+          done();
+        });
+      });
+    });
   });
 
   describe('#authenticate', function() {

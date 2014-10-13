@@ -1,5 +1,6 @@
 import Base from 'simple-auth/authorizers/base';
 import isSecureUrl from 'simple-auth/utils/is-secure-url';
+import Configuration from './../configuration';
 
 /**
   Authenticator that works with the Ruby gem
@@ -20,6 +21,30 @@ import isSecureUrl from 'simple-auth/utils/is-secure-url';
 */
 export default Base.extend({
   /**
+    The token attribute name
+
+    This value can be configured via
+    [`SimpleAuth.Configuration.Devise#tokenAttributeName`](#SimpleAuth-Configuration-Devise-tokenAttributeName).
+
+    @property tokenAttributeName
+    @type String
+    @default 'user_token'
+  */
+  tokenAttributeName: 'user_token',
+
+  /**
+    The email attribute name
+
+    This value can be configured via
+    [`SimpleAuth.Configuration.Devise#emailAttributeName`](#SimpleAuth-Configuration-Devise-emailAttributeName).
+
+    @property emailAttributeName
+    @type String
+    @default 'user_email'
+  */
+  emailAttributeName: 'user_email',
+
+  /**
     Authorizes an XHR request by sending the `user_token` and `user_email`
     properties from the session in the `Authorization` header:
 
@@ -32,9 +57,18 @@ export default Base.extend({
     @param {Object} requestOptions The options as provided to the `$.ajax` method (see http://api.jquery.com/jQuery.ajaxPrefilter/)
   */
 
+  /**
+    @method init
+    @private
+  */
+  init: function() {
+    this.tokenAttributeName = Configuration.tokenAttributeName;
+    this.emailAttributeName = Configuration.emailAttributeName;
+  },
+
   authorize: function(jqXHR, requestOptions) {
-    var userToken = this.get('session.user_token');
-    var userEmail = this.get('session.user_email');
+    var userToken = this.get('session.' + this.tokenAttributeName);
+    var userEmail = this.get('session.' + this.emailAttributeName);
     if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userEmail)) {
       if (!isSecureUrl(requestOptions.url)) {
         Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
