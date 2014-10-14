@@ -36,7 +36,7 @@ describe('Devise', function() {
         it('adds the "user_token" and "user_email" query string fields to the request', function() {
           this.authorizer.authorize(this.request, {});
 
-          expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Token token="secret token!", user_email="user@email.com"');
+          expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Token user_token="secret token!", user_email="user@email.com"');
         });
       });
 
@@ -56,7 +56,7 @@ describe('Devise', function() {
         it('adds the "employee_token" and "employee_email" query string fields to the request', function() {
           this.customAttributesAuthenticator.authorize(this.request, {});
 
-          expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Token token="secret token!", user_email="user@email.com"');
+          expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Token employee_token="secret token!", employee_email="user@email.com"');
         });
       });
 

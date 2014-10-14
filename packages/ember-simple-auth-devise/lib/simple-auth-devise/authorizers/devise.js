@@ -21,7 +21,7 @@ import Configuration from './../configuration';
 */
 export default Base.extend({
   /**
-    The token attribute name
+    The token attribute name.
 
     This value can be configured via
     [`SimpleAuth.Configuration.Devise#tokenAttributeName`](#SimpleAuth-Configuration-Devise-tokenAttributeName).
@@ -33,7 +33,7 @@ export default Base.extend({
   tokenAttributeName: 'user_token',
 
   /**
-    The email attribute name
+    The identification attribute name.
 
     This value can be configured via
     [`SimpleAuth.Configuration.Devise#identificationAttributeName`](#SimpleAuth-Configuration-Devise-identificationAttributeName).
@@ -49,7 +49,7 @@ export default Base.extend({
     properties from the session in the `Authorization` header:
 
     ```
-    Authorization: Token token="<user_token>", user_email="<user_email>"
+    Authorization: Token <tokenAttributeName>="<token>", <identificationAttributeName>="<user identification>"
     ```
 
     @method authorize
@@ -67,13 +67,13 @@ export default Base.extend({
   },
 
   authorize: function(jqXHR, requestOptions) {
-    var userToken = this.get('session.' + this.tokenAttributeName);
-    var userEmail = this.get('session.' + this.identificationAttributeName);
-    if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userEmail)) {
+    var userToken          = this.get('session').get(this.tokenAttributeName);
+    var userIdentification = this.get('session').get(this.identificationAttributeName);
+    if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userIdentification)) {
       if (!isSecureUrl(requestOptions.url)) {
         Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
       }
-      var authData = 'token="' + userToken + '", user_email="' + userEmail + '"';
+      var authData = this.tokenAttributeName + '="' + userToken + '", ' + this.identificationAttributeName + '="' + userIdentification + '"';
       jqXHR.setRequestHeader('Authorization', 'Token ' + authData);
     }
   }
