@@ -13,6 +13,24 @@ describe('Devise', function() {
     sinon.spy(this.request, 'setRequestHeader');
   });
 
+  describe('initilization', function() {
+    it('assigns tokenAttributeName from the configuration object', function() {
+      Configuration.tokenAttributeName = 'tokenAttributeName';
+
+      expect(Devise.create().tokenAttributeName).to.eq('tokenAttributeName');
+    });
+
+    it('assigns identificationAttributeName from the configuration object', function() {
+      Configuration.identificationAttributeName = 'identificationAttributeName';
+
+      expect(Devise.create().identificationAttributeName).to.eq('identificationAttributeName');
+    });
+
+    afterEach(function() {
+      Configuration.load({}, {});
+    });
+  });
+
   describe('#authorize', function() {
     function itDoesNotAuthorizeTheRequest() {
       it('does not add the "user-token" header to the request', function() {

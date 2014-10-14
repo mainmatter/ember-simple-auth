@@ -22,6 +22,18 @@ describe('Devise', function() {
       expect(Devise.create().resourceName).to.eq('resourceName');
     });
 
+    it('assigns tokenAttributeName from the configuration object', function() {
+      Configuration.tokenAttributeName = 'tokenAttributeName';
+
+      expect(Devise.create().tokenAttributeName).to.eq('tokenAttributeName');
+    });
+
+    it('assigns identificationAttributeName from the configuration object', function() {
+      Configuration.identificationAttributeName = 'identificationAttributeName';
+
+      expect(Devise.create().identificationAttributeName).to.eq('identificationAttributeName');
+    });
+
     afterEach(function() {
       Configuration.load({}, {});
     });
