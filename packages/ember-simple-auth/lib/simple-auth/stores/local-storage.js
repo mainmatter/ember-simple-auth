@@ -1,5 +1,5 @@
 import Base from './base';
-import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
+import objectsAreEqual from '../utils/objects-are-equal';
 import getGlobalConfig from 'simple-auth/utils/get-global-config';
 
 /**
@@ -79,7 +79,7 @@ export default Base.extend({
     var _this = this;
     Ember.$(window).bind('storage', function(e) {
       var data = _this.restore();
-      if (!flatObjectsAreEqual(data, _this._lastData)) {
+      if (!objectsAreEqual(data, _this._lastData)) {
         _this._lastData = data;
         _this.trigger('sessionDataUpdated', data);
       }

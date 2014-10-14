@@ -1,5 +1,5 @@
 import Base from 'simple-auth/stores/base';
-import flatObjectsAreEqual from 'simple-auth/utils/flat-objects-are-equal';
+import objectsAreEqual from 'simple-auth/utils/objects-are-equal';
 import Configuration from './../configuration';
 
 /**
@@ -157,7 +157,7 @@ export default Base.extend({
   */
   syncData: function() {
     var data = this.restore();
-    if (!flatObjectsAreEqual(data, this._lastData)) {
+    if (!objectsAreEqual(data, this._lastData)) {
       this._lastData = data;
       this.trigger('sessionDataUpdated', data);
     }

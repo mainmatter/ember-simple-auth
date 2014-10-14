@@ -1,4 +1,4 @@
-import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
+import objectsAreEqual from '../utils/objects-are-equal';
 
 /**
   The base for all store types. __This serves as a starting point for
