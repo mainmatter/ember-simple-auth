@@ -46,12 +46,38 @@ export default Base.extend({
   resourceName: 'user',
 
   /**
+    The token attribute name
+
+    This value can be configured via
+    [`SimpleAuth.Configuration.Devise#tokenAttributeName`](#SimpleAuth-Configuration-Devise-tokenAttributeName).
+
+    @property tokenAttributeName
+    @type String
+    @default 'user_token'
+  */
+  tokenAttributeName: 'user_token',
+
+  /**
+    The identification attribute name
+
+    This value can be configured via
+    [`SimpleAuth.Configuration.Devise#identificationAttributeName`](#SimpleAuth-Configuration-Devise-identificationAttributeName).
+
+    @property identificationAttributeName
+    @type String
+    @default 'user_email'
+  */
+  identificationAttributeName: 'user_email',
+
+  /**
     @method init
     @private
   */
   init: function() {
-    this.serverTokenEndpoint = Configuration.serverTokenEndpoint;
-    this.resourceName        = Configuration.resourceName;
+    this.serverTokenEndpoint          = Configuration.serverTokenEndpoint;
+    this.resourceName                 = Configuration.resourceName;
+    this.tokenAttributeName           = Configuration.tokenAttributeName;
+    this.identificationAttributeName  = Configuration.identificationAttributeName;
   },
 
   /**
@@ -64,8 +90,11 @@ export default Base.extend({
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(properties) {
+    var _properties = Ember.Object.create(properties);
+    var _this = this;
+
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(properties.user_token) && !Ember.isEmpty(properties.user_email)) {
+      if (!Ember.isEmpty(_properties.get(_this.tokenAttributeName) && !Ember.isEmpty(_properties.get(_this.identificationAttributeName)))) {
         resolve(properties);
       } else {
         reject();
