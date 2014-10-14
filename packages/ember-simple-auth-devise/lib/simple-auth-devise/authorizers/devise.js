@@ -36,13 +36,13 @@ export default Base.extend({
     The email attribute name
 
     This value can be configured via
-    [`SimpleAuth.Configuration.Devise#emailAttributeName`](#SimpleAuth-Configuration-Devise-emailAttributeName).
+    [`SimpleAuth.Configuration.Devise#identificationAttributeName`](#SimpleAuth-Configuration-Devise-identificationAttributeName).
 
-    @property emailAttributeName
+    @property identificationAttributeName
     @type String
     @default 'user_email'
   */
-  emailAttributeName: 'user_email',
+  identificationAttributeName: 'user_email',
 
   /**
     Authorizes an XHR request by sending the `user_token` and `user_email`
@@ -62,13 +62,13 @@ export default Base.extend({
     @private
   */
   init: function() {
-    this.tokenAttributeName = Configuration.tokenAttributeName;
-    this.emailAttributeName = Configuration.emailAttributeName;
+    this.tokenAttributeName          = Configuration.tokenAttributeName;
+    this.identificationAttributeName = Configuration.identificationAttributeName;
   },
 
   authorize: function(jqXHR, requestOptions) {
     var userToken = this.get('session.' + this.tokenAttributeName);
-    var userEmail = this.get('session.' + this.emailAttributeName);
+    var userEmail = this.get('session.' + this.identificationAttributeName);
     if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userEmail)) {
       if (!isSecureUrl(requestOptions.url)) {
         Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');

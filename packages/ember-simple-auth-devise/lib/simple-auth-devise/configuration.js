@@ -1,10 +1,10 @@
 import loadConfig from 'simple-auth/utils/load-config';
 
 var defaults = {
-  serverTokenEndpoint: '/users/sign_in',
-  resourceName:        'user',
-  tokenAttributeName:  'user_token',
-  emailAttributeName:  'user_email'
+  serverTokenEndpoint:          '/users/sign_in',
+  resourceName:                 'user',
+  tokenAttributeName:           'user_token',
+  identificationAttributeName:  'user_email'
 };
 
 /**
@@ -62,13 +62,13 @@ export default {
   /**
     The email attribute name
 
-    @property emailAttributeName
+    @property identificationAttributeName
     @readOnly
     @static
     @type String
     @default 'user_email'
   */
-  emailAttributeName: defaults.emailAttributeName,
+  identificationAttributeName: defaults.identificationAttributeName,
 
   /**
     @method load

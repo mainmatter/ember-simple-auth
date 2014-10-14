@@ -58,26 +58,26 @@ export default Base.extend({
   tokenAttributeName: 'user_token',
 
   /**
-    The email attribute name
+    The identification attribute name
 
     This value can be configured via
-    [`SimpleAuth.Configuration.Devise#emailAttributeName`](#SimpleAuth-Configuration-Devise-emailAttributeName).
+    [`SimpleAuth.Configuration.Devise#identificationAttributeName`](#SimpleAuth-Configuration-Devise-identificationAttributeName).
 
-    @property emailAttributeName
+    @property identificationAttributeName
     @type String
     @default 'user_email'
   */
-  emailAttributeName: 'user_email',
+  identificationAttributeName: 'user_email',
 
   /**
     @method init
     @private
   */
   init: function() {
-    this.serverTokenEndpoint = Configuration.serverTokenEndpoint;
-    this.resourceName        = Configuration.resourceName;
-    this.tokenAttributeName  = Configuration.tokenAttributeName;
-    this.emailAttributeName  = Configuration.emailAttributeName;
+    this.serverTokenEndpoint          = Configuration.serverTokenEndpoint;
+    this.resourceName                 = Configuration.resourceName;
+    this.tokenAttributeName           = Configuration.tokenAttributeName;
+    this.identificationAttributeName  = Configuration.identificationAttributeName;
   },
 
   /**
@@ -94,7 +94,7 @@ export default Base.extend({
     var _this = this;
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(_properties.get(_this.tokenAttributeName) && !Ember.isEmpty(_properties.get(_this.emailAttributeName)))) {
+      if (!Ember.isEmpty(_properties.get(_this.tokenAttributeName) && !Ember.isEmpty(_properties.get(_this.identificationAttributeName)))) {
         resolve(properties);
       } else {
         reject();

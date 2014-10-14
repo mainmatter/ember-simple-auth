@@ -43,7 +43,7 @@ describe('Devise', function() {
       describe('when the session contains a non empty custom token and email attributes', function() {
         beforeEach(function() {
           Configuration.tokenAttributeName = 'employee_token';
-          Configuration.emailAttributeName = 'employee_email';
+          Configuration.identificationAttributeName = 'employee_email';
 
           this.customAttributesAuthenticator = Devise.create();
           this.customAttributesAuthenticator.set('session', this.session);

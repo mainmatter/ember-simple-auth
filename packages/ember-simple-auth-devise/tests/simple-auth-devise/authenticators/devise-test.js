@@ -48,7 +48,7 @@ describe('Devise', function() {
     describe('when the data contains an custom token and email attribute', function() {
       beforeEach(function() {
         Configuration.tokenAttributeName = 'employee_token';
-        Configuration.emailAttributeName = 'employee_email';
+        Configuration.identificationAttributeName = 'employee_email';
         this.customAttributesAuthenticator = Devise.create();
         Configuration.load({}, {});
       });
