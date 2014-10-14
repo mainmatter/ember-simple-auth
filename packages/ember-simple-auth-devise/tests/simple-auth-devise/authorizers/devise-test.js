@@ -58,23 +58,30 @@ describe('Devise', function() {
         });
       });
 
-      describe('when the session contains a non empty custom token and email attributes', function() {
+      describe('when custom identification and token attribute names are configured', function() {
         beforeEach(function() {
-          Configuration.tokenAttributeName = 'employee_token';
+          Configuration.tokenAttributeName          = 'employee_token';
           Configuration.identificationAttributeName = 'employee_email';
 
-          this.customAttributesAuthenticator = Devise.create();
-          this.customAttributesAuthenticator.set('session', this.session);
-          this.customAttributesAuthenticator.set('session.employee_token', 'secret token!');
-          this.customAttributesAuthenticator.set('session.employee_email', 'user@email.com');
-
-          Configuration.load({}, {});
+          this.authorizer = Devise.create();
         });
 
-        it('adds the "employee_token" and "employee_email" query string fields to the request', function() {
-          this.customAttributesAuthenticator.authorize(this.request, {});
+        describe('when the session contains a non empty employee_token and employee_email', function() {
+          beforeEach(function() {
+            this.authorizer.set('session', this.session);
+            this.authorizer.set('session.employee_token', 'secret token!');
+            this.authorizer.set('session.employee_email', 'user@email.com');
+          });
 
-          expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Token employee_token="secret token!", employee_email="user@email.com"');
+          it('adds the "employee_token" and "employee_email" query string fields to the request', function() {
+            this.authorizer.authorize(this.request, {});
+
+            expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Token employee_token="secret token!", employee_email="user@email.com"');
+          });
+        });
+
+        afterEach(function() {
+          Configuration.load({}, {});
         });
       });
 
