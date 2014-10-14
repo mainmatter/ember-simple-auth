@@ -1,14 +1,15 @@
 import Devise from 'simple-auth-devise/authorizers/devise';
 import Session from 'simple-auth/session';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
+import Configuration from 'simple-auth-devise/configuration';
 
 describe('Devise', function() {
   beforeEach(function() {
     this.authorizer = Devise.create();
     this.request    = { setRequestHeader: function() {} };
-    var session     = Session.create();
-    session.setProperties({ store: EphemeralStore.create() });
-    this.authorizer.set('session', session);
+    this.session     = Session.create();
+    this.session.setProperties({ store: EphemeralStore.create() });
+    this.authorizer.set('session', this.session);
     sinon.spy(this.request, 'setRequestHeader');
   });
 
@@ -34,6 +35,26 @@ describe('Devise', function() {
 
         it('adds the "user_token" and "user_email" query string fields to the request', function() {
           this.authorizer.authorize(this.request, {});
+
+          expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Token token="secret token!", user_email="user@email.com"');
+        });
+      });
+
+      describe('when the session contains a non empty custom token and email attributes', function() {
+        beforeEach(function() {
+          Configuration.tokenAttributeName = 'employee_token';
+          Configuration.identificationAttributeName = 'employee_email';
+
+          this.customAttributesAuthenticator = Devise.create();
+          this.customAttributesAuthenticator.set('session', this.session);
+          this.customAttributesAuthenticator.set('session.employee_token', 'secret token!');
+          this.customAttributesAuthenticator.set('session.employee_email', 'user@email.com');
+
+          Configuration.load({}, {});
+        });
+
+        it('adds the "employee_token" and "employee_email" query string fields to the request', function() {
+          this.customAttributesAuthenticator.authorize(this.request, {});
 
           expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Token token="secret token!", user_email="user@email.com"');
         });
