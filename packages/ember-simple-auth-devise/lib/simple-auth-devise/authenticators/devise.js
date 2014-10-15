@@ -90,9 +90,10 @@ export default Base.extend({
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(properties) {
-    var _this = this;
+    var _this            = this;
+    var propertiesObject = Ember.Object.create(properties);
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(properties[_this.tokenAttributeName]) && !Ember.isEmpty(properties[_this.identificationAttributeName])) {
+      if (!Ember.isEmpty(propertiesObject.get(_this.tokenAttributeName)) && !Ember.isEmpty(propertiesObject.get(_this.identificationAttributeName))) {
         resolve(properties);
       } else {
         reject();

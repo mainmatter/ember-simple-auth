@@ -48,7 +48,7 @@ describe('Devise', function() {
       ]);
     });
 
-    describe('when the data contains an user_token and user_email', function() {
+    describe('when the data contains a user_token and user_email', function() {
       it('resolves with the correct data', function(done) {
         this.authenticator.restore({ "user_token": 'secret token!', "user_email": "user@email.com" }).then(function(content){
           expect(content).to.eql({ "user_token": "secret token!", "user_email": "user@email.com" });
@@ -57,19 +57,22 @@ describe('Devise', function() {
       });
     });
 
-    describe('when the data contains an custom token and email attribute', function() {
+    describe('when the data contains a custom token and email attribute', function() {
       beforeEach(function() {
-        Configuration.tokenAttributeName = 'employee_token';
-        Configuration.identificationAttributeName = 'employee_email';
-        this.customAttributesAuthenticator = Devise.create();
-        Configuration.load({}, {});
+        Configuration.tokenAttributeName          = 'employee.token';
+        Configuration.identificationAttributeName = 'employee.email';
+        this.authenticator                        = Devise.create();
       });
 
       it('resolves with the correct data', function(done) {
-        this.customAttributesAuthenticator.restore({ "employee_token": 'secret token!', "employee_email": "user@email.com" }).then(function(content){
-          expect(content).to.eql({ "employee_token": "secret token!", "employee_email": "user@email.com" });
+        this.authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then(function(content){
+          expect(content).to.eql({ employee: { token: 'secret token!', email: 'user@email.com' } });
           done();
         });
+      });
+
+      afterEach(function() {
+        Configuration.load({}, {});
       });
     });
   });
