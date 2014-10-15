@@ -276,7 +276,7 @@ methods (see the
 
 The
 [Ember Simple Auth Testing extension library](packages/ember-simple-auth-testing)
-provides test helpers for testing applications using Ember Simple Auth.
+provides test helpers for testing applications using Ember Simple Auth. [Setup instructions here](http://log.simplabs.com/post/92824729750/testing-with-ember-simple-auth-and-ember-cli)
 
 ## Examples
 
