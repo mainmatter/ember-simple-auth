@@ -102,7 +102,7 @@ export default Ember.Object.extend(Ember.Evented, {
     Authenticates the session with the specified `options`. These options vary
     depending on the actual authentication mechanism the authenticator
     implements (e.g. a set of credentials or a Facebook account id etc.). __The
-    session will invoke this method when an action in the appliaction triggers
+    session will invoke this method when an action in the application triggers
     authentication__ (see
     [SimpleAuth.AuthenticationControllerMixin.actions#authenticate](#SimpleAuth-AuthenticationControllerMixin-authenticate)).
 
