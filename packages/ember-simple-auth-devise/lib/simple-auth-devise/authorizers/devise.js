@@ -1,5 +1,4 @@
 import Base from 'simple-auth/authorizers/base';
-import isSecureUrl from 'simple-auth/utils/is-secure-url';
 import Configuration from './../configuration';
 
 /**
@@ -70,9 +69,6 @@ export default Base.extend({
     var userToken          = this.get('session').get(this.tokenAttributeName);
     var userIdentification = this.get('session').get(this.identificationAttributeName);
     if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userIdentification)) {
-      if (!isSecureUrl(requestOptions.url)) {
-        Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
-      }
       var authData = this.tokenAttributeName + '="' + userToken + '", ' + this.identificationAttributeName + '="' + userIdentification + '"';
       jqXHR.setRequestHeader('Authorization', 'Token ' + authData);
     }

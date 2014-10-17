@@ -1,5 +1,4 @@
 import Base from 'simple-auth/authenticators/base';
-import isSecureUrl from 'simple-auth/utils/is-secure-url';
 import Configuration from './../configuration';
 
 /**
@@ -209,9 +208,6 @@ export default Base.extend({
     @protected
   */
   makeRequest: function(url, data) {
-    if (!isSecureUrl(url)) {
-      Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
-    }
     return Ember.$.ajax({
       url:         url,
       type:        'POST',
