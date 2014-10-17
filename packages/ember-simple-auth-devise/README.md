@@ -6,6 +6,10 @@ This is an extension to the Ember Simple Auth library that provides an
 authenticator and an authorizer that are compatible with customized
 installations of [Devise](https://github.com/plataformatec/devise).
 
+__As your user's credentials as well as the token are exchanged between the
+Ember.js app and the Rails server you have to make sure that this connection
+uses HTTPS!__
+
 ## Server-side setup
 
 As token authentication is not actually part of Devise anymore, there are some
