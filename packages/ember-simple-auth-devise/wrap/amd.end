@@ -1,1 +1,1 @@
-})((typeof global !== 'undefined') ? global : window);
+})(this);
