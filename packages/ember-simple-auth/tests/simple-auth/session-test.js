@@ -220,6 +220,24 @@ describe('Session', function() {
       this.session.setProperties({ store: this.store, container: this.container });
     });
 
+    it('throws an error if no authenticator is specified', function() {
+      var _this = this;
+
+      expect(function() {
+        _this.session.authenticate();
+      }).to.throw(Error);
+    });
+
+    it('throws an error if the specified authenticator can not be found', function() {
+      var _this = this;
+      this.container.lookup.restore();
+      sinon.stub(this.container, 'lookup').returns(null);
+
+      expect(function() {
+        _this.session.authenticate('unknown:authenticator');
+      }).to.throw(Error);
+    });
+
     describe('when the authenticator resolves authentication', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'properties' }));

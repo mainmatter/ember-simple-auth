@@ -156,9 +156,11 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   */
   authenticate: function(authenticator, options) {
     Ember.assert('Session#authenticate requires the authenticator factory to be specified, was ' + authenticator, !Ember.isEmpty(authenticator));
-    var _this = this;
+    var _this            = this;
+    var theAuthenticator = this.container.lookup(authenticator);
+    Ember.assert('No authenticator for factory "' + authenticator + '" could be found', !Ember.isNone(theAuthenticator));
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      _this.container.lookup(authenticator).authenticate(options).then(function(content) {
+      theAuthenticator.authenticate(options).then(function(content) {
         _this.setup(authenticator, content, true);
         resolve();
       }, function(error) {
