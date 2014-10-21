@@ -141,7 +141,12 @@ export default Base.extend({
   authenticate: function(credentials) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var data = { grant_type: 'password', username: credentials.identification, password: credentials.password };
+    var grantType = credentials.grantType || 'password';
+    var scope = credentials.scope;
+    var data = { grantType: 'password', username: credentials.identification, password: credentials.password };
+    if (scope){
+        data.scope = scope;
+    }1
       _this.makeRequest(_this.serverTokenEndpoint, data).then(function(response) {
         Ember.run(function() {
           var expiresAt = _this.absolutizeExpirationTime(response.expires_in);
