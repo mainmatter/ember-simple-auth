@@ -84,11 +84,8 @@
     <script type="text/javascript">
       App = Ember.Application.create({});
 
-      var baseInitializer   = requireModule('simple-auth/initializer').default;
-      var oauth2Initializer = requireModule('simple-auth-oauth2/initializer').default;
-
-      App.initializer(baseInitializer);
-      App.initializer(oauth2Initializer);
+      requireModule('simple-auth/ember');
+      requireModule('simple-auth-oauth2/ember');
 
       App.Router.reopen({
         rootURL: '/examples/11-amd.html'
