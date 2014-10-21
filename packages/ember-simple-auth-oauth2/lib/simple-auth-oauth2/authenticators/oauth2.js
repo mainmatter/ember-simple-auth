@@ -146,7 +146,7 @@ export default Base.extend({
     var data = { grantType: 'password', username: credentials.identification, password: credentials.password };
     if (scope){
         data.scope = scope;
-    }1
+    }
       _this.makeRequest(_this.serverTokenEndpoint, data).then(function(response) {
         Ember.run(function() {
           var expiresAt = _this.absolutizeExpirationTime(response.expires_in);
