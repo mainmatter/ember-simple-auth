@@ -119,11 +119,11 @@ requests:
 Authorization: Bearer <access_token>
 ```
 
-To use the authorizer, configure it in the global environment object:
+To use the authorizer, configure it on the application's environment object:
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['simple-auth'] = {
+//config/environment.js
+ENV['simple-auth'] = {
   authorizer: 'simple-auth-authorizer:oauth2-bearer'
 }
 ```

@@ -6,12 +6,11 @@ import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
 
   Stores are used to persist the session's state so it survives a page reload
   and is synchronized across multiple tabs or windows of the same application.
-  The store to be used with the application can be configured in the global
-  configuration object:
+  The store to be used with the application can be configured on the
+  application's environment object:
 
   ```js
-  window.ENV = window.ENV || {};
-  window.ENV['simple-auth'] = {
+  ENV['simple-auth'] = {
     store: 'simple-auth-session-store:local-storage'
   }
   ```

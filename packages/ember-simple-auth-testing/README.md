@@ -41,9 +41,11 @@ store for the `test` environment as otherwise the session will be persisted and
 tests might influence each other.
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['simple-auth'] = {
-  store: 'simple-auth-session-store:ephemeral'
+//config/environment.js
+if (environment === 'test') {
+  ENV['simple-auth'] = {
+    store: 'simple-auth-session-store:ephemeral'
+  }
 }
 ```
 

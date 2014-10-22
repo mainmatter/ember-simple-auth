@@ -8,12 +8,11 @@ var defaults = {
 /**
   Ember Simple Auth Cookie Store's configuration object.
 
-  To change any of these values, define a global environment object for Ember
-  Simple Auth and define the values there:
+  To change any of these values, set them on the application's environment
+  object:
 
   ```js
-  window.ENV = window.ENV || {};
-  window.ENV['simple-auth-cookie-store'] = {
+  ENV['simple-auth-cookie-store'] = {
     cookieName: 'my_app_auth_session'
   }
   ```
