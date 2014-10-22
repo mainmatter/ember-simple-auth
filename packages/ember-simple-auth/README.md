@@ -344,8 +344,8 @@ once it is loaded in the application.
 ## Configuration
 
 If you're not using Ember CLI, Ember Simple Auth will read all configuration
-values from `window.ENV['simple-auth]` instead of `ENV` from Ember CLI's
-`config/environment.js`. file
+values from `window.ENV['simple-auth']` instead of `ENV` exported from Ember
+CLI's `config/environment.js`. file
 
 ## Building
 
