@@ -34,6 +34,19 @@ test('a protected route is not accessible when the session is not authenticated'
 });
 ```
 
+## Configuration
+
+When using the testing helpers also make sure to use the ephemeral session
+store for the `test` environment as otherwise the session will be persisted and
+tests might influence each other.
+
+```js
+window.ENV = window.ENV || {};
+window.ENV['simple-auth'] = {
+  store: 'simple-auth-session-store:ephemeral'
+}
+```
+
 ## Installation
 
 To install Ember Simple Auth Testing in an Ember.js application there are
