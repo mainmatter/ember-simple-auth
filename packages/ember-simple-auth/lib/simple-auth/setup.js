@@ -40,6 +40,8 @@ function registerFactories(container) {
   container.register('simple-auth-session:main', Session);
 }
 
+var didSetupAjaxHooks = false;
+
 /**
   @method setup
   @private
@@ -63,17 +65,20 @@ export default function(container, application) {
     var authorizer = container.lookup(Configuration.authorizer);
     if (!!authorizer) {
       authorizer.set('session', session);
-      Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-        if (!authorizer.isDestroyed && shouldAuthorizeRequest(options)) {
-          jqXHR.__simple_auth_authorized__ = true;
-          authorizer.authorize(jqXHR, options);
-        }
-      });
-      Ember.$(document).ajaxError(function(event, jqXHR, setting, exception) {
-        if (!!jqXHR.__simple_auth_authorized__ && jqXHR.status === 401) {
-          session.trigger('authorizationFailed');
-        }
-      });
+      if (!didSetupAjaxHooks) {
+        Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+          if (!authorizer.isDestroyed && shouldAuthorizeRequest(options)) {
+            jqXHR.__simple_auth_authorized__ = true;
+            authorizer.authorize(jqXHR, options);
+          }
+        });
+        Ember.$(document).ajaxError(function(event, jqXHR, setting, exception) {
+          if (!!jqXHR.__simple_auth_authorized__ && jqXHR.status === 401) {
+            session.trigger('authorizationFailed');
+          }
+        });
+        didSetupAjaxHooks = true;
+      }
     }
   } else {
     Ember.Logger.info('No authorizer was configured for Ember Simple Auth - specify one if backend requests need to be authorized.');
