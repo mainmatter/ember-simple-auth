@@ -11,7 +11,7 @@ describe('Session', function() {
   });
 
   function itHandlesAuthenticatorEvents(preparation) {
-    describe('when the authenticator triggers the "updated" event', function() {
+    describe('when the authenticator triggers the "sessionDataUpdated" event', function() {
       beforeEach(function(done) {
         preparation.apply(this, [done]);
       });
@@ -549,7 +549,7 @@ describe('Session', function() {
     });
   });
 
-  describe('when the store triggers the "updated" event', function() {
+  describe('when the store triggers the "sessionDataUpdated" event', function() {
     beforeEach(function() {
       this.session = Session.create();
       this.session.setProperties({ store: this.store, container: this.container });

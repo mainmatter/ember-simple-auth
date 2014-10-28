@@ -363,7 +363,7 @@ describe('OAuth2', function() {
         ]);
       });
 
-      it('triggers the "updated" event', function(done) {
+      it('triggers the "sessionDataUpdated" event', function(done) {
         this.authenticator.one('sessionDataUpdated', function(data) {
           expect(data.expires_at).to.be.greaterThan(new Date().getTime());
           delete data.expires_at;
@@ -383,7 +383,7 @@ describe('OAuth2', function() {
           ]);
         });
 
-        it('triggers the "updated" event with the correct data', function(done) {
+        it('triggers the "sessionDataUpdated" event with the correct data', function(done) {
           this.authenticator.one('sessionDataUpdated', function(data) {
             expect(data.expires_at).to.be.greaterThan(new Date().getTime());
             delete data.expires_at;

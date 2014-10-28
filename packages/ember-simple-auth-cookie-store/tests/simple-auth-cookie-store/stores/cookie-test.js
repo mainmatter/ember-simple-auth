@@ -41,7 +41,7 @@ describe('Stores.Cookie', function() {
     });
   });
 
-  describe('the "updated" event', function() {
+  describe('the "sessionDataUpdated" event', function() {
     beforeEach(function() {
       var _this = this;
       _this.triggered = false;
