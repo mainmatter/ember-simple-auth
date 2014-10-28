@@ -364,16 +364,14 @@ describe('OAuth2', function() {
       });
 
       it('triggers the "updated" event', function(done) {
-        var triggeredWith = false;
-        this.authenticator.one('sessionDataUpdated', function(data) { triggeredWith = data; });
-        this.authenticator.refreshAccessToken(12345, 'refresh token!');
-
-        Ember.run.later(function() {
-          expect(triggeredWith.expires_at).to.be.greaterThan(new Date().getTime());
-          delete triggeredWith.expires_at;
-          expect(triggeredWith).to.eql({ access_token: 'secret token 2!', expires_in: 12345, refresh_token: 'refresh token!' });
+        this.authenticator.one('sessionDataUpdated', function(data) {
+          expect(data.expires_at).to.be.greaterThan(new Date().getTime());
+          delete data.expires_at;
+          expect(data).to.eql({ access_token: 'secret token 2!', expires_in: 12345, refresh_token: 'refresh token!' });
           done();
-        }, 10);
+        });
+
+        this.authenticator.refreshAccessToken(12345, 'refresh token!');
       });
 
       describe('when the server reponse includes updated expiration data', function() {
@@ -386,16 +384,14 @@ describe('OAuth2', function() {
         });
 
         it('triggers the "updated" event with the correct data', function(done) {
-          var triggeredWith = false;
-          this.authenticator.one('sessionDataUpdated', function(data) { triggeredWith = data; });
-          this.authenticator.refreshAccessToken(12345, 'refresh token!');
-
-          Ember.run.later(function() {
-            expect(triggeredWith.expires_at).to.be.greaterThan(new Date().getTime());
-            delete triggeredWith.expires_at;
-            expect(triggeredWith).to.eql({ access_token: 'secret token 2!', expires_in: 67890, refresh_token: 'refresh token 2!' });
+          this.authenticator.one('sessionDataUpdated', function(data) {
+            expect(data.expires_at).to.be.greaterThan(new Date().getTime());
+            delete data.expires_at;
+            expect(data).to.eql({ access_token: 'secret token 2!', expires_in: 67890, refresh_token: 'refresh token 2!' });
             done();
-          }, 10);
+          });
+
+          this.authenticator.refreshAccessToken(12345, 'refresh token!');
         });
       });
     });
