@@ -17,9 +17,7 @@ export default function(options) {
 
     it('does not trigger the "sessionDataUpdated" event', function(done) {
       var triggered = false;
-      this.store.one('sessionDataUpdated', function() {
-        triggered = true;
-      });
+      this.store.one('sessionDataUpdated', function() { triggered = true; });
       this.store.persist({ key: 'other value' });
       syncExternalChanges.apply(this);
 

@@ -60,14 +60,12 @@ describe('Session', function() {
       });
 
       it('triggers the "sessionInvalidationSucceeded" event', function(done) {
-        var triggered = false;
-        this.session.one('sessionInvalidationSucceeded', function() { triggered = true; });
-        this.authenticator.trigger('sessionDataInvalidated', { some: 'other property' });
-
-        Ember.run.next(this, function() {
-          expect(triggered).to.be.true;
+        this.session.one('sessionInvalidationSucceeded', function() {
+          expect(true).to.be.true;
           done();
         });
+
+        this.authenticator.trigger('sessionDataInvalidated', { some: 'other property' });
       });
     });
   }
@@ -107,7 +105,6 @@ describe('Session', function() {
       });
 
       it('does not trigger the "sessionAuthenticationFailed" event', function(done) {
-        var _this = this;
         var triggered = false;
         this.session.one('sessionAuthenticationFailed', function() { triggered = true; });
 
@@ -180,7 +177,6 @@ describe('Session', function() {
         });
 
         it('does not trigger the "sessionAuthenticationSucceeded" event', function(done) {
-          var _this     = this;
           var triggered = false;
           this.session.one('sessionAuthenticationSucceeded', function() { triggered = true; });
 
@@ -273,20 +269,18 @@ describe('Session', function() {
       });
 
       it('triggers the "sessionAuthenticationSucceeded" event', function(done) {
-        this.session.one('sessionAuthenticationSucceeded', function() { triggered = true; });
-        this.session.authenticate('authenticator');
-        var triggered = false;
-
-        Ember.run.next(this, function() {
-          expect(triggered).to.be.true;
+        this.session.one('sessionAuthenticationSucceeded', function() {
+          expect(true).to.be.true;
           done();
         });
+
+        this.session.authenticate('authenticator');
       });
 
       it('does not trigger the "sessionAuthenticationFailed" event', function(done) {
+        var triggered = false;
         this.session.one('sessionAuthenticationFailed', function() { triggered = true; });
         this.session.authenticate('authenticator');
-        var triggered = false;
 
         Ember.run.next(this, function() {
           expect(triggered).to.be.false;
@@ -354,16 +348,12 @@ describe('Session', function() {
       });
 
       it('triggers the "sessionAuthenticationFailed" event', function(done) {
-        var triggered     = false;
-        var triggeredWith = null;
-        this.session.one('sessionAuthenticationFailed', function(error) { triggered = true; triggeredWith = error; });
-        this.session.authenticate('authenticator');
-
-        Ember.run.next(this, function() {
-          expect(triggered).to.be.true;
-          expect(triggeredWith).to.eql('error');
+        this.session.one('sessionAuthenticationFailed', function(error) {
+          expect(error).to.eql('error');
           done();
         });
+
+        this.session.authenticate('authenticator');
       });
     });
   });
@@ -432,14 +422,12 @@ describe('Session', function() {
       });
 
       it('triggers the "sessionInvalidationSucceeded" event', function(done) {
-        var triggered = false;
-        this.session.one('sessionInvalidationSucceeded', function() { triggered = true; });
-        this.session.invalidate();
-
-        Ember.run.next(this, function() {
-          expect(triggered).to.be.true;
+        this.session.one('sessionInvalidationSucceeded', function() {
+          expect(true).to.be.true;
           done();
         });
+
+        this.session.invalidate();
       });
     });
 
@@ -483,16 +471,12 @@ describe('Session', function() {
       });
 
       it('triggers the "sessionInvalidationFailed" event', function(done) {
-        var triggered     = false;
-        var triggeredWith = null;
-        this.session.one('sessionInvalidationFailed', function(error) { triggered = true; triggeredWith = error; });
-        this.session.invalidate();
-
-        Ember.run.next(this, function() {
-          expect(triggered).to.be.true;
-          expect(triggeredWith).to.eql('error');
+        this.session.one('sessionInvalidationFailed', function(error) {
+          expect(error).to.eql('error');
           done();
         });
+
+        this.session.invalidate();
       });
 
       it('does not trigger the "sessionInvalidationSucceeded" event', function(done) {
@@ -617,14 +601,12 @@ describe('Session', function() {
           });
 
           it('triggers the "sessionAuthenticationSucceeded" event', function(done) {
-            var triggered = false;
-            this.session.one('sessionAuthenticationSucceeded', function() { triggered = true; });
-            this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
-
-            Ember.run.next(this, function() {
-              expect(triggered).to.be.true;
+            this.session.one('sessionAuthenticationSucceeded', function() {
+              expect(true).to.be.true;
               done();
             });
+
+            this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
           });
         });
       });
@@ -667,14 +649,12 @@ describe('Session', function() {
           });
 
           it('triggers the "sessionInvalidationSucceeded" event', function(done) {
-            var triggered = false;
-            this.session.one('sessionInvalidationSucceeded', function() { triggered = true; });
-            this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
-
-            Ember.run.next(this, function() {
-              expect(triggered).to.be.true;
+            this.session.one('sessionInvalidationSucceeded', function() {
+              expect(true).to.be.true;
               done();
             });
+
+            this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
           });
         });
 
@@ -730,14 +710,12 @@ describe('Session', function() {
         });
 
         it('triggers the "sessionInvalidationSucceeded" event', function(done) {
-          var triggered = false;
-          this.session.one('sessionInvalidationSucceeded', function() { triggered = true; });
-          this.store.trigger('sessionDataUpdated', { some: 'other property' });
-
-          Ember.run.next(this, function() {
-            expect(triggered).to.be.true;
+          this.session.one('sessionInvalidationSucceeded', function() {
+            expect(true).to.be.true;
             done();
           });
+
+          this.store.trigger('sessionDataUpdated', { some: 'other property' });
         });
       });
 

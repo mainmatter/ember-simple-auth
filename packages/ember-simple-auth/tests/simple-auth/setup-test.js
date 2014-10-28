@@ -200,14 +200,12 @@ describe('setup', function() {
           });
 
           it("triggers the session's authorizationFailed event", function(done) {
-            var triggered = false;
-            this.session.one('authorizationFailed', function() { triggered = true; });
-            Ember.$.get('/data');
-
-            Ember.run.later(function() {
-              expect(triggered).to.be.true;
+            this.session.one('authorizationFailed', function() {
+              expect(true).to.be.true;
               done();
-            }, 100);
+            });
+
+            Ember.$.get('/data');
           });
         });
 
