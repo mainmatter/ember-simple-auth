@@ -42,6 +42,27 @@ import Configuration from './../configuration';
   @extends Stores.Base
 */
 export default Base.extend({
+
+  /**
+    The domain to use for the cookie. E.g., "example.com", ".example.com" (includes all subdomains)
+    or "subdomain.example.com"; if not specified, defaults to the host portion of the
+    current document location (string or null).
+
+    This value can be configured via the global environment object:
+
+    ```js
+    window.ENV = window.ENV || {};
+    window.ENV['simple-auth-cookie-store'] = {
+      cookieDomain: '.example.com'
+    }
+    ```
+
+    @property cookieDomain
+    @type String
+    @default ''
+  */
+  cookieDomain: '',
+
   /**
     The name of the cookie the store stores its data in.
 
@@ -87,6 +108,7 @@ export default Base.extend({
   init: function() {
     this.cookieName           = Configuration.cookieName;
     this.cookieExpirationTime = Configuration.cookieExpirationTime;
+    this.cookieDomain         = Configuration.cookieDomain;
     this.syncData();
   },
 
@@ -99,7 +121,8 @@ export default Base.extend({
   persist: function(data) {
     data           = JSON.stringify(data || {});
     var expiration = !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : null;
-    this.write(data, expiration);
+    var domain     = this.cookieDomain;
+    this.write(data, expiration, domain);
     this._lastData = this.restore();
   },
 
@@ -127,7 +150,7 @@ export default Base.extend({
     @method clear
   */
   clear: function() {
-    this.write(null, 0);
+    this.write(null, 0, this.cookieDomain);
     this._lastData = null;
   },
 
@@ -144,11 +167,11 @@ export default Base.extend({
     @method write
     @private
   */
-  write: function(value, expiration) {
+  write: function(value, expiration, domain) {
     var path = '; path=/';
     var expires = Ember.isEmpty(expiration) ? '' : '; expires=' + new Date(expiration).toUTCString();
     var secure  = !!this._secureCookies ? ';secure' : '';
-    document.cookie = this.cookieName + '=' + encodeURIComponent(value) + path + expires + secure;
+    document.cookie = this.cookieName + '=' + encodeURIComponent(value) + domain + path + expires + secure;
   },
 
   /**
