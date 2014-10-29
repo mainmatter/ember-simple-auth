@@ -25,18 +25,12 @@ var defaults = {
 export default {
 
   /**
-    The domain to use for the cookie. E.g., "example.com", ".example.com" (includes all subdomains)
-    or "subdomain.example.com"; if not specified, defaults to the host portion of the
-    current document location (string or null).
+    The domain to use for the cookie, e.g., "example.com", ".example.com"
+    (includes all subdomains) or "subdomain.example.com". If not configured the
+    cookie domain defaults to the domain the session was authneticated on.
 
-    This value can be configured via the global environment object:
-
-    ```js
-    window.ENV = window.ENV || {};
-    window.ENV['simple-auth-cookie-store'] = {
-      cookieDomain: '.example.com'
-    }
-    ```
+    This value can be configured via
+    [`SimpleAuth.Configuration.CookieStore#cookieDomain`](#SimpleAuth-Configuration-CookieStore-cookieDomain).
 
     @property cookieDomain
     @type String
