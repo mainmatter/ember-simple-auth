@@ -2,6 +2,7 @@ import loadConfig from 'simple-auth/utils/load-config';
 
 var defaults = {
   cookieName:           'ember_simple_auth:session',
+  cookieDomain:         '',
   cookieExpirationTime: null
 };
 
@@ -22,6 +23,27 @@ var defaults = {
   @module simple-auth/configuration
 */
 export default {
+
+  /**
+    The domain to use for the cookie. E.g., "example.com", ".example.com" (includes all subdomains)
+    or "subdomain.example.com"; if not specified, defaults to the host portion of the
+    current document location (string or null).
+
+    This value can be configured via the global environment object:
+
+    ```js
+    window.ENV = window.ENV || {};
+    window.ENV['simple-auth-cookie-store'] = {
+      cookieDomain: '.example.com'
+    }
+    ```
+
+    @property cookieDomain
+    @type String
+    @default ''
+  */
+  cookieDomain: defaults.cookieDomain,
+
   /**
     The name of the cookie the store stores its data in.
 

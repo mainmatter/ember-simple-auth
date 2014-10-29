@@ -14,6 +14,12 @@ describe('Stores.Cookie', function() {
   });
 
   describe('initilization', function() {
+    it('assigns cookieDomain from the configuration object', function() {
+      Configuration.cookieDomain = '.example.com';
+
+      expect(Cookie.create().cookieDomain).to.eq('.example.com');
+    });
+
     it('assigns cookieName from the configuration object', function() {
       Configuration.cookieName = 'cookieName';
 
@@ -52,7 +58,7 @@ describe('Stores.Cookie', function() {
     });
 
     it('is not triggered when the cookie has not actually changed', function(done) {
-      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22value%22%7D;path=/;';
+      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22value%22%7D;domain=;path=/;';
       this.store.syncData();
 
       Ember.run.next(this, function() {
@@ -62,7 +68,7 @@ describe('Stores.Cookie', function() {
     });
 
     it('is triggered when the cookie changed', function(done) {
-      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22other%20value%22%7D;path=/;';
+      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22other%20value%22%7D;domain=;path=/;';
       this.store.syncData();
 
       Ember.run.next(this, function() {
