@@ -9,11 +9,11 @@ support the `locaStorage` API.
 
 ## Configuration
 
-The Cookie Store can be configured via the global environment object:
+The Cookie Store can be configured via the application's environment object:
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['simple-auth'] = {
+//config/environment.js
+ENV['simple-auth'] = {
   store: 'simple-auth-session-store:cookie'
 }
 ```

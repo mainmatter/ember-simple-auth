@@ -17,8 +17,7 @@ In order to use the torii authenticator (see the
 the application needs to configure one or more torii providers, e.g.:
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['torii'] = {
+ENV['torii'] = {
   providers: {
     'facebook-oauth2': {
       apiKey:      '631252926924840',

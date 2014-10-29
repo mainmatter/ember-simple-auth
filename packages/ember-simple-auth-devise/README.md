@@ -175,11 +175,11 @@ session in the `Authorization` header:
 Authorization: Token token="<user_token>", user_email="<user_email>"
 ```
 
-To use the authorizer, configure it in the global environment object:
+To use the authorizer, configure it on the application's environment object:
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['simple-auth'] = {
+//config/environment.js
+ENV['simple-auth'] = {
   authorizer: 'simple-auth-authorizer:devise'
 }
 ```

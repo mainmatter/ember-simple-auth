@@ -165,8 +165,8 @@ to authorize AJAX requests. An authorizer can be configured in the global
 configuration object:
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['simple-auth'] = {
+//config/environment.js
+ENV['simple-auth'] = {
   authorizer: 'authorizer:custom'
 }
 ```
@@ -190,8 +190,7 @@ libraries, it is easy to implement custom authorizers as well. All you have to
 do is to extend the base authorizer and implement one method (see the
 [API docs for `Authorizers.Base`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Authorizers-Base)).
 
-To use a custom authorizer, register it with Ember's container and configure it
-in the global environment object:
+To use a custom authorizer, register it with Ember's container:
 
 ```js
 import Base from 'simple-auth/authorizers/base';
@@ -207,9 +206,13 @@ Ember.Application.initializer({
     container.register('authorizer:custom', CustomAuthorizer);
   }
 });
+```
 
-window.ENV = window.ENV || {};
-window.ENV['simple-auth'] = {
+and configure it on the application's environment object:
+
+```js
+//config/environment.js
+ENV['simple-auth'] = {
   authorizer: 'authorizer:custom'
 }
 ```
@@ -225,8 +228,8 @@ in the configuration _(beware that origins consist of protocol, host and port
 where port can be left out when it is 80 for HTTP or 443 for HTTPS)_:
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['simple-auth'] = {
+//config/environment.js
+ENV['simple-auth'] = {
   crossOriginWhitelist: ['http://some.other.domain:1234']
 }
 ```
@@ -239,8 +242,8 @@ There is only one store per application that can be configured in the global
 configuration object:
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['simple-auth'] = {
+//config/environment.js
+ENV['simple-auth'] = {
   store: 'simple-auth-session-store:local-storage'
 }
 ```
@@ -338,6 +341,12 @@ once it is loaded in the application.
 * Download a prebuilt version from
   [the releases page](https://github.com/simplabs/ember-simple-auth/releases)
 * [Build it yourself](#building)
+
+## Configuration
+
+If you're not using Ember CLI, Ember Simple Auth will read all configuration
+values from `window.ENV['simple-auth']` instead of the `ENV` object exported
+from Ember CLI's `config/environment.js`. file
 
 ## Building
 
