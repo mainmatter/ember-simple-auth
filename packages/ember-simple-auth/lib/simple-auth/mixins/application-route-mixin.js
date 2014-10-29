@@ -184,7 +184,9 @@ export default Ember.Mixin.create({
       @method actions.sessionInvalidationSucceeded
     */
     sessionInvalidationSucceeded: function() {
-      window.location.replace(Configuration.applicationRootUrl);
+      if (!Ember.testing) {
+        window.location.replace(Configuration.applicationRootUrl);
+      }
     },
 
     /**
