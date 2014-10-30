@@ -23,7 +23,7 @@ export default Base.extend({
     Triggered when the authenticator refreshes the access token (see
     [RFC 6740, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
 
-    @event updated
+    @event sessionDataUpdated
     @param {Object} data The updated session data
   */
 
