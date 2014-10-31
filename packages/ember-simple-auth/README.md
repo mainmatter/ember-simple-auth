@@ -233,7 +233,8 @@ ENV['simple-auth'] = {
   crossOriginWhitelist: ['http://some.other.domain:1234']
 }
 ```
-Use of * is allowed to allow all domains to be whitelisted.
+Whitelist all domains by specifying `*` (this should be used carefully of
+course).
 
 ### Stores
 
