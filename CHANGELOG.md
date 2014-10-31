@@ -1,5 +1,7 @@
 # 0.7.0
 
+* __[BREAKING]__: The Devise authorizer now sends the session token as
+  `user_token` instead of `token` for consistency.
 * The session store can store nested objects now, see #321.
 * The property names for `user_token` and `user_email` are now configurable for
   the Devise authenticator/authorizer, see #319.
