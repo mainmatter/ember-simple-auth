@@ -1,3 +1,21 @@
+# 0.7.0
+
+* The session store can store nested objects now, see #321.
+* The property names for `user_token` and `user_email` are now configurable for
+  the Devise authenticator/authorizer, see #319.
+* The `ApplicationRouteMixin`'s `sessionInvalidationSucceeded` action will no
+  longer reload the page in testing mode, see #333.
+* The cookie session store now has a `cookieDomain` setting that can be used if
+  e.g. the session needs to be shared across subdomains, see #332.
+* The AMD distribution has been fixed so that it doesn't depend on any specific
+  global objects anymore, see #325, #323.
+* Removed the insecure connection warning as it never actually triggers when it
+  actually should, see #318.
+* The `crossOriginWhitelist` setting can now be set to `['*']` to allow
+  requests to all domains, see #309.
+* The global `ajaxPrefilter` and `ajaxError` hooks will now be setup only once
+  which fixes some problems in testing mode.
+
 # 0.6.7
 
 * The Ember CLI Addons will now use the project's configuration as defined in
