@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/simplabs/ember-simple-auth.png?branch=master)](https://travis-ci.org/simplabs/ember-simple-auth)
+[![Build Status](https://travis-ci.org/simplabs/ember-simple-auth.svg?branch=master)](https://travis-ci.org/simplabs/ember-simple-auth)
 
 __[Ember Simple Auth's API docs are available here](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html)__
 
