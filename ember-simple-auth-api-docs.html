@@ -134,7 +134,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.6.7"><span class="label label-primary">0.6.7</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.7.0"><span class="label label-primary">0.7.0</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -337,6 +337,10 @@ application&#39;s root URL so that all in-memory data (such as Ember Data
 stores etc.) gets cleared. The root URL is automatically retrieved from
 the Ember.js application&#39;s router (see
 <a href="http://emberjs.com/guides/routing/#toc_specifying-a-root-url">http://emberjs.com/guides/routing/#toc_specifying-a-root-url</a>).</p>
+<p>If your Ember.js application will be used in an environment where the
+users don&#39;t have direct access to any data stored on the client (e.g.
+<a href="http://cordova.apache.org">cordova</a>) this action can be overridden to
+simply transition to the <code>&#39;index&#39;</code> route.</p>
 
     
   </div>
@@ -346,7 +350,7 @@ the Ember.js application&#39;s router (see
                   <div class="panel panel-default">
   <a id="SimpleAuth-ApplicationRouteMixin-sessionInvalidationFailed" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/mixins/application-route-mixin.js#L185"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/mixins/application-route-mixin.js#L192"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     <h3 class="panel-title method">
       sessionInvalidationFailed(error)
     </h3>
@@ -374,7 +378,7 @@ default.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-ApplicationRouteMixin-authorizationFailed" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/mixins/application-route-mixin.js#L196"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/mixins/application-route-mixin.js#L203"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     <h3 class="panel-title method">
       authorizationFailed()
     </h3>
@@ -816,7 +820,7 @@ rejecting promise.</p>
     <p>Authenticates the session with the specified <code>options</code>. These options vary
 depending on the actual authentication mechanism the authenticator
 implements (e.g. a set of credentials or a Facebook account id etc.). <strong>The
-session will invoke this method when an action in the appliaction triggers
+session will invoke this method when an action in the application triggers
 authentication</strong> (see
 <a href="#SimpleAuth-AuthenticationControllerMixin-authenticate">SimpleAuth.AuthenticationControllerMixin.actions#authenticate</a>).</p>
 <p><strong>This method returns a promise. A resolving promise will result in the
@@ -1171,10 +1175,9 @@ the <code>Authorization</code> header or some other secret in the query string e
           <div class="row">
             <div class="col-md-9" id="main-content">
               <p>Ember Simple Auth&#39;s configuration object.</p>
-<p>To change any of these values, define a global environment object for Ember
-Simple Auth and define the values there:</p>
-<pre><code class="lang-js">window.ENV = window.ENV || {};
-window.ENV[&#39;simple-auth&#39;] = {
+<p>To change any of these values, set them on the application&#39;s environment
+object:</p>
+<pre><code class="lang-js">ENV[&#39;simple-auth&#39;] = {
   authenticationRoute: &#39;sign-in&#39;
 };
 </code></pre>
@@ -1196,7 +1199,7 @@ window.ENV[&#39;simple-auth&#39;] = {
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-authenticationRoute" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L33"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L32"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1216,7 +1219,7 @@ window.ENV[&#39;simple-auth&#39;] = {
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-routeAfterAuthentication" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L44"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L43"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1236,7 +1239,7 @@ window.ENV[&#39;simple-auth&#39;] = {
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-routeIfAlreadyAuthenticated" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L55"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L54"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1258,7 +1261,7 @@ accessed when the session is authenticated.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-sessionPropertyName" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L68"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L67"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1279,7 +1282,7 @@ controllers.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-authorizer" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L80"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L79"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1303,7 +1306,7 @@ authorized requests, no auzthorizer is needed.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-session" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L95"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L94"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1325,7 +1328,7 @@ see
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-store" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L108"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L107"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1346,7 +1349,7 @@ see
                   <div class="panel panel-default">
   <a id="SimpleAuth-Configuration-crossOriginWhitelist" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L120"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/configuration.js#L119"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
       <span class="label label-info pull-right">static</span>
@@ -1715,7 +1718,7 @@ unauthenticated.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Session-invalidate" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/session.js#L172"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/session.js#L174"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -1979,10 +1982,9 @@ will be invoked whenever this event is triggered.</p>
 implementing custom stores and must not be used directly.</strong></p>
 <p>Stores are used to persist the session&#39;s state so it survives a page reload
 and is synchronized across multiple tabs or windows of the same application.
-The store to be used with the application can be configured in the global
-configuration object:</p>
-<pre><code class="lang-js">window.ENV = window.ENV || {};
-window.ENV[&#39;simple-auth&#39;] = {
+The store to be used with the application can be configured on the
+application&#39;s environment object:</p>
+<pre><code class="lang-js">ENV[&#39;simple-auth&#39;] = {
   store: &#39;simple-auth-session-store:local-storage&#39;
 }
 </code></pre>
@@ -2006,7 +2008,7 @@ window.ENV[&#39;simple-auth&#39;] = {
                   <div class="panel panel-default">
   <a id="SimpleAuth-Stores-Base-persist" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/stores/base.js#L38"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/stores/base.js#L37"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -2038,7 +2040,7 @@ stored data.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Stores-Base-restore" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/stores/base.js#L50"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/stores/base.js#L49"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -2066,7 +2068,7 @@ stored data.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Stores-Base-clear" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/stores/base.js#L62"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/stores/base.js#L61"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -2092,7 +2094,7 @@ stored data.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Stores-Base-sessionDataUpdated" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/stores/base.js#L26"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth/lib/simple-auth/stores/base.js#L25"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     <h3 class="panel-title method">
       sessionDataUpdated
     </h3>
