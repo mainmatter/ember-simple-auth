@@ -1,4 +1,5 @@
 import LocalStorage from 'simple-auth/stores/local-storage';
+import Configuration from 'simple-auth/configuration';
 import itBehavesLikeAStore from './shared/store-behavior';
 
 describe('Stores.LocalStorage', function() {
@@ -10,27 +11,14 @@ describe('Stores.LocalStorage', function() {
   itBehavesLikeAStore();
 
   describe('initilization', function() {
-    describe('when no global environment object is defined', function() {
-      it('defaults key to "ember_simple_auth:session"', function() {
-        expect(LocalStorage.create().key).to.eq('ember_simple_auth:session');
-      });
+    it('defaults key to "ember_simple_auth:session"', function() {
+      expect(LocalStorage.create().key).to.eq('ember_simple_auth:session');
     });
 
-    describe('when global environment object is defined', function() {
-      beforeEach(function() {
-        window.ENV = window.ENV || {};
-        window.ENV['simple-auth'] = {
-          localStorageKey: 'aDifferentKey'
-        };
-      });
+    it('assigns localStorageKey from the configuration object', function() {
+      Configuration.localStorageKey = 'localStorageKey';
 
-      it('uses the defined value for serverTokenEndpoint', function() {
-        expect(LocalStorage.create().key).to.eq('aDifferentKey');
-      });
-
-      afterEach(function() {
-        delete window.ENV['simple-auth'];
-      });
+      expect(LocalStorage.create().key).to.eq('localStorageKey');
     });
   });
 });
