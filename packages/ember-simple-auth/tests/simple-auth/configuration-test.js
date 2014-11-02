@@ -50,6 +50,12 @@ describe('Configuration', function() {
     });
   });
 
+  describe('localStorageKey', function() {
+    it('defaults to "ember_simple_auth:session"', function() {
+      expect(Configuration.localStorageKey).to.eql('ember_simple_auth:session');
+    });
+  });
+
   describe('crossOriginWhitelist', function() {
     it('defaults to []', function() {
       expect(Configuration.crossOriginWhitelist).to.be.a('array');
@@ -111,6 +117,12 @@ describe('Configuration', function() {
       Configuration.load(this.container, { store: 'store' });
 
       expect(Configuration.store).to.eql('store');
+    });
+
+    it('sets localStorageKey correctly', function() {
+      Configuration.load(this.container, { localStorageKey: 'localStorageKey' });
+
+      expect(Configuration.localStorageKey).to.eql('localStorageKey');
     });
 
     it('sets crossOriginWhitelist correctly', function() {
