@@ -1,3 +1,9 @@
+# 0.7.1
+
+* The `localStorage` session store now correctly reads its configuration from
+  the `Configuration` object and in turn can be configured in
+  `config/environment.js` in Ember CLI projects, see #340.
+
 # 0.7.0
 
 * __[BREAKING]__: The Devise authorizer now sends the session token as
