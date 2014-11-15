@@ -4,7 +4,7 @@ __[Ember Simple Auth's API docs are available here](http://ember-simple-auth.sim
 
 #  Ember Simple Auth
 
-![Logo](https://cloud.githubusercontent.com/assets/1510/5057175/fba067e0-6caf-11e4-8976-0c9a4eef70c5.png)
+![Logo](http://ember-simple-auth.com/images/logo.png)
 
 Ember Simple Auth is a __lightweight library for implementing authentication/
 authorization with [Ember.js](http://emberjs.com) applications__. It has
