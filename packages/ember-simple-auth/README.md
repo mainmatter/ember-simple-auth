@@ -381,3 +381,8 @@ grunt server
 
 and then run the tests in the browser at
 [http://localhost:8000](http://localhost:8000).
+
+## License
+
+Ember Simple Auth is released under the MIT License. It is not an official part
+of Ember.js and is not maintained by the Ember.js Core Team.
