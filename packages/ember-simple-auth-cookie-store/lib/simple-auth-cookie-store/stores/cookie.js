@@ -126,7 +126,6 @@ export default Base.extend({
     @return {Object} All data currently persisted in the cookie
   */
   restore: function() {
-
     var data = this.read();
     if (Ember.isEmpty(data)) {
       return {};
@@ -144,7 +143,7 @@ export default Base.extend({
   */
   clear: function() {
     this.write(null, 0);
-    this._lastData = null;
+    this._lastData = {};
   },
 
   /**

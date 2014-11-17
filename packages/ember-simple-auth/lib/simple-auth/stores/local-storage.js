@@ -67,7 +67,7 @@ export default Base.extend({
   */
   clear: function() {
     localStorage.removeItem(this.key);
-    this._lastData = null;
+    this._lastData = {};
   },
 
   /**
