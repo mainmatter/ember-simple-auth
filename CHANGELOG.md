@@ -193,7 +193,7 @@ incorrectly to npm...
   `setup` method, these values are now defined on `window.ENV['simple-auth']`
   (and `window.ENV['simple-auth-oauth']` etc. for the extension libraries).
   See the
-  [API Docs for `Configuration`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Configuration)
+  [API Docs for `Configuration`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Configuration)
   for more information.
 * __[BREAKING]__ All underscores have been replaced with dashes in filenames.
   This only affects users that were using the AMD build.
