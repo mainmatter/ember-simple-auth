@@ -261,6 +261,11 @@ The `localStorage` store (see the
 [API docs for `Stores.LocalStorage`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Stores-LocalStorage))
 stores its data in the browser's `localStorage`; __this is the default store__.
 
+##### `sessionStorage` Store
+
+The `sessionStorage` store (see the
+stores its data in the browser's `sessionStorage`; This works much like localStorage except it does not persist after the browser session.
+
 ##### Ephemeral Store
 
 The ephemeral store (see the

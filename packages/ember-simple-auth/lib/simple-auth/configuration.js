@@ -9,6 +9,7 @@ var defaults = {
   session:                     'simple-auth-session:main',
   store:                       'simple-auth-session-store:local-storage',
   localStorageKey:             'ember_simple_auth:session',
+  sessionStorageKey:           'ember_simple_auth:session',
   crossOriginWhitelist:        [],
   applicationRootUrl:          null
 };
@@ -125,6 +126,15 @@ export default {
     @default 'ember_simple_auth:session'
   */
   localStorageKey: defaults.localStorageKey,
+
+  /**
+    The key the store stores the data in.
+
+    @property key
+    @type String
+    @default 'ember_simple_auth:session'
+  */
+  sessionStorageKey: defaults.sessionStorageKey,
 
   /**
     Ember Simple Auth will never authorize requests going to a different origin
