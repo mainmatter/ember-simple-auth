@@ -3,7 +3,13 @@ import Configuration from 'simple-auth/configuration';
 var testHelpers = function() {
   Ember.Test.registerAsyncHelper('authenticateSession', function(app) {
     var session = app.__container__.lookup(Configuration.session);
-    session.authenticate('simple-auth-authenticator:test');
+    session.authenticate('simple-auth-authenticator:test', {});
+    return wait();
+  });
+
+  Ember.Test.registerAsyncHelper('authenticateSessionWithProperties', function(app, properties) {
+    var session = app.__container__.lookup(Configuration.session);
+    session.authenticate('simple-auth-authenticator:test', properties);
     return wait();
   });
 
