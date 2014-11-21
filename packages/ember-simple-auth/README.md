@@ -359,7 +359,7 @@ have those, simply run:
 
 ```bash
 git clone https://github.com/simplabs/ember-simple-auth.git
-cd simple-auth
+cd ember-simple-auth
 npm install
 grunt dist
 ```
