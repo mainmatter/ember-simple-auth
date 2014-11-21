@@ -7,7 +7,7 @@ var testHelpers = function() {
     return wait();
   });
   
-  Ember.Test.registerAsyncHelper('currentSession', function(app) {
+  Ember.Test.registerHelper('currentSession', function(app) {
     var session = app.__container__.lookup(Configuration.session);
     return session;
   });
