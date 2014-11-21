@@ -6,7 +6,7 @@ export default Base.extend({
   },
 
   authenticate: function(options) {
-    return new Ember.RSVP.resolve(options);
+    return new Ember.RSVP.resolve();
   },
 
   invalidate: function(data) {
