@@ -17,6 +17,18 @@ describe('Configuration', function() {
     });
   });
 
+  describe('tokenAttributeName', function() {
+    it('defaults to "user_token"', function() {
+      expect(Configuration.tokenAttributeName).to.eql('user_token');
+    });
+  });
+
+  describe('identificationAttributeName', function() {
+    it('defaults to "user_email"', function() {
+      expect(Configuration.identificationAttributeName).to.eq('user_email');
+    });
+  });
+
   describe('.load', function() {
     it('sets serverTokenEndpoint correctly', function() {
       Configuration.load(this.container, { serverTokenEndpoint: 'serverTokenEndpoint' });
@@ -28,6 +40,18 @@ describe('Configuration', function() {
       Configuration.load(this.container, { resourceName: 'resourceName' });
 
       expect(Configuration.resourceName).to.eql('resourceName');
+    });
+
+    it('sets identificationAttributeName correctly', function() {
+      Configuration.load(this.container, { identificationAttributeName: 'identificationAttributeName' });
+
+      expect(Configuration.identificationAttributeName).to.eql('identificationAttributeName');
+    });
+
+    it('sets tokenAttributeName correctly', function() {
+      Configuration.load(this.container, { tokenAttributeName: 'tokenAttributeName' });
+
+      expect(Configuration.tokenAttributeName).to.eql('tokenAttributeName');
     });
   });
 

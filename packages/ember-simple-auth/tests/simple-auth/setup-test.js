@@ -5,17 +5,31 @@ import LocalStorageStore from 'simple-auth/stores/local-storage';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
 
 describe('setup', function() {
+  before(function() {
+    Configuration.authorizer = 'authorizer';
+    this.container           = { register: function() {}, injection: function() {}, lookup: function() {} };
+    this.authorizer          = { set: function() {}, authorize: function() {} };
+    this.session             = Session.create();
+    this.containerStub       = sinon.stub(this.container, 'lookup');
+    this.containerStub.withArgs('authorizer').returns(this.authorizer);
+    sinon.spy(this.container, 'register');
+    sinon.spy(this.container, 'injection');
+    sinon.spy(this.authorizer, 'authorize');
+    sinon.spy(Ember.$, 'ajaxPrefilter');
+  });
+
   beforeEach(function() {
-    this.container   = { register: function() {}, injection: function() {}, lookup: function() {} };
     this.application = { deferReadiness: function() {}, advanceReadiness: function() {} };
     this.router      = { get: function() { return 'rootURL'; }, send: function() {} };
     this.store       = EphemeralStore.create();
-    this.session     = Session.create();
     this.session.setProperties({ store: this.store, container: this.container });
-    this.containerStub = sinon.stub(this.container, 'lookup');
     this.containerStub.withArgs('router:main').returns(this.router);
     this.containerStub.withArgs('simple-auth-session-store:local-storage').returns(this.store);
     this.containerStub.withArgs('simple-auth-session:main').returns(this.session);
+
+    this.container.register.reset();
+    this.container.injection.reset();
+    this.authorizer.authorize.reset();
   });
 
   it("defers the application's readiness", function() {
@@ -26,21 +40,18 @@ describe('setup', function() {
   });
 
   it('registers the LocalStorage store', function() {
-    sinon.spy(this.container, 'register');
     setup(this.container, this.application);
 
     expect(this.container.register).to.have.been.calledWith('simple-auth-session-store:local-storage', LocalStorageStore);
   });
 
   it('registers the Ephemeral store', function() {
-    sinon.spy(this.container, 'register');
     setup(this.container, this.application);
 
     expect(this.container.register).to.have.been.calledWith('simple-auth-session-store:ephemeral', EphemeralStore);
   });
 
   it('registers the Session', function() {
-    sinon.spy(this.container, 'register');
     setup(this.container, this.application);
 
     expect(this.container.register).to.have.been.calledWith('simple-auth-session:main', Session);
@@ -53,10 +64,9 @@ describe('setup', function() {
 
     context('when a custom session class is configured', function() {
       beforeEach(function() {
-        Configuration.session             = 'session:custom';
-        this.otherSession                 = Session.extend().create({ store: this.store, container: this.container });
+        Configuration.session = 'session:custom';
+        this.otherSession     = Session.extend().create({ store: this.store, container: this.container });
         this.containerStub.withArgs('session:custom').returns(this.otherSession);
-        sinon.spy(this.container, 'injection');
       });
 
       it('is of that class', function() {
@@ -75,7 +85,7 @@ describe('setup', function() {
 
     it('uses a custom store if specified', function() {
       Configuration.store = 'simple-auth-session-store:ephemeral';
-      var store = EphemeralStore.create();
+      var store           = EphemeralStore.create();
       this.containerStub.withArgs('simple-auth-session-store:ephemeral').returns(store);
       setup(this.container, this.application);
 
@@ -90,7 +100,6 @@ describe('setup', function() {
 
     it('is injected into all controllers and routes', function() {
       var _this = this;
-      sinon.spy(this.container, 'injection');
       setup(this.container, this.application);
 
       ['controller', 'route'].forEach(function(component) {
@@ -110,14 +119,6 @@ describe('setup', function() {
   });
 
   describe('when an authorizer is specified', function() {
-    beforeEach(function() {
-      Configuration.authorizer = 'authorizer';
-      this.authorizer                      = { set: function() {}, authorize: function() {} };
-      this.containerStub.withArgs('authorizer').returns(this.authorizer);
-      sinon.spy(this.authorizer, 'authorize');
-      sinon.spy(Ember.$, 'ajaxPrefilter');
-    });
-
     it('registers an AJAX prefilter', function() {
       setup(this.container, this.application);
 
@@ -127,7 +128,7 @@ describe('setup', function() {
     describe('the AJAX prefilter', function() {
       it('uses the configured authorizer', function() {
         setup(this.container, this.application);
-        Ember.$.get(window.location);
+        Ember.$.get('/data');
 
         expect(this.authorizer.authorize).to.have.been.calledOnce;
       });
@@ -135,7 +136,7 @@ describe('setup', function() {
       it('does not use destroyed authorizers', function() {
         this.authorizer.isDestroyed = true;
         setup(this.container, this.application);
-        Ember.$.get(window.location);
+        Ember.$.get('/data');
 
         expect(this.authorizer.authorize).to.not.have.been.called;
       });
@@ -147,7 +148,23 @@ describe('setup', function() {
         expect(this.authorizer.authorize).to.not.have.been.called;
       });
 
-      it('authorizes requests going to a foreign origin if the origin is whitelisted', function() {
+      it('authorizes requests going to a foreign origin if all other origins are whitelisted', function() {
+          Configuration.crossOriginWhitelist = ['*'];
+          setup(this.container, this.application);
+          Ember.$.get('http://other-domain.com/path/query=string');
+
+          expect(this.authorizer.authorize).to.have.been.calledOnce;
+
+          Ember.$.get('http://other-domain.com:80/path/query=string');
+
+          expect(this.authorizer.authorize).to.have.been.calledTwice;
+
+          Ember.$.get('https://another-port.net:4567/path/query=string');
+
+          expect(this.authorizer.authorize).to.have.been.calledThrice;
+      });
+
+      it('authorizes requests going to a foreign origin if the specific origin is whitelisted', function() {
         Configuration.crossOriginWhitelist = ['http://other-domain.com', 'https://another-port.net:4567'];
         setup(this.container, this.application);
         Ember.$.get('http://other-domain.com/path/query=string');
@@ -161,6 +178,10 @@ describe('setup', function() {
         Ember.$.get('https://another-port.net:4567/path/query=string');
 
         expect(this.authorizer.authorize).to.have.been.calledThrice;
+      });
+
+      afterEach(function() {
+        this.authorizer.isDestroyed = false;
       });
     });
 
@@ -179,14 +200,12 @@ describe('setup', function() {
           });
 
           it("triggers the session's authorizationFailed event", function(done) {
-            var triggered = false;
-            this.session.one('authorizationFailed', function() { triggered = true; });
-            Ember.$.get('/data');
-
-            Ember.run.later(function() {
-              expect(triggered).to.be.true;
+            this.session.one('authorizationFailed', function() {
+              expect(true).to.be.true;
               done();
-            }, 100);
+            });
+
+            Ember.$.get('/data');
           });
         });
 
@@ -232,20 +251,15 @@ describe('setup', function() {
     });
 
     afterEach(function() {
-      Ember.$.ajaxPrefilter.restore();
-    });
-  });
 
-  describe('when no authorizer is specified', function() {
-    it('does not register an AJAX prefilter', function() {
-      sinon.spy(Ember.$, 'ajaxPrefilter');
-      setup(this.container, this.application);
-
-      expect(Ember.$.ajaxPrefilter).to.not.have.been.called;
     });
   });
 
   afterEach(function() {
     Configuration.load(this.container, {});
+  });
+
+  after(function() {
+    Ember.$.ajaxPrefilter.restore();
   });
 });

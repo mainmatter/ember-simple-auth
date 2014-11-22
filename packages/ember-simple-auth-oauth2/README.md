@@ -1,14 +1,18 @@
-__[The API docs for Ember Simple Auth OAuth 2.0 are available here](http://ember-simple-auth.simplabs.com/ember-simple-auth-oauth2-api-docs.html)__
+__[The API docs for Ember Simple Auth OAuth 2.0 are available here](http://ember-simple-auth.com/ember-simple-auth-oauth2-api-docs.html)__
 
 # Ember Simple Auth OAuth 2.0
 
 This is an extension to the Ember Simple Auth library that provides an
 authenticator and an authorizer that are compatible with OAuth 2.0.
 
+__As your user's credentials as well as the token are exchanged between the
+Ember.js app and the OAuth 2.0 server you have to make sure that this
+connection uses HTTPS!__
+
 ## The Authenticator
 
 The authenticator (see the
-[API docs for `Authenticators.OAuth2`](http://ember-simple-auth.simplabs.com/ember-simple-auth-oauth2-api-docs.html#SimpleAuth-Authenticators-OAuth2))
+[API docs for `Authenticators.OAuth2`](http://ember-simple-auth.com/ember-simple-auth-oauth2-api-docs.html#SimpleAuth-Authenticators-OAuth2))
 is compliant with [RFC 6749 (OAuth 2.0)](http://tools.ietf.org/html/rfc6749),
 specifically the _"Resource Owner Password Credentials Grant Type"_. This grant
 type basically specifies that the client sends a set of credentials to a
@@ -68,7 +72,7 @@ The `authenticate` action that is triggered by submitting the form is provided
 by the `LoginControllerMixin` that the respective controller in the application
 can include (the controller can also implement its own action and use the
 session API directly; see the
-[API docs for `Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Session)).
+[API docs for `Session`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session)).
 It then also needs to specify the OAuth 2.0 authenticator to be used:
 
 ```js
@@ -109,7 +113,7 @@ with this library:
 ## The Authorizer
 
 The authorizer (see the
-[API docs for `Authorizers.OAuth2`](http://ember-simple-auth.simplabs.com/ember-simple-auth-oauth2-api-docs.html#SimpleAuth-Authorizers-OAuth2))
+[API docs for `Authorizers.OAuth2`](http://ember-simple-auth.com/ember-simple-auth-oauth2-api-docs.html#SimpleAuth-Authorizers-OAuth2))
 is compliant with [RFC 6750 (OAuth 2.0 Bearer Tokens)](http://tools.ietf.org/html/rfc6750)
 and thus fits the OAuth 2.0 authenticator. It simply injects an `Authorization`
 header with the `access_token` that the authenticator acquired into all
@@ -119,11 +123,11 @@ requests:
 Authorization: Bearer <access_token>
 ```
 
-To use the authorizer, configure it in the global environment object:
+To use the authorizer, configure it on the application's environment object:
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['simple-auth'] = {
+//config/environment.js
+ENV['simple-auth'] = {
   authorizer: 'simple-auth-authorizer:oauth2-bearer'
 }
 ```

@@ -14,6 +14,12 @@ describe('Stores.Cookie', function() {
   });
 
   describe('initilization', function() {
+    it('assigns cookieDomain from the configuration object', function() {
+      Configuration.cookieDomain = '.example.com';
+
+      expect(Cookie.create().cookieDomain).to.eq('.example.com');
+    });
+
     it('assigns cookieName from the configuration object', function() {
       Configuration.cookieName = 'cookieName';
 
@@ -39,9 +45,17 @@ describe('Stores.Cookie', function() {
 
       expect(document.cookie).to.contain('test:session=%7B%22key%22%3A%22value%22%7D');
     });
+
+    it('respects the configured cookieDomain', function() {
+      this.store = Cookie.create();
+      this.store.cookieDomain = 'example.com';
+      this.store.persist({ key: 'value' });
+
+      expect(document.cookie).to.eq('');
+    });
   });
 
-  describe('the "updated" event', function() {
+  describe('the "sessionDataUpdated" event', function() {
     beforeEach(function() {
       var _this = this;
       _this.triggered = false;

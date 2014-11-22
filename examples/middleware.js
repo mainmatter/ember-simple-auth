@@ -113,7 +113,7 @@ module.exports = function(request, response, next) {
       next();
     }
   } else if (request.url === '/v5/data') {
-    if (request.headers.authorization === 'Token token="secret token!", user_email="letme"') {
+    if (request.headers.authorization === 'Token user_token="secret token!", user_email="letme"') {
       success('{ "some": "data" }');
     } else {
       error(401, '{}');

@@ -1,19 +1,20 @@
 import loadConfig from 'simple-auth/utils/load-config';
 
 var defaults = {
-  serverTokenEndpoint: '/users/sign_in',
-  resourceName:        'user'
+  serverTokenEndpoint:         '/users/sign_in',
+  resourceName:                'user',
+  tokenAttributeName:          'user_token',
+  identificationAttributeName: 'user_email'
 };
 
 /**
   Ember Simple Auth Device's configuration object.
 
-  To change any of these values, define a global environment object for Ember
-  Simple Auth and define the values there:
+  To change any of these values, set them on the application's environment
+  object:
 
   ```js
-  window.ENV = window.ENV || {};
-  window.ENV['simple-auth-devise'] = {
+  ENV['simple-auth-devise'] = {
     serverTokenEndpoint: '/some/other/endpoint'
   }
   ```
@@ -45,6 +46,28 @@ export default {
     @default 'user'
   */
   resourceName: defaults.resourceName,
+
+  /**
+    The token attribute name.
+
+    @property tokenAttributeName
+    @readOnly
+    @static
+    @type String
+    @default 'user_token'
+  */
+  tokenAttributeName: defaults.tokenAttributeName,
+
+  /**
+    The email attribute name.
+
+    @property identificationAttributeName
+    @readOnly
+    @static
+    @type String
+    @default 'user_email'
+  */
+  identificationAttributeName: defaults.identificationAttributeName,
 
   /**
     @method load

@@ -1,6 +1,6 @@
 import Base from './base';
-import flatObjectsAreEqual from '../utils/flat-objects-are-equal';
-import getGlobalConfig from 'simple-auth/utils/get-global-config';
+import objectsAreEqual from '../utils/objects-are-equal';
+import Configuration from '../configuration';
 
 /**
   Store that saves its data in the browser's `localStorage`.
@@ -30,8 +30,7 @@ export default Base.extend({
     @private
   */
   init: function() {
-    var globalConfig = getGlobalConfig('simple-auth');
-    this.key         = globalConfig.localStorageKey || this.key;
+    this.key = Configuration.localStorageKey;
 
     this.bindToStorageEvents();
   },
@@ -68,7 +67,7 @@ export default Base.extend({
   */
   clear: function() {
     localStorage.removeItem(this.key);
-    this._lastData = null;
+    this._lastData = {};
   },
 
   /**
@@ -79,7 +78,7 @@ export default Base.extend({
     var _this = this;
     Ember.$(window).bind('storage', function(e) {
       var data = _this.restore();
-      if (!flatObjectsAreEqual(data, _this._lastData)) {
+      if (!objectsAreEqual(data, _this._lastData)) {
         _this._lastData = data;
         _this.trigger('sessionDataUpdated', data);
       }

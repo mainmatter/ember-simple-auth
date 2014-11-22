@@ -22,6 +22,18 @@ describe('Devise', function() {
       expect(Devise.create().resourceName).to.eq('resourceName');
     });
 
+    it('assigns tokenAttributeName from the configuration object', function() {
+      Configuration.tokenAttributeName = 'tokenAttributeName';
+
+      expect(Devise.create().tokenAttributeName).to.eq('tokenAttributeName');
+    });
+
+    it('assigns identificationAttributeName from the configuration object', function() {
+      Configuration.identificationAttributeName = 'identificationAttributeName';
+
+      expect(Devise.create().identificationAttributeName).to.eq('identificationAttributeName');
+    });
+
     afterEach(function() {
       Configuration.load({}, {});
     });
@@ -36,12 +48,31 @@ describe('Devise', function() {
       ]);
     });
 
-    describe('when the data contains an user_token and user_email', function() {
+    describe('when the data contains a user_token and user_email', function() {
       it('resolves with the correct data', function(done) {
         this.authenticator.restore({ "user_token": 'secret token!', "user_email": "user@email.com" }).then(function(content){
           expect(content).to.eql({ "user_token": "secret token!", "user_email": "user@email.com" });
           done();
         });
+      });
+    });
+
+    describe('when the data contains a custom token and email attribute', function() {
+      beforeEach(function() {
+        Configuration.tokenAttributeName          = 'employee.token';
+        Configuration.identificationAttributeName = 'employee.email';
+        this.authenticator                        = Devise.create();
+      });
+
+      it('resolves with the correct data', function(done) {
+        this.authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then(function(content){
+          expect(content).to.eql({ employee: { token: 'secret token!', email: 'user@email.com' } });
+          done();
+        });
+      });
+
+      afterEach(function() {
+        Configuration.load({}, {});
       });
     });
   });

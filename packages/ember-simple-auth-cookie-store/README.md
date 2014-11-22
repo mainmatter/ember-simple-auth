@@ -1,4 +1,4 @@
-__[The API docs for the cookie store are available here](http://ember-simple-auth.simplabs.com/ember-simple-auth-cookie-store-api-docs.html)__
+__[The API docs for the cookie store are available here](http://ember-simple-auth.com/ember-simple-auth-cookie-store-api-docs.html)__
 
 #  Ember Simple Auth Cookie Store
 
@@ -9,11 +9,11 @@ support the `locaStorage` API.
 
 ## Configuration
 
-The Cookie Store can be configured via the global environment object:
+The Cookie Store can be configured via the application's environment object:
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['simple-auth'] = {
+//config/environment.js
+ENV['simple-auth'] = {
   store: 'simple-auth-session-store:cookie'
 }
 ```

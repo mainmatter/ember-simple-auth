@@ -1,5 +1,4 @@
 import Base from 'simple-auth/authenticators/base';
-import isSecureUrl from 'simple-auth/utils/is-secure-url';
 import Configuration from './../configuration';
 
 /**
@@ -24,7 +23,7 @@ export default Base.extend({
     Triggered when the authenticator refreshes the access token (see
     [RFC 6740, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
 
-    @event updated
+    @event sessionDataUpdated
     @param {Object} data The updated session data
   */
 
@@ -214,9 +213,6 @@ export default Base.extend({
     @protected
   */
   makeRequest: function(url, data) {
-    if (!isSecureUrl(url)) {
-      Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
-    }
     return Ember.$.ajax({
       url:         url,
       type:        'POST',

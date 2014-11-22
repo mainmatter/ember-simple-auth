@@ -4,8 +4,8 @@
     return (window.location.search.match(regexp) || [])[1];
   }
 
-  var jQueryVersion     = parseVersion('jQuery') || '2.1.1';
-  var emberVersion      = parseVersion('ember') || '1.6.1';
+  var jQueryVersion = parseVersion('jQuery') || '2.1.1';
+  var emberVersion  = parseVersion('ember') || '1.8.0';
 
   document.write('<script src="vendor/jquery-' + jQueryVersion + '.js"></script>');
   document.write('<script src="vendor/handlebars.js"></script>');

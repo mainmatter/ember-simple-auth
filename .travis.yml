@@ -1,13 +1,14 @@
----
-notifications:
-  email:
-    on_success: never
 language: node_js
+
 node_js:
   - '0.10'
+
+sudo: false
+
 cache:
   directories:
     - node_modules
+
 env:
   global:
     - REPORTER=Dot
@@ -22,5 +23,11 @@ env:
     - BUNDLE="ember=1.5.1&jQuery=2.1.1"
     - BUNDLE="ember=1.6.1&jQuery=1.11.1"
     - BUNDLE="ember=1.6.1&jQuery=2.1.1"
-    - BUNDLE="ember=1.7.0&jQuery=1.11.1"
-    - BUNDLE="ember=1.7.0&jQuery=2.1.1"
+    - BUNDLE="ember=1.7.1&jQuery=1.11.1"
+    - BUNDLE="ember=1.7.1&jQuery=2.1.1"
+    - BUNDLE="ember=1.8.0&jQuery=1.11.1"
+    - BUNDLE="ember=1.8.0&jQuery=2.1.1"
+
+notifications:
+  email:
+    on_success: never

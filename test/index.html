@@ -39,7 +39,7 @@
     chai.Assertion.includeStack = true;
 
     mocha.checkLeaks();
-    mocha.globals(['jQuery', 'Ember', 'Handlebars', 'ENV']);
+    mocha.globals(['jQuery*', 'Ember', 'Handlebars', 'ENV']);
     if (navigator.userAgent.indexOf('PhantomJS') < 0) {
       mocha.run();
     }

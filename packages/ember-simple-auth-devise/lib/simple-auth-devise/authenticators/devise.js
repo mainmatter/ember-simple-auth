@@ -1,5 +1,4 @@
 import Base from 'simple-auth/authenticators/base';
-import isSecureUrl from 'simple-auth/utils/is-secure-url';
 import Configuration from './../configuration';
 
 /**
@@ -46,12 +45,38 @@ export default Base.extend({
   resourceName: 'user',
 
   /**
+    The token attribute name.
+
+    This value can be configured via
+    [`SimpleAuth.Configuration.Devise#tokenAttributeName`](#SimpleAuth-Configuration-Devise-tokenAttributeName).
+
+    @property tokenAttributeName
+    @type String
+    @default 'user_token'
+  */
+  tokenAttributeName: 'user_token',
+
+  /**
+    The identification attribute name.
+
+    This value can be configured via
+    [`SimpleAuth.Configuration.Devise#identificationAttributeName`](#SimpleAuth-Configuration-Devise-identificationAttributeName).
+
+    @property identificationAttributeName
+    @type String
+    @default 'user_email'
+  */
+  identificationAttributeName: 'user_email',
+
+  /**
     @method init
     @private
   */
   init: function() {
-    this.serverTokenEndpoint = Configuration.serverTokenEndpoint;
-    this.resourceName        = Configuration.resourceName;
+    this.serverTokenEndpoint          = Configuration.serverTokenEndpoint;
+    this.resourceName                 = Configuration.resourceName;
+    this.tokenAttributeName           = Configuration.tokenAttributeName;
+    this.identificationAttributeName  = Configuration.identificationAttributeName;
   },
 
   /**
@@ -64,8 +89,10 @@ export default Base.extend({
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(properties) {
+    var _this            = this;
+    var propertiesObject = Ember.Object.create(properties);
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(properties.user_token) && !Ember.isEmpty(properties.user_email)) {
+      if (!Ember.isEmpty(propertiesObject.get(_this.tokenAttributeName)) && !Ember.isEmpty(propertiesObject.get(_this.identificationAttributeName))) {
         resolve(properties);
       } else {
         reject();
@@ -121,9 +148,6 @@ export default Base.extend({
     @private
   */
   makeRequest: function(data, resolve, reject) {
-    if (!isSecureUrl(this.serverTokenEndpoint)) {
-      Ember.Logger.warn('Credentials are transmitted via an insecure connection - use HTTPS to keep them secure.');
-    }
     return Ember.$.ajax({
       url:        this.serverTokenEndpoint,
       type:       'POST',

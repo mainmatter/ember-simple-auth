@@ -1,5 +1,5 @@
 import Base from 'simple-auth/stores/base';
-import flatObjectsAreEqual from 'simple-auth/utils/flat-objects-are-equal';
+import objectsAreEqual from 'simple-auth/utils/objects-are-equal';
 import Configuration from './../configuration';
 
 /**
@@ -42,6 +42,21 @@ import Configuration from './../configuration';
   @extends Stores.Base
 */
 export default Base.extend({
+
+  /**
+    The domain to use for the cookie, e.g., "example.com", ".example.com"
+    (includes all subdomains) or "subdomain.example.com". If not configured the
+    cookie domain defaults to the domain the session was authneticated on.
+
+    This value can be configured via
+    [`SimpleAuth.Configuration.CookieStore#cookieDomain`](#SimpleAuth-Configuration-CookieStore-cookieDomain).
+
+    @property cookieDomain
+    @type String
+    @default null
+  */
+  cookieDomain: null,
+
   /**
     The name of the cookie the store stores its data in.
 
@@ -87,6 +102,7 @@ export default Base.extend({
   init: function() {
     this.cookieName           = Configuration.cookieName;
     this.cookieExpirationTime = Configuration.cookieExpirationTime;
+    this.cookieDomain         = Configuration.cookieDomain;
     this.syncData();
   },
 
@@ -110,7 +126,6 @@ export default Base.extend({
     @return {Object} All data currently persisted in the cookie
   */
   restore: function() {
-
     var data = this.read();
     if (Ember.isEmpty(data)) {
       return {};
@@ -128,7 +143,7 @@ export default Base.extend({
   */
   clear: function() {
     this.write(null, 0);
-    this._lastData = null;
+    this._lastData = {};
   },
 
   /**
@@ -145,10 +160,11 @@ export default Base.extend({
     @private
   */
   write: function(value, expiration) {
-    var path = '; path=/';
+    var path    = '; path=/';
+    var domain  = Ember.isEmpty(this.cookieDomain) ? '' : '; domain=' + this.cookieDomain;
     var expires = Ember.isEmpty(expiration) ? '' : '; expires=' + new Date(expiration).toUTCString();
     var secure  = !!this._secureCookies ? ';secure' : '';
-    document.cookie = this.cookieName + '=' + encodeURIComponent(value) + path + expires + secure;
+    document.cookie = this.cookieName + '=' + encodeURIComponent(value) + domain + path + expires + secure;
   },
 
   /**
@@ -157,7 +173,7 @@ export default Base.extend({
   */
   syncData: function() {
     var data = this.restore();
-    if (!flatObjectsAreEqual(data, this._lastData)) {
+    if (!objectsAreEqual(data, this._lastData)) {
       this._lastData = data;
       this.trigger('sessionDataUpdated', data);
     }

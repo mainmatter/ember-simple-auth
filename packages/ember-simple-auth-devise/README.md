@@ -1,10 +1,14 @@
-__[The API docs for Ember Simple Auth Devise are available here](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html)__
+__[The API docs for Ember Simple Auth Devise are available here](http://ember-simple-auth.com/ember-simple-auth-devise-api-docs.html)__
 
 # Ember Simple Auth Devise
 
 This is an extension to the Ember Simple Auth library that provides an
 authenticator and an authorizer that are compatible with customized
 installations of [Devise](https://github.com/plataformatec/devise).
+
+__As your user's credentials as well as the token are exchanged between the
+Ember.js app and the Rails server you have to make sure that this connection
+uses HTTPS!__
 
 ## Server-side setup
 
@@ -122,7 +126,7 @@ delete it on session invalidation!
 ## The Authenticator
 
 In order to use the Devise authenticator (see the
-[API docs for `Authenticators.Devise`](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html#SimpleAuth-Authenticators-Devise))
+[API docs for `Authenticators.Devise`](http://ember-simple-auth.com/ember-simple-auth-devise-api-docs.html#SimpleAuth-Authenticators-Devise))
 the application needs to have a login route:
 
 ```js
@@ -148,7 +152,7 @@ The `authenticate` action that is triggered by submitting the form is provided
 by the `LoginControllerMixin` that the respective controller in the application
 can include (the controller can also implement its own action and use the
 session API directly; see the
-[API docs for `Session`](http://ember-simple-auth.simplabs.com/ember-simple-auth-api-docs.html#SimpleAuth-Session)).
+[API docs for `Session`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session)).
 It then also needs to specify the Devise authenticator to be used:
 
 ```js
@@ -163,7 +167,7 @@ export default Ember.Controller.extend(LoginControllerMixin, {
 ## The Authorizer
 
 The authorizer (see the
-[API docs for `Authorizers.Devise`](http://ember-simple-auth.simplabs.com/ember-simple-auth-devise-api-docs.html#SimpleAuth-Authorizers-Devise))
+[API docs for `Authorizers.Devise`](http://ember-simple-auth.com/ember-simple-auth-devise-api-docs.html#SimpleAuth-Authorizers-Devise))
 authorizes requests by adding `user_token` and `user_email` properties from the
 session in the `Authorization` header:
 
@@ -171,11 +175,11 @@ session in the `Authorization` header:
 Authorization: Token token="<user_token>", user_email="<user_email>"
 ```
 
-To use the authorizer, configure it in the global environment object:
+To use the authorizer, configure it on the application's environment object:
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['simple-auth'] = {
+//config/environment.js
+ENV['simple-auth'] = {
   authorizer: 'simple-auth-authorizer:devise'
 }
 ```

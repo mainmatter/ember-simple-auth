@@ -15,11 +15,9 @@ export default function(options) {
       expect(this.store.restore()).to.eql({ key2: 'value2' });
     });
 
-    it('does not trigger the "updated" event', function(done) {
+    it('does not trigger the "sessionDataUpdated" event', function(done) {
       var triggered = false;
-      this.store.one('sessionDataUpdated', function() {
-        triggered = true;
-      });
+      this.store.one('sessionDataUpdated', function() { triggered = true; });
       this.store.persist({ key: 'other value' });
       syncExternalChanges.apply(this);
 

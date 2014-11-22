@@ -1,4 +1,4 @@
-__[The API docs for Ember Simple Auth Torii are available here](http://ember-simple-auth.simplabs.com/ember-simple-auth-torii-api-docs.html)__
+__[The API docs for Ember Simple Auth Torii are available here](http://ember-simple-auth.com/ember-simple-auth-torii-api-docs.html)__
 
 # Ember Simple Auth Torii
 
@@ -13,12 +13,11 @@ __Ember Simple Auth Torii requires Ember.js 1.6 or later!__
 ## The Authenticator
 
 In order to use the torii authenticator (see the
-[API docs for `Authenticators.Torii`](http://ember-simple-auth.simplabs.com/ember-simple-auth-torii-api-docs.html#SimpleAuth-Authenticators-Torii))
+[API docs for `Authenticators.Torii`](http://ember-simple-auth.com/ember-simple-auth-torii-api-docs.html#SimpleAuth-Authenticators-Torii))
 the application needs to configure one or more torii providers, e.g.:
 
 ```js
-window.ENV = window.ENV || {};
-window.ENV['torii'] = {
+ENV['torii'] = {
   providers: {
     'facebook-oauth2': {
       apiKey:      '631252926924840',
