@@ -10,6 +10,6 @@ export default {
     var config = getGlobalConfig('simple-auth-oauth2');
     Configuration.load(container, config);
     container.register('simple-auth-authorizer:oauth2-bearer', Authorizer);
-    container.register('simple-auth-authenticator:oauth2-password-grant', Authenticator);
+    container.register('simple-auth-authenticator:oauth2-generic', Authenticator);
   }
 };
