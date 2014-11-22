@@ -65,6 +65,8 @@ export default Base.extend({
   */
   refreshAccessTokens: true,
 
+
+
   /**
     @property _refreshTokenTimeout
     @private
@@ -80,6 +82,8 @@ export default Base.extend({
     this.serverTokenRevocationEndpoint = Configuration.serverTokenRevocationEndpoint;
     this.refreshAccessTokens           = Configuration.refreshAccessTokens;
   },
+
+
 
   /**
     Restores the session from a set of session properties; __will return a
@@ -119,6 +123,18 @@ export default Base.extend({
   },
 
   /**
+    Sets up the data needed for the authentication request. This allows different strategies to be used
+    through overriding the function.
+
+    @method authenticateDataProcessor
+    @param {Object} credentials The credentials to authenticate the session with
+    @return {Object} An object that contains all data necessary to complete authentication
+  */
+  authenticateDataProcessor: function(credentials){
+      return {grantType: 'password', username: credentials.identification, password: credentials.password};
+  },
+
+  /**
     Authenticates the session with the specified `credentials`; the credentials
     are send via a _"POST"_ request to the
     [`Authenticators.OAuth2#serverTokenEndpoint`](#SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint)
@@ -140,7 +156,7 @@ export default Base.extend({
   authenticate: function(credentials) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var data = { grant_type: 'password', username: credentials.identification, password: credentials.password };
+      var data = _this.authenticateDataProcessor(credentials);
       _this.makeRequest(_this.serverTokenEndpoint, data).then(function(response) {
         Ember.run(function() {
           var expiresAt = _this.absolutizeExpirationTime(response.expires_in);
