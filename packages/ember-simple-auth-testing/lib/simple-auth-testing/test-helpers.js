@@ -6,7 +6,7 @@ var testHelpers = function() {
     session.authenticate('simple-auth-authenticator:test');
     return wait();
   });
-  
+
   Ember.Test.registerHelper('currentSession', function(app) {
     var session = app.__container__.lookup(Configuration.session);
     return session;
