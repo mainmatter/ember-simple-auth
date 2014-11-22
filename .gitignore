@@ -1,5 +1,4 @@
 .DS_Store
-dist
 tmp
 docs/build
 .ruby-version
