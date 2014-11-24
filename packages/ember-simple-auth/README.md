@@ -137,7 +137,7 @@ registered factory's name to the session's `authenticate` method (see the
 [API docs for `Session#authenticate`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session-authenticate)):
 
 ```js
-this.get('session').authenticate('authenticators:custom', {});
+this.get('session').authenticate('authenticator:custom', {});
 ```
 
 or when using one of the controller mixins:
@@ -147,7 +147,7 @@ or when using one of the controller mixins:
 import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
 
 export default Ember.Controller.extend(LoginControllerMixin, {
-  authenticator: 'authenticators:custom'
+  authenticator: 'authenticator:custom'
 });
 ```
 
@@ -163,7 +163,7 @@ export default {
   name:       'authentication',
   before:     'simple-auth',
   initialize: function(container, application) {
-    container.register('authenticators:custom', CustomAuthenticator);
+    container.register('authenticator:custom', CustomAuthenticator);
   }
 };
 ```
@@ -224,7 +224,7 @@ and configure it on the application's environment object:
 ```js
 //config/environment.js
 ENV['simple-auth'] = {
-  authorizer: 'authorizers:custom'
+  authorizer: 'authorizer:custom'
 }
 ```
 
@@ -240,7 +240,7 @@ export default {
   name:       'authentication',
   before:     'simple-auth',
   initialize: function(container) {
-    container.register('authorizers:custom', CustomAuthorizer);
+    container.register('authorizer:custom', CustomAuthorizer);
   }
 };
 ```
