@@ -112,23 +112,22 @@ Besides the option to use one of the predefined authenticators from the
 extension libraries, it is easy to implement custom authenticators as well. All
 that is necessary is to extend the base authenticator and implement three
 methods (see the
-[API docs for `Authenticators.Base`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Authenticators-Base)).
-
-__Custom authenticators have to be registered with Ember's dependency injection
-container__ so that the session can retrieve an instance, e.g.:
+[API docs for `Authenticators.Base`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Authenticators-Base)),
+e.g.:
 
 ```js
+// app/authenticators/custom.js
 import Base from 'simple-auth/authenticators/base';
 
-var CustomAuthenticator = Base.extend({
-  …
-});
-
-Ember.Application.initializer({
-  name: 'authentication',
-  before: 'simple-auth',
-  initialize: function(container, application) {
-    container.register('authenticator:custom', CustomAuthenticator);
+export default CustomAuthenticator = Base.extend({
+  restore: function(data) {
+    …
+  },
+  authenticate: function(options) {
+    …
+  },
+  invalidate: function(data) {
+    …
   }
 });
 ```
@@ -138,7 +137,7 @@ registered factory's name to the session's `authenticate` method (see the
 [API docs for `Session#authenticate`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session-authenticate)):
 
 ```js
-this.get('session').authenticate('authenticator:custom', {});
+this.get('session').authenticate('authenticators:custom', {});
 ```
 
 or when using one of the controller mixins:
@@ -148,8 +147,25 @@ or when using one of the controller mixins:
 import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
 
 export default Ember.Controller.extend(LoginControllerMixin, {
-  authenticator: 'authenticator:custom'
+  authenticator: 'authenticators:custom'
 });
+```
+
+**Note that when you're not using Ember CLI the authenticator will not be
+registered with the container automatically and you need to do that in an
+initializer:**
+
+```js
+// app/initializers/authentication.js
+import CustomAuthenticator from '../authenticators/custom';
+
+export default {
+  name:       'authentication',
+  before:     'simple-auth',
+  initialize: function(container, application) {
+    container.register('authenticators:custom', CustomAuthenticator);
+  }
+};
 ```
 
 Also see the
@@ -169,7 +185,7 @@ configuration object:
 ```js
 //config/environment.js
 ENV['simple-auth'] = {
-  authorizer: 'authorizer:custom'
+  authorizer: 'simple-auth-authorizer:oauth2-bearer'
 }
 ```
 
@@ -192,20 +208,13 @@ libraries, it is easy to implement custom authorizers as well. All you have to
 do is to extend the base authorizer and implement one method (see the
 [API docs for `Authorizers.Base`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Authorizers-Base)).
 
-To use a custom authorizer, register it with Ember's container:
-
 ```js
+// app/authorizers/custom.js
 import Base from 'simple-auth/authorizers/base';
 
-var CustomAuthorizer = Base.extend({
-  …
-});
-
-Ember.Application.initializer({
-  name: 'authorization',
-  before: 'simple-auth',
-  initialize: function(container, application) {
-    container.register('authorizer:custom', CustomAuthorizer);
+export default Base.extend({
+  authorize: function(jqXHR, requestOptions) {
+    …
   }
 });
 ```
@@ -215,8 +224,25 @@ and configure it on the application's environment object:
 ```js
 //config/environment.js
 ENV['simple-auth'] = {
-  authorizer: 'authorizer:custom'
+  authorizer: 'authorizers:custom'
 }
+```
+
+**Note that when you're not using Ember CLI the authorizer will not be
+registered with the container automatically and you need to do that in an
+initializer:**
+
+```js
+// app/initializers/authentication.js
+import CustomAuthorizer from '../authorizers/custom';
+
+export default {
+  name:       'authentication',
+  before:     'simple-auth',
+  initialize: function(container) {
+    container.register('authorizers:custom', CustomAuthorizer);
+  }
+};
 ```
 
 #### Cross Origin Authorization
