@@ -169,6 +169,24 @@ describe('OAuth2', function() {
       });
     });
 
+    it('sends a single OAuth scope to the token endpoint', function(done) {
+      this.authenticator.authenticate({ identification: 'username', password: 'password', scope: 'public' });
+
+      Ember.run.next(function() {
+        expect(Ember.$.ajax.getCall(0).args[0].data.scope).to.eql('public');
+        done();
+      });
+    });
+
+    it('sends multiple OAuth scopes to the token endpoint', function(done) {
+      this.authenticator.authenticate({ identification: 'username', password: 'password', scope: ['public', 'private'] });
+
+      Ember.run.next(function() {
+        expect(Ember.$.ajax.getCall(0).args[0].data.scope).to.eql('public private');
+        done();
+      });
+    });
+
     describe('when the authentication request is successful', function() {
       beforeEach(function() {
         this.server.respondWith('POST', '/token', [

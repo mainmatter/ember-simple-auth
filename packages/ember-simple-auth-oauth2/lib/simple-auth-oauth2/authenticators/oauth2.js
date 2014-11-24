@@ -119,11 +119,11 @@ export default Base.extend({
   },
 
   /**
-    Authenticates the session with the specified `credentials`; the credentials
+    Authenticates the session with the specified `options`; the options
     are send via a _"POST"_ request to the
     [`Authenticators.OAuth2#serverTokenEndpoint`](#SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint)
     and if they are valid the server returns an access token in response (see
-    http://tools.ietf.org/html/rfc6749#section-4.3). __If the credentials are
+    http://tools.ietf.org/html/rfc6749#section-4.3). __If the options are
     valid and authentication succeeds, a promise that resolves with the
     server's response is returned__, otherwise a promise that rejects with the
     error is returned.
@@ -134,13 +134,20 @@ export default Base.extend({
     [`Authenticators.OAuth2#refreshAccessTokens`](#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
 
     @method authenticate
-    @param {Object} credentials The credentials to authenticate the session with
+    @param {Object} options
+    @param {String} options.identification The resource owner username
+    @param {String} options.password The resource owner password
+    @param {String|Array} [options.scope] The scope of the access request (see [RFC 6749, section 3.3](http://tools.ietf.org/html/rfc6749#section-3.3))
     @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
   */
-  authenticate: function(credentials) {
+  authenticate: function(options) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var data = { grant_type: 'password', username: credentials.identification, password: credentials.password };
+      var data = { grant_type: 'password', username: options.identification, password: options.password };
+      if (!Ember.isEmpty(options.scope)) {
+        var scopesString = Ember.makeArray(options.scope).join(' ');
+        Ember.merge(data, { scope: scopesString });
+      }
       _this.makeRequest(_this.serverTokenEndpoint, data).then(function(response) {
         Ember.run(function() {
           var expiresAt = _this.absolutizeExpirationTime(response.expires_in);
