@@ -34,6 +34,22 @@ test('a protected route is not accessible when the session is not authenticated'
 });
 ```
 
+This package also defines the `currentSession` helper that provides access to
+the session from tests to e.g. set properties on it:
+
+```js
+test("the current project's name is displayed in the page header", function() {
+  expect(1);
+  authenticateSession();
+  currentSession().set('currentProject', 'some test project');
+  visit('/dashboard');
+
+  andThen(function() {
+    findWithAssert('h1:contains("some test project")');
+  });
+});
+```
+
 ## Configuration
 
 When using the testing helpers also make sure to use the ephemeral session
