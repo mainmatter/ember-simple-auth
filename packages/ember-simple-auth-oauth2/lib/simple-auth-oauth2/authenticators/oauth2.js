@@ -119,12 +119,14 @@ export default Base.extend({
   },
 
   /**
-    Authenticates the session with the specified `options`; the options
-    are send via a _"POST"_ request to the
+    Authenticates the session with the specified `options`; makes a `POST`
+    request to the
     [`Authenticators.OAuth2#serverTokenEndpoint`](#SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint)
-    and if they are valid the server returns an access token in response (see
-    http://tools.ietf.org/html/rfc6749#section-4.3). __If the options are
-    valid and authentication succeeds, a promise that resolves with the
+    with the passed credentials and optional scope and receives the token in
+    response (see http://tools.ietf.org/html/rfc6749#section-4.3).
+
+    __If the credentials are valid (and the optionally requested scope is
+    granted) and thus authentication succeeds, a promise that resolves with the
     server's response is returned__, otherwise a promise that rejects with the
     error is returned.
 
