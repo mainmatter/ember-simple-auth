@@ -61,26 +61,27 @@ export default function(container, application) {
     return extractLocationOrigin(origin);
   });
 
-  if (!Ember.isEmpty(Configuration.authorizer)) {
-    var authorizer = container.lookup(Configuration.authorizer);
-    if (!!authorizer) {
-      authorizer.set('session', session);
-      if (!didSetupAjaxHooks) {
-        Ember.$.ajaxPrefilter('+*', function(options, originalOptions, jqXHR) {
-          if (!authorizer.isDestroyed && shouldAuthorizeRequest(options)) {
-            jqXHR.__simple_auth_authorized__ = true;
-            authorizer.authorize(jqXHR, options);
-          }
-        });
-        Ember.$(document).ajaxError(function(event, jqXHR, setting, exception) {
-          if (!!jqXHR.__simple_auth_authorized__ && jqXHR.status === 401) {
-            session.trigger('authorizationFailed');
-          }
-        });
-        didSetupAjaxHooks = true;
+  if (!didSetupAjaxHooks) {
+    Ember.$.ajaxPrefilter('+*', function(options, originalOptions, jqXHR) {
+      if (!Ember.isEmpty(Configuration.authorizer)) {
+        var authorizer = container.lookup(Configuration.authorizer);
+        Ember.assert('The configured authorizer "' + Configuration.authorizer + '" could not be found in the container.', !Ember.isEmpty(authorizer));
+        authorizer.set('session', session);
+        if (shouldAuthorizeRequest(options)) {
+          jqXHR.__simple_auth_authorized__ = true;
+          authorizer.authorize(jqXHR, options);
+        }
       }
-    }
-  } else {
+    });
+    Ember.$(document).ajaxError(function(event, jqXHR, setting, exception) {
+      if (!!jqXHR.__simple_auth_authorized__ && jqXHR.status === 401) {
+        session.trigger('authorizationFailed');
+      }
+    });
+    didSetupAjaxHooks = true;
+  }
+
+  if (Ember.isEmpty(Configuration.authorizer)) {
     Ember.Logger.info('No authorizer was configured for Ember Simple Auth - specify one if backend requests need to be authorized.');
   }
 

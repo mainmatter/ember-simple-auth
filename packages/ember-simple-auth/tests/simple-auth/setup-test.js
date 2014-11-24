@@ -6,30 +6,28 @@ import EphemeralStore from 'simple-auth/stores/ephemeral';
 
 describe('setup', function() {
   before(function() {
-    Configuration.authorizer = 'authorizer';
-    this.container           = { register: function() {}, injection: function() {}, lookup: function() {} };
-    this.authorizer          = { set: function() {}, authorize: function() {} };
-    this.session             = Session.create();
-    this.containerStub       = sinon.stub(this.container, 'lookup');
-    this.containerStub.withArgs('authorizer').returns(this.authorizer);
+    this.container     = { register: function() {}, injection: function() {}, lookup: function() {} };
+    this.session       = Session.create();
+    this.containerStub = sinon.stub(this.container, 'lookup');
     sinon.spy(this.container, 'register');
     sinon.spy(this.container, 'injection');
-    sinon.spy(this.authorizer, 'authorize');
-    sinon.spy(Ember.$, 'ajaxPrefilter');
   });
 
   beforeEach(function() {
     this.application = { deferReadiness: function() {}, advanceReadiness: function() {} };
     this.router      = { get: function() { return 'rootURL'; }, send: function() {} };
     this.store       = EphemeralStore.create();
+    this.authorizer  = { set: function() {}, authorize: function() {} };
     this.session.setProperties({ store: this.store, container: this.container });
     this.containerStub.withArgs('router:main').returns(this.router);
     this.containerStub.withArgs('simple-auth-session-store:local-storage').returns(this.store);
     this.containerStub.withArgs('simple-auth-session:main').returns(this.session);
+    this.containerStub.withArgs('authorizer').returns(this.authorizer);
 
     this.container.register.reset();
     this.container.injection.reset();
-    this.authorizer.authorize.reset();
+
+    sinon.spy(this.authorizer, 'authorize');
   });
 
   it("defers the application's readiness", function() {
@@ -118,27 +116,17 @@ describe('setup', function() {
     });
   });
 
-  describe('when an authorizer is specified', function() {
-    it('registers an AJAX prefilter', function() {
-      setup(this.container, this.application);
+  describe('the AJAX prefilter', function() {
+    describe('when an authorizer is configured', function() {
+      beforeEach(function() {
+        Configuration.authorizer = 'authorizer';
+      });
 
-      expect(Ember.$.ajaxPrefilter).to.have.been.calledOnce;
-    });
-
-    describe('the AJAX prefilter', function() {
       it('uses the configured authorizer', function() {
         setup(this.container, this.application);
         Ember.$.get('/data');
 
         expect(this.authorizer.authorize).to.have.been.calledOnce;
-      });
-
-      it('does not use destroyed authorizers', function() {
-        this.authorizer.isDestroyed = true;
-        setup(this.container, this.application);
-        Ember.$.get('/data');
-
-        expect(this.authorizer.authorize).to.not.have.been.called;
       });
 
       it('does not authorize requests going to a foreign origin', function() {
@@ -184,59 +172,43 @@ describe('setup', function() {
         this.authorizer.isDestroyed = false;
       });
     });
+  });
 
-    describe('the AJAX error handler', function() {
-      beforeEach(function() {
-        this.xhr                = sinon.useFakeXMLHttpRequest();
-        this.server             = sinon.fakeServer.create();
-        this.server.autoRespond = true;
-        setup(this.container, this.application);
-      });
+  describe('the AJAX error handler', function() {
+    beforeEach(function() {
+      Configuration.authorizer = 'authorizer';
+      this.xhr                 = sinon.useFakeXMLHttpRequest();
+      this.server              = sinon.fakeServer.create();
+      this.server.autoRespond  = true;
+      setup(this.container, this.application);
+    });
 
-      describe("when the request's status is 401", function() {
-        describe('when the XHR was authorized by the authorizer', function() {
-          beforeEach(function() {
-            this.server.respondWith('GET', '/data', [401, {}, '']);
-          });
-
-          it("triggers the session's authorizationFailed event", function(done) {
-            this.session.one('authorizationFailed', function() {
-              expect(true).to.be.true;
-              done();
-            });
-
-            Ember.$.get('/data');
-          });
-        });
-
-        describe('when the XHR was not authorized by the authorizer', function() {
-          beforeEach(function() {
-            this.server.respondWith('GET', 'http://other.origin/data', [401, {}, '']);
-          });
-
-          it("does not trigger the session's authorizationFailed event", function(done) {
-            var triggered = false;
-            this.session.one('authorizationFailed', function() { triggered = true; });
-            // as this is a different origin that's not whitelisted the request will not be authorized
-            Ember.$.get('http://other.origin/data');
-
-            Ember.run.later(function() {
-              expect(triggered).to.be.false;
-              done();
-            }, 100);
-          });
-        });
-      });
-
-      describe("when the request's status is not 401", function() {
+    describe("when the request's status is 401", function() {
+      describe('when the XHR was authorized by the authorizer', function() {
         beforeEach(function() {
-          this.server.respondWith('GET', '/data', [500, {}, '']);
+          this.server.respondWith('GET', '/data', [401, {}, '']);
+        });
+
+        it("triggers the session's authorizationFailed event", function(done) {
+          this.session.one('authorizationFailed', function() {
+            expect(true).to.be.true;
+            done();
+          });
+
+          Ember.$.get('/data');
+        });
+      });
+
+      describe('when the XHR was not authorized by the authorizer', function() {
+        beforeEach(function() {
+          this.server.respondWith('GET', 'http://other.origin/data', [401, {}, '']);
         });
 
         it("does not trigger the session's authorizationFailed event", function(done) {
           var triggered = false;
           this.session.one('authorizationFailed', function() { triggered = true; });
-          Ember.$.get('/data');
+          // as this is a different origin that's not whitelisted the request will not be authorized
+          Ember.$.get('http://other.origin/data');
 
           Ember.run.later(function() {
             expect(triggered).to.be.false;
@@ -244,22 +216,31 @@ describe('setup', function() {
           }, 100);
         });
       });
+    });
 
-      afterEach(function() {
-        this.xhr.restore();
+    describe("when the request's status is not 401", function() {
+      beforeEach(function() {
+        this.server.respondWith('GET', '/data', [500, {}, '']);
+      });
+
+      it("does not trigger the session's authorizationFailed event", function(done) {
+        var triggered = false;
+        this.session.one('authorizationFailed', function() { triggered = true; });
+        Ember.$.get('/data');
+
+        Ember.run.later(function() {
+          expect(triggered).to.be.false;
+          done();
+        }, 100);
       });
     });
 
     afterEach(function() {
-
+      this.xhr.restore();
     });
   });
 
   afterEach(function() {
     Configuration.load(this.container, {});
-  });
-
-  after(function() {
-    Ember.$.ajaxPrefilter.restore();
   });
 });
