@@ -54,13 +54,13 @@
         <div class="col-md-6 col-md-offset-3">
           <h2>Ember Simple Auth</h2>
           <p>
-            <a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Ember Simple Auth</a> is a <strong>lightweight library for implementing authentication/authorization with <a href="http://emberjs.com" title="Ember.js">Ember.js</a> applications</strong>. It has minimal requirements with respect to the application structure, routes etc.
+            <a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Ember Simple Auth</a> is a <strong>lightweight library for implementing authentication/authorization with <a href="http://emberjs.com" title="Ember.js">Ember.js</a> applications</strong>. It has minimal requirements with respect to application structure, routes etc. With its pluggable strategies it can support all kinds of authentication and authorization mechanisms.
           </p>
           <h2>What does it do?</h2>
           <ul>
-            <li>it <strong>manages a client side session</strong> and synchronizes that across tabs/ windows</li>
-            <li>it <strong>authenticates users</strong> against the application's own server, external providers like Facebook etc.</li>
-            <li>it <strong>authorizes requests</strong> to the backend server</li>
+            <li>it <strong>manages a client side session</strong> synchronizes that across browser tabs/windows</li>
+            <li>it <strong>authenticates the session</strong> against the application's own server, external providers like Facebook etc.</li>
+            <li>it <strong>authorizes requests</strong> to backend servers</li>
             <li>it is easily customizable and extensible</li>
           </ul>
           <h2>How to use it</h2>
@@ -71,8 +71,12 @@
             <pre><code class="javascript">npm install --save-dev ember-cli-simple-auth
 ember generate ember-cli-simple-auth</code></pre>
           </div>
+          <h3>The Session</h3>
           <p>
-          	Then <strong>implement the respective mixin in the application route</strong>:
+            Ember Simple Auth is built around the fundamental idea that users are always using the application in the context of a (client side) session. This session can either be authenticated or not. Ember Simple Auth creates that session, provides functionality to authenticate and invalidate it and also has a set of mixins that provide default implementations for common scenarios like redirecting users to the login if they access a restricted page etc.
+          </p>
+          <p>
+            While not necessary, the easiest way to use the session is to include the <code>ApplicationRouteMixin</code> mixin provided by Ember Simple Auth in the application route:
           </p>
           <div class="code">
             <pre><code class="javascript">// app/routes/application.js
@@ -81,7 +85,9 @@ import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
 export default Ember.Route.extend(ApplicationRouteMixin);</code></pre>
           </div>
           <p>
-          	<strong>Render login/logout buttons</strong> in the template:
+            This adds some actions to the application route like <code>authenticateSession</code> and <code>invalidateSession</code> as well as callback actions that are triggered when the session's authentication state changes like <code>sessionAuthenticationSucceeded</code> or <code>sessionInvalidationSucceeded</code> (see the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-ApplicationRouteMixin" title="Ember Simple Auth API docs">API docs for <code>ApplicationRouteMixin</code></a>).
+            Displaying e.g. login/logout buttons in the UI depending on the session's
+            authentication state then is as easy as:
           </p>
           <div class="code">
             <pre><code class="handlebars">{{#if session.isAuthenticated}}
@@ -91,13 +97,27 @@ export default Ember.Route.extend(ApplicationRouteMixin);</code></pre>
 {{/if}}</code></pre>
           </div>
           <p>
-          	Setup the route for the login form and <strong>implement the Ember Simple Auth mixin in the login controller</strong>:
+            To make a route in the application require the session to be authenticated, there is another mixin that Ember Simple Auth provides and that is included in the respective route (see the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-AuthenticatedRouteMixin" title="Ember Simple Auth API docs">API docs for <code>AuthenticatedRouteMixin</code></a>):
           </p>
           <div class="code">
-            <pre><code class="javascript">App.Router.map(function() {
-  this.route('login');
-});</code></pre>
+            <pre><code class="javascript">// app/routes/protected.js
+import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
+
+export default Ember.Route.extend(AuthenticatedRouteMixin);</code></pre>
           </div>
+          <p>
+            This will make the route transition to <code>/login</code> (or a different URL if configured) when the session is not authenticated in the <code>beforeModel</code> method.
+          </p>
+          <h3>Authenticators</h3>
+          <p>
+            <strong>Authenticators implement the concrete steps necessary to authenticate the session.</strong> An application can have several authenticators for different kinds of authentication mechanisms (e.g. the application's own backend server, external authentication providers like Facebook etc.) while the session is only authenticated with one authenticator at a time (see the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session-authenticate" title="Ember Simple Auth API docs">API docs for <code>Session#authenticate</code></a>). The authenticator to use is chosen when authentication is triggered:
+          </p>
+          <div class="code">
+            <pre><code class="javascript">this.get('session').authenticate('authenticator:custom', {});</code></pre>
+          </div>
+          <p>
+            or when you're using the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-LoginControllerMixin" title="Ember Simple Auth API docs"><code>LoginControllerMixin</code></a>:
+          </p>
           <div class="code">
             <pre><code class="javascript">// app/controllers/login.js
 import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
@@ -107,26 +127,53 @@ export default Ember.Controller.extend(LoginControllerMixin, {
 });</code></pre>
           </div>
           <p>
-          	Render the login form:
+            Ember Simple Auth does not include any authenticators in the base library but has extension libraries that can be loaded as needed:
+          </p>
+          <ul>
+            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-oauth2"><strong>simple-auth-oauth2</strong></a> provides an OAuth 2.0 authenticator</li>
+            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-devise"><strong>simple-auth-devise</strong></a> provides an authenticator compatible with the popular Ruby on Rails authentication plugin <a href="https://github.com/plataformatec/devise">devise</a></li>
+            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-torii"><strong>simple-auth-torii</strong></a> provides an authenticator that wraps the <a href="https://github.com/Vestorly/torii">torii library</a></li>
+          </ul>
+          <h3>Authorizers</h3>
+          <p>
+            If the Ember.js application makes requests to a backend server that requires authorization and an authorizer is configured, Ember Simple Auth sets up an <a href="http://api.jquery.com/jQuery.ajaxPrefilter/" title="jQuery docs"><code>$.ajaxPrefilter</code></a> that is used to authorize AJAX requests. An authorizer can be configured in the application's environment object:
           </p>
           <div class="code">
-            <pre><code class="handlebars">&lt;form {{action authenticate on='submit'}}&gt;
-  &lt;label for="identification"&gt;Login&lt;/label&gt;
-  {{input id='identification' placeholder='Enter Login' value=identification}}
-  &lt;label for="password"&gt;Password&lt;/label&gt;
-  {{input id='password' placeholder='Enter Password' type='password' value=password}}
-  &lt;button type="submit"&gt;Login&lt;/button&gt;
-&lt;/form&gt;</code></pre>
+            <pre><code class="javascript">//config/environment.js
+ENV['simple-auth'] = {
+  authorizer: 'simple-auth-authorizer:oauth2-bearer'
+}</code></pre>
           </div>
           <p>
-          	Now you can <strong>make routes protected by simply implementing the mixin</strong>:
+            While the authenticator acquires some sort of secret information from an authentication provider when it authenticates the session, <strong>the authorizer uses that secret information acquired by the authenticator to authorize subsequent requests, thus the authenticator and authorizer have to fit together</strong>. An application always only has one authorizer.
+          </p>
+          <p>
+            Ember Simple Auth does not include any authorizers in the base library but offers extension libraries that can be loaded in the application as needed:
+          </p>
+          <ul>
+            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-oauth2"><strong>simple-auth-oauth2</strong></a> provides an OAuth 2.0 authorizer</li>
+            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-devise"><strong>simple-auth-devise</strong></a> provides an authorizer compatible with the popular Ruby on Rails authentication plugin <a href="https://github.com/plataformatec/devise">devise</a></li>
+          </ul>
+          <h3>Stores</h3>
+          <p>
+            Ember Simple Auth <strong>persists the session state so it survives page reloads</strong>. There is only one store per application that can be configured in the global configuration object:
           </p>
           <div class="code">
-            <pre><code class="javascript">// app/routes/protected.js
-import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
-
-export default Ember.Route.extend(AuthenticatedRouteMixin);</code></pre>
+            <pre><code class="javascript">//config/environment.js
+ENV['simple-auth'] = {
+  store: 'simple-auth-session-store:local-storage'
+}</code></pre>
           </div>
+          <p>
+            Ember Simple Auth comes with 2 bundled stores:
+          </p>
+          <ul>
+            <li><strong><code>localStorage</code> Store</strong> stores its data in the browser's <code>localStorage</code>; <strong>this is the default store</strong>.</li>
+            <li><strong>Ephemeral Store</strong> stores its data in memory and thus <strong>is not actually persistent</strong>. This store is mainly useful for testing</li>
+          </ul>
+          <p>
+            A cookie based store is available in the extension library <a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-cookie-store">simple-auth-cookie-store</a>.
+          </p>
           <p>
             <a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Find more documentation, examples for using the library without Ember CLI and of course the source on github</a>.
           </p>
