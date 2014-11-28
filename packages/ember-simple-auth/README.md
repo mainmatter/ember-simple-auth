@@ -194,8 +194,8 @@ and
 If the Ember.js application makes requests to a backend server that requires
 authorization and an authorizer is configured, Ember Simple Auth sets up an
 [`$.ajaxPrefilter`](http://api.jquery.com/jQuery.ajaxPrefilter/) that is used
-to authorize AJAX requests. An authorizer can be configured in the global
-configuration object:
+to authorize AJAX requests. An authorizer can be configured in the application's
+environment object:
 
 ```js
 //config/environment.js
@@ -282,8 +282,8 @@ course).
 ### Stores
 
 Ember Simple Auth __persists the session state so it survives page reloads__.
-There is only one store per application that can be configured in the global
-configuration object:
+There is only one store per application that can be configured in the application's
+environment object:
 
 ```js
 //config/environment.js
