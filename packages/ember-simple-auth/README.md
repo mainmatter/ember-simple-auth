@@ -98,7 +98,19 @@ authenticated with one authenticator at a time (see the
 The authenticator to use is chosen when authentication is triggered:
 
 ```js
-this.get('session').authenticate('authenticator:custom', {});
+this.get('session').authenticate('authenticator:some', {});
+```
+
+or when using the
+[`LoginControllerMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-LoginControllerMixin):
+
+```js
+// app/controllers/login.js
+import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
+
+export default Ember.Controller.extend(LoginControllerMixin, {
+  authenticator: 'authenticator:some'
+});
 ```
 
 Ember Simple Auth does not include any authenticators in the base library but
@@ -142,7 +154,8 @@ registered factory's name to the session's `authenticate` method (see the
 this.get('session').authenticate('authenticator:custom', {});
 ```
 
-or when using one of the controller mixins:
+or when using the
+[`LoginControllerMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-LoginControllerMixin):
 
 ```js
 // app/controllers/login.js
