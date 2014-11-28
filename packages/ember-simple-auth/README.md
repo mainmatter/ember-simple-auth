@@ -16,9 +16,9 @@ authorization mechanisms.
 
 * it __manages a client side session__ and synchronizes that across tabs/
   windows
-* it __authenticates users__ against the application's own server, external
+* it __authenticates the session__ against the application's own server, external
   providers like Facebook etc.
-* it __authorizes requests__ to the backend server
+* it __authorizes requests__ to backend servers
 * it is easily customizable and extensible
 
 ## How do I use it?
