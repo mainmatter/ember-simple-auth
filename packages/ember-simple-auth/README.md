@@ -425,7 +425,10 @@ and then run the tests in the browser at
 
 ## License
 
-Ember Simple Auth is released under the
+Ember Simple Auth is developed by and &copy;
+[simplabs/Marco Otte-Witte](http://simplabs.com) and contributors. It is
+released under the
 [MIT License](https://github.com/simplabs/ember-simple-auth/blob/master/LICENSE).
-It is not an official part of Ember.js and is not maintained by the Ember.js
-Core Team.
+
+Ember Simple Auth is not an official part of [Ember.js](http://emberjs.com) and
+is not maintained by the Ember.js Core Team.
