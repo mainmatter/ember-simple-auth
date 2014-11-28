@@ -23,13 +23,6 @@ authorization mechanisms.
 
 ## How do I use it?
 
-Ember Simple Auth is built around the fundamental idea that __users are always
-using the application in the context of a (client side) session. This session
-can either be authenticated or not.__ Ember Simple Auth creates that session,
-provides functionality to authenticate and invalidate it and also has a set of
-mixins that provide default implementations for common scenarios like
-redirecting users to the login if they access a restricted page etc.
-
 _Ember Simple Auth can be used as a browserified version that exports a global
 as well as as an AMD build or an Ember CLI Addon. This README covers usage with
 Ember CLI; using it with Ember App Kit or via the browserified distribution is
@@ -42,6 +35,15 @@ options for including it into all types of Ember applications), it registers an
 named `'simple-auth'`. Once that initializer has run, the session (see the
 [API docs for `Session`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session))
 __will be available in all routes and controllers__ of the application.
+
+### The Session
+
+Ember Simple Auth is built around the fundamental idea that __users are always
+using the application in the context of a (client side) session. This session
+can either be authenticated or not.__ Ember Simple Auth creates that session,
+provides functionality to authenticate and invalidate it and also has a set of
+mixins that provide default implementations for common scenarios like
+redirecting users to the login if they access a restricted page etc.
 
 While not necessary, the easiest way to use the session is to include the
 `ApplicationRouteMixin` mixin provided by Ember Simple Auth in the
