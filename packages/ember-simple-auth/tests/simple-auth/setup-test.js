@@ -96,11 +96,11 @@ describe('setup', function() {
       expect(this.session.container).to.eql(this.container);
     });
 
-    it('is injected into all controllers and routes', function() {
+    it('is injected into all components, controllers and routes', function() {
       var _this = this;
       setup(this.container, this.application);
 
-      ['controller', 'route'].forEach(function(component) {
+      ['component', 'controller', 'route'].forEach(function(component) {
         expect(_this.container.injection).to.have.been.calledWith(component, Configuration.sessionPropertyName, Configuration.session);
       });
     });
