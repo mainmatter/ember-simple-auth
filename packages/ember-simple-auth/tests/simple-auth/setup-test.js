@@ -117,7 +117,7 @@ describe('setup', function() {
   });
 
   describe('the AJAX prefilter', function() {
-    describe('when an authorizer is configured', function() {
+    context('when an authorizer is configured', function() {
       beforeEach(function() {
         Configuration.authorizer = 'authorizer';
       });
@@ -184,7 +184,7 @@ describe('setup', function() {
     });
 
     describe("when the request's status is 401", function() {
-      describe('when the XHR was authorized by the authorizer', function() {
+      context('when the XHR was authorized by the authorizer', function() {
         beforeEach(function() {
           this.server.respondWith('GET', '/data', [401, {}, '']);
         });
@@ -199,7 +199,7 @@ describe('setup', function() {
         });
       });
 
-      describe('when the XHR was not authorized by the authorizer', function() {
+      context('when the XHR was not authorized by the authorizer', function() {
         beforeEach(function() {
           this.server.respondWith('GET', 'http://other.origin/data', [401, {}, '']);
         });

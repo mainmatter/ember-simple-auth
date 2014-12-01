@@ -117,7 +117,7 @@ describe('ApplicationRouteMixin', function() {
       sinon.spy(this.route, 'transitionTo');
     });
 
-    describe('when an attempted transition is stored in the session', function() {
+    context('when an attempted transition is stored in the session', function() {
       beforeEach(function() {
         this.attemptedTransition = { retry: function() {} };
         this.session.set('attemptedTransition', this.attemptedTransition);
@@ -138,7 +138,7 @@ describe('ApplicationRouteMixin', function() {
       });
     });
 
-    describe('when no attempted transition is stored in the session', function() {
+    context('when no attempted transition is stored in the session', function() {
       it('transitions to "Configuration.routeAfterAuthentication"', function() {
         this.route._actions.sessionAuthenticationSucceeded.apply(this.route);
 
@@ -157,7 +157,7 @@ describe('ApplicationRouteMixin', function() {
   });
 
   describe('the "authorizationFailed" action', function() {
-    describe('when the session is authenticated', function() {
+    context('when the session is authenticated', function() {
       beforeEach(function() {
         this.session.set('isAuthenticated', true);
       });
@@ -170,7 +170,7 @@ describe('ApplicationRouteMixin', function() {
       });
     });
 
-    describe('when the session is not authenticated', function() {
+    context('when the session is not authenticated', function() {
       it('does not try to invalidate the session', function() {
         sinon.stub(this.session, 'invalidate').returns(Ember.RSVP.resolve());
         this.route._actions.authorizationFailed.apply(this.route);

@@ -13,7 +13,7 @@ describe('LoginControllerMixin', function() {
   });
 
   describe('the "authenticate" action', function() {
-    describe('when both identification and password are set on the controller', function() {
+    context('when both identification and password are set on the controller', function() {
       beforeEach(function() {
         sinon.stub(this.session, 'authenticate');
         this.controller.setProperties({

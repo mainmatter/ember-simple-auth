@@ -21,12 +21,12 @@ describe('OAuth2', function() {
       });
     }
 
-    describe('when the session is authenticated', function() {
+    context('when the session is authenticated', function() {
       beforeEach(function() {
         this.authorizer.set('session.isAuthenticated', true);
       });
 
-      describe('when the session contains a non empty access_token', function() {
+      context('when the session contains a non empty access_token', function() {
         beforeEach(function() {
           this.authorizer.set('session.access_token', 'secret token!');
         });
@@ -38,7 +38,7 @@ describe('OAuth2', function() {
         });
       });
 
-      describe('when the session does not contain an access_token', function() {
+      context('when the session does not contain an access_token', function() {
         beforeEach(function() {
           this.authorizer.set('session.access_token', null);
         });
@@ -47,7 +47,7 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when the session is not authenticated', function() {
+    context('when the session is not authenticated', function() {
       beforeEach(function() {
         this.authorizer.set('session.isAuthenticated', false);
       });

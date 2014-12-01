@@ -35,7 +35,7 @@ describe('OAuth2', function() {
   });
 
   describe('#restore', function() {
-    describe('when the data includes expiration data', function() {
+    context('when the data includes expiration data', function() {
       it('resolves with the correct data', function(done) {
         this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
           expect(data).to.eql({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' });
@@ -43,9 +43,9 @@ describe('OAuth2', function() {
         });
       });
 
-      describe('when the data includes an expiration time in the past', function() {
-        describe('when automatic token refreshing is enabled', function() {
-          describe('when the refresh request is successful', function() {
+      context('when the data includes an expiration time in the past', function() {
+        context('when automatic token refreshing is enabled', function() {
+          context('when the refresh request is successful', function() {
             beforeEach(function() {
               this.server.respondWith('POST', '/token', [
                 200,
@@ -64,7 +64,7 @@ describe('OAuth2', function() {
             });
           });
 
-          describe('when the access token is not refreshed successfully', function() {
+          context('when the access token is not refreshed successfully', function() {
             it('returns a rejecting promise', function(done) {
               this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(null, function() {
                 expect(true).to.be.true;
@@ -74,7 +74,7 @@ describe('OAuth2', function() {
           });
         });
 
-        describe('when automatic token refreshing is disabled', function() {
+        context('when automatic token refreshing is disabled', function() {
           beforeEach(function() {
             this.authenticator.set('refreshAccessTokens', false);
           });
@@ -89,8 +89,8 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when the data does not include expiration data', function() {
-      describe('when the data contains an access_token', function() {
+    context('when the data does not include expiration data', function() {
+      context('when the data contains an access_token', function() {
         it('resolves with the correct data', function(done) {
           this.authenticator.restore({ access_token: 'secret token!' }).then(function(data) {
             expect(data).to.eql({ access_token: 'secret token!' });
@@ -99,7 +99,7 @@ describe('OAuth2', function() {
         });
       });
 
-      describe('when the data does not contain an access_token', function() {
+      context('when the data does not contain an access_token', function() {
         it('returns a rejecting promise', function(done) {
           this.authenticator.restore().then(null, function() {
             expect(true).to.be.true;
@@ -109,7 +109,7 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when automatic token refreshing is enabled', function() {
+    context('when automatic token refreshing is enabled', function() {
       beforeEach(function() {
         sinon.spy(Ember.run, 'later');
       });
@@ -132,7 +132,7 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when automatic token refreshing is disabled', function() {
+    context('when automatic token refreshing is disabled', function() {
       beforeEach(function() {
         this.authenticator.set('refreshAccessTokens', false);
         sinon.spy(Ember.run, 'later');
@@ -187,7 +187,7 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when the authentication request is successful', function() {
+    context('when the authentication request is successful', function() {
       beforeEach(function() {
         this.server.respondWith('POST', '/token', [
           200,
@@ -204,7 +204,7 @@ describe('OAuth2', function() {
         });
       });
 
-      describe('when the server response includes expiration data', function() {
+      context('when the server response includes expiration data', function() {
         beforeEach(function() {
           this.server.respondWith('POST', '/token', [
             200,
@@ -222,7 +222,7 @@ describe('OAuth2', function() {
           });
         });
 
-        describe('when automatic token refreshing is enabled', function() {
+        context('when automatic token refreshing is enabled', function() {
           beforeEach(function() {
             sinon.spy(Ember.run, 'later');
           });
@@ -245,7 +245,7 @@ describe('OAuth2', function() {
           });
         });
 
-        describe('when automatic token refreshing is disabled', function() {
+        context('when automatic token refreshing is disabled', function() {
           beforeEach(function() {
             this.authenticator.set('refreshAccessTokens', false);
             sinon.spy(Ember.run, 'later');
@@ -267,7 +267,7 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when the authentication request fails', function() {
+    context('when the authentication request fails', function() {
       beforeEach(function() {
         this.server.respondWith('POST', '/token', [
           400,
@@ -295,7 +295,7 @@ describe('OAuth2', function() {
       });
     }
 
-    describe('when token revokation is enabled', function() {
+    context('when token revokation is enabled', function() {
       beforeEach(function() {
         this.authenticator.serverTokenRevocationEndpoint = '/revoke';
       });
@@ -315,7 +315,7 @@ describe('OAuth2', function() {
         });
       });
 
-      describe('when the revokation request is successful', function() {
+      context('when the revokation request is successful', function() {
         beforeEach(function() {
           this.server.respondWith('POST', '/revoke', [200, { 'Content-Type': 'application/json' }, '']);
         });
@@ -323,7 +323,7 @@ describe('OAuth2', function() {
         itSuccessfullyInvalidatesTheSession();
       });
 
-      describe('when the revokation request fails', function() {
+      context('when the revokation request fails', function() {
         beforeEach(function() {
           this.server.respondWith('POST', '/revoke', [400, { 'Content-Type': 'application/json' },
           '{ "error": "unsupported_grant_type" }']);
@@ -332,7 +332,7 @@ describe('OAuth2', function() {
         itSuccessfullyInvalidatesTheSession();
       });
 
-      describe('when a refresh token is set', function() {
+      context('when a refresh token is set', function() {
         it('sends an AJAX request to invalidate the refresh token', function(done) {
           this.authenticator.invalidate({ access_token: 'access token!', refresh_token: 'refresh token!' });
 
@@ -350,7 +350,7 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when token revokation is not enabled', function() {
+    context('when token revokation is not enabled', function() {
       itSuccessfullyInvalidatesTheSession();
     });
   });
@@ -372,7 +372,7 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when the refresh request is successful', function() {
+    context('when the refresh request is successful', function() {
       beforeEach(function() {
         this.server.respondWith('POST', '/token', [
           200,
@@ -392,7 +392,7 @@ describe('OAuth2', function() {
         this.authenticator.refreshAccessToken(12345, 'refresh token!');
       });
 
-      describe('when the server reponse includes updated expiration data', function() {
+      context('when the server reponse includes updated expiration data', function() {
         beforeEach(function() {
           this.server.respondWith('POST', '/token', [
             200,

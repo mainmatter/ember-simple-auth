@@ -29,13 +29,13 @@ export default function(options) {
   });
 
   describe('#restore', function() {
-    describe('when the store is empty', function() {
+    context('when the store is empty', function() {
       it('returns an empty object', function() {
         expect(this.store.restore()).to.eql({});
       });
     });
 
-    describe('when the store has data', function() {
+    context('when the store has data', function() {
       beforeEach(function() {
         this.store.persist({ key1: 'value1', key2: 'value2' });
       });

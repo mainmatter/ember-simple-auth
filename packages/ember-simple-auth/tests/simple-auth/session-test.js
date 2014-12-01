@@ -11,7 +11,7 @@ describe('Session', function() {
   });
 
   function itHandlesAuthenticatorEvents(preparation) {
-    describe('when the authenticator triggers the "sessionDataUpdated" event', function() {
+    context('when the authenticator triggers the "sessionDataUpdated" event', function() {
       beforeEach(function(done) {
         preparation.apply(this, [done]);
       });
@@ -27,7 +27,7 @@ describe('Session', function() {
       });
     });
 
-    describe('when the authenticator triggers the "invalidated" event', function() {
+    context('when the authenticator triggers the "invalidated" event', function() {
       beforeEach(function(done) {
         preparation.apply(this, [done]);
       });
@@ -115,12 +115,12 @@ describe('Session', function() {
       });
     }
 
-    describe('when the restored data contains an authenticator factory', function() {
+    context('when the restored data contains an authenticator factory', function() {
       beforeEach(function() {
         this.store.persist({ authenticator: 'authenticator' });
       });
 
-      describe('when the authenticator resolves restoration', function() {
+      context('when the authenticator resolves restoration', function() {
         beforeEach(function() {
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'properties' }));
         });
@@ -195,7 +195,7 @@ describe('Session', function() {
         });
       });
 
-      describe('when the authenticator rejects restoration', function() {
+      context('when the authenticator rejects restoration', function() {
         beforeEach(function() {
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject());
         });
@@ -204,7 +204,7 @@ describe('Session', function() {
       });
     });
 
-    describe('when the restored data does not contain an authenticator factory', function() {
+    context('when the restored data does not contain an authenticator factory', function() {
       itDoesNotRestore();
     });
   });
@@ -216,7 +216,7 @@ describe('Session', function() {
       this.session.setProperties({ store: this.store, container: this.container });
     });
 
-    describe('when the authenticator resolves authentication', function() {
+    context('when the authenticator resolves authentication', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'properties' }));
       });
@@ -295,7 +295,7 @@ describe('Session', function() {
       });
     });
 
-    describe('when the authenticator rejects authentication', function() {
+    context('when the authenticator rejects authentication', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'authenticate').returns(Ember.RSVP.reject('error'));
       });
@@ -369,7 +369,7 @@ describe('Session', function() {
       });
     });
 
-    describe('when the authenticator resolves to invaldiation', function() {
+    context('when the authenticator resolves to invaldiation', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.resolve());
       });
@@ -431,7 +431,7 @@ describe('Session', function() {
       });
     });
 
-    describe('when the authenticator rejects invalidation', function() {
+    context('when the authenticator rejects invalidation', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.reject('error'));
       });
@@ -497,7 +497,7 @@ describe('Session', function() {
   });
 
   describe("when the session's content changes", function() {
-    describe('when a single property is set', function() {
+    context('when a single property is set', function() {
       beforeEach(function() {
         this.session = Session.create({ store: this.store });
         this.session.set('some', 'property');
@@ -514,7 +514,7 @@ describe('Session', function() {
       });
     });
 
-    describe('when multiple properties are set at once', function() {
+    context('when multiple properties are set at once', function() {
       beforeEach(function() {
         this.session = Session.create({ store: this.store });
         this.session.set('some', 'property');
@@ -533,14 +533,14 @@ describe('Session', function() {
     });
   });
 
-  describe('when the store triggers the "sessionDataUpdated" event', function() {
+  context('when the store triggers the "sessionDataUpdated" event', function() {
     beforeEach(function() {
       this.session = Session.create();
       this.session.setProperties({ store: this.store, container: this.container });
     });
 
-    describe('when there is an authenticator factory in the event data', function() {
-      describe('when the authenticator resolves restoration', function() {
+    context('when there is an authenticator factory in the event data', function() {
+      context('when the authenticator resolves restoration', function() {
         beforeEach(function() {
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'other property' }));
         });
@@ -578,7 +578,7 @@ describe('Session', function() {
           });
         });
 
-        describe('when the session is already authenticated', function() {
+        context('when the session is already authenticated', function() {
           beforeEach(function() {
             this.session.set('isAuthenticated', true);
           });
@@ -595,7 +595,7 @@ describe('Session', function() {
           });
         });
 
-        describe('when the session is not already authenticated', function() {
+        context('when the session is not already authenticated', function() {
           beforeEach(function() {
             this.session.set('isAuthenticated', false);
           });
@@ -611,7 +611,7 @@ describe('Session', function() {
         });
       });
 
-      describe('when the authenticator rejects restoration', function() {
+      context('when the authenticator rejects restoration', function() {
         beforeEach(function() {
           sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject());
         });
@@ -643,7 +643,7 @@ describe('Session', function() {
           });
         });
 
-        describe('when the session is authenticated', function() {
+        context('when the session is authenticated', function() {
           beforeEach(function() {
             this.session.set('isAuthenticated', true);
           });
@@ -658,7 +658,7 @@ describe('Session', function() {
           });
         });
 
-        describe('when the session is not authenticated', function() {
+        context('when the session is not authenticated', function() {
           beforeEach(function() {
             this.session.set('isAuthenticated', false);
           });
@@ -676,7 +676,7 @@ describe('Session', function() {
       });
     });
 
-    describe('when there is no authenticator factory in the store', function() {
+    context('when there is no authenticator factory in the store', function() {
       it('is not authenticated', function(done) {
         this.store.trigger('sessionDataUpdated', { some: 'other property' });
 
@@ -704,7 +704,7 @@ describe('Session', function() {
         });
       });
 
-      describe('when the session is authenticated', function() {
+      context('when the session is authenticated', function() {
         beforeEach(function() {
           this.session.set('isAuthenticated', true);
         });
@@ -719,7 +719,7 @@ describe('Session', function() {
         });
       });
 
-      describe('when the session is not authenticated', function() {
+      context('when the session is not authenticated', function() {
         beforeEach(function() {
           this.session.set('isAuthenticated', false);
         });

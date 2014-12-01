@@ -25,8 +25,8 @@ describe('Torii', function() {
       });
     }
 
-    describe('when there is a torii provider in the session data', function() {
-      describe('when torii fetches successfully', function() {
+    context('when there is a torii provider in the session data', function() {
+      context('when torii fetches successfully', function() {
         beforeEach(function() {
           sinon.stub(this.torii, 'fetch').returns(Ember.RSVP.resolve({ some: 'other data' }));
         });
@@ -47,7 +47,7 @@ describe('Torii', function() {
         });
       });
 
-      describe('when torii does not fetch successfully', function() {
+      context('when torii does not fetch successfully', function() {
         beforeEach(function() {
           sinon.stub(this.torii, 'fetch').returns(Ember.RSVP.reject());
         });
@@ -56,13 +56,13 @@ describe('Torii', function() {
       });
     });
 
-    describe('when there is no torii provider in the session data', function() {
+    context('when there is no torii provider in the session data', function() {
       itDoesNotRestore();
     });
   });
 
   describe('#authenticate', function() {
-    describe('when torii opens successfully', function() {
+    context('when torii opens successfully', function() {
       beforeEach(function() {
         sinon.stub(this.torii, 'open').returns(Ember.RSVP.resolve({ some: 'data' }));
       });
@@ -83,7 +83,7 @@ describe('Torii', function() {
       });
     });
 
-    describe('when torii does not open successfully', function() {
+    context('when torii does not open successfully', function() {
       beforeEach(function() {
         sinon.stub(this.torii, 'open').returns(Ember.RSVP.reject());
       });
@@ -98,7 +98,7 @@ describe('Torii', function() {
   });
 
   describe('#invalidate', function() {
-    describe('when torii closes successfully', function() {
+    context('when torii closes successfully', function() {
       beforeEach(function() {
         sinon.stub(this.torii, 'close').returns(Ember.RSVP.resolve());
       });
@@ -120,7 +120,7 @@ describe('Torii', function() {
       });
     });
 
-    describe('when torii does not close successfully', function() {
+    context('when torii does not close successfully', function() {
       beforeEach(function() {
         sinon.stub(this.torii, 'open').returns(Ember.RSVP.reject());
       });
