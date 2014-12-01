@@ -151,16 +151,18 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
 
     @method authenticate
     @param {String} authenticator The authenticator factory to use as it is registered with Ember's container, see [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register)
-    @param {Object} options The options to pass to the authenticator; depending on the type of authenticator these might be a set of credentials, a Facebook OAuth Token, etc.
+    @param {Any} [...args] The arguments to pass to the authenticator; depending on the type of authenticator these might be a set of credentials, a Facebook OAuth Token, etc.
     @return {Ember.RSVP.Promise} A promise that resolves when the session was authenticated successfully
   */
-  authenticate: function(authenticator, options) {
+  authenticate: function() {
+    var args          = Array.prototype.slice.call(arguments);
+    var authenticator = args.shift();
     Ember.assert('Session#authenticate requires the authenticator factory to be specified, was ' + authenticator, !Ember.isEmpty(authenticator));
     var _this            = this;
     var theAuthenticator = this.container.lookup(authenticator);
     Ember.assert('No authenticator for factory "' + authenticator + '" could be found', !Ember.isNone(theAuthenticator));
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      theAuthenticator.authenticate(options).then(function(content) {
+      theAuthenticator.authenticate.apply(theAuthenticator, args).then(function(content) {
         _this.setup(authenticator, content, true);
         resolve();
       }, function(error) {

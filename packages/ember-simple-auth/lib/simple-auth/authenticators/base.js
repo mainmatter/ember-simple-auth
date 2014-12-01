@@ -115,7 +115,7 @@ export default Ember.Object.extend(Ember.Evented, {
     rejecting promise and thus never authenticates the session.
 
     @method authenticate
-    @param {Object} options The options to authenticate the session with
+    @param {Any} [...options] The arguments that the authenticator requires to authenticate the session
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   authenticate: function(options) {
