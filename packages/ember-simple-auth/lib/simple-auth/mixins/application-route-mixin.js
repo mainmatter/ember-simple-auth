@@ -1,5 +1,7 @@
 import Configuration from './../configuration';
 
+var routeEntryComplete = false;
+
 /**
   The mixin for the application route; defines actions to authenticate the
   session as well as to invalidate it. These actions can be used in all
@@ -58,6 +60,15 @@ import Configuration from './../configuration';
 */
 export default Ember.Mixin.create({
   /**
+    @method activate
+    @private
+  */
+  activate: function () {
+    routeEntryComplete = true;
+    this._super();
+  },
+
+  /**
     @method beforeModel
     @private
   */
@@ -75,7 +86,8 @@ export default Ember.Mixin.create({
       ]).forEach(function(event) {
         _this.get(Configuration.sessionPropertyName).on(event, function(error) {
           Array.prototype.unshift.call(arguments, event);
-          transition.send.apply(transition, arguments);
+          var target = routeEntryComplete ? _this : transition;
+          target.send.apply(target, arguments);
         });
       });
     }
