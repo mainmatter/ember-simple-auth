@@ -66,7 +66,7 @@ export default function(container, application) {
   var store   = container.lookup(Configuration.store);
   var session = container.lookup(Configuration.session);
   session.setProperties({ store: store, container: container });
-  Ember.A(['controller', 'route']).forEach(function(component) {
+  Ember.A(['controller', 'route', 'component']).forEach(function(component) {
     container.injection(component, Configuration.sessionPropertyName, Configuration.session);
   });
 
