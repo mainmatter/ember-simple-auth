@@ -68,35 +68,34 @@
         background-color: transparent;
       }
 
-      .navbar {
+      #header {
         background-color: #e24b31;
       }
 
-      .navbar a {
+      #header a {
         color: #fff !important;
         background-color: #e24b31 !important;
         border: none;
       }
 
-      .navbar a.github {
+      #header a.github {
         padding-left: 0 !important;
       }
 
-      .navbar .dropdown-menu {
+      #header .dropdown-menu {
         background-color: #e24b31 !important;
-      }
-
-      #header {
-        background: #eee;
-      }
-
-      #header .row {
-        text-align: center;
+        border-top: 1px solid #fff;
       }
 
       #main-logo {
-        display: block;
-        margin: 0 auto;
+        background: #eee;
+      }
+
+      #main-logo .row {
+        text-align: center;
+      }
+
+      #main-logo i {
         display: inline-block;
         width: 300px;
         height: 134px;
@@ -105,15 +104,52 @@
       }
       
       @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6 / 2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-        #main-logo {
+        #main-logo i {
           background-image: url("images/logo@2x.png");
           background-size: 300px 134px;
+        }
+      }
+      
+      #footer {
+        margin-bottom: 0;
+        background-color: #eee;
+        font-size: 80%;
+      }
+      
+      #footer .navbar-text {
+        margin-left: 0;
+        margin-right: 0;
+        float: none;
+        text-align: center;
+      }
+      
+      #footer a.simplabs {
+        margin: 15px auto 0 auto;
+        display: block;
+        border: none;
+      }
+      
+      #footer a.simplabs i {
+        display: inline-block;
+        background-position: center left;
+        background-repeat: no-repeat;
+        transition: background .25s;
+        width: 173px;
+        height: 30px;
+        margin: auto auto;
+        background-image: url("images/simplabs.png");
+      }
+      
+      @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6 / 2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
+        #footer a.simplabs i {
+          background-image: url("images/simplabs@2x.png");
+          background-size: 173px 30px;
         }
       }
     </style>
   </head>
 	<body>
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <nav id="header" class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
         <div id="main-content" class="row">
           <div class="col-md-8 col-md-offset-2 col-xs-12">
@@ -138,10 +174,10 @@
         </div>
       </div>
     </nav>
-    <div class="container-fluid" id="header">
+    <div class="container-fluid" id="main-logo">
       <div class="row">
         <div class="col-md-12">
-          <i id="main-logo"></i>
+          <i></i>
         </div>
       </div>
     </div>
@@ -273,16 +309,26 @@ ENV['simple-auth'] = {
           <p>
             <a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Find more documentation, examples for using the library without Ember CLI and of course the source on github</a>.
           </p>
-          <h2>Copyright</h2>
-          <p>
-          	Ember Simple Auth is developed by and &copy; <a href="http://simplabs.com" title="simplabs.com">simplabs/Marco Otte-Witte</a> and contributors. It is released under the <a href="http://github.com/simplabs/ember-simple-auth/blob/master/LICENSE" title="MIT License">MIT License</a>.
-          </p>
-          <p>
-            Ember Simple Auth is not an official part of <a href="http://emberjs.com" title="Ember.js">Ember.js</a> and is not maintained by the Ember.js Core Team.
-          </p>
         </div>
       </div>
     </div>
+    <nav id="footer" class="navbar" role="navigation">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2 col-xs-12">
+            <p class="navbar-text">
+              <a href="http://simplabs.com" title="simplabs.com" class="simplabs"><i></i></a>
+            </p>
+            <p class="navbar-text">
+            	Ember Simple Auth is not an official part of <a href="http://emberjs.com" title="Ember.js">Ember.js</a> and is not maintained by the Ember.js Core Team.
+            </p>
+            <p class="navbar-text">
+              The Ember Simple Auth logo has been designed by <a href="https://github.com/jdhines" title="jdhines @ github">jdhines</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </nav>
     <script src="http://yandex.st/highlightjs/7.4/highlight.min.js"></script>
     <script type="text/javascript">
       hljs.initHighlightingOnLoad();
