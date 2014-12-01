@@ -10,16 +10,17 @@
 		<meta name="content-language" content="en"/>
 		<meta name="publisher" content="simplabs - Marco Otte-Witte" />
     <title>Ember Simple Auth - lightweight authentication/authorization library for Ember.js</title>
-    <link rel="shortcut icon" type="image/x-icon" href="http://simplabs.com/images/simplabs.ico" />
-    <link rel="apple-touch-icon" href="http://simplabs.com/images/apple-57.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="http://simplabs.com/images/apple-72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="http://simplabs.com/images/apple-114.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="http://simplabs.com/images/apple-144.png">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
+    <link rel="shortcut icon" type="image/x-icon" href="images/simplabs.ico" />
+    <link rel="apple-touch-icon" href="images/apple-57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-114.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/apple-144.png">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
     <link rel="stylesheet" href="http://yandex.st/highlightjs/7.4/styles/github.min.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Ubuntu:300,400">
-    <link rel="stylesheet" href="http://simplabs.com/css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -27,40 +28,191 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css" media="screen">
+      body {
+        line-height: 1.7;
+        font-weight: 300;
+        letter-spacing: 1px;
+        color: #384147;
+      }
+    
+      a, a:visited {
+        color: #e24b31;
+        border-bottom: 2px solid #eee;
+        text-decoration: none;
+        padding: 2px;
+        transition: all .25s;
+      }
+      
+      a:hover {
+        color: #384147;
+        border-bottom: 2px solid #e24b31;
+        text-decoration: none;
+      }
+      
+      p {
+        text-align: justify;
+      }
+      
+      h1 {
+        margin-top: 50px;
+      }
+
+      h1, h2 {
+        font-family: 'Ubuntu', sans-serif;
+      }
+
+      strong {
+        background-color: #fbfeda;
+        padding: 2px;
+      }
+      
+      code {
+        background-color: #f8f8ff;
+        color: #000;
+      }
+      
       div.code {
         background-color: #f8f8ff;
         overflow-x: scroll;
         line-height: 120%;
         font-size: 120%;
-        border: 1px solid #ddd;
+        border: 1px solid #eee;
         border-radius: 0;
         margin: 1em 0;
       }
+
       div.code pre {
         margin: 0;
         border: none;
         background-color: transparent;
       }
+
+      #header {
+        background-color: #e24b31;
+      }
+
+      #header a {
+        color: #fff !important;
+        background-color: #e24b31 !important;
+        border: none;
+      }
+
+      #header a.github {
+        padding-left: 0 !important;
+      }
+
+      #header .dropdown-menu {
+        background-color: #e24b31 !important;
+        border-top: 1px solid #fff;
+      }
+
+      #main-logo {
+        background: #eee;
+      }
+
+      #main-logo .row {
+        text-align: center;
+      }
+
+      #main-logo i {
+        display: inline-block;
+        width: 300px;
+        height: 134px;
+        background-image: url("images/logo.png");
+        margin: 100px 0 50px 0;
+      }
+      
+      @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6 / 2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
+        #main-logo i {
+          background-image: url("images/logo@2x.png");
+          background-size: 300px 134px;
+        }
+      }
+      
+      #footer {
+        margin-top: 50px;
+        margin-bottom: 0;
+        background-color: #eee;
+        font-size: 80%;
+      }
+      
+      #footer .navbar-text {
+        margin-left: 0;
+        margin-right: 0;
+        float: none;
+        text-align: center;
+      }
+      
+      #footer a.simplabs {
+        margin: 15px auto 0 auto;
+        display: block;
+        border: none;
+      }
+      
+      #footer a.simplabs i {
+        display: inline-block;
+        background-position: center left;
+        background-repeat: no-repeat;
+        transition: background .25s;
+        width: 173px;
+        height: 30px;
+        margin: auto auto;
+        background-image: url("images/simplabs.png");
+      }
+      
+      @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6 / 2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
+        #footer a.simplabs i {
+          background-image: url("images/simplabs@2x.png");
+          background-size: 173px 30px;
+        }
+      }
     </style>
   </head>
 	<body>
-    <div class="container">
-      <div id="header" class="row">
-        <div class="col-md-12">
-          <a href="/" title="simplabs.com - home"></a>
+    <nav id="header" class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div id="main-content" class="row">
+          <div class="col-md-8 col-md-offset-2 col-xs-12">
+            <ul class="nav navbar-nav">
+              <li>
+                <a href="https://github.com/simplabs/ember-simple-auth" class="github"><i class="icon icon-github"></i> simplabs/ember-simple-auth</a>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">API Docs <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="ember-simple-auth-api-docs.html">Ember Simple Auth</a></li>
+                  <li><a href="ember-simple-auth-oauth2-api-docs.html">Ember Simple Auth OAuth 2.0</a></li>
+                  <li><a href="ember-simple-auth-devise-api-docs.html">Ember Simple Auth Devise</a></li>
+                  <li><a href="ember-simple-auth-cookie-store-api-docs.html">Ember Simple Auth Cookie Store</a></li>
+                  <li><a href="ember-simple-auth-torii-api-docs.html">Ember Simple Auth torii</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
+    </nav>
+    <div class="container-fluid" id="main-logo">
+      <div class="row">
+        <div class="col-md-12">
+          <i></i>
+        </div>
+      </div>
+    </div>
+    <div class="container">
       <div id="main-content" class="row">
-        <div class="col-md-6 col-md-offset-3">
-          <h2>Ember Simple Auth</h2>
+        <div class="col-md-8 col-md-offset-2 col-xs-12">
+          <h1>Ember Simple Auth</h1>
           <p>
-            <a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Ember Simple Auth</a> is a <strong>lightweight library for implementing authentication/authorization with <a href="http://emberjs.com" title="Ember.js">Ember.js</a> applications</strong>. It has minimal requirements with respect to the application structure, routes etc.
+            <a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Ember Simple Auth</a> is a <strong>lightweight library for implementing authentication/authorization with <a href="http://emberjs.com" title="Ember.js">Ember.js</a> applications</strong>. It has minimal requirements with respect to application structure, routes etc. With its pluggable strategies it can support all kinds of authentication and authorization mechanisms.
           </p>
           <h2>What does it do?</h2>
           <ul>
-            <li>it <strong>manages a client side session</strong> and synchronizes that across tabs/ windows</li>
-            <li>it <strong>authenticates users</strong> against the application's own server, external providers like Facebook etc.</li>
-            <li>it <strong>authorizes requests</strong> to the backend server</li>
+            <li>it <strong>manages a client side session</strong> synchronizes that across browser tabs/windows</li>
+            <li>it <strong>authenticates the session</strong> against the application's own server, external providers like Facebook etc.</li>
+            <li>it <strong>authorizes requests</strong> to backend servers</li>
             <li>it is easily customizable and extensible</li>
           </ul>
           <h2>How to use it</h2>
@@ -71,8 +223,12 @@
             <pre><code class="javascript">npm install --save-dev ember-cli-simple-auth
 ember generate ember-cli-simple-auth</code></pre>
           </div>
+          <h3>The Session</h3>
           <p>
-          	Then <strong>implement the respective mixin in the application route</strong>:
+            Ember Simple Auth is built around the fundamental idea that users are always using the application in the context of a (client side) session. This session can either be authenticated or not. Ember Simple Auth creates that session, provides functionality to authenticate and invalidate it and also has a set of mixins that provide default implementations for common scenarios like redirecting users to the login if they access a restricted page etc.
+          </p>
+          <p>
+            While not necessary, the easiest way to use the session is to include the <code>ApplicationRouteMixin</code> mixin provided by Ember Simple Auth in the application route:
           </p>
           <div class="code">
             <pre><code class="javascript">// app/routes/application.js
@@ -81,7 +237,9 @@ import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
 export default Ember.Route.extend(ApplicationRouteMixin);</code></pre>
           </div>
           <p>
-          	<strong>Render login/logout buttons</strong> in the template:
+            This adds some actions to the application route like <code>authenticateSession</code> and <code>invalidateSession</code> as well as callback actions that are triggered when the session's authentication state changes like <code>sessionAuthenticationSucceeded</code> or <code>sessionInvalidationSucceeded</code> (see the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-ApplicationRouteMixin" title="Ember Simple Auth API docs">API docs for <code>ApplicationRouteMixin</code></a>).
+            Displaying e.g. login/logout buttons in the UI depending on the session's
+            authentication state then is as easy as:
           </p>
           <div class="code">
             <pre><code class="handlebars">{{#if session.isAuthenticated}}
@@ -91,13 +249,27 @@ export default Ember.Route.extend(ApplicationRouteMixin);</code></pre>
 {{/if}}</code></pre>
           </div>
           <p>
-          	Setup the route for the login form and <strong>implement the Ember Simple Auth mixin in the login controller</strong>:
+            To make a route in the application require the session to be authenticated, there is another mixin that Ember Simple Auth provides and that is included in the respective route (see the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-AuthenticatedRouteMixin" title="Ember Simple Auth API docs">API docs for <code>AuthenticatedRouteMixin</code></a>):
           </p>
           <div class="code">
-            <pre><code class="javascript">App.Router.map(function() {
-  this.route('login');
-});</code></pre>
+            <pre><code class="javascript">// app/routes/protected.js
+import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
+
+export default Ember.Route.extend(AuthenticatedRouteMixin);</code></pre>
           </div>
+          <p>
+            This will make the route transition to <code>/login</code> (or a different URL if configured) when the session is not authenticated in the <code>beforeModel</code> method.
+          </p>
+          <h3>Authenticators</h3>
+          <p>
+            <strong>Authenticators implement the concrete steps necessary to authenticate the session.</strong> An application can have several authenticators for different kinds of authentication mechanisms (e.g. the application's own backend server, external authentication providers like Facebook etc.) while the session is only authenticated with one authenticator at a time (see the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session-authenticate" title="Ember Simple Auth API docs">API docs for <code>Session#authenticate</code></a>). The authenticator to use is chosen when authentication is triggered:
+          </p>
+          <div class="code">
+            <pre><code class="javascript">this.get('session').authenticate('authenticator:custom', {});</code></pre>
+          </div>
+          <p>
+            or when you're using the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-LoginControllerMixin" title="Ember Simple Auth API docs"><code>LoginControllerMixin</code></a>:
+          </p>
           <div class="code">
             <pre><code class="javascript">// app/controllers/login.js
 import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
@@ -107,44 +279,77 @@ export default Ember.Controller.extend(LoginControllerMixin, {
 });</code></pre>
           </div>
           <p>
-          	Render the login form:
+            Ember Simple Auth does not include any authenticators in the base library but has extension libraries that can be loaded as needed:
+          </p>
+          <ul>
+            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-oauth2"><strong>simple-auth-oauth2</strong></a> provides an OAuth 2.0 authenticator</li>
+            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-devise"><strong>simple-auth-devise</strong></a> provides an authenticator compatible with the popular Ruby on Rails authentication plugin <a href="https://github.com/plataformatec/devise">devise</a></li>
+            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-torii"><strong>simple-auth-torii</strong></a> provides an authenticator that wraps the <a href="https://github.com/Vestorly/torii">torii library</a></li>
+          </ul>
+          <h3>Authorizers</h3>
+          <p>
+            If the Ember.js application makes requests to a backend server that requires authorization and an authorizer is configured, Ember Simple Auth sets up an <a href="http://api.jquery.com/jQuery.ajaxPrefilter/" title="jQuery docs"><code>$.ajaxPrefilter</code></a> that is used to authorize AJAX requests. An authorizer can be configured in the application's environment object:
           </p>
           <div class="code">
-            <pre><code class="handlebars">&lt;form {{action authenticate on='submit'}}&gt;
-  &lt;label for="identification"&gt;Login&lt;/label&gt;
-  {{input id='identification' placeholder='Enter Login' value=identification}}
-  &lt;label for="password"&gt;Password&lt;/label&gt;
-  {{input id='password' placeholder='Enter Password' type='password' value=password}}
-  &lt;button type="submit"&gt;Login&lt;/button&gt;
-&lt;/form&gt;</code></pre>
+            <pre><code class="javascript">//config/environment.js
+ENV['simple-auth'] = {
+  authorizer: 'simple-auth-authorizer:oauth2-bearer'
+}</code></pre>
           </div>
           <p>
-          	Now you can <strong>make routes protected by simply implementing the mixin</strong>:
+            While the authenticator acquires some sort of secret information from an authentication provider when it authenticates the session, <strong>the authorizer uses that secret information acquired by the authenticator to authorize subsequent requests, thus the authenticator and authorizer have to fit together</strong>. An application always only has one authorizer.
+          </p>
+          <p>
+            Ember Simple Auth does not include any authorizers in the base library but offers extension libraries that can be loaded in the application as needed:
+          </p>
+          <ul>
+            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-oauth2"><strong>simple-auth-oauth2</strong></a> provides an OAuth 2.0 authorizer</li>
+            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-devise"><strong>simple-auth-devise</strong></a> provides an authorizer compatible with the popular Ruby on Rails authentication plugin <a href="https://github.com/plataformatec/devise">devise</a></li>
+          </ul>
+          <h3>Stores</h3>
+          <p>
+            Ember Simple Auth <strong>persists the session state so it survives page reloads</strong>. There is only one store per application that can be configured in the global configuration object:
           </p>
           <div class="code">
-            <pre><code class="javascript">// app/routes/protected.js
-import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
-
-export default Ember.Route.extend(AuthenticatedRouteMixin);</code></pre>
+            <pre><code class="javascript">//config/environment.js
+ENV['simple-auth'] = {
+  store: 'simple-auth-session-store:local-storage'
+}</code></pre>
           </div>
+          <p>
+            Ember Simple Auth comes with 2 bundled stores:
+          </p>
+          <ul>
+            <li><strong><code>localStorage</code> Store</strong> stores its data in the browser's <code>localStorage</code>; <strong>this is the default store</strong>.</li>
+            <li><strong>Ephemeral Store</strong> stores its data in memory and thus <strong>is not actually persistent</strong>. This store is mainly useful for testing</li>
+          </ul>
+          <p>
+            A cookie based store is available in the extension library <a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-cookie-store">simple-auth-cookie-store</a>.
+          </p>
           <p>
             <a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Find more documentation, examples for using the library without Ember CLI and of course the source on github</a>.
           </p>
-          <h2>Copyright</h2>
-          <p>
-          	Ember Simple Auth is developed by and &copy; <a href="http://simplabs.com" title="simplabs.com">Marco Otte-Witte</a>. It is released under the <a href="http://github.com/simplabs/ember-simple-auth/blob/master/LICENSE" title="MIT License">MIT License</a>.
-          </p>
-        </div>
-      </div>
-      <div id="footer" class="row">
-        <div class="col-md-6 col-md-offset-3">
-          <ul class="nav nav-tabs nav-justified">
-            <li><a href="http://simplabs.com/imprint">Imprint</a></li>
-          </ul>
         </div>
       </div>
     </div>
-    <script src="//yandex.st/highlightjs/7.4/highlight.min.js"></script>
+    <nav id="footer" class="navbar" role="navigation">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2 col-xs-12">
+            <p class="navbar-text">
+              <a href="http://simplabs.com" title="simplabs.com" class="simplabs"><i></i></a>
+            </p>
+            <p class="navbar-text">
+            	Ember Simple Auth is not an official part of <a href="http://emberjs.com" title="Ember.js">Ember.js</a> and is not maintained by the Ember.js Core Team.
+            </p>
+            <p class="navbar-text">
+              The Ember Simple Auth logo has been designed by <a href="https://github.com/jdhines" title="jdhines @ github">jdhines</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <script src="http://yandex.st/highlightjs/7.4/highlight.min.js"></script>
     <script type="text/javascript">
       hljs.initHighlightingOnLoad();
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
