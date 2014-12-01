@@ -34,7 +34,7 @@ options for including it into all types of Ember applications), it registers an
 [initializer](http://emberjs.com/api/classes/Ember.Application.html#toc_initializers)
 named `'simple-auth'`. Once that initializer has run, the session (see the
 [API docs for `Session`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session))
-__will be available in all routes and controllers__ of the application.
+__will be available in all routes, controllers and components__ of the application.
 
 ### The Session
 
