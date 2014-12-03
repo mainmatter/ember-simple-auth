@@ -1,3 +1,18 @@
+# 0.7.2
+
+* The session's `authenticate` method now accepts an arbitrary list of
+  arguments to pass to the authenticator's `authenticate` method which also
+  allows to pass options to torii providers, see #371.
+* With the move away from controllers/views and towards components, the session
+  is now injected into components as well, see #364.
+* The OAuth 2.0 authenticator now handles access scopes, see #363.
+* `ApplicationRouteMixin` will now send actions to the current route if
+  available or the initial transition, see #367.
+* Added a new `currentSession()` helper to the Ember Simple Auth Testing
+  package that provides access to the current session, see #359.
+* Fixed clearing of cookie and `localStorage` stores, see #349.
+* The `ajaxPrefilter` and `ajaxError` handlers were cleaned up.
+
 # 0.7.1
 
 * The `localStorage` session store now correctly reads its configuration from
