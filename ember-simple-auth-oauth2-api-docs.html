@@ -98,7 +98,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.7.1"><span class="label label-primary">0.7.1</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.7.2"><span class="label label-primary">0.7.2</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -258,19 +258,20 @@ refreshing is not disabled (see
     
     
     <h3 class="panel-title method">
-      authenticate(credentials)
+      authenticate(options)
       
         <span class="type">&rarr; Ember.RSVP.Promise</span>
       
     </h3>
   </div>
   <div class="panel-body">
-    <p>Authenticates the session with the specified <code>credentials</code>; the credentials
-are send via a <em>&quot;POST&quot;</em> request to the
+    <p>Authenticates the session with the specified <code>options</code>; makes a <code>POST</code>
+request to the
 <a href="#SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint"><code>Authenticators.OAuth2#serverTokenEndpoint</code></a>
-and if they are valid the server returns an access token in response (see
-<a href="http://tools.ietf.org/html/rfc6749#section-4.3">http://tools.ietf.org/html/rfc6749#section-4.3</a>). <strong>If the credentials are
-valid and authentication succeeds, a promise that resolves with the
+with the passed credentials and optional scope and receives the token in
+response (see <a href="http://tools.ietf.org/html/rfc6749#section-4.3">http://tools.ietf.org/html/rfc6749#section-4.3</a>).</p>
+<p><strong>If the credentials are valid (and the optionally requested scope is
+granted) and thus authentication succeeds, a promise that resolves with the
 server&#39;s response is returned</strong>, otherwise a promise that rejects with the
 error is returned.</p>
 <p>This method also schedules automatic token refreshing when there are values
@@ -282,9 +283,24 @@ token refreshing is not disabled (see
       <h4 class="subsection">Arguments</h4>
       <dl class="params">
         
-          <dt>credentials <span class="type">Object</span></dt>
-          <dd><p>The credentials to authenticate the session with</p>
+          <dt>options <span class="type">Object</span></dt>
+          <dd></dd>
+          
+            <dl class="props">
+              
+                <dt>options.identification <span class="type">String</span></dt>
+                <dd><p>The resource owner username</p>
 </dd>
+              
+                <dt>options.password <span class="type">String</span></dt>
+                <dd><p>The resource owner password</p>
+</dd>
+              
+                <dt>options.[scope] <span class="type">String|Array</span></dt>
+                <dd><p>The scope of the access request (see <a href="http://tools.ietf.org/html/rfc6749#section-3.3">RFC 6749, section 3.3</a>)</p>
+</dd>
+              
+            </dl>
           
         
       </dl>
@@ -302,7 +318,7 @@ token refreshing is not disabled (see
                   <div class="panel panel-default">
   <a id="SimpleAuth-Authenticators-OAuth2-invalidate" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L161"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L170"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
@@ -340,7 +356,7 @@ promise.</p>
                   <div class="panel panel-default">
   <a id="SimpleAuth-Authenticators-OAuth2-makeRequest" class="symbol-anchor"></a>
   <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L195"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L204"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
     
     
     <h3 class="panel-title method">
