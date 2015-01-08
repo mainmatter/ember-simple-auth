@@ -2,8 +2,7 @@ import Base from 'simple-auth/authorizers/base';
 import Configuration from './../configuration';
 
 /**
-  Authenticator that works with the Ruby gem
-  [Devise](https://github.com/plataformatec/devise) by sending the `user_token`
+  Authenticator that works with Rails by sending the `token`
   and `user_email` properties from the session in the `Authorization` header.
 
   __As token authentication is not actually part of devise anymore, the server
@@ -27,9 +26,9 @@ export default Base.extend({
 
     @property tokenAttributeName
     @type String
-    @default 'user_token'
+    @default 'token'
   */
-  tokenAttributeName: 'user_token',
+  tokenAttributeName: 'token',
 
   /**
     The identification attribute name.
@@ -44,7 +43,7 @@ export default Base.extend({
   identificationAttributeName: 'user_email',
 
   /**
-    Authorizes an XHR request by sending the `user_token` and `user_email`
+    Authorizes an XHR request by sending the `token` and `user_email`
     properties from the session in the `Authorization` header:
 
     ```

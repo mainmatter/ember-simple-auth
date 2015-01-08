@@ -18,8 +18,8 @@ describe('Configuration', function() {
   });
 
   describe('tokenAttributeName', function() {
-    it('defaults to "user_token"', function() {
-      expect(Configuration.tokenAttributeName).to.eql('user_token');
+    it('defaults to "token"', function() {
+      expect(Configuration.tokenAttributeName).to.eql('token');
     });
   });
 
