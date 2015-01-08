@@ -2,8 +2,9 @@ import Base from 'simple-auth/authorizers/base';
 import Configuration from './../configuration';
 
 /**
-  Authenticator that works with Rails by sending the `token`
-  and `user_email` properties from the session in the `Authorization` header.
+  Authenticator that works with the Ruby gem
+  [Devise](https://github.com/plataformatec/devise) by sending the `token` and
+  `user_email` properties from the session in the `Authorization` header.
 
   __As token authentication is not actually part of devise anymore, the server
   needs to implement some customizations__ to work with this authenticator -

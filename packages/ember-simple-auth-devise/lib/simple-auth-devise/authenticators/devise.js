@@ -17,8 +17,7 @@ import Configuration from './../configuration';
   @namespace SimpleAuth.Authenticators
   @module simple-auth-devise/authenticators/devise
   @extends Base
-*/
-export default Base.extend({
+*/export default Base.extend({
   /**
     The endpoint on the server the authenticator acquires the auth token
     and email from.
