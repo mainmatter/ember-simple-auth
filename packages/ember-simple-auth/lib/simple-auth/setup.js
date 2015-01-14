@@ -4,7 +4,7 @@ import LocalStorage from './stores/local-storage';
 import Ephemeral from './stores/ephemeral';
 
 function extractLocationOrigin(location) {
-  if (location === '*'){
+  if (location.indexOf("*") > -1){
       return location;
   }
   if (Ember.typeOf(location) === 'string') {
@@ -24,14 +24,26 @@ function extractLocationOrigin(location) {
   return location.protocol + '//' + location.hostname + (port !== '' ? ':' + port : '');
 }
 
+function matchDomain(urlOrigin){
+  return function(domain) {
+    if (domain.indexOf('*') > -1) {
+      var domainRegex = new RegExp(domain.replace("*" , ".+"));
+      return urlOrigin.match(domainRegex);
+    }
+
+    return domain.indexOf(urlOrigin) > -1;
+  };
+}
+
 var urlOrigins     = {};
 var crossOriginWhitelist;
 function shouldAuthorizeRequest(options) {
   if (options.crossDomain === false || crossOriginWhitelist.indexOf('*') > -1) {
     return true;
   }
+
   var urlOrigin = urlOrigins[options.url] = urlOrigins[options.url] || extractLocationOrigin(options.url);
-  return crossOriginWhitelist.indexOf(urlOrigin) > -1;
+  return Ember.A(crossOriginWhitelist).any(matchDomain(urlOrigin));
 }
 
 function registerFactories(container) {
