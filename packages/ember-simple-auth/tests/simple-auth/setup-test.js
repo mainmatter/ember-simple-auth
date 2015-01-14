@@ -169,7 +169,7 @@ describe('setup', function() {
       });
 
       it('authorizes requests going to a foreign origin if the hosts on whitelist allow subdomain to origin', function() {
-        Configuration.crossOriginWhitelist = ['http://*.other-domain.com'];
+        Configuration.crossOriginWhitelist = ['http://*.other-domain.com', 'http://*.sub.test-domain.com:1234'];
         setup(this.container, this.application);
         Ember.$.get('http://test.other-domain.com/path/query=string');
 
@@ -182,6 +182,26 @@ describe('setup', function() {
         Ember.$.get('http://test2.other-domain.com/path/query=string');
 
         expect(this.authorizer.authorize).to.have.been.calledThrice;
+
+        Ember.$.get('http://test2.other-domain.com:80/path/query=string');
+
+        expect(this.authorizer.authorize).to.have.been.callCount(4);
+
+        Ember.$.get('http://another-port.other-domain.com:1234/path/query=string');
+
+        expect(this.authorizer.authorize).to.not.have.been.callCount(5);
+
+        Ember.$.get('http://test2.sub.test-domain.com/path/query=string');
+
+        expect(this.authorizer.authorize).to.not.have.been.callCount(5);
+
+        Ember.$.get('http://wrong.test2.test-domain.com:1234/path/query=string');
+
+        expect(this.authorizer.authorize).to.not.have.been.callCount(5);
+
+        Ember.$.get('http://test2.sub.test-domain.com:1234/path/query=string');
+
+        expect(this.authorizer.authorize).to.have.been.callCount(5);
       });
 
       afterEach(function() {
