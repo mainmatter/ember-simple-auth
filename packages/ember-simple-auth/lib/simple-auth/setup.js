@@ -6,12 +6,12 @@ import Ephemeral from './stores/ephemeral';
 var wildcardToken = "WILDCARD_TOKEN";
 
 function extractLocationOrigin(location) {
-  if (location === "*"){
+  if (location === '*'){
       return location;
   }
 
-  if (location.indexOf("*") > -1) {
-    location = location.replace("*", wildcardToken);
+  if (location.indexOf('*') > -1) {
+    location = location.replace('*', wildcardToken);
   }
 
   if (Ember.typeOf(location) === 'string') {
@@ -34,7 +34,7 @@ function extractLocationOrigin(location) {
 function matchDomain(urlOrigin){
   return function(domain) {
     if (domain.indexOf(wildcardToken) > -1) {
-      var domainRegex = new RegExp(domain.replace(wildcardToken , ".+"));
+      var domainRegex = new RegExp(domain.replace(wildcardToken , '.+'));
       return urlOrigin.match(domainRegex);
     }
 
