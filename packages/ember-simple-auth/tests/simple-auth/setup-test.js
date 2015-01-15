@@ -202,6 +202,10 @@ describe('setup', function() {
         Ember.$.get('http://test2.sub.test-domain.com:1234/path/query=string');
 
         expect(this.authorizer.authorize).to.have.been.callCount(5);
+
+        Ember.$.get('http://test2.sub.test-domain.com:1235/path/query=string');
+
+        expect(this.authorizer.authorize).to.not.have.been.callCount(6);
       });
 
       afterEach(function() {
