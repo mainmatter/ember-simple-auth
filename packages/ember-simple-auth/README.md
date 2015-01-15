@@ -133,7 +133,7 @@ e.g.:
 // app/authenticators/custom.js
 import Base from 'simple-auth/authenticators/base';
 
-export default CustomAuthenticator = Base.extend({
+export default Base.extend({
   restore: function(data) {
     …
   },
