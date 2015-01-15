@@ -10,9 +10,7 @@ function extractLocationOrigin(location) {
       return location;
   }
 
-  if (location.indexOf('*') > -1) {
-    location = location.replace('*', wildcardToken);
-  }
+  location = location.replace('*', wildcardToken);
 
   if (Ember.typeOf(location) === 'string') {
     var link = document.createElement('a');
