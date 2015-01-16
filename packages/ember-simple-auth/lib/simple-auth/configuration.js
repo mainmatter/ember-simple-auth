@@ -133,9 +133,9 @@ export default {
     this setting. _Beware that origins consist of protocol, host and port (port
     can be left out when it is 80 for HTTP or 443 for HTTPS)_, e.g.
     `http://domain.com:1234`, `https://external.net`. You can also whitelist
-    all subdomains for a specific domain using wildcard e.g.
-    `http://*.domain.com:1234`, `https://*.external.net` or  whitelist
-    all external origins by specifying `[*]`.
+    all subdomains for a specific domain using wildcard expressions e.g.
+    `http://*.domain.com:1234`, `https://*.external.net` or whitelist all
+    external origins by specifying `[*]`.
 
     @property crossOriginWhitelist
     @readOnly
