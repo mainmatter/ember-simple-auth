@@ -95,7 +95,7 @@ export default Ember.Object.extend(Ember.Evented, {
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(data) {
-    return new Ember.RSVP.reject();
+    return Ember.RSVP.reject();
   },
 
   /**
@@ -119,7 +119,7 @@ export default Ember.Object.extend(Ember.Evented, {
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   authenticate: function(options) {
-    return new Ember.RSVP.reject();
+    return Ember.RSVP.reject();
   },
 
   /**
@@ -141,6 +141,6 @@ export default Ember.Object.extend(Ember.Evented, {
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
   */
   invalidate: function(data) {
-    return new Ember.RSVP.resolve();
+    return Ember.RSVP.resolve();
   }
 });
