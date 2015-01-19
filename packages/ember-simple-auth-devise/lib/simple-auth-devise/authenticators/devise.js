@@ -58,9 +58,6 @@ import Configuration from './../configuration';
   /**
     The identification attribute name.
 
-    This is also the param that is sent to [serverTokenEndpoint]((#SimpleAuth-Configuration-Devise-serverTokenEndpoint)
-    during the authentication process.
-
     This value can be configured via
     [`SimpleAuth.Configuration.Devise#identificationAttributeName`](#SimpleAuth-Configuration-Devise-identificationAttributeName).
 
