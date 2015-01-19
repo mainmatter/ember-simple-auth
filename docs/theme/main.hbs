@@ -80,7 +80,7 @@
               <li class="dropdown" id="classesDropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption"></span></a>
                 <ul class="dropdown-menu">
-                  {{#each}}
+                  {{#each .}}
                     <li>
                       <a href="#{{anchor}}">{{name}}</a>
                     </li>
@@ -99,7 +99,7 @@
         <div class="row">
           <div class="alert alert-info">For a general overview of how Ember Simple Auth works, see the <a href="{{@root.project.githubUrl}}#readme" title="Ember Simple Auth's README github" class="alert-link">README</a></div>
         </div>
-        {{#each}}
+        {{#each .}}
           <div class="row">
             <div class="col-md-12">
               <div class="page-header">
