@@ -58,6 +58,9 @@ import Configuration from './../configuration';
   /**
     The identification attribute name.
 
+    This is also the param that is sent to [serverTokenEndpoint]((#SimpleAuth-Configuration-Devise-serverTokenEndpoint)
+    during the authentication process.
+
     This value can be configured via
     [`SimpleAuth.Configuration.Devise#identificationAttributeName`](#SimpleAuth-Configuration-Devise-identificationAttributeName).
 
@@ -117,9 +120,10 @@ import Configuration from './../configuration';
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var data                 = {};
       data[_this.resourceName] = {
-        email:    credentials.identification,
         password: credentials.password
       };
+      data[_this.resourceName][_this.identificationAttributeName] = credentials.identification;
+
       _this.makeRequest(data).then(function(response) {
         Ember.run(function() {
           resolve(response);

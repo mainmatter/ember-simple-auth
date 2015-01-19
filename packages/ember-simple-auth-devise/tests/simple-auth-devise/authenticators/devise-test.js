@@ -91,7 +91,7 @@ describe('Devise', function() {
         expect(args).to.eql({
           url:      '/users/sign_in',
           type:     'POST',
-          data:     { user: { email: 'identification', password: 'password' } },
+          data:     { user: { user_email: 'identification', password: 'password' } },
           dataType: 'json',
         });
         done();
