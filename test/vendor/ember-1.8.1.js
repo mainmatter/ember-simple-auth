@@ -5,7 +5,7 @@
  *            Portions Copyright 2008-2011 Apple Inc. All rights reserved.
  * @license   Licensed under MIT license
  *            See https://raw.github.com/emberjs/ember.js/master/LICENSE
- * @version   1.8.0
+ * @version   1.8.1
  */
 
 (function() {
@@ -6917,8 +6917,8 @@ enifed("ember-handlebars/ext",
       }
 
       Ember.assert(
-        fmt(path+" must be a subclass of Ember.View, not %@", [viewClass]),
-        View.detect(viewClass)
+        fmt(path+" must be a subclass or an instance of Ember.View, not %@", [viewClass]),
+        View.detect(viewClass) || View.detectInstance(viewClass)
       );
 
       return viewClass;
@@ -9619,16 +9619,22 @@ enifed("ember-handlebars/helpers/view",
         var data = options.data;
         var fn   = options.fn;
         var newView;
+        var newViewProto;
 
         makeBindings(thisContext, options);
 
         var container = this.container || (data && data.view && data.view.container);
         newView = handlebarsGetView(thisContext, path, container, options);
 
+        if (View.detectInstance(newView)) {
+          newViewProto = newView;
+        } else {
+          newViewProto = newView.proto();
+        }
+
         var viewOptions = this.propertiesFromHTMLOptions(options, thisContext);
         var currentView = data.view;
         viewOptions.templateData = data;
-        var newViewProto = newView.proto();
 
         if (fn) {
           Ember.assert("You cannot provide a template block if you also specified a templateName", !get(viewOptions, 'templateName') && !get(newViewProto, 'templateName'));
@@ -10105,6 +10111,9 @@ enifed("ember-handlebars/string",
       @return {Handlebars.SafeString} a string that will not be html escaped by Handlebars
     */
     function htmlSafe(str) {
+      if (typeof str !== 'string') {
+        str = ''+str;
+      }
       return new Handlebars.SafeString(str);
     }
 
@@ -10132,7 +10141,7 @@ enifed("ember-handlebars/string",
     __exports__["default"] = htmlSafe;
   });
 enifed("ember-handlebars/views/handlebars_bound_view",
-  ["ember-handlebars-compiler","ember-metal/core","ember-metal/error","ember-metal/property_get","ember-metal/property_set","ember-metal/merge","ember-metal/run_loop","ember-metal/computed","ember-views/views/view","ember-views/views/states","ember-handlebars/views/metamorph_view","ember-handlebars/ext","ember-metal/utils","exports"],
+  ["ember-handlebars-compiler","ember-metal/core","ember-metal/error","ember-metal/property_get","ember-metal/property_set","ember-metal/merge","ember-metal/run_loop","ember-views/views/view","ember-handlebars/string","ember-views/views/states","ember-handlebars/views/metamorph_view","ember-handlebars/ext","ember-metal/utils","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __dependency9__, __dependency10__, __dependency11__, __dependency12__, __dependency13__, __exports__) {
     "use strict";
     /*globals Handlebars, Metamorph:true */
@@ -10157,8 +10166,8 @@ enifed("ember-handlebars/views/handlebars_bound_view",
     var set = __dependency5__.set;
     var merge = __dependency6__["default"];
     var run = __dependency7__["default"];
-    var computed = __dependency8__.computed;
-    var View = __dependency9__["default"];
+    var View = __dependency8__["default"];
+    var htmlSafe = __dependency9__["default"];
     var cloneStates = __dependency10__.cloneStates;
     var states = __dependency10__.states;
     var viewStates = states;
@@ -10219,7 +10228,7 @@ enifed("ember-handlebars/views/handlebars_bound_view",
         }
 
         if (!escape && !(result instanceof SafeString)) {
-          result = new SafeString(result);
+          result = htmlSafe(result);
         }
 
         return result;
@@ -13636,7 +13645,7 @@ enifed("ember-metal/core",
 
       @class Ember
       @static
-      @version 1.8.0
+      @version 1.8.1
     */
 
     if ('undefined' === typeof Ember) {
@@ -13663,10 +13672,10 @@ enifed("ember-metal/core",
     /**
       @property VERSION
       @type String
-      @default '1.8.0'
+      @default '1.8.1'
       @static
     */
-    Ember.VERSION = '1.8.0';
+    Ember.VERSION = '1.8.1';
 
     /**
       Standard environmental variables. You can define these in a global `EmberENV`
@@ -13826,16 +13835,18 @@ enifed("ember-metal/core",
 enifed("ember-metal/dependent_keys",
   ["ember-metal/platform","ember-metal/watching","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
-    "use strict";
-    var create = __dependency1__.create;
+        // Remove "use strict"; from transpiled module until
+    // https://bugs.webkit.org/show_bug.cgi?id=138038 is fixed
+    //
+    // REMOVE_USE_STRICT: true
+
+    var o_create = __dependency1__.create;
     var watch = __dependency2__.watch;
     var unwatch = __dependency2__.unwatch;
 
     /**
     @module ember-metal
     */
-
-    var o_create = create;
 
     // ..........................................................
     // DEPENDENT KEYS
@@ -14262,7 +14273,11 @@ enifed("ember-metal/error",
 enifed("ember-metal/events",
   ["ember-metal/core","ember-metal/utils","ember-metal/platform","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
-    "use strict";
+        // Remove "use strict"; from transpiled module until
+    // https://bugs.webkit.org/show_bug.cgi?id=138038 is fixed
+    //
+    // REMOVE_USE_STRICT: true
+
     /**
     @module ember-metal
     */
@@ -16033,7 +16048,11 @@ enifed("ember-metal/merge",
 enifed("ember-metal/mixin",
   ["ember-metal/core","ember-metal/merge","ember-metal/array","ember-metal/platform","ember-metal/utils","ember-metal/expand_properties","ember-metal/properties","ember-metal/computed","ember-metal/binding","ember-metal/observer","ember-metal/events","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __dependency9__, __dependency10__, __dependency11__, __exports__) {
-    "use strict";
+        // Remove "use strict"; from transpiled module until
+    // https://bugs.webkit.org/show_bug.cgi?id=138038 is fixed
+    //
+    // REMOVE_USE_STRICT: true
+
     /**
     @module ember
     @submodule ember-metal
@@ -18058,7 +18077,10 @@ enifed("ember-metal/property_set",
             propertyWillChange(obj, keyName);
             
               if (hasPropertyAccessors) {
-                if ((currentValue === undefined && !(keyName in obj)) || !obj.propertyIsEnumerable(keyName)) {
+                if (
+                  (currentValue === undefined && !(keyName in obj)) ||
+                  !Object.prototype.propertyIsEnumerable.call(obj, keyName)
+                ) {
                   defineProperty(obj, keyName, null, value); // setup mandatory setter
                 } else {
                   meta.values[keyName] = value;
@@ -18805,7 +18827,11 @@ enifed("ember-metal/set_properties",
 enifed("ember-metal/utils",
   ["ember-metal/core","ember-metal/platform","ember-metal/array","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
-    "use strict";
+        // Remove "use strict"; from transpiled module until
+    // https://bugs.webkit.org/show_bug.cgi?id=138038 is fixed
+    //
+    // REMOVE_USE_STRICT: true
+
     var Ember = __dependency1__["default"];
     var o_defineProperty = __dependency2__.defineProperty;
     var canDefineNonEnumerableProperties = __dependency2__.canDefineNonEnumerableProperties;
@@ -19726,7 +19752,7 @@ enifed("ember-metal/watch_key",
           m.values[keyName] = obj[keyName];
           o_defineProperty(obj, keyName, {
             configurable: true,
-            enumerable: obj.propertyIsEnumerable(keyName),
+            enumerable: Object.prototype.propertyIsEnumerable.call(obj, keyName),
             set: MANDATORY_SETTER_FUNCTION(keyName),
             get: DEFAULT_GETTER_FUNCTION(keyName)
           });
@@ -19751,7 +19777,7 @@ enifed("ember-metal/watch_key",
           if (hasPropertyAccessors && keyName in obj) {
             o_defineProperty(obj, keyName, {
               configurable: true,
-              enumerable: obj.propertyIsEnumerable(keyName),
+              enumerable: Object.prototype.propertyIsEnumerable.call(obj, keyName),
               set: function(val) {
                 // redefine to set as enumerable
                 o_defineProperty(obj, keyName, {
@@ -22966,7 +22992,7 @@ enifed("ember-routing/location/hash_location",
       */
       getURL: function() {
         var path = this.getHash().substr(1);
-        Ember.deprecate('location.hash value is ambiguous. Support for this will be removed soon. When using location: "hash|auto" your hash paths MUST begin with a forward slash. e.g. #/' + path + ' NOT #' + path, path.length === 0 || path.charAt(0) === '/');
+        Ember.deprecate('location.hash value is ambiguous. Support for this will be removed soon. When using location: "hash|auto" your hash paths MUST begin with a forward slash. e.g. #/' + path + ' NOT #' + path + '. See http://emberjs.com/guides/deprecations/#toc_location-hash-paths-must-now-include-a-forward-slash-e-g-foo-not-foo', path.length === 0 || path.charAt(0) === '/');
         return path;
       },
 
@@ -24787,7 +24813,7 @@ enifed("ember-routing/system/route",
         });
         ```
 
-        The model for the `post` route is `App.Post.find(params.post_id)`.
+        The model for the `post` route is `store.find('post', params.post_id)`.
 
         By default, if your route has a dynamic segment ending in `_id`:
 
@@ -24830,7 +24856,7 @@ enifed("ember-routing/system/route",
         ```js
         App.PostRoute = Ember.Route.extend({
           model: function(params) {
-            return App.Post.find(params.post_id);
+            return this.store.find('post', params.post_id);
           }
         });
         ```
@@ -25001,7 +25027,7 @@ enifed("ember-routing/system/route",
         ```js
         App.PhotosRoute = Ember.Route.extend({
           model: function() {
-            return App.Photo.find();
+            return this.store.find('photo');
           },
 
           setupController: function (controller, model) {
@@ -25241,7 +25267,7 @@ enifed("ember-routing/system/route",
         // posts route
         Ember.Route.extend({
           renderTemplate: function(){
-            this.render('posts', {
+            this.render('photos', {
               into: 'application',
               outlet: 'anOutletName'
             })
@@ -39323,6 +39349,8 @@ enifed("ember-views/system/render_buffer",
       */
       element: function() {
         var content = this.innerContent();
+        // No content means a text node buffer, with the content
+        // in _element. HandlebarsBoundView is an example.
         if (content === null)  {
           return this._element;
         }
@@ -39401,16 +39429,17 @@ enifed("ember-views/system/render_buffer",
     };
   });
 enifed("ember-views/system/renderer",
-  ["ember-metal-views/renderer","ember-metal/platform","ember-views/system/render_buffer","ember-metal/run_loop","ember-metal/property_set","ember-metal/instrumentation","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __exports__) {
+  ["ember-metal/core","ember-metal-views/renderer","ember-metal/platform","ember-views/system/render_buffer","ember-metal/run_loop","ember-metal/property_set","ember-metal/instrumentation","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
     "use strict";
-    var Renderer = __dependency1__["default"];
-    var create = __dependency2__.create;
-    var renderBuffer = __dependency3__["default"];
-    var run = __dependency4__["default"];
-    var set = __dependency5__.set;
-    var _instrumentStart = __dependency6__._instrumentStart;
-    var subscribers = __dependency6__.subscribers;
+    var Ember = __dependency1__["default"];
+    var Renderer = __dependency2__["default"];
+    var create = __dependency3__.create;
+    var renderBuffer = __dependency4__["default"];
+    var run = __dependency5__["default"];
+    var set = __dependency6__.set;
+    var _instrumentStart = __dependency7__._instrumentStart;
+    var subscribers = __dependency7__.subscribers;
 
     function EmberRenderer() {
       this.buffer = renderBuffer();
@@ -39470,9 +39499,14 @@ enifed("ember-views/system/renderer",
         // provided buffer operation (for example, `insertAfter` will
         // insert a new buffer after the "parent buffer").
         var tagName = view.tagName;
+        var classNameBindings = view.classNameBindings;
+        var taglessViewWithClassBindings = tagName === '' && classNameBindings.length > 0;
+
         if (tagName === null || tagName === undefined) {
           tagName = 'div';
         }
+
+        Ember.assert('You cannot use `classNameBindings` on a tag-less view: ' + view.toString(), !taglessViewWithClassBindings);
 
         var buffer = view.buffer = this.buffer;
         buffer.reset(tagName, contextualElement);
@@ -39481,7 +39515,7 @@ enifed("ember-views/system/renderer",
           view.beforeRender(buffer);
         }
 
-        if (view.tagName !== '') {
+        if (tagName !== '') {
           if (view.applyAttributesToBuffer) {
             view.applyAttributesToBuffer(buffer);
           }
@@ -42388,6 +42422,8 @@ enifed("ember-views/views/view",
           var property = split[0];
           var attributeName = split[1] || property;
 
+          Ember.assert('You cannot use class as an attributeBinding, use classNameBindings instead.', attributeName !== 'class');
+
           if (property in this) {
             this._setupAttributeBindingObservation(property, attributeName);
 
@@ -43672,7 +43708,7 @@ enifed("morph/dom-helper/build-html-dom",
     __exports__.svgNamespace = svgNamespace;
     // Safari does not like using innerHTML on SVG HTML integration
     // points (desc/title/foreignObject).
-    var needsIntegrationPointFix = document.createElementNS && (function() {
+    var needsIntegrationPointFix = document && document.createElementNS && (function() {
       // In FF title will not accept innerHTML.
       var testEl = document.createElementNS(svgNamespace, 'title');
       testEl.innerHTML = "<div></div>";
@@ -43682,7 +43718,7 @@ enifed("morph/dom-helper/build-html-dom",
     // Internet Explorer prior to 9 does not allow setting innerHTML if the first element
     // is a "zero-scope" element. This problem can be worked around by making
     // the first node an invisible text node. We, like Modernizr, use &shy;
-    var needsShy = (function() {
+    var needsShy = document && (function() {
       var testEl = document.createElement('div');
       testEl.innerHTML = "<div></div>";
       testEl.firstChild.innerHTML = "<script><\/script>";
@@ -43698,6 +43734,31 @@ enifed("morph/dom-helper/build-html-dom",
       return testEl.childNodes[0].nodeValue === 'Test:' &&
               testEl.childNodes[2].nodeValue === ' Value';
     })();
+
+    // IE8 create a selected attribute where they should only
+    // create a property
+    var createsSelectedAttribute = document && (function() {
+      var testEl = document.createElement('div');
+      testEl.innerHTML = "<select><option></option></select>";
+      return testEl.childNodes[0].childNodes[0].getAttribute('selected') === 'selected';
+    })();
+
+    var detectAutoSelectedOption;
+    if (createsSelectedAttribute) {
+      var detectAutoSelectedOptionRegex = /<option[^>]*selected/;
+      detectAutoSelectedOption = function detectAutoSelectedOption(select, option, html) { //jshint ignore:line
+        return select.selectedIndex === 0 &&
+               !detectAutoSelectedOptionRegex.test(html);
+      };
+    } else {
+      detectAutoSelectedOption = function detectAutoSelectedOption(select, option, html) { //jshint ignore:line
+        var selectedAttribute = option.getAttribute('selected');
+        return select.selectedIndex === 0 && (
+                 selectedAttribute === null ||
+                 ( selectedAttribute !== '' && selectedAttribute.toLowerCase() !== 'selected' )
+                );
+      };
+    }
 
     // IE 9 and earlier don't allow us to set innerHTML on col, colgroup, frameset,
     // html, style, table, tbody, tfoot, thead, title, tr. Detect this and add
@@ -43812,7 +43873,6 @@ enifed("morph/dom-helper/build-html-dom",
       };
     }
 
-
     var buildIESafeDOM;
     if (tagNamesRequiringInnerHTMLFix || movesWhitespace) {
       buildIESafeDOM = function buildIESafeDOM(html, contextualElement, dom) {
@@ -43879,17 +43939,45 @@ enifed("morph/dom-helper/build-html-dom",
       buildIESafeDOM = buildDOM;
     }
 
+    // When parsing innerHTML, the browser may set up DOM with some things
+    // not desired. For example, with a select element context and option
+    // innerHTML the first option will be marked selected.
+    //
+    // This method cleans up some of that, resetting those values back to
+    // their defaults.
+    //
+    function buildSafeDOM(html, contextualElement, dom) {
+      var childNodes = buildIESafeDOM(html, contextualElement, dom);
+
+      if (contextualElement.tagName === 'SELECT') {
+        // Walk child nodes
+        for (var i = 0; childNodes[i]; i++) {
+          // Find and process the first option child node
+          if (childNodes[i].tagName === 'OPTION') {
+            if (detectAutoSelectedOption(childNodes[i].parentNode, childNodes[i], html)) {
+              // If the first node is selected but does not have an attribute,
+              // presume it is not really selected.
+              childNodes[i].parentNode.selectedIndex = -1;
+            }
+            break;
+          }
+        }
+      }
+
+      return childNodes;
+    }
+
     var buildHTMLDOM;
     if (needsIntegrationPointFix) {
       buildHTMLDOM = function buildHTMLDOM(html, contextualElement, dom){
         if (svgHTMLIntegrationPoints[contextualElement.tagName]) {
-          return buildIESafeDOM(html, document.createElement('div'), dom);
+          return buildSafeDOM(html, document.createElement('div'), dom);
         } else {
-          return buildIESafeDOM(html, contextualElement, dom);
+          return buildSafeDOM(html, contextualElement, dom);
         }
       };
     } else {
-      buildHTMLDOM = buildIESafeDOM;
+      buildHTMLDOM = buildSafeDOM;
     }
 
     __exports__.buildHTMLDOM = buildHTMLDOM;
