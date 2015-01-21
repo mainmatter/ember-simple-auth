@@ -369,7 +369,7 @@ describe('Session', function() {
       });
     });
 
-    context('when the authenticator resolves to invaldiation', function() {
+    context('when the authenticator resolves invaldiation', function() {
       beforeEach(function() {
         sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.resolve());
       });
