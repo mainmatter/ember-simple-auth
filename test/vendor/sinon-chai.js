@@ -3,6 +3,7 @@
 
     // Module systems magic dance.
 
+    /* istanbul ignore else */
     if (typeof require === "function" && typeof exports === "object" && typeof module === "object") {
         // NodeJS
         module.exports = sinonChai;
@@ -55,8 +56,12 @@
         }
 
         return {
-            affirmative: printfArray(["expected %n to " + verbPhrase + action + nonNegatedSuffix].concat(args)),
-            negative: printfArray(["expected %n to not " + verbPhrase + action].concat(args))
+            affirmative: function () {
+                return printfArray(["expected %n to " + verbPhrase + action + nonNegatedSuffix].concat(args));
+            },
+            negative: function () {
+                return printfArray(["expected %n to not " + verbPhrase + action].concat(args));
+            }
         };
     }
 
