@@ -3,7 +3,7 @@ import Session from './session';
 import LocalStorage from './stores/local-storage';
 import Ephemeral from './stores/ephemeral';
 
-var wildcardToken = "WILDCARD_TOKEN";
+var wildcardToken = '_wildcard_token_';
 
 function extractLocationOrigin(location) {
   if (location === '*'){
