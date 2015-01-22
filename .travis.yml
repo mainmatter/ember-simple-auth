@@ -27,7 +27,7 @@ env:
     - BUNDLE="ember=1.7.1&jQuery=2.1.3&handlebars=1.3.0"
     - BUNDLE="ember=1.8.1&jQuery=1.11.2&handlebars=1.3.0"
     - BUNDLE="ember=1.8.1&jQuery=2.1.3&handlebars=1.3.0"
-    - BUNDLE="ember=1.9.1&jQuery=1.11.2&handlebars=1.3.0"
+    - BUNDLE="ember=1.9.1&jQuery=1.11.2&handlebars=2.0.0"
     - BUNDLE="ember=1.9.1&jQuery=2.1.3&handlebars=2.0.0"
 
 notifications:
