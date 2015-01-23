@@ -163,10 +163,14 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     Ember.assert('No authenticator for factory "' + authenticator + '" could be found', !Ember.isNone(theAuthenticator));
     return new Ember.RSVP.Promise(function(resolve, reject) {
       theAuthenticator.authenticate.apply(theAuthenticator, args).then(function(content) {
-        _this.setup(authenticator, content, true);
+        var trigger = !_this.get('isAuthenticated');
+        content = Ember.merge(Ember.merge({}, _this.content), content);
+        _this.setup(authenticator, content);
+        if (trigger) {
+          _this.trigger('sessionAuthenticationSucceeded');
+        }
         resolve();
       }, function(error) {
-        _this.clear();
         _this.trigger('sessionAuthenticationFailed', error);
         reject(error);
       });
@@ -196,9 +200,10 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var authenticator = _this.container.lookup(_this.authenticator);
-      authenticator.invalidate(_this.content).then(function() {
+      authenticator.invalidate(_this.content).then(function(content) {
         authenticator.off('sessionDataUpdated');
-        _this.clear(true);
+        _this.setup(null, content);
+        _this.trigger('sessionInvalidationSucceeded');
         resolve();
       }, function(error) {
         _this.trigger('sessionInvalidationFailed', error);
@@ -221,12 +226,12 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         _this.container.lookup(authenticator).restore(restoredContent).then(function(content) {
           _this.setup(authenticator, content);
           resolve();
-        }, function() {
-          _this.store.clear();
+        }, function(content) {
+          _this.setup(null, content);
           reject();
         });
       } else {
-        _this.store.clear();
+        _this.setup(null, restoredContent);
         reject();
       }
     });
@@ -236,40 +241,16 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @method setup
     @private
   */
-  setup: function(authenticator, content, trigger) {
-    content = Ember.merge(Ember.merge({}, this.content), content);
-    trigger = !!trigger && !this.get('isAuthenticated');
+  setup: function(authenticator, content) {
     this.beginPropertyChanges();
     this.setProperties({
-      isAuthenticated: true,
+      isAuthenticated: !Ember.isNone(authenticator),
       authenticator:   authenticator,
       content:         content
     });
     this.bindToAuthenticatorEvents();
     this.updateStore();
     this.endPropertyChanges();
-    if (trigger) {
-      this.trigger('sessionAuthenticationSucceeded');
-    }
-  },
-
-  /**
-    @method clear
-    @private
-  */
-  clear: function(trigger) {
-    trigger = !!trigger && this.get('isAuthenticated');
-    this.beginPropertyChanges();
-    this.setProperties({
-      isAuthenticated: false,
-      authenticator:   null,
-      content:         {}
-    });
-    this.store.clear();
-    this.endPropertyChanges();
-    if (trigger) {
-      this.trigger('sessionInvalidationSucceeded');
-    }
   },
 
   /**
@@ -306,10 +287,12 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     authenticator.off('sessionDataUpdated');
     authenticator.off('sessionDataInvalidated');
     authenticator.on('sessionDataUpdated', function(content) {
+      content = Ember.merge(Ember.merge({}, _this.content), content);
       _this.setup(_this.authenticator, content);
     });
     authenticator.on('sessionDataInvalidated', function(content) {
-      _this.clear(true);
+      _this.setup(null, content);
+      _this.trigger('sessionInvalidationSucceeded');
     });
   },
 
@@ -324,12 +307,18 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       if (!!authenticator) {
         delete content.authenticator;
         _this.container.lookup(authenticator).restore(content).then(function(content) {
-          _this.setup(authenticator, content, true);
-        }, function() {
-          _this.clear(true);
+          var trigger = !_this.get('isAuthenticated');
+          _this.setup(authenticator, content);
+          if (trigger) {
+            _this.trigger('sessionAuthenticationSucceeded');
+          }
+        }, function(content) {
+          _this.setup(null, content);
+          _this.trigger('sessionInvalidationSucceeded');
         });
       } else {
-        _this.clear(true);
+        _this.setup(null, content);
+        _this.trigger('sessionInvalidationSucceeded');
       }
     });
   }.observes('store')
