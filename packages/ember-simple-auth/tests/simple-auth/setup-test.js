@@ -168,7 +168,7 @@ describe('setup', function() {
         expect(this.authorizer.authorize).to.have.been.calledThrice;
       });
 
-      it('authorizes requests going to a foreign origin if the hosts on whitelist allow subdomain to origin', function() {
+      it('authorizes requests going to a subdomain of a foreign origin if the origin and any subdomain are whitelisted', function() {
         Configuration.crossOriginWhitelist = ['http://*.other-domain.com', 'http://*.sub.test-domain.com:1234'];
         setup(this.container, this.application);
         Ember.$.get('http://test.other-domain.com/path/query=string');

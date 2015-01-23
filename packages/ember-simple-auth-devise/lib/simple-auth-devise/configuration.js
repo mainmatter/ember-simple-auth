@@ -59,7 +59,11 @@ export default {
   tokenAttributeName: defaults.tokenAttributeName,
 
   /**
-    The email attribute name.
+    The identification attribute name. This is the parameter that is sent to
+    [serverTokenEndpoint](#SimpleAuth-Configuration-Devise-serverTokenEndpoint)
+    during the authentication process, is expected in the response and is used
+    by the
+    [Devise authorizer](#SimpleAuth-Authorizers-Devise).
 
     @property identificationAttributeName
     @readOnly

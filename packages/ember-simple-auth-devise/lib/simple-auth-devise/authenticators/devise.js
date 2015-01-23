@@ -17,7 +17,8 @@ import Configuration from './../configuration';
   @namespace SimpleAuth.Authenticators
   @module simple-auth-devise/authenticators/devise
   @extends Base
-*/export default Base.extend({
+*/
+export default Base.extend({
   /**
     The endpoint on the server the authenticator acquires the auth token
     and email from.
@@ -117,9 +118,10 @@ import Configuration from './../configuration';
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var data                 = {};
       data[_this.resourceName] = {
-        email:    credentials.identification,
         password: credentials.password
       };
+      data[_this.resourceName][_this.identificationAttributeName] = credentials.identification;
+
       _this.makeRequest(data).then(function(response) {
         Ember.run(function() {
           resolve(response);

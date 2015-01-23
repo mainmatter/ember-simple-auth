@@ -29,6 +29,7 @@
   <script src="../tmp/ember-simple-auth-testing-tests.amd.js"></script>
   <script type="text/javascript">
     Ember.Logger.warn = Ember.K;
+    Ember.onerror     = Ember.K;
     for (var key in requireModule.registry) {
       if (/-test$/.test(key)) {
         requireModule(key);
