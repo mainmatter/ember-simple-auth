@@ -184,8 +184,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     the session was successfully invalidated__ while a rejecting promise
     indicates that the promise returned by the `authenticator` rejected and
     thus invalidation was cancelled. In that case the session remains
-    authenticated. Once the session is successfully invalidated it clears all
-    of its data.
+    authenticated. When the authenticator successfully invalidates the session
+    it will also delete all secure data from the session, e.g. access tokens
+    etc.
 
     @method invalidate
     @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully
@@ -239,7 +240,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   setup: function(authenticator, content, mergeContent) {
     mergeContent = mergeContent || false;
     if (mergeContent) {
-      content = Ember.merge(Ember.merge({}, this.content), content);
+      content = Ember.merge(Ember.merge({}, this.content), content || {});
     }
     this.beginPropertyChanges();
     this.setProperties({

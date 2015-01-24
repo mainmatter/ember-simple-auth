@@ -82,13 +82,17 @@ export default Base.extend({
   /**
     Restores the session from a set of session properties; __will return a
     resolving promise when there's a non-empty `token` and a non-empty
-    `user_email` in the `properties`__ and a rejecting promise otherwise.
+    `user_email` in the `data`__ (or whatever has been configured for
+    [`SimpleAuth.Configuration.Devise#tokenAttributeName`](#SimpleAuth-Configuration-Devise-tokenAttributeName)
+    and
+    [`SimpleAuth.Configuration.Devise#identificationAttributeName`](#SimpleAuth-Configuration-Devise-identificationAttributeName))
+    and a rejecting promise otherwise.
 
     @method restore
-    @param {Object} properties The properties to restore the session from
+    @param {Object} data The current session data
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
-  restore: function(properties) {
+  restore: function(data) {
     var _this            = this;
     var propertiesObject = Ember.Object.create(properties);
     return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -142,6 +146,18 @@ export default Base.extend({
   */
   invalidate: function() {
     return Ember.RSVP.resolve();
+  },
+
+  /**
+    @method stripAuthenticatedData
+    @private
+  */
+  stripAuthenticatedData: function(data) {
+    delete data.access_token;
+    delete data.refresh_token;
+    delete data.expires_in;
+    delete data.expires_at;
+    return data;
   },
 
   /**

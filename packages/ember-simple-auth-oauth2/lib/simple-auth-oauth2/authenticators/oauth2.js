@@ -92,7 +92,7 @@ export default Base.extend({
     [`Authenticators.OAuth2#refreshAccessTokens`](#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
 
     @method restore
-    @param {Object} data The data to restore the session from
+    @param {Object} data The current sesion data
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(data) {
@@ -173,8 +173,9 @@ export default Base.extend({
   },
 
   /**
-    Cancels any outstanding automatic token refreshes and returns a resolving
-    promise.
+    Cancels any outstanding automatic token refreshes, deletes the
+    `access_token`, `refresh_token`, `expires_in` and `expires_at` properties
+    from the session and returns a resolving promise.
 
     @method invalidate
     @param {Object} data The data of the session to be invalidated
@@ -231,6 +232,10 @@ export default Base.extend({
     });
   },
 
+  /**
+    @method stripAuthenticatedData
+    @private
+  */
   stripAuthenticatedData: function(data) {
     delete data.access_token;
     delete data.refresh_token;

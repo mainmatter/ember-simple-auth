@@ -12,6 +12,13 @@ describe('Authenticators.Base', function() {
         done();
       });
     });
+
+    it('rejects with the passed data', function(done) {
+      this.authenticator.restore({ some: 'property' }).then(null, function() {
+        expect(true).to.be.true;
+        done({ some: 'property' });
+      });
+    });
   });
 
   describe('#authenticate', function() {
