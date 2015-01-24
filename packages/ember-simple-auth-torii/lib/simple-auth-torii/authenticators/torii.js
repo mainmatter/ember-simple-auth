@@ -29,7 +29,7 @@ export default Base.extend({
     Restores the session by calling the torii provider's `fetch` method.
 
     @method restore
-    @param {Object} data The data to restore the session from
+    @param {Object} data The current session data
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(data) {
@@ -42,11 +42,11 @@ export default Base.extend({
           _this.resolveWith(provider, data, resolve);
         }, function() {
           delete _this.provider;
-          reject();
+          reject(data);
         });
       } else {
         delete _this.provider;
-        reject();
+        reject(data);
       }
     });
   },
@@ -82,8 +82,10 @@ export default Base.extend({
     return new Ember.RSVP.Promise(function(resolve, reject) {
       _this.torii.close(_this.provider).then(function() {
         delete _this.provider;
-        resolve();
-      }, reject);
+        resolve(data);
+      }, function() {
+        reject(data);
+      });
     });
   },
 
