@@ -163,7 +163,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     Ember.assert('No authenticator for factory "' + authenticator + '" could be found', !Ember.isNone(theAuthenticator));
     return new Ember.RSVP.Promise(function(resolve, reject) {
       theAuthenticator.authenticate.apply(theAuthenticator, args).then(function(content) {
-        _this.setupAuthenticated(authenticator, content, true);
+        _this.setAuthenticated(authenticator, content, true);
         resolve();
       }, function(error) {
         _this.trigger('sessionAuthenticationFailed', error);
@@ -253,10 +253,10 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   },
 
   /**
-    @method setupAuthenticated
+    @method setAuthenticated
     @private
   */
-  setupAuthenticated: function(authenticator, content, mergeContent) {
+  setAuthenticated: function(authenticator, content, mergeContent) {
     var trigger = !this.get('isAuthenticated');
     this.setup(authenticator, content, mergeContent);
     if (trigger) {
@@ -321,7 +321,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       if (!!authenticator) {
         delete content.authenticator;
         _this.container.lookup(authenticator).restore(content).then(function(content) {
-          _this.setupAuthenticated(authenticator, content);
+          _this.setAuthenticated(authenticator, content);
         }, function(content) {
           succeedInvalidation(content);
         });
