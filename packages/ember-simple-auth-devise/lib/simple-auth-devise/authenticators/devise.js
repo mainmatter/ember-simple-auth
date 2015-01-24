@@ -93,13 +93,13 @@ export default Base.extend({
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(data) {
-    var _this            = this;
-    var propertiesObject = Ember.Object.create(properties);
+    var _this      = this;
+    var dataObject = Ember.Object.create(data);
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(propertiesObject.get(_this.tokenAttributeName)) && !Ember.isEmpty(propertiesObject.get(_this.identificationAttributeName))) {
-        resolve(properties);
+      if (!Ember.isEmpty(dataObject.get(_this.tokenAttributeName)) && !Ember.isEmpty(dataObject.get(_this.identificationAttributeName))) {
+        resolve(data);
       } else {
-        reject();
+        reject(_this.stripAuthenticatedData(data));
       }
     });
   },
@@ -139,13 +139,15 @@ export default Base.extend({
   },
 
   /**
-    Does nothing
+    Deletes the `token` and `user_email` properties from the session and
+    returns a resolving promise.
 
     @method invalidate
+    @param {Object} data The data of the session to be invalidated
     @return {Ember.RSVP.Promise} A resolving promise
   */
-  invalidate: function() {
-    return Ember.RSVP.resolve();
+  invalidate: function(data) {
+    return Ember.RSVP.resolve(this.stripAuthenticatedData(data || {}));
   },
 
   /**
@@ -153,10 +155,10 @@ export default Base.extend({
     @private
   */
   stripAuthenticatedData: function(data) {
-    delete data.access_token;
-    delete data.refresh_token;
-    delete data.expires_in;
-    delete data.expires_at;
+    Ember.A([this.tokenAttributeName, this.identificationAttributeName]).forEach(function(propertyName) {
+      var rootProperty = propertyName.split('.')[0];
+      delete data[rootProperty];
+    });
     return data;
   },
 

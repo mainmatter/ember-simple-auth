@@ -57,17 +57,51 @@ describe('Devise', function() {
       });
     });
 
-    context('when the data contains a custom token and email attribute', function() {
+    context('when the data does not contain a token and user_email', function() {
+      it('returns a rejecting promise', function(done) {
+        this.authenticator.restore().then(null, function(content){
+          expect(true).to.be.true;
+          done();
+        });
+      });
+
+      it('strips sensitivate data from the session data', function(done) {
+        this.authenticator.restore({ token: 'secret token!', some: 'property' }).then(null, function(data) {
+          expect(data).to.eql({ some: 'property' });
+          done();
+        });
+      });
+    });
+
+    context('custom token and identification attributes have been configured', function() {
       beforeEach(function() {
         Configuration.tokenAttributeName          = 'employee.token';
         Configuration.identificationAttributeName = 'employee.email';
         this.authenticator                        = Devise.create();
       });
 
-      it('resolves with the correct data', function(done) {
-        this.authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then(function(content){
-          expect(content).to.eql({ employee: { token: 'secret token!', email: 'user@email.com' } });
-          done();
+      context('when the data contains values for token and identification', function() {
+        it('resolves with the correct data', function(done) {
+          this.authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then(function(content){
+            expect(content).to.eql({ employee: { token: 'secret token!', email: 'user@email.com' } });
+            done();
+          });
+        });
+      });
+
+      context('when the data does not contain values for token and identifitication', function() {
+        it('returns a rejecting promise', function(done) {
+          this.authenticator.restore().then(null, function(content){
+            expect(true).to.be.true;
+            done();
+          });
+        });
+
+        it('strips sensitivate data from the session data', function(done) {
+          this.authenticator.restore({ employee: { token: 'secret token!' }, some: 'property' }).then(null, function(data) {
+            expect(data).to.eql({ some: 'property' });
+            done();
+          });
         });
       });
 
@@ -142,6 +176,13 @@ describe('Devise', function() {
     it('returns a resolving promise', function(done) {
       this.authenticator.invalidate().then(function() {
         expect(true).to.be.true;
+        done();
+      });
+    });
+
+    it('strips sensitivate data from the session data', function(done) {
+      this.authenticator.invalidate({ token: 'secret token!', some: 'property' }).then(function(data) {
+        expect(data).to.eql({ some: 'property' });
         done();
       });
     });
