@@ -161,10 +161,10 @@
         authenticate: function() {
           return new Ember.RSVP.Promise(function(resolve, reject) {
             gapi.auth.authorize({
-              client_id:        '694766332436-1g5bakjoo5flkfpv3t2mfsch9ghg7ggd.apps.googleusercontent.com',
-              scope:            ['https://www.googleapis.com/auth/plus.me'],
-              approval_prompt:  'force',
-              immediate:        false
+              client_id:       '694766332436-1g5bakjoo5flkfpv3t2mfsch9ghg7ggd.apps.googleusercontent.com',
+              scope:           ['https://www.googleapis.com/auth/plus.me'],
+              approval_prompt: 'force',
+              immediate:       false
             }, function(authResult) {
               if (authResult && !authResult.error) {
                   resolve({ access_token: authResult.access_token });
