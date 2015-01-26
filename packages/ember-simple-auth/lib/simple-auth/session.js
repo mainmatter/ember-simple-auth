@@ -138,6 +138,14 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   content: {},
 
   /**
+    @method init
+    @private
+  */
+  init: function() {
+    this.set('content', {});
+  },
+
+  /**
     Authenticates the session with an `authenticator` and appropriate
     `options`. __This delegates the actual authentication work to the
     `authenticator`__ and handles the returned promise accordingly (see
@@ -215,9 +223,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var restoredContent = _this.store.restore();
-      var authenticator   = restoredContent.authenticator;
+      var authenticator   = (restoredContent.secure || {}).authenticator;
       if (!!authenticator) {
-        delete restoredContent.authenticator;
+        delete restoredContent.secure.authenticator;
         _this.container.lookup(authenticator).restore(restoredContent).then(function(content) {
           _this.setup(authenticator, content);
           resolve();
@@ -236,15 +244,14 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @method setup
     @private
   */
-  setup: function(authenticator, content, trigger) {
-    content = Ember.merge(Ember.merge({}, this.content), content);
+  setup: function(authenticator, secureContent, trigger) {
     trigger = !!trigger && !this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated: true,
-      authenticator:   authenticator,
-      content:         content
+      authenticator:   authenticator
     });
+    Ember.set(this.content, 'secure', secureContent);
     this.bindToAuthenticatorEvents();
     this.updateStore();
     this.endPropertyChanges();
@@ -277,6 +284,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   setUnknownProperty: function(key, value) {
+    //TODO: assert that key is not 'secure' as that is reserved to the session itself
     var result = this._super(key, value);
     this.updateStore();
     return result;
@@ -289,7 +297,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   updateStore: function() {
     var data = this.content;
     if (!Ember.isEmpty(this.authenticator)) {
-      data = Ember.merge({ authenticator: this.authenticator }, data);
+      data.secure = Ember.merge({ authenticator: this.authenticator }, data.secure || {});
     }
     if (!Ember.isEmpty(data)) {
       this.store.persist(data);
@@ -320,9 +328,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   bindToStoreEvents: Ember.observer('store', function() {
     var _this = this;
     this.store.on('sessionDataUpdated', function(content) {
-      var authenticator = content.authenticator;
+      var authenticator = (content.secure || {}).authenticator;
       if (!!authenticator) {
-        delete content.authenticator;
+        delete content.secure.authenticator;
         _this.container.lookup(authenticator).restore(content).then(function(content) {
           _this.setup(authenticator, content, true);
         }, function() {
