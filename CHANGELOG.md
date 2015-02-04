@@ -1,3 +1,21 @@
+# 0.7.3
+
+* __[BREAKING]__ The name of the token attribute used by the devise
+  authenticator and authorizer is now `token` by default, see #394.
+* __[BREAKING]__ The devise authenticator will now send the user's
+  identification for the configured `identificationAttributeName` instead of
+  always using `email`, see #403.
+* The `crossOriginWhitelist` now supports whitelisting all subdomains of a
+  specific domain, see #398.
+* The docs for defining custom authenticators have been improved, see #399.
+* The tests will now run against the newest versions of Ember, Ember.js, jQuery
+  and handlebars.
+* The examples now run with handlebars 2.0.0 and jQuery 2.1.3.
+* The Google+ example has been fixed so that it will always prompt the user for
+  approval, see #412.
+* The template for the API docs was updated so that it works with the newest
+  handlebars version.
+
 # 0.7.2
 
 * The session's `authenticate` method now accepts an arbitrary list of
