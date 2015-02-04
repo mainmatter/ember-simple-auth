@@ -72,7 +72,6 @@
     </style>
   </head>
   <body>
-    
       <header class="navbar navbar-default navbar-fixed-top">
         <div class="container">
           <div class="collapse navbar-collapse">
@@ -80,25 +79,21 @@
               <li class="dropdown" id="classesDropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption"></span></a>
                 <ul class="dropdown-menu">
-                  
                     <li>
                       <a href="#SimpleAuth-Authenticators-Devise">SimpleAuth.Authenticators.Devise</a>
                     </li>
-                  
                     <li>
                       <a href="#SimpleAuth-Authorizers-Devise">SimpleAuth.Authorizers.Devise</a>
                     </li>
-                  
                     <li>
                       <a href="#SimpleAuth-Configuration-Devise">SimpleAuth.Configuration.Devise</a>
                     </li>
-                  
                 </ul>
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.7.2"><span class="label label-primary">0.7.2</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.7.3"><span class="label label-primary">0.7.3</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -107,7 +102,6 @@
         <div class="row">
           <div class="alert alert-info">For a general overview of how Ember Simple Auth works, see the <a href="https://github.com/simplabs/ember-simple-auth#readme" title="Ember Simple Auth's README github" class="alert-link">README</a></div>
         </div>
-        
           <div class="row">
             <div class="col-md-12">
               <div class="page-header">
@@ -138,267 +132,172 @@ see the README and
                   <pre><code class="lang-javascript javascript">var Devise = requireModule('simple-auth-devise/authenticators/devise')['default'];</code></pre>
                 </dd>
               </dl>
-              
                 <h3 class="section">Properties</h3>
-                
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-Devise-serverTokenEndpoint" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title property">serverTokenEndpoint <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    <p>The endpoint on the server the authenticator acquires the auth token
-and email from.</p>
-<p>This value can be configured via
-<a href="#SimpleAuth-Configuration-Devise-serverTokenEndpoint"><code>SimpleAuth.Configuration.Devise#serverTokenEndpoint</code></a>.</p>
-
-    
-      Defaults to <code>&#x27;/users/sign_in&#x27;</code>
-      
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-Devise-serverTokenEndpoint" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title property">serverTokenEndpoint <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The endpoint on the server the authenticator acquires the auth token
+                  and email from.</p>
+                  <p>This value can be configured via
+                  <a href="#SimpleAuth-Configuration-Devise-serverTokenEndpoint"><code>SimpleAuth.Configuration.Devise#serverTokenEndpoint</code></a>.</p>
+                  
+                        Defaults to <code>&#x27;/users/sign_in&#x27;</code>
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-Devise-resourceName" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L35"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title property">resourceName <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    <p>The devise resource name</p>
-<p>This value can be configured via
-<a href="#SimpleAuth-Configuration-Devise-resourceName"><code>SimpleAuth.Configuration.Devise#resourceName</code></a>.</p>
-
-    
-      Defaults to <code>&#x27;user&#x27;</code>
-      
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-Devise-resourceName" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L35"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title property">resourceName <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The devise resource name</p>
+                  <p>This value can be configured via
+                  <a href="#SimpleAuth-Configuration-Devise-resourceName"><code>SimpleAuth.Configuration.Devise#resourceName</code></a>.</p>
+                  
+                        Defaults to <code>&#x27;user&#x27;</code>
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-Devise-tokenAttributeName" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L47"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title property">tokenAttributeName <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    <p>The token attribute name.</p>
-<p>This value can be configured via
-<a href="#SimpleAuth-Configuration-Devise-tokenAttributeName"><code>SimpleAuth.Configuration.Devise#tokenAttributeName</code></a>.</p>
-
-    
-      Defaults to <code>&#x27;user_token&#x27;</code>
-      
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-Devise-tokenAttributeName" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L47"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title property">tokenAttributeName <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The token attribute name.</p>
+                  <p>This value can be configured via
+                  <a href="#SimpleAuth-Configuration-Devise-tokenAttributeName"><code>SimpleAuth.Configuration.Devise#tokenAttributeName</code></a>.</p>
+                  
+                        Defaults to <code>&#x27;token&#x27;</code>
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-Devise-identificationAttributeName" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L59"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title property">identificationAttributeName <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    <p>The identification attribute name.</p>
-<p>This value can be configured via
-<a href="#SimpleAuth-Configuration-Devise-identificationAttributeName"><code>SimpleAuth.Configuration.Devise#identificationAttributeName</code></a>.</p>
-
-    
-      Defaults to <code>&#x27;user_email&#x27;</code>
-      
-  </div>
-</div>
-
-                
-              
-              
-              
+                    <a id="SimpleAuth-Authenticators-Devise-identificationAttributeName" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L59"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title property">identificationAttributeName <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The identification attribute name.</p>
+                  <p>This value can be configured via
+                  <a href="#SimpleAuth-Configuration-Devise-identificationAttributeName"><code>SimpleAuth.Configuration.Devise#identificationAttributeName</code></a>.</p>
+                  
+                        Defaults to <code>&#x27;user_email&#x27;</code>
+                    </div>
+                  </div>
                 <h3 class="section">Methods</h3>
-                
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-Devise-restore" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L82"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      restore(properties)
-      
-        <span class="type">&rarr; Ember.RSVP.Promise</span>
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    <p>Restores the session from a set of session properties; <strong>will return a
-resolving promise when there&#39;s a non-empty <code>user_token</code> and a non-empty
-<code>user_email</code> in the <code>properties</code></strong> and a rejecting promise otherwise.</p>
-
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>properties <span class="type">Object</span></dt>
-          <dd><p>The properties to restore the session from</p>
-</dd>
-          
-        
-      </dl>
-    
-    
-      <h4 class="subsection">Returns</h4>
-      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
-      <p>A promise that when it resolves results in the session being authenticated</p>
-
-    
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-Devise-restore" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L82"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        restore(properties)
+                          <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Restores the session from a set of session properties; <strong>will return a
+                  resolving promise when there&#39;s a non-empty <code>token</code> and a non-empty
+                  <code>user_email</code> in the <code>properties</code></strong> and a rejecting promise otherwise.</p>
+                  
+                        <h4 class="subsection">Arguments</h4>
+                        <dl class="params">
+                            <dt>properties <span class="type">Object</span></dt>
+                            <dd><p>The properties to restore the session from</p>
+                  </dd>
+                        </dl>
+                        <h4 class="subsection">Returns</h4>
+                        <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                        <p>A promise that when it resolves results in the session being authenticated</p>
+                  
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-Devise-authenticate" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L103"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      authenticate(options)
-      
-        <span class="type">&rarr; Ember.RSVP.Promise</span>
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    <p>Authenticates the session with the specified <code>credentials</code>; the credentials
-are <code>POST</code>ed to the
-<a href="#SimpleAuth-Authenticators-Devise-serverTokenEndpoint"><code>Authenticators.Devise#serverTokenEndpoint</code></a>
-and if they are valid the server returns an auth token and email in
-response. <strong>If the credentials are valid and authentication succeeds, a
-promise that resolves with the server&#39;s response is returned</strong>, otherwise a
-promise that rejects with the server error is returned.</p>
-
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>options <span class="type">Object</span></dt>
-          <dd><p>The credentials to authenticate the session with</p>
-</dd>
-          
-        
-      </dl>
-    
-    
-      <h4 class="subsection">Returns</h4>
-      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
-      <p>A promise that resolves when an auth token and email is successfully acquired from the server and rejects otherwise</p>
-
-    
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-Devise-authenticate" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L103"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        authenticate(options)
+                          <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Authenticates the session with the specified <code>credentials</code>; the credentials
+                  are <code>POST</code>ed to the
+                  <a href="#SimpleAuth-Authenticators-Devise-serverTokenEndpoint"><code>Authenticators.Devise#serverTokenEndpoint</code></a>
+                  and if they are valid the server returns an auth token and email in
+                  response. <strong>If the credentials are valid and authentication succeeds, a
+                  promise that resolves with the server&#39;s response is returned</strong>, otherwise a
+                  promise that rejects with the server error is returned.</p>
+                  
+                        <h4 class="subsection">Arguments</h4>
+                        <dl class="params">
+                            <dt>options <span class="type">Object</span></dt>
+                            <dd><p>The credentials to authenticate the session with</p>
+                  </dd>
+                        </dl>
+                        <h4 class="subsection">Returns</h4>
+                        <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                        <p>A promise that resolves when an auth token and email is successfully acquired from the server and rejects otherwise</p>
+                  
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-Devise-invalidate" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L136"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      invalidate()
-      
-        <span class="type">&rarr; Ember.RSVP.Promise</span>
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    <p>Does nothing</p>
-
-    
-    
-      <h4 class="subsection">Returns</h4>
-      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
-      <p>A resolving promise</p>
-
-    
-  </div>
-</div>
-
-                
-              
-              
-              
+                    <a id="SimpleAuth-Authenticators-Devise-invalidate" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authenticators/devise.js#L137"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        invalidate()
+                          <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Does nothing</p>
+                  
+                        <h4 class="subsection">Returns</h4>
+                        <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                        <p>A resolving promise</p>
+                  
+                    </div>
+                  </div>
             </div>
             <div class="col-md-3 overview">
-              
-  <h4>Extends</h4>
-  <p><span class="type">Base</span></p>
-
-
-              
-
-              
-  <h4>Properties</h4>
-  <ul class="list-unstyled">
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-Devise-serverTokenEndpoint">serverTokenEndpoint</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-Devise-resourceName">resourceName</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-Devise-tokenAttributeName">tokenAttributeName</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-Devise-identificationAttributeName">identificationAttributeName</a>
-      </li>
-    
-  </ul>
-
-
-              
-
-              
-  <h4>Methods</h4>
-  <ul class="list-unstyled">
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-Devise-restore">restore</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-Devise-authenticate">authenticate</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-Devise-invalidate">invalidate</a>
-      </li>
-    
-  </ul>
-
-
-              
-
-              
-
+                <h4>Extends</h4>
+                <p><span class="type">Base</span></p>
+                <h4>Properties</h4>
+                <ul class="list-unstyled">
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-Devise-serverTokenEndpoint">serverTokenEndpoint</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-Devise-resourceName">resourceName</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-Devise-tokenAttributeName">tokenAttributeName</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-Devise-identificationAttributeName">identificationAttributeName</a>
+                    </li>
+                </ul>
+                <h4>Methods</h4>
+                <ul class="list-unstyled">
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-Devise-restore">restore</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-Devise-authenticate">authenticate</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-Devise-invalidate">invalidate</a>
+                    </li>
+                </ul>
             </div>
           </div>
-        
           <div class="row">
             <div class="col-md-12">
               <div class="page-header">
@@ -410,8 +309,8 @@ promise that rejects with the server error is returned.</p>
           <div class="row">
             <div class="col-md-9" id="main-content">
               <p>Authenticator that works with the Ruby gem
-<a href="https://github.com/plataformatec/devise">Devise</a> by sending the <code>user_token</code>
-and <code>user_email</code> properties from the session in the <code>Authorization</code> header.</p>
+<a href="https://github.com/plataformatec/devise">Devise</a> by sending the <code>token</code> and
+<code>user_email</code> properties from the session in the <code>Authorization</code> header.</p>
 <p><strong>As token authentication is not actually part of devise anymore, the server
 needs to implement some customizations</strong> to work with this authenticator -
 see the README for more information.</p>
@@ -429,138 +328,81 @@ see the README for more information.</p>
                   <pre><code class="lang-javascript javascript">var Devise = requireModule('simple-auth-devise/authorizers/devise')['default'];</code></pre>
                 </dd>
               </dl>
-              
                 <h3 class="section">Properties</h3>
-                
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authorizers-Devise-tokenAttributeName" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authorizers/devise.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title property">tokenAttributeName <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    <p>The token attribute name.</p>
-<p>This value can be configured via
-<a href="#SimpleAuth-Configuration-Devise-tokenAttributeName"><code>SimpleAuth.Configuration.Devise#tokenAttributeName</code></a>.</p>
-
-    
-      Defaults to <code>&#x27;user_token&#x27;</code>
-      
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authorizers-Devise-tokenAttributeName" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authorizers/devise.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title property">tokenAttributeName <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The token attribute name.</p>
+                  <p>This value can be configured via
+                  <a href="#SimpleAuth-Configuration-Devise-tokenAttributeName"><code>SimpleAuth.Configuration.Devise#tokenAttributeName</code></a>.</p>
+                  
+                        Defaults to <code>&#x27;token&#x27;</code>
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authorizers-Devise-identificationAttributeName" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authorizers/devise.js#L34"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title property">identificationAttributeName <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    <p>The identification attribute name.</p>
-<p>This value can be configured via
-<a href="#SimpleAuth-Configuration-Devise-identificationAttributeName"><code>SimpleAuth.Configuration.Devise#identificationAttributeName</code></a>.</p>
-
-    
-      Defaults to <code>&#x27;user_email&#x27;</code>
-      
-  </div>
-</div>
-
-                
-              
-              
-              
+                    <a id="SimpleAuth-Authorizers-Devise-identificationAttributeName" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authorizers/devise.js#L34"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title property">identificationAttributeName <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The identification attribute name.</p>
+                  <p>This value can be configured via
+                  <a href="#SimpleAuth-Configuration-Devise-identificationAttributeName"><code>SimpleAuth.Configuration.Devise#identificationAttributeName</code></a>.</p>
+                  
+                        Defaults to <code>&#x27;user_email&#x27;</code>
+                    </div>
+                  </div>
                 <h3 class="section">Methods</h3>
-                
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authorizers-Devise-authorize" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authorizers/devise.js#L46"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      authorize(jqXHR, requestOptions)
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    <p>Authorizes an XHR request by sending the <code>user_token</code> and <code>user_email</code>
-properties from the session in the <code>Authorization</code> header:</p>
-<pre><code>Authorization: Token &lt;tokenAttributeName&gt;=&quot;&lt;token&gt;&quot;, &lt;identificationAttributeName&gt;=&quot;&lt;user identification&gt;&quot;
-</code></pre>
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>jqXHR <span class="type">JqXHR</span></dt>
-          <dd><p>The XHR request to authorize (see <a href="http://api.jquery.com/jQuery.ajax/#jqXHR">http://api.jquery.com/jQuery.ajax/#jqXHR</a>)</p>
-</dd>
-          
-        
-          <dt>requestOptions <span class="type">Object</span></dt>
-          <dd><p>The options as provided to the <code>$.ajax</code> method (see <a href="http://api.jquery.com/jQuery.ajaxPrefilter/">http://api.jquery.com/jQuery.ajaxPrefilter/</a>)</p>
-</dd>
-          
-        
-      </dl>
-    
-    
-  </div>
-</div>
-
-                
-              
-              
-              
+                    <a id="SimpleAuth-Authorizers-Devise-authorize" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/authorizers/devise.js#L46"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        authorize(jqXHR, requestOptions)
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Authorizes an XHR request by sending the <code>token</code> and <code>user_email</code>
+                  properties from the session in the <code>Authorization</code> header:</p>
+                  <pre><code>Authorization: Token &lt;tokenAttributeName&gt;=&quot;&lt;token&gt;&quot;, &lt;identificationAttributeName&gt;=&quot;&lt;user identification&gt;&quot;
+                  </code></pre>
+                        <h4 class="subsection">Arguments</h4>
+                        <dl class="params">
+                            <dt>jqXHR <span class="type">JqXHR</span></dt>
+                            <dd><p>The XHR request to authorize (see <a href="http://api.jquery.com/jQuery.ajax/#jqXHR">http://api.jquery.com/jQuery.ajax/#jqXHR</a>)</p>
+                  </dd>
+                            <dt>requestOptions <span class="type">Object</span></dt>
+                            <dd><p>The options as provided to the <code>$.ajax</code> method (see <a href="http://api.jquery.com/jQuery.ajaxPrefilter/">http://api.jquery.com/jQuery.ajaxPrefilter/</a>)</p>
+                  </dd>
+                        </dl>
+                    </div>
+                  </div>
             </div>
             <div class="col-md-3 overview">
-              
-  <h4>Extends</h4>
-  <p><span class="type">Base</span></p>
-
-
-              
-
-              
-  <h4>Properties</h4>
-  <ul class="list-unstyled">
-    
-      <li>
-        <a href="#SimpleAuth-Authorizers-Devise-tokenAttributeName">tokenAttributeName</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authorizers-Devise-identificationAttributeName">identificationAttributeName</a>
-      </li>
-    
-  </ul>
-
-
-              
-
-              
-  <h4>Methods</h4>
-  <ul class="list-unstyled">
-    
-      <li>
-        <a href="#SimpleAuth-Authorizers-Devise-authorize">authorize</a>
-      </li>
-    
-  </ul>
-
-
-              
-
-              
-
+                <h4>Extends</h4>
+                <p><span class="type">Base</span></p>
+                <h4>Properties</h4>
+                <ul class="list-unstyled">
+                    <li>
+                      <a href="#SimpleAuth-Authorizers-Devise-tokenAttributeName">tokenAttributeName</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authorizers-Devise-identificationAttributeName">identificationAttributeName</a>
+                    </li>
+                </ul>
+                <h4>Methods</h4>
+                <ul class="list-unstyled">
+                    <li>
+                      <a href="#SimpleAuth-Authorizers-Devise-authorize">authorize</a>
+                    </li>
+                </ul>
             </div>
           </div>
-        
           <div class="row">
             <div class="col-md-12">
               <div class="page-header">
@@ -590,135 +432,83 @@ object:</p>
                   <pre><code class="lang-javascript javascript">var Devise = requireModule('simple-auth/configuration')['default'];</code></pre>
                 </dd>
               </dl>
-              
                 <h3 class="section">Properties</h3>
-                
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Configuration-Devise-serverTokenEndpoint" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/configuration.js#L27"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-      <span class="label label-info pull-right">static</span>
-    
-    <h3 class="panel-title property">serverTokenEndpoint <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    <p>The endpoint on the server the authenticator acquires the auth token
-and email from.</p>
-
-    
-      Defaults to <code>&#x27;/users/sign_in&#x27;</code>
-      
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Configuration-Devise-serverTokenEndpoint" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/configuration.js#L27"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                        <span class="label label-info pull-right">static</span>
+                      <h3 class="panel-title property">serverTokenEndpoint <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The endpoint on the server the authenticator acquires the auth token
+                  and email from.</p>
+                  
+                        Defaults to <code>&#x27;/users/sign_in&#x27;</code>
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Configuration-Devise-resourceName" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/configuration.js#L39"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-      <span class="label label-info pull-right">static</span>
-    
-    <h3 class="panel-title property">resourceName <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    <p>The devise resource name.</p>
-
-    
-      Defaults to <code>&#x27;user&#x27;</code>
-      
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Configuration-Devise-resourceName" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/configuration.js#L39"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                        <span class="label label-info pull-right">static</span>
+                      <h3 class="panel-title property">resourceName <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The devise resource name.</p>
+                  
+                        Defaults to <code>&#x27;user&#x27;</code>
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Configuration-Devise-tokenAttributeName" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/configuration.js#L50"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-      <span class="label label-info pull-right">static</span>
-    
-    <h3 class="panel-title property">tokenAttributeName <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    <p>The token attribute name.</p>
-
-    
-      Defaults to <code>&#x27;user_token&#x27;</code>
-      
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Configuration-Devise-tokenAttributeName" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/configuration.js#L50"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                        <span class="label label-info pull-right">static</span>
+                      <h3 class="panel-title property">tokenAttributeName <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The token attribute name.</p>
+                  
+                        Defaults to <code>&#x27;token&#x27;</code>
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Configuration-Devise-identificationAttributeName" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/configuration.js#L61"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-      <span class="label label-info pull-right">static</span>
-    
-    <h3 class="panel-title property">identificationAttributeName <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    <p>The email attribute name.</p>
-
-    
-      Defaults to <code>&#x27;user_email&#x27;</code>
-      
-  </div>
-</div>
-
-                
-              
-              
-              
-              
-              
+                    <a id="SimpleAuth-Configuration-Devise-identificationAttributeName" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-devise/lib/simple-auth-devise/configuration.js#L61"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                        <span class="label label-info pull-right">static</span>
+                      <h3 class="panel-title property">identificationAttributeName <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The identification attribute name. This is the parameter that is sent to
+                  <a href="#SimpleAuth-Configuration-Devise-serverTokenEndpoint">serverTokenEndpoint</a>
+                  during the authentication process, is expected in the response and is used
+                  by the
+                  <a href="#SimpleAuth-Authorizers-Devise">Devise authorizer</a>.</p>
+                  
+                        Defaults to <code>&#x27;user_email&#x27;</code>
+                    </div>
+                  </div>
             </div>
             <div class="col-md-3 overview">
-              
-
-              
-
-              
-  <h4>Properties</h4>
-  <ul class="list-unstyled">
-    
-      <li>
-        <a href="#SimpleAuth-Configuration-Devise-serverTokenEndpoint">serverTokenEndpoint</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Configuration-Devise-resourceName">resourceName</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Configuration-Devise-tokenAttributeName">tokenAttributeName</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Configuration-Devise-identificationAttributeName">identificationAttributeName</a>
-      </li>
-    
-  </ul>
-
-
-              
-
-              
-
-              
-
-              
-
+                <h4>Properties</h4>
+                <ul class="list-unstyled">
+                    <li>
+                      <a href="#SimpleAuth-Configuration-Devise-serverTokenEndpoint">serverTokenEndpoint</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Configuration-Devise-resourceName">resourceName</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Configuration-Devise-tokenAttributeName">tokenAttributeName</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Configuration-Devise-identificationAttributeName">identificationAttributeName</a>
+                    </li>
+                </ul>
             </div>
           </div>
-        
       </div>
       <script type="text/javascript" charset="utf-8">
         $(function() {
@@ -740,6 +530,5 @@ and email from.</p>
           updateDropdownCaption(dropdownCaption);
         });
       </script>
-    
   </body>
 </html>

@@ -72,7 +72,6 @@
     </style>
   </head>
   <body>
-    
       <header class="navbar navbar-default navbar-fixed-top">
         <div class="container">
           <div class="collapse navbar-collapse">
@@ -80,17 +79,15 @@
               <li class="dropdown" id="classesDropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption"></span></a>
                 <ul class="dropdown-menu">
-                  
                     <li>
                       <a href="#SimpleAuth-Authenticators-Torii">SimpleAuth.Authenticators.Torii</a>
                     </li>
-                  
                 </ul>
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.7.2"><span class="label label-primary">0.7.2</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.7.3"><span class="label label-primary">0.7.3</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -99,7 +96,6 @@
         <div class="row">
           <div class="alert alert-info">For a general overview of how Ember Simple Auth works, see the <a href="https://github.com/simplabs/ember-simple-auth#readme" title="Ember Simple Auth's README github" class="alert-link">README</a></div>
         </div>
-        
           <div class="row">
             <div class="col-md-12">
               <div class="page-header">
@@ -126,171 +122,102 @@
                   <pre><code class="lang-javascript javascript">var Torii = requireModule('simple-auth-torii/authenticators/torii')['default'];</code></pre>
                 </dd>
               </dl>
-              
-              
-              
                 <h3 class="section">Methods</h3>
-                
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-Torii-restore" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-torii/lib/simple-auth-torii/authenticators/torii.js#L28"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      restore(data)
-      
-        <span class="type">&rarr; Ember.RSVP.Promise</span>
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    <p>Restores the session by calling the torii provider&#39;s <code>fetch</code> method.</p>
-
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>data <span class="type">Object</span></dt>
-          <dd><p>The data to restore the session from</p>
-</dd>
-          
-        
-      </dl>
-    
-    
-      <h4 class="subsection">Returns</h4>
-      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
-      <p>A promise that when it resolves results in the session being authenticated</p>
-
-    
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-Torii-restore" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-torii/lib/simple-auth-torii/authenticators/torii.js#L28"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        restore(data)
+                          <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Restores the session by calling the torii provider&#39;s <code>fetch</code> method.</p>
+                  
+                        <h4 class="subsection">Arguments</h4>
+                        <dl class="params">
+                            <dt>data <span class="type">Object</span></dt>
+                            <dd><p>The data to restore the session from</p>
+                  </dd>
+                        </dl>
+                        <h4 class="subsection">Returns</h4>
+                        <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                        <p>A promise that when it resolves results in the session being authenticated</p>
+                  
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-Torii-authenticate" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-torii/lib/simple-auth-torii/authenticators/torii.js#L54"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      authenticate(provider, options)
-      
-        <span class="type">&rarr; Ember.RSVP.Promise</span>
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    <p>Authenticates the session by opening the torii provider. For more
-documentation on torii, see the
-<a href="https://github.com/Vestorly/torii#readme">project&#39;s README</a>.</p>
-
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>provider <span class="type">String</span></dt>
-          <dd><p>The provider to authenticate the session with</p>
-</dd>
-          
-        
-          <dt>options <span class="type">Object</span></dt>
-          <dd><p>The options to pass to the torii provider</p>
-</dd>
-          
-        
-      </dl>
-    
-    
-      <h4 class="subsection">Returns</h4>
-      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
-      <p>A promise that resolves when the provider successfully authenticates a user and rejects otherwise</p>
-
-    
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-Torii-authenticate" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-torii/lib/simple-auth-torii/authenticators/torii.js#L54"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        authenticate(provider, options)
+                          <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Authenticates the session by opening the torii provider. For more
+                  documentation on torii, see the
+                  <a href="https://github.com/Vestorly/torii#readme">project&#39;s README</a>.</p>
+                  
+                        <h4 class="subsection">Arguments</h4>
+                        <dl class="params">
+                            <dt>provider <span class="type">String</span></dt>
+                            <dd><p>The provider to authenticate the session with</p>
+                  </dd>
+                            <dt>options <span class="type">Object</span></dt>
+                            <dd><p>The options to pass to the torii provider</p>
+                  </dd>
+                        </dl>
+                        <h4 class="subsection">Returns</h4>
+                        <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                        <p>A promise that resolves when the provider successfully authenticates a user and rejects otherwise</p>
+                  
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-Torii-invalidate" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-torii/lib/simple-auth-torii/authenticators/torii.js#L73"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      invalidate(data)
-      
-        <span class="type">&rarr; Ember.RSVP.Promise</span>
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    <p>Closes the torii provider.</p>
-
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>data <span class="type">Object</span></dt>
-          <dd><p>The data that&#39;s stored in the session</p>
-</dd>
-          
-        
-      </dl>
-    
-    
-      <h4 class="subsection">Returns</h4>
-      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
-      <p>A promise that resolves when the provider successfully closes and rejects otherwise</p>
-
-    
-  </div>
-</div>
-
-                
-              
-              
-              
+                    <a id="SimpleAuth-Authenticators-Torii-invalidate" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-torii/lib/simple-auth-torii/authenticators/torii.js#L73"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        invalidate(data)
+                          <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Closes the torii provider.</p>
+                  
+                        <h4 class="subsection">Arguments</h4>
+                        <dl class="params">
+                            <dt>data <span class="type">Object</span></dt>
+                            <dd><p>The data that&#39;s stored in the session</p>
+                  </dd>
+                        </dl>
+                        <h4 class="subsection">Returns</h4>
+                        <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                        <p>A promise that resolves when the provider successfully closes and rejects otherwise</p>
+                  
+                    </div>
+                  </div>
             </div>
             <div class="col-md-3 overview">
-              
-  <h4>Extends</h4>
-  <p><span class="type">Base</span></p>
-
-
-              
-
-              
-
-              
-
-              
-  <h4>Methods</h4>
-  <ul class="list-unstyled">
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-Torii-restore">restore</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-Torii-authenticate">authenticate</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-Torii-invalidate">invalidate</a>
-      </li>
-    
-  </ul>
-
-
-              
-
-              
-
+                <h4>Extends</h4>
+                <p><span class="type">Base</span></p>
+                <h4>Methods</h4>
+                <ul class="list-unstyled">
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-Torii-restore">restore</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-Torii-authenticate">authenticate</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-Torii-invalidate">invalidate</a>
+                    </li>
+                </ul>
             </div>
           </div>
-        
       </div>
       <script type="text/javascript" charset="utf-8">
         $(function() {
@@ -312,6 +239,5 @@ documentation on torii, see the
           updateDropdownCaption(dropdownCaption);
         });
       </script>
-    
   </body>
 </html>
