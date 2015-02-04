@@ -7,6 +7,8 @@
   always using `email`, see #403.
 * The `crossOriginWhitelist` now supports whitelisting all subdomains of a
   specific domain, see #398.
+* Fixed a bug where stores would trigger `sessionDataUpdated` updated events
+  although the store's contents actually had not changed, see #349.
 * The docs for defining custom authenticators have been improved, see #399.
 * The tests will now run against the newest versions of Ember, Ember.js, jQuery
   and handlebars.
