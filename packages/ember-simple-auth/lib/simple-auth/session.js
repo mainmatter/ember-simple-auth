@@ -135,14 +135,14 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @property content
     @private
   */
-  content: {},
+  content: { secure: {} },
 
   /**
     @method init
     @private
   */
   init: function() {
-    this.set('content', {});
+    this.set('content', { secure: {} });
   },
 
   /**
