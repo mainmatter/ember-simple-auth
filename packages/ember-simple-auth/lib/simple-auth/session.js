@@ -269,9 +269,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated: false,
-      authenticator:   null,
-      content:         {}
+      authenticator:   null
     });
+    Ember.set(this.content, 'secure', {});
     this.store.clear();
     this.endPropertyChanges();
     if (trigger) {
