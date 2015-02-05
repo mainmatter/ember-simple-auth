@@ -93,7 +93,7 @@ export default function(container, application) {
 
   if (!Ember.isEmpty(Configuration.authorizer)) {
     var authorizer = container.lookup(Configuration.authorizer);
-    Ember.assert('The configured authorizer "' + Configuration.authorizer + '" could not be found in the container.', !Ember.isEmpty(authorizer));
+    Ember.assert('The configured authorizer "' + Configuration.authorizer + '" could not be found in the container!', !Ember.isEmpty(authorizer));
     authorizer.set('session', session);
     ajaxPrefilter.authorizer = authorizer;
     ajaxError.session = session;

@@ -157,10 +157,10 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   authenticate: function() {
     var args          = Array.prototype.slice.call(arguments);
     var authenticator = args.shift();
-    Ember.assert('Session#authenticate requires the authenticator factory to be specified, was ' + authenticator, !Ember.isEmpty(authenticator));
+    Ember.assert('Session#authenticate requires the authenticator factory to be specified, was "' + authenticator + '"!', !Ember.isEmpty(authenticator));
     var _this            = this;
     var theAuthenticator = this.container.lookup(authenticator);
-    Ember.assert('No authenticator for factory "' + authenticator + '" could be found', !Ember.isNone(theAuthenticator));
+    Ember.assert('No authenticator for factory "' + authenticator + '" could be found!', !Ember.isNone(theAuthenticator));
     return new Ember.RSVP.Promise(function(resolve, reject) {
       theAuthenticator.authenticate.apply(theAuthenticator, args).then(function(content) {
         _this.setup(authenticator, content, true);
@@ -192,7 +192,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully
   */
   invalidate: function() {
-    Ember.assert('Session#invalidate requires the session to be authenticated', this.get('isAuthenticated'));
+    Ember.assert('Session#invalidate requires the session to be authenticated!', this.get('isAuthenticated'));
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var authenticator = _this.container.lookup(_this.authenticator);
