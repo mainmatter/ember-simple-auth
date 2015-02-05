@@ -245,6 +245,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   setup: function(authenticator, secureContent, trigger) {
+    //TODO: clean this up, it's so messy!
     trigger = !!trigger && !this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
@@ -265,6 +266,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   clear: function(trigger, content) {
+    //TODO: clean this up, it's so messy!
     trigger = !!trigger && this.get('isAuthenticated');
     content = content || this.get('content');
     this.beginPropertyChanges();
@@ -309,6 +311,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   bindToAuthenticatorEvents: function() {
+    //TODO: authenticators only update/invalidate the secure content of the section
     var _this = this;
     var authenticator = this.container.lookup(this.authenticator);
     authenticator.off('sessionDataUpdated');
