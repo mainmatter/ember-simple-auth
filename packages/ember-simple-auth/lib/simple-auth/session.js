@@ -264,15 +264,17 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @method clear
     @private
   */
-  clear: function(trigger) {
+  clear: function(trigger, content) {
     trigger = !!trigger && this.get('isAuthenticated');
+    content = content || this.get('content');
     this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated: false,
       authenticator:   null
     });
+    Ember.set(this, 'content', content || {});
     Ember.set(this.content, 'secure', {});
-    this.store.clear();
+    this.updateStore();
     this.endPropertyChanges();
     if (trigger) {
       this.trigger('sessionInvalidationSucceeded');
@@ -299,9 +301,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     if (!Ember.isEmpty(this.authenticator)) {
       data.secure = Ember.merge({ authenticator: this.authenticator }, data.secure || {});
     }
-    if (!Ember.isEmpty(data)) {
-      this.store.persist(data);
-    }
+    this.store.persist(data);
   },
 
   /**
@@ -317,7 +317,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       _this.setup(_this.authenticator, content);
     });
     authenticator.on('sessionDataInvalidated', function(content) {
-      _this.clear(true);
+      _this.clear(true, content);
     });
   },
 
@@ -334,10 +334,10 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         _this.container.lookup(authenticator).restore(content).then(function(content) {
           _this.setup(authenticator, content, true);
         }, function() {
-          _this.clear(true);
+          _this.clear(true, content);
         });
       } else {
-        _this.clear(true);
+        _this.clear(true, content);
       }
     });
   })

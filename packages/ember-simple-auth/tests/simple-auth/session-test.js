@@ -48,19 +48,19 @@ describe('Session', function() {
 
       it('clears its secure section', function(done) {
         this.session.set('content', { some: 'property', secure: { some: 'other property' } });
-        this.authenticator.trigger('sessionDataInvalidated', {});
+        this.authenticator.trigger('sessionDataInvalidated', { some: 'other property' });
 
         Ember.run.next(this, function() {
-          expect(this.session.get('content')).to.eql({ some: 'property', secure: {} });
+          expect(this.session.get('content')).to.eql({ some: 'other property', secure: {} });
           done();
         });
       });
 
-      it('clears the store', function(done) {
+      it('updates the store', function(done) {
         this.authenticator.trigger('sessionDataInvalidated', { some: 'other property' });
 
         Ember.run.next(this, function() {
-          expect(this.store.restore()).to.eql({});
+          expect(this.store.restore()).to.eql({ some: 'other property', secure: {} });
           done();
         });
       });
@@ -100,12 +100,12 @@ describe('Session', function() {
         });
       });
 
-      it('clears the store', function(done) {
+      it('updates the store', function(done) {
         var _this = this;
-        this.store.persist({ some: 'properties' });
+        this.store.persist({ some: 'property' });
 
         this.session.restore().then(null, function() {
-          expect(_this.store.restore()).to.eql({});
+          expect(_this.store.restore()).to.eql({ some: 'other property', secure: {} });
           done();
         });
       });
@@ -330,12 +330,12 @@ describe('Session', function() {
         });
       });
 
-      it('clears the store', function(done) {
+      it('updates the store', function(done) {
         var _this = this;
         this.store.persist({ some: 'property' });
 
         this.session.authenticate('authenticator').then(null, function() {
-          expect(_this.store.restore()).to.eql({});
+          expect(_this.store.restore()).to.eql({ some: 'property', secure: {} });
           done();
         });
       });
@@ -404,12 +404,12 @@ describe('Session', function() {
         });
       });
 
-      it('clears the store', function(done) {
+      it('updates the store', function(done) {
         var _this = this;
         this.store.persist({ some: 'property' });
 
         this.session.invalidate().then(function() {
-          expect(_this.store.restore()).to.eql({});
+          expect(_this.store.restore()).to.eql({ some: 'property', secure: {} });
           done();
         });
       });
@@ -628,19 +628,20 @@ describe('Session', function() {
 
         it('clears its secure section', function(done) {
           this.session.set('content', { some: 'property', secure: { some: 'other property' } });
-          this.store.trigger('sessionDataUpdated', { some: 'property', secure: { authenticator: 'authenticator' } });
+          this.store.trigger('sessionDataUpdated', { some: 'other property', secure: { authenticator: 'authenticator' } });
 
           Ember.run.next(this, function() {
-            expect(this.session.get('content')).to.eql({ some: 'property', secure: {} });
+            expect(this.session.get('content')).to.eql({ some: 'other property', secure: {} });
             done();
           });
         });
 
-        it('clears the store', function(done) {
+        it('updates the store', function(done) {
+          this.session.set('content', { some: 'property', secure: { some: 'other property' } });
           this.store.trigger('sessionDataUpdated', { some: 'other property', secure: { authenticator: 'authenticator' } });
 
           Ember.run.next(this, function() {
-            expect(this.store.restore()).to.eql({});
+            expect(this.store.restore()).to.eql({ some: 'other property', secure: {} });
             done();
           });
         });
@@ -690,19 +691,20 @@ describe('Session', function() {
 
       it('clears its secure section', function(done) {
         this.session.set('content', { some: 'property', secure: { some: 'other property' } });
-        this.store.trigger('sessionDataUpdated', { some: 'property' });
+        this.store.trigger('sessionDataUpdated', { some: 'other property' });
 
         Ember.run.next(this, function() {
-          expect(this.session.get('content')).to.eql({ some: 'property', secure: {} });
+          expect(this.session.get('content')).to.eql({ some: 'other property', secure: {} });
           done();
         });
       });
 
-      it('clears the store', function(done) {
+      it('updates the store', function(done) {
+        this.session.set('content', { some: 'property', secure: { some: 'other property' } });
         this.store.trigger('sessionDataUpdated', { some: 'other property' });
 
         Ember.run.next(this, function() {
-          expect(this.store.restore()).to.eql({});
+          expect(this.store.restore()).to.eql({ some: 'other property', secure: {} });
           done();
         });
       });
