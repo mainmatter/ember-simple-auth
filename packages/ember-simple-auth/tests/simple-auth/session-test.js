@@ -10,6 +10,12 @@ describe('Session', function() {
     sinon.stub(this.container, 'lookup').returns(this.authenticator);
   });
 
+  it('does not allow data to be stored for the key "secure"', function() {
+    expect(function() {
+      this.session.set('secure', 'test');
+    }).to.throw(Error);
+  });
+
   function itHandlesAuthenticatorEvents(preparation) {
     context('when the authenticator triggers the "sessionDataUpdated" event', function() {
       beforeEach(function(done) {

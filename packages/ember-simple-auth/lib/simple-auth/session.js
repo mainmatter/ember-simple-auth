@@ -284,7 +284,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   setUnknownProperty: function(key, value) {
-    //TODO: assert that key is not 'secure' as that is reserved to the session itself
+    Ember.assert('"secure" is a reserved key used by Ember Simple Auth!', key !== 'secure');
     var result = this._super(key, value);
     this.updateStore();
     return result;
