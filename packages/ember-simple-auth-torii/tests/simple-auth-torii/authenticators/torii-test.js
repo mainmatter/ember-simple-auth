@@ -15,6 +15,13 @@ describe('Torii', function() {
         });
       });
 
+      it('rejects with the passed session data', function(done) {
+        this.authenticator.restore(data).then(null, function(theData) {
+          expect(theData).to.eql(data);
+          done();
+        });
+      });
+
       it('unsets the provider', function(done) {
         var _this = this;
         this.authenticator.provider = 'provider';
@@ -57,7 +64,7 @@ describe('Torii', function() {
     });
 
     context('when there is no torii provider in the session data', function() {
-      itDoesNotRestore();
+      itDoesNotRestore({});
     });
   });
 
@@ -110,6 +117,13 @@ describe('Torii', function() {
         });
       });
 
+      it('resolves with the passed session data', function(done) {
+        this.authenticator.invalidate({ some: 'property' }).then(function(data) {
+          expect(data).to.eql({ some: 'property' });
+          done();
+        });
+      });
+
       it('unsets the provider', function(done) {
         var _this = this;
         this.authenticator.provider = 'provider';
@@ -122,12 +136,19 @@ describe('Torii', function() {
 
     context('when torii does not close successfully', function() {
       beforeEach(function() {
-        sinon.stub(this.torii, 'open').returns(Ember.RSVP.reject());
+        sinon.stub(this.torii, 'close').returns(Ember.RSVP.reject());
       });
 
       it('returns a rejecting promise', function(done) {
         this.authenticator.invalidate('provider').then(null, function() {
           expect(true).to.be.true;
+          done();
+        });
+      });
+
+      it('rejects with the passed session data', function(done) {
+        this.authenticator.invalidate({ some: 'property' }).then(null, function(data) {
+          expect(data).to.eql({ some: 'property' });
           done();
         });
       });

@@ -41,20 +41,29 @@ describe('Session', function() {
         });
       });
 
-      it('clears its content', function(done) {
+      it('clears its authenticator', function(done) {
         this.authenticator.trigger('sessionDataInvalidated', { some: 'other property' });
 
         Ember.run.next(this, function() {
-          expect(this.session.get('content')).to.eql({});
+          expect(this.session.get('authenticator')).to.be.null;
           done();
         });
       });
 
-      it('clears the store', function(done) {
+      it('updates its content', function(done) {
         this.authenticator.trigger('sessionDataInvalidated', { some: 'other property' });
 
         Ember.run.next(this, function() {
-          expect(this.store.restore()).to.eql({});
+          expect(this.session.get('content')).to.eql({ some: 'other property' });
+          done();
+        });
+      });
+
+      it('updates the store', function(done) {
+        this.authenticator.trigger('sessionDataInvalidated', { some: 'other property' });
+
+        Ember.run.next(this, function() {
+          expect(this.store.restore()).to.eql({ some: 'other property' });
           done();
         });
       });
@@ -94,12 +103,20 @@ describe('Session', function() {
         });
       });
 
-      it('clears the store', function(done) {
+      it('clears its authenticator', function(done) {
         var _this = this;
-        this.store.persist({ some: 'properties' });
 
         this.session.restore().then(null, function() {
-          expect(_this.store.restore()).to.eql({});
+          expect(_this.session.get('authenticator')).to.be.null;
+          done();
+        });
+      });
+
+      it('updates its content', function(done) {
+        var _this = this;
+
+        this.session.restore().then(null, function() {
+          expect(_this.session.get('content')).to.eql({ some: 'properties' });
           done();
         });
       });
@@ -141,7 +158,7 @@ describe('Session', function() {
           });
         });
 
-        it('merges its content to the data the authenticator resolves with', function(done) {
+        it('updates its content to the data the authenticator resolves with', function(done) {
           var _this = this;
           this.session.set('existing', 'property');
           this.store.persist({ authenticator: 'authenticator' });
@@ -150,7 +167,7 @@ describe('Session', function() {
             var properties = _this.store.restore();
             delete properties.authenticator;
 
-            expect(_this.session.get('content')).to.eql({ existing: 'property', some: 'properties' });
+            expect(_this.session.get('content')).to.eql({ some: 'properties' });
             done();
           });
         });
@@ -197,7 +214,7 @@ describe('Session', function() {
 
       context('when the authenticator rejects restoration', function() {
         beforeEach(function() {
-          sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject());
+          sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject({ some: 'properties' }));
         });
 
         itDoesNotRestore();
@@ -205,6 +222,10 @@ describe('Session', function() {
     });
 
     context('when the restored data does not contain an authenticator factory', function() {
+      beforeEach(function() {
+        this.store.persist({ some: 'properties' });
+      });
+
       itDoesNotRestore();
     });
   });
@@ -316,22 +337,12 @@ describe('Session', function() {
         });
       });
 
-      it('clears its content', function(done) {
-        var _this = this;
-        this.session.set('some', 'property');
-
-        this.session.authenticate('authenticator').then(null, function() {
-          expect(_this.session.get('content')).to.eql({});
-          done();
-        });
-      });
-
-      it('clears the store', function(done) {
+      it('clears its authenticator', function(done) {
         var _this = this;
         this.store.persist({ some: 'property' });
 
         this.session.authenticate('authenticator').then(null, function() {
-          expect(_this.store.restore()).to.eql({});
+          expect(_this.session.get('authenticator')).to.be.null;
           done();
         });
       });
@@ -371,7 +382,7 @@ describe('Session', function() {
 
     context('when the authenticator resolves invaldiation', function() {
       beforeEach(function() {
-        sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.resolve());
+        sinon.stub(this.authenticator, 'invalidate').returns(Ember.RSVP.resolve({ some: 'other property' }));
       });
 
       it('is not authenticated', function(done) {
@@ -390,22 +401,32 @@ describe('Session', function() {
         });
       });
 
-      it('clears its content', function(done) {
+      it('clears its authenticator', function(done) {
         var _this = this;
         this.session.set('some', 'property');
 
         this.session.invalidate().then(function() {
-          expect(_this.session.get('content')).to.eql({});
+          expect(_this.session.get('authenticator')).to.be.null;
           done();
         });
       });
 
-      it('clears the store', function(done) {
+      it('updates its content', function(done) {
         var _this = this;
-        this.store.persist({ some: 'property' });
+        this.session.set('some', 'property');
 
         this.session.invalidate().then(function() {
-          expect(_this.store.restore()).to.eql({});
+          expect(_this.session.get('content')).to.eql({ some: 'other property' });
+          done();
+        });
+      });
+
+      it('updates the store', function(done) {
+        var _this = this;
+        this.session.set('some', 'property');
+
+        this.session.invalidate().then(function() {
+          expect(_this.store.restore()).to.eql({ some: 'other property' });
           done();
         });
       });
@@ -554,14 +575,14 @@ describe('Session', function() {
           });
         });
 
-        it('merges its content to the data the authenticator resolves with', function(done) {
+        it('updates its content to the data the authenticator resolves with', function(done) {
           this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
 
           Ember.run.next(this, function() {
             var properties = this.store.restore();
             delete properties.authenticator;
 
-            expect(this.session.get('content')).to.eql({ some: 'other property', multiple: 'properties' });
+            expect(this.session.get('content')).to.eql({ some: 'other property' });
             done();
           });
         });
@@ -573,7 +594,7 @@ describe('Session', function() {
             var properties = this.store.restore();
             delete properties.authenticator;
 
-            expect(properties).to.eql({ some: 'other property', multiple: 'properties' });
+            expect(properties).to.eql({ some: 'other property' });
             done();
           });
         });
@@ -613,7 +634,7 @@ describe('Session', function() {
 
       context('when the authenticator rejects restoration', function() {
         beforeEach(function() {
-          sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject());
+          sinon.stub(this.authenticator, 'restore').returns(Ember.RSVP.reject({ some: 'properties' }));
         });
 
         it('is not authenticated', function(done) {
@@ -625,20 +646,29 @@ describe('Session', function() {
           });
         });
 
-        it('clears its content', function(done) {
+        it('clears its authenticator', function(done) {
           this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
 
           Ember.run.next(this, function() {
-            expect(this.session.get('content')).to.eql({});
+            expect(this.session.get('authenticator')).to.be.null;
             done();
           });
         });
 
-        it('clears the store', function(done) {
+        it('updates its content', function(done) {
           this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
 
           Ember.run.next(this, function() {
-            expect(this.store.restore()).to.eql({});
+            expect(this.session.get('content')).to.eql({ some: 'properties' });
+            done();
+          });
+        });
+
+        it('updates the store', function(done) {
+          this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
+
+          Ember.run.next(this, function() {
+            expect(this.store.restore()).to.eql({ some: 'properties' });
             done();
           });
         });
@@ -686,20 +716,11 @@ describe('Session', function() {
         });
       });
 
-      it('clears its content', function(done) {
-        this.store.trigger('sessionDataUpdated', { some: 'other property' });
+      it('clears its authenticator', function(done) {
+        this.store.trigger('sessionDataUpdated', { some: 'other property', authenticator: 'authenticator' });
 
         Ember.run.next(this, function() {
-          expect(this.session.get('content')).to.eql({});
-          done();
-        });
-      });
-
-      it('clears the store', function(done) {
-        this.store.trigger('sessionDataUpdated', { some: 'other property' });
-
-        Ember.run.next(this, function() {
-          expect(this.store.restore()).to.eql({});
+          expect(this.session.get('authenticator')).to.be.null;
           done();
         });
       });

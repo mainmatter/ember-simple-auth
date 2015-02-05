@@ -163,10 +163,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     Ember.assert('No authenticator for factory "' + authenticator + '" could be found!', !Ember.isNone(theAuthenticator));
     return new Ember.RSVP.Promise(function(resolve, reject) {
       theAuthenticator.authenticate.apply(theAuthenticator, args).then(function(content) {
-        _this.setup(authenticator, content, true);
+        _this.setAuthenticated(authenticator, content, true);
         resolve();
       }, function(error) {
-        _this.clear();
         _this.trigger('sessionAuthenticationFailed', error);
         reject(error);
       });
@@ -185,8 +184,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     the session was successfully invalidated__ while a rejecting promise
     indicates that the promise returned by the `authenticator` rejected and
     thus invalidation was cancelled. In that case the session remains
-    authenticated. Once the session is successfully invalidated it clears all
-    of its data.
+    authenticated. When the authenticator successfully invalidates the session
+    it will also delete all secure data from the session, e.g. access tokens
+    etc.
 
     @method invalidate
     @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully
@@ -196,9 +196,10 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var authenticator = _this.container.lookup(_this.authenticator);
-      authenticator.invalidate(_this.content).then(function() {
+      authenticator.invalidate(_this.content).then(function(content) {
         authenticator.off('sessionDataUpdated');
-        _this.clear(true);
+        _this.setup(null, content);
+        _this.trigger('sessionInvalidationSucceeded');
         resolve();
       }, function(error) {
         _this.trigger('sessionInvalidationFailed', error);
@@ -221,12 +222,12 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         _this.container.lookup(authenticator).restore(restoredContent).then(function(content) {
           _this.setup(authenticator, content);
           resolve();
-        }, function() {
-          _this.store.clear();
+        }, function(content) {
+          _this.setup(null, content);
           reject();
         });
       } else {
-        _this.store.clear();
+        _this.setup(null, restoredContent);
         reject();
       }
     });
@@ -236,39 +237,31 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @method setup
     @private
   */
-  setup: function(authenticator, content, trigger) {
-    content = Ember.merge(Ember.merge({}, this.content), content);
-    trigger = !!trigger && !this.get('isAuthenticated');
+  setup: function(authenticator, content, mergeContent) {
+    mergeContent = mergeContent || false;
+    if (mergeContent) {
+      content = Ember.merge(Ember.merge({}, this.content), content || {});
+    }
     this.beginPropertyChanges();
     this.setProperties({
-      isAuthenticated: true,
+      isAuthenticated: !Ember.isNone(authenticator),
       authenticator:   authenticator,
       content:         content
     });
     this.bindToAuthenticatorEvents();
     this.updateStore();
     this.endPropertyChanges();
-    if (trigger) {
-      this.trigger('sessionAuthenticationSucceeded');
-    }
   },
 
   /**
-    @method clear
+    @method setAuthenticated
     @private
   */
-  clear: function(trigger) {
-    trigger = !!trigger && this.get('isAuthenticated');
-    this.beginPropertyChanges();
-    this.setProperties({
-      isAuthenticated: false,
-      authenticator:   null,
-      content:         {}
-    });
-    this.store.clear();
-    this.endPropertyChanges();
+  setAuthenticated: function(authenticator, content, mergeContent) {
+    var trigger = !this.get('isAuthenticated');
+    this.setup(authenticator, content, mergeContent);
     if (trigger) {
-      this.trigger('sessionInvalidationSucceeded');
+      this.trigger('sessionAuthenticationSucceeded');
     }
   },
 
@@ -306,10 +299,11 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     authenticator.off('sessionDataUpdated');
     authenticator.off('sessionDataInvalidated');
     authenticator.on('sessionDataUpdated', function(content) {
-      _this.setup(_this.authenticator, content);
+      _this.setup(_this.authenticator, content, true);
     });
     authenticator.on('sessionDataInvalidated', function(content) {
-      _this.clear(true);
+      _this.setup(null, content);
+      _this.trigger('sessionInvalidationSucceeded');
     });
   },
 
@@ -319,17 +313,21 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   */
   bindToStoreEvents: function() {
     var _this = this;
+    function succeedInvalidation(content) {
+      _this.setup(null, content);
+      _this.trigger('sessionInvalidationSucceeded');
+    }
     this.store.on('sessionDataUpdated', function(content) {
       var authenticator = content.authenticator;
       if (!!authenticator) {
         delete content.authenticator;
         _this.container.lookup(authenticator).restore(content).then(function(content) {
-          _this.setup(authenticator, content, true);
-        }, function() {
-          _this.clear(true);
+          _this.setAuthenticated(authenticator, content);
+        }, function(content) {
+          succeedInvalidation(content);
         });
       } else {
-        _this.clear(true);
+        succeedInvalidation(content);
       }
     });
   }.observes('store')

@@ -82,20 +82,24 @@ export default Base.extend({
   /**
     Restores the session from a set of session properties; __will return a
     resolving promise when there's a non-empty `token` and a non-empty
-    `user_email` in the `properties`__ and a rejecting promise otherwise.
+    `user_email` in the `data`__ (or whatever has been configured for
+    [`SimpleAuth.Configuration.Devise#tokenAttributeName`](#SimpleAuth-Configuration-Devise-tokenAttributeName)
+    and
+    [`SimpleAuth.Configuration.Devise#identificationAttributeName`](#SimpleAuth-Configuration-Devise-identificationAttributeName))
+    and a rejecting promise otherwise.
 
     @method restore
-    @param {Object} properties The properties to restore the session from
+    @param {Object} data The current session data
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
-  restore: function(properties) {
-    var _this            = this;
-    var propertiesObject = Ember.Object.create(properties);
+  restore: function(data) {
+    var _this      = this;
+    var dataObject = Ember.Object.create(data);
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(propertiesObject.get(_this.tokenAttributeName)) && !Ember.isEmpty(propertiesObject.get(_this.identificationAttributeName))) {
-        resolve(properties);
+      if (!Ember.isEmpty(dataObject.get(_this.tokenAttributeName)) && !Ember.isEmpty(dataObject.get(_this.identificationAttributeName))) {
+        resolve(data);
       } else {
-        reject();
+        reject(_this.stripAuthenticatedData(data));
       }
     });
   },
@@ -135,13 +139,27 @@ export default Base.extend({
   },
 
   /**
-    Does nothing
+    Deletes the `token` and `user_email` properties from the session and
+    returns a resolving promise.
 
     @method invalidate
+    @param {Object} data The data of the session to be invalidated
     @return {Ember.RSVP.Promise} A resolving promise
   */
-  invalidate: function() {
-    return Ember.RSVP.resolve();
+  invalidate: function(data) {
+    return Ember.RSVP.resolve(this.stripAuthenticatedData(data || {}));
+  },
+
+  /**
+    @method stripAuthenticatedData
+    @private
+  */
+  stripAuthenticatedData: function(data) {
+    Ember.A([this.tokenAttributeName, this.identificationAttributeName]).forEach(function(propertyName) {
+      var rootProperty = propertyName.split('.')[0];
+      delete data[rootProperty];
+    });
+    return data;
   },
 
   /**

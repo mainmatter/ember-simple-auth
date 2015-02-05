@@ -71,6 +71,13 @@ describe('OAuth2', function() {
                 done();
               });
             });
+
+            it('strips sensitivate data from the session data', function(done) {
+              this.authenticator.restore({ access_token: 'access_token', expires_at: 1, some: 'property' }).then(null, function(data) {
+                expect(data).to.eql({ some: 'property' });
+                done();
+              });
+            });
           });
         });
 
@@ -82,6 +89,13 @@ describe('OAuth2', function() {
           it('returns a rejecting promise', function(done) {
             this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(null, function() {
               expect(true).to.be.true;
+              done();
+            });
+          });
+
+          it('strips sensitivate data from the session data', function(done) {
+            this.authenticator.restore({ access_token: 'access_token', expires_at: 1, some: 'property' }).then(null, function(data) {
+              expect(data).to.eql({ some: 'property' });
               done();
             });
           });
@@ -103,6 +117,13 @@ describe('OAuth2', function() {
         it('returns a rejecting promise', function(done) {
           this.authenticator.restore().then(null, function() {
             expect(true).to.be.true;
+            done();
+          });
+        });
+
+        it('strips sensitivate data from the session data', function(done) {
+          this.authenticator.restore({ refresh_token: 'access_token', some: 'property' }).then(null, function(data) {
+            expect(data).to.eql({ some: 'property' });
             done();
           });
         });
@@ -290,6 +311,13 @@ describe('OAuth2', function() {
       it('returns a resolving promise', function(done) {
         this.authenticator.invalidate({ access_token: 'access token!' }).then(function() {
           expect(true).to.be.true;
+          done();
+        });
+      });
+
+      it('strips sensitivate data from the session data', function(done) {
+        this.authenticator.invalidate({ access_token: 'access_token', some: 'property' }).then(function(data) {
+          expect(data).to.eql({ some: 'property' });
           done();
         });
       });

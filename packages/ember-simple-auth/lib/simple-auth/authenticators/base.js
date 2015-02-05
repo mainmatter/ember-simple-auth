@@ -82,20 +82,24 @@ export default Ember.Object.extend(Ember.Evented, {
     session.
 
     __This method returns a promise. A resolving promise will result in the
-    session being authenticated.__ Any properties the promise resolves with
-    will be saved in and accessible via the session. In most cases the `data`
-    argument will simply be forwarded through the promise. A rejecting promise
-    indicates that authentication failed and the session will remain unchanged.
+    session being authenticated.__ A rejecting promise indicates that the
+    passed session data does not constitute an authenticated session and the
+    session will remain unauthenticated. In any case the data that the returned
+    promise resolves or rejects with will replace the current session data.
+    That means when returning a rejecting pormise that leads to the session
+    being invalidated or remaining unauthenticated, the authenticator has to
+    make sure to delete any sensitive data (e.g. access tokens etc.) from the
+    session data first.
 
     `SimpleAuth.Authenticators.Base`'s implementation always returns a
-    rejecting promise.
+    rejecting promise that rejects with the passed session data.
 
     @method restore
-    @param {Object} data The data to restore the session from
+    @param {Object} data The current session data
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(data) {
-    return Ember.RSVP.reject();
+    return Ember.RSVP.reject(data);
   },
 
   /**
@@ -108,8 +112,12 @@ export default Ember.Object.extend(Ember.Evented, {
 
     __This method returns a promise. A resolving promise will result in the
     session being authenticated.__ Any properties the promise resolves with
-    will be saved in and accessible via the session. A rejecting promise
+    will be saved in and be accessible via the session. A rejecting promise
     indicates that authentication failed and the session will remain unchanged.
+    A rejecting promise should reject with an error that will then be
+    propagated to the session's
+    [`sessionAuthenticationFailed`](#SimpleAuth-Session-sessionAuthenticationFailed)
+    event.
 
     `SimpleAuth.Authenticators.Base`'s implementation always returns a
     rejecting promise and thus never authenticates the session.
@@ -132,6 +140,11 @@ export default Ember.Object.extend(Ember.Evented, {
     __This method returns a promise. A resolving promise will result in the
     session being invalidated.__ A rejecting promise will result in the session
     invalidation being intercepted and the session being left authenticated.
+    In any case the data that the returned promise resolves or rejects with
+    will replace the current session data. That means when returning a
+    resolving pormise that leads to the session being invalidated, the
+    authenticator has to make sure to delete any sensitive data (e.g. access
+    tokens etc.) from the session data first.
 
     `SimpleAuth.Authenticators.Base`'s implementation always returns a
     resolving promise and thus never intercepts session invalidation.
@@ -141,6 +154,6 @@ export default Ember.Object.extend(Ember.Evented, {
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
   */
   invalidate: function(data) {
-    return Ember.RSVP.resolve();
+    return Ember.RSVP.resolve(data);
   }
 });

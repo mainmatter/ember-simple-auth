@@ -92,24 +92,29 @@ export default Base.extend({
     [`Authenticators.OAuth2#refreshAccessTokens`](#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
 
     @method restore
-    @param {Object} data The data to restore the session from
+    @param {Object} data The current sesion data
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
   */
   restore: function(data) {
     var _this = this;
+    function fail(reject, data) {
+      reject(_this.stripAuthenticatedData(data));
+    }
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var now = (new Date()).getTime();
       if (!Ember.isEmpty(data.expires_at) && data.expires_at < now) {
         if (_this.refreshAccessTokens) {
           _this.refreshAccessToken(data.expires_in, data.refresh_token).then(function(data) {
             resolve(data);
-          }, reject);
+          }, function() {
+            fail(reject, data);
+          });
         } else {
-          reject();
+          fail(reject, data);
         }
       } else {
         if (Ember.isEmpty(data.access_token)) {
-          reject();
+          fail(reject, data);
         } else {
           _this.scheduleAccessTokenRefresh(data.expires_in, data.expires_at, data.refresh_token);
           resolve(data);
@@ -168,8 +173,9 @@ export default Base.extend({
   },
 
   /**
-    Cancels any outstanding automatic token refreshes and returns a resolving
-    promise.
+    Cancels any outstanding automatic token refreshes, deletes the
+    `access_token`, `refresh_token`, `expires_in` and `expires_at` properties
+    from the session and returns a resolving promise.
 
     @method invalidate
     @param {Object} data The data of the session to be invalidated
@@ -180,7 +186,7 @@ export default Base.extend({
     function success(resolve) {
       Ember.run.cancel(_this._refreshTokenTimeout);
       delete _this._refreshTokenTimeout;
-      resolve();
+      resolve(_this.stripAuthenticatedData(data));
     }
     return new Ember.RSVP.Promise(function(resolve, reject) {
       if (!Ember.isEmpty(_this.serverTokenRevocationEndpoint)) {
@@ -224,6 +230,18 @@ export default Base.extend({
       dataType:    'json',
       contentType: 'application/x-www-form-urlencoded'
     });
+  },
+
+  /**
+    @method stripAuthenticatedData
+    @private
+  */
+  stripAuthenticatedData: function(data) {
+    delete data.access_token;
+    delete data.refresh_token;
+    delete data.expires_in;
+    delete data.expires_at;
+    return data;
   },
 
   /**
