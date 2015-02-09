@@ -59,6 +59,27 @@ var routeEntryComplete = false;
   @static
 */
 export default Ember.Mixin.create({
+
+  /**
+    The name of the authentication route, the authenticateSession action transitions to.
+
+    @property authenticationRoute
+    @default Configuration.authenticationRoute
+    @public
+  */
+  authenticationRoute: Configuration.authenticationRoute,
+
+
+  /**
+    The name of the route the sessionAuthenticationSucceeded action transitions to.
+
+    @property routeAfterAuthentication
+    @default Configuration.routeAfterAuthentication
+    @public
+  */
+  routeAfterAuthentication: Configuration.routeAfterAuthentication,
+
+
   /**
     @method activate
     @private
@@ -95,8 +116,9 @@ export default Ember.Mixin.create({
 
   actions: {
     /**
-      This action triggers transition to the
-      [`Configuration.authenticationRoute`](#SimpleAuth-Configuration-authenticationRoute).
+      This action triggers transition to the route defined in `authenticationRoute` (which
+      defaults to
+      [`Configuration.authenticationRoute`](#SimpleAuth-Configuration-authenticationRoute)).
       It can be used in templates as shown above. It is also triggered
       automatically by the
       [`AuthenticatedRouteMixin`](#SimpleAuth-AuthenticatedRouteMixin) whenever
@@ -120,7 +142,7 @@ export default Ember.Mixin.create({
       @method actions.authenticateSession
     */
     authenticateSession: function() {
-      this.transitionTo(Configuration.authenticationRoute);
+      this.transitionTo(this.get('authenticationRoute'));
     },
 
     /**
@@ -129,8 +151,8 @@ export default Ember.Mixin.create({
       by
       [`AuthenticatedRouteMixin#beforeModel`](#SimpleAuth-AuthenticatedRouteMixin-beforeModel)
       it will retry it. If there is no such transition, this action transitions
-      to the
-      [`Configuration.routeAfterAuthentication`](#SimpleAuth-Configuration-routeAfterAuthentication).
+      to the route defined in `routeAfterAuthentication` (defaults to
+      [`Configuration.routeAfterAuthentication`](#SimpleAuth-Configuration-routeAfterAuthentication)).
 
       @method actions.sessionAuthenticationSucceeded
     */
@@ -140,7 +162,7 @@ export default Ember.Mixin.create({
         attemptedTransition.retry();
         this.get(Configuration.sessionPropertyName).set('attemptedTransition', null);
       } else {
-        this.transitionTo(Configuration.routeAfterAuthentication);
+        this.transitionTo(this.get('routeAfterAuthentication'));
       }
     },
 
