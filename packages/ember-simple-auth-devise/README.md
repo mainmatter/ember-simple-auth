@@ -57,17 +57,16 @@ needed the format handling can be left out of course_):
 
 ```ruby
 class SessionsController < Devise::SessionsController
+  respond_to :html, :json
+
   def create
-    respond_to do |format|
-      format.html { super }
-      format.json do
-        self.resource = warden.authenticate!(auth_options)
-        sign_in(resource_name, resource)
+    super do |user|
+      if request.format.json?
         data = {
-          token:      self.resource.authentication_token,
-          user_email: self.resource.email
+          token:      user.authentication_token,
+          user_email: user.email
         }
-        render json: data, status: 201
+        render json: data, status: 201 and return
       end
     end
   end
@@ -89,18 +88,22 @@ token and email if present:
 class ApplicationController < ActionController::Base
   before_filter :authenticate_user_from_token!
 
+  # Enter the normal Devise authentication path,
+  # using the token authenticated user if available
+  before_filter :authenticate_user!
+
   private
 
-    def authenticate_user_from_token!
-      authenticate_with_http_token do |token, options|
-        user_email = options[:user_email].presence
-        user       = user_email && User.find_by_email(user_email)
+  def authenticate_user_from_token!
+    authenticate_with_http_token do |token, options|
+      user_email = options[:user_email].presence
+      user = user_email && User.find_by_email(user_email)
 
-        if user && Devise.secure_compare(user.authentication_token, token)
-          sign_in user, store: false
-        end
+      if user && Devise.secure_compare(user.authentication_token, token)
+        sign_in user, store: false
       end
     end
+  end
 end
 ```
 
