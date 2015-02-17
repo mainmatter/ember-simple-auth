@@ -59,9 +59,7 @@ tests might influence each other.
 ```js
 //config/environment.js
 if (environment === 'test') {
-  ENV['simple-auth'] = {
-    store: 'simple-auth-session-store:ephemeral'
-  }
+  ENV['simple-auth'].store = 'simple-auth-session-store:ephemeral';
 }
 ```
 
