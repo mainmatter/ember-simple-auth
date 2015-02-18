@@ -311,7 +311,6 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   bindToAuthenticatorEvents: function() {
-    //TODO: authenticators only update/invalidate the secure content of the section
     var _this = this;
     var authenticator = this.container.lookup(this.authenticator);
     authenticator.off('sessionDataUpdated');
@@ -329,6 +328,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   bindToStoreEvents: Ember.observer('store', function() {
+    //TODO: reflect all updated properties in the session (setup will only set the secure part)
     var _this = this;
     this.store.on('sessionDataUpdated', function(content) {
       var authenticator = (content.secure || {}).authenticator;
