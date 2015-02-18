@@ -100,12 +100,12 @@ describe('Session', function() {
         });
       });
 
-      it('updates the store', function(done) {
+      it('clears its secure section', function(done) {
         var _this = this;
-        this.store.persist({ some: 'property' });
+        this.session.set('content', { secure: { some: 'other property' } });
 
         this.session.restore().then(null, function() {
-          expect(_this.store.restore()).to.eql({ some: 'other property', secure: {} });
+          expect(_this.session.get('content')).to.eql({ secure: {} });
           done();
         });
       });

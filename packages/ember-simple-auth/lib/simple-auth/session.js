@@ -230,11 +230,11 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
           _this.setup(authenticator, content);
           resolve();
         }, function() {
-          _this.store.clear();
+          _this.clear();
           reject();
         });
       } else {
-        _this.store.clear();
+        _this.clear();
         reject();
       }
     });
