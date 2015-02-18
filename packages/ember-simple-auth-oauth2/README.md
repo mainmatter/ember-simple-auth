@@ -64,7 +64,7 @@ This route displays the login form with fields for `identification` and
   {{input value=identification placeholder='Enter Login'}}
   <label for="password">Password</label>
   {{input value=password placeholder='Enter Password' type='password'}}
-  <button type="submit">Login</button>
+  {{input type="submit" value="Login"}}
 </form>
 ```
 
