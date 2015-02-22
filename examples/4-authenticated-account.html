@@ -169,7 +169,7 @@
       });
 
       // clear a potentially stale error message from previous login attempts
-      App.authenticationRoute = Ember.Route.extend({
+      App.LoginRoute = Ember.Route.extend({
         setupController: function(controller, model) {
           controller.set('errorMessage', null);
         }
