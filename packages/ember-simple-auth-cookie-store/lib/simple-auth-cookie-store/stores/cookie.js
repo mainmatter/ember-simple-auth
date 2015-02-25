@@ -156,15 +156,28 @@ export default Base.extend({
   },
 
   /**
-    @method write
-    @private
-  */
-  write: function(value, expiration) {
-    var path    = '; path=/';
-    var domain  = Ember.isEmpty(this.cookieDomain) ? '' : '; domain=' + this.cookieDomain;
-    var expires = Ember.isEmpty(expiration) ? '' : '; expires=' + new Date(expiration).toUTCString();
-    var secure  = !!this._secureCookies ? ';secure' : '';
-    document.cookie = this.cookieName + '=' + encodeURIComponent(value) + domain + path + expires + secure;
+   @method readExpiration
+   @private
+   */
+  readExpiration: function () {
+      var value = document.cookie.match(new RegExp(this.cookieName + '-expires=([^;]+)')) || [];
+      return decodeURIComponent(value[1] || '');
+  },
+
+  /**
+   @method write
+   @private
+   */
+  write: function (value, expiration) {
+      var path = '; path=/',
+          domain = Ember.isEmpty(this.cookieDomain) ? '' : '; domain=' + this.cookieDomain,
+          cachedExpiration = Ember.isEmpty(this.readExpiration()) ? '' : '; expires=' + new Date(this.readExpiration()).toUTCString(),
+          expires = Ember.isEmpty(expiration) ? cachedExpiration : '; expires=' + new Date(expiration).toUTCString(),
+          secure = !!this._secureCookies ? ';secure' : '';
+      if (value !== this.read()) { // change cookie only on session data change
+          document.cookie = this.cookieName + '=' + encodeURIComponent(value) + domain + path + expires + secure;
+          document.cookie = this.cookieName + '-expires=' + encodeURIComponent(expires) + domain + path + expires + secure;
+      }
   },
 
   /**
