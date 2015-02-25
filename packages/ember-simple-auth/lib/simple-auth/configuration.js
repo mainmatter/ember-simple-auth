@@ -135,7 +135,7 @@ export default {
     `http://domain.com:1234`, `https://external.net`. You can also whitelist
     all subdomains for a specific domain using wildcard expressions e.g.
     `http://*.domain.com:1234`, `https://*.external.net` or whitelist all
-    external origins by specifying `[*]`.
+    external origins by specifying `['*']`.
 
     @property crossOriginWhitelist
     @readOnly
