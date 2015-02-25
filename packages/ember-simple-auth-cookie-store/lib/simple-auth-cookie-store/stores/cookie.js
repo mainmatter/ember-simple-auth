@@ -169,11 +169,11 @@ export default Base.extend({
    @private
    */
   write: function (value, expiration) {
-      var path = '; path=/',
-          domain = Ember.isEmpty(this.cookieDomain) ? '' : '; domain=' + this.cookieDomain,
-          cachedExpiration = Ember.isEmpty(this.readExpiration()) ? '' : '; expires=' + new Date(this.readExpiration()).toUTCString(),
-          expires = Ember.isEmpty(expiration) ? cachedExpiration : '; expires=' + new Date(expiration).toUTCString(),
-          secure = !!this._secureCookies ? ';secure' : '';
+      var path = '; path=/';
+      var  domain = Ember.isEmpty(this.cookieDomain) ? '' : '; domain=' + this.cookieDomain;
+      var cachedExpiration = Ember.isEmpty(this.readExpiration()) ? '' : '; expires=' + new Date(this.readExpiration()).toUTCString();
+      var expires = Ember.isEmpty(expiration) ? cachedExpiration : '; expires=' + new Date(expiration).toUTCString();
+      var secure = !!this._secureCookies ? ';secure' : '';
       if (value !== this.read()) { // change cookie only on session data change
           document.cookie = this.cookieName + '=' + encodeURIComponent(value) + domain + path + expires + secure;
           document.cookie = this.cookieName + '-expires=' + encodeURIComponent(expires) + domain + path + expires + secure;
