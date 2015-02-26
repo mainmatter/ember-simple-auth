@@ -34,6 +34,17 @@ the provider's name to the `authenticate` method of the session:
 this.get('session').authenticate('simple-auth-authenticator:torii', 'facebook-oauth2');
 ```
 
+## An authorizer
+
+To make sure the token you just got from torii is sent along with your ajax
+requests you need to add your own authorizer. The torii provider returns the
+token from the Provider#open function. This can be different per provider. So
+when you use several providers, you will have make sure you look at the right
+properties to find the token. Most providers also return their name you could
+use that to find out where the token is.
+
+Read this: https://github.com/simplabs/ember-simple-auth#implementing-a-custom-authorizer.
+
 ## Installation
 
 To install Ember Simple Auth Torii in an Ember.js application there are several
