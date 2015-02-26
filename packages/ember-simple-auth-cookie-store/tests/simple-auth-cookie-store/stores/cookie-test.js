@@ -60,32 +60,32 @@ describe('Stores.Cookie', function() {
       this.store.clear();
       this.store = Cookie.create();
       this.store.cookieName = 'test:session';
-      this.store.cookieExpirationTime = 1; // 1 second
+      this.store.cookieExpirationTime = 0.500; // 500ms
       this.store.persist({key: 'value' });
     });
 
     it('cookie exists after renew', function(done) {
       this.store.renew({key: 'value'});
 
-      Ember.run.later(function() {
+      Ember.run.next(this,function() {
         try {
           expect(document.cookie).to.contain('test:session=%7B%22key%22%3A%22value%22%7D');
         } catch (error) {
           done(error);
         }
-      },500);
+      });
     });
 
     it('cookie expires after cookie renewed lifetime finish', function(done) {
       this.store.renew({key: 'value'});
 
-      Ember.run.later(function() {
+      Ember.run.next(function() {
         try {
           expect(document.cookie).to.eq('');
         } catch (error) {
           done(error);
         }
-      }, 11000);
+      }, 600);
     });
   });
 
