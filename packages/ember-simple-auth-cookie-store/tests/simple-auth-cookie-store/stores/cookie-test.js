@@ -55,6 +55,37 @@ describe('Stores.Cookie', function() {
     });
   });
 
+  describe('#renew', function() {
+    beforeEach(function() {
+      this.store.clear();
+      this.store = Cookie.create();
+      this.store.cookieName = 'test:session';
+      this.store.cookieExpirationTime = 1; // 1 second
+      this.store.persist({key: 'value' });
+    });
+
+    it('cookie exists after renew', function(done) {
+      this.store.renew({key: 'value'});
+      Ember.run.later(function() {
+        try {
+          expect(document.cookie).to.contain('test:session=%7B%22key%22%3A%22value%22%7D');
+        } catch (error) {
+          done(error);
+        }
+      },100);
+    });
+
+    it('cookie expires after cookie lifetime finish', function(done) {
+      Ember.run.later(function() {
+        try {
+          expect(document.cookie).to.eq('');
+        } catch (error) {
+          done(error);
+        }
+      }, 600);
+    });
+  });
+
   describe('the "sessionDataUpdated" event', function() {
     beforeEach(function() {
       var _this = this;
