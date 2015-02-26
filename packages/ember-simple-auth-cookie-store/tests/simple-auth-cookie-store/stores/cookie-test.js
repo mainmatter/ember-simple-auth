@@ -60,7 +60,7 @@ describe('Stores.Cookie', function() {
       this.store.clear();
       this.store = Cookie.create();
       this.store.cookieName = 'test:session';
-      this.store.cookieExpirationTime = 2; // 1 second
+      this.store.cookieExpirationTime = 1; // 1 second
       this.store.persist({key: 'value' });
     });
 
@@ -73,7 +73,7 @@ describe('Stores.Cookie', function() {
         } catch (error) {
           done(error);
         }
-      },1000);
+      },500);
     });
 
     it('cookie expires after cookie renewed lifetime finish', function(done) {
@@ -85,7 +85,7 @@ describe('Stores.Cookie', function() {
         } catch (error) {
           done(error);
         }
-      }, 2500);
+      }, 11000);
     });
   });
 
