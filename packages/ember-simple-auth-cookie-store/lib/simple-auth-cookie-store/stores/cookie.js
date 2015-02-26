@@ -157,11 +157,25 @@ export default Base.extend({
   },
 
   /**
+    @method renew
+    @private
+  */
+  renew: function(data) {
+    data           = Ember.typeOf(data) === 'string' ? data : JSON.stringify(data || {});
+    var cachedExpirationTime = !!this.readExpirationTime() ? new Date().getTime() + this.readExpirationTime() * 1000 : null;
+    var expiration = !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : cachedExpirationTime;
+    this.write(data, expiration);
+  },
+
+  /**
     @method read
     @private
   */
   read: function() {
     var value = document.cookie.match(new RegExp(this.cookieName + '=([^;]+)')) || [];
+    if (!Ember.isEmpty(decodeURIComponent(value[1] || ''))) {
+        this.renew(decodeURIComponent(value[1] || ''));
+    }
     return decodeURIComponent(value[1] || '');
   },
 
