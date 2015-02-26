@@ -51,41 +51,45 @@ describe('Stores.Cookie', function() {
       this.store.cookieDomain = 'example.com';
       this.store.persist({ key: 'value' });
 
-      expect(document.cookie).to.eq('');
+      expect(document.cookie).to.not.contain('test:session=%7B%22key%22%3A%22value%22%7D');
     });
   });
 
   describe('#renew', function() {
     beforeEach(function() {
-      this.store.clear();
       this.store = Cookie.create();
       this.store.cookieName = 'test:session';
-      this.store.cookieExpirationTime = 0.500; // 500ms
-      this.store.persist({key: 'value' });
+      this.store.cookieExpirationTime = 60; // 1 min
+      this.store.expires = new Date().getTime() + this.store.cookieExpirationTime * 1000;
+      this.store.persist({key: this.store.expires});
     });
 
-    it('cookie exists after renew', function(done) {
-      this.store.renew({key: 'value'});
-
-      Ember.run.next(this,function() {
-        try {
-          expect(document.cookie).to.contain('test:session=%7B%22key%22%3A%22value%22%7D');
-        } catch (error) {
-          done(error);
-        }
-      });
+    it('session data cookie name should equal "test:session"', function() {
+      expect(this.store.cookieName).to.eq('test:session');
     });
 
-    it('cookie expires after cookie renewed lifetime finish', function(done) {
-      this.store.renew({key: 'value'});
+    it('session expiration cookie name should equal "test:session"', function() {
+      expect(this.store.cookieName + ':expiration-time').to.eq('test:session:expiration-time');
+    });
 
-      Ember.run.next(function() {
-        try {
-          expect(document.cookie).to.eq('');
-        } catch (error) {
-          done(error);
-        }
-      }, 600);
+    it('session data cookie exists', function() {
+      expect(document.cookie).to.contain('test:session=%7B%22key%22%3A'+this.store.expires+'%7D');
+    });
+
+    it('session expiration cookie exists', function() {
+      expect(document.cookie).to.contain(this.store.cookieName + ':expiration-time=60');
+    });
+
+    it('session expiration cookie value should be 60', function() {
+      var value = document.cookie.match(new RegExp('test:session:expiration-time=([^;]+)')) || [];
+      var val = decodeURIComponent(value[1] || '');
+      expect(val).to.eq('60');
+    });
+
+    it('cookie exists after renew', function() {
+      this.store.expires = new Date().getTime() + this.store.cookieExpirationTime * 1000;
+      this.store.renew({key: this.store.expires});
+      expect(document.cookie).to.contain('test:session=%7B%22key%22%3A'+this.store.expires+'%7D');
     });
   });
 
@@ -115,6 +119,16 @@ describe('Stores.Cookie', function() {
 
       Ember.run.next(this, function() {
         expect(this.triggered).to.be.true;
+        done();
+      });
+    });
+
+    it('is not triggered when the cookie expiration renewed', function(done) {
+      this.store.renew({key: 'value'});
+      this.store.syncData();
+
+      Ember.run.next(this, function() {
+        expect(this.triggered).to.be.false;
         done();
       });
     });
