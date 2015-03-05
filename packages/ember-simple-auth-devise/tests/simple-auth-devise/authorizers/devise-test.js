@@ -45,16 +45,16 @@ describe('Devise', function() {
         this.authorizer.set('session.isAuthenticated', true);
       });
 
-      context('when the session contains a non empty token and user_email', function() {
+      context('when the session contains a non empty token and email', function() {
         beforeEach(function() {
           this.authorizer.set('session.token', 'secret token!');
-          this.authorizer.set('session.user_email', 'user@email.com');
+          this.authorizer.set('session.email', 'user@email.com');
         });
 
-        it('adds the "token" and "user_email" query string fields to the request', function() {
+        it('adds the "token" and "email" query string fields to the request', function() {
           this.authorizer.authorize(this.request, {});
 
-          expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Token token="secret token!", user_email="user@email.com"');
+          expect(this.request.setRequestHeader).to.have.been.calledWith('Authorization', 'Token token="secret token!", email="user@email.com"');
         });
       });
 
@@ -93,9 +93,9 @@ describe('Devise', function() {
         itDoesNotAuthorizeTheRequest();
       });
 
-      context('when the session does not contain an user_email', function() {
+      context('when the session does not contain an email', function() {
         beforeEach(function() {
-          this.authorizer.set('session.user_email', null);
+          this.authorizer.set('session.email', null);
         });
 
         itDoesNotAuthorizeTheRequest();
