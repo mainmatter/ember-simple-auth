@@ -332,7 +332,7 @@ describe('Session', function() {
 
       it('updates the store', function(done) {
         var _this = this;
-        this.store.persist({ some: 'property' });
+        this.session.set('content', { some: 'property', secure: { some: 'other property' } });
 
         this.session.authenticate('authenticator').then(null, function() {
           expect(_this.store.restore()).to.eql({ some: 'property', secure: {} });
@@ -406,7 +406,7 @@ describe('Session', function() {
 
       it('updates the store', function(done) {
         var _this = this;
-        this.store.persist({ some: 'property' });
+        this.session.set('content', { some: 'property', secure: { some: 'other property' } });
 
         this.session.invalidate().then(function() {
           expect(_this.store.restore()).to.eql({ some: 'property', secure: {} });
@@ -512,7 +512,7 @@ describe('Session', function() {
           var properties = this.store.restore();
           delete properties.authenticator;
 
-          expect(properties).to.eql({ some: 'property' });
+          expect(properties).to.eql({ some: 'property', secure: {} });
           done();
         });
       });
@@ -530,7 +530,7 @@ describe('Session', function() {
           var properties = this.store.restore();
           delete properties.authenticator;
 
-          expect(properties).to.eql({ some: 'property', multiple: 'properties' });
+          expect(properties).to.eql({ some: 'property', multiple: 'properties', secure: {} });
           done();
         });
       });
