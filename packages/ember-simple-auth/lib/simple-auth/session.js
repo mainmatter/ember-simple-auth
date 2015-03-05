@@ -226,7 +226,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       var authenticator   = (restoredContent.secure || {}).authenticator;
       if (!!authenticator) {
         delete restoredContent.secure.authenticator;
-        _this.container.lookup(authenticator).restore(restoredContent).then(function(content) {
+        _this.container.lookup(authenticator).restore(restoredContent.secure).then(function(content) {
           _this.setup(authenticator, content);
           resolve();
         }, function() {
@@ -334,7 +334,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       var authenticator = (content.secure || {}).authenticator;
       if (!!authenticator) {
         delete content.secure.authenticator;
-        _this.container.lookup(authenticator).restore(content).then(function(content) {
+        _this.container.lookup(authenticator).restore(content.secure).then(function(content) {
           _this.setup(authenticator, content, true);
         }, function() {
           _this.clear(true, content);
