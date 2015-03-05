@@ -568,13 +568,12 @@ describe('Session', function() {
         });
 
         it('persists its content in the store', function(done) {
-          this.store.trigger('sessionDataUpdated', { some: 'other property', secure: { authenticator: 'authenticator' } });
+          this.store.trigger('sessionDataUpdated', { some: 'property', secure: { authenticator: 'authenticator' } });
 
           Ember.run.next(this, function() {
             var properties = this.store.restore();
-            delete properties.authenticator;
 
-            expect(properties).to.eql({ secure: { some: 'other property', authenticator: 'authenticator' } });
+            expect(properties).to.eql({ some: 'property', secure: { some: 'other property', authenticator: 'authenticator' } });
             done();
           });
         });

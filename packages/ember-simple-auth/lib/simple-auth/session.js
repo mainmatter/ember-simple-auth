@@ -138,14 +138,6 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   content: { secure: {} },
 
   /**
-    @method init
-    @private
-  */
-  init: function() {
-    this.set('content', { secure: {} });
-  },
-
-  /**
     Authenticates the session with an `authenticator` and appropriate
     `options`. __This delegates the actual authentication work to the
     `authenticator`__ and handles the returned promise accordingly (see
@@ -171,7 +163,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     Ember.assert('No authenticator for factory "' + authenticator + '" could be found!', !Ember.isNone(theAuthenticator));
     return new Ember.RSVP.Promise(function(resolve, reject) {
       theAuthenticator.authenticate.apply(theAuthenticator, args).then(function(content) {
-        _this.setup(authenticator, content, true);
+        _this.setup(authenticator, _this.get('content'), content, true);
         resolve();
       }, function(error) {
         _this.clear();
@@ -227,7 +219,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       if (!!authenticator) {
         delete restoredContent.secure.authenticator;
         _this.container.lookup(authenticator).restore(restoredContent.secure).then(function(content) {
-          _this.setup(authenticator, content);
+          _this.setup(authenticator, _this.get('content'), content);
           resolve();
         }, function() {
           _this.clear();
@@ -244,7 +236,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @method setup
     @private
   */
-  setup: function(authenticator, secureContent, trigger) {
+  setup: function(authenticator, content, secureContent, trigger) {
     //TODO: clean this up, it's so messy!
     trigger = !!trigger && !this.get('isAuthenticated');
     this.beginPropertyChanges();
@@ -252,6 +244,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       isAuthenticated: true,
       authenticator:   authenticator
     });
+    Ember.set(this, 'content', content || {});
     Ember.set(this.content, 'secure', secureContent);
     this.bindToAuthenticatorEvents();
     this.updateStore();
@@ -316,7 +309,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     authenticator.off('sessionDataUpdated');
     authenticator.off('sessionDataInvalidated');
     authenticator.on('sessionDataUpdated', function(content) {
-      _this.setup(_this.authenticator, content);
+      _this.setup(_this.authenticator, _this.get('content'), content);
     });
     authenticator.on('sessionDataInvalidated', function(content) {
       _this.clear(true, content);
@@ -334,8 +327,8 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       var authenticator = (content.secure || {}).authenticator;
       if (!!authenticator) {
         delete content.secure.authenticator;
-        _this.container.lookup(authenticator).restore(content.secure).then(function(content) {
-          _this.setup(authenticator, content, true);
+        _this.container.lookup(authenticator).restore(content.secure).then(function(secureContent) {
+          _this.setup(authenticator, content, secureContent, true);
         }, function() {
           _this.clear(true, content);
         });
