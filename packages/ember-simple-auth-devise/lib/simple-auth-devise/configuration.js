@@ -4,7 +4,7 @@ var defaults = {
   serverTokenEndpoint:         '/users/sign_in',
   resourceName:                'user',
   tokenAttributeName:          'token',
-  identificationAttributeName: 'user_email'
+  identificationAttributeName: 'email'
 };
 
 /**
@@ -69,7 +69,7 @@ export default {
     @readOnly
     @static
     @type String
-    @default 'user_email'
+    @default 'email'
   */
   identificationAttributeName: defaults.identificationAttributeName,
 

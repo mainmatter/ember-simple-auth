@@ -64,9 +64,9 @@ export default Base.extend({
 
     @property identificationAttributeName
     @type String
-    @default 'user_email'
+    @default 'email'
   */
-  identificationAttributeName: 'user_email',
+  identificationAttributeName: 'email',
 
   /**
     @method init
@@ -82,7 +82,7 @@ export default Base.extend({
   /**
     Restores the session from a set of session properties; __will return a
     resolving promise when there's a non-empty `token` and a non-empty
-    `user_email` in the `properties`__ and a rejecting promise otherwise.
+    `email` in the `properties`__ and a rejecting promise otherwise.
 
     @method restore
     @param {Object} properties The properties to restore the session from
