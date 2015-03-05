@@ -4,7 +4,7 @@ import Configuration from './../configuration';
 /**
   Authenticator that works with the Ruby gem
   [Devise](https://github.com/plataformatec/devise) by sending the `token` and
-  `user_email` properties from the session in the `Authorization` header.
+  `email` properties from the session in the `Authorization` header.
 
   __As token authentication is not actually part of devise anymore, the server
   needs to implement some customizations__ to work with this authenticator -
@@ -39,12 +39,12 @@ export default Base.extend({
 
     @property identificationAttributeName
     @type String
-    @default 'user_email'
+    @default 'email'
   */
-  identificationAttributeName: 'user_email',
+  identificationAttributeName: 'email',
 
   /**
-    Authorizes an XHR request by sending the `token` and `user_email`
+    Authorizes an XHR request by sending the `token` and `email`
     properties from the session in the `Authorization` header:
 
     ```
