@@ -317,7 +317,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @method bindToStoreEvents
     @private
   */
-  bindToStoreEvents: function() {
+  bindToStoreEvents: Ember.observer('store', function() {
     var _this = this;
     this.store.on('sessionDataUpdated', function(content) {
       var authenticator = content.authenticator;
@@ -332,5 +332,5 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         _this.clear(true);
       }
     });
-  }.observes('store')
+  })
 });
