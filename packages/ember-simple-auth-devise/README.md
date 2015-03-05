@@ -10,6 +10,33 @@ __As your user's credentials as well as the token are exchanged between the
 Ember.js app and the Rails server you have to make sure that this connection
 uses HTTPS!__
 
+## Devise settings
+
+The sample configuration in this README assumes, that you generated a User
+model for Devise via
+
+```
+rails generate devise User
+```
+
+and didn't change the permitted parameters for authentication (e.g. you used
+the default migration). You can then signin with `email` and `password`, which
+is also the default configuration of Ember Simple Auth Devise.
+
+If you have generated a different model than `User` for Devise or if you
+changed the permitted parameters for authentication (see [Devise manual](https://github.com/plataformatec/devise#strong-parameters)), you
+will need to set `resourceName` and `identificationAttributeName` accordingly
+for your Ember app:
+
+```js
+//config/environment.js
+ENV['simple-auth-devise'] = {
+  resourceName: 'yourModel',
+  identificationAttributeName: 'yourSigninParameter'
+}
+```
+You will also need to adapt all of the following steps to your settings.
+
 ## Server-side setup
 
 As token authentication is not actually part of Devise anymore, there are some
@@ -63,8 +90,8 @@ class SessionsController < Devise::SessionsController
     super do |user|
       if request.format.json?
         data = {
-          token:      user.authentication_token,
-          user_email: user.email
+          token:  user.authentication_token,
+          email:  user.email
         }
         render json: data, status: 201 and return
       end
@@ -96,7 +123,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user_from_token!
     authenticate_with_http_token do |token, options|
-      user_email = options[:user_email].presence
+      user_email = options[:email].presence
       user = user_email && User.find_by_email(user_email)
 
       if user && Devise.secure_compare(user.authentication_token, token)
@@ -171,11 +198,11 @@ export default Ember.Controller.extend(LoginControllerMixin, {
 
 The authorizer (see the
 [API docs for `Authorizers.Devise`](http://ember-simple-auth.com/ember-simple-auth-devise-api-docs.html#SimpleAuth-Authorizers-Devise))
-authorizes requests by adding `user_token` and `user_email` properties from the
+authorizes requests by adding `token` and `email` properties from the
 session in the `Authorization` header:
 
 ```
-Authorization: Token token="<user_token>", user_email="<user_email>"
+Authorization: Token token="<token>", email="<email>"
 ```
 
 To use the authorizer, configure it on the application's environment object:
