@@ -36,14 +36,19 @@ this.get('session').authenticate('simple-auth-authenticator:torii', 'facebook-oa
 
 ## An authorizer
 
-To make sure the token you just got from torii is sent along with your ajax
-requests you need to add your own authorizer. The torii provider returns the
-token from the Provider#open function. This can be different per provider. So
-when you use several providers, you will have make sure you look at the right
-properties to find the token. Most providers also return their name you could
-use that to find out where the token is.
+You will need to implement your own authorizer when you use torii, but before
+you do you should think about finishing the rest of your oauth flow. Because
+torii only returns the Authorization token. You probably want to get a Bearer
+token from your API with that Authorization token first. You could do this by
+extending one of the providers.
 
-Read this: https://github.com/simplabs/ember-simple-auth#implementing-a-custom-authorizer.
+Make sure you also implement the `fetch` method on your provider to revalidate
+your token after a refresh. The `fetch` method is called with the information
+returned from your `open` method earlier.
+
+Read
+[this](https://github.com/simplabs/ember-simple-auth#implementing-a-custom-authorizer.)
+about implementing your own authorizer.
 
 ## Installation
 
