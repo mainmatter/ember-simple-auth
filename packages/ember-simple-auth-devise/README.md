@@ -10,34 +10,11 @@ __As your user's credentials as well as the token are exchanged between the
 Ember.js app and the Rails server you have to make sure that this connection
 uses HTTPS!__
 
-## Devise settings
-
-The sample configuration in this README assumes, that you generated a User
-model for Devise via
-
-```
-rails generate devise User
-```
-
-and didn't change the permitted parameters for authentication (e.g. you used
-the default migration). You can then signin with `email` and `password`, which
-is also the default configuration of Ember Simple Auth Devise.
-
-If you have generated a different model than `User` for Devise or if you
-changed the permitted parameters for authentication (see [Devise manual](https://github.com/plataformatec/devise#strong-parameters)), you
-will need to set `resourceName` and `identificationAttributeName` accordingly
-for your Ember app:
-
-```js
-//config/environment.js
-ENV['simple-auth-devise'] = {
-  resourceName: 'yourModel',
-  identificationAttributeName: 'yourSigninParameter'
-}
-```
-You will also need to adapt all of the following steps to your settings.
-
 ## Server-side setup
+
+__These instructions assume you're using the default Devise configuration and
+models. If you're using a custom model or attribute names, you can
+[configure Ember Simple Auth Devise to work with those](http://ember-simple-auth.com/ember-simple-auth-devise-api-docs.html#SimpleAuth-Configuration-Devise)).__
 
 As token authentication is not actually part of Devise anymore, there are some
 customizations necessary on the server side (most of this is adapted from
