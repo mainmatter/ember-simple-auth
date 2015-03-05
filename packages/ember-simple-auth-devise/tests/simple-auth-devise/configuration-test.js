@@ -24,8 +24,8 @@ describe('Configuration', function() {
   });
 
   describe('identificationAttributeName', function() {
-    it('defaults to "user_email"', function() {
-      expect(Configuration.identificationAttributeName).to.eq('user_email');
+    it('defaults to "email"', function() {
+      expect(Configuration.identificationAttributeName).to.eq('email');
     });
   });
 
