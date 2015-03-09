@@ -54,9 +54,9 @@ export default Ember.Object.extend(Ember.Evented, {
   /**
     __Triggered when the data that constitutes the session is updated by the
     authenticator__. This might happen e.g. because the authenticator refreshes
-    it or an event from is triggered from an external authentication provider.
-    The session automatically catches that event, passes the updated data back
-    to the authenticator's
+    it or an event is triggered from an external authentication provider. The
+    session automatically catches that event, passes the updated data back to
+    the authenticator's
     [SimpleAuth.Authenticators.Base#restore](#SimpleAuth-Authenticators-Base-restore)
     method and handles the result of that invocation accordingly.
 
