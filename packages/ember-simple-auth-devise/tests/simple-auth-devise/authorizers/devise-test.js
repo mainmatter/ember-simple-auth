@@ -47,8 +47,8 @@ describe('Devise', function() {
 
       context('when the session contains a non empty token and email', function() {
         beforeEach(function() {
-          this.authorizer.set('session.token', 'secret token!');
-          this.authorizer.set('session.email', 'user@email.com');
+          this.authorizer.set('session.secure.token', 'secret token!');
+          this.authorizer.set('session.secure.email', 'user@email.com');
         });
 
         it('adds the "token" and "email" query string fields to the request', function() {
@@ -69,8 +69,8 @@ describe('Devise', function() {
         context('when the session contains a non empty employee_token and employee_email', function() {
           beforeEach(function() {
             this.authorizer.set('session', this.session);
-            this.authorizer.set('session.employee_token', 'secret token!');
-            this.authorizer.set('session.employee_email', 'user@email.com');
+            this.authorizer.set('session.secure.employee_token', 'secret token!');
+            this.authorizer.set('session.secure.employee_email', 'user@email.com');
           });
 
           it('adds the "employee_token" and "employee_email" query string fields to the request', function() {
@@ -87,7 +87,7 @@ describe('Devise', function() {
 
       context('when the session does not contain an token', function() {
         beforeEach(function() {
-          this.authorizer.set('session.token', null);
+          this.authorizer.set('session.secure.token', null);
         });
 
         itDoesNotAuthorizeTheRequest();
@@ -95,7 +95,7 @@ describe('Devise', function() {
 
       context('when the session does not contain an email', function() {
         beforeEach(function() {
-          this.authorizer.set('session.email', null);
+          this.authorizer.set('session.secure.email', null);
         });
 
         itDoesNotAuthorizeTheRequest();

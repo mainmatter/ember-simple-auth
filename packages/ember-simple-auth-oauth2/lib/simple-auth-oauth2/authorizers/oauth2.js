@@ -28,7 +28,7 @@ export default Base.extend({
     @param {Object} requestOptions The options as provided to the `$.ajax` method (see http://api.jquery.com/jQuery.ajaxPrefilter/)
   */
   authorize: function(jqXHR, requestOptions) {
-    var accessToken = this.get('session.access_token');
+    var accessToken = this.get('session.secure.access_token');
     if (this.get('session.isAuthenticated') && !Ember.isEmpty(accessToken)) {
       jqXHR.setRequestHeader('Authorization', 'Bearer ' + accessToken);
     }
