@@ -2,7 +2,7 @@ import Base from 'simple-auth/authorizers/base';
 import Configuration from './../configuration';
 
 /**
-  Authenticator that works with the Ruby gem
+  Authorizer that works with the Ruby gem
   [Devise](https://github.com/plataformatec/devise) by sending the `token` and
   `email` properties from the session in the `Authorization` header.
 
