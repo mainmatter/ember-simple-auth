@@ -87,6 +87,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin);
 This will make the route transition to `/login` (or a different URL if
 configured) when the session is not authenticated in the `beforeModel` method.
 
+To prevent a route from being accessed when the session is authenticated (which
+makes sense for the `login` route for example), use the
+[`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-UnauthenticatedRouteMixin)).
+
 ### Authenticators
 
 __Authenticators implement the concrete steps necessary to authenticate the
