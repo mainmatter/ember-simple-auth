@@ -34,6 +34,22 @@ the provider's name to the `authenticate` method of the session:
 this.get('session').authenticate('simple-auth-authenticator:torii', 'facebook-oauth2');
 ```
 
+## An authorizer
+
+You will need to implement your own authorizer when you use torii, but before
+you do you should think about finishing the rest of your oauth flow. Because
+torii only returns the Authorization token. You probably want to get a Bearer
+token from your API with that Authorization token first. You could do this by
+extending one of the providers.
+
+Make sure you also implement the `fetch` method on your provider to revalidate
+your token after a refresh. The `fetch` method is called with the information
+returned from your `open` method earlier.
+
+Read
+[this](https://github.com/simplabs/ember-simple-auth#implementing-a-custom-authorizer.)
+about implementing your own authorizer.
+
 ## Installation
 
 To install Ember Simple Auth Torii in an Ember.js application there are several
