@@ -38,7 +38,7 @@ describe('Session', function() {
       });
 
       it('is not authenticated', function(done) {
-        this.authenticator.trigger('sessionDataInvalidated', { some: 'other property' });
+        this.authenticator.trigger('sessionDataInvalidated');
 
         Ember.run.next(this, function() {
           expect(this.session.get('isAuthenticated')).to.be.false;
@@ -48,19 +48,19 @@ describe('Session', function() {
 
       it('clears its secure section', function(done) {
         this.session.set('content', { some: 'property', secure: { some: 'other property' } });
-        this.authenticator.trigger('sessionDataInvalidated', { some: 'other property' });
+        this.authenticator.trigger('sessionDataInvalidated');
 
         Ember.run.next(this, function() {
-          expect(this.session.get('content')).to.eql({ some: 'other property', secure: {} });
+          expect(this.session.get('content.secure')).to.eql({});
           done();
         });
       });
 
       it('updates the store', function(done) {
-        this.authenticator.trigger('sessionDataInvalidated', { some: 'other property' });
+        this.authenticator.trigger('sessionDataInvalidated');
 
         Ember.run.next(this, function() {
-          expect(this.store.restore()).to.eql({ some: 'other property', secure: {} });
+          expect(this.store.restore().secure).to.eql({});
           done();
         });
       });
@@ -71,7 +71,7 @@ describe('Session', function() {
           done();
         });
 
-        this.authenticator.trigger('sessionDataInvalidated', { some: 'other property' });
+        this.authenticator.trigger('sessionDataInvalidated');
       });
     });
   }
@@ -105,7 +105,7 @@ describe('Session', function() {
         this.session.set('content', { secure: { some: 'other property' } });
 
         this.session.restore().then(null, function() {
-          expect(_this.session.get('content')).to.eql({ secure: {} });
+          expect(_this.session.get('content.secure')).to.eql({});
           done();
         });
       });
@@ -630,7 +630,7 @@ describe('Session', function() {
           this.store.trigger('sessionDataUpdated', { some: 'other property', secure: { authenticator: 'authenticator' } });
 
           Ember.run.next(this, function() {
-            expect(this.session.get('content')).to.eql({ some: 'other property', secure: {} });
+            expect(this.session.get('content.secure')).to.eql({});
             done();
           });
         });

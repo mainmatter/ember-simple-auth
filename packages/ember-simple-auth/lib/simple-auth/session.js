@@ -257,16 +257,14 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @method clear
     @private
   */
-  clear: function(trigger, content) {
+  clear: function(trigger) {
     //TODO: clean this up, it's so messy!
     trigger = !!trigger && this.get('isAuthenticated');
-    content = content || this.get('content');
     this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated: false,
       authenticator:   null
     });
-    Ember.set(this, 'content', content || {});
     Ember.set(this.content, 'secure', {});
     this.updateStore();
     this.endPropertyChanges();
@@ -311,7 +309,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       _this.setup(_this.authenticator, content);
     });
     authenticator.on('sessionDataInvalidated', function(content) {
-      _this.clear(true, content);
+      _this.clear(true);
     });
   },
 
@@ -329,10 +327,12 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
           _this.set('content', content);
           _this.setup(authenticator, secureContent, true);
         }, function() {
-          _this.clear(true, content);
+          _this.set('content', content);
+          _this.clear(true);
         });
       } else {
-        _this.clear(true, content);
+        _this.set('content', content);
+        _this.clear(true);
       }
     });
   })

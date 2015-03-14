@@ -70,7 +70,6 @@ export default Ember.Object.extend(Ember.Evented, {
     automatically catches that event and invalidates itself.
 
     @event sessionDataInvalidated
-    @param {Object} data The updated session data
   */
 
   /**
