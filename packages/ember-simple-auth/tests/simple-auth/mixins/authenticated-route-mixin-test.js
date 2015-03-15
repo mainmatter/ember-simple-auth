@@ -5,10 +5,22 @@ import EphemeralStore from 'simple-auth/stores/ephemeral';
 describe('AuthenticatedRouteMixin', function() {
   describe('#beforeModel', function() {
     beforeEach(function() {
+      var Route = Ember.Route.extend({
+        beforeModel: function() {
+          var routeContext = this;
+
+          return new Ember.RSVP.Promise(function(resolve) {
+            Ember.run.next(function() {
+              resolve(routeContext.beforeModelReturnValue);
+            });
+          });
+        }
+      }, AuthenticatedRouteMixin);
+
       this.session = Session.create();
       this.session.setProperties({ store: EphemeralStore.create() });
       this.transition = { abort: function() {}, send: function() {} };
-      this.route      = Ember.Route.extend(AuthenticatedRouteMixin).create({ session: this.session });
+      this.route      = Route.create({ session: this.session });
       sinon.spy(this.transition, 'abort');
       sinon.spy(this.transition, 'send');
     });
@@ -16,6 +28,15 @@ describe('AuthenticatedRouteMixin', function() {
     describe('if the session is authenticated', function() {
       beforeEach(function() {
         this.session.set('isAuthenticated', true);
+      });
+
+      it('returns the upstream promise', function() {
+        this.route.beforeModelReturnValue = 'authenticated';
+
+        return this.route.beforeModel(this.transition)
+          .then(function(result) {
+            expect(result).to.equal('authenticated');
+          });
       });
 
       it('does not abort the transition', function() {
@@ -32,6 +53,15 @@ describe('AuthenticatedRouteMixin', function() {
     });
 
     describe('if the session is not authenticated', function() {
+      it('returns the upstream promise', function() {
+        this.route.beforeModelReturnValue = 'unauthenticated';
+
+        return this.route.beforeModel(this.transition)
+          .then(function(result) {
+            expect(result).to.equal('unauthenticated');
+          });
+      });
+
       it('aborts the transition', function() {
         this.route.beforeModel(this.transition);
 
