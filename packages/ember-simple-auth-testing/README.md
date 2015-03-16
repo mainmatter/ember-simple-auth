@@ -71,7 +71,14 @@ several options:
 * If you're using [Ember CLI](https://github.com/stefanpenner/ember-cli), just
   add the
   [Ember CLI Addon](https://github.com/simplabs/ember-cli-simple-auth-testing)
-  to your project. Also import the test helpers in `tests/helpers/start-app.js`
+  to your project. 
+
+  ```bash
+  npm install --save-dev ember-cli-simple-auth-testing
+  ember generate ember-cli-simple-auth-testing
+  ```
+  
+  then import the test helpers in `tests/helpers/start-app.js`
   before the export:
 
   ```js
