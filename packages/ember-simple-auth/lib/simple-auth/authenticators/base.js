@@ -82,9 +82,10 @@ export default Ember.Object.extend(Ember.Evented, {
 
     __This method returns a promise. A resolving promise will result in the
     session being authenticated.__ Any properties the promise resolves with
-    will be saved in and accessible via the session. In most cases the `data`
-    argument will simply be forwarded through the promise. A rejecting promise
-    indicates that authentication failed and the session will remain unchanged.
+    will be saved in and accessible via the session's `secure` property. In
+    most cases the `data` argument will simply be forwarded through the
+    promise. A rejecting promise indicates that authentication failed and the
+    session will remain unchanged.
 
     `SimpleAuth.Authenticators.Base`'s implementation always returns a
     rejecting promise.
@@ -107,8 +108,9 @@ export default Ember.Object.extend(Ember.Evented, {
 
     __This method returns a promise. A resolving promise will result in the
     session being authenticated.__ Any properties the promise resolves with
-    will be saved in and accessible via the session. A rejecting promise
-    indicates that authentication failed and the session will remain unchanged.
+    will be saved in and accessible via the session's `secure` property. A
+    rejecting promise indicates that authentication failed and the session will
+    remain unchanged.
 
     `SimpleAuth.Authenticators.Base`'s implementation always returns a
     rejecting promise and thus never authenticates the session.
