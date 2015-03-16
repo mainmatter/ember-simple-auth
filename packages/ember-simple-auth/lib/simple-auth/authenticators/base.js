@@ -54,9 +54,9 @@ export default Ember.Object.extend(Ember.Evented, {
   /**
     __Triggered when the data that constitutes the session is updated by the
     authenticator__. This might happen e.g. because the authenticator refreshes
-    it or an event from is triggered from an external authentication provider.
-    The session automatically catches that event, passes the updated data back
-    to the authenticator's
+    it or an event is triggered from an external authentication provider. The
+    session automatically catches that event, passes the updated data back to
+    the authenticator's
     [SimpleAuth.Authenticators.Base#restore](#SimpleAuth-Authenticators-Base-restore)
     method and handles the result of that invocation accordingly.
 
@@ -70,7 +70,6 @@ export default Ember.Object.extend(Ember.Evented, {
     automatically catches that event and invalidates itself.
 
     @event sessionDataInvalidated
-    @param {Object} data The updated session data
   */
 
   /**
@@ -83,9 +82,10 @@ export default Ember.Object.extend(Ember.Evented, {
 
     __This method returns a promise. A resolving promise will result in the
     session being authenticated.__ Any properties the promise resolves with
-    will be saved in and accessible via the session. In most cases the `data`
-    argument will simply be forwarded through the promise. A rejecting promise
-    indicates that authentication failed and the session will remain unchanged.
+    will be saved in and accessible via the session's `secure` property. In
+    most cases the `data` argument will simply be forwarded through the
+    promise. A rejecting promise indicates that authentication failed and the
+    session will remain unchanged.
 
     `SimpleAuth.Authenticators.Base`'s implementation always returns a
     rejecting promise.
@@ -108,8 +108,9 @@ export default Ember.Object.extend(Ember.Evented, {
 
     __This method returns a promise. A resolving promise will result in the
     session being authenticated.__ Any properties the promise resolves with
-    will be saved in and accessible via the session. A rejecting promise
-    indicates that authentication failed and the session will remain unchanged.
+    will be saved in and accessible via the session's `secure` property. A
+    rejecting promise indicates that authentication failed and the session will
+    remain unchanged.
 
     `SimpleAuth.Authenticators.Base`'s implementation always returns a
     rejecting promise and thus never authenticates the session.

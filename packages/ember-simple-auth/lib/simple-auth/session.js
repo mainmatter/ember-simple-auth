@@ -135,7 +135,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @property content
     @private
   */
-  content: {},
+  content: { secure: {} },
 
   /**
     Authenticates the session with an `authenticator` and appropriate
@@ -215,18 +215,18 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var restoredContent = _this.store.restore();
-      var authenticator   = restoredContent.authenticator;
+      var authenticator   = (restoredContent.secure || {}).authenticator;
       if (!!authenticator) {
-        delete restoredContent.authenticator;
-        _this.container.lookup(authenticator).restore(restoredContent).then(function(content) {
+        delete restoredContent.secure.authenticator;
+        _this.container.lookup(authenticator).restore(restoredContent.secure).then(function(content) {
           _this.setup(authenticator, content);
           resolve();
         }, function() {
-          _this.store.clear();
+          _this.clear();
           reject();
         });
       } else {
-        _this.store.clear();
+        _this.clear();
         reject();
       }
     });
@@ -236,15 +236,14 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @method setup
     @private
   */
-  setup: function(authenticator, content, trigger) {
-    content = Ember.merge(Ember.merge({}, this.content), content);
+  setup: function(authenticator, secureContent, trigger) {
     trigger = !!trigger && !this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated: true,
-      authenticator:   authenticator,
-      content:         content
+      authenticator:   authenticator
     });
+    Ember.set(this.content, 'secure', secureContent);
     this.bindToAuthenticatorEvents();
     this.updateStore();
     this.endPropertyChanges();
@@ -262,10 +261,10 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated: false,
-      authenticator:   null,
-      content:         {}
+      authenticator:   null
     });
-    this.store.clear();
+    Ember.set(this.content, 'secure', {});
+    this.updateStore();
     this.endPropertyChanges();
     if (trigger) {
       this.trigger('sessionInvalidationSucceeded');
@@ -277,6 +276,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   setUnknownProperty: function(key, value) {
+    Ember.assert('"secure" is a reserved key used by Ember Simple Auth!', key !== 'secure');
     var result = this._super(key, value);
     this.updateStore();
     return result;
@@ -289,11 +289,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   updateStore: function() {
     var data = this.content;
     if (!Ember.isEmpty(this.authenticator)) {
-      data = Ember.merge({ authenticator: this.authenticator }, data);
+      Ember.set(data, 'secure', Ember.merge({ authenticator: this.authenticator }, data.secure || {}));
     }
-    if (!Ember.isEmpty(data)) {
-      this.store.persist(data);
-    }
+    this.store.persist(data);
   },
 
   /**
@@ -320,15 +318,18 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   bindToStoreEvents: Ember.observer('store', function() {
     var _this = this;
     this.store.on('sessionDataUpdated', function(content) {
-      var authenticator = content.authenticator;
+      var authenticator = (content.secure || {}).authenticator;
       if (!!authenticator) {
-        delete content.authenticator;
-        _this.container.lookup(authenticator).restore(content).then(function(content) {
-          _this.setup(authenticator, content, true);
+        delete content.secure.authenticator;
+        _this.container.lookup(authenticator).restore(content.secure).then(function(secureContent) {
+          _this.set('content', content);
+          _this.setup(authenticator, secureContent, true);
         }, function() {
+          _this.set('content', content);
           _this.clear(true);
         });
       } else {
+        _this.set('content', content);
         _this.clear(true);
       }
     });
