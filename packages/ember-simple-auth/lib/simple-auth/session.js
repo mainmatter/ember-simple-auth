@@ -289,7 +289,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   updateStore: function() {
     var data = this.content;
     if (!Ember.isEmpty(this.authenticator)) {
-      data.secure = Ember.merge({ authenticator: this.authenticator }, data.secure || {});
+      Ember.set(data, 'secure', Ember.merge({ authenticator: this.authenticator }, data.secure || {}));
     }
     this.store.persist(data);
   },
