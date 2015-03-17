@@ -240,10 +240,12 @@ export default Base.extend({
     @private
   */
   renew: function(data) {
-    data           = Ember.typeOf(data) === 'string' ? data : JSON.stringify(data || {});
-    var cachedExpirationTime = !!this.readExpirationTime() ? new Date().getTime() + this.readExpirationTime() * 1000 : null;
-    var expiration = !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : cachedExpirationTime;
-    this.write(data, expiration);
+    if(!Ember.isEmpty(data)){
+      data           = Ember.typeOf(data) === 'string' ? data : JSON.stringify(data || {});
+      var cachedExpirationTime = !!this.readExpirationTime() ? new Date().getTime() + this.readExpirationTime() * 1000 : null;
+      var expiration = !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : cachedExpirationTime;
+      this.write(data, expiration);
+    }
   },
 
   /**
