@@ -176,13 +176,13 @@
           controller.set('errorMessage', null);
         }
       });
-      App.LoginController = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
-        authenticator: 'authenticator:custom',
+      App.LoginController = Ember.Controller.extend({
         actions: {
           // display an error when authentication fails
           authenticate: function() {
             var _this = this;
-            this._super().then(null, function(message) {
+            var credentials = this.getProperties('identification', 'password');
+            this.get('session').authenticate('authenticator:custom', credentials).then(null, function(message) {
               _this.set('errorMessage', message);
             });
           }
