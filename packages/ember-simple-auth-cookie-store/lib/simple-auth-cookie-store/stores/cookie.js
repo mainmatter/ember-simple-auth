@@ -215,7 +215,9 @@ export default Base.extend({
     @private
   */
   pageVisibilityInit: function(){
-    var stateKey, eventKey, keys = {
+    var stateKey;
+    var eventKey;
+    var keys = {
       hidden: "visibilitychange",
       webkitHidden: "webkitvisibilitychange",
       mozHidden: "mozvisibilitychange",
