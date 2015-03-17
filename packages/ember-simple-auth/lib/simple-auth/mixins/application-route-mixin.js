@@ -177,6 +177,7 @@ export default Ember.Mixin.create({
       @method actions.invalidateSession
     */
     invalidateSession: function() {
+      Ember.deprecate("The invalidateSession action is deprecated. Use the session's invalidate method directly instead.");
       this.get(Configuration.sessionPropertyName).invalidate();
     },
 

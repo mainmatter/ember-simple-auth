@@ -1,5 +1,7 @@
 import Configuration from './../configuration';
 
+Ember.deprecate("The AuthenticationControllerMixin is deprecated. Use the session's authenticate method directly instead.");
+
 /**
   This mixin is for the controller that handles the
   [`Configuration.authenticationRoute`](#SimpleAuth-Configuration-authenticationRoute).
