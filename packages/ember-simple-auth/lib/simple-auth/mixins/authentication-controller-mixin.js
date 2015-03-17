@@ -1,7 +1,5 @@
 import Configuration from './../configuration';
 
-Ember.deprecate("The AuthenticationControllerMixin is deprecated. Use the session's authenticate method directly instead.");
-
 /**
   This mixin is for the controller that handles the
   [`Configuration.authenticationRoute`](#SimpleAuth-Configuration-authenticationRoute).
@@ -37,6 +35,7 @@ export default Ember.Mixin.create({
       @param {Object} options Any options the authenticator needs to authenticate the session
     */
     authenticate: function(options) {
+      Ember.deprecate("The AuthenticationControllerMixin is deprecated. Use the session's authenticate method directly instead.");
       var authenticator = this.get('authenticator');
       Ember.assert('AuthenticationControllerMixin/LoginControllerMixin require the authenticator property to be set on the controller!', !Ember.isEmpty(authenticator));
       return this.get(Configuration.sessionPropertyName).authenticate(authenticator, options);
