@@ -253,7 +253,9 @@ export default Base.extend({
     if (!Ember.isEmpty(data) && data !== {} && this.pageVisibility()) {
       this.renew(data);
     }
-    Ember.run.cancel(this._renewExpirationTimeout);
-    this._renewExpirationTimeout = Ember.run.later(this, this.renewExpiration, 60000);
+    if (!Ember.testing) {
+      Ember.run.cancel(this._renewExpirationTimeout);
+      this._renewExpirationTimeout = Ember.run.later(this, this.renewExpiration, 60000);
+    }
   }
 });
