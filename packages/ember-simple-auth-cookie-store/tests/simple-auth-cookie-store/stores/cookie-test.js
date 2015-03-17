@@ -61,11 +61,7 @@ describe('Stores.Cookie', function() {
       this.store.cookieName = 'test:session';
       this.store.cookieExpirationTime = 60; // 1 min
       this.store.expires = new Date().getTime() + this.store.cookieExpirationTime * 1000;
-      this.store.persist({key: this.store.expires});
-    });
-
-    it('session data cookie name should equal "test:session"', function() {
-      expect(this.store.cookieName).to.eq('test:session');
+      this.store.renew({key: this.store.expires});
     });
 
     it('session expiration cookie name should equal "test:session"', function() {
