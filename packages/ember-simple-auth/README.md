@@ -105,18 +105,6 @@ The authenticator to use is chosen when authentication is triggered:
 this.get('session').authenticate('authenticator:some', {});
 ```
 
-or when using the
-[`LoginControllerMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-LoginControllerMixin):
-
-```js
-// app/controllers/login.js
-import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
-
-export default Ember.Controller.extend(LoginControllerMixin, {
-  authenticator: 'authenticator:some'
-});
-```
-
 Ember Simple Auth does not include any authenticators in the base library but
 has extension libraries that can be loaded as needed:
 
@@ -158,18 +146,6 @@ registered factory's name to the session's `authenticate` method (see the
 this.get('session').authenticate('authenticator:custom', {});
 ```
 
-or when using the
-[`LoginControllerMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-LoginControllerMixin):
-
-```js
-// app/controllers/login.js
-import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
-
-export default Ember.Controller.extend(LoginControllerMixin, {
-  authenticator: 'authenticator:custom'
-});
-```
-
 **Note that when you're not using Ember CLI the authenticator will not be
 registered with the container automatically and you need to do that in an
 initializer:**
@@ -186,12 +162,6 @@ export default {
   }
 };
 ```
-
-Also see the
-[API docs for `Session#authenticate`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session-authenticate),
-[`LoginControllerMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-LoginControllerMixin)
-and
-[`AuthenticationControllerMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-AuthenticationControllerMixin).
 
 ### Authorizers
 
