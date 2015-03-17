@@ -69,7 +69,7 @@ describe('Stores.Cookie', function() {
     });
 
     it('session expiration cookie name should equal "test:session"', function() {
-      expect(this.store.cookieName + ':expiration-time').to.eq('test:session:expiration-time');
+      expect(this.store.cookieName + ':expiration_time').to.eq('test:session:expiration_time');
     });
 
     it('session data cookie exists', function() {
@@ -77,11 +77,11 @@ describe('Stores.Cookie', function() {
     });
 
     it('session expiration cookie exists', function() {
-      expect(document.cookie).to.contain(this.store.cookieName + ':expiration-time=60');
+      expect(document.cookie).to.contain(this.store.cookieName + ':expiration_time=60');
     });
 
     it('session expiration cookie value should be 60', function() {
-      var value = document.cookie.match(new RegExp('test:session:expiration-time=([^;]+)')) || [];
+      var value = document.cookie.match(new RegExp('test:session:expiration_time=([^;]+)')) || [];
       var val = decodeURIComponent(value[1] || '');
       expect(val).to.eq('60');
     });
