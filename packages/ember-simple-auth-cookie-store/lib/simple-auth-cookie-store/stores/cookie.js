@@ -189,7 +189,7 @@ export default Base.extend({
     var expires = Ember.isEmpty(expiration) ? '' : '; expires=' + new Date(expiration).toUTCString();
     var secure  = !!this._secureCookies ? ';secure' : '';
     document.cookie = this.cookieName + '=' + encodeURIComponent(value) + domain + path + expires + secure;
-    if(expiration !== null){ console.log('renewed to expire at : ' + new Date(expiration));
+    if(expiration !== null){
       document.cookie = this.cookieName + ':expiration_time=' + encodeURIComponent(this.cookieExpirationTime || this.readExpirationTime()) + domain + path + expires + secure;
     }
   },
