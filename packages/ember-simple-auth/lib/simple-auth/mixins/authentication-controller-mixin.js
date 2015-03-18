@@ -11,6 +11,7 @@ import Configuration from './../configuration';
   @namespace SimpleAuth
   @module simple-auth/mixins/authentication-controller-mixin
   @extends Ember.Mixin
+  @deprecated use [`Session#authenticate`](#SimpleAuth-Session-authenticate) instead
 */
 export default Ember.Mixin.create({
   /**

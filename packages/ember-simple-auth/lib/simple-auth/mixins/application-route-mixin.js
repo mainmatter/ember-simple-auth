@@ -125,6 +125,7 @@ export default Ember.Mixin.create({
       ```
 
       @method actions.authenticateSession
+      @deprecated use [`ApplicationRouteMixin#sessionRequiresAuthentication`](#SimpleAuth-ApplicationRouteMixin-sessionRequiresAuthentication) instead
     */
     authenticateSession: function() {
       Ember.deprecate('The authenticateSession action is deprecated. Use sessionRequiresAuthentication instead.');
@@ -183,6 +184,7 @@ export default Ember.Mixin.create({
       [`ApplicationRouteMixin#sessionInvalidationSucceeded`](#SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)).
 
       @method actions.invalidateSession
+      @deprecated use [`Session#invalidate`](#SimpleAuth-Session-invalidate) instead
     */
     invalidateSession: function() {
       Ember.deprecate("The invalidateSession action is deprecated. Use the session's invalidate method directly instead.");

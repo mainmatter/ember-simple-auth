@@ -69,6 +69,11 @@
         top: -55px;
         height: 1px;
       }
+      span.label-deprecation {
+        float: left;
+        line-height: inherit;
+        margin-right: 5px;
+      }
     </style>
   </head>
   <body>
@@ -110,6 +115,9 @@
           </div>
           <div class="row">
             <div class="col-md-9" id="main-content">
+              {{#if deprecated}}
+                <span class="label label-warning label-deprecation">deprecated</span>{{markdown deprecationMessage}}
+              {{/if}}
               {{markdown description}}
               <h4 class="section">Importing</h4>
               <dl>
