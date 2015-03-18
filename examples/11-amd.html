@@ -99,13 +99,23 @@
       });
 
       var ApplicationRouteMixin   = requireModule('simple-auth/mixins/application-route-mixin').default;
-      var LoginControllerMixin    = requireModule('simple-auth/mixins/login-controller-mixin').default;
       var AuthenticatedRouteMixin = requireModule('simple-auth/mixins/authenticated-route-mixin').default;
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(LoginControllerMixin, {
-        authenticator: 'simple-auth-authenticator:oauth2-password-grant'
+      App.ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin, {
+        actions: {
+          invalidateSession: function() {
+            this.get('session').invalidate();
+          }
+        }
+      });
+      App.LoginController = Ember.Controller.extend({
+        actions: {
+          authenticate: function() {
+            var credentials = this.getProperties('identification', 'password');
+            this.get('session').authenticate('simple-auth-authenticator:oauth2-password-grant', credentials);
+          }
+        }
       });
 
       // make this route protected

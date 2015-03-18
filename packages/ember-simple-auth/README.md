@@ -56,9 +56,8 @@ import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
 export default Ember.Route.extend(ApplicationRouteMixin);
 ```
 
-This adds some actions to the application route like `authenticateSession` and
-`invalidateSession` as well as callback actions that are triggered when the
-session's authentication state changes like `sessionAuthenticationSucceeded` or
+This adds some callback actions that are triggered when the session's
+authentication state changes like `sessionAuthenticationSucceeded` or
 `sessionInvalidationSucceeded` (see the
 [API docs for `ApplicationRouteMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-ApplicationRouteMixin)).
 Displaying e.g. login/logout buttons in the UI depending on the session's
@@ -70,6 +69,14 @@ authentication state then is as easy as:
 {{else}}
   {{#link-to 'login'}}Login{{/link-to}}
 {{/if}}
+```
+
+In the `invalidateSession` action simply call the session's `invalidate` method:
+
+```js
+invalidateSession: function() {
+  this.get('session').invalidate();
+}
 ```
 
 To make a route in the application require the session to be authenticated,
@@ -103,18 +110,6 @@ The authenticator to use is chosen when authentication is triggered:
 
 ```js
 this.get('session').authenticate('authenticator:some', {});
-```
-
-or when using the
-[`LoginControllerMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-LoginControllerMixin):
-
-```js
-// app/controllers/login.js
-import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
-
-export default Ember.Controller.extend(LoginControllerMixin, {
-  authenticator: 'authenticator:some'
-});
 ```
 
 Ember Simple Auth does not include any authenticators in the base library but
@@ -158,18 +153,6 @@ registered factory's name to the session's `authenticate` method (see the
 this.get('session').authenticate('authenticator:custom', {});
 ```
 
-or when using the
-[`LoginControllerMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-LoginControllerMixin):
-
-```js
-// app/controllers/login.js
-import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
-
-export default Ember.Controller.extend(LoginControllerMixin, {
-  authenticator: 'authenticator:custom'
-});
-```
-
 **Note that when you're not using Ember CLI the authenticator will not be
 registered with the container automatically and you need to do that in an
 initializer:**
@@ -186,12 +169,6 @@ export default {
   }
 };
 ```
-
-Also see the
-[API docs for `Session#authenticate`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session-authenticate),
-[`LoginControllerMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-LoginControllerMixin)
-and
-[`AuthenticationControllerMixin`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-AuthenticationControllerMixin).
 
 ### Authorizers
 

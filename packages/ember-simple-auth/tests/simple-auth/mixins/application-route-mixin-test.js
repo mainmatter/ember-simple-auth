@@ -100,9 +100,27 @@ describe('ApplicationRouteMixin', function() {
     });
   });
 
-  describe('the "authenticateSession" action', function() {
+  describe('the "sessionRequiresAuthentication" action', function() {
     beforeEach(function() {
       sinon.spy(this.route, 'transitionTo');
+    });
+
+    it('transitions to "Configuration.authenticationRoute"', function() {
+      this.route._actions.sessionRequiresAuthentication.apply(this.route);
+
+      expect(this.route.transitionTo).to.have.been.calledWith(Configuration.authenticationRoute);
+    });
+  });
+
+  describe('the "authenticateSession" action', function() {
+    beforeEach(function() {
+      var route = this.route;
+      sinon.spy(route, 'transitionTo');
+      route.send = function(name) {
+        if (name === 'sessionRequiresAuthentication') {
+          route._actions.sessionRequiresAuthentication.apply(route);
+        }
+      };
     });
 
     it('transitions to "Configuration.authenticationRoute"', function() {

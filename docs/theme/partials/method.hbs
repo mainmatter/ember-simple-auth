@@ -16,6 +16,9 @@
     </h3>
   </div>
   <div class="panel-body">
+    {{#if deprecated}}
+      <span class="label label-warning label-deprecation">deprecated</span>{{markdown deprecationMessage}}
+    {{/if}}
     {{markdown description}}
     {{#if params}}
       <h4 class="subsection">Arguments</h4>

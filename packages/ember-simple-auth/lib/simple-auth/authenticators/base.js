@@ -37,10 +37,12 @@
 
   ```js
   // app/controllers/login.js
-  import AuthenticationControllerMixin from 'simple-auth/mixins/authentication-controller-mixin';
-
-  export default Ember.Controller.extend(AuthenticationControllerMixin, {
-    authenticator: 'authenticator:custom'
+  export default Ember.Controller.extend({
+    actions: {
+      authenticate: function() {
+        this.get('session').authenticate('authenticator:custom');
+      }
+    }
   });
   ```
 
@@ -102,9 +104,8 @@ export default Ember.Object.extend(Ember.Evented, {
     Authenticates the session with the specified `options`. These options vary
     depending on the actual authentication mechanism the authenticator
     implements (e.g. a set of credentials or a Facebook account id etc.). __The
-    session will invoke this method when an action in the application triggers
-    authentication__ (see
-    [SimpleAuth.AuthenticationControllerMixin.actions#authenticate](#SimpleAuth-AuthenticationControllerMixin-authenticate)).
+    session will invoke this method when it is being authenticated__ (see
+    [SimpleAuth.Session#authenticate](#SimpleAuth-Session-authenticate)).
 
     __This method returns a promise. A resolving promise will result in the
     session being authenticated.__ Any properties the promise resolves with

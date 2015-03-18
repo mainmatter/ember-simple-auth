@@ -11,6 +11,7 @@ import Configuration from './../configuration';
   @namespace SimpleAuth
   @module simple-auth/mixins/authentication-controller-mixin
   @extends Ember.Mixin
+  @deprecated use [`Session#authenticate`](#SimpleAuth-Session-authenticate) instead
 */
 export default Ember.Mixin.create({
   /**
@@ -35,6 +36,7 @@ export default Ember.Mixin.create({
       @param {Object} options Any options the authenticator needs to authenticate the session
     */
     authenticate: function(options) {
+      Ember.deprecate("The AuthenticationControllerMixin is deprecated. Use the session's authenticate method directly instead.");
       var authenticator = this.get('authenticator');
       Ember.assert('AuthenticationControllerMixin/LoginControllerMixin require the authenticator property to be set on the controller!', !Ember.isEmpty(authenticator));
       return this.get(Configuration.sessionPropertyName).authenticate(authenticator, options);

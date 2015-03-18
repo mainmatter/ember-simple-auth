@@ -45,7 +45,7 @@ describe('AuthenticatedRouteMixin', function() {
         expect(this.transition.abort).to.not.have.been.called;
       });
 
-      it('does not invoke the "authenticateSession" action', function() {
+      it('does not invoke the "sessionRequiresAuthentication" action', function() {
         this.route.beforeModel(this.transition);
 
         expect(this.transition.send).to.not.have.been.called;
@@ -68,10 +68,10 @@ describe('AuthenticatedRouteMixin', function() {
         expect(this.transition.abort).to.have.been.called;
       });
 
-      it('invokes the "authenticateSession" action', function() {
+      it('invokes the "sessionRequiresAuthentication" action', function() {
         this.route.beforeModel(this.transition);
 
-        expect(this.transition.send).to.have.been.calledWith('authenticateSession');
+        expect(this.transition.send).to.have.been.calledWith('sessionRequiresAuthentication');
       });
     });
   });

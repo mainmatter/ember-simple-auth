@@ -11,6 +11,9 @@
     <h3 class="panel-title property">{{name}} <span class="type">{{{type}}}</span></h3>
   </div>
   <div class="panel-body">
+    {{#if deprecated}}
+      <span class="label label-warning label-deprecation">deprecated</span>{{markdown deprecationMessage}}
+    {{/if}}
     {{markdown description}}
     {{#if default}}
       Defaults to <code>{{default}}</code>

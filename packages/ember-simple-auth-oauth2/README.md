@@ -68,20 +68,14 @@ This route displays the login form with fields for `identification` and
 </form>
 ```
 
-The `authenticate` action that is triggered by submitting the form is provided
-by the `LoginControllerMixin` that the respective controller in the application
-can include (the controller can also implement its own action and use the
-session API directly; see the
-[API docs for `Session`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session)).
-It then also needs to specify the OAuth 2.0 authenticator to be used:
+The `auhtenticate` action authenticates the session with the
+`'simple-auth-authenticator:oauth2-password-grant'` authenticator:
 
 ```js
-// app/controllers/login.js
-import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
-
-export default Ember.Controller.extend(LoginControllerMixin, {
-  authenticator: 'simple-auth-authenticator:oauth2-password-grant'
-});
+authenticate: function() {
+  var data = this.getProperties('identification', 'password');
+  return this.get('session').authenticate('simple-auth-authenticator:oauth2-password-grant', data);
+}
 ```
 
 ### Compatible Middlewares

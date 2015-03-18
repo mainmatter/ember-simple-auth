@@ -105,9 +105,20 @@
       });
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
-        authenticator: 'simple-auth-authenticator:devise'
+      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin, {
+        actions: {
+          invalidateSession: function() {
+            this.get('session').invalidate();
+          }
+        }
+      });
+      App.LoginController = Ember.Controller.extend({
+        actions: {
+          authenticate: function() {
+            var credentials = this.getProperties('identification', 'password');
+            this.get('session').authenticate('simple-auth-authenticator:devise', credentials);
+          }
+        }
       });
 
       // make this route protected
