@@ -114,12 +114,13 @@ describe('ApplicationRouteMixin', function() {
 
   describe('the "authenticateSession" action', function() {
     beforeEach(function() {
-      sinon.spy(this.route, 'transitionTo');
-      this.route.send = function(name) {
+      var route = this.route;
+      sinon.spy(route, 'transitionTo');
+      route.send = function(name) {
         if (name === 'sessionRequiresAuthentication') {
-          this.route._actions.sessionRequiresAuthentication.apply(this.route);
+          route._actions.sessionRequiresAuthentication.apply(route);
         }
-      }.bind(this);
+      };
     });
 
     it('transitions to "Configuration.authenticationRoute"', function() {
