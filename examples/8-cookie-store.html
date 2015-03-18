@@ -107,9 +107,15 @@
       });
 
       // use the provided mixins in the application route and login controller
-      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
-      App.LoginController  = Ember.Controller.extend({
-        rememberMe:    false,
+      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin, {
+        actions: {
+          invalidateSession: function() {
+            this.get('session').invalidate();
+          }
+        }
+      });
+      App.LoginController = Ember.Controller.extend({
+        rememberMe: false,
 
         // change the store's cookie expiration time depending on whether "remember me" is checked or not
         rememberMeChanged: function() {

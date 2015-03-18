@@ -3,32 +3,11 @@ import Configuration from './../configuration';
 var routeEntryComplete = false;
 
 /**
-  The mixin for the application route; defines actions to authenticate the
-  session as well as to invalidate it. These actions can be used in all
-  templates like this:
-
-  ```handlebars
-  {{#if session.isAuthenticated}}
-    <a {{ action 'invalidateSession' }}>Logout</a>
-  {{else}}
-    <a {{ action 'authenticateSession' }}>Login</a>
-  {{/if}}
-  ```
-
-  or in the case that the application uses a dedicated route for logging in:
-
-  ```handlebars
-  {{#if session.isAuthenticated}}
-    <a {{ action 'invalidateSession' }}>Logout</a>
-  {{else}}
-    {{#link-to 'login'}}Login{{/link-to}}
-  {{/if}}
-  ```
-
-  This mixin also defines actions that are triggered whenever the session is
-  successfully authenticated or invalidated and whenever authentication or
-  invalidation fails. These actions provide a good starting point for adding
-  custom behavior to these events.
+  The mixin for the application route; defines actions that are triggered
+  when authentication is required, when the session has successfully been
+  authenticated or invalidated or when authentication or invalidation fails or
+  authorization is rejected by the server. These actions provide a good
+  starting point for adding custom behavior to these events.
 
   __When this mixin is used and the application's `ApplicationRoute` defines
   the `beforeModel` method, that method has to call `_super`.__
