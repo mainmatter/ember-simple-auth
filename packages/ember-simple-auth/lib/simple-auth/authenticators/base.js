@@ -78,16 +78,15 @@ export default Ember.Object.extend(Ember.Evented, {
     Restores the session from a set of properties. __This method is invoked by
     the session either after the application starts up and session data was
     restored from the store__ or when properties in the store have changed due
-    to external events (e.g. in another tab) and the new set of properties
-    needs to be re-checked for whether it still constitutes an authenticated
-    session.
+    to external events (e.g. in another tab) and the new session data needs to
+    be re-checked for whether it still constitutes an authenticated session.
 
     __This method returns a promise. A resolving promise will result in the
-    session being authenticated.__ Any properties the promise resolves with
-    will be saved in and accessible via the session's `secure` property. In
-    most cases the `data` argument will simply be forwarded through the
-    promise. A rejecting promise indicates that authentication failed and the
-    session will remain unchanged.
+    session being authenticated.__ Any data the promise resolves with will be
+    saved in and accessible via the session's `secure` property. In most cases,
+    `data` will simply be forwarded through the promise. A rejecting promise
+    indicates that `data` does not constitute a valid session and will result
+    in the session being invalidated.
 
     `SimpleAuth.Authenticators.Base`'s implementation always returns a
     rejecting promise.
