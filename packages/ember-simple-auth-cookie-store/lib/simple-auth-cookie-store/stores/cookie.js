@@ -96,10 +96,10 @@ export default Base.extend({
   _syncDataTimeout: null,
 
   /**
-    @property _renewExpirationTimeout
+    @property renewExpirationTimeout
     @private
   */
-  _renewExpirationTimeout: null,
+  renewExpirationTimeout: null,
 
   /**
     @property pageVisibility
@@ -258,8 +258,8 @@ export default Base.extend({
       this.renew(data);
     }
     if (!Ember.testing) {
-      Ember.run.cancel(this._renewExpirationTimeout);
-      this._renewExpirationTimeout = Ember.run.later(this, this.renewExpiration, 60000);
+      Ember.run.cancel(this.renewExpirationTimeout);
+      this.renewExpirationTimeout = Ember.run.later(this, this.renewExpiration, 60000);
     }
   }
 });
