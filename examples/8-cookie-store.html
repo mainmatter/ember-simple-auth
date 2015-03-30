@@ -92,6 +92,9 @@
       window.ENV['simple-auth'] = {
         store: 'simple-auth-session-store:cookie'
       };
+      window.ENV['simple-auth-cookie-store'] = {
+        cookieExpirationTime: 60
+      };
 
       App = Ember.Application.create({});
 
