@@ -1,7 +1,7 @@
 {
   "name": "ember-simple-auth-testing",
   "main": "simple-auth-testing",
-  "version": "0.7.3",
+  "version": "0.8.0-beta.1",
   "description": "Test helpers for Ember Simple Auth to authenticate and invalidate the session.",
   "author": "Marco Otte-Witte",
   "license": "MIT"
