@@ -183,20 +183,21 @@ export default Base.extend({
       resolve();
     }
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(_this.serverTokenRevocationEndpoint)) {
+      if (Ember.isEmpty(_this.serverTokenRevocationEndpoint)) {
+        success(resolve);
+      } else {
         var requests = [];
         Ember.A(['access_token', 'refresh_token']).forEach(function(tokenType) {
-          if (!Ember.isEmpty(data[tokenType])) {
+          var token = data[tokenType];
+          if (!Ember.isEmpty(token)) {
             requests.push(_this.makeRequest(_this.serverTokenRevocationEndpoint, {
-              token_type_hint: tokenType, token: data[tokenType]
+              token_type_hint: tokenType, token: token
             }));
           }
         });
         Ember.$.when.apply(Ember.$, requests).always(function(responses) {
           success(resolve);
         });
-      } else {
-        success(resolve);
       }
     });
   },
