@@ -402,7 +402,7 @@ grunt server
 ```
 
 and then run the tests in the browser at
-[http://localhost:8000](http://localhost:8000).
+[http://localhost:8000/test/](http://localhost:8000/test/).
 
 ## License
 
