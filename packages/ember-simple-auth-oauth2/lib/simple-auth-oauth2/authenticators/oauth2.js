@@ -139,6 +139,7 @@ export default Base.extend({
     @param {Object} options
     @param {String} options.identification The resource owner username
     @param {String} options.password The resource owner password
+    @param {Object} options.extras Additional data to send to the OAuth server
     @param {String|Array} [options.scope] The scope of the access request (see [RFC 6749, section 3.3](http://tools.ietf.org/html/rfc6749#section-3.3))
     @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
   */
@@ -149,6 +150,9 @@ export default Base.extend({
       if (!Ember.isEmpty(options.scope)) {
         var scopesString = Ember.makeArray(options.scope).join(' ');
         Ember.merge(data, { scope: scopesString });
+      }
+      if (!Ember.isEmpty(options.extras) && Ember.typeOf(options.extras) === 'object') {
+        Ember.merge(data, options.extras);
       }
       _this.makeRequest(_this.serverTokenEndpoint, data).then(function(response) {
         Ember.run(function() {

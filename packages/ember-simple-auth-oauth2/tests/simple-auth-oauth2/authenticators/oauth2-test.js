@@ -187,6 +187,15 @@ describe('OAuth2', function() {
       });
     });
 
+    it('sends additional data to the token endpooint', function(done) {
+      this.authenticator.authenticate({ identification: 'username', password: 'password', extras: {extra: 'data'} });
+
+      Ember.run.next(function() {
+        expect(Ember.$.ajax.getCall(0).args[0].data.extra).to.eql('data');
+        done();
+      });
+    });
+
     context('when the authentication request is successful', function() {
       beforeEach(function() {
         this.server.respondWith('POST', '/token', [
