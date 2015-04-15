@@ -196,7 +196,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var authenticator = _this.container.lookup(_this.authenticator);
-      authenticator.invalidate(_this.content).then(function() {
+      authenticator.invalidate(_this.content.secure).then(function() {
         authenticator.off('sessionDataUpdated');
         _this.clear(true);
         resolve();
