@@ -139,7 +139,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.8.0-beta.1"><span class="label label-primary">0.8.0-beta.1</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.8.0-beta.2"><span class="label label-primary">0.8.0-beta.2</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -776,7 +776,7 @@ var CustomAuthenticator = Base.extend({
 Ember.Application.initializer({
   name: &#39;authentication&#39;,
   initialize: function(container, application) {
-    container.register(&#39;authenticator:custom&#39;, CustomAuthenticator);
+    application.register(&#39;authenticator:custom&#39;, CustomAuthenticator);
   }
 });
 </code></pre>
