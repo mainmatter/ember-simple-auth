@@ -76,7 +76,8 @@ several options:
 
   ```js
   …
-  import 'simple-auth-testing/test-helpers';
+  import initializeTestHelpers from 'simple-auth-testing/test-helpers';
+  initializeTestHelpers();
 
   export default function startApp(attrs) {
   …
