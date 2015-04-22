@@ -8,7 +8,7 @@ export default {
   before:     'simple-auth',
   initialize: function(container, application) {
     var config = getGlobalConfig('simple-auth-oauth2');
-    Configuration.load(application, config);
+    Configuration.load(container, config);
     application.register('simple-auth-authorizer:oauth2-bearer', Authorizer);
     application.register('simple-auth-authenticator:oauth2-password-grant', Authenticator);
   }
