@@ -1,4 +1,15 @@
-# 0.8.0-beta.1
+# 0.8.0-beta.2
+
+* Ember Simple Auth now uses the application's `register` and `inject` methods
+  instead of the container's, see #462.
+* A bug in the OAuth 2.0 authorizer was fixed that prevented requests from
+  actually being authorized, see #483.
+* Changed the way the test helpers are loaded to prevent JSHint errors, see
+  #478.
+* Better implementation for detection of changes in the session store, see
+  #469.
+
+# 0.8.0-beta.2
 
 * __[BREAKING]__ The devise package's `identificationAttributeName` property
   now defaults to `email`, see #456.
