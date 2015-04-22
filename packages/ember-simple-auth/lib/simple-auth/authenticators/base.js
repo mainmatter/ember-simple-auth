@@ -30,7 +30,7 @@
   Ember.Application.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-      container.register('authenticator:custom', CustomAuthenticator);
+      application.register('authenticator:custom', CustomAuthenticator);
     }
   });
   ```

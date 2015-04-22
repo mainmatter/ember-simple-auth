@@ -104,9 +104,9 @@
         before:     'simple-auth',
         initialize: function(container, application) {
           // register the custom session so Ember Simple Auth can find it
-          container.register('session:custom', App.CustomSession);
+          application.register('session:custom', App.CustomSession);
           // register the custom authenticator so the session can find it
-          container.register('authenticator:custom', App.CustomAuthenticator);
+          application.register('authenticator:custom', App.CustomAuthenticator);
         }
       });
 

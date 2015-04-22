@@ -5,27 +5,23 @@ import LocalStorageStore from 'simple-auth/stores/local-storage';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
 
 describe('setup', function() {
-  before(function() {
-    this.container     = { register: function() {}, injection: function() {}, lookup: function() {} };
+  beforeEach(function() {
+    this.application   = { register: function() {}, inject: function() {}, deferReadiness: function() {}, advanceReadiness: function() {} };
+    this.container     = { lookup: function() {} };
     this.session       = Session.create();
     this.containerStub = sinon.stub(this.container, 'lookup');
-    sinon.spy(this.container, 'register');
-    sinon.spy(this.container, 'injection');
-  });
-
-  beforeEach(function() {
-    this.application = { deferReadiness: function() {}, advanceReadiness: function() {} };
-    this.router      = { get: function() { return 'rootURL'; }, send: function() {} };
-    this.store       = EphemeralStore.create();
-    this.authorizer  = { set: function() {}, authorize: function() {} };
+    this.router        = { get: function() { return 'rootURL'; }, send: function() {} };
+    this.store         = EphemeralStore.create();
+    this.authorizer    = { set: function() {}, authorize: function() {} };
     this.session.setProperties({ store: this.store, container: this.container });
+
     this.containerStub.withArgs('router:main').returns(this.router);
     this.containerStub.withArgs('simple-auth-session-store:local-storage').returns(this.store);
     this.containerStub.withArgs('simple-auth-session:main').returns(this.session);
     this.containerStub.withArgs('authorizer').returns(this.authorizer);
 
-    this.container.register.reset();
-    this.container.injection.reset();
+    sinon.spy(this.application, 'register');
+    sinon.spy(this.application, 'inject');
 
     sinon.spy(this.authorizer, 'authorize');
   });
@@ -40,19 +36,19 @@ describe('setup', function() {
   it('registers the LocalStorage store', function() {
     setup(this.container, this.application);
 
-    expect(this.container.register).to.have.been.calledWith('simple-auth-session-store:local-storage', LocalStorageStore);
+    expect(this.application.register).to.have.been.calledWith('simple-auth-session-store:local-storage', LocalStorageStore);
   });
 
   it('registers the Ephemeral store', function() {
     setup(this.container, this.application);
 
-    expect(this.container.register).to.have.been.calledWith('simple-auth-session-store:ephemeral', EphemeralStore);
+    expect(this.application.register).to.have.been.calledWith('simple-auth-session-store:ephemeral', EphemeralStore);
   });
 
   it('registers the Session', function() {
     setup(this.container, this.application);
 
-    expect(this.container.register).to.have.been.calledWith('simple-auth-session:main', Session);
+    expect(this.application.register).to.have.been.calledWith('simple-auth-session:main', Session);
   });
 
   describe('the session instance', function() {
@@ -70,7 +66,7 @@ describe('setup', function() {
       it('is of that class', function() {
         setup(this.container, this.application);
 
-        var spyCall = this.container.injection.getCall(0);
+        var spyCall = this.application.inject.getCall(0);
         expect(spyCall.args[2]).to.eql('session:custom');
       });
     });
@@ -101,7 +97,7 @@ describe('setup', function() {
       setup(this.container, this.application);
 
       ['component', 'controller', 'route'].forEach(function(component) {
-        expect(_this.container.injection).to.have.been.calledWith(component, Configuration.sessionPropertyName, Configuration.session);
+        expect(_this.application.inject).to.have.been.calledWith(component, Configuration.sessionPropertyName, Configuration.session);
       });
     });
   });

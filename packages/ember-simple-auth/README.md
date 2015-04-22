@@ -165,7 +165,7 @@ export default {
   name:       'authentication',
   before:     'simple-auth',
   initialize: function(container, application) {
-    container.register('authenticator:custom', CustomAuthenticator);
+    application.register('authenticator:custom', CustomAuthenticator);
   }
 };
 ```
@@ -235,8 +235,8 @@ import CustomAuthorizer from '../authorizers/custom';
 export default {
   name:       'authentication',
   before:     'simple-auth',
-  initialize: function(container) {
-    container.register('authorizer:custom', CustomAuthorizer);
+  initialize: function(container, application) {
+    application.register('authorizer:custom', CustomAuthorizer);
   }
 };
 ```

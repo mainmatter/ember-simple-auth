@@ -7,6 +7,6 @@ export default {
   initialize: function(container, application) {
     var torii         = container.lookup('torii:main');
     var authenticator = Authenticator.create({ torii: torii });
-    container.register('simple-auth-authenticator:torii', authenticator, { instantiate: false });
+    application.register('simple-auth-authenticator:torii', authenticator, { instantiate: false });
   }
 };

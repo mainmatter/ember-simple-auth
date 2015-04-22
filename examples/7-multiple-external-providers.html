@@ -86,8 +86,8 @@
         before: 'simple-auth',
         initialize: function(container, application) {
           // register the Facebook and Google+ authenticators so the session can find them
-          container.register('authenticator:facebook', App.FacebookAuthenticator);
-          container.register('authenticator:googleplus', App.GooglePlusAuthenticator);
+          application.register('authenticator:facebook', App.FacebookAuthenticator);
+          application.register('authenticator:googleplus', App.GooglePlusAuthenticator);
         }
       });
 

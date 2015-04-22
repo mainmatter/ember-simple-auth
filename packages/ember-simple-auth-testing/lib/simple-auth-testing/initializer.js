@@ -4,6 +4,6 @@ export default {
   name:       'simple-auth-testing',
   before:     'simple-auth',
   initialize: function(container, application) {
-    container.register('simple-auth-authenticator:test', TestAuthenticator);
+    application.register('simple-auth-authenticator:test', TestAuthenticator);
   }
 };

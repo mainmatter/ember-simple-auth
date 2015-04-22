@@ -12,13 +12,13 @@ describe('the "simple-auth-cookie" initializer', function() {
 
   describe('the initialize method', function() {
     beforeEach(function() {
-      this.container = { register: function() {} };
-      sinon.spy(this.container, 'register');
+      this.application = { register: function() {} };
+      sinon.spy(this.application, 'register');
     });
 
     it('registers the store with the Ember container', function() {
-      initializer.initialize(this.container);
-      var spyCall = this.container.register.getCall(0);
+      initializer.initialize(null, this.application);
+      var spyCall = this.application.register.getCall(0);
 
       expect(spyCall.args[0]).to.eql('simple-auth-session-store:cookie');
       expect(spyCall.args[1]).to.eql(Store);

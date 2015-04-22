@@ -8,8 +8,8 @@ export default {
   before:     'simple-auth',
   initialize: function(container, application) {
     var config = getGlobalConfig('simple-auth-devise');
-    Configuration.load(container, config);
-    container.register('simple-auth-authorizer:devise', Authorizer);
-    container.register('simple-auth-authenticator:devise', Authenticator);
+    Configuration.load(application, config);
+    application.register('simple-auth-authorizer:devise', Authorizer);
+    application.register('simple-auth-authenticator:devise', Authenticator);
   }
 };

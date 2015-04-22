@@ -13,22 +13,22 @@ describe('the "simple-auth-oauth2" initializer', function() {
 
   describe('the initialize method', function() {
     beforeEach(function() {
-      this.container = { register: function() {} };
-      sinon.spy(this.container, 'register');
+      this.application = { register: function() {} };
+      sinon.spy(this.application, 'register');
     });
 
     it('registers the authorizer with the Ember container', function() {
-      initializer.initialize(this.container);
-      var spyCall = this.container.register.getCall(0);
+      initializer.initialize(null, this.application);
+      var spyCall = this.application.register.getCall(0);
 
       expect(spyCall.args[0]).to.eql('simple-auth-authorizer:oauth2-bearer');
       expect(spyCall.args[1]).to.eql(Authorizer);
     });
 
     it('registers the authenticator with the Ember container', function() {
-      initializer.initialize(this.container);
+      initializer.initialize(null, this.application);
 
-      var spyCall = this.container.register.getCall(1);
+      var spyCall = this.application.register.getCall(1);
 
       expect(spyCall.args[0]).to.eql('simple-auth-authenticator:oauth2-password-grant');
       expect(spyCall.args[1]).to.eql(Authenticator);

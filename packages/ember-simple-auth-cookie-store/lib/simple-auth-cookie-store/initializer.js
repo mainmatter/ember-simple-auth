@@ -8,6 +8,6 @@ export default {
   initialize: function(container, application) {
     var config = getGlobalConfig('simple-auth-cookie-store');
     Configuration.load(container, config);
-    container.register('simple-auth-session-store:cookie', Store);
+    application.register('simple-auth-session-store:cookie', Store);
   }
 };

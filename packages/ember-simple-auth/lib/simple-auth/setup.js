@@ -51,10 +51,10 @@ function shouldAuthorizeRequest(options) {
   return Ember.A(crossOriginWhitelist).any(matchDomain(urlOrigin));
 }
 
-function registerFactories(container) {
-  container.register('simple-auth-session-store:local-storage', LocalStorage);
-  container.register('simple-auth-session-store:ephemeral', Ephemeral);
-  container.register('simple-auth-session:main', Session);
+function registerFactories(application) {
+  application.register('simple-auth-session-store:local-storage', LocalStorage);
+  application.register('simple-auth-session-store:ephemeral', Ephemeral);
+  application.register('simple-auth-session:main', Session);
 }
 
 function ajaxPrefilter(options, originalOptions, jqXHR) {
@@ -78,13 +78,13 @@ var didSetupAjaxHooks = false;
 **/
 export default function(container, application) {
   application.deferReadiness();
-  registerFactories(container);
+  registerFactories(application);
 
   var store   = container.lookup(Configuration.store);
   var session = container.lookup(Configuration.session);
   session.setProperties({ store: store, container: container });
   Ember.A(['controller', 'route', 'component']).forEach(function(component) {
-    container.injection(component, Configuration.sessionPropertyName, Configuration.session);
+    application.inject(component, Configuration.sessionPropertyName, Configuration.session);
   });
 
   crossOriginWhitelist = Ember.A(Configuration.crossOriginWhitelist).map(function(origin) {
