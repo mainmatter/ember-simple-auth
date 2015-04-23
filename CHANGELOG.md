@@ -9,7 +9,7 @@
 * Better implementation for detection of changes in the session store, see
   #469.
 
-# 0.8.0-beta.2
+# 0.8.0-beta.1
 
 * __[BREAKING]__ The devise package's `identificationAttributeName` property
   now defaults to `email`, see #456.
