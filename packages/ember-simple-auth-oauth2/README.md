@@ -68,7 +68,7 @@ This route displays the login form with fields for `identification` and
 </form>
 ```
 
-The `auhtenticate` action authenticates the session with the
+The `authenticate` action authenticates the session with the
 `'simple-auth-authenticator:oauth2-password-grant'` authenticator:
 
 ```js
