@@ -3,7 +3,8 @@ import loadConfig from 'simple-auth/utils/load-config';
 var defaults = {
   serverTokenEndpoint:           '/token',
   serverTokenRevocationEndpoint: null,
-  refreshAccessTokens:           true
+  refreshAccessTokens:           true,
+  clientId:                      null
 };
 
 /**
@@ -23,6 +24,17 @@ var defaults = {
   @module simple-auth/configuration
 */
 export default {
+  /**
+    The client_id sent to the server
+
+    @property client_id
+    @readOnly
+    @static
+    @type String
+    @default null
+  */
+  clientId: defaults.clientId,
+
   /**
     The endpoint on the server the authenticator acquires the access token
     from.

@@ -23,6 +23,12 @@ describe('Configuration', function() {
     });
   });
 
+  describe('clientId', function() {
+    it('defaults to null', function() {
+      expect(Configuration.clientId).to.be.null;
+    });
+  });
+
   describe('.load', function() {
     it('sets serverTokenEndpoint correctly', function() {
       Configuration.load(this.container, { serverTokenEndpoint: 'serverTokenEndpoint' });
