@@ -137,12 +137,12 @@ In order to use the Devise authenticator (see the
 the application needs to have a login route:
 
 ```js
-App.Router.map(function() {
-  this.route('login');
+export default Router.map(function() {
+    this.route('login');
 });
 ```
 
-This route displays the login form with fields for `identification`,
+This route displays the login.hbs view with a form with fields for `identification`,
 `password`:
 
 ```html
@@ -159,9 +159,13 @@ The `authenticate` action authenticates the session with the
 `'simple-auth-authenticator:devise'` authenticator:
 
 ```js
-authenticate: function() {
-  var data = this.getProperties('identification', 'password');
-  return this.get('session').authenticate('simple-auth-authenticator:devise', data);
+export default Ember.Controller.extend({
+  actions: {
+    authenticate: function() {
+      var data = this.getProperties('identification', 'password');
+      return this.get('session').authenticate('simple-auth-authenticator:devise', data);
+    }
+  }
 }
 ```
 
