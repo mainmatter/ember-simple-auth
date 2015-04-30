@@ -120,7 +120,7 @@ export default {
   /**
     The key the store stores the data in.
 
-    @property key
+    @property localStorageKey
     @type String
     @default 'ember_simple_auth:session'
   */
