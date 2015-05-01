@@ -60,6 +60,7 @@ export default Ember.Mixin.create({
         'sessionAuthenticationSucceeded',
         'sessionAuthenticationFailed',
         'sessionInvalidationSucceeded',
+        'sessionRestorationSucceeded',
         'sessionInvalidationFailed',
         'authorizationFailed'
       ]).forEach(function(event) {
@@ -210,6 +211,16 @@ export default Ember.Mixin.create({
       if (!Ember.testing) {
         window.location.replace(Configuration.applicationRootUrl);
       }
+    },
+
+    /**
+      This action is invoked whenever session restoration succeeds. This mainly
+      serves as an extension point to add custom behavior and does nothing by
+      default.
+
+      @method actions.sessionRestorationSucceeded
+    */
+    sessionRestorationSucceeded: function() {
     },
 
     /**

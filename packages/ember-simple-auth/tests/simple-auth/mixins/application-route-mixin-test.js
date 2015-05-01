@@ -70,6 +70,15 @@ describe('ApplicationRouteMixin', function() {
         });
       });
 
+      it("translates the session's 'sessionRestorationSucceeded' event into an action invocation", function(done) {
+        this.session.trigger('sessionRestorationSucceeded');
+
+        Ember.run.next(this, function() {
+          expect(this.route.send).to.have.been.calledWith('sessionRestorationSucceeded');
+          done();
+        });
+      });
+
       it("translates the session's 'sessionInvalidationFailed' event into an action invocation", function(done) {
         this.session.trigger('sessionInvalidationFailed', 'error');
 

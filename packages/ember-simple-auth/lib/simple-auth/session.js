@@ -67,6 +67,15 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @event sessionInvalidationSucceeded
   */
   /**
+    Triggered __whenever the session is successfully restored__. When the
+    application uses the
+    [`ApplicationRouteMixin` mixin](#SimpleAuth-ApplicationRouteMixin),
+    [`ApplicationRouteMixin.actions#sessionRestorationSucceeded`](#SimpleAuth-ApplicationRouteMixin-sessionRestorationSucceeded)
+    will be invoked whenever this event is triggered.
+
+    @event sessionRestorationSucceeded
+    */
+  /**
     Triggered __whenever an attempt to invalidate the session fails__. When the
     application uses the
     [`ApplicationRouteMixin` mixin](#SimpleAuth-ApplicationRouteMixin),
@@ -220,6 +229,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         delete restoredContent.secure.authenticator;
         _this.container.lookup(authenticator).restore(restoredContent.secure).then(function(content) {
           _this.setup(authenticator, content);
+          _this.trigger('sessionRestorationSucceeded');
           resolve();
         }, function() {
           _this.clear();

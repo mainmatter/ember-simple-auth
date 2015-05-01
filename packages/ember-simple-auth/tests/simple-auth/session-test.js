@@ -191,6 +191,16 @@ describe('Session', function() {
           });
         });
 
+        it('triggers the "sessionRestorationSucceeded" event', function(done) {
+          var triggered = false;
+          this.session.one('sessionRestorationSucceeded', function() { triggered = true; });
+
+          this.session.restore().then(function() {
+            expect(triggered).to.be.true;
+            done();
+          });
+        });
+
         itHandlesAuthenticatorEvents(function(done) {
           var _this = this;
           this.session.restore().then(function() {
