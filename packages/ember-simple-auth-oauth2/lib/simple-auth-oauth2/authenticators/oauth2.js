@@ -232,11 +232,21 @@ export default Base.extend({
   */
   makeRequest: function(url, data) {
     var _this = this;
-    var options = {url: url, type: 'POST', data: data, dataType: 'json', contentType: 'application/x-www-form-urlencoded'};
+    var options = {
+      url: url,
+      type: 'POST',
+      data: data,
+      dataType: 'json',
+      contentType: 'application/x-www-form-urlencoded'
+    };
 
-    if(!Ember.isEmpty(_this.clientId)) {
-      var base64ClientId = btoa(_this.clientId + ":");
-      Ember.merge(options, {headers: {Authorization: "Basic " + base64ClientId}});
+    if (!Ember.isEmpty(_this.clientId)) {
+      var base64ClientId = _this.base64Encode(_this.clientId + ":");
+      Ember.merge(options, {
+          headers: {
+              Authorization: "Basic " + base64ClientId
+          }
+      });
     }
 
     return Ember.$.ajax(options);
@@ -297,5 +307,35 @@ export default Base.extend({
     if (!Ember.isEmpty(expiresIn)) {
       return new Date((new Date().getTime()) + expiresIn * 1000).getTime();
     }
+  },
+
+  /**
+    Adapted from https://github.com/davidchambers/Base64.js
+
+
+    @method base64Encode taken from
+    @private
+  */
+  base64Encode: function (input) {
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
+    var str = String(input);
+    for (
+      // initialize result and counter
+      var block, charCode, idx = 0, map = chars, output = '';
+      // if the next str index does not exist:
+      //   change the mapping table to "="
+      //   check if d has no fractional digits
+      str.charAt(idx | 0) || (map = '=', idx % 1);
+      // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
+      output += map.charAt(63 & block >> 8 - idx % 1 * 8)
+    ) {
+      charCode = str.charCodeAt(idx += 3 / 4);
+      if (charCode > 0xFF) {
+        throw new InvalidCharacterError("'base64Encode' failed: The string to be encoded contains characters outside of the Latin1 range.");
+      }
+      block = block << 8 | charCode;
+    }
+    return output;
   }
 });
