@@ -1,1 +1,0 @@
-Ember.libraries.register('Ember Simple Auth Torii', '{{ VERSION }}');
