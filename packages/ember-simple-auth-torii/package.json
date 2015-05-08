@@ -1,8 +1,0 @@
-{
-  "name": "ember-simple-auth-torii",
-  "main": "simple-auth-torii",
-  "version": "0.8.0-beta.2",
-  "description": "An authenticator for Ember Simple Auth that wraps the torii library.",
-  "author": "Marco Otte-Witte",
-  "license": "MIT"
-}

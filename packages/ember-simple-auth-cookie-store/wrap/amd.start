@@ -1,7 +1,0 @@
-(function(global) {
-  var define = global.define;
-  var require = global.require;
-  var Ember = global.Ember;
-  if (typeof Ember === 'undefined' && typeof require !== 'undefined') {
-    Ember = require('ember');
-  }
