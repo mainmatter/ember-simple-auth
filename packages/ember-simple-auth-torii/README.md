@@ -20,8 +20,7 @@ the application needs to configure one or more torii providers, e.g.:
 ENV['torii'] = {
   providers: {
     'facebook-oauth2': {
-      apiKey:      '631252926924840',
-      redirectUri: document.location.href
+      apiKey: '631252926924840'
     }
   }
 };
