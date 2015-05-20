@@ -23,7 +23,7 @@ import Ember from 'ember';
   injection container__ so that the session can retrieve an instance, e.g.:
 
   ```js
-  import Base from 'simple-auth/authenticators/base';
+  import Base from 'ember-simple-auth/authenticators/base';
 
   var CustomAuthenticator = Base.extend({
     ...

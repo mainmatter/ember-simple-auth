@@ -1,6 +1,6 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
-import Base from 'simple-auth/authenticators/base';
+import Base from 'ember-simple-auth/authenticators/base';
 
 describe('Authenticators.Base', function() {
   beforeEach(function() {

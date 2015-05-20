@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Base from 'simple-auth/authorizers/base';
+import Base from './base';
 
 /**
   Authorizer that conforms to OAuth 2

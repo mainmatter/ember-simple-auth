@@ -1,8 +1,8 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import OAuth2 from 'simple-auth-oauth2/authenticators/oauth2';
-import Configuration from 'simple-auth-oauth2/configuration';
+import OAuth2 from 'ember-simple-auth/authenticators/oauth2';
+import Configuration from 'ember-simple-auth/configuration';
 
 describe('OAuth2', function() {
   beforeEach(function() {

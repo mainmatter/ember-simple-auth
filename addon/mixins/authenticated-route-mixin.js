@@ -10,7 +10,7 @@ import Configuration from './../configuration';
 
   ```js
   // app/routes/protected.js
-  import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
+  import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
   export default Ember.Route.extend(AuthenticatedRouteMixin);
   ```

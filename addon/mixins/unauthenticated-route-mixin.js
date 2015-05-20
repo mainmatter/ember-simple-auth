@@ -11,7 +11,7 @@ import Configuration from './../configuration';
 
   ```js
   // app/routes/login.js
-  import UnauthenticatedRouteMixin from 'simple-auth/mixins/unauthenticated-route-mixin';
+  import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 
   export default Ember.Route.extend(UnauthenticatedRouteMixin);
   ```

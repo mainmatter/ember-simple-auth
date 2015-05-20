@@ -1,9 +1,9 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
-import Session from 'simple-auth/session';
-import EphemeralStore from 'simple-auth/stores/ephemeral';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('AuthenticatedRouteMixin', function() {
   describe('#beforeModel', function() {

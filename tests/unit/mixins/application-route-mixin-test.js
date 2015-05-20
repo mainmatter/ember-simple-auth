@@ -1,10 +1,10 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
-import Session from 'simple-auth/session';
-import EphemeralStore from 'simple-auth/stores/ephemeral';
-import Configuration from 'simple-auth/configuration';
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
+import Configuration from 'ember-simple-auth/configuration';
 
 var TestRoute = Ember.Route.extend(ApplicationRouteMixin);
 

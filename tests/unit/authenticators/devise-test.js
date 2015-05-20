@@ -1,8 +1,8 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import Devise from 'simple-auth-devise/authenticators/devise';
-import Configuration from 'simple-auth-devise/configuration';
+import Devise from 'ember-simple-auth/authenticators/devise';
+import Configuration from 'ember-simple-auth/configuration';
 
 describe('Devise', function() {
   beforeEach(function() {

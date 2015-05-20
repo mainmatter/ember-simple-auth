@@ -1,9 +1,9 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
-import Devise from 'simple-auth-devise/authorizers/devise';
-import Session from 'simple-auth/session';
-import EphemeralStore from 'simple-auth/stores/ephemeral';
-import Configuration from 'simple-auth-devise/configuration';
+import Devise from 'ember-simple-auth/authorizers/devise';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
+import Configuration from 'ember-simple-auth/configuration';
 
 describe('Devise', function() {
   beforeEach(function() {

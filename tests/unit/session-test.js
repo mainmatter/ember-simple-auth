@@ -1,9 +1,9 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import Session from 'simple-auth/session';
-import EphemeralStore from 'simple-auth/stores/ephemeral';
-import Authenticator from 'simple-auth/authenticators/base';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
+import Authenticator from 'ember-simple-auth/authenticators/base';
 
 describe('Session', function() {
   beforeEach(function() {

@@ -1,9 +1,9 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
-import Session from 'simple-auth/session';
-import EphemeralStore from 'simple-auth/stores/ephemeral';
+import LoginControllerMixin from 'ember-simple-auth/mixins/login-controller-mixin';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('LoginControllerMixin', function() {
   beforeEach(function() {

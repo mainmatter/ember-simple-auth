@@ -1,6 +1,6 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
-import objectsAreEqual from 'simple-auth/utils/objects-are-equal';
+import objectsAreEqual from 'ember-simple-auth/utils/objects-are-equal';
 
 describe('Utils.objectsAreEqual', function() {
   it('is true for equal objects', function() {

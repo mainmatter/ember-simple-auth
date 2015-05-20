@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import loadConfig from 'simple-auth/utils/load-config';
+import loadConfig from './utils/load-config';
 
 var defaults = {
   base: {

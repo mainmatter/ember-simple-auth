@@ -1,6 +1,6 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
-import Test from 'simple-auth-testing/authenticators/test';
+import Test from 'ember-simple-auth/authenticators/test';
 
 describe('Authenticators.Test', function() {
   beforeEach(function() {

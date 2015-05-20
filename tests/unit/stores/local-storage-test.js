@@ -1,6 +1,6 @@
 import { it } from 'ember-mocha';
-import LocalStorage from 'simple-auth/stores/local-storage';
-import Configuration from 'simple-auth/configuration';
+import LocalStorage from 'ember-simple-auth/stores/local-storage';
+import Configuration from 'ember-simple-auth/configuration';
 import itBehavesLikeAStore from './shared/store-behavior';
 
 describe('Stores.LocalStorage', function() {

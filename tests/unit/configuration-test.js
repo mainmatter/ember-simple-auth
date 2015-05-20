@@ -1,6 +1,6 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
-import Configuration from 'simple-auth/configuration';
+import Configuration from 'ember-simple-auth/configuration';
 
 describe('Configuration', function() {
   beforeEach(function() {
