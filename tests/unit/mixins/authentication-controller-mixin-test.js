@@ -1,8 +1,8 @@
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import AuthenticationControllerMixin from 'simple-auth/mixins/authentication-controller-mixin';
-import Session from 'simple-auth/session';
-import EphemeralStore from 'simple-auth/stores/ephemeral';
+import AuthenticationControllerMixin from 'ember-simple-auth/mixins/authentication-controller-mixin';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('AuthenticationControllerMixin', function() {
   describe('the "authenticate" action', function() {

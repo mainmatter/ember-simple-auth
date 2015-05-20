@@ -1,8 +1,8 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
-import OAuth2 from 'simple-auth-oauth2/authorizers/oauth2';
-import Session from 'simple-auth/session';
-import EphemeralStore from 'simple-auth/stores/ephemeral';
+import OAuth2 from 'ember-simple-auth/authorizers/oauth2';
+import Session from 'ember-simple-auth/session';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('OAuth2', function() {
   beforeEach(function() {

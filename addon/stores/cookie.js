@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import Base from 'simple-auth/stores/base';
-import objectsAreEqual from 'simple-auth/utils/objects-are-equal';
+import Base from './base';
+import objectsAreEqual from '../utils/objects-are-equal';
 import Configuration from './../configuration';
 
 /**

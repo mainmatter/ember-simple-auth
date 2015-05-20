@@ -1,11 +1,11 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import setup from 'simple-auth/setup';
-import Configuration from 'simple-auth/configuration';
-import Session from 'simple-auth/session';
-import LocalStorageStore from 'simple-auth/stores/local-storage';
-import EphemeralStore from 'simple-auth/stores/ephemeral';
+import setup from 'ember-simple-auth/setup';
+import Configuration from 'ember-simple-auth/configuration';
+import Session from 'ember-simple-auth/session';
+import LocalStorageStore from 'ember-simple-auth/stores/local-storage';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('setup', function() {
   beforeEach(function() {

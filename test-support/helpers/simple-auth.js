@@ -1,4 +1,4 @@
-import Configuration from 'simple-auth/configuration';
+import Configuration from 'configuration';
 
 export default function() {
   Ember.Test.registerAsyncHelper('authenticateSession', function(app) {

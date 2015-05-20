@@ -1,7 +1,7 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import Torii from 'simple-auth-torii/authenticators/torii';
+import Torii from 'ember-simple-auth/authenticators/torii';
 
 describe('Torii', function() {
   beforeEach(function() {

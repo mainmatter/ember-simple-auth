@@ -51,7 +51,7 @@ application route:
 
 ```js
 // app/routes/application.js
-import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
 export default Ember.Route.extend(ApplicationRouteMixin);
 ```
@@ -86,7 +86,7 @@ the respective route (see the
 
 ```js
 // app/routes/protected.js
-import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin);
 ```
@@ -130,7 +130,7 @@ e.g.:
 
 ```js
 // app/authenticators/custom.js
-import Base from 'simple-auth/authenticators/base';
+import Base from 'ember-simple-auth/authenticators/base';
 
 export default Base.extend({
   restore: function(data) {
@@ -206,7 +206,7 @@ do is to extend the base authorizer and implement one method (see the
 
 ```js
 // app/authorizers/custom.js
-import Base from 'simple-auth/authorizers/base';
+import Base from 'ember-simple-auth/authorizers/base';
 
 export default Base.extend({
   authorize: function(jqXHR, requestOptions) {

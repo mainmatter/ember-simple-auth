@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Base from 'simple-auth/authenticators/base';
+import Base from './base';
 
 /**
   Authenticator that wraps the

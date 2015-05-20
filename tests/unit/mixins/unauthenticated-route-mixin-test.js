@@ -1,10 +1,10 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import UnauthenticatedRouteMixin from 'simple-auth/mixins/unauthenticated-route-mixin';
-import Session from 'simple-auth/session';
-import Configuration from 'simple-auth/configuration';
-import EphemeralStore from 'simple-auth/stores/ephemeral';
+import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
+import Session from 'ember-simple-auth/session';
+import Configuration from 'ember-simple-auth/configuration';
+import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('UnauthenticatedRouteMixin', function() {
   describe('#beforeModel', function() {

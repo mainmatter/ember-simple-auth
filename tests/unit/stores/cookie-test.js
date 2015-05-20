@@ -1,8 +1,8 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import Cookie from 'simple-auth-cookie-store/stores/cookie';
-import Configuration from 'simple-auth-cookie-store/configuration';
+import Cookie from 'ember-simple-auth/stores/cookie';
+import Configuration from 'ember-simple-auth/configuration';
 import itBehavesLikeAStore from 'tests/simple-auth/stores/shared/store-behavior';
 
 describe('Stores.Cookie', function() {
