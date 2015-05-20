@@ -29,7 +29,8 @@ describe('Devise', function() {
     });
 
     afterEach(function() {
-      Configuration.load({}, {});
+      //TODO: make resetting the config easier
+      Configuration.load({ lookup: function() { return Ember.Object.create() } }, {});
     });
   });
 
@@ -83,7 +84,8 @@ describe('Devise', function() {
         });
 
         afterEach(function() {
-          Configuration.load({}, {});
+          //TODO: make resetting the config easier
+          Configuration.load({ lookup: function() { return Ember.Object.create() } }, {});
         });
       });
 
