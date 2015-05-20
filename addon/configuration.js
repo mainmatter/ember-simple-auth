@@ -330,6 +330,6 @@ export default {
   load: function(container, config) {
     Ember.A(['base', 'cookie', 'devise', 'oauth2']).forEach(function(section) {
       this[section].load(container, config[section]);
-    });
+    }.bind(this));
   }
 };
