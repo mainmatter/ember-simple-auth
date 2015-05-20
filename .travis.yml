@@ -1,7 +1,7 @@
+---
 language: node_js
-
 node_js:
-  - '0.10'
+  - "0.12"
 
 sudo: false
 
@@ -10,27 +10,28 @@ cache:
     - node_modules
 
 env:
-  global:
-    - REPORTER=Dot
-  matrix:
-    - BUNDLE="ember=1.2.2&jQuery=1.10.2&handlebars=1.3.0"
-    - BUNDLE="ember=1.2.2&jQuery=2.0.3&handlebars=1.3.0"
-    - BUNDLE="ember=1.3.2&jQuery=1.10.2&handlebars=1.3.0"
-    - BUNDLE="ember=1.3.2&jQuery=2.0.3&handlebars=1.3.0"
-    - BUNDLE="ember=1.4.0&jQuery=1.11.2&handlebars=1.3.0"
-    - BUNDLE="ember=1.4.0&jQuery=2.1.3&handlebars=1.3.0"
-    - BUNDLE="ember=1.5.1&jQuery=1.11.2&handlebars=1.3.0"
-    - BUNDLE="ember=1.5.1&jQuery=2.1.3&handlebars=1.3.0"
-    - BUNDLE="ember=1.6.1&jQuery=1.11.2&handlebars=1.3.0"
-    - BUNDLE="ember=1.6.1&jQuery=2.1.3&handlebars=1.3.0"
-    - BUNDLE="ember=1.7.1&jQuery=1.11.2&handlebars=1.3.0"
-    - BUNDLE="ember=1.7.1&jQuery=2.1.3&handlebars=1.3.0"
-    - BUNDLE="ember=1.8.1&jQuery=1.11.2&handlebars=1.3.0"
-    - BUNDLE="ember=1.8.1&jQuery=2.1.3&handlebars=1.3.0"
-    - BUNDLE="ember=1.9.1&jQuery=1.11.2&handlebars=2.0.0"
-    - BUNDLE="ember=1.9.1&jQuery=2.1.3&handlebars=2.0.0"
-    - BUNDLE="ember=1.10.0&jQuery=1.11.2&handlebars=2.0.0"
-    - BUNDLE="ember=1.10.0&jQuery=2.1.3&handlebars=2.0.0"
+  - EMBER_TRY_SCENARIO=default
+  - EMBER_TRY_SCENARIO=ember-release
+  - EMBER_TRY_SCENARIO=ember-beta
+  - EMBER_TRY_SCENARIO=ember-canary
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: EMBER_TRY_SCENARIO=ember-canary
+
+before_install:
+  - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
+  - "npm config set spin false"
+  - "npm install -g npm@^2"
+
+install:
+  - npm install -g bower
+  - npm install
+  - bower install
+
+script:
+  - ember try $EMBER_TRY_SCENARIO test
 
 notifications:
   email:
