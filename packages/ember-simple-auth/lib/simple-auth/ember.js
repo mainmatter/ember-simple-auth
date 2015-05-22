@@ -1,9 +1,9 @@
 import initializer from './initializer';
-import instainceInitializer from './instaince-initializer';
+import instanceInitializer from './instance-initializer';
 
 Ember.onLoad('Ember.Application', function(Application) {
   Application.initializer(initializer);
   if(Application.instainceInitializer) {
-    Application.instainceInitializer(instainceInitializer);
+    Application.instanceInitializer(instanceInitializer);
   }
 });
