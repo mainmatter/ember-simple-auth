@@ -76,8 +76,10 @@ var didSetupAjaxHooks = false;
   @method setup
   @private
 **/
-export default function(container, application) {
-  application.deferReadiness();
+export default function(container, application, isInRoute) {
+  if(!isInRoute) {
+    application.deferReadiness();
+  }
   registerFactories(application);
 
   var store   = container.lookup(Configuration.store);
@@ -108,7 +110,10 @@ export default function(container, application) {
   }
 
   var advanceReadiness = function() {
-    application.advanceReadiness();
+    if(!isInRoute) {
+      application.advanceReadiness();
+    }
+    return Ember.RSVP.resolve();
   };
-  session.restore().then(advanceReadiness, advanceReadiness);
+  return session.restore().then(advanceReadiness, advanceReadiness);
 }

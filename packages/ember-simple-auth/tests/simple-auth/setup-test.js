@@ -28,7 +28,7 @@ describe('setup', function() {
 
   it("defers the application's readiness", function() {
     sinon.spy(this.application, 'deferReadiness');
-    setup(this.container, this.application, {});
+    setup(this.container, this.application);
 
     expect(this.application.deferReadiness).to.have.been.calledOnce;
   });
@@ -104,7 +104,7 @@ describe('setup', function() {
 
   it("advances the application's readiness", function(done) {
     sinon.spy(this.application, 'advanceReadiness');
-    setup(this.container, this.application, {});
+    setup(this.container, this.application);
 
     Ember.run.next(this, function() {
       expect(this.application.advanceReadiness).to.have.been.calledOnce;
