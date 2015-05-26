@@ -162,12 +162,12 @@ describe('Session', function() {
 
         it('persists its content in the store', function(done) {
           var _this = this;
-
+          this.store.persist({ secure: { authenticator: 'authenticator' }, someOther: 'property' });
           this.session.restore().then(function() {
             var properties = _this.store.restore();
             delete properties.authenticator;
 
-            expect(properties).to.eql({ secure: { some: 'property', authenticator: 'authenticator' } });
+            expect(properties).to.eql({ secure: { some: 'property', authenticator: 'authenticator' }, someOther: 'property' });
             done();
           });
         });
