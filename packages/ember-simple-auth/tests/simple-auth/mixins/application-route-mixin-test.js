@@ -198,10 +198,4 @@ describe('ApplicationRouteMixin', function() {
       });
     });
   });
-
-  describe('resetApplicationRouteMixinInternalState()', function() {
-    it('can call reset', function() {
-      expect(resetApplicationRouteMixinInternalState()).to.eql('reset');
-    });
-  });
 });
