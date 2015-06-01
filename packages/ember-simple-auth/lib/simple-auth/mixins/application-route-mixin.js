@@ -2,6 +2,11 @@ import Configuration from './../configuration';
 
 var routeEntryComplete = false;
 
+var resetApplicationRouteMixinInternalState = function() {
+  routeEntryComplete = false;
+  return 'reset';
+};
+
 /**
   The mixin for the application route; defines actions that are triggered
   when authentication is required, when the session has successfully been
@@ -37,7 +42,7 @@ var routeEntryComplete = false;
   @extends Ember.Mixin
   @static
 */
-export default Ember.Mixin.create({
+var ApplicationRouteMixin = Ember.Mixin.create({
   /**
     @method activate
     @private
@@ -238,3 +243,6 @@ export default Ember.Mixin.create({
     }
   }
 });
+
+export { ApplicationRouteMixin, resetApplicationRouteMixinInternalState };
+export default ApplicationRouteMixin;

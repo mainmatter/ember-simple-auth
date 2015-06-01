@@ -1,4 +1,5 @@
-import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
+import { ApplicationRouteMixin, resetApplicationRouteMixinInternalState }
+  from 'simple-auth/mixins/application-route-mixin';
 import Session from 'simple-auth/session';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
 import Configuration from 'simple-auth/configuration';
@@ -195,6 +196,12 @@ describe('ApplicationRouteMixin', function() {
 
         expect(this.session.invalidate).to.not.have.been.calledOnce;
       });
+    });
+  });
+
+  describe('resetApplicationRouteMixinInternalState()', function() {
+    it('can call reset', function() {
+      expect(resetApplicationRouteMixinInternalState()).to.eql('reset');
     });
   });
 });
