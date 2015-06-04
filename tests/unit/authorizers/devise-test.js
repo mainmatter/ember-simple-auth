@@ -1,4 +1,5 @@
 /* jshint expr:true */
+import Ember from 'ember';
 import { it } from 'ember-mocha';
 import Devise from 'ember-simple-auth/authorizers/devise';
 import Session from 'ember-simple-auth/session';
@@ -30,7 +31,7 @@ describe('Devise', function() {
 
     afterEach(function() {
       //TODO: make resetting the config easier
-      Configuration.load({ lookup: function() { return Ember.Object.create() } }, {});
+      Configuration.load({ lookup: function() { return Ember.Object.create(); } }, {});
     });
   });
 
@@ -85,7 +86,7 @@ describe('Devise', function() {
 
         afterEach(function() {
           //TODO: make resetting the config easier
-          Configuration.load({ lookup: function() { return Ember.Object.create() } }, {});
+          Configuration.load({ lookup: function() { return Ember.Object.create(); } }, {});
         });
       });
 

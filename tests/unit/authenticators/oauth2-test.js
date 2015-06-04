@@ -34,7 +34,7 @@ describe('OAuth2', function() {
 
     afterEach(function() {
       //TODO: make resetting the config easier
-      Configuration.load({ lookup: function() { return Ember.Object.create() } }, {});
+      Configuration.load({ lookup: function() { return Ember.Object.create(); } }, {});
     });
   });
 
