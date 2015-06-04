@@ -2,7 +2,6 @@ import Configuration from './configuration';
 import Session from './session';
 import LocalStorage from './stores/local-storage';
 import Ephemeral from './stores/ephemeral';
-import { resetApplicationRouteMixinInternalState } from './mixins/application-route-mixin';
 
 var wildcardToken = '_wildcard_token_';
 
@@ -107,9 +106,6 @@ export default function(container, application) {
   } else {
     Ember.Logger.info('No authorizer was configured for Ember Simple Auth - specify one if backend requests need to be authorized.');
   }
-
-  /* Reset internal state used by ApplicationRouteMixin */
-  resetApplicationRouteMixinInternalState();
 
   var advanceReadiness = function() {
     application.advanceReadiness();

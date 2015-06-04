@@ -1,5 +1,4 @@
-import { ApplicationRouteMixin, resetApplicationRouteMixinInternalState }
-  from 'simple-auth/mixins/application-route-mixin';
+import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
 import Session from 'simple-auth/session';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
 import Configuration from 'simple-auth/configuration';
