@@ -40,7 +40,7 @@ export default Ember.Mixin.create({
       Ember.deprecate("The AuthenticationControllerMixin is deprecated. Use the session's authenticate method directly instead.");
       var authenticator = this.get('authenticator');
       Ember.assert('AuthenticationControllerMixin/LoginControllerMixin require the authenticator property to be set on the controller!', !Ember.isEmpty(authenticator));
-      return this.get(Configuration.sessionPropertyName).authenticate(authenticator, options);
+      return this.get(Configuration.base.sessionPropertyName).authenticate(authenticator, options);
     }
   }
 });

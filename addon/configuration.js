@@ -59,7 +59,7 @@ export default {
       @type String
       @default 'login'
     */
-    authenticationRoute: defaults.authenticationRoute,
+    authenticationRoute: defaults.base.authenticationRoute,
 
     /**
       The route to transition to after successful authentication.
@@ -70,7 +70,7 @@ export default {
       @type String
       @default 'index'
     */
-    routeAfterAuthentication: defaults.routeAfterAuthentication,
+    routeAfterAuthentication: defaults.base.routeAfterAuthentication,
 
     /**
       The route to transition to if a route that implements
@@ -83,7 +83,7 @@ export default {
       @type String
       @default 'index'
     */
-    routeIfAlreadyAuthenticated: defaults.routeIfAlreadyAuthenticated,
+    routeIfAlreadyAuthenticated: defaults.base.routeIfAlreadyAuthenticated,
 
     /**
       The name of the property that the session is injected with into routes and
@@ -95,7 +95,7 @@ export default {
       @type String
       @default 'session'
     */
-    sessionPropertyName: defaults.sessionPropertyName,
+    sessionPropertyName: defaults.base.sessionPropertyName,
 
     /**
       The authorizer factory to use as it is registered with Ember's container,
@@ -110,7 +110,7 @@ export default {
       @type String
       @default null
     */
-    authorizer: defaults.authorizer,
+    authorizer: defaults.base.authorizer,
 
     /**
       The session factory to use as it is registered with Ember's container,
@@ -123,7 +123,7 @@ export default {
       @type String
       @default 'simple-auth-session:main'
     */
-    session: defaults.session,
+    session: defaults.base.session,
 
     /**
       The store factory to use as it is registered with Ember's container, see
@@ -135,7 +135,7 @@ export default {
       @type String
       @default simple-auth-session-store:local-storage
     */
-    store: defaults.store,
+    store: defaults.base.store,
 
     /**
       The key the store stores the data in.
@@ -144,7 +144,7 @@ export default {
       @type String
       @default 'ember_simple_auth:session'
     */
-    localStorageKey: defaults.localStorageKey,
+    localStorageKey: defaults.base.localStorageKey,
 
     /**
       Ember Simple Auth will never authorize requests going to a different origin
@@ -163,13 +163,13 @@ export default {
       @type Array
       @default []
     */
-    crossOriginWhitelist: defaults.crossOriginWhitelist,
+    crossOriginWhitelist: defaults.base.crossOriginWhitelist,
 
     /**
       @property applicationRootUrl
       @private
     */
-    applicationRootUrl: defaults.applicationRootUrl,
+    applicationRootUrl: defaults.base.applicationRootUrl,
 
     /**
       @method load
@@ -194,7 +194,7 @@ export default {
       @type String
       @default null
     */
-    domain: defaults.cookieDomain,
+    domain: defaults.cookie.domain,
 
     /**
       The name of the cookie the cookie store stores its data in.
@@ -205,7 +205,7 @@ export default {
       @type String
       @default 'ember_simple_auth:'
     */
-    name: defaults.cookieName,
+    name: defaults.cookie.name,
 
     /**
       The expiration time in seconds to use for the cookie store's cookie. A
@@ -218,7 +218,7 @@ export default {
       @type Integer
       @default null
     */
-    expirationTime: defaults.cookieExpirationTime,
+    expirationTime: defaults.cookie.expirationTime,
 
     /**
       @method load
@@ -238,7 +238,7 @@ export default {
       @type String
       @default '/users/sign_in'
     */
-    serverTokenEndpoint: defaults.serverTokenEndpoint,
+    serverTokenEndpoint: defaults.devise.serverTokenEndpoint,
 
     /**
       The devise resource name.
@@ -249,7 +249,7 @@ export default {
       @type String
       @default 'user'
     */
-    resourceName: defaults.resourceName,
+    resourceName: defaults.devise.resourceName,
 
     /**
       The token attribute name.
@@ -260,7 +260,7 @@ export default {
       @type String
       @default 'token'
     */
-    tokenAttributeName: defaults.tokenAttributeName,
+    tokenAttributeName: defaults.devise.tokenAttributeName,
 
     /**
       The identification attribute name. This is the parameter that is sent to
@@ -275,7 +275,7 @@ export default {
       @type String
       @default 'email'
     */
-    identificationAttributeName: defaults.identificationAttributeName,
+    identificationAttributeName: defaults.devise.identificationAttributeName,
 
     /**
       @method load
@@ -295,7 +295,7 @@ export default {
       @type String
       @default '/token'
     */
-    serverTokenEndpoint: defaults.serverTokenEndpoint,
+    serverTokenEndpoint: defaults.oauth2.serverTokenEndpoint,
 
     /**
       The endpoint on the server the authenticator uses to revoke tokens. Only
@@ -307,7 +307,7 @@ export default {
       @type String
       @default null
     */
-    serverTokenRevocationEndpoint: defaults.serverTokenRevocationEndpoint,
+    serverTokenRevocationEndpoint: defaults.oauth2.serverTokenRevocationEndpoint,
 
     /**
       Sets whether the authenticator automatically refreshes access tokens.
@@ -318,7 +318,7 @@ export default {
       @type Boolean
       @default true
     */
-    refreshAccessTokens: defaults.refreshAccessTokens,
+    refreshAccessTokens: defaults.oauth2.refreshAccessTokens,
 
     /**
       @method load

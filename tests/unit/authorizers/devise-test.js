@@ -10,7 +10,7 @@ describe('Devise', function() {
   beforeEach(function() {
     this.authorizer = Devise.create();
     this.request    = { setRequestHeader: function() {} };
-    this.session     = Session.create();
+    this.session    = Session.create();
     this.session.setProperties({ store: EphemeralStore.create() });
     this.authorizer.set('session', this.session);
     sinon.spy(this.request, 'setRequestHeader');
@@ -18,13 +18,13 @@ describe('Devise', function() {
 
   describe('initilization', function() {
     it('assigns tokenAttributeName from the configuration object', function() {
-      Configuration.tokenAttributeName = 'tokenAttributeName';
+      Configuration.devise.tokenAttributeName = 'tokenAttributeName';
 
       expect(Devise.create().tokenAttributeName).to.eq('tokenAttributeName');
     });
 
     it('assigns identificationAttributeName from the configuration object', function() {
-      Configuration.identificationAttributeName = 'identificationAttributeName';
+      Configuration.devise.identificationAttributeName = 'identificationAttributeName';
 
       expect(Devise.create().identificationAttributeName).to.eq('identificationAttributeName');
     });
@@ -64,8 +64,8 @@ describe('Devise', function() {
 
       context('when custom identification and token attribute names are configured', function() {
         beforeEach(function() {
-          Configuration.tokenAttributeName          = 'employee_token';
-          Configuration.identificationAttributeName = 'employee_email';
+          Configuration.devise.tokenAttributeName          = 'employee_token';
+          Configuration.devise.identificationAttributeName = 'employee_email';
 
           this.authorizer = Devise.create();
         });

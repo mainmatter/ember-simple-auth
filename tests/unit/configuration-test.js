@@ -12,116 +12,116 @@ describe('Configuration', function() {
 
   describe('authenticationRoute', function() {
     it('defaults to "login"', function() {
-      expect(Configuration.authenticationRoute).to.eql('login');
+      expect(Configuration.base.authenticationRoute).to.eql('login');
     });
   });
 
   describe('routeAfterAuthentication', function() {
     it('defaults to "index"', function() {
-      expect(Configuration.routeAfterAuthentication).to.eql('index');
+      expect(Configuration.base.routeAfterAuthentication).to.eql('index');
     });
   });
 
   describe('routeIfAlreadyAuthenticated', function() {
     it('defaults to "index"', function() {
-      expect(Configuration.routeIfAlreadyAuthenticated).to.eql('index');
+      expect(Configuration.base.routeIfAlreadyAuthenticated).to.eql('index');
     });
   });
 
   describe('sessionPropertyName', function() {
     it('defaults to "session"', function() {
-      expect(Configuration.sessionPropertyName).to.eql('session');
+      expect(Configuration.base.sessionPropertyName).to.eql('session');
     });
   });
 
   describe('authorizer', function() {
     it('defaults to null', function() {
-      expect(Configuration.authorizer).to.be.null;
+      expect(Configuration.base.authorizer).to.be.null;
     });
   });
 
   describe('session', function() {
     it('defaults to "simple-auth-session:main"', function() {
-      expect(Configuration.session).to.eq('simple-auth-session:main');
+      expect(Configuration.base.session).to.eq('simple-auth-session:main');
     });
   });
 
   describe('store', function() {
     it('defaults to "simple-auth-session-store:local-storage"', function() {
-      expect(Configuration.store).to.eq('simple-auth-session-store:local-storage');
+      expect(Configuration.base.store).to.eq('simple-auth-session-store:local-storage');
     });
   });
 
   describe('localStorageKey', function() {
     it('defaults to "ember_simple_auth:session"', function() {
-      expect(Configuration.localStorageKey).to.eql('ember_simple_auth:session');
+      expect(Configuration.base.localStorageKey).to.eql('ember_simple_auth:session');
     });
   });
 
   describe('crossOriginWhitelist', function() {
     it('defaults to []', function() {
-      expect(Configuration.crossOriginWhitelist).to.be.a('array');
-      expect(Configuration.crossOriginWhitelist).to.be.empty;
+      expect(Configuration.base.crossOriginWhitelist).to.be.a('array');
+      expect(Configuration.base.crossOriginWhitelist).to.be.empty;
     });
   });
 
-  describe('cookieDomain', function() {
+  describe('cookie.domain', function() {
     it('defaults to null', function() {
-      expect(Configuration.cookieDomain).to.be.null;
+      expect(Configuration.cookie.domain).to.be.null;
     });
   });
 
-  describe('cookieName', function() {
+  describe('cookie.name', function() {
     it('defaults to "ember_simple_auth:session"', function() {
-      expect(Configuration.cookieName).to.eql('ember_simple_auth:session');
+      expect(Configuration.cookie.name).to.eql('ember_simple_auth:session');
     });
   });
 
-  describe('cookieExpirationTime', function() {
+  describe('cookie.expirationTime', function() {
     it('defaults to null', function() {
-      expect(Configuration.cookieExpirationTime).to.be.null;
+      expect(Configuration.cookie.expirationTime).to.be.null;
     });
   });
 
   describe('serverTokenEndpoint', function() {
     it('defaults to "/users/sign_in"', function() {
-      expect(Configuration.serverTokenEndpoint).to.eql('/users/sign_in');
+      expect(Configuration.devise.serverTokenEndpoint).to.eql('/users/sign_in');
     });
   });
 
   describe('resourceName', function() {
     it('defaults to "user"', function() {
-      expect(Configuration.resourceName).to.eq('user');
+      expect(Configuration.devise.resourceName).to.eq('user');
     });
   });
 
   describe('tokenAttributeName', function() {
     it('defaults to "token"', function() {
-      expect(Configuration.tokenAttributeName).to.eql('token');
+      expect(Configuration.devise.tokenAttributeName).to.eql('token');
     });
   });
 
   describe('identificationAttributeName', function() {
     it('defaults to "email"', function() {
-      expect(Configuration.identificationAttributeName).to.eq('email');
+      expect(Configuration.devise.identificationAttributeName).to.eq('email');
     });
   });
 
   describe('serverTokenEndpoint', function() {
     it('defaults to "/token"', function() {
-      expect(Configuration.serverTokenEndpoint).to.eql('/token');
+      expect(Configuration.oauth2.serverTokenEndpoint).to.eql('/token');
     });
   });
 
   describe('serverTokenRevocationEndpoint', function() {
     it('defaults to null', function() {
-      expect(Configuration.serverTokenRevocationEndpoint).to.be.null;
+      expect(Configuration.oauth2.serverTokenRevocationEndpoint).to.be.null;
     });
   });
 
   describe('refreshAccessTokens', function() {
     it('defaults to true', function() {
-      expect(Configuration.refreshAccessTokens).to.be.true;
+      expect(Configuration.oauth2.refreshAccessTokens).to.be.true;
     });
   });
 
@@ -136,121 +136,121 @@ describe('Configuration', function() {
     it("sets applicationRootUrl to the application's root URL", function() {
       Configuration.load(this.container, {});
 
-      expect(Configuration.applicationRootUrl).to.eql('rootURL');
+      expect(Configuration.base.applicationRootUrl).to.eql('rootURL');
     });
 
     it('sets authenticationRoute correctly', function() {
-      Configuration.load(this.container, { authenticationRoute: 'authenticationRoute' });
+      Configuration.load(this.container, { base: { authenticationRoute: 'authenticationRoute' } });
 
-      expect(Configuration.authenticationRoute).to.eql('authenticationRoute');
+      expect(Configuration.base.authenticationRoute).to.eql('authenticationRoute');
     });
 
     it('sets routeAfterAuthentication correctly', function() {
-      Configuration.load(this.container, { routeAfterAuthentication: 'routeAfterAuthentication' });
+      Configuration.load(this.container, { base: { routeAfterAuthentication: 'routeAfterAuthentication' } });
 
-      expect(Configuration.routeAfterAuthentication).to.eql('routeAfterAuthentication');
+      expect(Configuration.base.routeAfterAuthentication).to.eql('routeAfterAuthentication');
     });
 
     it('sets routeIfAlreadyAuthenticated correctly', function() {
-      Configuration.load(this.container, { routeIfAlreadyAuthenticated: 'routeIfAlreadyAuthenticated' });
+      Configuration.load(this.container, { base: { routeIfAlreadyAuthenticated: 'routeIfAlreadyAuthenticated' } });
 
-      expect(Configuration.routeIfAlreadyAuthenticated).to.eql('routeIfAlreadyAuthenticated');
+      expect(Configuration.base.routeIfAlreadyAuthenticated).to.eql('routeIfAlreadyAuthenticated');
     });
 
     it('sets sessionPropertyName correctly', function() {
-      Configuration.load(this.container, { sessionPropertyName: 'sessionPropertyName' });
+      Configuration.load(this.container, { base: { sessionPropertyName: 'sessionPropertyName' } });
 
-      expect(Configuration.sessionPropertyName).to.eql('sessionPropertyName');
+      expect(Configuration.base.sessionPropertyName).to.eql('sessionPropertyName');
     });
 
     it('sets authorizer correctly', function() {
-      Configuration.load(this.container, { authorizer: 'authorizer' });
+      Configuration.load(this.container, { base: { authorizer: 'authorizer' } });
 
-      expect(Configuration.authorizer).to.eql('authorizer');
+      expect(Configuration.base.authorizer).to.eql('authorizer');
     });
 
     it('sets session correctly', function() {
-      Configuration.load(this.container, { session: 'session' });
+      Configuration.load(this.container, { base: { session: 'session' } });
 
-      expect(Configuration.session).to.eql('session');
+      expect(Configuration.base.session).to.eql('session');
     });
 
     it('sets store correctly', function() {
-      Configuration.load(this.container, { store: 'store' });
+      Configuration.load(this.container, { base: { store: 'store' } });
 
-      expect(Configuration.store).to.eql('store');
+      expect(Configuration.base.store).to.eql('store');
     });
 
     it('sets localStorageKey correctly', function() {
-      Configuration.load(this.container, { localStorageKey: 'localStorageKey' });
+      Configuration.load(this.container, { base: { localStorageKey: 'localStorageKey' } });
 
-      expect(Configuration.localStorageKey).to.eql('localStorageKey');
+      expect(Configuration.base.localStorageKey).to.eql('localStorageKey');
     });
 
     it('sets crossOriginWhitelist correctly', function() {
-      Configuration.load(this.container, { crossOriginWhitelist: ['https://some.origin:1234'] });
+      Configuration.load(this.container, { base: { crossOriginWhitelist: ['https://some.origin:1234'] } });
 
-      expect(Configuration.crossOriginWhitelist).to.eql(['https://some.origin:1234']);
+      expect(Configuration.base.crossOriginWhitelist).to.eql(['https://some.origin:1234']);
     });
 
     it('sets cookieDomain correctly', function() {
-      Configuration.load(this.container, { cookieDomain: '.example.com' });
+      Configuration.load(this.container, { cookie: { domain: '.example.com' } });
 
-      expect(Configuration.cookieDomain).to.eql('.example.com');
+      expect(Configuration.cookie.domain).to.eql('.example.com');
     });
 
     it('sets cookieName correctly', function() {
-      Configuration.load(this.container, { cookieName: 'cookieName' });
+      Configuration.load(this.container, { cookie: { name: 'cookieName' } });
 
-      expect(Configuration.cookieName).to.eql('cookieName');
+      expect(Configuration.cookie.name).to.eql('cookieName');
     });
 
     it('sets cookieExpirationTime correctly', function() {
-      Configuration.load(this.container, { cookieExpirationTime: 1 });
+      Configuration.load(this.container, { cookie: { expirationTime: 1 } });
 
-      expect(Configuration.cookieExpirationTime).to.eql(1);
+      expect(Configuration.cookie.expirationTime).to.eql(1);
     });
 
     it('sets serverTokenEndpoint correctly', function() {
-      Configuration.load(this.container, { serverTokenEndpoint: 'serverTokenEndpoint' });
+      Configuration.load(this.container, { devise: { serverTokenEndpoint: 'serverTokenEndpoint' } });
 
-      expect(Configuration.serverTokenEndpoint).to.eql('serverTokenEndpoint');
+      expect(Configuration.devise.serverTokenEndpoint).to.eql('serverTokenEndpoint');
     });
 
     it('sets resourceName correctly', function() {
-      Configuration.load(this.container, { resourceName: 'resourceName' });
+      Configuration.load(this.container, { devise: { resourceName: 'resourceName' } });
 
-      expect(Configuration.resourceName).to.eql('resourceName');
+      expect(Configuration.devise.resourceName).to.eql('resourceName');
     });
 
     it('sets identificationAttributeName correctly', function() {
-      Configuration.load(this.container, { identificationAttributeName: 'identificationAttributeName' });
+      Configuration.load(this.container, { devise: { identificationAttributeName: 'identificationAttributeName' } });
 
-      expect(Configuration.identificationAttributeName).to.eql('identificationAttributeName');
+      expect(Configuration.devise.identificationAttributeName).to.eql('identificationAttributeName');
     });
 
     it('sets tokenAttributeName correctly', function() {
-      Configuration.load(this.container, { tokenAttributeName: 'tokenAttributeName' });
+      Configuration.load(this.container, { devise: { tokenAttributeName: 'tokenAttributeName' } });
 
-      expect(Configuration.tokenAttributeName).to.eql('tokenAttributeName');
+      expect(Configuration.devise.tokenAttributeName).to.eql('tokenAttributeName');
     });
 
     it('sets serverTokenEndpoint correctly', function() {
-      Configuration.load(this.container, { serverTokenEndpoint: 'serverTokenEndpoint' });
+      Configuration.load(this.container, { oauth2: { serverTokenEndpoint: 'serverTokenEndpoint' } });
 
-      expect(Configuration.serverTokenEndpoint).to.eql('serverTokenEndpoint');
+      expect(Configuration.oauth2.serverTokenEndpoint).to.eql('serverTokenEndpoint');
     });
 
     it('sets serverTokenRevocationEndpoint correctly', function() {
-      Configuration.load(this.container, { serverTokenRevocationEndpoint: 'serverTokenRevocationEndpoint' });
+      Configuration.load(this.container, { oauth2: { serverTokenRevocationEndpoint: 'serverTokenRevocationEndpoint' } });
 
-      expect(Configuration.serverTokenRevocationEndpoint).to.eql('serverTokenRevocationEndpoint');
+      expect(Configuration.oauth2.serverTokenRevocationEndpoint).to.eql('serverTokenRevocationEndpoint');
     });
 
     it('sets refreshAccessTokens correctly', function() {
-      Configuration.load(this.container, { refreshAccessTokens: false });
+      Configuration.load(this.container, { oauth2: { refreshAccessTokens: false } });
 
-      expect(Configuration.refreshAccessTokens).to.be.false;
+      expect(Configuration.oauth2.refreshAccessTokens).to.be.false;
     });
   });
 

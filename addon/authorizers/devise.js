@@ -62,8 +62,8 @@ export default Base.extend({
     @private
   */
   init: function() {
-    this.tokenAttributeName          = Configuration.tokenAttributeName;
-    this.identificationAttributeName = Configuration.identificationAttributeName;
+    this.tokenAttributeName          = Configuration.devise.tokenAttributeName;
+    this.identificationAttributeName = Configuration.devise.identificationAttributeName;
   },
 
   authorize: function(jqXHR) {

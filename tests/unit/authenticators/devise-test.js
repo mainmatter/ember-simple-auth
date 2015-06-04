@@ -14,25 +14,25 @@ describe('Devise', function() {
 
   describe('initilization', function() {
     it('assigns serverTokenEndpoint from the configuration object', function() {
-      Configuration.serverTokenEndpoint = 'serverTokenEndpoint';
+      Configuration.devise.serverTokenEndpoint = 'serverTokenEndpoint';
 
       expect(Devise.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
     });
 
     it('assigns resourceName from the configuration object', function() {
-      Configuration.resourceName = 'resourceName';
+      Configuration.devise.resourceName = 'resourceName';
 
       expect(Devise.create().resourceName).to.eq('resourceName');
     });
 
     it('assigns tokenAttributeName from the configuration object', function() {
-      Configuration.tokenAttributeName = 'tokenAttributeName';
+      Configuration.devise.tokenAttributeName = 'tokenAttributeName';
 
       expect(Devise.create().tokenAttributeName).to.eq('tokenAttributeName');
     });
 
     it('assigns identificationAttributeName from the configuration object', function() {
-      Configuration.identificationAttributeName = 'identificationAttributeName';
+      Configuration.devise.identificationAttributeName = 'identificationAttributeName';
 
       expect(Devise.create().identificationAttributeName).to.eq('identificationAttributeName');
     });
@@ -54,6 +54,7 @@ describe('Devise', function() {
 
     context('when the data contains a token and email', function() {
       it('resolves with the correct data', function(done) {
+        console.log(Configuration);
         this.authenticator.restore({ "token": 'secret token!', "email": "user@email.com" }).then(function(content){
           expect(content).to.eql({ "token": "secret token!", "email": "user@email.com" });
           done();
@@ -63,9 +64,9 @@ describe('Devise', function() {
 
     context('when the data contains a custom token and email attribute', function() {
       beforeEach(function() {
-        Configuration.tokenAttributeName          = 'employee.token';
-        Configuration.identificationAttributeName = 'employee.email';
-        this.authenticator                        = Devise.create();
+        Configuration.devise.tokenAttributeName          = 'employee.token';
+        Configuration.devise.identificationAttributeName = 'employee.email';
+        this.authenticator                               = Devise.create();
       });
 
       it('resolves with the correct data', function(done) {

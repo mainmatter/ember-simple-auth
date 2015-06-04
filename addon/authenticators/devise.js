@@ -74,10 +74,10 @@ export default Base.extend({
     @private
   */
   init: function() {
-    this.serverTokenEndpoint          = Configuration.serverTokenEndpoint;
-    this.resourceName                 = Configuration.resourceName;
-    this.tokenAttributeName           = Configuration.tokenAttributeName;
-    this.identificationAttributeName  = Configuration.identificationAttributeName;
+    this.serverTokenEndpoint          = Configuration.devise.serverTokenEndpoint;
+    this.resourceName                 = Configuration.devise.resourceName;
+    this.tokenAttributeName           = Configuration.devise.tokenAttributeName;
+    this.identificationAttributeName  = Configuration.devise.identificationAttributeName;
   },
 
   /**

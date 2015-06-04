@@ -129,10 +129,10 @@ describe('ApplicationRouteMixin', function() {
       sinon.spy(this.route, 'transitionTo');
     });
 
-    it('transitions to "Configuration.authenticationRoute"', function() {
+    it('transitions to "Configuration.base.authenticationRoute"', function() {
       this.route._actions.sessionRequiresAuthentication.apply(this.route);
 
-      expect(this.route.transitionTo).to.have.been.calledWith(Configuration.authenticationRoute);
+      expect(this.route.transitionTo).to.have.been.calledWith(Configuration.base.authenticationRoute);
     });
   });
 
@@ -147,10 +147,10 @@ describe('ApplicationRouteMixin', function() {
       };
     });
 
-    it('transitions to "Configuration.authenticationRoute"', function() {
+    it('transitions to "Configuration.base.authenticationRoute"', function() {
       this.route._actions.authenticateSession.apply(this.route);
 
-      expect(this.route.transitionTo).to.have.been.calledWith(Configuration.authenticationRoute);
+      expect(this.route.transitionTo).to.have.been.calledWith(Configuration.base.authenticationRoute);
     });
   });
 
@@ -181,10 +181,10 @@ describe('ApplicationRouteMixin', function() {
     });
 
     context('when no attempted transition is stored in the session', function() {
-      it('transitions to "Configuration.routeAfterAuthentication"', function() {
+      it('transitions to "Configuration.base.routeAfterAuthentication"', function() {
         this.route._actions.sessionAuthenticationSucceeded.apply(this.route);
 
-        expect(this.route.transitionTo).to.have.been.calledWith(Configuration.routeAfterAuthentication);
+        expect(this.route.transitionTo).to.have.been.calledWith(Configuration.base.routeAfterAuthentication);
       });
     });
   });

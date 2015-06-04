@@ -56,12 +56,12 @@ describe('setup', function() {
 
   describe('the session instance', function() {
     beforeEach(function() {
-      Configuration.store = 'simple-auth-session-store:local-storage';
+      Configuration.base.store = 'simple-auth-session-store:local-storage';
     });
 
     context('when a custom session class is configured', function() {
       beforeEach(function() {
-        Configuration.session = 'session:custom';
+        Configuration.base.session = 'session:custom';
         this.otherSession     = Session.extend().create({ store: this.store, container: this.container });
         this.containerStub.withArgs('session:custom').returns(this.otherSession);
       });
@@ -81,7 +81,7 @@ describe('setup', function() {
     });
 
     it('uses a custom store if specified', function() {
-      Configuration.store = 'simple-auth-session-store:ephemeral';
+      Configuration.base.store = 'simple-auth-session-store:ephemeral';
       var store           = EphemeralStore.create();
       this.containerStub.withArgs('simple-auth-session-store:ephemeral').returns(store);
       setup(this.container, this.application);
@@ -100,7 +100,7 @@ describe('setup', function() {
       setup(this.container, this.application);
 
       ['component', 'controller', 'route'].forEach(function(component) {
-        expect(_this.application.inject).to.have.been.calledWith(component, Configuration.sessionPropertyName, Configuration.session);
+        expect(_this.application.inject).to.have.been.calledWith(component, Configuration.base.sessionPropertyName, Configuration.base.session);
       });
     });
   });
@@ -118,7 +118,7 @@ describe('setup', function() {
   describe('the AJAX prefilter', function() {
     context('when an authorizer is configured', function() {
       beforeEach(function() {
-        Configuration.authorizer = 'authorizer';
+        Configuration.base.authorizer = 'authorizer';
       });
 
       it('uses the configured authorizer', function() {
@@ -136,7 +136,7 @@ describe('setup', function() {
       });
 
       it('authorizes requests going to a foreign origin if all other origins are whitelisted', function() {
-          Configuration.crossOriginWhitelist = ['*'];
+          Configuration.base.crossOriginWhitelist = ['*'];
           setup(this.container, this.application);
           Ember.$.get('http://other-domain.com/path/query=string');
 
@@ -152,7 +152,7 @@ describe('setup', function() {
       });
 
       it('authorizes requests going to a foreign origin if the specific origin is whitelisted', function() {
-        Configuration.crossOriginWhitelist = ['http://other-domain.com', 'https://another-port.net:4567'];
+        Configuration.base.crossOriginWhitelist = ['http://other-domain.com', 'https://another-port.net:4567'];
         setup(this.container, this.application);
         Ember.$.get('http://other-domain.com/path/query=string');
 
@@ -168,7 +168,7 @@ describe('setup', function() {
       });
 
       it('authorizes requests going to a subdomain of a foreign origin if the origin and any subdomain are whitelisted', function() {
-        Configuration.crossOriginWhitelist = ['http://*.other-domain.com', 'http://*.sub.test-domain.com:1234'];
+        Configuration.base.crossOriginWhitelist = ['http://*.other-domain.com', 'http://*.sub.test-domain.com:1234'];
         setup(this.container, this.application);
         Ember.$.get('http://test.other-domain.com/path/query=string');
 
@@ -215,7 +215,7 @@ describe('setup', function() {
 
   describe('the AJAX error handler', function() {
     beforeEach(function() {
-      Configuration.authorizer = 'authorizer';
+      Configuration.base.authorizer = 'authorizer';
       this.xhr                 = sinon.useFakeXMLHttpRequest();
       this.server              = sinon.fakeServer.create();
       this.server.autoRespond  = true;

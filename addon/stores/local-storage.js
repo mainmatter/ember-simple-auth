@@ -31,7 +31,7 @@ export default Base.extend({
     @private
   */
   init: function() {
-    this.key = Configuration.localStorageKey;
+    this.key = Configuration.base.localStorageKey;
 
     this.bindToStorageEvents();
   },
