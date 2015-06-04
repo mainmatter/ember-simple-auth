@@ -3,7 +3,7 @@ import { it } from 'ember-mocha';
 import Ember from 'ember';
 import Cookie from 'ember-simple-auth/stores/cookie';
 import Configuration from 'ember-simple-auth/configuration';
-import itBehavesLikeAStore from 'tests/simple-auth/stores/shared/store-behavior';
+import itBehavesLikeAStore from './shared/store-behavior';
 
 describe('Stores.Cookie', function() {
   beforeEach(function() {

@@ -54,7 +54,6 @@ describe('Devise', function() {
 
     context('when the data contains a token and email', function() {
       it('resolves with the correct data', function(done) {
-        console.log(Configuration);
         this.authenticator.restore({ "token": 'secret token!', "email": "user@email.com" }).then(function(content){
           expect(content).to.eql({ "token": "secret token!", "email": "user@email.com" });
           done();
