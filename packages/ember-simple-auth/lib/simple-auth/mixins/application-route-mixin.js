@@ -81,7 +81,7 @@ var ApplicationRouteMixin = Ember.Mixin.create({
       [`Configuration.authenticationRoute`](#SimpleAuth-Configuration-authenticationRoute).
       It is triggered automatically by the
       [`AuthenticatedRouteMixin`](#SimpleAuth-AuthenticatedRouteMixin) whenever
-      a route that requries authentication is accessed but the session is not
+      a route that requires authentication is accessed but the session is not
       currently authenticated.
 
       __For an application that works without an authentication route (e.g.
