@@ -17,7 +17,7 @@ describe('Stores.LocalStorage', function() {
     });
 
     it('assigns localStorageKey from the configuration object', function() {
-      Configuration.localStorageKey = 'localStorageKey';
+      Configuration.base.localStorageKey = 'localStorageKey';
 
       expect(LocalStorage.create().key).to.eq('localStorageKey');
     });

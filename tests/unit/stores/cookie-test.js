@@ -18,19 +18,19 @@ describe('Stores.Cookie', function() {
 
   describe('initilization', function() {
     it('assigns cookieDomain from the configuration object', function() {
-      Configuration.cookieDomain = '.example.com';
+      Configuration.cookie.cookieDomain = '.example.com';
 
       expect(Cookie.create().cookieDomain).to.eq('.example.com');
     });
 
     it('assigns cookieName from the configuration object', function() {
-      Configuration.cookieName = 'cookieName';
+      Configuration.cookie.cookieName = 'cookieName';
 
       expect(Cookie.create().cookieName).to.eq('cookieName');
     });
 
     it('assigns cookieExpirationTime from the configuration object', function() {
-      Configuration.cookieExpirationTime = 123;
+      Configuration.cookie.cookieExpirationTime = 123;
 
       expect(Cookie.create().cookieExpirationTime).to.eq(123);
     });

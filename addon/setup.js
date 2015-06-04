@@ -81,20 +81,20 @@ export default function(container, application) {
   application.deferReadiness();
   registerFactories(application);
 
-  var store   = container.lookup(Configuration.store);
-  var session = container.lookup(Configuration.session);
+  var store   = container.lookup(Configuration.base.store);
+  var session = container.lookup(Configuration.base.session);
   session.set('store', store);
   Ember.A(['controller', 'route', 'component']).forEach(function(component) {
-    application.inject(component, Configuration.sessionPropertyName, Configuration.session);
+    application.inject(component, Configuration.base.sessionPropertyName, Configuration.base.session);
   });
 
-  crossOriginWhitelist = Ember.A(Configuration.crossOriginWhitelist).map(function(origin) {
+  crossOriginWhitelist = Ember.A(Configuration.base.crossOriginWhitelist).map(function(origin) {
     return extractLocationOrigin(origin);
   });
 
-  if (!Ember.isEmpty(Configuration.authorizer)) {
-    var authorizer = container.lookup(Configuration.authorizer);
-    Ember.assert('The configured authorizer "' + Configuration.authorizer + '" could not be found in the container!', !Ember.isEmpty(authorizer));
+  if (!Ember.isEmpty(Configuration.base.authorizer)) {
+    var authorizer = container.lookup(Configuration.base.authorizer);
+    Ember.assert('The configured authorizer "' + Configuration.base.authorizer + '" could not be found in the container!', !Ember.isEmpty(authorizer));
     authorizer.set('session', session);
     ajaxPrefilter.authorizer = authorizer;
     ajaxError.session = session;

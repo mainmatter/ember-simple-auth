@@ -15,19 +15,19 @@ describe('OAuth2', function() {
 
   describe('initilization', function() {
     it('assigns serverTokenEndpoint from the configuration object', function() {
-      Configuration.serverTokenEndpoint = 'serverTokenEndpoint';
+      Configuration.oauth2.serverTokenEndpoint = 'serverTokenEndpoint';
 
       expect(OAuth2.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
     });
 
     it('assigns serverTokenRevocationEndpoint from the configuration object', function() {
-      Configuration.serverTokenRevocationEndpoint = 'serverTokenRevocationEndpoint';
+      Configuration.oauth2.serverTokenRevocationEndpoint = 'serverTokenRevocationEndpoint';
 
       expect(OAuth2.create().serverTokenRevocationEndpoint).to.eq('serverTokenRevocationEndpoint');
     });
 
     it('assigns refreshAccessTokens from the configuration object', function() {
-      Configuration.refreshAccessTokens = false;
+      Configuration.oauth2.refreshAccessTokens = false;
 
       expect(OAuth2.create().refreshAccessTokens).to.be.false;
     });

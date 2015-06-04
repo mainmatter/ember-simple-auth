@@ -77,9 +77,9 @@ export default Base.extend({
     @private
   */
   init: function() {
-    this.serverTokenEndpoint           = Configuration.serverTokenEndpoint;
-    this.serverTokenRevocationEndpoint = Configuration.serverTokenRevocationEndpoint;
-    this.refreshAccessTokens           = Configuration.refreshAccessTokens;
+    this.serverTokenEndpoint           = Configuration.oauth2.serverTokenEndpoint;
+    this.serverTokenRevocationEndpoint = Configuration.oauth2.serverTokenRevocationEndpoint;
+    this.refreshAccessTokens           = Configuration.oauth2.refreshAccessTokens;
   },
 
   /**

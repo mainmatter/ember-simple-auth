@@ -64,7 +64,7 @@ export default Ember.Mixin.create({
         'sessionInvalidationFailed',
         'authorizationFailed'
       ]).forEach(function(event) {
-        _this.get(Configuration.sessionPropertyName).on(event, function() {
+        _this.get(Configuration.base.sessionPropertyName).on(event, function() {
           Array.prototype.unshift.call(arguments, event);
           var target = routeEntryComplete ? _this : transition;
           target.send.apply(target, arguments);
@@ -99,7 +99,7 @@ export default Ember.Mixin.create({
       @method actions.sessionRequiresAuthentication
     */
     sessionRequiresAuthentication: function() {
-      this.transitionTo(Configuration.authenticationRoute);
+      this.transitionTo(Configuration.base.authenticationRoute);
     },
 
     /**
@@ -145,12 +145,12 @@ export default Ember.Mixin.create({
       @method actions.sessionAuthenticationSucceeded
     */
     sessionAuthenticationSucceeded: function() {
-      var attemptedTransition = this.get(Configuration.sessionPropertyName).get('attemptedTransition');
+      var attemptedTransition = this.get(Configuration.base.sessionPropertyName).get('attemptedTransition');
       if (attemptedTransition) {
         attemptedTransition.retry();
-        this.get(Configuration.sessionPropertyName).set('attemptedTransition', null);
+        this.get(Configuration.base.sessionPropertyName).set('attemptedTransition', null);
       } else {
-        this.transitionTo(Configuration.routeAfterAuthentication);
+        this.transitionTo(Configuration.base.routeAfterAuthentication);
       }
     },
 
@@ -189,7 +189,7 @@ export default Ember.Mixin.create({
     */
     invalidateSession: function() {
       Ember.deprecate("The invalidateSession action is deprecated. Use the session's invalidate method directly instead.");
-      this.get(Configuration.sessionPropertyName).invalidate();
+      this.get(Configuration.base.sessionPropertyName).invalidate();
     },
 
     /**
@@ -209,7 +209,7 @@ export default Ember.Mixin.create({
     */
     sessionInvalidationSucceeded: function() {
       if (!Ember.testing) {
-        window.location.replace(Configuration.applicationRootUrl);
+        window.location.replace(Configuration.base.applicationRootUrl);
       }
     },
 
@@ -233,8 +233,8 @@ export default Ember.Mixin.create({
       @method actions.authorizationFailed
     */
     authorizationFailed: function() {
-      if (this.get(Configuration.sessionPropertyName).get('isAuthenticated')) {
-        this.get(Configuration.sessionPropertyName).invalidate();
+      if (this.get(Configuration.base.sessionPropertyName).get('isAuthenticated')) {
+        this.get(Configuration.base.sessionPropertyName).invalidate();
       }
     }
   }
