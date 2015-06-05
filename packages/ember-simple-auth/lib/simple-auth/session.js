@@ -142,7 +142,8 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     `options`. __This delegates the actual authentication work to the
     `authenticator`__ and handles the returned promise accordingly (see
     [`Authenticators.Base#authenticate`](#SimpleAuth-Authenticators-Base-authenticate)).
-    All data the authenticator resolves with will be saved in the session's `secure` property.
+    All data the authenticator resolves with will be saved in the session's
+    `secure` property.
 
     __This method returns a promise itself. A resolving promise indicates that
     the session was successfully authenticated__ while a rejecting promise
