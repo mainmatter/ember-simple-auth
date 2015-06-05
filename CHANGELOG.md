@@ -1,3 +1,13 @@
+# 0.8.0-beta.3
+
+* Fixed a bug related to the mechanism for automatic translation of session
+  events to route actions leaking state, see #544.
+* Fixed a bug where non-secure session data would get lost after a reload, see
+  #534.
+* Ember Simple Auth does not explicitly set the container on the session
+  anymore as that's already set by the container itself when creating the
+  object, see #520.
+
 # 0.8.0-beta.2
 
 * Ember Simple Auth now uses the application's `register` and `inject` methods
