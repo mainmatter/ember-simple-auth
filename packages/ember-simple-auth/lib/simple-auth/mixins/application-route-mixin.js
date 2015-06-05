@@ -35,7 +35,7 @@ import Configuration from './../configuration';
   @extends Ember.Mixin
   @static
 */
-var ApplicationRouteMixin = Ember.Mixin.create({
+export default Ember.Mixin.create({
   /**
     @method activate
     @private
@@ -241,5 +241,3 @@ var ApplicationRouteMixin = Ember.Mixin.create({
     }
   }
 });
-
-export default ApplicationRouteMixin;

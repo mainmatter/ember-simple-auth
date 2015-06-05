@@ -44,10 +44,28 @@ describe('ApplicationRouteMixin', function() {
       });
 
       it("translates the session's 'sessionAuthenticationSucceeded' event into an action invocation", function(done) {
+        expect(this.route.get('_authRouteEntryComplete')).to.be.true;
         this.session.trigger('sessionAuthenticationSucceeded');
 
         Ember.run.next(this, function() {
           expect(this.route.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
+          done();
+        });
+      });
+
+      it("sends the action to the transition on a new route instance", function(done) {
+        route2 = Ember.Route.extend(ApplicationRouteMixin, {
+          transitionTo: function() {}
+        }).create({ session: this.session });
+        var transition = { send: function() {} };
+        sinon.spy(transition, 'send');
+        sinon.spy(route2, 'send');
+        route2.beforeModel(transition);
+        this.session.trigger('sessionAuthenticationSucceeded');
+        Ember.run.next(this, function() {
+          expect(route2.get('_authRouteEntryComplete')).to.not.be.true;
+          expect(transition.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
+          expect(route2.send).to.not.have.been.called;
           done();
         });
       });
