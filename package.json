@@ -17,7 +17,7 @@
     "grunt-string-replace": "^0.2.7",
     "yuidocjs": "^0.3.49",
     "grunt-compile-handlebars": "^0.6.3",
-    "grunt-lintspaces": "^0.4.1",
+    "grunt-lintspaces": "0.7.0",
     "connect-redirection": "^0.0.1",
     "body-parser": "^1.0.0",
     "handlebars": "^2.0.0",
