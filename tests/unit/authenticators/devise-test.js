@@ -38,8 +38,12 @@ describe('Devise', function() {
     });
 
     afterEach(function() {
-      //TODO: make resetting the config easier
-      Configuration.load({ lookup: function() { return Ember.Object.create(); } }, {});
+      // TODO: make resetting the config easier
+      Configuration.load({
+        lookup() {
+          return Ember.Object.create();
+        }
+      }, {});
     });
   });
 
@@ -54,8 +58,8 @@ describe('Devise', function() {
 
     context('when the data contains a token and email', function() {
       it('resolves with the correct data', function(done) {
-        this.authenticator.restore({ "token": 'secret token!', "email": "user@email.com" }).then(function(content){
-          expect(content).to.eql({ "token": "secret token!", "email": "user@email.com" });
+        this.authenticator.restore({ token: 'secret token!', email: 'user@email.com' }).then(function(content) {
+          expect(content).to.eql({ token: 'secret token!', email: 'user@email.com' });
           done();
         });
       });
@@ -69,15 +73,19 @@ describe('Devise', function() {
       });
 
       it('resolves with the correct data', function(done) {
-        this.authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then(function(content){
+        this.authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then(function(content) {
           expect(content).to.eql({ employee: { token: 'secret token!', email: 'user@email.com' } });
           done();
         });
       });
 
       afterEach(function() {
-        //TODO: make resetting the config easier
-        Configuration.load({ lookup: function() { return Ember.Object.create(); } }, {});
+        // TODO: make resetting the config easier
+        Configuration.load({
+          lookup() {
+            return Ember.Object.create();
+          }
+        }, {});
       });
     });
   });
@@ -91,13 +99,13 @@ describe('Devise', function() {
       this.authenticator.authenticate({ identification: 'identification', password: 'password' });
 
       Ember.run.next(function() {
-        var args = Ember.$.ajax.getCall(0).args[0];
+        let [args] = Ember.$.ajax.getCall(0).args;
         delete args.beforeSend;
         expect(args).to.eql({
           url:      '/users/sign_in',
           type:     'POST',
           data:     { user: { email: 'identification', password: 'password' } },
-          dataType: 'json',
+          dataType: 'json'
         });
         done();
       });
@@ -115,7 +123,7 @@ describe('Devise', function() {
       it('resolves with the correct data', function(done) {
         this.authenticator.authenticate({ email: 'email@address.com', password: 'password' }).then(function(data) {
           expect(true).to.be.true;
-          expect(data).to.eql({ access_token: 'secret token!' });
+          expect(data).to.eql({ 'access_token': 'secret token!' });
           done();
         });
       });
@@ -132,7 +140,7 @@ describe('Devise', function() {
 
       it('rejects with the correct error', function(done) {
         this.authenticator.authenticate({ email: 'email@address.com', password: 'password' }).then(null, function(error) {
-          expect(error).to.eql({ "error": "invalid_grant" });
+          expect(error).to.eql({ error: 'invalid_grant' });
           done();
         });
       });

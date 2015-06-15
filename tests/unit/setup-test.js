@@ -15,14 +15,29 @@ let lookupStub;
 
 describe('setup', () => {
   beforeEach(() => {
-    application        = { register: () => {}, inject: () => {}, deferReadiness: () => {}, advanceReadiness: () => {} };
-    container          = { lookup: () => {} };
+    application = {
+      register() {},
+      inject() {},
+      deferReadiness() {},
+      advanceReadiness() {}
+    };
+    container          = {
+      lookup() {}
+    };
     session            = Session.create();
     lookupStub         = sinon.stub(container, 'lookup');
-    let router         = { get: () => { return 'rootURL'; }, send: () => {} };
+    let router         = {
+      get() {
+        return 'rootURL';
+      },
+      send() {}
+    };
     let store          = LocalStorageStore.create();
-    authorizer         = { set: () => {}, authorize: () => {} };
-    session.setProperties({ store: store, container: container });
+    authorizer         = {
+      set() {},
+      authorize() {}
+    };
+    session.setProperties({ store, container });
 
     lookupStub.withArgs('router:main').returns(router);
     lookupStub.withArgs('simple-auth-session-store:local-storage').returns(store);
@@ -71,14 +86,14 @@ describe('setup', () => {
       beforeEach(() => {
         Configuration.base.session = 'session:custom';
         let store                  = EphemeralStore.create();
-        let otherSession           = Session.extend().create({ store: store, container: container });
+        let otherSession           = Session.extend().create({ store, container });
         lookupStub.withArgs('session:custom').returns(otherSession);
       });
 
       it('is of that class', () => {
         setup(container, application);
 
-        var spyCall = application.inject.getCall(0);
+        let spyCall = application.inject.getCall(0);
         expect(spyCall.args[2]).to.eql('session:custom');
       });
     });
@@ -91,7 +106,7 @@ describe('setup', () => {
 
     it('uses a custom store if specified', () => {
       Configuration.base.store = 'simple-auth-session-store:ephemeral';
-      var store                = EphemeralStore.create();
+      let store                = EphemeralStore.create();
       lookupStub.withArgs('simple-auth-session-store:ephemeral').returns(store);
       setup(container, application);
 
@@ -105,7 +120,6 @@ describe('setup', () => {
     });
 
     it('is injected into all components, controllers and routes', () => {
-      var _this = this;
       setup(container, application);
 
       ['component', 'controller', 'route'].forEach((component) => {
@@ -234,7 +248,7 @@ describe('setup', () => {
       setup(container, application);
     });
 
-    afterEach(() => xhr.restore() );
+    afterEach(() => xhr.restore());
 
     describe("when the request's status is 401", () => {
       context('when the XHR was authorized by the authorizer', () => {
@@ -258,8 +272,8 @@ describe('setup', () => {
         });
 
         it("does not trigger the session's authorizationFailed event", (done) => {
-          var triggered = false;
-          session.one('authorizationFailed', () => { triggered = true; });
+          let triggered = false;
+          session.one('authorizationFailed', () => triggered = true);
           // as this is a different origin that's not whitelisted the request will not be authorized
           Ember.$.get('http://other.origin/data');
 
@@ -277,8 +291,8 @@ describe('setup', () => {
       });
 
       it("does not trigger the session's authorizationFailed event", (done) => {
-        var triggered = false;
-        session.one('authorizationFailed', () => { triggered = true; });
+        let triggered = false;
+        session.one('authorizationFailed', () => triggered = true);
         Ember.$.get('/data');
 
         Ember.run.next(() => {

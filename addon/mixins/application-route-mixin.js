@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-var routeEntryComplete = false;
+let routeEntryComplete = false;
 
 /**
   The mixin for the application route; defines actions that are triggered
@@ -37,13 +37,14 @@ var routeEntryComplete = false;
   @module simple-auth/mixins/application-route-mixin
   @extends Ember.Mixin
   @static
+  @public
 */
 export default Ember.Mixin.create({
   /**
     @method activate
     @private
   */
-  activate: function () {
+  activate() {
     routeEntryComplete = true;
     this._super();
   },
@@ -52,21 +53,20 @@ export default Ember.Mixin.create({
     @method beforeModel
     @private
   */
-  beforeModel: function(transition) {
+  beforeModel(transition) {
     this._super(transition);
     if (!this.get('_authEventListenersAssigned')) {
       this.set('_authEventListenersAssigned', true);
-      var _this = this;
       Ember.A([
         'sessionAuthenticationSucceeded',
         'sessionAuthenticationFailed',
         'sessionInvalidationSucceeded',
         'sessionInvalidationFailed',
         'authorizationFailed'
-      ]).forEach(function(event) {
-        _this.get(Configuration.base.sessionPropertyName).on(event, function() {
+      ]).forEach((event) => {
+        this.get(Configuration.base.sessionPropertyName).on(event, () => {
           Array.prototype.unshift.call(arguments, event);
-          var target = routeEntryComplete ? _this : transition;
+          let target = routeEntryComplete ? this : transition;
           target.send.apply(target, arguments);
         });
       });
@@ -97,8 +97,9 @@ export default Ember.Mixin.create({
       ```
 
       @method actions.sessionRequiresAuthentication
+      @public
     */
-    sessionRequiresAuthentication: function() {
+    sessionRequiresAuthentication() {
       this.transitionTo(Configuration.base.authenticationRoute);
     },
 
@@ -127,8 +128,9 @@ export default Ember.Mixin.create({
 
       @method actions.authenticateSession
       @deprecated use [`ApplicationRouteMixin#sessionRequiresAuthentication`](#SimpleAuth-ApplicationRouteMixin-sessionRequiresAuthentication) instead
+      @public
     */
-    authenticateSession: function() {
+    authenticateSession() {
       Ember.deprecate('The authenticateSession action is deprecated. Use sessionRequiresAuthentication instead.');
       this.send('sessionRequiresAuthentication');
     },
@@ -143,9 +145,10 @@ export default Ember.Mixin.create({
       [`Configuration.routeAfterAuthentication`](#SimpleAuth-Configuration-routeAfterAuthentication).
 
       @method actions.sessionAuthenticationSucceeded
+      @public
     */
-    sessionAuthenticationSucceeded: function() {
-      var attemptedTransition = this.get(Configuration.base.sessionPropertyName).get('attemptedTransition');
+    sessionAuthenticationSucceeded() {
+      let attemptedTransition = this.get(Configuration.base.sessionPropertyName).get('attemptedTransition');
       if (attemptedTransition) {
         attemptedTransition.retry();
         this.get(Configuration.base.sessionPropertyName).set('attemptedTransition', null);
@@ -174,8 +177,9 @@ export default Ember.Mixin.create({
 
       @method actions.sessionAuthenticationFailed
       @param {any} error The error the promise returned by the authenticator rejects with, see [`Authenticators.Base#authenticate`](#SimpleAuth-Authenticators-Base-authenticate)
+      @public
     */
-    sessionAuthenticationFailed: function() {
+    sessionAuthenticationFailed() {
     },
 
     /**
@@ -186,8 +190,9 @@ export default Ember.Mixin.create({
 
       @method actions.invalidateSession
       @deprecated use [`Session#invalidate`](#SimpleAuth-Session-invalidate) instead
+      @public
     */
-    invalidateSession: function() {
+    invalidateSession() {
       Ember.deprecate("The invalidateSession action is deprecated. Use the session's invalidate method directly instead.");
       this.get(Configuration.base.sessionPropertyName).invalidate();
     },
@@ -206,8 +211,9 @@ export default Ember.Mixin.create({
       simply transition to the `'index'` route.
 
       @method actions.sessionInvalidationSucceeded
+      @public
     */
-    sessionInvalidationSucceeded: function() {
+    sessionInvalidationSucceeded() {
       if (!Ember.testing) {
         window.location.replace(Configuration.base.applicationRootUrl);
       }
@@ -220,8 +226,9 @@ export default Ember.Mixin.create({
 
       @method actions.sessionInvalidationFailed
       @param {any} error The error the promise returned by the authenticator rejects with, see [`Authenticators.Base#invalidate`](#SimpleAuth-Authenticators-Base-invalidate)
+      @public
     */
-    sessionInvalidationFailed: function() {
+    sessionInvalidationFailed() {
     },
 
     /**
@@ -231,8 +238,9 @@ export default Ember.Mixin.create({
       [`ApplicationRouteMixin#sessionInvalidationSucceeded`](#SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)).
 
       @method actions.authorizationFailed
+      @public
     */
-    authorizationFailed: function() {
+    authorizationFailed() {
       if (this.get(Configuration.base.sessionPropertyName).get('isAuthenticated')) {
         this.get(Configuration.base.sessionPropertyName).invalidate();
       }

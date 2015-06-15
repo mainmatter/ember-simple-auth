@@ -26,6 +26,7 @@ import Configuration from './../configuration';
   @module simple-auth/mixins/authenticated-route-mixin
   @extends Ember.Mixin
   @static
+  @public
 */
 export default Ember.Mixin.create({
   /**
@@ -39,9 +40,10 @@ export default Ember.Mixin.create({
 
     @method beforeModel
     @param {Transition} transition The transition that lead to this route
+    @public
   */
-  beforeModel: function(transition) {
-    var superResult = this._super(transition);
+  beforeModel(transition) {
+    let superResult = this._super(transition);
 
     if (!this.get(Configuration.base.sessionPropertyName).get('isAuthenticated')) {
       transition.abort();

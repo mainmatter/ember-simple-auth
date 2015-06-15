@@ -41,7 +41,7 @@ describe('LoginControllerMixin', function() {
       });
 
       it('returns the promise returned by the session', function() {
-        var promise = new Ember.RSVP.Promise(function() {});
+        let promise = new Ember.RSVP.Promise(function() {});
         this.session.authenticate.restore();
         sinon.stub(this.session, 'authenticate').returns(promise);
 

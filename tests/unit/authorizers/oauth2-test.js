@@ -7,8 +7,10 @@ import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 describe('OAuth2', function() {
   beforeEach(function() {
     this.authorizer  = OAuth2.create();
-    this.request     = { setRequestHeader: function() {} };
-    var session     = Session.create();
+    this.request     = {
+      setRequestHeader() {}
+    };
+    let session     = Session.create();
     session.setProperties({ store: EphemeralStore.create() });
     this.authorizer.set('session', session);
     sinon.spy(this.request, 'setRequestHeader');

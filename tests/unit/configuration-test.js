@@ -7,8 +7,14 @@ let router;
 
 describe('Configuration', () => {
   beforeEach(() => {
-    container         = { lookup: function() {} };
-    router            = { get: function() { return 'rootURL'; } };
+    container         = {
+      lookup() {}
+    };
+    router            = {
+      get() {
+        return 'rootURL';
+      }
+    };
     let containerStub = sinon.stub(container, 'lookup');
     containerStub.withArgs('router:main').returns(router);
   });

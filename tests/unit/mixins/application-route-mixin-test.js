@@ -6,21 +6,23 @@ import Session from 'ember-simple-auth/session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 import Configuration from 'ember-simple-auth/configuration';
 
-var TestRoute = Ember.Route.extend(ApplicationRouteMixin);
+let TestRoute = Ember.Route.extend(ApplicationRouteMixin);
 
 describe('ApplicationRouteMixin', function() {
   beforeEach(function() {
     this.session = Session.create();
     this.session.setProperties({ store: EphemeralStore.create() });
     this.route = Ember.Route.extend(ApplicationRouteMixin, {
-      send: function() {},
-      transitionTo: function() {}
+      send() {},
+      transitionTo() {}
     }).create({ session: this.session });
   });
 
   describe('#beforeModel', function() {
     beforeEach(function() {
-      this.transition = { send: function() {} };
+      this.transition = {
+        send() {}
+      };
       sinon.spy(this.route, 'send');
     });
 
@@ -30,10 +32,10 @@ describe('ApplicationRouteMixin', function() {
         this.route.beforeModel(this.transition);
       });
 
-      it('sends the action to the transition', function (done) {
+      it('sends the action to the transition', (done) => {
         this.session.trigger('authorizationFailed');
 
-        Ember.run.next(this, function () {
+        Ember.run.next(this, () => {
           expect(this.transition.send).to.have.been.calledWith('authorizationFailed');
           done();
         });
@@ -117,7 +119,7 @@ describe('ApplicationRouteMixin', function() {
 
   describe('the "authenticateSession" action', function() {
     beforeEach(function() {
-      var route = this.route;
+      let { route } = this;
       sinon.spy(route, 'transitionTo');
       route.send = function(name) {
         if (name === 'sessionRequiresAuthentication') {
@@ -140,7 +142,9 @@ describe('ApplicationRouteMixin', function() {
 
     context('when an attempted transition is stored in the session', function() {
       beforeEach(function() {
-        this.attemptedTransition = { retry: function() {} };
+        this.attemptedTransition = {
+          retry() {}
+        };
         this.session.set('attemptedTransition', this.attemptedTransition);
       });
 

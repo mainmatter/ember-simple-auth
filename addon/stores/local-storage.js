@@ -15,6 +15,7 @@ import Configuration from '../configuration';
   @namespace SimpleAuth.Stores
   @module simple-auth/stores/local-storage
   @extends Stores.Base
+  @public
 */
 export default Base.extend({
   /**
@@ -23,6 +24,7 @@ export default Base.extend({
     @property key
     @type String
     @default 'ember_simple_auth:session'
+    @public
   */
   key: 'ember_simple_auth:session',
 
@@ -30,7 +32,7 @@ export default Base.extend({
     @method init
     @private
   */
-  init: function() {
+  init() {
     this.key = Configuration.base.localStorageKey;
 
     this.bindToStorageEvents();
@@ -41,8 +43,9 @@ export default Base.extend({
 
     @method persist
     @param {Object} data The data to persist
+    @public
   */
-  persist: function(data) {
+  persist(data) {
     data = JSON.stringify(data || {});
     localStorage.setItem(this.key, data);
     this._lastData = this.restore();
@@ -54,9 +57,10 @@ export default Base.extend({
 
     @method restore
     @return {Object} All data currently persisted in the `localStorage`
+    @public
   */
-  restore: function() {
-    var data = localStorage.getItem(this.key);
+  restore() {
+    let data = localStorage.getItem(this.key);
     return JSON.parse(data) || {};
   },
 
@@ -65,8 +69,9 @@ export default Base.extend({
     `keyPrefix`.
 
     @method clear
+    @public
   */
-  clear: function() {
+  clear() {
     localStorage.removeItem(this.key);
     this._lastData = {};
   },
@@ -75,13 +80,12 @@ export default Base.extend({
     @method bindToStorageEvents
     @private
   */
-  bindToStorageEvents: function() {
-    var _this = this;
-    Ember.$(window).bind('storage', function() {
-      var data = _this.restore();
-      if (!objectsAreEqual(data, _this._lastData)) {
-        _this._lastData = data;
-        _this.trigger('sessionDataUpdated', data);
+  bindToStorageEvents() {
+    Ember.$(window).bind('storage', () => {
+      let data = this.restore();
+      if (!objectsAreEqual(data, this._lastData)) {
+        this._lastData = data;
+        this.trigger('sessionDataUpdated', data);
       }
     });
   }

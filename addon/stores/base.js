@@ -20,6 +20,7 @@ import Ember from 'ember';
   @module simple-auth/stores/base
   @extends Ember.Object
   @uses Ember.Evented
+  @public
 */
 export default Ember.Object.extend(Ember.Evented, {
   /**
@@ -32,6 +33,7 @@ export default Ember.Object.extend(Ember.Evented, {
 
     @event sessionDataUpdated
     @param {Object} data The updated session data
+    @public
   */
 
   /**
@@ -42,9 +44,9 @@ export default Ember.Object.extend(Ember.Evented, {
 
     @method persist
     @param {Object} data The data to persist
+    @public
   */
-  persist: function() {
-  },
+  persist() {},
 
   /**
     Restores all data currently saved in the store as a plain object.
@@ -53,8 +55,9 @@ export default Ember.Object.extend(Ember.Evented, {
 
     @method restore
     @return {Object} The data currently persisted in the store.
+    @public
   */
-  restore: function() {
+  restore() {
     return {};
   },
 
@@ -64,7 +67,7 @@ export default Ember.Object.extend(Ember.Evented, {
     `Stores.Base`'s implementation does nothing.
 
     @method clear
+    @public
   */
-  clear: function() {
-  }
+  clear() {}
 });

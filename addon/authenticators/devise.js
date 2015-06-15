@@ -18,6 +18,7 @@ import Configuration from './../configuration';
   @namespace SimpleAuth.Authenticators
   @module simple-auth-devise/authenticators/devise
   @extends Base
+  @public
 */
 export default Base.extend({
   /**
@@ -30,6 +31,7 @@ export default Base.extend({
     @property serverTokenEndpoint
     @type String
     @default '/users/sign_in'
+    @public
   */
   serverTokenEndpoint: '/users/sign_in',
 
@@ -42,6 +44,7 @@ export default Base.extend({
     @property resourceName
     @type String
     @default 'user'
+    @public
   */
   resourceName: 'user',
 
@@ -54,6 +57,7 @@ export default Base.extend({
     @property tokenAttributeName
     @type String
     @default 'token'
+    @public
   */
   tokenAttributeName: 'token',
 
@@ -66,6 +70,7 @@ export default Base.extend({
     @property identificationAttributeName
     @type String
     @default 'email'
+    @public
   */
   identificationAttributeName: 'email',
 
@@ -73,11 +78,11 @@ export default Base.extend({
     @method init
     @private
   */
-  init: function() {
-    this.serverTokenEndpoint          = Configuration.devise.serverTokenEndpoint;
-    this.resourceName                 = Configuration.devise.resourceName;
-    this.tokenAttributeName           = Configuration.devise.tokenAttributeName;
-    this.identificationAttributeName  = Configuration.devise.identificationAttributeName;
+  init() {
+    this.serverTokenEndpoint         = Configuration.devise.serverTokenEndpoint;
+    this.resourceName                = Configuration.devise.resourceName;
+    this.tokenAttributeName          = Configuration.devise.tokenAttributeName;
+    this.identificationAttributeName = Configuration.devise.identificationAttributeName;
   },
 
   /**
@@ -88,12 +93,12 @@ export default Base.extend({
     @method restore
     @param {Object} properties The properties to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
+    @public
   */
-  restore: function(properties) {
-    var _this            = this;
-    var propertiesObject = Ember.Object.create(properties);
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (!Ember.isEmpty(propertiesObject.get(_this.tokenAttributeName)) && !Ember.isEmpty(propertiesObject.get(_this.identificationAttributeName))) {
+  restore(properties) {
+    let propertiesObject = Ember.Object.create(properties);
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      if (!Ember.isEmpty(propertiesObject.get(this.tokenAttributeName)) && !Ember.isEmpty(propertiesObject.get(this.identificationAttributeName))) {
         resolve(properties);
       } else {
         reject();
@@ -113,17 +118,17 @@ export default Base.extend({
     @method authenticate
     @param {Object} options The credentials to authenticate the session with
     @return {Ember.RSVP.Promise} A promise that resolves when an auth token and email is successfully acquired from the server and rejects otherwise
+    @public
   */
-  authenticate: function(credentials) {
-    var _this = this;
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      var data                 = {};
-      data[_this.resourceName] = {
+  authenticate(credentials) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      let data                = {};
+      data[this.resourceName] = {
         password: credentials.password
       };
-      data[_this.resourceName][_this.identificationAttributeName] = credentials.identification;
+      data[this.resourceName][this.identificationAttributeName] = credentials.identification;
 
-      _this.makeRequest(data).then(function(response) {
+      this.makeRequest(data).then(function(response) {
         Ember.run(function() {
           resolve(response);
         });
@@ -140,8 +145,9 @@ export default Base.extend({
 
     @method invalidate
     @return {Ember.RSVP.Promise} A resolving promise
+    @public
   */
-  invalidate: function() {
+  invalidate() {
     return Ember.RSVP.resolve();
   },
 
@@ -149,13 +155,13 @@ export default Base.extend({
     @method makeRequest
     @private
   */
-  makeRequest: function(data) {
+  makeRequest(data) {
     return Ember.$.ajax({
       url:        this.serverTokenEndpoint,
       type:       'POST',
-      data:       data,
       dataType:   'json',
-      beforeSend: function(xhr, settings) {
+      data,
+      beforeSend(xhr, settings) {
         xhr.setRequestHeader('Accept', settings.accepts.json);
       }
     });

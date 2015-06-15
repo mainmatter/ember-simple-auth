@@ -6,7 +6,7 @@
 */
 export default function objectsAreEqual(a, b) {
   function compare(x, y) {
-    var property;
+    let property;
     if (isNaN(x) && isNaN(y) && typeof x === 'number' && typeof y === 'number') {
       return true;
     }

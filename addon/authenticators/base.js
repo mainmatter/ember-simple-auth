@@ -53,6 +53,7 @@ import Ember from 'ember';
   @module simple-auth/authenticators/base
   @extends Ember.Object
   @uses Ember.Evented
+  @public
 */
 export default Ember.Object.extend(Ember.Evented, {
   /**
@@ -66,7 +67,9 @@ export default Ember.Object.extend(Ember.Evented, {
 
     @event sessionDataUpdated
     @param {Object} data The updated session data
+    @public
   */
+
   /**
     __Triggered when the data that constitutes the session is invalidated by
     the authenticator__. This might happen e.g. because the date expires or an
@@ -74,6 +77,7 @@ export default Ember.Object.extend(Ember.Evented, {
     automatically catches that event and invalidates itself.
 
     @event sessionDataInvalidated
+    @public
   */
 
   /**
@@ -96,8 +100,9 @@ export default Ember.Object.extend(Ember.Evented, {
     @method restore
     @param {Object} data The data to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
+    @public
   */
-  restore: function() {
+  restore() {
     return Ember.RSVP.reject();
   },
 
@@ -120,8 +125,9 @@ export default Ember.Object.extend(Ember.Evented, {
     @method authenticate
     @param {Any} [...options] The arguments that the authenticator requires to authenticate the session
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
+    @public
   */
-  authenticate: function() {
+  authenticate() {
     return Ember.RSVP.reject();
   },
 
@@ -142,8 +148,9 @@ export default Ember.Object.extend(Ember.Evented, {
     @method invalidate
     @param {Object} data The data that the session currently holds
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
+    @public
   */
-  invalidate: function() {
+  invalidate() {
     return Ember.RSVP.resolve();
   }
 });

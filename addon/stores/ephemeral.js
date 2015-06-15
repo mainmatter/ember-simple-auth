@@ -14,13 +14,14 @@ import Base from './base';
   @namespace SimpleAuth.Stores
   @module simple-auth/stores/ephemeral
   @extends Stores.Base
+  @public
 */
 export default Base.extend({
   /**
     @method init
     @private
   */
-  init: function() {
+  init() {
     this.clear();
   },
 
@@ -29,8 +30,9 @@ export default Base.extend({
 
     @method persist
     @param {Object} data The data to persist
+    @public
   */
-  persist: function(data) {
+  persist(data) {
     this._data = JSON.stringify(data || {});
   },
 
@@ -39,8 +41,9 @@ export default Base.extend({
 
     @method restore
     @return {Object} All data currently persisted
+    @public
   */
-  restore: function() {
+  restore() {
     return JSON.parse(this._data) || {};
   },
 
@@ -48,8 +51,9 @@ export default Base.extend({
     Clears the store.
 
     @method clear
+    @public
   */
-  clear: function() {
+  clear() {
     delete this._data;
     this._data = '{}';
   }

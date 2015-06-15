@@ -1,4 +1,5 @@
 /* jshint expr:true */
+/* jscs:disable requireDotNotation */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
 import OAuth2 from 'ember-simple-auth/authenticators/oauth2';
@@ -33,16 +34,20 @@ describe('OAuth2', function() {
     });
 
     afterEach(function() {
-      //TODO: make resetting the config easier
-      Configuration.load({ lookup: function() { return Ember.Object.create(); } }, {});
+      // TODO: make resetting the config easier
+      Configuration.load({
+        lookup() {
+          return Ember.Object.create();
+        }
+      }, {});
     });
   });
 
   describe('#restore', function() {
     context('when the data includes expiration data', function() {
       it('resolves with the correct data', function(done) {
-        this.authenticator.restore({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' }).then(function(data) {
-          expect(data).to.eql({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' });
+        this.authenticator.restore({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' }).then(function(data) {
+          expect(data).to.eql({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
           done();
         });
       });
@@ -59,10 +64,10 @@ describe('OAuth2', function() {
             });
 
             it('resolves with the correct data', function(done) {
-              this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(function(data) {
-                expect(data.expires_at).to.be.greaterThan(new Date().getTime());
-                delete data.expires_at;
-                expect(data).to.eql({ access_token: 'secret token 2!', expires_in: 67890, refresh_token: 'refresh token 2!' });
+              this.authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then(function(data) {
+                expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
+                delete data['expires_at'];
+                expect(data).to.eql({ 'access_token': 'secret token 2!', 'expires_in': 67890, 'refresh_token': 'refresh token 2!' });
                 done();
               });
             });
@@ -70,7 +75,7 @@ describe('OAuth2', function() {
 
           context('when the access token is not refreshed successfully', function() {
             it('returns a rejecting promise', function(done) {
-              this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(null, function() {
+              this.authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then(null, function() {
                 expect(true).to.be.true;
                 done();
               });
@@ -84,7 +89,7 @@ describe('OAuth2', function() {
           });
 
           it('returns a rejecting promise', function(done) {
-            this.authenticator.restore({ access_token: 'secret token!', expires_at: 1 }).then(null, function() {
+            this.authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then(null, function() {
               expect(true).to.be.true;
               done();
             });
@@ -96,8 +101,8 @@ describe('OAuth2', function() {
     context('when the data does not include expiration data', function() {
       context('when the data contains an access_token', function() {
         it('resolves with the correct data', function(done) {
-          this.authenticator.restore({ access_token: 'secret token!' }).then(function(data) {
-            expect(data).to.eql({ access_token: 'secret token!' });
+          this.authenticator.restore({ 'access_token': 'secret token!' }).then(function(data) {
+            expect(data).to.eql({ 'access_token': 'secret token!' });
             done();
           });
         });
@@ -122,7 +127,7 @@ describe('OAuth2', function() {
         expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
           url:         '/token',
           type:        'POST',
-          data:        { grant_type: 'password', username: 'username', password: 'password' },
+          data:        { 'grant_type': 'password', username: 'username', password: 'password' },
           dataType:    'json',
           contentType: 'application/x-www-form-urlencoded'
         });
@@ -160,7 +165,7 @@ describe('OAuth2', function() {
       it('resolves with the correct data', function(done) {
         this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(function(data) {
           expect(true).to.be.true;
-          expect(data).to.eql({ access_token: 'secret token!' });
+          expect(data).to.eql({ 'access_token': 'secret token!' });
           done();
         });
       });
@@ -176,9 +181,9 @@ describe('OAuth2', function() {
 
         it('resolves with the correct data', function(done) {
           this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(function(data) {
-            expect(data.expires_at).to.be.greaterThan(new Date().getTime());
-            delete data.expires_at;
-            expect(data).to.eql({ access_token: 'secret token!', expires_in: 12345, refresh_token: 'refresh token!' });
+            expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
+            delete data['expires_at'];
+            expect(data).to.eql({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
             done();
           });
         });
@@ -206,7 +211,7 @@ describe('OAuth2', function() {
   describe('#invalidate', function() {
     function itSuccessfullyInvalidatesTheSession() {
       it('returns a resolving promise', function(done) {
-        this.authenticator.invalidate({ access_token: 'access token!' }).then(function() {
+        this.authenticator.invalidate({ 'access_token': 'access token!' }).then(function() {
           expect(true).to.be.true;
           done();
         });
@@ -219,13 +224,13 @@ describe('OAuth2', function() {
       });
 
       it('sends an AJAX request to the revokation endpoint', function(done) {
-        this.authenticator.invalidate({ access_token: 'access token!' });
+        this.authenticator.invalidate({ 'access_token': 'access token!' });
 
         Ember.run.next(function() {
           expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
             url:         '/revoke',
             type:        'POST',
-            data:        { token_type_hint: 'access_token', token: 'access token!' },
+            data:        { 'token_type_hint': 'access_token', token: 'access token!' },
             dataType:    'json',
             contentType: 'application/x-www-form-urlencoded'
           });
@@ -252,13 +257,13 @@ describe('OAuth2', function() {
 
       context('when a refresh token is set', function() {
         it('sends an AJAX request to invalidate the refresh token', function(done) {
-          this.authenticator.invalidate({ access_token: 'access token!', refresh_token: 'refresh token!' });
+          this.authenticator.invalidate({ 'access_token': 'access token!', 'refresh_token': 'refresh token!' });
 
           Ember.run.next(function() {
             expect(Ember.$.ajax.getCall(1).args[0]).to.eql({
               url:         '/revoke',
               type:        'POST',
-              data:        { token_type_hint: 'refresh_token', token: 'refresh token!' },
+              data:        { 'token_type_hint': 'refresh_token', token: 'refresh token!' },
               dataType:    'json',
               contentType: 'application/x-www-form-urlencoded'
             });
@@ -282,7 +287,7 @@ describe('OAuth2', function() {
         expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
           url:         '/token',
           type:        'POST',
-          data:        { grant_type: 'refresh_token', refresh_token: 'refresh token!' },
+          data:        { 'grant_type': 'refresh_token', 'refresh_token': 'refresh token!' },
           dataType:    'json',
           contentType: 'application/x-www-form-urlencoded'
         });
@@ -301,9 +306,9 @@ describe('OAuth2', function() {
 
       it('triggers the "sessionDataUpdated" event', function(done) {
         this.authenticator.one('sessionDataUpdated', function(data) {
-          expect(data.expires_at).to.be.greaterThan(new Date().getTime());
-          delete data.expires_at;
-          expect(data).to.eql({ access_token: 'secret token 2!', expires_in: 12345, refresh_token: 'refresh token!' });
+          expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
+          delete data['expires_at'];
+          expect(data).to.eql({ 'access_token': 'secret token 2!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
           done();
         });
 
@@ -321,9 +326,9 @@ describe('OAuth2', function() {
 
         it('triggers the "sessionDataUpdated" event with the correct data', function(done) {
           this.authenticator.one('sessionDataUpdated', function(data) {
-            expect(data.expires_at).to.be.greaterThan(new Date().getTime());
-            delete data.expires_at;
-            expect(data).to.eql({ access_token: 'secret token 2!', expires_in: 67890, refresh_token: 'refresh token 2!' });
+            expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
+            delete data['expires_at'];
+            expect(data).to.eql({ 'access_token': 'secret token 2!', 'expires_in': 67890, 'refresh_token': 'refresh token 2!' });
             done();
           });
 
