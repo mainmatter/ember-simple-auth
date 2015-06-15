@@ -40,6 +40,7 @@ export default function(options) {
   describe('#restore', function() {
     context('when the store is empty', function() {
       it('returns an empty object', function() {
+        store.clear();
         expect(store.restore()).to.eql({});
       });
     });
