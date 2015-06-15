@@ -2,10 +2,16 @@ import { it } from 'ember-mocha';
 import Ephemeral from 'ember-simple-auth/stores/ephemeral';
 import itBehavesLikeAStore from './shared/store-behavior';
 
+let store;
+
 describe('Stores.Ephemeral', function() {
   beforeEach(function() {
-    this.store = Ephemeral.create();
+    store = Ephemeral.create();
   });
 
-  itBehavesLikeAStore();
+  itBehavesLikeAStore({
+    store: () => {
+      return store;
+    }
+  });
 });
