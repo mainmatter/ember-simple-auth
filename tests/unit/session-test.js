@@ -16,6 +16,7 @@ describe('Session', () => {
     container     = { lookup: () => {} };
     authenticator = Authenticator.create();
     session       = Session.create();
+    session.setProperties({ store: store, container: container });
     sinon.stub(container, 'lookup').returns(authenticator);
   });
 
@@ -28,7 +29,7 @@ describe('Session', () => {
   function itHandlesAuthenticatorEvents(preparation) {
     context('when the authenticator triggers the "sessionDataUpdated" event', () => {
       beforeEach(() => {
-        return preparation.apply(this);
+        return preparation.call();
       });
 
       it('stores the data the event is triggered with in its secure section', (done) => {
@@ -43,7 +44,7 @@ describe('Session', () => {
 
     context('when the authenticator triggers the "invalidated" event', () => {
       beforeEach(() => {
-        return preparation.apply(this);
+        return preparation.call();
       });
 
       it('is not authenticated', (done) => {
@@ -90,12 +91,6 @@ describe('Session', () => {
   }
 
   describe('restore', () => {
-    beforeEach(() => {
-      
-      session.set('content', {});
-      session.setProperties({ store: store, container: container });
-    });
-
     function itDoesNotRestore() {
       it('returns a rejecting promise', () => {
         return session.restore().then(null, () => {
@@ -204,12 +199,6 @@ describe('Session', () => {
   });
 
   describe('authentication', () => {
-    beforeEach(() => {
-      session = Session.create();
-      session.set('content', {});
-      session.setProperties({ store: store, container: container });
-    });
-
     context('when the authenticator resolves authentication', () => {
       beforeEach(() => {
         sinon.stub(authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'property' }));
@@ -334,10 +323,7 @@ describe('Session', () => {
 
   describe('invalidation', () => {
     beforeEach(() => {
-      session.set('content', {});
-      session.setProperties({ store: store, container: container });
       sinon.stub(authenticator, 'authenticate').returns(Ember.RSVP.resolve({ some: 'property' }));
-
       return session.authenticate('authenticator');
     });
 
@@ -457,7 +443,6 @@ describe('Session', () => {
   describe("when the session's content changes", () => {
     context('when a single property is set', () => {
       beforeEach(() => {
-        session = Session.create({ store: store });
         session.set('some', 'property');
       });
 
@@ -471,7 +456,6 @@ describe('Session', () => {
 
     context('when multiple properties are set at once', () => {
       beforeEach(() => {
-        session = Session.create({ store: store });
         session.set('some', 'property');
         session.setProperties({ multiple: 'properties' });
       });
@@ -486,11 +470,6 @@ describe('Session', () => {
   });
 
   context('when the store triggers the "sessionDataUpdated" event', () => {
-    beforeEach(() => {
-      session = Session.create();
-      session.setProperties({ store: store, container: container });
-    });
-
     context('when there is an authenticator factory in the event data', () => {
       context('when the authenticator resolves restoration', () => {
         beforeEach(() => {
