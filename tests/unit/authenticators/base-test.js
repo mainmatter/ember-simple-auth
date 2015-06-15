@@ -2,32 +2,34 @@
 import { it } from 'ember-mocha';
 import Base from 'ember-simple-auth/authenticators/base';
 
-describe('Authenticators.Base', function() {
-  beforeEach(function() {
-    this.authenticator = Base.create();
+let authenticator;
+
+describe('Authenticators.Base', () => {
+  beforeEach(() => {
+    authenticator = Base.create();
   });
 
-  describe('#restore', function() {
-    it('returns a rejecting promise', function(done) {
-      this.authenticator.restore().then(null, function() {
+  describe('#restore', () => {
+    it('returns a rejecting promise', (done) => {
+      authenticator.restore().then(null, () => {
         expect(true).to.be.true;
         done();
       });
     });
   });
 
-  describe('#authenticate', function() {
-    it('returns a rejecting promise', function(done) {
-      this.authenticator.authenticate().then(null, function() {
+  describe('#authenticate', () => {
+    it('returns a rejecting promise', (done) => {
+      authenticator.authenticate().then(null, () => {
         expect(true).to.be.true;
         done();
       });
     });
   });
 
-  describe('#invalidate', function() {
-    it('returns a resolving promise', function(done) {
-      this.authenticator.invalidate().then(function() {
+  describe('#invalidate', () => {
+    it('returns a resolving promise', (done) => {
+      authenticator.invalidate().then(() => {
         expect(true).to.be.true;
         done();
       });
