@@ -4,40 +4,48 @@ import Ember from 'ember';
 import Devise from 'ember-simple-auth/authenticators/devise';
 import Configuration from 'ember-simple-auth/configuration';
 
-describe('Devise', function() {
-  beforeEach(function() {
-    this.xhr                = sinon.useFakeXMLHttpRequest();
-    this.server             = sinon.fakeServer.create();
-    this.server.autoRespond = true;
-    this.authenticator      = Devise.create();
+let xhr;
+let server;
+let authenticator;
+
+describe('Devise', () => {
+  beforeEach(() => {
+    xhr                = sinon.useFakeXMLHttpRequest();
+    server             = sinon.fakeServer.create();
+    server.autoRespond = true;
+    authenticator      = Devise.create();
   });
 
-  describe('initilization', function() {
-    it('assigns serverTokenEndpoint from the configuration object', function() {
+  afterEach(() => {
+    xhr.restore();
+  });
+
+  describe('initilization', () => {
+    it('assigns serverTokenEndpoint from the configuration object', () => {
       Configuration.devise.serverTokenEndpoint = 'serverTokenEndpoint';
 
       expect(Devise.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
     });
 
-    it('assigns resourceName from the configuration object', function() {
+    it('assigns resourceName from the configuration object', () => {
       Configuration.devise.resourceName = 'resourceName';
 
       expect(Devise.create().resourceName).to.eq('resourceName');
     });
 
-    it('assigns tokenAttributeName from the configuration object', function() {
+    it('assigns tokenAttributeName from the configuration object', () => {
       Configuration.devise.tokenAttributeName = 'tokenAttributeName';
 
       expect(Devise.create().tokenAttributeName).to.eq('tokenAttributeName');
     });
 
-    it('assigns identificationAttributeName from the configuration object', function() {
+    it('assigns identificationAttributeName from the configuration object', () => {
       Configuration.devise.identificationAttributeName = 'identificationAttributeName';
 
       expect(Devise.create().identificationAttributeName).to.eq('identificationAttributeName');
     });
 
-    afterEach(function() {
+    afterEach(() => {
       // TODO: make resetting the config easier
       Configuration.load({
         lookup() {
@@ -47,39 +55,39 @@ describe('Devise', function() {
     });
   });
 
-  describe('#restore', function() {
-    beforeEach(function() {
-      this.server.respondWith('POST', '/users/sign_in', [
+  describe('#restore', () => {
+    beforeEach(() => {
+      server.respondWith('POST', '/users/sign_in', [
         201,
         { 'Content-Type': 'application/json' },
         '{ "user_token": "secret token!" }'
       ]);
     });
 
-    context('when the data contains a token and email', function() {
-      it('resolves with the correct data', function(done) {
-        this.authenticator.restore({ token: 'secret token!', email: 'user@email.com' }).then(function(content) {
+    context('when the data contains a token and email', () => {
+      it('resolves with the correct data', (done) => {
+        authenticator.restore({ token: 'secret token!', email: 'user@email.com' }).then((content) => {
           expect(content).to.eql({ token: 'secret token!', email: 'user@email.com' });
           done();
         });
       });
     });
 
-    context('when the data contains a custom token and email attribute', function() {
-      beforeEach(function() {
+    context('when the data contains a custom token and email attribute', () => {
+      beforeEach(() => {
         Configuration.devise.tokenAttributeName          = 'employee.token';
         Configuration.devise.identificationAttributeName = 'employee.email';
-        this.authenticator                               = Devise.create();
+        authenticator                                    = Devise.create();
       });
 
-      it('resolves with the correct data', function(done) {
-        this.authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then(function(content) {
+      it('resolves with the correct data', (done) => {
+        authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then((content) => {
           expect(content).to.eql({ employee: { token: 'secret token!', email: 'user@email.com' } });
           done();
         });
       });
 
-      afterEach(function() {
+      afterEach(() => {
         // TODO: make resetting the config easier
         Configuration.load({
           lookup() {
@@ -90,15 +98,19 @@ describe('Devise', function() {
     });
   });
 
-  describe('#authenticate', function() {
-    beforeEach(function() {
+  describe('#authenticate', () => {
+    beforeEach(() => {
       sinon.spy(Ember.$, 'ajax');
     });
 
-    it('sends an AJAX request to the sign in endpoint', function(done) {
-      this.authenticator.authenticate({ identification: 'identification', password: 'password' });
+    afterEach(() => {
+      Ember.$.ajax.restore();
+    });
 
-      Ember.run.next(function() {
+    it('sends an AJAX request to the sign in endpoint', (done) => {
+      authenticator.authenticate({ identification: 'identification', password: 'password' });
+
+      Ember.run.next(() => {
         let [args] = Ember.$.ajax.getCall(0).args;
         delete args.beforeSend;
         expect(args).to.eql({
@@ -111,17 +123,17 @@ describe('Devise', function() {
       });
     });
 
-    context('when the authentication request is successful', function() {
-      beforeEach(function() {
-        this.server.respondWith('POST', '/users/sign_in', [
+    context('when the authentication request is successful', () => {
+      beforeEach(() => {
+        server.respondWith('POST', '/users/sign_in', [
           201,
           { 'Content-Type': 'application/json' },
           '{ "access_token": "secret token!" }'
         ]);
       });
 
-      it('resolves with the correct data', function(done) {
-        this.authenticator.authenticate({ email: 'email@address.com', password: 'password' }).then(function(data) {
+      it('resolves with the correct data', (done) => {
+        authenticator.authenticate({ email: 'email@address.com', password: 'password' }).then((data) => {
           expect(true).to.be.true;
           expect(data).to.eql({ 'access_token': 'secret token!' });
           done();
@@ -129,38 +141,30 @@ describe('Devise', function() {
       });
     });
 
-    context('when the authentication request fails', function() {
-      beforeEach(function() {
-        this.server.respondWith('POST', '/users/sign_in', [
+    context('when the authentication request fails', () => {
+      beforeEach(() => {
+        server.respondWith('POST', '/users/sign_in', [
           400,
           { 'Content-Type': 'application/json' },
           '{ "error": "invalid_grant" }'
         ]);
       });
 
-      it('rejects with the correct error', function(done) {
-        this.authenticator.authenticate({ email: 'email@address.com', password: 'password' }).then(null, function(error) {
+      it('rejects with the correct error', (done) => {
+        authenticator.authenticate({ email: 'email@address.com', password: 'password' }).then(null, (error) => {
           expect(error).to.eql({ error: 'invalid_grant' });
           done();
         });
       });
     });
-
-    afterEach(function() {
-      Ember.$.ajax.restore();
-    });
   });
 
-  describe('#invalidate', function() {
-    it('returns a resolving promise', function(done) {
-      this.authenticator.invalidate().then(function() {
+  describe('#invalidate', () => {
+    it('returns a resolving promise', (done) => {
+      authenticator.invalidate().then(() => {
         expect(true).to.be.true;
         done();
       });
     });
-  });
-
-  afterEach(function() {
-    this.xhr.restore();
   });
 });

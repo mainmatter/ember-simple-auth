@@ -54,13 +54,13 @@ describe('Configuration', () => {
   });
 
   describe('session', () => {
-    it('defaults to "simple-auth-session:main"', function() {
+    it('defaults to "simple-auth-session:main"', () => {
       expect(Configuration.base.session).to.eq('simple-auth-session:main');
     });
   });
 
   describe('store', () => {
-    it('defaults to "simple-auth-session-store:local-storage"', function() {
+    it('defaults to "simple-auth-session-store:local-storage"', () => {
       expect(Configuration.base.store).to.eq('simple-auth-session-store:local-storage');
     });
   });
