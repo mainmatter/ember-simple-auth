@@ -25,7 +25,7 @@ describe('Torii', function() {
       it('unsets the provider', function(done) {
         this.authenticator.provider = 'provider';
         this.authenticator.restore(data).then(null, (data) => {
-          expect(_this.authenticator.provider).to.be.null;
+          expect(this.authenticator.provider).to.be.null;
           done();
         });
       });
@@ -46,7 +46,7 @@ describe('Torii', function() {
 
         it('remembers the provider', function(done) {
           this.authenticator.restore({ some: 'data', provider: 'provider' }).then((data) => {
-            expect(_this.authenticator.provider).to.eql('provider');
+            expect(this.authenticator.provider).to.eql('provider');
             done();
           });
         });
@@ -81,7 +81,7 @@ describe('Torii', function() {
 
       it('remembers the provider', function(done) {
         this.authenticator.authenticate('provider').then((data) => {
-          expect(_this.authenticator.provider).to.eql('provider');
+          expect(this.authenticator.provider).to.eql('provider');
           done();
         });
       });
@@ -117,7 +117,7 @@ describe('Torii', function() {
       it('unsets the provider', function(done) {
         this.authenticator.provider = 'provider';
         this.authenticator.invalidate({ some: 'data' }).then((data) => {
-          expect(_this.authenticator.provider).to.be.null;
+          expect(this.authenticator.provider).to.be.null;
           done();
         });
       });
@@ -138,7 +138,7 @@ describe('Torii', function() {
       it('keeps the provider', function(done) {
         this.authenticator.provider = 'provider';
         this.authenticator.invalidate({ some: 'data' }).then(null, (data) => {
-          expect(_this.authenticator.provider).to.eql('provider');
+          expect(this.authenticator.provider).to.eql('provider');
           done();
         });
       });

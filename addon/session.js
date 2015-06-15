@@ -195,7 +195,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     let theAuthenticator = this.container.lookup(authenticator);
     Ember.assert(`No authenticator for factory "${authenticator}" could be found!`, !Ember.isNone(theAuthenticator));
     return new Ember.RSVP.Promise((resolve, reject) => {
-      theAuthenticator.authenticate.apply(theAuthenticator, args).then(function(content) {
+      theAuthenticator.authenticate.apply(theAuthenticator, args).then((content) => {
         this.setup(authenticator, content, true);
         resolve();
       }, (error) => {
@@ -253,7 +253,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         this.container.lookup(authenticator).restore(restoredContent.secure).then((content) => {
           this.setup(authenticator, content);
           resolve();
-        }, function() {
+        }, () => {
           this.clear();
           reject();
         });
@@ -351,7 +351,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       let { authenticator } = (content.secure || {});
       if (!!authenticator) {
         delete content.secure.authenticator;
-        this.container.lookup(authenticator).restore(content.secure).then(function(secureContent) {
+        this.container.lookup(authenticator).restore(content.secure).then((secureContent) => {
           this.set('content', content);
           this.setup(authenticator, secureContent, true);
         }, () => {

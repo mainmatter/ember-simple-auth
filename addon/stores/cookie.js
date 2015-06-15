@@ -222,12 +222,25 @@ export default Base.extend({
     @private
   */
   initPageVisibility() {
-    let [event] = Ember.A(['visibilitychange', 'webkitvisibilitychange', 'mozvisibilitychange', 'msvisibilitychange']).find((event) => {
-      return document[event];
-    });
+    // TODO: implement this in a better way!
     return function() {
-      return !document[event];
+      return false;
     };
+    /*var keys = {
+      hidden:       'visibilitychange',
+      webkitHidden: 'webkitvisibilitychange',
+      mozHidden:    'mozvisibilitychange',
+      msHidden:     'msvisibilitychange'
+    };
+    for (var stateKey in keys) {
+      if (stateKey in document) {
+        var eventKey = keys[stateKey];
+        break;
+      }
+    }
+    return function() {
+      return !document[stateKey];
+    };*/
   },
 
   /**
