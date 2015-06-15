@@ -2,15 +2,15 @@ import Ember from 'ember';
 import Base from './base';
 
 export default Base.extend({
-  restore: function() {
+  restore() {
     return Ember.RSVP.resolve();
   },
 
-  authenticate: function() {
+  authenticate() {
     return Ember.RSVP.resolve();
   },
 
-  invalidate: function() {
+  invalidate() {
     return Ember.RSVP.resolve();
   }
 });

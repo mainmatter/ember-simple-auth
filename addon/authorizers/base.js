@@ -18,6 +18,7 @@ import Ember from 'ember';
   @namespace SimpleAuth.Authorizers
   @module simple-auth/authorizers/base
   @extends Ember.Object
+@public
 */
 export default Ember.Object.extend({
   /**
@@ -28,6 +29,7 @@ export default Ember.Object.extend({
     @readOnly
     @type SimpleAuth.Session
     @default the session instance
+    @public
   */
   session: null,
 
@@ -41,7 +43,7 @@ export default Ember.Object.extend({
     @method authorize
     @param {jqXHR} jqXHR The XHR request to authorize (see http://api.jquery.com/jQuery.ajax/#jqXHR)
     @param {Object} requestOptions The options as provided to the `$.ajax` method (see http://api.jquery.com/jQuery.ajaxPrefilter/)
+    @public
   */
-  authorize: function() {
-  }
+  authorize() {}
 });

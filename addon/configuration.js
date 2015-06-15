@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import loadConfig from './utils/load-config';
 
-var defaults = {
+const defaults = {
   base: {
     authenticationRoute:         'login',
     routeAfterAuthentication:    'index',
@@ -17,13 +17,13 @@ var defaults = {
   cookie: {
     name:           'ember_simple_auth:session',
     domain:         null,
-    expirationTime: null,
+    expirationTime: null
   },
   devise: {
     serverTokenEndpoint:         '/users/sign_in',
     resourceName:                'user',
     tokenAttributeName:          'token',
-    identificationAttributeName: 'email',
+    identificationAttributeName: 'email'
   },
   oauth2: {
     serverTokenEndpoint:           '/token',
@@ -47,6 +47,7 @@ var defaults = {
   @class Configuration
   @namespace SimpleAuth
   @module simple-auth/configuration
+  @public
 */
 export default {
   base: {
@@ -58,6 +59,7 @@ export default {
       @static
       @type String
       @default 'login'
+      @public
     */
     authenticationRoute: defaults.base.authenticationRoute,
 
@@ -69,6 +71,7 @@ export default {
       @static
       @type String
       @default 'index'
+      @public
     */
     routeAfterAuthentication: defaults.base.routeAfterAuthentication,
 
@@ -82,6 +85,7 @@ export default {
       @static
       @type String
       @default 'index'
+      @public
     */
     routeIfAlreadyAuthenticated: defaults.base.routeIfAlreadyAuthenticated,
 
@@ -94,6 +98,7 @@ export default {
       @static
       @type String
       @default 'session'
+      @public
     */
     sessionPropertyName: defaults.base.sessionPropertyName,
 
@@ -109,6 +114,7 @@ export default {
       @static
       @type String
       @default null
+      @public
     */
     authorizer: defaults.base.authorizer,
 
@@ -122,6 +128,7 @@ export default {
       @static
       @type String
       @default 'simple-auth-session:main'
+      @public
     */
     session: defaults.base.session,
 
@@ -134,6 +141,7 @@ export default {
       @static
       @type String
       @default simple-auth-session-store:local-storage
+      @public
     */
     store: defaults.base.store,
 
@@ -143,6 +151,7 @@ export default {
       @property localStorageKey
       @type String
       @default 'ember_simple_auth:session'
+      @public
     */
     localStorageKey: defaults.base.localStorageKey,
 
@@ -162,6 +171,7 @@ export default {
       @static
       @type Array
       @default []
+      @public
     */
     crossOriginWhitelist: defaults.base.crossOriginWhitelist,
 
@@ -193,6 +203,7 @@ export default {
       @property cookieDomain
       @type String
       @default null
+      @public
     */
     domain: defaults.cookie.domain,
 
@@ -204,6 +215,7 @@ export default {
       @static
       @type String
       @default 'ember_simple_auth:'
+      @public
     */
     name: defaults.cookie.name,
 
@@ -217,6 +229,7 @@ export default {
       @static
       @type Integer
       @default null
+      @public
     */
     expirationTime: defaults.cookie.expirationTime,
 
@@ -237,6 +250,7 @@ export default {
       @static
       @type String
       @default '/users/sign_in'
+      @public
     */
     serverTokenEndpoint: defaults.devise.serverTokenEndpoint,
 
@@ -248,6 +262,7 @@ export default {
       @static
       @type String
       @default 'user'
+      @public
     */
     resourceName: defaults.devise.resourceName,
 
@@ -259,6 +274,7 @@ export default {
       @static
       @type String
       @default 'token'
+      @public
     */
     tokenAttributeName: defaults.devise.tokenAttributeName,
 
@@ -274,6 +290,7 @@ export default {
       @static
       @type String
       @default 'email'
+      @public
     */
     identificationAttributeName: defaults.devise.identificationAttributeName,
 
@@ -294,6 +311,7 @@ export default {
       @static
       @type String
       @default '/token'
+      @public
     */
     serverTokenEndpoint: defaults.oauth2.serverTokenEndpoint,
 
@@ -306,6 +324,7 @@ export default {
       @static
       @type String
       @default null
+      @public
     */
     serverTokenRevocationEndpoint: defaults.oauth2.serverTokenRevocationEndpoint,
 
@@ -317,6 +336,7 @@ export default {
       @static
       @type Boolean
       @default true
+      @public
     */
     refreshAccessTokens: defaults.oauth2.refreshAccessTokens,
 
@@ -327,9 +347,9 @@ export default {
     load: loadConfig(defaults.oauth2)
   },
 
-  load: function(container, config) {
-    Ember.A(['base', 'cookie', 'devise', 'oauth2']).forEach(function(section) {
+  load(container, config) {
+    Ember.A(['base', 'cookie', 'devise', 'oauth2']).forEach((section) => {
       this[section].load(container, config[section]);
-    }.bind(this));
+    });
   }
 };

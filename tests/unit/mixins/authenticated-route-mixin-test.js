@@ -8,12 +8,12 @@ import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 describe('AuthenticatedRouteMixin', function() {
   describe('#beforeModel', function() {
     beforeEach(function() {
-      var Route = Ember.Route.extend({
-        beforeModel: function() {
-          var routeContext = this;
+      let Route = Ember.Route.extend({
+        beforeModel() {
+          let routeContext = this;
 
-          return new Ember.RSVP.Promise(function(resolve) {
-            Ember.run.next(function() {
+          return new Ember.RSVP.Promise((resolve) => {
+            Ember.run.next(() => {
               resolve(routeContext.beforeModelReturnValue);
             });
           });
@@ -22,7 +22,10 @@ describe('AuthenticatedRouteMixin', function() {
 
       this.session = Session.create();
       this.session.setProperties({ store: EphemeralStore.create() });
-      this.transition = { abort: function() {}, send: function() {} };
+      this.transition = {
+        abort() {},
+        send() {}
+      };
       this.route      = Route.create({ session: this.session });
       sinon.spy(this.transition, 'abort');
       sinon.spy(this.transition, 'send');

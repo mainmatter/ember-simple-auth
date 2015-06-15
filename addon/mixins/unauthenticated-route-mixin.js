@@ -25,6 +25,7 @@ import Configuration from './../configuration';
   @module simple-auth/mixins/unauthenticated-route-mixin
   @extends Ember.Mixin
   @static
+  @public
 */
 export default Ember.Mixin.create({
   /**
@@ -35,8 +36,9 @@ export default Ember.Mixin.create({
 
     @method beforeModel
     @param {Transition} transition The transition that lead to this route
+    @public
   */
-  beforeModel: function(transition) {
+  beforeModel(transition) {
     if (this.get(Configuration.base.sessionPropertyName).get('isAuthenticated')) {
       transition.abort();
       Ember.assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== Configuration.base.routeIfAlreadyAuthenticated);

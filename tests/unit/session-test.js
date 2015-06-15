@@ -13,10 +13,12 @@ let session;
 describe('Session', () => {
   beforeEach(() => {
     store         = EphemeralStore.create();
-    container     = { lookup: () => {} };
+    container     = {
+      lookup() {}
+    };
     authenticator = Authenticator.create();
     session       = Session.create();
-    session.setProperties({ store: store, container: container });
+    session.setProperties({ store, container });
     sinon.stub(container, 'lookup').returns(authenticator);
   });
 
@@ -76,7 +78,7 @@ describe('Session', () => {
       });
 
       it('triggers the "sessionInvalidationSucceeded" event', (done) => {
-        var triggered = false;
+        let triggered = false;
         session.one('sessionInvalidationSucceeded', () => {
           triggered = true;
         });
@@ -113,8 +115,8 @@ describe('Session', () => {
       });
 
       it('does not trigger the "sessionAuthenticationFailed" event', () => {
-        var triggered = false;
-        session.one('sessionAuthenticationFailed', () => { triggered = true; });
+        let triggered = false;
+        session.one('sessionAuthenticationFailed', () => triggered = true);
 
         return session.restore().then(null, () => {
           expect(triggered).to.be.false;
@@ -148,7 +150,7 @@ describe('Session', () => {
           store.persist({ secure: { authenticator: 'authenticator' } });
 
           return session.restore().then(() => {
-            var properties = store.restore();
+            let properties = store.restore();
             delete properties.authenticator;
 
             expect(session.get('secure')).to.eql({ some: 'property', authenticator: 'authenticator' });
@@ -157,7 +159,7 @@ describe('Session', () => {
 
         it('persists its content in the store', () => {
           return session.restore().then(() => {
-            var properties = store.restore();
+            let properties = store.restore();
             delete properties.authenticator;
 
             expect(properties).to.eql({ secure: { some: 'property', authenticator: 'authenticator' } });
@@ -171,8 +173,8 @@ describe('Session', () => {
         });
 
         it('does not trigger the "sessionAuthenticationSucceeded" event', () => {
-          var triggered = false;
-          session.one('sessionAuthenticationSucceeded', () => { triggered = true; });
+          let triggered = false;
+          session.one('sessionAuthenticationSucceeded', () => triggered = true);
 
           return session.restore().then(() => {
             expect(triggered).to.be.false;
@@ -224,7 +226,7 @@ describe('Session', () => {
 
       it('persists its content in the store', () => {
         return session.authenticate('authenticator').then(() => {
-          var properties = store.restore();
+          let properties = store.restore();
           delete properties.authenticator;
 
           expect(properties).to.eql({ secure: { some: 'property', authenticator: 'authenticator' } });
@@ -238,10 +240,8 @@ describe('Session', () => {
       });
 
       it('triggers the "sessionAuthenticationSucceeded" event', () => {
-        var triggered = false;
-        session.one('sessionAuthenticationSucceeded', () => {
-          triggered = true;
-        });
+        let triggered = false;
+        session.one('sessionAuthenticationSucceeded', () => triggered = true);
 
         return session.authenticate('authenticator').then(() => {
           expect(true).to.be.true;
@@ -249,8 +249,8 @@ describe('Session', () => {
       });
 
       it('does not trigger the "sessionAuthenticationFailed" event', () => {
-        var triggered = false;
-        session.one('sessionAuthenticationFailed', () => { triggered = true; });
+        let triggered = false;
+        session.one('sessionAuthenticationFailed', () => triggered = true);
 
         return session.authenticate('authenticator').then(() => {
           expect(triggered).to.be.false;
@@ -298,9 +298,9 @@ describe('Session', () => {
       });
 
       it('does not trigger the "sessionAuthenticationSucceeded" event', () => {
-        var triggered = false;
+        let triggered = false;
         sinon.stub(authenticator, 'authenticate').returns(Ember.RSVP.reject('error auth'));
-        session.one('sessionAuthenticationSucceeded', () => { triggered = true; });
+        session.one('sessionAuthenticationSucceeded', () => triggered = true);
 
         return session.authenticate('authenticator').then(null, () => {
           expect(triggered).to.be.false;
@@ -308,11 +308,9 @@ describe('Session', () => {
       });
 
       it('triggers the "sessionAuthenticationFailed" event', () => {
-        var triggered = false;
+        let triggered = false;
         sinon.stub(authenticator, 'authenticate').returns(Ember.RSVP.reject('error'));
-        session.one('sessionAuthenticationFailed', function(error) {
-          triggered = error;
-        });
+        session.one('sessionAuthenticationFailed', (error) => triggered = error);
 
         return session.authenticate('authenticator').then(null, () => {
           expect(triggered).to.eql('error');
@@ -361,8 +359,8 @@ describe('Session', () => {
       });
 
       it('does not trigger the "sessionInvalidationFailed" event', () => {
-        var triggered = false;
-        session.one('sessionInvalidationFailed', () => { triggered = true; });
+        let triggered = false;
+        session.one('sessionInvalidationFailed', () => triggered = true);
 
         return session.invalidate().then(() => {
           expect(triggered).to.be.false;
@@ -370,10 +368,8 @@ describe('Session', () => {
       });
 
       it('triggers the "sessionInvalidationSucceeded" event', () => {
-        var triggered = false;
-        session.one('sessionInvalidationSucceeded', () => {
-          triggered = true;
-        });
+        let triggered = false;
+        session.one('sessionInvalidationSucceeded', () => triggered = true);
 
         return session.invalidate().then(() => {
           expect(triggered).to.be.true;
@@ -415,11 +411,9 @@ describe('Session', () => {
       });
 
       it('triggers the "sessionInvalidationFailed" event', () => {
-        var triggerd = false;
+        let triggerd = false;
         sinon.stub(authenticator, 'invalidate').returns(Ember.RSVP.reject('error'));
-        session.one('sessionInvalidationFailed', function(error) {
-          triggerd = error;
-        });
+        session.one('sessionInvalidationFailed', (error) => triggerd = error);
 
         return session.invalidate().then(null, () => {
           expect(triggerd).to.eql('error');
@@ -428,8 +422,8 @@ describe('Session', () => {
 
       it('does not trigger the "sessionInvalidationSucceeded" event', () => {
         sinon.stub(authenticator, 'invalidate').returns(Ember.RSVP.reject('error'));
-        var triggered = false;
-        session.one('sessionInvalidationSucceeded', () => { triggered = true; });
+        let triggered = false;
+        session.one('sessionInvalidationSucceeded', () => triggered = true);
 
         return session.invalidate().then(null, () => {
           expect(triggered).to.be.false;
@@ -447,7 +441,7 @@ describe('Session', () => {
       });
 
       it('persists its content in the store', () => {
-        var properties = store.restore();
+        let properties = store.restore();
         delete properties.authenticator;
 
         expect(properties).to.eql({ some: 'property', secure: {} });
@@ -461,7 +455,7 @@ describe('Session', () => {
       });
 
       it('persists its content in the store', () => {
-        var properties = store.restore();
+        let properties = store.restore();
         delete properties.authenticator;
 
         expect(properties).to.eql({ some: 'property', multiple: 'properties', secure: {} });
@@ -498,7 +492,7 @@ describe('Session', () => {
           store.trigger('sessionDataUpdated', { some: 'property', secure: { authenticator: 'authenticator' } });
 
           Ember.run.next(() => {
-            var properties = store.restore();
+            let properties = store.restore();
 
             expect(properties).to.eql({ some: 'property', secure: { some: 'other property', authenticator: 'authenticator' } });
             done();
@@ -511,8 +505,8 @@ describe('Session', () => {
           });
 
           it('does not trigger the "sessionAuthenticationSucceeded" event', (done) => {
-            var triggered = false;
-            session.one('sessionAuthenticationSucceeded', () => { triggered = true; });
+            let triggered = false;
+            session.one('sessionAuthenticationSucceeded', () => triggered = true);
             store.trigger('sessionDataUpdated', { some: 'other property', secure: { authenticator: 'authenticator' } });
 
             Ember.run.next(() => {
@@ -528,10 +522,8 @@ describe('Session', () => {
           });
 
           it('triggers the "sessionAuthenticationSucceeded" event', (done) => {
-            var triggered = false;
-            session.one('sessionAuthenticationSucceeded', () => {
-              triggered = true;
-            });
+            let triggered = false;
+            session.one('sessionAuthenticationSucceeded', () => triggered = true);
             store.trigger('sessionDataUpdated', { some: 'other property', secure: { authenticator: 'authenticator' } });
 
             Ember.run.next(() => {
@@ -582,10 +574,8 @@ describe('Session', () => {
           });
 
           it('triggers the "sessionInvalidationSucceeded" event', (done) => {
-            var triggered = false;
-            session.one('sessionInvalidationSucceeded', () => {
-              triggered = true;
-            });
+            let triggered = false;
+            session.one('sessionInvalidationSucceeded', () => triggered = true);
             store.trigger('sessionDataUpdated', { some: 'other property', secure: { authenticator: 'authenticator' } });
 
             Ember.run.next(() => {
@@ -601,8 +591,8 @@ describe('Session', () => {
           });
 
           it('does not trigger the "sessionInvalidationSucceeded" event', (done) => {
-            var triggered = false;
-            session.one('sessionInvalidationSucceeded', () => { triggered = true; });
+            let triggered = false;
+            session.one('sessionInvalidationSucceeded', () => triggered = true);
 
             Ember.run.next(() => {
               expect(triggered).to.be.false;
@@ -649,10 +639,8 @@ describe('Session', () => {
         });
 
         it('triggers the "sessionInvalidationSucceeded" event', (done) => {
-          var triggered = false;
-          session.one('sessionInvalidationSucceeded', () => {
-            triggered = true;
-          });
+          let triggered = false;
+          session.one('sessionInvalidationSucceeded', () => triggered = true);
           store.trigger('sessionDataUpdated', { some: 'other property' });
 
           Ember.run.next(() => {
@@ -668,8 +656,8 @@ describe('Session', () => {
         });
 
         it('does not trigger the "sessionInvalidationSucceeded" event', (done) => {
-          var triggered = false;
-          session.one('sessionInvalidationSucceeded', () => { triggered = true; });
+          let triggered = false;
+          session.one('sessionInvalidationSucceeded', () => triggered = true);
 
           Ember.run.next(() => {
             expect(triggered).to.be.false;

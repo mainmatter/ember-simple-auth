@@ -10,9 +10,12 @@ describe('UnauthenticatedRouteMixin', function() {
   describe('#beforeModel', function() {
     beforeEach(function() {
       this.session    = Session.create({ store: EphemeralStore.create() });
-      this.transition = { abort: function() {}, send: function() {} };
+      this.transition = {
+        abort() {},
+        send() {}
+      };
       this.route   = Ember.Route.extend(UnauthenticatedRouteMixin, {
-        transitionTo: function() {}
+        transitionTo() {}
       }).create({ session: this.session });
       sinon.spy(this.transition, 'abort');
       sinon.spy(this.route, 'transitionTo');

@@ -1,39 +1,41 @@
+/* jscs:disable requireDotNotation */
 import Ember from 'ember';
 import Configuration from './configuration';
 import Session from './session';
 import LocalStorage from './stores/local-storage';
 import Ephemeral from './stores/ephemeral';
 
-var wildcardToken = '_wildcard_token_';
+const WILDCARD_TOKEN = '_wildcard_token_';
 
 function extractLocationOrigin(location) {
-  if (location === '*'){
-      return location;
+  if (location === '*') {
+    return location;
   }
 
-  location = location.replace('*', wildcardToken);
+  location = location.replace('*', WILDCARD_TOKEN);
 
   if (Ember.typeOf(location) === 'string') {
-    var link = document.createElement('a');
+    let link = document.createElement('a');
     link.href = location;
-    //IE requires the following line when url is relative.
-    //First assignment of relative url to link.href results in absolute url on link.href but link.hostname and other properties are not set
-    //Second assignment of absolute url to link.href results in link.hostname and other properties being set as expected
+    // IE requires the following line when url is relative.
+    // First assignment of relative url to link.href results in absolute url on link.href but link.hostname and other properties are not set
+    // Second assignment of absolute url to link.href results in link.hostname and other properties being set as expected
     link.href = link.href;
     location = link;
   }
-  var port = location.port;
+  let { port } = location;
   if (Ember.isEmpty(port)) {
-    //need to include the port whether its actually present or not as some versions of IE will always set it
+    // need to include the port whether its actually present or not as some versions of IE will always set it
     port = location.protocol === 'http:' ? '80' : (location.protocol === 'https:' ? '443' : '');
   }
-  return location.protocol + '//' + location.hostname + (port !== '' ? ':' + port : '');
+  let portString = port !== '' ? `:${port}` : '';
+  return `${location.protocol}//${location.hostname}${portString}`;
 }
 
-function matchDomain(urlOrigin){
+function matchDomain(urlOrigin) {
   return function(domain) {
-    if (domain.indexOf(wildcardToken) > -1) {
-      var domainRegex = new RegExp(domain.replace(wildcardToken , '.+'));
+    if (domain.indexOf(WILDCARD_TOKEN) > -1) {
+      let domainRegex = new RegExp(domain.replace(WILDCARD_TOKEN , '.+'));
       return urlOrigin.match(domainRegex);
     }
 
@@ -41,14 +43,14 @@ function matchDomain(urlOrigin){
   };
 }
 
-var urlOrigins     = {};
-var crossOriginWhitelist;
+let urlOrigins     = {};
+let crossOriginWhitelist;
 function shouldAuthorizeRequest(options) {
   if (options.crossDomain === false || crossOriginWhitelist.indexOf('*') > -1) {
     return true;
   }
 
-  var urlOrigin = urlOrigins[options.url] = urlOrigins[options.url] || extractLocationOrigin(options.url);
+  let urlOrigin = urlOrigins[options.url] = urlOrigins[options.url] || extractLocationOrigin(options.url);
   return Ember.A(crossOriginWhitelist).any(matchDomain(urlOrigin));
 }
 
@@ -60,18 +62,18 @@ function registerFactories(application) {
 
 function ajaxPrefilter(options, originalOptions, jqXHR) {
   if (shouldAuthorizeRequest(options)) {
-    jqXHR.__simple_auth_authorized__ = true;
+    jqXHR['__simple_auth_authorized__'] = true;
     ajaxPrefilter.authorizer.authorize(jqXHR, options);
   }
 }
 
 function ajaxError(event, jqXHR) {
-  if (!!jqXHR.__simple_auth_authorized__ && jqXHR.status === 401) {
+  if (!!jqXHR['__simple_auth_authorized__'] && jqXHR.status === 401) {
     ajaxError.session.trigger('authorizationFailed');
   }
 }
 
-var didSetupAjaxHooks = false;
+let didSetupAjaxHooks = false;
 
 /**
   @method setup
@@ -81,8 +83,8 @@ export default function(container, application) {
   application.deferReadiness();
   registerFactories(application);
 
-  var store   = container.lookup(Configuration.base.store);
-  var session = container.lookup(Configuration.base.session);
+  let store   = container.lookup(Configuration.base.store);
+  let session = container.lookup(Configuration.base.session);
   session.set('store', store);
   Ember.A(['controller', 'route', 'component']).forEach(function(component) {
     application.inject(component, Configuration.base.sessionPropertyName, Configuration.base.session);
@@ -93,8 +95,8 @@ export default function(container, application) {
   });
 
   if (!Ember.isEmpty(Configuration.base.authorizer)) {
-    var authorizer = container.lookup(Configuration.base.authorizer);
-    Ember.assert('The configured authorizer "' + Configuration.base.authorizer + '" could not be found in the container!', !Ember.isEmpty(authorizer));
+    let authorizer = container.lookup(Configuration.base.authorizer);
+    Ember.assert(`The configured authorizer "${Configuration.base.authorizer}" could not be found in the container!`, !Ember.isEmpty(authorizer));
     authorizer.set('session', session);
     ajaxPrefilter.authorizer = authorizer;
     ajaxError.session = session;
@@ -108,7 +110,7 @@ export default function(container, application) {
     Ember.Logger.info('No authorizer was configured for Ember Simple Auth - specify one if backend requests need to be authorized.');
   }
 
-  var advanceReadiness = function() {
+  let advanceReadiness = function() {
     application.advanceReadiness();
   };
   session.restore().then(advanceReadiness, advanceReadiness);

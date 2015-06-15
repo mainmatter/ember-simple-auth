@@ -18,6 +18,7 @@ import Configuration from './../configuration';
   @namespace SimpleAuth.Authorizers
   @module simple-auth-devise/authorizers/devise
   @extends Base
+  @public
 */
 export default Base.extend({
   /**
@@ -29,6 +30,7 @@ export default Base.extend({
     @property tokenAttributeName
     @type String
     @default 'token'
+    @public
   */
   tokenAttributeName: 'token',
 
@@ -41,8 +43,18 @@ export default Base.extend({
     @property identificationAttributeName
     @type String
     @default 'email'
+    @public
   */
   identificationAttributeName: 'email',
+
+  /**
+    @method init
+    @private
+  */
+  init() {
+    this.tokenAttributeName          = Configuration.devise.tokenAttributeName;
+    this.identificationAttributeName = Configuration.devise.identificationAttributeName;
+  },
 
   /**
     Authorizes an XHR request by sending the `token` and `email`
@@ -55,24 +67,15 @@ export default Base.extend({
     @method authorize
     @param {jqXHR} jqXHR The XHR request to authorize (see http://api.jquery.com/jQuery.ajax/#jqXHR)
     @param {Object} requestOptions The options as provided to the `$.ajax` method (see http://api.jquery.com/jQuery.ajaxPrefilter/)
+    @public
   */
-
-  /**
-    @method init
-    @private
-  */
-  init: function() {
-    this.tokenAttributeName          = Configuration.devise.tokenAttributeName;
-    this.identificationAttributeName = Configuration.devise.identificationAttributeName;
-  },
-
-  authorize: function(jqXHR) {
-    var secureData         = this.get('session.secure');
-    var userToken          = secureData[this.tokenAttributeName];
-    var userIdentification = secureData[this.identificationAttributeName];
+  authorize(jqXHR) {
+    let secureData         = this.get('session.secure');
+    let userToken          = secureData[this.tokenAttributeName];
+    let userIdentification = secureData[this.identificationAttributeName];
     if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userIdentification)) {
-      var authData = this.tokenAttributeName + '="' + userToken + '", ' + this.identificationAttributeName + '="' + userIdentification + '"';
-      jqXHR.setRequestHeader('Authorization', 'Token ' + authData);
+      let authData = `${this.tokenAttributeName}="${userToken}", ${this.identificationAttributeName}="${userIdentification}"`;
+      jqXHR.setRequestHeader('Authorization', `Token ${authData}`);
     }
   }
 });

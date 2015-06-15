@@ -5,7 +5,11 @@ import Torii from 'ember-simple-auth/authenticators/torii';
 
 describe('Torii', function() {
   beforeEach(function() {
-    this.torii         = { fetch: function() {}, open: function() {}, close: function() {} };
+    this.torii         = {
+      fetch() {},
+      open() {},
+      close() {}
+    };
     this.authenticator = Torii.create({ torii: this.torii });
   });
 
@@ -19,9 +23,8 @@ describe('Torii', function() {
       });
 
       it('unsets the provider', function(done) {
-        var _this = this;
         this.authenticator.provider = 'provider';
-        this.authenticator.restore(data).then(null, function(data) {
+        this.authenticator.restore(data).then(null, (data) => {
           expect(_this.authenticator.provider).to.be.null;
           done();
         });
@@ -42,8 +45,7 @@ describe('Torii', function() {
         });
 
         it('remembers the provider', function(done) {
-          var _this = this;
-          this.authenticator.restore({ some: 'data', provider: 'provider' }).then(function(data) {
+          this.authenticator.restore({ some: 'data', provider: 'provider' }).then((data) => {
             expect(_this.authenticator.provider).to.eql('provider');
             done();
           });
@@ -78,8 +80,7 @@ describe('Torii', function() {
       });
 
       it('remembers the provider', function(done) {
-        var _this = this;
-        this.authenticator.authenticate('provider').then(function(data) {
+        this.authenticator.authenticate('provider').then((data) => {
           expect(_this.authenticator.provider).to.eql('provider');
           done();
         });
@@ -114,9 +115,8 @@ describe('Torii', function() {
       });
 
       it('unsets the provider', function(done) {
-        var _this = this;
         this.authenticator.provider = 'provider';
-        this.authenticator.invalidate({ some: 'data' }).then(function(data) {
+        this.authenticator.invalidate({ some: 'data' }).then((data) => {
           expect(_this.authenticator.provider).to.be.null;
           done();
         });
@@ -136,9 +136,8 @@ describe('Torii', function() {
       });
 
       it('keeps the provider', function(done) {
-        var _this = this;
         this.authenticator.provider = 'provider';
-        this.authenticator.invalidate({ some: 'data' }).then(null, function(data) {
+        this.authenticator.invalidate({ some: 'data' }).then(null, (data) => {
           expect(_this.authenticator.provider).to.eql('provider');
           done();
         });

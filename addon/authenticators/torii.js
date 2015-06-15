@@ -12,6 +12,7 @@ import Base from './base';
   @namespace SimpleAuth.Authenticators
   @module simple-auth-torii/authenticators/torii
   @extends Base
+  @public
 */
 export default Base.extend({
   /**
@@ -32,21 +33,21 @@ export default Base.extend({
     @method restore
     @param {Object} data The data to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
+    @public
   */
-  restore: function(data) {
-    var _this = this;
+  restore(data) {
     data      = data || {};
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       if (!Ember.isEmpty(data.provider)) {
-        var provider = data.provider;
-        _this.torii.fetch(data.provider, data).then(function(data) {
-          _this.resolveWith(provider, data, resolve);
-        }, function() {
-          delete _this.provider;
+        let { provider } = data;
+        this.torii.fetch(data.provider, data).then((data) => {
+          this.resolveWith(provider, data, resolve);
+        }, () => {
+          delete this.provider;
           reject();
         });
       } else {
-        delete _this.provider;
+        delete this.provider;
         reject();
       }
     });
@@ -61,12 +62,12 @@ export default Base.extend({
     @param {String} provider The provider to authenticate the session with
     @param {Object} options The options to pass to the torii provider
     @return {Ember.RSVP.Promise} A promise that resolves when the provider successfully authenticates a user and rejects otherwise
+    @public
   */
-  authenticate: function(provider, options) {
-    var _this = this;
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      _this.torii.open(provider, options || {}).then(function(data) {
-        _this.resolveWith(provider, data, resolve);
+  authenticate(provider, options) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this.torii.open(provider, options || {}).then((data) => {
+        this.resolveWith(provider, data, resolve);
       }, reject);
     });
   },
@@ -77,12 +78,12 @@ export default Base.extend({
     @method invalidate
     @param {Object} data The data that's stored in the session
     @return {Ember.RSVP.Promise} A promise that resolves when the provider successfully closes and rejects otherwise
+    @public
   */
-  invalidate: function() {
-    var _this = this;
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      _this.torii.close(_this.provider).then(function() {
-        delete _this.provider;
+  invalidate() {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this.torii.close(this.provider).then(() => {
+        delete this.provider;
         resolve();
       }, reject);
     });
@@ -92,10 +93,9 @@ export default Base.extend({
     @method resolveWith
     @private
   */
-  resolveWith: function(provider, data, resolve) {
+  resolveWith(provider, data, resolve) {
     data.provider = provider;
     this.provider = data.provider;
     resolve(data);
   }
-
 });

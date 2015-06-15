@@ -39,6 +39,7 @@ import Configuration from './../configuration';
   @namespace SimpleAuth.Stores
   @module simple-auth-cookie-store/stores/cookie
   @extends Stores.Base
+  @public
 */
 export default Base.extend({
 
@@ -53,6 +54,7 @@ export default Base.extend({
     @property cookieDomain
     @type String
     @default null
+    @public
   */
   cookieDomain: null,
 
@@ -65,6 +67,7 @@ export default Base.extend({
     @property cookieName
     @readOnly
     @type String
+    @public
   */
   cookieName: 'ember_simple_auth:session',
 
@@ -79,6 +82,7 @@ export default Base.extend({
     @property cookieExpirationTime
     @readOnly
     @type Integer
+    @public
   */
   cookieExpirationTime: null,
 
@@ -110,7 +114,7 @@ export default Base.extend({
     @method init
     @private
   */
-  init: function() {
+  init() {
     this.cookieName           = Configuration.cookie.name;
     this.cookieExpirationTime = Configuration.cookie.expirationTime;
     this.cookieDomain         = Configuration.cookie.domain;
@@ -124,10 +128,11 @@ export default Base.extend({
 
     @method persist
     @param {Object} data The data to persist
+    @public
   */
-  persist: function(data) {
+  persist(data) {
     data           = JSON.stringify(data || {});
-    var expiration = this.calculateExpirationTime();
+    let expiration = this.calculateExpirationTime();
     this.write(data, expiration);
     this._lastData = this.restore();
   },
@@ -137,9 +142,10 @@ export default Base.extend({
 
     @method restore
     @return {Object} All data currently persisted in the cookie
+    @public
   */
-  restore: function() {
-    var data = this.read(this.cookieName);
+  restore() {
+    let data = this.read(this.cookieName);
     if (Ember.isEmpty(data)) {
       return {};
     } else {
@@ -153,8 +159,9 @@ export default Base.extend({
     [`SimpleAuth.Stores.Cookie#cookieName`](#SimpleAuth-Stores-Cookie-cookieName)).
 
     @method clear
+    @public
   */
-  clear: function() {
+  clear() {
     this.write(null, 0);
     this._lastData = {};
   },
@@ -163,8 +170,8 @@ export default Base.extend({
     @method read
     @private
   */
-  read: function(name) {
-    var value = document.cookie.match(new RegExp(name + '=([^;]+)')) || [];
+  read(name) {
+    let value = document.cookie.match(new RegExp(`${name}=([^;]+)`)) || [];
     return decodeURIComponent(value[1] || '');
   },
 
@@ -172,8 +179,8 @@ export default Base.extend({
     @method calculateExpirationTime
     @private
   */
-  calculateExpirationTime: function() {
-    var cachedExpirationTime = this.read(this.cookieName + ':expiration_time');
+  calculateExpirationTime() {
+    let cachedExpirationTime = this.read(`${this.cookieName}:expiration_time`);
     cachedExpirationTime     = !!cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
     return !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : cachedExpirationTime;
   },
@@ -182,15 +189,15 @@ export default Base.extend({
     @method write
     @private
   */
-  write: function(value, expiration) {
-    var path        = '; path=/';
-    var domain      = Ember.isEmpty(this.cookieDomain) ? '' : '; domain=' + this.cookieDomain;
-    var expires     = Ember.isEmpty(expiration) ? '' : '; expires=' + new Date(expiration).toUTCString();
-    var secure      = !!this._secureCookies ? ';secure' : '';
-    document.cookie = this.cookieName + '=' + encodeURIComponent(value) + domain + path + expires + secure;
-    if(expiration !== null) {
-      var cachedExpirationTime = this.read(this.cookieName + ':expiration_time');
-      document.cookie = this.cookieName + ':expiration_time=' + encodeURIComponent(this.cookieExpirationTime || cachedExpirationTime) + domain + path + expires + secure;
+  write(value, expiration) {
+    let path        = '; path=/';
+    let domain      = Ember.isEmpty(this.cookieDomain) ? '' : `; domain=${this.cookieDomain}`;
+    let expires     = Ember.isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
+    let secure      = !!this._secureCookies ? ';secure' : '';
+    document.cookie = `${this.cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
+    if (expiration !== null) {
+      let cachedExpirationTime = this.read(`${this.cookieName}:expiration_time`);
+      document.cookie = `${this.cookieName}:expiration_time=${encodeURIComponent(this.cookieExpirationTime || cachedExpirationTime)}${domain}${path}${expires}${secure}`;
     }
   },
 
@@ -198,8 +205,8 @@ export default Base.extend({
     @method syncData
     @private
   */
-  syncData: function() {
-    var data = this.restore();
+  syncData() {
+    let data = this.restore();
     if (!objectsAreEqual(data, this._lastData)) {
       this._lastData = data;
       this.trigger('sessionDataUpdated', data);
@@ -214,20 +221,12 @@ export default Base.extend({
     @method initPageVisibility
     @private
   */
-  initPageVisibility: function(){
-    var keys = {
-      hidden:       'visibilitychange',
-      webkitHidden: 'webkitvisibilitychange',
-      mozHidden:    'mozvisibilitychange',
-      msHidden:     'msvisibilitychange'
-    };
-    for (var stateKey in keys) {
-      if (stateKey in document) {
-        break;
-      }
-    }
+  initPageVisibility() {
+    let [event] = Ember.A(['visibilitychange', 'webkitvisibilitychange', 'mozvisibilitychange', 'msvisibilitychange']).find((event) => {
+      return document[event];
+    });
     return function() {
-      return !document[stateKey];
+      return !document[event];
     };
   },
 
@@ -235,11 +234,11 @@ export default Base.extend({
     @method renew
     @private
   */
-  renew: function() {
-    var data = this.restore();
+  renew() {
+    let data = this.restore();
     if (!Ember.isEmpty(data) && data !== {}) {
       data           = Ember.typeOf(data) === 'string' ? data : JSON.stringify(data || {});
-      var expiration = this.calculateExpirationTime();
+      let expiration = this.calculateExpirationTime();
       this.write(data, expiration);
     }
   },
@@ -248,7 +247,7 @@ export default Base.extend({
     @method renewExpiration
     @private
   */
-  renewExpiration: function() {
+  renewExpiration() {
     if (this.isPageVisible()) {
       this.renew();
     }

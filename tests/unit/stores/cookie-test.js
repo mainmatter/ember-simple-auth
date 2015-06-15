@@ -45,8 +45,8 @@ describe('Stores.Cookie', () => {
     });
 
     afterEach(() => {
-      //TODO: make resetting the config easier
-      Configuration.load({ lookup: () => { return Ember.Object.create(); } }, {});
+      // TODO: make resetting the config easier
+      Configuration.load({ lookup: () => Ember.Object.create() }, {});
     });
   });
 
@@ -79,7 +79,7 @@ describe('Stores.Cookie', () => {
     });
 
     it('stores the expiration time in a cookie named "test:session:expiration_time"', () => {
-      expect(document.cookie).to.contain(store.cookieName + ':expiration_time=60');
+      expect(document.cookie).to.contain(`${store.cookieName}:expiration_time=60`);
     });
   });
 

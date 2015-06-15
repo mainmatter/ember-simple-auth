@@ -9,7 +9,9 @@ import Configuration from 'ember-simple-auth/configuration';
 describe('Devise', function() {
   beforeEach(function() {
     this.authorizer = Devise.create();
-    this.request    = { setRequestHeader: function() {} };
+    this.request    = {
+      setRequestHeader() {}
+    };
     this.session    = Session.create();
     this.session.setProperties({ store: EphemeralStore.create() });
     this.authorizer.set('session', this.session);
@@ -30,8 +32,12 @@ describe('Devise', function() {
     });
 
     afterEach(function() {
-      //TODO: make resetting the config easier
-      Configuration.load({ lookup: function() { return Ember.Object.create(); } }, {});
+      // TODO: make resetting the config easier
+      Configuration.load({
+        lookup() {
+          return Ember.Object.create();
+        }
+      }, {});
     });
   });
 
@@ -85,8 +91,12 @@ describe('Devise', function() {
         });
 
         afterEach(function() {
-          //TODO: make resetting the config easier
-          Configuration.load({ lookup: function() { return Ember.Object.create(); } }, {});
+          // TODO: make resetting the config easier
+          Configuration.load({
+            lookup() {
+              return Ember.Object.create();
+            }
+          }, {});
         });
       });
 
