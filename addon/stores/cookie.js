@@ -111,9 +111,9 @@ export default Base.extend({
     @private
   */
   init: function() {
-    this.cookieName           = Configuration.cookie.cookieName;
-    this.cookieExpirationTime = Configuration.cookie.cookieExpirationTime;
-    this.cookieDomain         = Configuration.cookie.cookieDomain;
+    this.cookieName           = Configuration.cookie.name;
+    this.cookieExpirationTime = Configuration.cookie.expirationTime;
+    this.cookieDomain         = Configuration.cookie.domain;
     this.isPageVisible        = this.initPageVisibility();
     this.syncData();
     this.renewExpiration();
