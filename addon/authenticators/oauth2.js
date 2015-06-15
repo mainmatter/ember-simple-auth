@@ -108,9 +108,7 @@ export default Base.extend({
       let now = (new Date()).getTime();
       if (!Ember.isEmpty(data['expires_at']) && data['expires_at'] < now) {
         if (this.refreshAccessTokens) {
-          this.refreshAccessToken(data['expires_in'], data['refresh_token']).then(function(data) {
-            resolve(data);
-          }, reject);
+          this.refreshAccessToken(data['expires_in'], data['refresh_token']).then(resolve, reject);
         } else {
           reject();
         }
@@ -157,8 +155,8 @@ export default Base.extend({
         let scopesString = Ember.makeArray(options.scope).join(' ');
         Ember.merge(data, { scope: scopesString });
       }
-      this.makeRequest(this.serverTokenEndpoint, data).then(function(response) {
-        Ember.run(function() {
+      this.makeRequest(this.serverTokenEndpoint, data).then((response) => {
+        Ember.run(() => {
           let expiresAt = this.absolutizeExpirationTime(response['expires_in']);
           this.scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
           if (!Ember.isEmpty(expiresAt)) {
@@ -166,8 +164,8 @@ export default Base.extend({
           }
           resolve(response);
         });
-      }, function(xhr) {
-        Ember.run(function() {
+      }, (xhr) => {
+        Ember.run(() => {
           reject(xhr.responseJSON || xhr.responseText);
         });
       });
@@ -191,10 +189,10 @@ export default Base.extend({
     }
     return new Ember.RSVP.Promise((resolve) => {
       if (Ember.isEmpty(this.serverTokenRevocationEndpoint)) {
-        success(resolve);
+        success.apply(this, [resolve]);
       } else {
         let requests = [];
-        Ember.A(['access_token', 'refresh_token']).forEach(function(tokenType) {
+        Ember.A(['access_token', 'refresh_token']).forEach((tokenType) => {
           let token = data[tokenType];
           if (!Ember.isEmpty(token)) {
             requests.push(this.makeRequest(this.serverTokenRevocationEndpoint, {
@@ -202,8 +200,8 @@ export default Base.extend({
             }));
           }
         });
-        Ember.$.when.apply(Ember.$, requests).always(function() {
-          success(resolve);
+        Ember.$.when.apply(Ember.$, requests).always(() => {
+          success.apply(this, [resolve]);
         });
       }
     });
@@ -261,9 +259,9 @@ export default Base.extend({
   */
   refreshAccessToken(expiresIn, refreshToken) {
     let data  = { 'grant_type': 'refresh_token', 'refresh_token': refreshToken };
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      this.makeRequest(this.serverTokenEndpoint, data).then(function(response) {
-        Ember.run(function() {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this.makeRequest(this.serverTokenEndpoint, data).then((response) => {
+        Ember.run(() => {
           expiresIn     = response['expires_in'] || expiresIn;
           refreshToken  = response['refresh_token'] || refreshToken;
           let expiresAt = this.absolutizeExpirationTime(expiresIn);
@@ -272,7 +270,7 @@ export default Base.extend({
           this.trigger('sessionDataUpdated', data);
           resolve(data);
         });
-      }, function(xhr, status, error) {
+      }, (xhr, status, error) => {
         Ember.Logger.warn(`Access token could not be refreshed - server responded with ${error}.`);
         reject();
       });
