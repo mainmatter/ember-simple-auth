@@ -135,7 +135,18 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @property content
     @private
   */
-  content: { secure: {} },
+  content: null,
+
+  /**
+    Initializes the content object so references aren't shared across
+    instances.
+
+    @method initializeContent
+    @private
+  */
+  initializeContent: Ember.on('init', function() {
+    this.set('content', { secure: {} });
+  }),
 
   /**
     Authenticates the session with an `authenticator` and appropriate
