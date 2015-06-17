@@ -1,3 +1,7 @@
+# 0.8.0
+
+* Correctly initialize the session's `content`, see #556.
+
 # 0.8.0-beta.3
 
 * Fixed a bug related to the mechanism for automatic translation of session
