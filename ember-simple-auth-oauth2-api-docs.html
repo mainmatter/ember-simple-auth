@@ -77,7 +77,6 @@
     </style>
   </head>
   <body>
-    
       <header class="navbar navbar-default navbar-fixed-top">
         <div class="container">
           <div class="collapse navbar-collapse">
@@ -85,25 +84,21 @@
               <li class="dropdown" id="classesDropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> <span class="caption"></span></a>
                 <ul class="dropdown-menu">
-                  
                     <li>
                       <a href="#SimpleAuth-Authenticators-OAuth2">SimpleAuth.Authenticators.OAuth2</a>
                     </li>
-                  
                     <li>
                       <a href="#SimpleAuth-Authorizers-OAuth2">SimpleAuth.Authorizers.OAuth2</a>
                     </li>
-                  
                     <li>
                       <a href="#SimpleAuth-Configuration-OAuth2">SimpleAuth.Configuration.OAuth2</a>
                     </li>
-                  
                 </ul>
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.8.0-beta.3"><span class="label label-primary">0.8.0-beta.3</span></a></p></li>
+              <li><p class="navbar-text"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/0.8.0"><span class="label label-primary">0.8.0</span></a></p></li>
             </ul>
           </div>
         </div>
@@ -112,7 +107,6 @@
         <div class="row">
           <div class="alert alert-info">For a general overview of how Ember Simple Auth works, see the <a href="https://github.com/simplabs/ember-simple-auth#readme" title="Ember Simple Auth's README github" class="alert-link">README</a></div>
         </div>
-        
           <div class="row">
             <div class="col-md-12">
               <div class="page-header">
@@ -123,7 +117,6 @@
           </div>
           <div class="row">
             <div class="col-md-9" id="main-content">
-              
               <p>Authenticator that conforms to OAuth 2
 (<a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>), specifically the <em>&quot;Resource
 Owner Password Credentials Grant Type&quot;</em>.</p>
@@ -144,377 +137,245 @@ container.</em></p>
                   <pre><code class="lang-javascript javascript">var OAuth2 = requireModule('simple-auth-oauth2/authenticators/oauth2')['default'];</code></pre>
                 </dd>
               </dl>
-              
                 <h3 class="section">Properties</h3>
-                
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L30"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title property">serverTokenEndpoint <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>The endpoint on the server the authenticator acquires the access token
-from.</p>
-<p>This value can be configured via
-<a href="#SimpleAuth-Configuration-OAuth2-serverTokenEndpoint"><code>SimpleAuth.Configuration.OAuth2#serverTokenEndpoint</code></a>.</p>
-
-    
-      Defaults to <code>&#x27;/token&#x27;</code>
-      
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L30"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title property">serverTokenEndpoint <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The endpoint on the server the authenticator acquires the access token
+                  from.</p>
+                  <p>This value can be configured via
+                  <a href="#SimpleAuth-Configuration-OAuth2-serverTokenEndpoint"><code>SimpleAuth.Configuration.OAuth2#serverTokenEndpoint</code></a>.</p>
+                  
+                        Defaults to <code>&#x27;/token&#x27;</code>
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-OAuth2-serverTokenRevocationEndpoint" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L43"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title property">serverTokenRevocationEndpoint <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>The endpoint on the server the authenticator uses to revoke tokens. Only
-set this if the server actually supports token revokation.</p>
-<p>This value can be configured via
-<a href="#SimpleAuth-Configuration-OAuth2-serverTokenRevocationEndpoint"><code>SimpleAuth.Configuration.OAuth2#serverTokenRevocationEndpoint</code></a>.</p>
-
-    
-      Defaults to <code>null</code>
-      
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-OAuth2-serverTokenRevocationEndpoint" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L43"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title property">serverTokenRevocationEndpoint <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The endpoint on the server the authenticator uses to revoke tokens. Only
+                  set this if the server actually supports token revokation.</p>
+                  <p>This value can be configured via
+                  <a href="#SimpleAuth-Configuration-OAuth2-serverTokenRevocationEndpoint"><code>SimpleAuth.Configuration.OAuth2#serverTokenRevocationEndpoint</code></a>.</p>
+                  
+                        Defaults to <code>null</code>
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-OAuth2-refreshAccessTokens" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L56"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title property">refreshAccessTokens <span class="type">Boolean</span></h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>Sets whether the authenticator automatically refreshes access tokens.</p>
-<p>This value can be configured via
-<a href="#SimpleAuth-Configuration-OAuth2-refreshAccessTokens"><code>SimpleAuth.Configuration.OAuth2#refreshAccessTokens</code></a>.</p>
-
-    
-      Defaults to <code>true</code>
-      
-  </div>
-</div>
-
-                
-              
-              
-              
+                    <a id="SimpleAuth-Authenticators-OAuth2-refreshAccessTokens" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L56"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title property">refreshAccessTokens <span class="type">Boolean</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Sets whether the authenticator automatically refreshes access tokens.</p>
+                  <p>This value can be configured via
+                  <a href="#SimpleAuth-Configuration-OAuth2-refreshAccessTokens"><code>SimpleAuth.Configuration.OAuth2#refreshAccessTokens</code></a>.</p>
+                  
+                        Defaults to <code>true</code>
+                    </div>
+                  </div>
                 <h3 class="section">Methods</h3>
-                
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-OAuth2-restore" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L84"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      restore(data)
-      
-        <span class="type">&rarr; Ember.RSVP.Promise</span>
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>Restores the session from a set of session properties; <strong>will return a
-resolving promise when there&#39;s a non-empty <code>access_token</code> in the <code>data</code></strong>
-and a rejecting promise otherwise.</p>
-<p>This method also schedules automatic token refreshing when there are values
-for <code>refresh_token</code> and <code>expires_in</code> in the <code>data</code> and automatic token
-refreshing is not disabled (see
-<a href="#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens"><code>Authenticators.OAuth2#refreshAccessTokens</code></a>).</p>
-
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>data <span class="type">Object</span></dt>
-          <dd><p>The data to restore the session from</p>
-</dd>
-          
-        
-      </dl>
-    
-    
-      <h4 class="subsection">Returns</h4>
-      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
-      <p>A promise that when it resolves results in the session being authenticated</p>
-
-    
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-OAuth2-restore" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L84"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        restore(data)
+                          <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Restores the session from a set of session properties; <strong>will return a
+                  resolving promise when there&#39;s a non-empty <code>access_token</code> in the <code>data</code></strong>
+                  and a rejecting promise otherwise.</p>
+                  <p>This method also schedules automatic token refreshing when there are values
+                  for <code>refresh_token</code> and <code>expires_in</code> in the <code>data</code> and automatic token
+                  refreshing is not disabled (see
+                  <a href="#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens"><code>Authenticators.OAuth2#refreshAccessTokens</code></a>).</p>
+                  
+                        <h4 class="subsection">Arguments</h4>
+                        <dl class="params">
+                            <dt>data <span class="type">Object</span></dt>
+                            <dd><p>The data to restore the session from</p>
+                  </dd>
+                        </dl>
+                        <h4 class="subsection">Returns</h4>
+                        <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                        <p>A promise that when it resolves results in the session being authenticated</p>
+                  
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-OAuth2-authenticate" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L121"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      authenticate(options)
-      
-        <span class="type">&rarr; Ember.RSVP.Promise</span>
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>Authenticates the session with the specified <code>options</code>; makes a <code>POST</code>
-request to the
-<a href="#SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint"><code>Authenticators.OAuth2#serverTokenEndpoint</code></a>
-with the passed credentials and optional scope and receives the token in
-response (see <a href="http://tools.ietf.org/html/rfc6749#section-4.3">http://tools.ietf.org/html/rfc6749#section-4.3</a>).</p>
-<p><strong>If the credentials are valid (and the optionally requested scope is
-granted) and thus authentication succeeds, a promise that resolves with the
-server&#39;s response is returned</strong>, otherwise a promise that rejects with the
-error is returned.</p>
-<p>This method also schedules automatic token refreshing when there are values
-for <code>refresh_token</code> and <code>expires_in</code> in the server response and automatic
-token refreshing is not disabled (see
-<a href="#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens"><code>Authenticators.OAuth2#refreshAccessTokens</code></a>).</p>
-
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>options <span class="type">Object</span></dt>
-          <dd></dd>
-          
-            <dl class="props">
-              
-                <dt>options.identification <span class="type">String</span></dt>
-                <dd><p>The resource owner username</p>
-</dd>
-              
-                <dt>options.password <span class="type">String</span></dt>
-                <dd><p>The resource owner password</p>
-</dd>
-              
-                <dt>options.[scope] <span class="type">String|Array</span></dt>
-                <dd><p>The scope of the access request (see <a href="http://tools.ietf.org/html/rfc6749#section-3.3">RFC 6749, section 3.3</a>)</p>
-</dd>
-              
-            </dl>
-          
-        
-      </dl>
-    
-    
-      <h4 class="subsection">Returns</h4>
-      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
-      <p>A promise that resolves when an access token is successfully acquired from the server and rejects otherwise</p>
-
-    
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-OAuth2-authenticate" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L121"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        authenticate(options)
+                          <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Authenticates the session with the specified <code>options</code>; makes a <code>POST</code>
+                  request to the
+                  <a href="#SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint"><code>Authenticators.OAuth2#serverTokenEndpoint</code></a>
+                  with the passed credentials and optional scope and receives the token in
+                  response (see <a href="http://tools.ietf.org/html/rfc6749#section-4.3">http://tools.ietf.org/html/rfc6749#section-4.3</a>).</p>
+                  <p><strong>If the credentials are valid (and the optionally requested scope is
+                  granted) and thus authentication succeeds, a promise that resolves with the
+                  server&#39;s response is returned</strong>, otherwise a promise that rejects with the
+                  error is returned.</p>
+                  <p>This method also schedules automatic token refreshing when there are values
+                  for <code>refresh_token</code> and <code>expires_in</code> in the server response and automatic
+                  token refreshing is not disabled (see
+                  <a href="#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens"><code>Authenticators.OAuth2#refreshAccessTokens</code></a>).</p>
+                  
+                        <h4 class="subsection">Arguments</h4>
+                        <dl class="params">
+                            <dt>options <span class="type">Object</span></dt>
+                            <dd></dd>
+                              <dl class="props">
+                                  <dt>options.identification <span class="type">String</span></dt>
+                                  <dd><p>The resource owner username</p>
+                  </dd>
+                                  <dt>options.password <span class="type">String</span></dt>
+                                  <dd><p>The resource owner password</p>
+                  </dd>
+                                  <dt>options.[scope] <span class="type">String|Array</span></dt>
+                                  <dd><p>The scope of the access request (see <a href="http://tools.ietf.org/html/rfc6749#section-3.3">RFC 6749, section 3.3</a>)</p>
+                  </dd>
+                              </dl>
+                        </dl>
+                        <h4 class="subsection">Returns</h4>
+                        <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                        <p>A promise that resolves when an access token is successfully acquired from the server and rejects otherwise</p>
+                  
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-OAuth2-invalidate" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L170"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      invalidate(data)
-      
-        <span class="type">&rarr; Ember.RSVP.Promise</span>
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>Cancels any outstanding automatic token refreshes and returns a resolving
-promise.</p>
-
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>data <span class="type">Object</span></dt>
-          <dd><p>The data of the session to be invalidated</p>
-</dd>
-          
-        
-      </dl>
-    
-    
-      <h4 class="subsection">Returns</h4>
-      <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
-      <p>A resolving promise</p>
-
-    
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Authenticators-OAuth2-invalidate" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L170"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        invalidate(data)
+                          <span class="type">&rarr; Ember.RSVP.Promise</span>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Cancels any outstanding automatic token refreshes and returns a resolving
+                  promise.</p>
+                  
+                        <h4 class="subsection">Arguments</h4>
+                        <dl class="params">
+                            <dt>data <span class="type">Object</span></dt>
+                            <dd><p>The data of the session to be invalidated</p>
+                  </dd>
+                        </dl>
+                        <h4 class="subsection">Returns</h4>
+                        <p><span class="type return">&rarr; Ember.RSVP.Promise</span></p>
+                        <p>A resolving promise</p>
+                  
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-OAuth2-makeRequest" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L205"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      makeRequest(url, data)
-      
-        <span class="type">&rarr; Deferred object</span>
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>Sends an <code>AJAX</code> request to the <code>url</code>. This will always be a <em>&quot;POST&quot;</em>
-request with content type <em>&quot;application/x-www-form-urlencoded&quot;</em> as
-specified in <a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>.</p>
-<p>This method is not meant to be used directly but serves as an extension
-point to e.g. add <em>&quot;Client Credentials&quot;</em> (see
-<a href="http://tools.ietf.org/html/rfc6749#section-2.3">RFC 6749, section 2.3</a>).</p>
-
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>url <span class="type">Object</span></dt>
-          <dd><p>The url to send the request to</p>
-</dd>
-          
-        
-          <dt>data <span class="type">Object</span></dt>
-          <dd><p>The data to send with the request, e.g. username and password or the refresh token</p>
-</dd>
-          
-        
-      </dl>
-    
-    
-      <h4 class="subsection">Returns</h4>
-      <p><span class="type return">&rarr; Deferred object</span></p>
-      <p>A Deferred object (see <a href="http://api.jquery.com/category/deferred-object/">the jQuery docs</a>) that is compatible to Ember.RSVP.Promise; will resolve if the request succeeds, reject otherwise</p>
-
-    
-  </div>
-</div>
-
-                
-              
-              
-              
+                    <a id="SimpleAuth-Authenticators-OAuth2-makeRequest" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L205"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        makeRequest(url, data)
+                          <span class="type">&rarr; Deferred object</span>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Sends an <code>AJAX</code> request to the <code>url</code>. This will always be a <em>&quot;POST&quot;</em>
+                  request with content type <em>&quot;application/x-www-form-urlencoded&quot;</em> as
+                  specified in <a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>.</p>
+                  <p>This method is not meant to be used directly but serves as an extension
+                  point to e.g. add <em>&quot;Client Credentials&quot;</em> (see
+                  <a href="http://tools.ietf.org/html/rfc6749#section-2.3">RFC 6749, section 2.3</a>).</p>
+                  
+                        <h4 class="subsection">Arguments</h4>
+                        <dl class="params">
+                            <dt>url <span class="type">Object</span></dt>
+                            <dd><p>The url to send the request to</p>
+                  </dd>
+                            <dt>data <span class="type">Object</span></dt>
+                            <dd><p>The data to send with the request, e.g. username and password or the refresh token</p>
+                  </dd>
+                        </dl>
+                        <h4 class="subsection">Returns</h4>
+                        <p><span class="type return">&rarr; Deferred object</span></p>
+                        <p>A Deferred object (see <a href="http://api.jquery.com/category/deferred-object/">the jQuery docs</a>) that is compatible to Ember.RSVP.Promise; will resolve if the request succeeds, reject otherwise</p>
+                  
+                    </div>
+                  </div>
                 <h3 class="section">Events</h3>
-                
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authenticators-OAuth2-sessionDataUpdated" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    <h3 class="panel-title method">
-      sessionDataUpdated
-    </h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>Triggered when the authenticator refreshes the access token (see
-<a href="http://tools.ietf.org/html/rfc6749#section-6">RFC 6740, section 6</a>).</p>
-
-    
-      <h4 class="subsection">Parameters</h4>
-      <dl class="params">
-        
-          <dt>data <span class="type">Object</span></dt>
-          <dd><p>The updated session data</p>
-</dd>
-        
-      </dl>
-    
-  </div>
-</div>
-
-                
-              
+                    <a id="SimpleAuth-Authenticators-OAuth2-sessionDataUpdated" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authenticators/oauth2.js#L22"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        sessionDataUpdated
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Triggered when the authenticator refreshes the access token (see
+                  <a href="http://tools.ietf.org/html/rfc6749#section-6">RFC 6740, section 6</a>).</p>
+                  
+                        <h4 class="subsection">Parameters</h4>
+                        <dl class="params">
+                            <dt>data <span class="type">Object</span></dt>
+                            <dd><p>The updated session data</p>
+                  </dd>
+                        </dl>
+                    </div>
+                  </div>
             </div>
             <div class="col-md-3 overview">
-              
-  <h4>Extends</h4>
-  <p><span class="type">Base</span></p>
-
-
-              
-
-              
-  <h4>Properties</h4>
-  <ul class="list-unstyled">
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint">serverTokenEndpoint</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-OAuth2-serverTokenRevocationEndpoint">serverTokenRevocationEndpoint</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens">refreshAccessTokens</a>
-      </li>
-    
-  </ul>
-
-
-              
-
-              
-  <h4>Methods</h4>
-  <ul class="list-unstyled">
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-OAuth2-restore">restore</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-OAuth2-authenticate">authenticate</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-OAuth2-invalidate">invalidate</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-OAuth2-makeRequest">makeRequest</a>
-      </li>
-    
-  </ul>
-
-
-              
-
-              
-  <h4>Events</h4>
-  <ul class="list-unstyled">
-    
-      <li>
-        <a href="#SimpleAuth-Authenticators-OAuth2-sessionDataUpdated">sessionDataUpdated</a>
-      </li>
-    
-  </ul>
-
-
+                <h4>Extends</h4>
+                <p><span class="type">Base</span></p>
+                <h4>Properties</h4>
+                <ul class="list-unstyled">
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint">serverTokenEndpoint</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-OAuth2-serverTokenRevocationEndpoint">serverTokenRevocationEndpoint</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens">refreshAccessTokens</a>
+                    </li>
+                </ul>
+                <h4>Methods</h4>
+                <ul class="list-unstyled">
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-OAuth2-restore">restore</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-OAuth2-authenticate">authenticate</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-OAuth2-invalidate">invalidate</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-OAuth2-makeRequest">makeRequest</a>
+                    </li>
+                </ul>
+                <h4>Events</h4>
+                <ul class="list-unstyled">
+                    <li>
+                      <a href="#SimpleAuth-Authenticators-OAuth2-sessionDataUpdated">sessionDataUpdated</a>
+                    </li>
+                </ul>
             </div>
           </div>
-        
           <div class="row">
             <div class="col-md-12">
               <div class="page-header">
@@ -525,7 +386,6 @@ point to e.g. add <em>&quot;Client Credentials&quot;</em> (see
           </div>
           <div class="row">
             <div class="col-md-9" id="main-content">
-              
               <p>Authorizer that conforms to OAuth 2
 (<a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>) by sending a bearer token
 (<a href="http://tools.ietf.org/html/rfc6750">RFC 6749</a>) in the request&#39;s
@@ -544,83 +404,43 @@ point to e.g. add <em>&quot;Client Credentials&quot;</em> (see
                   <pre><code class="lang-javascript javascript">var OAuth2 = requireModule('simple-auth-oauth2/authorizers/oauth2')['default'];</code></pre>
                 </dd>
               </dl>
-              
-              
-              
                 <h3 class="section">Methods</h3>
-                
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Authorizers-OAuth2-authorize" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authorizers/oauth2.js#L18"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-    <h3 class="panel-title method">
-      authorize(jqXHR, requestOptions)
-      
-    </h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>Authorizes an XHR request by sending the <code>access_token</code> property from the
-session as a bearer token in the <code>Authorization</code> header:</p>
-<pre><code>Authorization: Bearer &lt;access_token&gt;
-</code></pre>
-    
-      <h4 class="subsection">Arguments</h4>
-      <dl class="params">
-        
-          <dt>jqXHR <span class="type">JqXHR</span></dt>
-          <dd><p>The XHR request to authorize (see <a href="http://api.jquery.com/jQuery.ajax/#jqXHR">http://api.jquery.com/jQuery.ajax/#jqXHR</a>)</p>
-</dd>
-          
-        
-          <dt>requestOptions <span class="type">Object</span></dt>
-          <dd><p>The options as provided to the <code>$.ajax</code> method (see <a href="http://api.jquery.com/jQuery.ajaxPrefilter/">http://api.jquery.com/jQuery.ajaxPrefilter/</a>)</p>
-</dd>
-          
-        
-      </dl>
-    
-    
-  </div>
-</div>
-
-                
-              
-              
-              
+                    <a id="SimpleAuth-Authorizers-OAuth2-authorize" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/authorizers/oauth2.js#L18"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                      <h3 class="panel-title method">
+                        authorize(jqXHR, requestOptions)
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Authorizes an XHR request by sending the <code>access_token</code> property from the
+                  session as a bearer token in the <code>Authorization</code> header:</p>
+                  <pre><code>Authorization: Bearer &lt;access_token&gt;
+                  </code></pre>
+                        <h4 class="subsection">Arguments</h4>
+                        <dl class="params">
+                            <dt>jqXHR <span class="type">JqXHR</span></dt>
+                            <dd><p>The XHR request to authorize (see <a href="http://api.jquery.com/jQuery.ajax/#jqXHR">http://api.jquery.com/jQuery.ajax/#jqXHR</a>)</p>
+                  </dd>
+                            <dt>requestOptions <span class="type">Object</span></dt>
+                            <dd><p>The options as provided to the <code>$.ajax</code> method (see <a href="http://api.jquery.com/jQuery.ajaxPrefilter/">http://api.jquery.com/jQuery.ajaxPrefilter/</a>)</p>
+                  </dd>
+                        </dl>
+                    </div>
+                  </div>
             </div>
             <div class="col-md-3 overview">
-              
-  <h4>Extends</h4>
-  <p><span class="type">Base</span></p>
-
-
-              
-
-              
-
-              
-
-              
-  <h4>Methods</h4>
-  <ul class="list-unstyled">
-    
-      <li>
-        <a href="#SimpleAuth-Authorizers-OAuth2-authorize">authorize</a>
-      </li>
-    
-  </ul>
-
-
-              
-
-              
-
+                <h4>Extends</h4>
+                <p><span class="type">Base</span></p>
+                <h4>Methods</h4>
+                <ul class="list-unstyled">
+                    <li>
+                      <a href="#SimpleAuth-Authorizers-OAuth2-authorize">authorize</a>
+                    </li>
+                </ul>
             </div>
           </div>
-        
           <div class="row">
             <div class="col-md-12">
               <div class="page-header">
@@ -631,7 +451,6 @@ session as a bearer token in the <code>Authorization</code> header:</p>
           </div>
           <div class="row">
             <div class="col-md-9" id="main-content">
-              
               <p>Ember Simple Auth OAuth2&#39;s configuration object.</p>
 <p>To change any of these values, set them on the application&#39;s environment
 object:</p>
@@ -651,115 +470,64 @@ object:</p>
                   <pre><code class="lang-javascript javascript">var OAuth2 = requireModule('simple-auth/configuration')['default'];</code></pre>
                 </dd>
               </dl>
-              
                 <h3 class="section">Properties</h3>
-                
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Configuration-OAuth2-serverTokenEndpoint" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/configuration.js#L26"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-      <span class="label label-info pull-right">static</span>
-    
-    <h3 class="panel-title property">serverTokenEndpoint <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>The endpoint on the server the authenticator acquires the access token
-from.</p>
-
-    
-      Defaults to <code>&#x27;/token&#x27;</code>
-      
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Configuration-OAuth2-serverTokenEndpoint" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/configuration.js#L26"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                        <span class="label label-info pull-right">static</span>
+                      <h3 class="panel-title property">serverTokenEndpoint <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The endpoint on the server the authenticator acquires the access token
+                  from.</p>
+                  
+                        Defaults to <code>&#x27;/token&#x27;</code>
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Configuration-OAuth2-serverTokenRevocationEndpoint" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/configuration.js#L38"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-      <span class="label label-info pull-right">static</span>
-    
-    <h3 class="panel-title property">serverTokenRevocationEndpoint <span class="type">String</span></h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>The endpoint on the server the authenticator uses to revoke tokens. Only
-set this if the server actually supports token revokation.</p>
-
-    
-      Defaults to <code>null</code>
-      
-  </div>
-</div>
-
-                
+                    <a id="SimpleAuth-Configuration-OAuth2-serverTokenRevocationEndpoint" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/configuration.js#L38"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                        <span class="label label-info pull-right">static</span>
+                      <h3 class="panel-title property">serverTokenRevocationEndpoint <span class="type">String</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>The endpoint on the server the authenticator uses to revoke tokens. Only
+                  set this if the server actually supports token revokation.</p>
+                  
+                        Defaults to <code>null</code>
+                    </div>
+                  </div>
                   <div class="panel panel-default">
-  <a id="SimpleAuth-Configuration-OAuth2-refreshAccessTokens" class="symbol-anchor"></a>
-  <div class="panel-heading">
-    <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/configuration.js#L50"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
-    
-    
-      <span class="label label-info pull-right">static</span>
-    
-    <h3 class="panel-title property">refreshAccessTokens <span class="type">Boolean</span></h3>
-  </div>
-  <div class="panel-body">
-    
-    <p>Sets whether the authenticator automatically refreshes access tokens.</p>
-
-    
-      Defaults to <code>true</code>
-      
-  </div>
-</div>
-
-                
-              
-              
-              
-              
-              
+                    <a id="SimpleAuth-Configuration-OAuth2-refreshAccessTokens" class="symbol-anchor"></a>
+                    <div class="panel-heading">
+                      <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/master/packages/ember-simple-auth-oauth2/lib/simple-auth-oauth2/configuration.js#L50"><span class="label label-default pull-right"><i class="fa fa-github"></i> source</span></a>
+                        <span class="label label-info pull-right">static</span>
+                      <h3 class="panel-title property">refreshAccessTokens <span class="type">Boolean</span></h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>Sets whether the authenticator automatically refreshes access tokens.</p>
+                  
+                        Defaults to <code>true</code>
+                    </div>
+                  </div>
             </div>
             <div class="col-md-3 overview">
-              
-
-              
-
-              
-  <h4>Properties</h4>
-  <ul class="list-unstyled">
-    
-      <li>
-        <a href="#SimpleAuth-Configuration-OAuth2-serverTokenEndpoint">serverTokenEndpoint</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Configuration-OAuth2-serverTokenRevocationEndpoint">serverTokenRevocationEndpoint</a>
-      </li>
-    
-      <li>
-        <a href="#SimpleAuth-Configuration-OAuth2-refreshAccessTokens">refreshAccessTokens</a>
-      </li>
-    
-  </ul>
-
-
-              
-
-              
-
-              
-
-              
-
+                <h4>Properties</h4>
+                <ul class="list-unstyled">
+                    <li>
+                      <a href="#SimpleAuth-Configuration-OAuth2-serverTokenEndpoint">serverTokenEndpoint</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Configuration-OAuth2-serverTokenRevocationEndpoint">serverTokenRevocationEndpoint</a>
+                    </li>
+                    <li>
+                      <a href="#SimpleAuth-Configuration-OAuth2-refreshAccessTokens">refreshAccessTokens</a>
+                    </li>
+                </ul>
             </div>
           </div>
-        
       </div>
       <script type="text/javascript" charset="utf-8">
         $(function() {
@@ -781,6 +549,5 @@ set this if the server actually supports token revokation.</p>
           updateDropdownCaption(dropdownCaption);
         });
       </script>
-    
   </body>
 </html>
