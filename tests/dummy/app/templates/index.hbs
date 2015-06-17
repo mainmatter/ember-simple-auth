@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>Simple example</h1>
+</div>
+{{#unless session.isAuthenticated}}
+  <div class="alert alert-info">
+    You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
+  </div>
+{{/unless}}

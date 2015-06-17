@@ -1,6 +1,6 @@
-import Configuration from './configuration';
-import getGlobalConfig from './utils/get-global-config';
-import setup from './setup';
+import Configuration from 'ember-simple-auth/configuration';
+import getGlobalConfig from 'ember-simple-auth/utils/get-global-config';
+import setup from 'ember-simple-auth/setup';
 
 export default {
   name:       'simple-auth',

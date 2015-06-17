@@ -21,4 +21,6 @@ var app = new EmberAddon({
   }
 });
 
+app.import('bower_components/bootstrap/dist/css/bootstrap.css');
+
 module.exports = app.toTree();
