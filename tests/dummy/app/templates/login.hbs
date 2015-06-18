@@ -13,3 +13,13 @@
   </div>
   <button type="submit" class="btn btn-default">Login</button>
 </form>
+{{#if errorMessage}}
+  <div class="alert alert-danger">
+    <p>
+      <strong>Login failed:</strong> <code>{{errorMessage}}</code>
+    </p>
+    <p>
+      Documentation of the error codes can be found in the <a href="http://tools.ietf.org/html/rfc6749#section-5.2" title="RFC 6749 - Error Response">Error Response section of RFC 6749</a>.
+    </p>
+  </div>
+{{/if}}
