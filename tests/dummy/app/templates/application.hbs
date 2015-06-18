@@ -1,11 +1,11 @@
 <nav class="navbar navbar-default navbar-fixed-top">
-  <div class="navbar-header">
-    {{#link-to 'index' classNames='navbar-brand'}}
-      Home
-    {{/link-to}}
-  </div>
-  <div class="collapse navbar-collapse navbar-ex5-collapse">
-    <ul class="nav navbar-nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      {{#link-to 'index' classNames='navbar-brand'}}
+        Home
+      {{/link-to}}
+    </div>
+    <ul class="nav navbar-nav navbar-left">
       {{#link-to 'protected' tagName='li'}}
         <a>Protected Page</a>
       {{/link-to}}
