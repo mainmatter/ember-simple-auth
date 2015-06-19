@@ -31,31 +31,31 @@ describe('Configuration', function() {
 
   describe('.load', function() {
     it('sets serverTokenEndpoint correctly', function() {
-      Configuration.load(this.container, { serverTokenEndpoint: 'serverTokenEndpoint' });
+      Configuration.load({ serverTokenEndpoint: 'serverTokenEndpoint' });
 
       expect(Configuration.serverTokenEndpoint).to.eql('serverTokenEndpoint');
     });
 
     it('sets resourceName correctly', function() {
-      Configuration.load(this.container, { resourceName: 'resourceName' });
+      Configuration.load({ resourceName: 'resourceName' });
 
       expect(Configuration.resourceName).to.eql('resourceName');
     });
 
     it('sets identificationAttributeName correctly', function() {
-      Configuration.load(this.container, { identificationAttributeName: 'identificationAttributeName' });
+      Configuration.load({ identificationAttributeName: 'identificationAttributeName' });
 
       expect(Configuration.identificationAttributeName).to.eql('identificationAttributeName');
     });
 
     it('sets tokenAttributeName correctly', function() {
-      Configuration.load(this.container, { tokenAttributeName: 'tokenAttributeName' });
+      Configuration.load({ tokenAttributeName: 'tokenAttributeName' });
 
       expect(Configuration.tokenAttributeName).to.eql('tokenAttributeName');
     });
   });
 
   afterEach(function() {
-    Configuration.load(this.container, {});
+    Configuration.load({});
   });
 });

@@ -7,11 +7,26 @@ var TestRoute = Ember.Route.extend(ApplicationRouteMixin);
 
 describe('ApplicationRouteMixin', function() {
   beforeEach(function() {
+    this.container     = { lookup: function() {} };
+    this.containerStub = sinon.stub(this.container, 'lookup');
+
+    this.session       = Session.create();
+    this.router        = { get: function() { return 'rootURL'; }, send: function() {} };
+    this.store         = EphemeralStore.create();
+    this.authorizer    = { set: function() {}, authorize: function() {} };
+    this.session.setProperties({ store: this.store, container: this.container });
+
+    this.containerStub.withArgs('router:main').returns(this.router);
+    this.containerStub.withArgs('simple-auth-session-store:local-storage').returns(this.store);
+    this.containerStub.withArgs('simple-auth-session:main').returns(this.session);
+    this.containerStub.withArgs('authorizer').returns(this.authorizer);
+
     this.session = Session.create();
     this.session.setProperties({ store: EphemeralStore.create() });
     this.route = Ember.Route.extend(ApplicationRouteMixin, {
       send: function() {},
-      transitionTo: function() {}
+      transitionTo: function() {},
+      container: this.container
     }).create({ session: this.session });
   });
 
