@@ -1,4 +1,5 @@
 var initializer                   = requireModule('simple-auth/initializer')['default'];
+var instanceInitializer           = requireModule('simple-auth/instance-Initializer')['default'];
 var Configuration                 = requireModule('simple-auth/configuration')['default'];
 var Session                       = requireModule('simple-auth/session')['default'];
 var BaseAuthenticator             = requireModule('simple-auth/authenticators/base')['default'];
