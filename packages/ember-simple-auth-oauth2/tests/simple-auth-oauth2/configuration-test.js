@@ -25,25 +25,25 @@ describe('Configuration', function() {
 
   describe('.load', function() {
     it('sets serverTokenEndpoint correctly', function() {
-      Configuration.load(this.container, { serverTokenEndpoint: 'serverTokenEndpoint' });
+      Configuration.load({ serverTokenEndpoint: 'serverTokenEndpoint' });
 
       expect(Configuration.serverTokenEndpoint).to.eql('serverTokenEndpoint');
     });
 
     it('sets serverTokenRevocationEndpoint correctly', function() {
-      Configuration.load(this.container, { serverTokenRevocationEndpoint: 'serverTokenRevocationEndpoint' });
+      Configuration.load({ serverTokenRevocationEndpoint: 'serverTokenRevocationEndpoint' });
 
       expect(Configuration.serverTokenRevocationEndpoint).to.eql('serverTokenRevocationEndpoint');
     });
 
     it('sets refreshAccessTokens correctly', function() {
-      Configuration.load(this.container, { refreshAccessTokens: false });
+      Configuration.load({ refreshAccessTokens: false });
 
       expect(Configuration.refreshAccessTokens).to.be.false;
     });
   });
 
   afterEach(function() {
-    Configuration.load(this.container, {});
+    Configuration.load({});
   });
 });

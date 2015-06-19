@@ -1,8 +1,14 @@
-import setup from 'simple-auth/setup';
+import globalSetup from 'simple-auth/setup';
+import initializer from 'simple-auth/initializer';
 import Configuration from 'simple-auth/configuration';
 import Session from 'simple-auth/session';
 import LocalStorageStore from 'simple-auth/stores/local-storage';
 import EphemeralStore from 'simple-auth/stores/ephemeral';
+
+var setup = function(container, application){
+  initializer.initialize(container, application);
+  globalSetup(container);
+};
 
 describe('setup', function() {
   beforeEach(function() {
@@ -26,12 +32,12 @@ describe('setup', function() {
     sinon.spy(this.authorizer, 'authorize');
   });
 
-  it("defers the application's readiness", function() {
-    sinon.spy(this.application, 'deferReadiness');
-    setup(this.container, this.application, {});
+  it("sets applicationRootUrl to the application's root URL", function() {
+    setup(this.container, this.application);
 
-    expect(this.application.deferReadiness).to.have.been.calledOnce;
+    expect(Configuration.applicationRootUrl).to.eql('rootURL');
   });
+
 
   it('registers the LocalStorage store', function() {
     setup(this.container, this.application);
@@ -59,8 +65,14 @@ describe('setup', function() {
     context('when a custom session class is configured', function() {
       beforeEach(function() {
         Configuration.session = 'session:custom';
+        this.load = Configuration.load;
+        Configuration.load = function(){};
         this.otherSession     = Session.extend().create({ store: this.store, container: this.container });
         this.containerStub.withArgs('session:custom').returns(this.otherSession);
+      });
+
+      afterEach(function(){
+        Configuration.load = this.load;
       });
 
       it('is of that class', function() {
@@ -77,13 +89,26 @@ describe('setup', function() {
       expect(this.session.store).to.eql(this.store);
     });
 
-    it('uses a custom store if specified', function() {
-      Configuration.store = 'simple-auth-session-store:ephemeral';
-      var store           = EphemeralStore.create();
-      this.containerStub.withArgs('simple-auth-session-store:ephemeral').returns(store);
-      setup(this.container, this.application);
+    context('uses a custom store if specified', function() {
 
-      expect(this.session.store).to.eql(store);
+      beforeEach(function(){
+        Configuration.store = 'simple-auth-session-store:ephemeral';
+        this.store           = EphemeralStore.create();
+        this.containerStub.withArgs('simple-auth-session-store:ephemeral').returns(this.store);
+
+        this.load = Configuration.load;
+        Configuration.load = function(){};
+
+        setup(this.container, this.application);
+      });
+
+      afterEach(function(){
+        Configuration.load = this.load;
+      });
+
+      it("is specified", function(){
+        expect(this.session.store).to.equal(this.store);
+      });
     });
 
     it("uses the app's container", function() {
@@ -102,20 +127,16 @@ describe('setup', function() {
     });
   });
 
-  it("advances the application's readiness", function(done) {
-    sinon.spy(this.application, 'advanceReadiness');
-    setup(this.container, this.application, {});
-
-    Ember.run.next(this, function() {
-      expect(this.application.advanceReadiness).to.have.been.calledOnce;
-      done();
-    });
-  });
-
   describe('the AJAX prefilter', function() {
     context('when an authorizer is configured', function() {
       beforeEach(function() {
         Configuration.authorizer = 'authorizer';
+        this.load = Configuration.load;
+        Configuration.load = function(){};
+      });
+
+      afterEach(function(){
+        Configuration.load = this.load;
       });
 
       it('uses the configured authorizer', function() {
@@ -216,7 +237,13 @@ describe('setup', function() {
       this.xhr                 = sinon.useFakeXMLHttpRequest();
       this.server              = sinon.fakeServer.create();
       this.server.autoRespond  = true;
+      this.load = Configuration.load;
+      Configuration.load = function(){};
       setup(this.container, this.application);
+    });
+
+    afterEach(function(){
+      Configuration.load = this.load;
     });
 
     describe("when the request's status is 401", function() {
@@ -277,6 +304,6 @@ describe('setup', function() {
   });
 
   afterEach(function() {
-    Configuration.load(this.container, {});
+    Configuration.load({});
   });
 });

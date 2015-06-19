@@ -1,8 +1,4 @@
 import Configuration from './configuration';
-import Session from './session';
-import LocalStorage from './stores/local-storage';
-import Ephemeral from './stores/ephemeral';
-
 var wildcardToken = '_wildcard_token_';
 
 function extractLocationOrigin(location) {
@@ -51,12 +47,6 @@ function shouldAuthorizeRequest(options) {
   return Ember.A(crossOriginWhitelist).any(matchDomain(urlOrigin));
 }
 
-function registerFactories(application) {
-  application.register('simple-auth-session-store:local-storage', LocalStorage);
-  application.register('simple-auth-session-store:ephemeral', Ephemeral);
-  application.register('simple-auth-session:main', Session);
-}
-
 function ajaxPrefilter(options, originalOptions, jqXHR) {
   if (shouldAuthorizeRequest(options)) {
     jqXHR.__simple_auth_authorized__ = true;
@@ -76,16 +66,12 @@ var didSetupAjaxHooks = false;
   @method setup
   @private
 **/
-export default function(container, application) {
-  application.deferReadiness();
-  registerFactories(application);
+export default function(container) {
+  Configuration.applicationRootUrl = container.lookup('router:main').get('rootURL') || '/';
 
   var store   = container.lookup(Configuration.store);
   var session = container.lookup(Configuration.session);
   session.set('store', store);
-  Ember.A(['controller', 'route', 'component']).forEach(function(component) {
-    application.inject(component, Configuration.sessionPropertyName, Configuration.session);
-  });
 
   crossOriginWhitelist = Ember.A(Configuration.crossOriginWhitelist).map(function(origin) {
     return extractLocationOrigin(origin);
@@ -107,8 +93,5 @@ export default function(container, application) {
     Ember.Logger.info('No authorizer was configured for Ember Simple Auth - specify one if backend requests need to be authorized.');
   }
 
-  var advanceReadiness = function() {
-    application.advanceReadiness();
-  };
-  session.restore().then(advanceReadiness, advanceReadiness);
+  session.restore();
 }

@@ -1,5 +1,5 @@
-import Configuration from './../configuration';
-
+import Configuration from '../configuration';
+import setup from '../setup';
 /**
   The mixin for the application route; defines actions that are triggered
   when authentication is required, when the session has successfully been
@@ -55,6 +55,11 @@ export default Ember.Mixin.create({
     @private
   */
   beforeModel: function(transition) {
+    if(!Configuration._setupDone){
+      setup(this.container);
+      Configuration._setupDone = true;
+    }
+
     this._super(transition);
     if (!this.get('_authEventListenersAssigned')) {
       this.set('_authEventListenersAssigned', true);
