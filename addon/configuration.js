@@ -185,9 +185,7 @@ export default {
       @method load
       @private
     */
-    load: loadConfig(defaults.base, function(container) {
-      this.applicationRootUrl = container.lookup('router:main').get('rootURL') || '/';
-    })
+    load: loadConfig(defaults.base)
   },
 
   cookie: {
@@ -347,9 +345,9 @@ export default {
     load: loadConfig(defaults.oauth2)
   },
 
-  load(container, config) {
+  load(config) {
     Ember.A(['base', 'cookie', 'devise', 'oauth2']).forEach((section) => {
-      this[section].load(container, config[section]);
+      this[section].load(config[section]);
     });
   }
 };

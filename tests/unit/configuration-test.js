@@ -20,7 +20,7 @@ describe('Configuration', () => {
   });
 
   afterEach(() => {
-    Configuration.load(container, {});
+    Configuration.load({});
   });
 
   describe('authenticationRoute', () => {
@@ -139,122 +139,116 @@ describe('Configuration', () => {
   });
 
   describe('.load', () => {
-    it("sets applicationRootUrl to the application's root URL", () => {
-      Configuration.load(container, {});
-
-      expect(Configuration.base.applicationRootUrl).to.eql('rootURL');
-    });
-
     it('sets authenticationRoute correctly', () => {
-      Configuration.load(container, { base: { authenticationRoute: 'authenticationRoute' } });
+      Configuration.load({ base: { authenticationRoute: 'authenticationRoute' } });
 
       expect(Configuration.base.authenticationRoute).to.eql('authenticationRoute');
     });
 
     it('sets routeAfterAuthentication correctly', () => {
-      Configuration.load(container, { base: { routeAfterAuthentication: 'routeAfterAuthentication' } });
+      Configuration.load({ base: { routeAfterAuthentication: 'routeAfterAuthentication' } });
 
       expect(Configuration.base.routeAfterAuthentication).to.eql('routeAfterAuthentication');
     });
 
     it('sets routeIfAlreadyAuthenticated correctly', () => {
-      Configuration.load(container, { base: { routeIfAlreadyAuthenticated: 'routeIfAlreadyAuthenticated' } });
+      Configuration.load({ base: { routeIfAlreadyAuthenticated: 'routeIfAlreadyAuthenticated' } });
 
       expect(Configuration.base.routeIfAlreadyAuthenticated).to.eql('routeIfAlreadyAuthenticated');
     });
 
     it('sets sessionPropertyName correctly', () => {
-      Configuration.load(container, { base: { sessionPropertyName: 'sessionPropertyName' } });
+      Configuration.load({ base: { sessionPropertyName: 'sessionPropertyName' } });
 
       expect(Configuration.base.sessionPropertyName).to.eql('sessionPropertyName');
     });
 
     it('sets authorizer correctly', () => {
-      Configuration.load(container, { base: { authorizer: 'authorizer' } });
+      Configuration.load({ base: { authorizer: 'authorizer' } });
 
       expect(Configuration.base.authorizer).to.eql('authorizer');
     });
 
     it('sets session correctly', () => {
-      Configuration.load(container, { base: { session: 'session' } });
+      Configuration.load({ base: { session: 'session' } });
 
       expect(Configuration.base.session).to.eql('session');
     });
 
     it('sets store correctly', () => {
-      Configuration.load(container, { base: { store: 'store' } });
+      Configuration.load({ base: { store: 'store' } });
 
       expect(Configuration.base.store).to.eql('store');
     });
 
     it('sets localStorageKey correctly', () => {
-      Configuration.load(container, { base: { localStorageKey: 'localStorageKey' } });
+      Configuration.load({ base: { localStorageKey: 'localStorageKey' } });
 
       expect(Configuration.base.localStorageKey).to.eql('localStorageKey');
     });
 
     it('sets crossOriginWhitelist correctly', () => {
-      Configuration.load(container, { base: { crossOriginWhitelist: ['https://some.origin:1234'] } });
+      Configuration.load({ base: { crossOriginWhitelist: ['https://some.origin:1234'] } });
 
       expect(Configuration.base.crossOriginWhitelist).to.eql(['https://some.origin:1234']);
     });
 
     it('sets cookieDomain correctly', () => {
-      Configuration.load(container, { cookie: { domain: '.example.com' } });
+      Configuration.load({ cookie: { domain: '.example.com' } });
 
       expect(Configuration.cookie.domain).to.eql('.example.com');
     });
 
     it('sets cookieName correctly', () => {
-      Configuration.load(container, { cookie: { name: 'cookieName' } });
+      Configuration.load({ cookie: { name: 'cookieName' } });
 
       expect(Configuration.cookie.name).to.eql('cookieName');
     });
 
     it('sets cookieExpirationTime correctly', () => {
-      Configuration.load(container, { cookie: { expirationTime: 1 } });
+      Configuration.load({ cookie: { expirationTime: 1 } });
 
       expect(Configuration.cookie.expirationTime).to.eql(1);
     });
 
     it('sets serverTokenEndpoint correctly', () => {
-      Configuration.load(container, { devise: { serverTokenEndpoint: 'serverTokenEndpoint' } });
+      Configuration.load({ devise: { serverTokenEndpoint: 'serverTokenEndpoint' } });
 
       expect(Configuration.devise.serverTokenEndpoint).to.eql('serverTokenEndpoint');
     });
 
     it('sets resourceName correctly', () => {
-      Configuration.load(container, { devise: { resourceName: 'resourceName' } });
+      Configuration.load({ devise: { resourceName: 'resourceName' } });
 
       expect(Configuration.devise.resourceName).to.eql('resourceName');
     });
 
     it('sets identificationAttributeName correctly', () => {
-      Configuration.load(container, { devise: { identificationAttributeName: 'identificationAttributeName' } });
+      Configuration.load({ devise: { identificationAttributeName: 'identificationAttributeName' } });
 
       expect(Configuration.devise.identificationAttributeName).to.eql('identificationAttributeName');
     });
 
     it('sets tokenAttributeName correctly', () => {
-      Configuration.load(container, { devise: { tokenAttributeName: 'tokenAttributeName' } });
+      Configuration.load({ devise: { tokenAttributeName: 'tokenAttributeName' } });
 
       expect(Configuration.devise.tokenAttributeName).to.eql('tokenAttributeName');
     });
 
     it('sets serverTokenEndpoint correctly', () => {
-      Configuration.load(container, { oauth2: { serverTokenEndpoint: 'serverTokenEndpoint' } });
+      Configuration.load({ oauth2: { serverTokenEndpoint: 'serverTokenEndpoint' } });
 
       expect(Configuration.oauth2.serverTokenEndpoint).to.eql('serverTokenEndpoint');
     });
 
     it('sets serverTokenRevocationEndpoint correctly', () => {
-      Configuration.load(container, { oauth2: { serverTokenRevocationEndpoint: 'serverTokenRevocationEndpoint' } });
+      Configuration.load({ oauth2: { serverTokenRevocationEndpoint: 'serverTokenRevocationEndpoint' } });
 
       expect(Configuration.oauth2.serverTokenRevocationEndpoint).to.eql('serverTokenRevocationEndpoint');
     });
 
     it('sets refreshAccessTokens correctly', () => {
-      Configuration.load(container, { oauth2: { refreshAccessTokens: false } });
+      Configuration.load({ oauth2: { refreshAccessTokens: false } });
 
       expect(Configuration.oauth2.refreshAccessTokens).to.be.false;
     });
