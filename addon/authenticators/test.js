@@ -6,8 +6,8 @@ export default Base.extend({
     return Ember.RSVP.resolve();
   },
 
-  authenticate() {
-    return Ember.RSVP.resolve();
+  authenticate(data) {
+    return Ember.RSVP.resolve(data);
   },
 
   invalidate() {
