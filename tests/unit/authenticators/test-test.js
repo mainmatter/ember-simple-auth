@@ -23,6 +23,14 @@ describe('Authenticators.Test', function() {
         done();
       });
     });
+
+    it('resolves with session data', function(done) {
+      this.authenticator.authenticate({ userId: 1, otherData: 'some-data' }).then(function(data) {
+        expect(true).to.be.true;
+        expect(data).to.eql({ userId: 1, otherData: 'some-data' });
+        done();
+      });
+    });
   });
 
   describe('#invalidate', function() {
