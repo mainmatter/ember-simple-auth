@@ -57,22 +57,19 @@ export default Ember.Mixin.create({
   beforeModel(transition) {
     setup(this.container).finally(() => {
       this._super(transition);
-      if (!this.get('_authEventListenersAssigned')) {
-        this.set('_authEventListenersAssigned', true);
-        Ember.A([
-          'sessionAuthenticationSucceeded',
-          'sessionAuthenticationFailed',
-          'sessionInvalidationSucceeded',
-          'sessionInvalidationFailed',
-          'authorizationFailed'
-        ]).forEach((event) => {
-          this.get(Configuration.base.sessionPropertyName).on(event, Ember.run.bind(this, function() {
-            Array.prototype.unshift.call(arguments, event);
-            let target = routeEntryComplete ? this : transition;
-            target.send.apply(target, arguments);
-          }));
-        });
-      }
+      Ember.A([
+        'sessionAuthenticationSucceeded',
+        'sessionAuthenticationFailed',
+        'sessionInvalidationSucceeded',
+        'sessionInvalidationFailed',
+        'authorizationFailed'
+      ]).forEach((event) => {
+        this.get(Configuration.base.sessionPropertyName).on(event, Ember.run.bind(this, function() {
+          Array.prototype.unshift.call(arguments, event);
+          let target = routeEntryComplete ? this : transition;
+          target.send.apply(target, arguments);
+        }));
+      });
     });
   },
 
