@@ -1,9 +1,9 @@
 import Configuration from 'configuration';
 
 export default function() {
-  Ember.Test.registerAsyncHelper('authenticateSession', function(app) {
+  Ember.Test.registerAsyncHelper('authenticateSession', function(app, sessionData) {
     var session = app.__container__.lookup(Configuration.session);
-    session.authenticate('simple-auth-authenticator:test');
+    session.authenticate('simple-auth-authenticator:test', sessionData);
     return wait();
   });
 

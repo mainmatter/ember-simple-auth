@@ -23,6 +23,12 @@ describe('Authenticators.Test', function() {
         done();
       });
     });
+
+    it('resolves with session data', function() {
+      return this.authenticator.authenticate({ userId: 1, otherData: 'some-data' }).then(function(data) {
+        expect(data).to.eql({ userId: 1, otherData: 'some-data' });
+      });
+    });
   });
 
   describe('#invalidate', function() {
