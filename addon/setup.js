@@ -108,6 +108,7 @@ export function register(application) {
 }
 
 export function inject(application) {
+  application.inject('service', 'session', Configuration.base.session);
   Ember.A(['controller', 'route', 'component']).forEach(function(component) {
     application.inject(component, Configuration.base.sessionPropertyName, Configuration.base.session);
   });
