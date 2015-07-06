@@ -147,23 +147,6 @@ describe('ApplicationRouteMixin', () => {
     });
   });
 
-  describe('the "authenticateSession" action', () => {
-    beforeEach(() => {
-      sinon.spy(route, 'transitionTo');
-      route.send = function(name) {
-        if (name === 'sessionRequiresAuthentication') {
-          route._actions.sessionRequiresAuthentication.apply(route);
-        }
-      };
-    });
-
-    it('transitions to "Configuration.base.authenticationRoute"', () => {
-      route._actions.authenticateSession.apply(route);
-
-      expect(route.transitionTo).to.have.been.calledWith(Configuration.base.authenticationRoute);
-    });
-  });
-
   describe('the "sessionAuthenticationSucceeded" action', () => {
     beforeEach(() => {
       sinon.spy(route, 'transitionTo');
@@ -200,15 +183,6 @@ describe('ApplicationRouteMixin', () => {
 
         expect(route.transitionTo).to.have.been.calledWith(Configuration.base.routeAfterAuthentication);
       });
-    });
-  });
-
-  describe('the "invalidateSession" action', () => {
-    it('invalidates the session', () => {
-      sinon.stub(session, 'invalidate').returns(Ember.RSVP.resolve());
-      route._actions.invalidateSession.apply(route);
-
-      expect(session.invalidate).to.have.been.calledOnce;
     });
   });
 
