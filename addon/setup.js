@@ -54,12 +54,6 @@ function shouldAuthorizeRequest(options) {
   return Ember.A(crossOriginWhitelist).any(matchDomain(urlOrigin));
 }
 
-function registerFactories(application) {
-  application.register('simple-auth-session-store:local-storage', LocalStorage);
-  application.register('simple-auth-session-store:ephemeral', Ephemeral);
-  application.register('simple-auth-session:main', Session);
-}
-
 function ajaxPrefilter(options, originalOptions, jqXHR) {
   if (shouldAuthorizeRequest(options)) {
     jqXHR['__simple_auth_authorized__'] = true;
@@ -79,16 +73,14 @@ let didSetupAjaxHooks = false;
   @method setup
   @private
 **/
-export default function(container, application) {
-  application.deferReadiness();
-  registerFactories(application);
 
-  let store   = container.lookup(Configuration.base.store);
+export default function(container) {
+  Configuration.base.applicationRootUrl = container.lookup('router:main').get('rootURL') || '/';
+
   let session = container.lookup(Configuration.base.session);
+  let store   = container.lookup(Configuration.base.store);
+
   session.set('store', store);
-  Ember.A(['controller', 'route', 'component']).forEach(function(component) {
-    application.inject(component, Configuration.base.sessionPropertyName, Configuration.base.session);
-  });
 
   crossOriginWhitelist = Ember.A(Configuration.base.crossOriginWhitelist).map(function(origin) {
     return extractLocationOrigin(origin);
@@ -110,8 +102,17 @@ export default function(container, application) {
     Ember.Logger.info('No authorizer was configured for Ember Simple Auth - specify one if backend requests need to be authorized.');
   }
 
-  let advanceReadiness = function() {
-    application.advanceReadiness();
-  };
-  session.restore().then(advanceReadiness, advanceReadiness);
+  return session.restore();
+}
+
+export function register(application) {
+  application.register('simple-auth-session-store:local-storage', LocalStorage);
+  application.register('simple-auth-session-store:ephemeral', Ephemeral);
+  application.register('simple-auth-session:main', Session);
+}
+
+export function inject(application) {
+  Ember.A(['controller', 'route', 'component']).forEach(function(component) {
+    application.inject(component, Configuration.base.sessionPropertyName, Configuration.base.session);
+  });
 }

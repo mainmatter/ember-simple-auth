@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
+import setup from '../setup';
 
 let routeEntryComplete = false;
 
@@ -54,9 +55,8 @@ export default Ember.Mixin.create({
     @private
   */
   beforeModel(transition) {
-    this._super(transition);
-    if (!this.get('_authEventListenersAssigned')) {
-      this.set('_authEventListenersAssigned', true);
+    setup(this.container).finally(() => {
+      this._super(transition);
       Ember.A([
         'sessionAuthenticationSucceeded',
         'sessionAuthenticationFailed',
@@ -70,7 +70,7 @@ export default Ember.Mixin.create({
           target.send.apply(target, arguments);
         }));
       });
-    }
+    });
   },
 
   actions: {

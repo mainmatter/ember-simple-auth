@@ -3,21 +3,43 @@ import { it } from 'ember-mocha';
 import Ember from 'ember';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import Session from 'ember-simple-auth/session';
+import LocalStorageStore from 'ember-simple-auth/stores/local-storage';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 import Configuration from 'ember-simple-auth/configuration';
 
 let TestRoute = Ember.Route.extend(ApplicationRouteMixin);
 let session;
 let route;
+let container;
+let router;
+let store;
+let lookupStub;
 
 describe('ApplicationRouteMixin', () => {
   beforeEach(() => {
+    container = {
+      lookup() {}
+    };
+    router = {
+      get() {
+        return 'rootURL';
+      }
+    };
+    store = LocalStorageStore.create();
+
     session = Session.create();
     session.setProperties({ store: EphemeralStore.create() });
+
     route = Ember.Route.extend(ApplicationRouteMixin, {
       send() {},
-      transitionTo() {}
+      transitionTo() {},
+      container
     }).create({ session });
+
+    lookupStub = sinon.stub(container, 'lookup');
+    lookupStub.withArgs('router:main').returns(router);
+    lookupStub.withArgs('simple-auth-session:main').returns(session);
+    lookupStub.withArgs('simple-auth-session-store:local-storage').returns(store);
   });
 
   describe('#beforeModel', () => {
@@ -47,6 +69,10 @@ describe('ApplicationRouteMixin', () => {
     });
 
     context('when there is an active route', () => {
+      beforeEach(() => {
+        Configuration.base.store = 'simple-auth-session-store:local-storage';
+      });
+
       beforeEach(() => {
         route.beforeModel(transition);
         route.activate();

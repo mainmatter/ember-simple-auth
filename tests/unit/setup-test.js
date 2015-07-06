@@ -1,7 +1,7 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import setup from 'ember-simple-auth/setup';
+import { default as setup, inject, register } from 'ember-simple-auth/setup';
 import Configuration from 'ember-simple-auth/configuration';
 import Session from 'ember-simple-auth/session';
 import LocalStorageStore from 'ember-simple-auth/stores/local-storage';
@@ -52,27 +52,20 @@ describe('setup', () => {
     Configuration.load(container, {});
   });
 
-  it("defers the application's readiness", () => {
-    sinon.spy(application, 'deferReadiness');
-    setup(container, application, {});
-
-    expect(application.deferReadiness).to.have.been.calledOnce;
-  });
-
   it('registers the LocalStorage store', () => {
-    setup(container, application);
+    register(application);
 
     expect(application.register).to.have.been.calledWith('simple-auth-session-store:local-storage', LocalStorageStore);
   });
 
   it('registers the Ephemeral store', () => {
-    setup(container, application);
+    register(application);
 
     expect(application.register).to.have.been.calledWith('simple-auth-session-store:ephemeral', EphemeralStore);
   });
 
   it('registers the Session', () => {
-    setup(container, application);
+    register(application);
 
     expect(application.register).to.have.been.calledWith('simple-auth-session:main', Session);
   });
@@ -91,7 +84,8 @@ describe('setup', () => {
       });
 
       it('is of that class', () => {
-        setup(container, application);
+        setup(container);
+        inject(application);
 
         let spyCall = application.inject.getCall(0);
         expect(spyCall.args[2]).to.eql('session:custom');
@@ -99,7 +93,7 @@ describe('setup', () => {
     });
 
     it('uses the LocalStorage store by default', () => {
-      setup(container, application);
+      setup(container);
 
       expect(session.store).to.be.an.instanceof(LocalStorageStore);
     });
@@ -108,33 +102,29 @@ describe('setup', () => {
       Configuration.base.store = 'simple-auth-session-store:ephemeral';
       let store                = EphemeralStore.create();
       lookupStub.withArgs('simple-auth-session-store:ephemeral').returns(store);
-      setup(container, application);
+      setup(container);
 
       expect(session.store).to.be.an.instanceof(EphemeralStore);
     });
 
     it("uses the app's container", () => {
-      setup(container, application);
+      setup(container);
 
       expect(session.container).to.eql(container);
     });
 
     it('is injected into all components, controllers and routes', () => {
-      setup(container, application);
+      inject(application);
 
       ['component', 'controller', 'route'].forEach((component) => {
         expect(application.inject).to.have.been.calledWith(component, Configuration.base.sessionPropertyName, Configuration.base.session);
       });
     });
-  });
 
-  it("advances the application's readiness", (done) => {
-    sinon.spy(application, 'advanceReadiness');
-    setup(container, application, {});
+    it("sets applicationRootUrl to the application's root URL", () => {
+      setup(container);
 
-    Ember.run.next(() => {
-      expect(application.advanceReadiness).to.have.been.calledOnce;
-      done();
+      expect(Configuration.base.applicationRootUrl).to.eql('rootURL');
     });
   });
 
@@ -149,14 +139,14 @@ describe('setup', () => {
       });
 
       it('uses the configured authorizer', () => {
-        setup(container, application);
+        setup(container);
         Ember.$.get('/data');
 
         expect(authorizer.authorize).to.have.been.calledOnce;
       });
 
       it('does not authorize requests going to a foreign origin', () => {
-        setup(container, application);
+        setup(container);
         Ember.$.get('http://other-domain.com');
 
         expect(authorizer.authorize).to.not.have.been.called;
@@ -164,7 +154,7 @@ describe('setup', () => {
 
       it('authorizes requests going to a foreign origin if all other origins are whitelisted', () => {
         Configuration.base.crossOriginWhitelist = ['*'];
-        setup(container, application);
+        setup(container);
         Ember.$.get('http://other-domain.com/path/query=string');
 
         expect(authorizer.authorize).to.have.been.calledOnce;
@@ -180,7 +170,7 @@ describe('setup', () => {
 
       it('authorizes requests going to a foreign origin if the specific origin is whitelisted', () => {
         Configuration.base.crossOriginWhitelist = ['http://other-domain.com', 'https://another-port.net:4567'];
-        setup(container, application);
+        setup(container);
         Ember.$.get('http://other-domain.com/path/query=string');
 
         expect(authorizer.authorize).to.have.been.calledOnce;
@@ -196,7 +186,7 @@ describe('setup', () => {
 
       it('authorizes requests going to a subdomain of a foreign origin if the origin and any subdomain are whitelisted', () => {
         Configuration.base.crossOriginWhitelist = ['http://*.other-domain.com', 'http://*.sub.test-domain.com:1234'];
-        setup(container, application);
+        setup(container);
         Ember.$.get('http://test.other-domain.com/path/query=string');
 
         expect(authorizer.authorize).to.have.been.calledOnce;
@@ -245,7 +235,7 @@ describe('setup', () => {
       xhr                           = sinon.useFakeXMLHttpRequest();
       server                        = sinon.fakeServer.create();
       server.autoRespond            = true;
-      setup(container, application);
+      setup(container);
     });
 
     afterEach(() => xhr.restore());
