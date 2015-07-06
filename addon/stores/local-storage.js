@@ -7,7 +7,7 @@ import Configuration from '../configuration';
   Store that saves its data in the browser's `localStorage`.
 
   _The factory for this store is registered as
-  `'simple-auth-session-store:local-storage'` in Ember's container._
+  `'session-store:local-storage'` in Ember's container._
 
   __`Stores.LocalStorage` is Ember Simple Auth's default store.__
 

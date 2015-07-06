@@ -39,7 +39,7 @@ describe('ApplicationRouteMixin', () => {
     lookupStub = sinon.stub(container, 'lookup');
     lookupStub.withArgs('router:main').returns(router);
     lookupStub.withArgs('simple-auth-session:main').returns(session);
-    lookupStub.withArgs('simple-auth-session-store:local-storage').returns(store);
+    lookupStub.withArgs('session-store:local-storage').returns(store);
   });
 
   describe('#beforeModel', () => {
@@ -70,7 +70,7 @@ describe('ApplicationRouteMixin', () => {
 
     context('when there is an active route', () => {
       beforeEach(() => {
-        Configuration.base.store = 'simple-auth-session-store:local-storage';
+        Configuration.base.store = 'session-store:local-storage';
       });
 
       beforeEach(() => {
