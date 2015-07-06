@@ -12,7 +12,7 @@
     </ul>
     {{! display logout button when the session is authenticated, login button otherwise }}
     {{#if session.isAuthenticated}}
-      <a {{ action 'invalidateSession' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
+      {{logout-button}}
     {{else}}
       {{#link-to 'login' class="btn btn-success navbar-btn navbar-right"}}
         Login
