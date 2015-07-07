@@ -9,7 +9,7 @@
     "yuidoc": {
       "linkNatives": true,
       "quiet": true,
-      "parseOnly": false,
+      "parseOnly": true,
       "lint": false
     }
   }
