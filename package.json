@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "ember server",
-    "build": "ember build --docs",
+    "build": "ember build",
+    "docs": "ember build --docs -e docs",
     "test": "ember try:testall"
   },
   "repository": "",
