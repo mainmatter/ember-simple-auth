@@ -135,18 +135,6 @@ describe('ApplicationRouteMixin', () => {
     });
   });
 
-  describe('the "sessionRequiresAuthentication" action', () => {
-    beforeEach(() => {
-      sinon.spy(route, 'transitionTo');
-    });
-
-    it('transitions to "Configuration.base.authenticationRoute"', () => {
-      route._actions.sessionRequiresAuthentication.apply(route);
-
-      expect(route.transitionTo).to.have.been.calledWith(Configuration.base.authenticationRoute);
-    });
-  });
-
   describe('the "sessionAuthenticationSucceeded" action', () => {
     beforeEach(() => {
       sinon.spy(route, 'transitionTo');
