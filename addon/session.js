@@ -345,6 +345,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @method bindToStoreEvents
     @private
   */
+  // TODO: this should run on('init')
   bindToStoreEvents: Ember.observer('store', function() {
     this.store.on('sessionDataUpdated', (content) => {
       let { authenticator } = (content.secure || {});
