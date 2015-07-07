@@ -9,7 +9,7 @@ const defaults = {
     sessionPropertyName:         'session',
     authorizer:                  null,
     session:                     'simple-auth-session:main',
-    store:                       'simple-auth-session-store:local-storage',
+    store:                       'session-store:local-storage',
     localStorageKey:             'ember_simple_auth:session',
     crossOriginWhitelist:        [],
     applicationRootUrl:          null
@@ -140,7 +140,7 @@ export default {
       @readOnly
       @static
       @type String
-      @default simple-auth-session-store:local-storage
+      @default session-store:local-storage
       @public
     */
     store: defaults.base.store,

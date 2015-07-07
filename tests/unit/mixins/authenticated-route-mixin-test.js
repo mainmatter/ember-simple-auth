@@ -3,6 +3,7 @@ import { it } from 'ember-mocha';
 import Ember from 'ember';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import Session from 'ember-simple-auth/session';
+import Configuration from 'ember-simple-auth/configuration';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('AuthenticatedRouteMixin', function() {
@@ -17,7 +18,9 @@ describe('AuthenticatedRouteMixin', function() {
               resolve(routeContext.beforeModelReturnValue);
             });
           });
-        }
+        },
+
+        transitionTo() {}
       }, AuthenticatedRouteMixin);
 
       this.session = Session.create();
@@ -29,6 +32,7 @@ describe('AuthenticatedRouteMixin', function() {
       this.route      = Route.create({ session: this.session });
       sinon.spy(this.transition, 'abort');
       sinon.spy(this.transition, 'send');
+      sinon.spy(this.route, 'transitionTo');
     });
 
     describe('if the session is authenticated', function() {
@@ -51,10 +55,10 @@ describe('AuthenticatedRouteMixin', function() {
         expect(this.transition.abort).to.not.have.been.called;
       });
 
-      it('does not invoke the "sessionRequiresAuthentication" action', function() {
+      it('does not transition to the authentication route', function() {
         this.route.beforeModel(this.transition);
 
-        expect(this.transition.send).to.not.have.been.called;
+        expect(this.route.transitionTo).to.not.have.been.calledWith(Configuration.base.authenticationRoute);
       });
     });
 
@@ -74,10 +78,10 @@ describe('AuthenticatedRouteMixin', function() {
         expect(this.transition.abort).to.have.been.called;
       });
 
-      it('invokes the "sessionRequiresAuthentication" action', function() {
+      it('transitions to the authentication route', function() {
         this.route.beforeModel(this.transition);
 
-        expect(this.transition.send).to.have.been.calledWith('sessionRequiresAuthentication');
+        expect(this.route.transitionTo).to.have.been.calledWith(Configuration.base.authenticationRoute);
       });
     });
   });

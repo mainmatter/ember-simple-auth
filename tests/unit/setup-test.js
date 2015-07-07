@@ -40,7 +40,7 @@ describe('setup', () => {
     session.setProperties({ store, container });
 
     lookupStub.withArgs('router:main').returns(router);
-    lookupStub.withArgs('simple-auth-session-store:local-storage').returns(store);
+    lookupStub.withArgs('session-store:local-storage').returns(store);
     lookupStub.withArgs('simple-auth-session:main').returns(session);
     lookupStub.withArgs('authorizer').returns(authorizer);
 
@@ -52,18 +52,6 @@ describe('setup', () => {
     Configuration.load(container, {});
   });
 
-  it('registers the LocalStorage store', () => {
-    register(application);
-
-    expect(application.register).to.have.been.calledWith('simple-auth-session-store:local-storage', LocalStorageStore);
-  });
-
-  it('registers the Ephemeral store', () => {
-    register(application);
-
-    expect(application.register).to.have.been.calledWith('simple-auth-session-store:ephemeral', EphemeralStore);
-  });
-
   it('registers the Session', () => {
     register(application);
 
@@ -72,7 +60,7 @@ describe('setup', () => {
 
   describe('the session instance', () => {
     beforeEach(() => {
-      Configuration.base.store = 'simple-auth-session-store:local-storage';
+      Configuration.base.store = 'session-store:local-storage';
     });
 
     context('when a custom session class is configured', () => {
@@ -99,9 +87,9 @@ describe('setup', () => {
     });
 
     it('uses a custom store if specified', () => {
-      Configuration.base.store = 'simple-auth-session-store:ephemeral';
+      Configuration.base.store = 'session-store:ephemeral';
       let store                = EphemeralStore.create();
-      lookupStub.withArgs('simple-auth-session-store:ephemeral').returns(store);
+      lookupStub.withArgs('session-store:ephemeral').returns(store);
       setup(container);
 
       expect(session.store).to.be.an.instanceof(EphemeralStore);

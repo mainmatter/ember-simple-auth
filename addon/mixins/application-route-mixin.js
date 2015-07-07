@@ -75,67 +75,6 @@ export default Ember.Mixin.create({
 
   actions: {
     /**
-      This action triggers a transition to the
-      [`Configuration.authenticationRoute`](#SimpleAuth-Configuration-authenticationRoute).
-      It is triggered automatically by the
-      [`AuthenticatedRouteMixin`](#SimpleAuth-AuthenticatedRouteMixin) whenever
-      a route that requries authentication is accessed but the session is not
-      currently authenticated.
-
-      __For an application that works without an authentication route (e.g.
-      because it opens a new window to handle authentication there), this is
-      the action to override, e.g.:__
-
-      ```js
-      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin, {
-        actions: {
-          sessionRequiresAuthentication: function() {
-            this.get('session').authenticate('authenticator:custom', {});
-          }
-        }
-      });
-      ```
-
-      @method actions.sessionRequiresAuthentication
-      @public
-    */
-    sessionRequiresAuthentication() {
-      this.transitionTo(Configuration.base.authenticationRoute);
-    },
-
-    /**
-      This action triggers a transition to the
-      [`Configuration.authenticationRoute`](#SimpleAuth-Configuration-authenticationRoute).
-      It can be used in templates as shown above. It is also triggered
-      automatically by the
-      [`AuthenticatedRouteMixin`](#SimpleAuth-AuthenticatedRouteMixin) whenever
-      a route that requries authentication is accessed but the session is not
-      currently authenticated.
-
-      __For an application that works without an authentication route (e.g.
-      because it opens a new window to handle authentication there), this is
-      the action to override, e.g.:__
-
-      ```js
-      App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin, {
-        actions: {
-          authenticateSession: function() {
-            this.get('session').authenticate('authenticator:custom', {});
-          }
-        }
-      });
-      ```
-
-      @method actions.authenticateSession
-      @deprecated use [`ApplicationRouteMixin#sessionRequiresAuthentication`](#SimpleAuth-ApplicationRouteMixin-sessionRequiresAuthentication) instead
-      @public
-    */
-    authenticateSession() {
-      Ember.deprecate('The authenticateSession action is deprecated. Use sessionRequiresAuthentication instead.');
-      this.send('sessionRequiresAuthentication');
-    },
-
-    /**
       This action is triggered whenever the session is successfully
       authenticated. If there is a transition that was previously intercepted
       by
@@ -180,21 +119,6 @@ export default Ember.Mixin.create({
       @public
     */
     sessionAuthenticationFailed() {
-    },
-
-    /**
-      This action invalidates the session (see
-      [`Session#invalidate`](#SimpleAuth-Session-invalidate)).
-      If invalidation succeeds, it reloads the application (see
-      [`ApplicationRouteMixin#sessionInvalidationSucceeded`](#SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)).
-
-      @method actions.invalidateSession
-      @deprecated use [`Session#invalidate`](#SimpleAuth-Session-invalidate) instead
-      @public
-    */
-    invalidateSession() {
-      Ember.deprecate("The invalidateSession action is deprecated. Use the session's invalidate method directly instead.");
-      this.get(Configuration.base.sessionPropertyName).invalidate();
     },
 
     /**

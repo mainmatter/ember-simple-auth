@@ -269,7 +269,7 @@ environment object:
 ```js
 //config/environment.js
 ENV['simple-auth'] = {
-  store: 'simple-auth-session-store:local-storage'
+  store: 'session-store:local-storage'
 }
 ```
 

@@ -8,7 +8,7 @@ import Base from './base';
   __This store is mainly useful for testing.__
 
   _The factory for this store is registered as
-  `'simple-auth-session-store:ephemeral'` in Ember's container._
+  `'session-store:ephemeral'` in Ember's container._
 
   @class Ephemeral
   @namespace SimpleAuth.Stores

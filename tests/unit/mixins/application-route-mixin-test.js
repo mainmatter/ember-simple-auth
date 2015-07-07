@@ -39,7 +39,7 @@ describe('ApplicationRouteMixin', () => {
     lookupStub = sinon.stub(container, 'lookup');
     lookupStub.withArgs('router:main').returns(router);
     lookupStub.withArgs('simple-auth-session:main').returns(session);
-    lookupStub.withArgs('simple-auth-session-store:local-storage').returns(store);
+    lookupStub.withArgs('session-store:local-storage').returns(store);
   });
 
   describe('#beforeModel', () => {
@@ -70,7 +70,7 @@ describe('ApplicationRouteMixin', () => {
 
     context('when there is an active route', () => {
       beforeEach(() => {
-        Configuration.base.store = 'simple-auth-session-store:local-storage';
+        Configuration.base.store = 'session-store:local-storage';
       });
 
       beforeEach(() => {
@@ -135,35 +135,6 @@ describe('ApplicationRouteMixin', () => {
     });
   });
 
-  describe('the "sessionRequiresAuthentication" action', () => {
-    beforeEach(() => {
-      sinon.spy(route, 'transitionTo');
-    });
-
-    it('transitions to "Configuration.base.authenticationRoute"', () => {
-      route._actions.sessionRequiresAuthentication.apply(route);
-
-      expect(route.transitionTo).to.have.been.calledWith(Configuration.base.authenticationRoute);
-    });
-  });
-
-  describe('the "authenticateSession" action', () => {
-    beforeEach(() => {
-      sinon.spy(route, 'transitionTo');
-      route.send = function(name) {
-        if (name === 'sessionRequiresAuthentication') {
-          route._actions.sessionRequiresAuthentication.apply(route);
-        }
-      };
-    });
-
-    it('transitions to "Configuration.base.authenticationRoute"', () => {
-      route._actions.authenticateSession.apply(route);
-
-      expect(route.transitionTo).to.have.been.calledWith(Configuration.base.authenticationRoute);
-    });
-  });
-
   describe('the "sessionAuthenticationSucceeded" action', () => {
     beforeEach(() => {
       sinon.spy(route, 'transitionTo');
@@ -200,15 +171,6 @@ describe('ApplicationRouteMixin', () => {
 
         expect(route.transitionTo).to.have.been.calledWith(Configuration.base.routeAfterAuthentication);
       });
-    });
-  });
-
-  describe('the "invalidateSession" action', () => {
-    it('invalidates the session', () => {
-      sinon.stub(session, 'invalidate').returns(Ember.RSVP.resolve());
-      route._actions.invalidateSession.apply(route);
-
-      expect(session.invalidate).to.have.been.calledOnce;
     });
   });
 

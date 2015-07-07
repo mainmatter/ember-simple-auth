@@ -2,8 +2,6 @@
 import Ember from 'ember';
 import Configuration from './configuration';
 import Session from './session';
-import LocalStorage from './stores/local-storage';
-import Ephemeral from './stores/ephemeral';
 
 const WILDCARD_TOKEN = '_wildcard_token_';
 
@@ -106,12 +104,11 @@ export default function(container) {
 }
 
 export function register(application) {
-  application.register('simple-auth-session-store:local-storage', LocalStorage);
-  application.register('simple-auth-session-store:ephemeral', Ephemeral);
   application.register('simple-auth-session:main', Session);
 }
 
 export function inject(application) {
+  application.inject('service', 'session', Configuration.base.session);
   Ember.A(['controller', 'route', 'component']).forEach(function(component) {
     application.inject(component, Configuration.base.sessionPropertyName, Configuration.base.session);
   });
