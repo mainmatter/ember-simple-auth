@@ -10,14 +10,7 @@
         <a>Protected Page</a>
       {{/link-to}}
     </ul>
-    {{! display logout button when the session is authenticated, login button otherwise }}
-    {{#if session.isAuthenticated}}
-      {{logout-button}}
-    {{else}}
-      {{#link-to 'login' class="btn btn-success navbar-btn navbar-right"}}
-        Login
-      {{/link-to}}
-    {{/if}}
+    {{login-logout-button login='transitionToLoginRoute'}}
   </div>
 </nav>
 <div class="container">
