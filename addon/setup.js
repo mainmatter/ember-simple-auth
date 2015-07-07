@@ -1,7 +1,6 @@
 /* jscs:disable requireDotNotation */
 import Ember from 'ember';
 import Configuration from './configuration';
-import Session from './session';
 
 const WILDCARD_TOKEN = '_wildcard_token_';
 
@@ -76,9 +75,6 @@ export default function(container) {
   Configuration.base.applicationRootUrl = container.lookup('router:main').get('rootURL') || '/';
 
   let session = container.lookup(Configuration.base.session);
-  let store   = container.lookup(Configuration.base.store);
-
-  session.set('store', store);
 
   crossOriginWhitelist = Ember.A(Configuration.base.crossOriginWhitelist).map(function(origin) {
     return extractLocationOrigin(origin);
@@ -103,12 +99,7 @@ export default function(container) {
   return session.restore();
 }
 
-export function register(application) {
-  application.register('simple-auth-session:main', Session);
-}
-
 export function inject(application) {
-  application.inject('service:session', 'session', Configuration.base.session);
   Ember.A(['controller', 'route', 'component']).forEach(function(component) {
     application.inject(component, Configuration.base.sessionPropertyName, Configuration.base.session);
   });

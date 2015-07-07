@@ -1,7 +1,7 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
 import Ember from 'ember';
-import { default as setup, inject, register } from 'ember-simple-auth/setup';
+import { default as setup, inject } from 'ember-simple-auth/setup';
 import Configuration from 'ember-simple-auth/configuration';
 import Session from 'ember-simple-auth/session';
 import LocalStorageStore from 'ember-simple-auth/stores/local-storage';
@@ -52,12 +52,6 @@ describe('setup', () => {
     Configuration.load(container, {});
   });
 
-  it('registers the Session', () => {
-    register(application);
-
-    expect(application.register).to.have.been.calledWith('simple-auth-session:main', Session);
-  });
-
   describe('the session instance', () => {
     beforeEach(() => {
       Configuration.base.store = 'session-store:local-storage';
@@ -84,21 +78,6 @@ describe('setup', () => {
       setup(container);
 
       expect(session.store).to.be.an.instanceof(LocalStorageStore);
-    });
-
-    it('uses a custom store if specified', () => {
-      Configuration.base.store = 'session-store:ephemeral';
-      let store                = EphemeralStore.create();
-      lookupStub.withArgs('session-store:ephemeral').returns(store);
-      setup(container);
-
-      expect(session.store).to.be.an.instanceof(EphemeralStore);
-    });
-
-    it("uses the app's container", () => {
-      setup(container);
-
-      expect(session.container).to.eql(container);
     });
 
     it('is injected into all components, controllers and routes', () => {
