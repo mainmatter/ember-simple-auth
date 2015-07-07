@@ -11,8 +11,8 @@ import Base from './base';
   `'simple-auth-authorizer:oauth2-bearer'` in Ember's container._
 
   @class OAuth2
-  @namespace SimpleAuth.Authorizers
-  @module simple-auth-oauth2/authorizers/oauth2
+  @namespace Authorizers
+  @module authorizers/oauth2
   @extends Base
   @public
 */

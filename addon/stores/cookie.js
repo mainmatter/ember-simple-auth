@@ -36,8 +36,8 @@ import Configuration from './../configuration';
   `'simple-auth-session-store:cookie'` in Ember's container._
 
   @class Cookie
-  @namespace SimpleAuth.Stores
-  @module simple-auth-cookie-store/stores/cookie
+  @namespace Stores
+  @module stores/cookie
   @extends Stores.Base
   @public
 */

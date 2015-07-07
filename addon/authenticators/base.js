@@ -49,8 +49,8 @@ import Ember from 'ember';
   ```
 
   @class Base
-  @namespace SimpleAuth.Authenticators
-  @module simple-auth/authenticators/base
+  @namespace Authenticators
+  @module ember-simple-auth/authenticators/base
   @extends Ember.Object
   @uses Ember.Evented
   @public

@@ -21,8 +21,8 @@ import Configuration from './../configuration';
   implementation calls `this._super(transition)`__.
 
   @class UnauthenticatedRouteMixin
-  @namespace SimpleAuth
-  @module simple-auth/mixins/unauthenticated-route-mixin
+  @namespace Mixins
+  @module ember-simple-auth/mixins/unauthenticated-route-mixin
   @extends Ember.Mixin
   @static
   @public

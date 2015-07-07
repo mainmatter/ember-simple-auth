@@ -11,8 +11,8 @@ import Base from './base';
   `'session-store:ephemeral'` in Ember's container._
 
   @class Ephemeral
-  @namespace SimpleAuth.Stores
-  @module simple-auth/stores/ephemeral
+  @namespace Stores
+  @module stores/ephemeral
   @extends Stores.Base
   @public
 */
