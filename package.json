@@ -1,25 +1,27 @@
 {
   "name": "ember-simple-auth",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "1.0.0",
+  "description": "A lightweight library for implementing authentication/authorization with Ember.js applications.",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
   "scripts": {
     "start": "ember server",
-    "build": "ember build",
+    "build": "ember build --docs",
     "test": "ember try:testall"
   },
   "repository": "",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Marco Otte-Witte",
   "license": "MIT",
   "devDependencies": {
     "body-parser": "1.12.4",
     "broccoli-asset-rev": "^2.0.2",
+    "broccoli-handlebars": "0.0.6",
+    "broccoli-merge-trees": "^0.2.1",
     "ember-browserify": "^1.0.1",
     "ember-cli": "0.2.7",
     "ember-cli-app-version": "0.3.3",
@@ -30,21 +32,26 @@
     "ember-cli-inject-live-reload": "^1.3.0",
     "ember-cli-mocha": "0.7.0",
     "ember-cli-uglify": "^1.0.1",
+    "ember-cli-yuidoc": "0.7.0",
     "ember-data": "1.13.0",
     "ember-disable-prototype-extensions": "^1.0.0",
     "ember-disable-proxy-controllers": "^0.7.0",
     "ember-export-application-global": "^1.0.2",
     "ember-sinon": "simplabs/ember-sinon",
-    "ember-disable-prototype-extensions": "^1.0.0",
     "ember-suave": "0.1.11",
     "ember-try": "0.0.7",
     "express": "^4.8.5",
     "glob": "^4.0.5",
+    "handlebars": "2.0.0",
+    "lodash": "^3.10.0",
+    "marked": "^0.3.1",
     "morgan": "^1.3.2",
     "sinon-chai": "^2.8.0"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "authentication",
+    "authorization"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.0.0"

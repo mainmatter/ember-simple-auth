@@ -1,0 +1,10 @@
+{{#if events}}
+  <h4>Events</h4>
+  <ul class="list-unstyled">
+    {{#each events}}
+      <li>
+        <a href="#{{anchor}}">{{name}}</a>
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}

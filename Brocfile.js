@@ -1,7 +1,12 @@
 /* jshint node: true */
 /* global require, module */
 
-var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+const Handlebars = require('handlebars'),
+  mergeTrees = require('broccoli-merge-trees'),
+  broccoliHandlebars = require('broccoli-handlebars'),
+  merge = require('lodash/object/merge');
+
+const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 var app = new EmberAddon({
   jscsOptions: {
@@ -23,4 +28,21 @@ var app = new EmberAddon({
 
 app.import('bower_components/bootstrap/dist/css/bootstrap.css');
 
-module.exports = app.toTree();
+// Docs
+const docs = broccoliHandlebars('docs/theme', ['index.hbs'], {
+  handlebars: Handlebars,
+  helpers: require('./docs/theme/helpers'),
+  partials: 'docs/theme/partials',
+  context: function() {
+    return merge(
+      {},
+      require('./docs/config.json'),
+      require('./tmp/docs/data.json')
+    )
+  },
+  destFile: function (filename) {
+    return 'docs/' + filename.replace(/(hbs|handlebars)$/, 'html');
+  }
+});
+
+module.exports = mergeTrees([app.toTree(), docs]);
