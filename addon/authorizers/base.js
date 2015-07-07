@@ -15,8 +15,8 @@ import Ember from 'ember';
   as it relies on data that the authenticator acquires during authentication.
 
   @class Base
-  @namespace SimpleAuth.Authorizers
-  @module simple-auth/authorizers/base
+  @namespace Authorizers
+  @module ember-simple-auth/authorizers/base
   @extends Ember.Object
 @public
 */

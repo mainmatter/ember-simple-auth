@@ -12,8 +12,8 @@ import Configuration from '../configuration';
   __`Stores.LocalStorage` is Ember Simple Auth's default store.__
 
   @class LocalStorage
-  @namespace SimpleAuth.Stores
-  @module simple-auth/stores/local-storage
+  @namespace Stores
+  @module stores/local-storage
   @extends Stores.Base
   @public
 */

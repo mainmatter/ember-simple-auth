@@ -45,8 +45,7 @@ const defaults = {
   ```
 
   @class Configuration
-  @namespace SimpleAuth
-  @module simple-auth/configuration
+  @module ember-simple-auth/configuration
   @public
 */
 export default {

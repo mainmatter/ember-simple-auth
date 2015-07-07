@@ -16,8 +16,8 @@ import Configuration from './../configuration';
   container._
 
   @class OAuth2
-  @namespace SimpleAuth.Authenticators
-  @module simple-auth-oauth2/authenticators/oauth2
+  @namespace Authenticators
+  @module authenticators/oauth2
   @extends Base
   @public
 */

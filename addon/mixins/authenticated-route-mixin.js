@@ -22,8 +22,8 @@ import Configuration from './../configuration';
   enforcement code is actually executed.
 
   @class AuthenticatedRouteMixin
-  @namespace SimpleAuth
-  @module simple-auth/mixins/authenticated-route-mixin
+  @namespace Mixins
+  @module ember-simple-auth/mixins/authenticated-route-mixin
   @extends Ember.Mixin
   @static
   @public

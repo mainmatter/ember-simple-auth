@@ -15,8 +15,8 @@ import Configuration from './../configuration';
   `'simple-auth-authorizer:devise'` in Ember's container._
 
   @class Devise
-  @namespace SimpleAuth.Authorizers
-  @module simple-auth-devise/authorizers/devise
+  @namespace Authorizers
+  @module authorizers/devise
   @extends Base
   @public
 */

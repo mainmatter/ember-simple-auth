@@ -9,8 +9,8 @@ import Base from './base';
   `'simple-auth-authenticator:torii'` in Ember's container._
 
   @class Torii
-  @namespace SimpleAuth.Authenticators
-  @module simple-auth-torii/authenticators/torii
+  @namespace Authenticators
+  @module authenticators/torii
   @extends Base
   @public
 */
