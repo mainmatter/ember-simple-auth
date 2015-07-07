@@ -34,8 +34,7 @@ import Ember from 'ember';
   end [`Stores.Base`](#SimpleAuth-Stores-Base)).
 
   @class Session
-  @namespace SimpleAuth
-  @module simple-auth/session
+  @module ember-simple-auth/session
   @extends Ember.ObjectProxy
   @uses Ember.Evented
   @public

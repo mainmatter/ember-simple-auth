@@ -34,8 +34,8 @@ let routeEntryComplete = false;
   ```
 
   @class ApplicationRouteMixin
-  @namespace SimpleAuth
-  @module simple-auth/mixins/application-route-mixin
+  @namespace Mixins
+  @module ember-simple-auth/mixins/application-route-mixin
   @extends Ember.Mixin
   @static
   @public
