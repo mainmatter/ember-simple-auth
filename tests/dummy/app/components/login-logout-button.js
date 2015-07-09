@@ -3,7 +3,8 @@ import Ember from 'ember';
 const { service } = Ember.inject;
 
 export default Ember.Component.extend({
-  mySession: service('custom-session'),
+  session:        service('session'),
+  sessionAccount: service('session-account'),
 
   actions: {
     login() {
@@ -11,7 +12,7 @@ export default Ember.Component.extend({
     },
 
     logout() {
-      this.get('mySession').invalidate();
+      this.get('session').invalidate();
     }
   }
 });
