@@ -2,7 +2,8 @@ import Ember from 'ember';
 import Configuration from './../configuration';
 import setup from '../setup';
 
-let routeEntryComplete = false;
+const { on }      = Ember;
+const { service } = Ember.inject;
 
 /**
   The mixin for the application route; defines actions that are triggered
@@ -41,14 +42,25 @@ let routeEntryComplete = false;
   @public
 */
 export default Ember.Mixin.create({
+  session: service('session'),
+
   /**
-    @method activate
+    @method _mapSessionEventsToActions
     @private
   */
-  activate() {
-    routeEntryComplete = true;
-    this._super();
-  },
+  _mapSessionEventsToActions: on('init', function() {
+    Ember.A([
+      'sessionAuthenticationSucceeded',
+      'sessionAuthenticationFailed',
+      'sessionInvalidationSucceeded',
+      'sessionInvalidationFailed',
+      'authorizationFailed'
+    ]).forEach((event) => {
+      this.get('session').on(event, Ember.run.bind(this, function() {
+        this.send(event, ...arguments);
+      }));
+    });
+  }),
 
   /**
     @method beforeModel
@@ -57,19 +69,6 @@ export default Ember.Mixin.create({
   beforeModel(transition) {
     setup(this.container).finally(() => {
       this._super(transition);
-      Ember.A([
-        'sessionAuthenticationSucceeded',
-        'sessionAuthenticationFailed',
-        'sessionInvalidationSucceeded',
-        'sessionInvalidationFailed',
-        'authorizationFailed'
-      ]).forEach((event) => {
-        this.get(Configuration.base.sessionPropertyName).on(event, Ember.run.bind(this, function() {
-          Array.prototype.unshift.call(arguments, event);
-          let target = routeEntryComplete ? this : transition;
-          target.send.apply(target, arguments);
-        }));
-      });
     });
   },
 
