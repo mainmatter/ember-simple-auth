@@ -1,10 +1,25 @@
 import Ember from 'ember';
 
-const { alias, oneWay } = Ember.computed;
+const { computed, on }  = Ember;
+const { alias, oneWay } = computed;
 
-export default Ember.Service.extend({
+export default Ember.Service.extend(Ember.Evented, {
   isAuthenticated: oneWay('session.isAuthenticated'),
   content:         alias('session.content'),
+
+  _forwardSessionEvents: on('init', function() {
+    Ember.A([
+      'sessionAuthenticationSucceeded',
+      'sessionAuthenticationFailed',
+      'sessionInvalidationSucceeded',
+      'sessionInvalidationFailed',
+      'authorizationFailed'
+    ]).forEach((event) => {
+      this.get('session').on(event, () => {
+        this.trigger(event, ...arguments);
+      });
+    });
+  }),
 
   authenticate() {
     const session = this.get('session');

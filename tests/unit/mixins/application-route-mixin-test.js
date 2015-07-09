@@ -42,95 +42,64 @@ describe('ApplicationRouteMixin', () => {
     lookupStub.withArgs('session-store:local-storage').returns(store);
   });
 
-  describe('#beforeModel', () => {
-    let transition;
-
+  describe('mapping of service events to route actions', () => {
     beforeEach(() => {
-      transition = {
-        send() {}
-      };
+      Configuration.base.store = 'session-store:local-storage';
       sinon.spy(route, 'send');
     });
 
-    context('when there is no active route', () => {
-      beforeEach(() => {
-        sinon.spy(transition, 'send');
-        route.beforeModel(transition);
-      });
+    it("maps the services's 'sessionAuthenticationSucceeded' event into an action invocation", (done) => {
+      session.trigger('sessionAuthenticationSucceeded');
 
-      it('sends the action to the transition', (done) => {
-        session.trigger('authorizationFailed');
-
-        Ember.run.next(() => {
-          expect(transition.send).to.have.been.calledWith('authorizationFailed');
-          done();
-        });
+      Ember.run.next(() => {
+        expect(route.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
+        done();
       });
     });
 
-    context('when there is an active route', () => {
-      beforeEach(() => {
-        Configuration.base.store = 'session-store:local-storage';
+    it("maps the services's 'sessionAuthenticationFailed' event into an action invocation", (done) => {
+      session.trigger('sessionAuthenticationFailed', 'error');
+
+      Ember.run.next(() => {
+        expect(route.send).to.have.been.calledWith('sessionAuthenticationFailed', 'error');
+        done();
       });
+    });
 
-      beforeEach(() => {
-        route.beforeModel(transition);
-        route.activate();
+    it("maps the services's 'sessionInvalidationSucceeded' event into an action invocation", (done) => {
+      session.trigger('sessionInvalidationSucceeded');
+
+      Ember.run.next(() => {
+        expect(route.send).to.have.been.calledWith('sessionInvalidationSucceeded');
+        done();
       });
+    });
 
-      it("translates the session's 'sessionAuthenticationSucceeded' event into an action invocation", (done) => {
-        session.trigger('sessionAuthenticationSucceeded');
+    it("maps the services's 'sessionInvalidationFailed' event into an action invocation", (done) => {
+      session.trigger('sessionInvalidationFailed', 'error');
 
-        Ember.run.next(() => {
-          expect(route.send).to.have.been.calledWith('sessionAuthenticationSucceeded');
-          done();
-        });
+      Ember.run.next(() => {
+        expect(route.send).to.have.been.calledWith('sessionInvalidationFailed', 'error');
+        done();
       });
+    });
 
-      it("translates the session's 'sessionAuthenticationFailed' event into an action invocation", (done) => {
-        session.trigger('sessionAuthenticationFailed', 'error');
+    it("maps the services's 'authorizationFailed' event into an action invocation", (done) => {
+      session.trigger('authorizationFailed');
 
-        Ember.run.next(() => {
-          expect(route.send).to.have.been.calledWith('sessionAuthenticationFailed', 'error');
-          done();
-        });
+      Ember.run.next(() => {
+        expect(route.send).to.have.been.calledWith('authorizationFailed');
+        done();
       });
+    });
 
-      it("translates the session's 'sessionInvalidationSucceeded' event into an action invocation", (done) => {
-        session.trigger('sessionInvalidationSucceeded');
+    it('does not attach the event listeners twice', (done) => {
+      route.beforeModel();
+      session.trigger('sessionAuthenticationSucceeded');
 
-        Ember.run.next(() => {
-          expect(route.send).to.have.been.calledWith('sessionInvalidationSucceeded');
-          done();
-        });
-      });
-
-      it("translates the session's 'sessionInvalidationFailed' event into an action invocation", (done) => {
-        session.trigger('sessionInvalidationFailed', 'error');
-
-        Ember.run.next(() => {
-          expect(route.send).to.have.been.calledWith('sessionInvalidationFailed', 'error');
-          done();
-        });
-      });
-
-      it("translates the session's 'authorizationFailed' event into an action invocation", (done) => {
-        session.trigger('authorizationFailed');
-
-        Ember.run.next(() => {
-          expect(route.send).to.have.been.calledWith('authorizationFailed');
-          done();
-        });
-      });
-
-      it('does not attach the event listeners twice', (done) => {
-        route.beforeModel(transition);
-        session.trigger('sessionAuthenticationSucceeded');
-
-        Ember.run.next(function() {
-          expect(route.send).to.have.been.calledOnce;
-          done();
-        });
+      Ember.run.next(function() {
+        expect(route.send).to.have.been.calledOnce;
+        done();
       });
     });
   });
