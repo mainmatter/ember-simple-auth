@@ -80,7 +80,7 @@ export default Base.extend({
   invalidate: function(data) {
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      _this.torii.close(_this.provider).then(function() {
+      _this.torii.close(_this.provider, data).then(function() {
         delete _this.provider;
         resolve();
       }, reject);
