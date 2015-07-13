@@ -104,7 +104,7 @@ describe('Torii', function() {
   describe('#invalidate', function() {
     context('when torii closes successfully', function() {
       beforeEach(function() {
-        sinon.stub(this.torii, 'close').returns(Ember.RSVP.resolve());
+        this.toriiSpy = sinon.stub(this.torii, 'close').returns(Ember.RSVP.resolve());
       });
 
       it('returns a resolving promise', function(done) {
@@ -118,6 +118,13 @@ describe('Torii', function() {
         this.authenticator.provider = 'provider';
         this.authenticator.invalidate({ some: 'data' }).then((data) => {
           expect(this.authenticator.provider).to.be.null;
+          done();
+        });
+      });
+
+      it('passes the session data to torii', function(done) {
+        this.authenticator.invalidate({ some: 'data' }).then(() => {
+          expect(this.toriiSpy.getCall(0).args[1]).to.deep.equal({ some: 'data' });
           done();
         });
       });

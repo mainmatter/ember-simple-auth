@@ -80,9 +80,9 @@ export default Base.extend({
     @return {Ember.RSVP.Promise} A promise that resolves when the provider successfully closes and rejects otherwise
     @public
   */
-  invalidate() {
+  invalidate(data) {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      this.torii.close(this.provider).then(() => {
+      this.torii.close(this.provider, data).then(() => {
         delete this.provider;
         resolve();
       }, reject);
