@@ -1,6 +1,8 @@
 /* jshint expr:true */
-import { it } from 'ember-mocha';
 import Ember from 'ember';
+import { it } from 'ember-mocha';
+import { describe, beforeEach, afterEach } from 'mocha';
+import { expect } from 'chai';
 import Cookie from 'ember-simple-auth/stores/cookie';
 import Configuration from 'ember-simple-auth/configuration';
 import itBehavesLikeAStore from './shared/store-behavior';

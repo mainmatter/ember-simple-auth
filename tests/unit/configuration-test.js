@@ -1,5 +1,8 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
+import { describe, beforeEach, afterEach } from 'mocha';
+import { expect } from 'chai';
+import sinon from 'sinon';
 import Configuration from 'ember-simple-auth/configuration';
 
 let container;

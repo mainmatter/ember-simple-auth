@@ -1,5 +1,7 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
+import { describe } from 'mocha';
+import { expect } from 'chai';
 import objectsAreEqual from 'ember-simple-auth/utils/objects-are-equal';
 
 describe('Utils.objectsAreEqual', function() {
