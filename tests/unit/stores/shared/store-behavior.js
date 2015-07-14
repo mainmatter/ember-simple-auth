@@ -1,6 +1,8 @@
 /* jshint expr:true */
-import { it } from 'ember-mocha';
 import Ember from 'ember';
+import { it } from 'ember-mocha';
+import { describe, beforeEach } from 'mocha';
+import { expect } from 'chai';
 
 export default function(options) {
   let syncExternalChanges = (options || {}).syncExternalChanges || Ember.K;
@@ -38,14 +40,14 @@ export default function(options) {
   });
 
   describe('#restore', () => {
-    context('when the store is empty', () => {
+    describe('when the store is empty', () => {
       it('returns an empty object', () => {
         store.clear();
         expect(store.restore()).to.eql({});
       });
     });
 
-    context('when the store has data', () => {
+    describe('when the store has data', () => {
       beforeEach(() => {
         store.persist({ key1: 'value1', key2: 'value2' });
       });

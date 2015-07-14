@@ -1,6 +1,9 @@
 /* jshint expr:true */
 import Ember from 'ember';
 import { it } from 'ember-mocha';
+import { describe, beforeEach, afterEach } from 'mocha';
+import { expect } from 'chai';
+import sinon from 'sinon';
 import Devise from 'ember-simple-auth/authorizers/devise';
 import Session from 'ember-simple-auth/session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
@@ -50,12 +53,12 @@ describe('Devise', function() {
       });
     }
 
-    context('when the session is authenticated', function() {
+    describe('when the session is authenticated', function() {
       beforeEach(function() {
         this.authorizer.set('session.isAuthenticated', true);
       });
 
-      context('when the session contains a non empty token and email', function() {
+      describe('when the session contains a non empty token and email', function() {
         beforeEach(function() {
           this.authorizer.set('session.secure.token', 'secret token!');
           this.authorizer.set('session.secure.email', 'user@email.com');
@@ -68,7 +71,7 @@ describe('Devise', function() {
         });
       });
 
-      context('when custom identification and token attribute names are configured', function() {
+      describe('when custom identification and token attribute names are configured', function() {
         beforeEach(function() {
           Configuration.devise.tokenAttributeName          = 'employee_token';
           Configuration.devise.identificationAttributeName = 'employee_email';
@@ -76,7 +79,7 @@ describe('Devise', function() {
           this.authorizer = Devise.create();
         });
 
-        context('when the session contains a non empty employee_token and employee_email', function() {
+        describe('when the session contains a non empty employee_token and employee_email', function() {
           beforeEach(function() {
             this.authorizer.set('session', this.session);
             this.authorizer.set('session.secure.employee_token', 'secret token!');
@@ -100,7 +103,7 @@ describe('Devise', function() {
         });
       });
 
-      context('when the session does not contain an token', function() {
+      describe('when the session does not contain an token', function() {
         beforeEach(function() {
           this.authorizer.set('session.secure.token', null);
         });
@@ -108,7 +111,7 @@ describe('Devise', function() {
         itDoesNotAuthorizeTheRequest();
       });
 
-      context('when the session does not contain an email', function() {
+      describe('when the session does not contain an email', function() {
         beforeEach(function() {
           this.authorizer.set('session.secure.email', null);
         });
@@ -117,7 +120,7 @@ describe('Devise', function() {
       });
     });
 
-    context('when the session is not authenticated', function() {
+    describe('when the session is not authenticated', function() {
       beforeEach(function() {
         this.authorizer.set('session.isAuthenticated', false);
       });

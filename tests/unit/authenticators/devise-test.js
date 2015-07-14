@@ -1,6 +1,9 @@
 /* jshint expr:true */
-import { it } from 'ember-mocha';
 import Ember from 'ember';
+import { it } from 'ember-mocha';
+import { describe, beforeEach, afterEach } from 'mocha';
+import { expect } from 'chai';
+import sinon from 'sinon';
 import Devise from 'ember-simple-auth/authenticators/devise';
 import Configuration from 'ember-simple-auth/configuration';
 
@@ -64,7 +67,7 @@ describe('Devise', () => {
       ]);
     });
 
-    context('when the data contains a token and email', () => {
+    describe('when the data contains a token and email', () => {
       it('resolves with the correct data', (done) => {
         authenticator.restore({ token: 'secret token!', email: 'user@email.com' }).then((content) => {
           expect(content).to.eql({ token: 'secret token!', email: 'user@email.com' });
@@ -73,7 +76,7 @@ describe('Devise', () => {
       });
     });
 
-    context('when the data contains a custom token and email attribute', () => {
+    describe('when the data contains a custom token and email attribute', () => {
       beforeEach(() => {
         Configuration.devise.tokenAttributeName          = 'employee.token';
         Configuration.devise.identificationAttributeName = 'employee.email';
@@ -123,7 +126,7 @@ describe('Devise', () => {
       });
     });
 
-    context('when the authentication request is successful', () => {
+    describe('when the authentication request is successful', () => {
       beforeEach(() => {
         server.respondWith('POST', '/users/sign_in', [
           201,
@@ -141,7 +144,7 @@ describe('Devise', () => {
       });
     });
 
-    context('when the authentication request fails', () => {
+    describe('when the authentication request fails', () => {
       beforeEach(() => {
         server.respondWith('POST', '/users/sign_in', [
           400,

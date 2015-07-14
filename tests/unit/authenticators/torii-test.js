@@ -1,6 +1,9 @@
 /* jshint expr:true */
-import { it } from 'ember-mocha';
 import Ember from 'ember';
+import { it } from 'ember-mocha';
+import { describe, beforeEach } from 'mocha';
+import { expect } from 'chai';
+import sinon from 'sinon';
 import Torii from 'ember-simple-auth/authenticators/torii';
 
 describe('Torii', function() {
@@ -24,15 +27,15 @@ describe('Torii', function() {
 
       it('unsets the provider', function(done) {
         this.authenticator.provider = 'provider';
-        this.authenticator.restore(data).then(null, (data) => {
+        this.authenticator.restore(data).then(null, () => {
           expect(this.authenticator.provider).to.be.null;
           done();
         });
       });
     }
 
-    context('when there is a torii provider in the session data', function() {
-      context('when torii fetches successfully', function() {
+    describe('when there is a torii provider in the session data', function() {
+      describe('when torii fetches successfully', function() {
         beforeEach(function() {
           sinon.stub(this.torii, 'fetch').returns(Ember.RSVP.resolve({ some: 'other data' }));
         });
@@ -45,14 +48,14 @@ describe('Torii', function() {
         });
 
         it('remembers the provider', function(done) {
-          this.authenticator.restore({ some: 'data', provider: 'provider' }).then((data) => {
+          this.authenticator.restore({ some: 'data', provider: 'provider' }).then(() => {
             expect(this.authenticator.provider).to.eql('provider');
             done();
           });
         });
       });
 
-      context('when torii does not fetch successfully', function() {
+      describe('when torii does not fetch successfully', function() {
         beforeEach(function() {
           sinon.stub(this.torii, 'fetch').returns(Ember.RSVP.reject());
         });
@@ -61,13 +64,13 @@ describe('Torii', function() {
       });
     });
 
-    context('when there is no torii provider in the session data', function() {
+    describe('when there is no torii provider in the session data', function() {
       itDoesNotRestore();
     });
   });
 
   describe('#authenticate', function() {
-    context('when torii opens successfully', function() {
+    describe('when torii opens successfully', function() {
       beforeEach(function() {
         sinon.stub(this.torii, 'open').returns(Ember.RSVP.resolve({ some: 'data' }));
       });
@@ -80,14 +83,14 @@ describe('Torii', function() {
       });
 
       it('remembers the provider', function(done) {
-        this.authenticator.authenticate('provider').then((data) => {
+        this.authenticator.authenticate('provider').then(() => {
           expect(this.authenticator.provider).to.eql('provider');
           done();
         });
       });
     });
 
-    context('when torii does not open successfully', function() {
+    describe('when torii does not open successfully', function() {
       beforeEach(function() {
         sinon.stub(this.torii, 'open').returns(Ember.RSVP.reject());
       });
@@ -102,13 +105,13 @@ describe('Torii', function() {
   });
 
   describe('#invalidate', function() {
-    context('when torii closes successfully', function() {
+    describe('when torii closes successfully', function() {
       beforeEach(function() {
         sinon.stub(this.torii, 'close').returns(Ember.RSVP.resolve());
       });
 
       it('returns a resolving promise', function(done) {
-        this.authenticator.invalidate({ some: 'data' }).then(function(data) {
+        this.authenticator.invalidate({ some: 'data' }).then(function() {
           expect(true).to.be.true;
           done();
         });
@@ -116,14 +119,14 @@ describe('Torii', function() {
 
       it('unsets the provider', function(done) {
         this.authenticator.provider = 'provider';
-        this.authenticator.invalidate({ some: 'data' }).then((data) => {
+        this.authenticator.invalidate({ some: 'data' }).then(() => {
           expect(this.authenticator.provider).to.be.null;
           done();
         });
       });
     });
 
-    context('when torii does not close successfully', function() {
+    describe('when torii does not close successfully', function() {
       beforeEach(function() {
         sinon.stub(this.torii, 'open').returns(Ember.RSVP.reject());
       });
@@ -137,7 +140,7 @@ describe('Torii', function() {
 
       it('keeps the provider', function(done) {
         this.authenticator.provider = 'provider';
-        this.authenticator.invalidate({ some: 'data' }).then(null, (data) => {
+        this.authenticator.invalidate({ some: 'data' }).then(null, () => {
           expect(this.authenticator.provider).to.eql('provider');
           done();
         });

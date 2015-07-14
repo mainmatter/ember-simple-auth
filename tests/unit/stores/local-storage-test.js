@@ -1,4 +1,6 @@
 import { it } from 'ember-mocha';
+import { describe, beforeEach, afterEach } from 'mocha';
+import { expect } from 'chai';
 import LocalStorage from 'ember-simple-auth/stores/local-storage';
 import Configuration from 'ember-simple-auth/configuration';
 import itBehavesLikeAStore from './shared/store-behavior';

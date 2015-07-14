@@ -1,6 +1,8 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
-import Ember from 'ember';
+import { describe, beforeEach } from 'mocha';
+import { expect } from 'chai';
+import sinon from 'sinon';
 import setupSession from 'ember-simple-auth/initializers/setup-session';
 import Session from 'ember-simple-auth/session';
 import Configuration from 'ember-simple-auth/configuration';

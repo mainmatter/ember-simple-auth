@@ -1,5 +1,7 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
+import { describe, beforeEach } from 'mocha';
+import { expect } from 'chai';
 import Base from 'ember-simple-auth/authenticators/base';
 
 let authenticator;

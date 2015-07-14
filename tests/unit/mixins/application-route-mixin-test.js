@@ -1,13 +1,15 @@
 /* jshint expr:true */
-import { it } from 'ember-mocha';
 import Ember from 'ember';
+import { it } from 'ember-mocha';
+import { describe, beforeEach } from 'mocha';
+import { expect } from 'chai';
+import sinon from 'sinon';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import Session from 'ember-simple-auth/session';
 import LocalStorageStore from 'ember-simple-auth/stores/local-storage';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 import Configuration from 'ember-simple-auth/configuration';
 
-let TestRoute = Ember.Route.extend(ApplicationRouteMixin);
 let session;
 let route;
 let container;
@@ -109,7 +111,7 @@ describe('ApplicationRouteMixin', () => {
       sinon.spy(route, 'transitionTo');
     });
 
-    context('when an attempted transition is stored in the session', () => {
+    describe('when an attempted transition is stored in the session', () => {
       let attemptedTransition;
 
       beforeEach(() => {
@@ -134,7 +136,7 @@ describe('ApplicationRouteMixin', () => {
       });
     });
 
-    context('when no attempted transition is stored in the session', () => {
+    describe('when no attempted transition is stored in the session', () => {
       it('transitions to "Configuration.base.routeAfterAuthentication"', () => {
         route._actions.sessionAuthenticationSucceeded.apply(route);
 
@@ -144,7 +146,7 @@ describe('ApplicationRouteMixin', () => {
   });
 
   describe('the "authorizationFailed" action', () => {
-    context('when the session is authenticated', () => {
+    describe('when the session is authenticated', () => {
       beforeEach(() => {
         session.set('isAuthenticated', true);
       });
@@ -157,7 +159,7 @@ describe('ApplicationRouteMixin', () => {
       });
     });
 
-    context('when the session is not authenticated', () => {
+    describe('when the session is not authenticated', () => {
       it('does not try to invalidate the session', () => {
         sinon.stub(session, 'invalidate').returns(Ember.RSVP.resolve());
         route._actions.authorizationFailed.apply(route);

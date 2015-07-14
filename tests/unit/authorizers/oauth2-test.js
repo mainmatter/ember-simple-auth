@@ -1,5 +1,8 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
+import { describe, beforeEach } from 'mocha';
+import { expect } from 'chai';
+import sinon from 'sinon';
 import OAuth2 from 'ember-simple-auth/authorizers/oauth2';
 import Session from 'ember-simple-auth/session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
@@ -25,12 +28,12 @@ describe('OAuth2', function() {
       });
     }
 
-    context('when the session is authenticated', function() {
+    describe('when the session is authenticated', function() {
       beforeEach(function() {
         this.authorizer.set('session.isAuthenticated', true);
       });
 
-      context('when the session contains a non empty access_token', function() {
+      describe('when the session contains a non empty access_token', function() {
         beforeEach(function() {
           this.authorizer.set('session.secure.access_token', 'secret token!');
         });
@@ -42,7 +45,7 @@ describe('OAuth2', function() {
         });
       });
 
-      context('when the session does not contain an access_token', function() {
+      describe('when the session does not contain an access_token', function() {
         beforeEach(function() {
           this.authorizer.set('session.secure.access_token', null);
         });
@@ -51,7 +54,7 @@ describe('OAuth2', function() {
       });
     });
 
-    context('when the session is not authenticated', function() {
+    describe('when the session is not authenticated', function() {
       beforeEach(function() {
         this.authorizer.set('session.isAuthenticated', false);
       });
