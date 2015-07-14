@@ -2,6 +2,7 @@
 import Ember from 'ember';
 import Base from './base';
 import Configuration from './../configuration';
+import Base64 from './../utils/base64';
 
 /**
   Authenticator that conforms to OAuth 2
@@ -30,6 +31,19 @@ export default Base.extend({
     @param {Object} data The updated session data
     @public
   */
+
+  /**
+    The client_id to be sent to the authorization server
+
+    This value can be configured via
+    [`SimpleAuth.Configuration.OAuth2#clientId`](#SimpleAuth-Configuration-OAuth2-clientId).
+
+    @property clientId
+    @type String
+    @default null
+    @public
+  */
+  clientId: null,
 
   /**
     The endpoint on the server the authenticator acquires the access token
@@ -83,6 +97,7 @@ export default Base.extend({
     @private
   */
   init() {
+    this.clientId                      = Configuration.oauth2.clientId;
     this.serverTokenEndpoint           = Configuration.oauth2.serverTokenEndpoint;
     this.serverTokenRevocationEndpoint = Configuration.oauth2.serverTokenRevocationEndpoint;
     this.refreshAccessTokens           = Configuration.oauth2.refreshAccessTokens;
@@ -223,13 +238,24 @@ export default Base.extend({
     @public
   */
   makeRequest(url, data) {
-    return Ember.$.ajax({
+    let options = {
       url,
-      type:        'POST',
+      type:         'POST',
       data,
-      dataType:    'json',
-      contentType: 'application/x-www-form-urlencoded'
-    });
+      dataType:     'json',
+      contentType:  'application/x-www-form-urlencoded'
+    };
+
+    if (!Ember.isEmpty(this.clientId)) {
+      let base64ClientId = Base64.encode(this.clientId.concat(':'));
+      Ember.merge(options, {
+        headers: {
+          Authorization: 'Basic '.concat(base64ClientId)
+        }
+      });
+    }
+
+    return Ember.$.ajax(options);
   },
 
   /**
