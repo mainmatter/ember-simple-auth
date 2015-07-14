@@ -209,6 +209,12 @@ describe('Configuration', () => {
       expect(Configuration.devise.tokenAttributeName).to.eql('tokenAttributeName');
     });
 
+    it('sets clientId correctly', () => {
+      Configuration.load({ oauth2: { clientId: 'clientId' } });
+
+      expect(Configuration.oauth2.clientId).to.eql('clientId');
+    });
+
     it('sets serverTokenEndpoint correctly', () => {
       Configuration.load({ oauth2: { serverTokenEndpoint: 'serverTokenEndpoint' } });
 

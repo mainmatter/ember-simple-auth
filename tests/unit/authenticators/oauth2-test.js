@@ -45,6 +45,12 @@ describe('OAuth2', () => {
       expect(OAuth2.create().refreshAccessTokens).to.be.false;
     });
 
+    it('assigns clientId from the configuration object', () => {
+      Configuration.oauth2.clientId = 'test-client';
+
+      expect(OAuth2.create().clientId).to.be.eq('test-client');
+    });
+
     afterEach(() => {
       Configuration.load({});
     });
@@ -142,7 +148,24 @@ describe('OAuth2', () => {
       });
     });
 
-    it('sends a single OAuth scope to the token endpoint', (done) => {
+    it('sends an AJAX request to the token endpoint with client_id Basic Auth header', function(done) {
+      authenticator.set('clientId', 'test-client');
+      authenticator.authenticate({ identification: 'username', password: 'password' });
+
+      Ember.run.next(() => {
+        expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
+          url:         '/token',
+          type:        'POST',
+          data:        { 'grant_type': 'password', username: 'username', password: 'password' },
+          dataType:    'json',
+          contentType: 'application/x-www-form-urlencoded',
+          headers:     { Authorization: 'Basic dGVzdC1jbGllbnQ6' }
+        });
+        done();
+      });
+    });
+
+    it('sends a single OAuth scope to the token endpoint', function(done) {
       authenticator.authenticate({ identification: 'username', password: 'password', scope: 'public' });
 
       Ember.run.next(() => {

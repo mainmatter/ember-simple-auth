@@ -27,7 +27,8 @@ const defaults = {
   oauth2: {
     serverTokenEndpoint:           '/token',
     serverTokenRevocationEndpoint: null,
-    refreshAccessTokens:           true
+    refreshAccessTokens:           true,
+    clientId:                      null
   }
 };
 
@@ -285,6 +286,18 @@ export default {
   },
 
   oauth2: {
+    /**
+      The client_id sent to the server
+
+      @property client_id
+      @readOnly
+      @static
+      @type String
+      @default null
+      @public
+    */
+    clientId: defaults.oauth2.clientId,
+
     /**
       The endpoint on the server the authenticator acquires the access token
       from.
