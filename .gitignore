@@ -4,3 +4,6 @@ tmp
 docs/build
 .ruby-version
 node_modules
+
+.idea
+ember-simple-auth.iml
