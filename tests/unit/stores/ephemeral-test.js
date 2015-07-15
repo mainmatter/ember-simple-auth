@@ -1,4 +1,4 @@
-import { it } from 'ember-mocha';
+import { describe, beforeEach } from 'mocha';
 import Ephemeral from 'ember-simple-auth/stores/ephemeral';
 import itBehavesLikeAStore from './shared/store-behavior';
 

@@ -1,6 +1,9 @@
 /* jshint expr:true */
-import { it } from 'ember-mocha';
 import Ember from 'ember';
+import { it } from 'ember-mocha';
+import { describe, beforeEach, afterEach } from 'mocha';
+import { expect } from 'chai';
+import sinon from 'sinon';
 import { default as setup, inject } from 'ember-simple-auth/setup';
 import Configuration from 'ember-simple-auth/configuration';
 import Session from 'ember-simple-auth/session';
@@ -57,7 +60,7 @@ describe('setup', () => {
       Configuration.base.store = 'session-store:local-storage';
     });
 
-    context('when a custom session class is configured', () => {
+    describe('when a custom session class is configured', () => {
       beforeEach(() => {
         Configuration.base.session = 'session:custom';
         let store                  = EphemeralStore.create();
@@ -100,7 +103,7 @@ describe('setup', () => {
       sinon.spy(authorizer, 'authorize');
     });
 
-    context('when an authorizer is configured', () => {
+    describe('when an authorizer is configured', () => {
       beforeEach(() => {
         Configuration.base.authorizer = 'authorizer';
       });
@@ -208,7 +211,7 @@ describe('setup', () => {
     afterEach(() => xhr.restore());
 
     describe("when the request's status is 401", () => {
-      context('when the XHR was authorized by the authorizer', () => {
+      describe('when the XHR was authorized by the authorizer', () => {
         beforeEach(() => {
           server.respondWith('GET', '/data', [401, {}, '']);
         });
@@ -223,7 +226,7 @@ describe('setup', () => {
         });
       });
 
-      context('when the XHR was not authorized by the authorizer', () => {
+      describe('when the XHR was not authorized by the authorizer', () => {
         beforeEach(() => {
           server.respondWith('GET', 'http://other.origin/data', [401, {}, '']);
         });
