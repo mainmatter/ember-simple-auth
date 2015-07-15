@@ -407,7 +407,7 @@ and then run the tests in the browser at
 ## License
 
 Ember Simple Auth is developed by and &copy;
-[simplabs/Marco Otte-Witte](http://simplabs.com) and contributors. It is
+[simplabs GmbH/Marco Otte-Witte](http://simplabs.com) and contributors. It is
 released under the
 [MIT License](https://github.com/simplabs/ember-simple-auth/blob/master/LICENSE).
 
