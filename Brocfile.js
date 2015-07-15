@@ -32,7 +32,9 @@ app.import('bower_components/bootstrap/dist/css/bootstrap.css');
 sourceTrees.push(app.toTree());
 
 // Docs
-if (app.env === 'docs') {
+const cmdOpts = process.argv.slice(3);
+
+if (cmdOpts.indexOf('--docs') !== -1) {
   const docs = broccoliHandlebars('docs/theme', ['index.hbs'], {
     handlebars: Handlebars,
     helpers: require('./docs/theme/helpers'),

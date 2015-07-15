@@ -9,7 +9,7 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
-    "docs": "ember build --docs -e docs",
+    "docs": "ember build --docs",
     "test": "ember try:testall"
   },
   "repository": "",
@@ -36,7 +36,7 @@
     "ember-cli-release": "0.2.3",
     "ember-cli-uglify": "^1.0.1",
     "ember-data": "1.13.4",
-    "ember-cli-yuidoc": "0.7.1",
+    "ember-cli-yuidoc": "0.7.2",
     "ember-disable-prototype-extensions": "^1.0.0",
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.2",
