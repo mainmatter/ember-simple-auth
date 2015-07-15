@@ -9,7 +9,7 @@ import Configuration from './../configuration';
   Owner Password Credentials Grant Type"_.
 
   This authenticator supports access token refresh (see
-  [RFC 6740, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
+  [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
 
   _The factory for this authenticator is registered as
   `'simple-auth-authenticator:oauth2-password-grant'` in Ember's
@@ -24,7 +24,7 @@ import Configuration from './../configuration';
 export default Base.extend({
   /**
     Triggered when the authenticator refreshes the access token (see
-    [RFC 6740, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
+    [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
 
     @event sessionDataUpdated
     @param {Object} data The updated session data
