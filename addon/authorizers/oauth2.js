@@ -4,7 +4,7 @@ import Base from './base';
 /**
   Authorizer that conforms to OAuth 2
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)) by sending a bearer token
-  ([RFC 6749](http://tools.ietf.org/html/rfc6750)) in the request's
+  ([RFC 6750](http://tools.ietf.org/html/rfc6750)) in the request's
   `Authorization` header.
 
   _The factory for this authorizer is registered as
