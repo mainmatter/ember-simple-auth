@@ -26,6 +26,7 @@
     "ember-browserify": "1.0.1",
     "ember-cli": "1.13.1",
     "ember-cli-app-version": "0.4.0",
+    "ember-cli-base64": "0.0.1",
     "ember-cli-content-security-policy": "0.4.0",
     "ember-cli-dependency-checker": "^1.0.0",
     "ember-cli-htmlbars": "0.7.9",
