@@ -2,7 +2,6 @@
 import Ember from 'ember';
 import Base from './base';
 import Configuration from './../configuration';
-import Base64 from './../utils/base64';
 
 /**
   Authenticator that conforms to OAuth 2
