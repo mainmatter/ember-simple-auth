@@ -1,6 +1,6 @@
 /* jscs:disable requireDotNotation */
 import Ember from 'ember';
-import Configuration from './configuration';
+import Configuration from '../configuration';
 
 const WILDCARD_TOKEN = '_wildcard_token_';
 
@@ -71,7 +71,8 @@ let didSetupAjaxHooks = false;
   @private
 **/
 
-export default function(container) {
+export default function(instance) {
+  const { container } = instance;
   Configuration.base.applicationRootUrl = container.lookup('router:main').get('rootURL') || '/';
 
   let session = container.lookup(Configuration.base.session);

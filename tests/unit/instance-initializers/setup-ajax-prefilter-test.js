@@ -4,7 +4,7 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import setup from 'ember-simple-auth/setup';
+import setupAjaxPrefilter from 'ember-simple-auth/instance-initializers/setup-ajax-prefilter';
 import Configuration from 'ember-simple-auth/configuration';
 import Session from 'ember-simple-auth/session';
 import LocalStorageStore from 'ember-simple-auth/stores/local-storage';
@@ -15,16 +15,12 @@ let session;
 let authorizer;
 let lookupStub;
 
-describe('setup', () => {
+describe('setupAjaxPrefilter', () => {
   beforeEach(() => {
-    application = {
-      register() {},
-      deferReadiness() {},
-      advanceReadiness() {}
-    };
     container          = {
       lookup() {}
     };
+    application = { container };
     session            = Session.create();
     lookupStub         = sinon.stub(container, 'lookup');
     let router         = {
@@ -44,8 +40,6 @@ describe('setup', () => {
     lookupStub.withArgs('session-store:local-storage').returns(store);
     lookupStub.withArgs('simple-auth-session:main').returns(session);
     lookupStub.withArgs('authorizer').returns(authorizer);
-
-    sinon.spy(application, 'register');
   });
 
   afterEach(() => {
@@ -58,13 +52,13 @@ describe('setup', () => {
     });
 
     it('uses the LocalStorage store by default', () => {
-      setup(container);
+      setupAjaxPrefilter(application);
 
       expect(session.store).to.be.an.instanceof(LocalStorageStore);
     });
 
     it("sets applicationRootUrl to the application's root URL", () => {
-      setup(container);
+      setupAjaxPrefilter(application);
 
       expect(Configuration.base.applicationRootUrl).to.eql('rootURL');
     });
@@ -81,14 +75,14 @@ describe('setup', () => {
       });
 
       it('uses the configured authorizer', () => {
-        setup(container);
+        setupAjaxPrefilter(application);
         Ember.$.get('/data');
 
         expect(authorizer.authorize).to.have.been.calledOnce;
       });
 
       it('does not authorize requests going to a foreign origin', () => {
-        setup(container);
+        setupAjaxPrefilter(application);
         Ember.$.get('http://other-domain.com');
 
         expect(authorizer.authorize).to.not.have.been.called;
@@ -96,7 +90,7 @@ describe('setup', () => {
 
       it('authorizes requests going to a foreign origin if all other origins are whitelisted', () => {
         Configuration.base.crossOriginWhitelist = ['*'];
-        setup(container);
+        setupAjaxPrefilter(application);
         Ember.$.get('http://other-domain.com/path/query=string');
 
         expect(authorizer.authorize).to.have.been.calledOnce;
@@ -112,7 +106,7 @@ describe('setup', () => {
 
       it('authorizes requests going to a foreign origin if the specific origin is whitelisted', () => {
         Configuration.base.crossOriginWhitelist = ['http://other-domain.com', 'https://another-port.net:4567'];
-        setup(container);
+        setupAjaxPrefilter(application);
         Ember.$.get('http://other-domain.com/path/query=string');
 
         expect(authorizer.authorize).to.have.been.calledOnce;
@@ -128,7 +122,7 @@ describe('setup', () => {
 
       it('authorizes requests going to a subdomain of a foreign origin if the origin and any subdomain are whitelisted', () => {
         Configuration.base.crossOriginWhitelist = ['http://*.other-domain.com', 'http://*.sub.test-domain.com:1234'];
-        setup(container);
+        setupAjaxPrefilter(application);
         Ember.$.get('http://test.other-domain.com/path/query=string');
 
         expect(authorizer.authorize).to.have.been.calledOnce;
@@ -177,7 +171,7 @@ describe('setup', () => {
       xhr                           = sinon.useFakeXMLHttpRequest();
       server                        = sinon.fakeServer.create();
       server.autoRespond            = true;
-      setup(container);
+      setupAjaxPrefilter(application);
     });
 
     afterEach(() => xhr.restore());
