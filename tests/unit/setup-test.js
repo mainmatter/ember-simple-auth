@@ -4,11 +4,10 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { default as setup, inject } from 'ember-simple-auth/setup';
+import setup from 'ember-simple-auth/setup';
 import Configuration from 'ember-simple-auth/configuration';
 import Session from 'ember-simple-auth/session';
 import LocalStorageStore from 'ember-simple-auth/stores/local-storage';
-import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 let application;
 let container;
@@ -20,7 +19,6 @@ describe('setup', () => {
   beforeEach(() => {
     application = {
       register() {},
-      inject() {},
       deferReadiness() {},
       advanceReadiness() {}
     };
@@ -48,7 +46,6 @@ describe('setup', () => {
     lookupStub.withArgs('authorizer').returns(authorizer);
 
     sinon.spy(application, 'register');
-    sinon.spy(application, 'inject');
   });
 
   afterEach(() => {
@@ -60,35 +57,10 @@ describe('setup', () => {
       Configuration.base.store = 'session-store:local-storage';
     });
 
-    describe('when a custom session class is configured', () => {
-      beforeEach(() => {
-        Configuration.base.session = 'session:custom';
-        let store                  = EphemeralStore.create();
-        let otherSession           = Session.extend().create({ store, container });
-        lookupStub.withArgs('session:custom').returns(otherSession);
-      });
-
-      it('is of that class', () => {
-        setup(container);
-        inject(application);
-
-        let spyCall = application.inject.getCall(0);
-        expect(spyCall.args[2]).to.eql('session:custom');
-      });
-    });
-
     it('uses the LocalStorage store by default', () => {
       setup(container);
 
       expect(session.store).to.be.an.instanceof(LocalStorageStore);
-    });
-
-    it('is injected into all components, controllers and routes', () => {
-      inject(application);
-
-      ['component', 'controller', 'route'].forEach((component) => {
-        expect(application.inject).to.have.been.calledWith(component, Configuration.base.sessionPropertyName, Configuration.base.session);
-      });
     });
 
     it("sets applicationRootUrl to the application's root URL", () => {

@@ -98,9 +98,3 @@ export default function(container) {
 
   return session.restore();
 }
-
-export function inject(application) {
-  Ember.A(['controller', 'route', 'component']).forEach(function(component) {
-    application.inject(component, Configuration.base.sessionPropertyName, Configuration.base.session);
-  });
-}
