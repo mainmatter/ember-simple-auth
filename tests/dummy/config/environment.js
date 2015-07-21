@@ -19,9 +19,14 @@ module.exports = function(environment) {
     }
   };
 
-  ENV['simple-auth-oauth2'] = {
-    serverTokenRevocationEndpoint: '/revoke'
-  }
+  ENV['simple-auth'] = {
+    base: {
+      authorizer: 'authorizer:oauth2-bearer'
+    },
+    oauth2: {
+      serverTokenRevocationEndpoint: '/revoke'
+    }
+  };
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
