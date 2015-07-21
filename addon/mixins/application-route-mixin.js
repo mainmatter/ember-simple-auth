@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
-import setup from '../setup';
 
 const { on }      = Ember;
 const { service } = Ember.inject;
@@ -61,16 +60,6 @@ export default Ember.Mixin.create({
       }));
     });
   }),
-
-  /**
-    @method beforeModel
-    @private
-  */
-  beforeModel(transition) {
-    setup(this.container).finally(() => {
-      this._super(transition);
-    });
-  },
 
   actions: {
     /**
