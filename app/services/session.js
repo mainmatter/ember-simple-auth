@@ -29,5 +29,5 @@ export default Ember.Service.extend(Ember.Evented, {
   invalidate() {
     const session = this.get('session');
     return session.invalidate.apply(session, arguments);
-  },
+  }
 });

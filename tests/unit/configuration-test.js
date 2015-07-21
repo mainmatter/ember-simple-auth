@@ -44,12 +44,6 @@ describe('Configuration', () => {
     });
   });
 
-  describe('sessionPropertyName', () => {
-    it('defaults to "session"', () => {
-      expect(Configuration.base.sessionPropertyName).to.eql('session');
-    });
-  });
-
   describe('authorizer', () => {
     it('defaults to null', () => {
       expect(Configuration.base.authorizer).to.be.null;
@@ -158,12 +152,6 @@ describe('Configuration', () => {
       Configuration.load({ base: { routeIfAlreadyAuthenticated: 'routeIfAlreadyAuthenticated' } });
 
       expect(Configuration.base.routeIfAlreadyAuthenticated).to.eql('routeIfAlreadyAuthenticated');
-    });
-
-    it('sets sessionPropertyName correctly', () => {
-      Configuration.load({ base: { sessionPropertyName: 'sessionPropertyName' } });
-
-      expect(Configuration.base.sessionPropertyName).to.eql('sessionPropertyName');
     });
 
     it('sets authorizer correctly', () => {
