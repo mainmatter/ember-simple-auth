@@ -86,10 +86,10 @@ export default Ember.Mixin.create({
       @public
     */
     sessionAuthenticationSucceeded() {
-      let attemptedTransition = this.get(Configuration.base.sessionPropertyName).get('attemptedTransition');
+      let attemptedTransition = this.get('session').get('attemptedTransition');
       if (attemptedTransition) {
         attemptedTransition.retry();
-        this.get(Configuration.base.sessionPropertyName).set('attemptedTransition', null);
+        this.get('session').set('attemptedTransition', null);
       } else {
         this.transitionTo(Configuration.base.routeAfterAuthentication);
       }
@@ -164,8 +164,8 @@ export default Ember.Mixin.create({
       @public
     */
     authorizationFailed() {
-      if (this.get(Configuration.base.sessionPropertyName).get('isAuthenticated')) {
-        this.get(Configuration.base.sessionPropertyName).invalidate();
+      if (this.get('session').get('isAuthenticated')) {
+        this.get('session').invalidate();
       }
     }
   }

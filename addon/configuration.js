@@ -6,7 +6,6 @@ const defaults = {
     authenticationRoute:         'login',
     routeAfterAuthentication:    'index',
     routeIfAlreadyAuthenticated: 'index',
-    sessionPropertyName:         'session',
     authorizer:                  null,
     session:                     'simple-auth-session:main',
     store:                       'session-store:local-storage',
@@ -87,19 +86,6 @@ export default {
       @public
     */
     routeIfAlreadyAuthenticated: defaults.base.routeIfAlreadyAuthenticated,
-
-    /**
-      The name of the property that the session is injected with into routes and
-      controllers.
-
-      @property sessionPropertyName
-      @readOnly
-      @static
-      @type String
-      @default 'session'
-      @public
-    */
-    sessionPropertyName: defaults.base.sessionPropertyName,
 
     /**
       The authorizer factory to use as it is registered with Ember's container,
