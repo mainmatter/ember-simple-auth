@@ -8,66 +8,70 @@ import sinon from 'sinon';
 import OAuth2 from 'ember-simple-auth/authenticators/oauth2';
 import Configuration from 'ember-simple-auth/configuration';
 
-describe('OAuth2', function() {
-  beforeEach(function() {
-    this.authenticator      = OAuth2.create();
-    this.xhr                = sinon.useFakeXMLHttpRequest();
-    this.server             = sinon.fakeServer.create();
-    this.server.autoRespond = true;
+let authenticator;
+let xhr;
+let server;
+
+describe('OAuth2', () => {
+  beforeEach(() => {
+    authenticator      = OAuth2.create();
+    xhr                = sinon.useFakeXMLHttpRequest();
+    server             = sinon.fakeServer.create();
+    server.autoRespond = true;
     sinon.spy(Ember.$, 'ajax');
   });
 
-  describe('initilization', function() {
-    it('assigns serverTokenEndpoint from the configuration object', function() {
+  afterEach(() => {
+    xhr.restore();
+    Ember.$.ajax.restore();
+  });
+
+  describe('initilization', () => {
+    it('assigns serverTokenEndpoint from the configuration object', () => {
       Configuration.oauth2.serverTokenEndpoint = 'serverTokenEndpoint';
 
       expect(OAuth2.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
     });
 
-    it('assigns serverTokenRevocationEndpoint from the configuration object', function() {
+    it('assigns serverTokenRevocationEndpoint from the configuration object', () => {
       Configuration.oauth2.serverTokenRevocationEndpoint = 'serverTokenRevocationEndpoint';
 
       expect(OAuth2.create().serverTokenRevocationEndpoint).to.eq('serverTokenRevocationEndpoint');
     });
 
-    it('assigns refreshAccessTokens from the configuration object', function() {
+    it('assigns refreshAccessTokens from the configuration object', () => {
       Configuration.oauth2.refreshAccessTokens = false;
 
       expect(OAuth2.create().refreshAccessTokens).to.be.false;
     });
 
-    afterEach(function() {
-      // TODO: make resetting the config easier
-      Configuration.load({
-        lookup() {
-          return Ember.Object.create();
-        }
-      }, {});
+    afterEach(() => {
+      Configuration.load({});
     });
   });
 
-  describe('#restore', function() {
-    describe('when the data includes expiration data', function() {
-      it('resolves with the correct data', function(done) {
-        this.authenticator.restore({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' }).then(function(data) {
+  describe('#restore', () => {
+    describe('when the data includes expiration data', () => {
+      it('resolves with the correct data', (done) => {
+        authenticator.restore({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' }).then((data) => {
           expect(data).to.eql({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
           done();
         });
       });
 
-      describe('when the data includes an expiration time in the past', function() {
-        describe('when automatic token refreshing is enabled', function() {
-          describe('when the refresh request is successful', function() {
-            beforeEach(function() {
-              this.server.respondWith('POST', '/token', [
+      describe('when the data includes an expiration time in the past', () => {
+        describe('when automatic token refreshing is enabled', () => {
+          describe('when the refresh request is successful', () => {
+            beforeEach(() => {
+              server.respondWith('POST', '/token', [
                 200,
                 { 'Content-Type': 'application/json' },
                 '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }'
               ]);
             });
 
-            it('resolves with the correct data', function(done) {
-              this.authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then(function(data) {
+            it('resolves with the correct data', (done) => {
+              authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then((data) => {
                 expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
                 delete data['expires_at'];
                 expect(data).to.eql({ 'access_token': 'secret token 2!', 'expires_in': 67890, 'refresh_token': 'refresh token 2!' });
@@ -76,9 +80,9 @@ describe('OAuth2', function() {
             });
           });
 
-          describe('when the access token is not refreshed successfully', function() {
-            it('returns a rejecting promise', function(done) {
-              this.authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then(null, function() {
+          describe('when the access token is not refreshed successfully', () => {
+            it('returns a rejecting promise', (done) => {
+              authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then(null, () => {
                 expect(true).to.be.true;
                 done();
               });
@@ -86,13 +90,13 @@ describe('OAuth2', function() {
           });
         });
 
-        describe('when automatic token refreshing is disabled', function() {
-          beforeEach(function() {
-            this.authenticator.set('refreshAccessTokens', false);
+        describe('when automatic token refreshing is disabled', () => {
+          beforeEach(() => {
+            authenticator.set('refreshAccessTokens', false);
           });
 
-          it('returns a rejecting promise', function(done) {
-            this.authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then(null, function() {
+          it('returns a rejecting promise', (done) => {
+            authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then(null, () => {
               expect(true).to.be.true;
               done();
             });
@@ -101,19 +105,19 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when the data does not include expiration data', function() {
-      describe('when the data contains an access_token', function() {
-        it('resolves with the correct data', function(done) {
-          this.authenticator.restore({ 'access_token': 'secret token!' }).then(function(data) {
+    describe('when the data does not include expiration data', () => {
+      describe('when the data contains an access_token', () => {
+        it('resolves with the correct data', (done) => {
+          authenticator.restore({ 'access_token': 'secret token!' }).then((data) => {
             expect(data).to.eql({ 'access_token': 'secret token!' });
             done();
           });
         });
       });
 
-      describe('when the data does not contain an access_token', function() {
-        it('returns a rejecting promise', function(done) {
-          this.authenticator.restore().then(null, function() {
+      describe('when the data does not contain an access_token', () => {
+        it('returns a rejecting promise', (done) => {
+          authenticator.restore().then(null, () => {
             expect(true).to.be.true;
             done();
           });
@@ -122,11 +126,11 @@ describe('OAuth2', function() {
     });
   });
 
-  describe('#authenticate', function() {
-    it('sends an AJAX request to the token endpoint', function(done) {
-      this.authenticator.authenticate({ identification: 'username', password: 'password' });
+  describe('#authenticate', () => {
+    it('sends an AJAX request to the token endpoint', (done) => {
+      authenticator.authenticate({ identification: 'username', password: 'password' });
 
-      Ember.run.next(function() {
+      Ember.run.next(() => {
         expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
           url:         '/token',
           type:        'POST',
@@ -138,52 +142,52 @@ describe('OAuth2', function() {
       });
     });
 
-    it('sends a single OAuth scope to the token endpoint', function(done) {
-      this.authenticator.authenticate({ identification: 'username', password: 'password', scope: 'public' });
+    it('sends a single OAuth scope to the token endpoint', (done) => {
+      authenticator.authenticate({ identification: 'username', password: 'password', scope: 'public' });
 
-      Ember.run.next(function() {
+      Ember.run.next(() => {
         expect(Ember.$.ajax.getCall(0).args[0].data.scope).to.eql('public');
         done();
       });
     });
 
-    it('sends multiple OAuth scopes to the token endpoint', function(done) {
-      this.authenticator.authenticate({ identification: 'username', password: 'password', scope: ['public', 'private'] });
+    it('sends multiple OAuth scopes to the token endpoint', (done) => {
+      authenticator.authenticate({ identification: 'username', password: 'password', scope: ['public', 'private'] });
 
-      Ember.run.next(function() {
+      Ember.run.next(() => {
         expect(Ember.$.ajax.getCall(0).args[0].data.scope).to.eql('public private');
         done();
       });
     });
 
-    describe('when the authentication request is successful', function() {
-      beforeEach(function() {
-        this.server.respondWith('POST', '/token', [
+    describe('when the authentication request is successful', () => {
+      beforeEach(() => {
+        server.respondWith('POST', '/token', [
           200,
           { 'Content-Type': 'application/json' },
           '{ "access_token": "secret token!" }'
         ]);
       });
 
-      it('resolves with the correct data', function(done) {
-        this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(function(data) {
+      it('resolves with the correct data', (done) => {
+        authenticator.authenticate({ identification: 'username', password: 'password' }).then((data) => {
           expect(true).to.be.true;
           expect(data).to.eql({ 'access_token': 'secret token!' });
           done();
         });
       });
 
-      describe('when the server response includes expiration data', function() {
-        beforeEach(function() {
-          this.server.respondWith('POST', '/token', [
+      describe('when the server response includes expiration data', () => {
+        beforeEach(() => {
+          server.respondWith('POST', '/token', [
             200,
             { 'Content-Type': 'application/json' },
             '{ "access_token": "secret token!", "expires_in": 12345, "refresh_token": "refresh token!" }'
           ]);
         });
 
-        it('resolves with the correct data', function(done) {
-          this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(function(data) {
+        it('resolves with the correct data', (done) => {
+          authenticator.authenticate({ identification: 'username', password: 'password' }).then((data) => {
             expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
             delete data['expires_at'];
             expect(data).to.eql({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
@@ -193,17 +197,17 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when the authentication request fails', function() {
-      beforeEach(function() {
-        this.server.respondWith('POST', '/token', [
+    describe('when the authentication request fails', () => {
+      beforeEach(() => {
+        server.respondWith('POST', '/token', [
           400,
           { 'Content-Type': 'application/json' },
           '{ "error": "invalid_grant" }'
         ]);
       });
 
-      it('rejects with the correct error', function(done) {
-        this.authenticator.authenticate({ identification: 'username', password: 'password' }).then(null, function(error) {
+      it('rejects with the correct error', (done) => {
+        authenticator.authenticate({ identification: 'username', password: 'password' }).then(null, (error) => {
           expect(error).to.eql({ error: 'invalid_grant' });
           done();
         });
@@ -211,25 +215,25 @@ describe('OAuth2', function() {
     });
   });
 
-  describe('#invalidate', function() {
+  describe('#invalidate', () => {
     function itSuccessfullyInvalidatesTheSession() {
-      it('returns a resolving promise', function(done) {
-        this.authenticator.invalidate({ 'access_token': 'access token!' }).then(function() {
+      it('returns a resolving promise', (done) => {
+        authenticator.invalidate({ 'access_token': 'access token!' }).then(() => {
           expect(true).to.be.true;
           done();
         });
       });
     }
 
-    describe('when token revokation is enabled', function() {
-      beforeEach(function() {
-        this.authenticator.serverTokenRevocationEndpoint = '/revoke';
+    describe('when token revokation is enabled', () => {
+      beforeEach(() => {
+        authenticator.serverTokenRevocationEndpoint = '/revoke';
       });
 
-      it('sends an AJAX request to the revokation endpoint', function(done) {
-        this.authenticator.invalidate({ 'access_token': 'access token!' });
+      it('sends an AJAX request to the revokation endpoint', (done) => {
+        authenticator.invalidate({ 'access_token': 'access token!' });
 
-        Ember.run.next(function() {
+        Ember.run.next(() => {
           expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
             url:         '/revoke',
             type:        'POST',
@@ -241,28 +245,28 @@ describe('OAuth2', function() {
         });
       });
 
-      describe('when the revokation request is successful', function() {
-        beforeEach(function() {
-          this.server.respondWith('POST', '/revoke', [200, { 'Content-Type': 'application/json' }, '']);
+      describe('when the revokation request is successful', () => {
+        beforeEach(() => {
+          server.respondWith('POST', '/revoke', [200, { 'Content-Type': 'application/json' }, '']);
         });
 
         itSuccessfullyInvalidatesTheSession();
       });
 
-      describe('when the revokation request fails', function() {
-        beforeEach(function() {
-          this.server.respondWith('POST', '/revoke', [400, { 'Content-Type': 'application/json' },
+      describe('when the revokation request fails', () => {
+        beforeEach(() => {
+          server.respondWith('POST', '/revoke', [400, { 'Content-Type': 'application/json' },
           '{ "error": "unsupported_grant_type" }']);
         });
 
         itSuccessfullyInvalidatesTheSession();
       });
 
-      describe('when a refresh token is set', function() {
-        it('sends an AJAX request to invalidate the refresh token', function(done) {
-          this.authenticator.invalidate({ 'access_token': 'access token!', 'refresh_token': 'refresh token!' });
+      describe('when a refresh token is set', () => {
+        it('sends an AJAX request to invalidate the refresh token', (done) => {
+          authenticator.invalidate({ 'access_token': 'access token!', 'refresh_token': 'refresh token!' });
 
-          Ember.run.next(function() {
+          Ember.run.next(() => {
             expect(Ember.$.ajax.getCall(1).args[0]).to.eql({
               url:         '/revoke',
               type:        'POST',
@@ -276,17 +280,17 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when token revokation is not enabled', function() {
+    describe('when token revokation is not enabled', () => {
       itSuccessfullyInvalidatesTheSession();
     });
   });
 
   // testing private API here ;(
-  describe('#refreshAccessToken', function() {
-    it('sends an AJAX request to the token endpoint', function(done) {
-      this.authenticator.refreshAccessToken(12345, 'refresh token!');
+  describe('#refreshAccessToken', () => {
+    it('sends an AJAX request to the token endpoint', (done) => {
+      authenticator.refreshAccessToken(12345, 'refresh token!');
 
-      Ember.run.next(function() {
+      Ember.run.next(() => {
         expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
           url:         '/token',
           type:        'POST',
@@ -298,51 +302,46 @@ describe('OAuth2', function() {
       });
     });
 
-    describe('when the refresh request is successful', function() {
-      beforeEach(function() {
-        this.server.respondWith('POST', '/token', [
+    describe('when the refresh request is successful', () => {
+      beforeEach(() => {
+        server.respondWith('POST', '/token', [
           200,
           { 'Content-Type': 'application/json' },
           '{ "access_token": "secret token 2!" }'
         ]);
       });
 
-      it('triggers the "sessionDataUpdated" event', function(done) {
-        this.authenticator.one('sessionDataUpdated', function(data) {
+      it('triggers the "sessionDataUpdated" event', (done) => {
+        authenticator.one('sessionDataUpdated', (data) => {
           expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
           delete data['expires_at'];
           expect(data).to.eql({ 'access_token': 'secret token 2!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
           done();
         });
 
-        this.authenticator.refreshAccessToken(12345, 'refresh token!');
+        authenticator.refreshAccessToken(12345, 'refresh token!');
       });
 
-      describe('when the server reponse includes updated expiration data', function() {
-        beforeEach(function() {
-          this.server.respondWith('POST', '/token', [
+      describe('when the server reponse includes updated expiration data', () => {
+        beforeEach(() => {
+          server.respondWith('POST', '/token', [
             200,
             { 'Content-Type': 'application/json' },
             '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }'
           ]);
         });
 
-        it('triggers the "sessionDataUpdated" event with the correct data', function(done) {
-          this.authenticator.one('sessionDataUpdated', function(data) {
+        it('triggers the "sessionDataUpdated" event with the correct data', (done) => {
+          authenticator.one('sessionDataUpdated', (data) => {
             expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
             delete data['expires_at'];
             expect(data).to.eql({ 'access_token': 'secret token 2!', 'expires_in': 67890, 'refresh_token': 'refresh token 2!' });
             done();
           });
 
-          this.authenticator.refreshAccessToken(12345, 'refresh token!');
+          authenticator.refreshAccessToken(12345, 'refresh token!');
         });
       });
     });
-  });
-
-  afterEach(function() {
-    this.xhr.restore();
-    Ember.$.ajax.restore();
   });
 });

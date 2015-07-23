@@ -49,12 +49,7 @@ describe('Devise', () => {
     });
 
     afterEach(() => {
-      // TODO: make resetting the config easier
-      Configuration.load({
-        lookup() {
-          return Ember.Object.create();
-        }
-      }, {});
+      Configuration.load({});
     });
   });
 
@@ -91,12 +86,7 @@ describe('Devise', () => {
       });
 
       afterEach(() => {
-        // TODO: make resetting the config easier
-        Configuration.load({
-          lookup() {
-            return Ember.Object.create();
-          }
-        }, {});
+        Configuration.load({});
       });
     });
   });
