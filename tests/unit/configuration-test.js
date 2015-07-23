@@ -1,27 +1,10 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
-import { describe, beforeEach, afterEach } from 'mocha';
+import { describe, afterEach } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
 import Configuration from 'ember-simple-auth/configuration';
 
-let container;
-let router;
-
 describe('Configuration', () => {
-  beforeEach(() => {
-    container         = {
-      lookup() {}
-    };
-    router            = {
-      get() {
-        return 'rootURL';
-      }
-    };
-    let containerStub = sinon.stub(container, 'lookup');
-    containerStub.withArgs('router:main').returns(router);
-  });
-
   afterEach(() => {
     Configuration.load({});
   });
