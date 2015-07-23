@@ -17,7 +17,7 @@ describe('Stores.LocalStorage', function() {
   });
 
   itBehavesLikeAStore({
-    store: () => {
+    store() {
       return store;
     }
   });

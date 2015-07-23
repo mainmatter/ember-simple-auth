@@ -4,13 +4,13 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 
-export default function(options) {
-  let syncExternalChanges = (options || {}).syncExternalChanges || Ember.K;
+export default function(options = {}) {
+  let syncExternalChanges = options.syncExternalChanges || Ember.K;
   let store;
 
   describe('#persist', () => {
     beforeEach(() => {
-      store = (options || {}).store();
+      store = options.store();
     });
 
     it('persists an object', () => {
@@ -30,7 +30,7 @@ export default function(options) {
       let triggered = false;
       store.one('sessionDataUpdated', () => triggered = true);
       store.persist({ key: 'other value' });
-      syncExternalChanges.call();
+      syncExternalChanges();
 
       Ember.run.next(() => {
         expect(triggered).to.be.false;

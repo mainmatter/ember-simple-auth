@@ -19,10 +19,10 @@ describe('Stores.Cookie', () => {
   });
 
   itBehavesLikeAStore({
-    store: () => {
+    store() {
       return store;
     },
-    syncExternalChanges: () => {
+    syncExternalChanges() {
       store.syncData();
     }
   });
@@ -47,8 +47,7 @@ describe('Stores.Cookie', () => {
     });
 
     afterEach(() => {
-      // TODO: make resetting the config easier
-      Configuration.load({ lookup: () => Ember.Object.create() }, {});
+      Configuration.load({});
     });
   });
 

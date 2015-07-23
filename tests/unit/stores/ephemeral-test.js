@@ -10,7 +10,7 @@ describe('Stores.Ephemeral', function() {
   });
 
   itBehavesLikeAStore({
-    store: () => {
+    store() {
       return store;
     }
   });
