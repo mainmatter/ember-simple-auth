@@ -39,6 +39,7 @@ export default Ember.Mixin.create({
     @public
   */
   beforeModel(transition) {
+    // TODO: this should return a potential return value from _super
     const sessionService = this.container.lookup('service:session');
     if (sessionService.get('isAuthenticated')) {
       transition.abort();
