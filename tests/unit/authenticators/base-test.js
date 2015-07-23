@@ -13,7 +13,7 @@ describe('Authenticators.Base', () => {
 
   describe('#restore', () => {
     it('returns a rejecting promise', (done) => {
-      authenticator.restore().then(null, () => {
+      authenticator.restore().catch(() => {
         expect(true).to.be.true;
         done();
       });
@@ -22,7 +22,7 @@ describe('Authenticators.Base', () => {
 
   describe('#authenticate', () => {
     it('returns a rejecting promise', (done) => {
-      authenticator.authenticate().then(null, () => {
+      authenticator.authenticate().catch(() => {
         expect(true).to.be.true;
         done();
       });

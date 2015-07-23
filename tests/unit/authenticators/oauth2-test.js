@@ -82,7 +82,7 @@ describe('OAuth2', () => {
 
           describe('when the access token is not refreshed successfully', () => {
             it('returns a rejecting promise', (done) => {
-              authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then(null, () => {
+              authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).catch(() => {
                 expect(true).to.be.true;
                 done();
               });
@@ -96,7 +96,7 @@ describe('OAuth2', () => {
           });
 
           it('returns a rejecting promise', (done) => {
-            authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then(null, () => {
+            authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).catch(() => {
               expect(true).to.be.true;
               done();
             });
@@ -117,7 +117,7 @@ describe('OAuth2', () => {
 
       describe('when the data does not contain an access_token', () => {
         it('returns a rejecting promise', (done) => {
-          authenticator.restore().then(null, () => {
+          authenticator.restore().catch(() => {
             expect(true).to.be.true;
             done();
           });
@@ -207,7 +207,7 @@ describe('OAuth2', () => {
       });
 
       it('rejects with the correct error', (done) => {
-        authenticator.authenticate({ identification: 'username', password: 'password' }).then(null, (error) => {
+        authenticator.authenticate({ identification: 'username', password: 'password' }).catch((error) => {
           expect(error).to.eql({ error: 'invalid_grant' });
           done();
         });

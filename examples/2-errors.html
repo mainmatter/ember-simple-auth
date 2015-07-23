@@ -148,7 +148,7 @@
           authenticate: function() {
             var _this = this;
             var credentials = this.getProperties('identification', 'password');
-            this.get('session').authenticate('simple-auth-authenticator:oauth2-password-grant', credentials).then(null, function(error) {
+            this.get('session').authenticate('simple-auth-authenticator:oauth2-password-grant', credentials).catch(function(error) {
               var message = error.error;
               _this.set('errorMessage', message);
             });

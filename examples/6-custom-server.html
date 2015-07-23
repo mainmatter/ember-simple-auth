@@ -188,7 +188,7 @@
           authenticate: function() {
             var _this = this;
             var credentials = this.getProperties('identification', 'password');
-            this.get('session').authenticate('authenticator:custom', credentials).then(null, function(message) {
+            this.get('session').authenticate('authenticator:custom', credentials).catch(function(message) {
               _this.set('errorMessage', message);
             });
           }
