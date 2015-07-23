@@ -1,8 +1,6 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { service } = Ember.inject;
-
 /**
   This mixin is for routes that require the session to be authenticated to be
   accessible. Including this mixin in a route automatically adds a hook that
@@ -31,8 +29,6 @@ const { service } = Ember.inject;
   @public
 */
 export default Ember.Mixin.create({
-  session: service('session'),
-
   /**
     This method implements the enforcement of the session being authenticated.
     If the session is not authenticated, the current transition will be aborted
@@ -47,11 +43,12 @@ export default Ember.Mixin.create({
     @public
   */
   beforeModel(transition) {
+    const sessionService = this.container.lookup('service:session');
     let superResult = this._super(transition);
 
-    if (!this.get('session.isAuthenticated')) {
+    if (!sessionService.get('isAuthenticated')) {
       transition.abort();
-      this.get('session').set('attemptedTransition', transition);
+      sessionService.set('attemptedTransition', transition);
       Ember.assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== Configuration.base.authenticationRoute);
       this.transitionTo(Configuration.base.authenticationRoute);
     }
