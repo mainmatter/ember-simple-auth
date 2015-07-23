@@ -9,57 +9,58 @@ import Session from 'ember-simple-auth/session';
 import Configuration from 'ember-simple-auth/configuration';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
-describe('UnauthenticatedRouteMixin', function() {
-  describe('#beforeModel', function() {
-    beforeEach(function() {
-      this.session    = Session.create({ store: EphemeralStore.create() });
-      this.transition = {
+let route;
+let session;
+let transition;
+
+describe('UnauthenticatedRouteMixin', () => {
+  describe('#beforeModel', () => {
+    beforeEach(() => {
+      session    = Session.create({ store: EphemeralStore.create() });
+      transition = {
         abort() {},
         send() {}
       };
 
-      let container = {
-        lookup() {}
-      };
-      let lookupStub = sinon.stub(container, 'lookup');
-      lookupStub.withArgs('service:session').returns(this.session);
+      let container = { lookup() {} };
+      sinon.stub(container, 'lookup').withArgs('service:session').returns(session);
 
-      this.route   = Ember.Route.extend(UnauthenticatedRouteMixin, {
+      route = Ember.Route.extend(UnauthenticatedRouteMixin, {
         transitionTo() {}
       }).create({ container });
-      sinon.spy(this.transition, 'abort');
-      sinon.spy(this.route, 'transitionTo');
+      sinon.spy(transition, 'abort');
+      sinon.spy(route, 'transitionTo');
     });
 
-    describe('if the session is authenticated', function() {
-      beforeEach(function() {
-        this.session.set('isAuthenticated', true);
+    describe('if the session is authenticated', () => {
+      beforeEach(() => {
+        session.set('isAuthenticated', true);
       });
 
-      it('aborts the transition', function() {
-        this.route.beforeModel(this.transition);
+      it('aborts the transition', () => {
+        route.beforeModel(transition);
 
-        expect(this.transition.abort).to.have.been.called;
+        expect(transition.abort).to.have.been.called;
       });
 
-      it('transitions to routeIfAlreadyAuthenticated', function() {
-        this.route.beforeModel(this.transition);
+      it('transitions to routeIfAlreadyAuthenticated', () => {
+        route.beforeModel(transition);
 
-        expect(this.route.transitionTo).to.have.been.calledWith(Configuration.base.routeIfAlreadyAuthenticated);
+        expect(route.transitionTo).to.have.been.calledWith(Configuration.base.routeIfAlreadyAuthenticated);
       });
     });
 
-    describe('if the session is not authenticated', function() {
-      it('does not abort the transition', function() {
-        this.route.beforeModel(this.transition);
+    describe('if the session is not authenticated', () => {
+      it('does not abort the transition', () => {
+        route.beforeModel(transition);
 
-        expect(this.transition.abort).to.not.have.been.called;
+        expect(transition.abort).to.not.have.been.called;
       });
 
-      it('does not call route transitionTo', function() {
-        this.route.beforeModel(this.transition);
+      it('does not call route transitionTo', () => {
+        route.beforeModel(transition);
 
-        expect(this.route.transitionTo).to.not.have.been.called;
+        expect(route.transitionTo).to.not.have.been.called;
       });
     });
   });
