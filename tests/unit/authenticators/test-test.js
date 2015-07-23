@@ -4,40 +4,39 @@ import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import Test from 'ember-simple-auth/authenticators/test';
 
-describe('Authenticators.Test', function() {
-  beforeEach(function() {
-    this.authenticator = Test.create();
+let authenticator;
+
+describe('Authenticators.Test', () => {
+  beforeEach(() => {
+    authenticator = Test.create();
   });
 
-  describe('#restore', function() {
-    it('returns a resolving promise', function(done) {
-      this.authenticator.restore().then(function() {
+  describe('#restore', () => {
+    it('returns a resolving promise', () => {
+      return authenticator.restore().then(() => {
         expect(true).to.be.true;
-        done();
       });
     });
   });
 
-  describe('#authenticate', function() {
-    it('returns a resolving promise', function(done) {
-      this.authenticator.authenticate().then(function() {
+  describe('#authenticate', () => {
+    it('returns a resolving promise', () => {
+      return authenticator.authenticate().then(() => {
         expect(true).to.be.true;
-        done();
       });
     });
 
-    it('resolves with session data', function() {
-      return this.authenticator.authenticate({ userId: 1, otherData: 'some-data' }).then(function(data) {
+    it('resolves with session data', () => {
+      return authenticator.authenticate({ userId: 1, otherData: 'some-data' }).then((data) => {
         expect(data).to.eql({ userId: 1, otherData: 'some-data' });
       });
     });
   });
 
-  describe('#invalidate', function() {
-    it('returns a resolving promise', function(done) {
-      this.authenticator.invalidate().then(function() {
+  describe('#invalidate', () => {
+    it('returns a resolving promise', () => {
+      return authenticator.invalidate().then(() => {
         expect(true).to.be.true;
-        done();
       });
     });
   });
