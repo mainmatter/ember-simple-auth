@@ -1,8 +1,6 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { service } = Ember.inject;
-
 /**
   This mixin is for routes that should only be accessible if the session is
   not authenticated. This is e.g. the case for the login route that should not
@@ -30,8 +28,6 @@ const { service } = Ember.inject;
   @public
 */
 export default Ember.Mixin.create({
-  session: service('session'),
-
   /**
     This method implements the enforcement of the session not being
     authenticated. If the session is authenticated, the current transition will
@@ -43,7 +39,8 @@ export default Ember.Mixin.create({
     @public
   */
   beforeModel(transition) {
-    if (this.get('session.isAuthenticated')) {
+    const sessionService = this.container.lookup('service:session');
+    if (sessionService.get('isAuthenticated')) {
       transition.abort();
       Ember.assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== Configuration.base.routeIfAlreadyAuthenticated);
       this.transitionTo(Configuration.base.routeIfAlreadyAuthenticated);

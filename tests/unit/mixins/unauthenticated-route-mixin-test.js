@@ -17,9 +17,16 @@ describe('UnauthenticatedRouteMixin', function() {
         abort() {},
         send() {}
       };
+
+      let container = {
+        lookup() {}
+      };
+      let lookupStub = sinon.stub(container, 'lookup');
+      lookupStub.withArgs('service:session').returns(this.session);
+
       this.route   = Ember.Route.extend(UnauthenticatedRouteMixin, {
         transitionTo() {}
-      }).create({ session: this.session });
+      }).create({ container });
       sinon.spy(this.transition, 'abort');
       sinon.spy(this.route, 'transitionTo');
     });

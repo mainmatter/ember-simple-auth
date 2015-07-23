@@ -32,16 +32,15 @@ describe('ApplicationRouteMixin', () => {
     session = Session.create();
     session.setProperties({ store: EphemeralStore.create() });
 
-    route = Ember.Route.extend(ApplicationRouteMixin, {
-      send() {},
-      transitionTo() {},
-      container
-    }).create({ session });
-
     lookupStub = sinon.stub(container, 'lookup');
     lookupStub.withArgs('router:main').returns(router);
-    lookupStub.withArgs('simple-auth-session:main').returns(session);
+    lookupStub.withArgs('service:session').returns(session);
     lookupStub.withArgs('session-store:local-storage').returns(store);
+
+    route = Ember.Route.extend(ApplicationRouteMixin, {
+      send() {},
+      transitionTo() {}
+    }).create({ container });
   });
 
   describe('mapping of service events to route actions', () => {

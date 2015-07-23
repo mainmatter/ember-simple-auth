@@ -1,9 +1,6 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { on }      = Ember;
-const { service } = Ember.inject;
-
 /**
   The mixin for the application route; defines actions that are triggered
   when authentication is required, when the session has successfully been
@@ -41,13 +38,12 @@ const { service } = Ember.inject;
   @public
 */
 export default Ember.Mixin.create({
-  session: service('session'),
-
   /**
     @method _mapSessionEventsToActions
     @private
   */
-  _mapSessionEventsToActions: on('init', function() {
+  _mapSessionEventsToActions: Ember.on('init', function() {
+    const sessionService = this.container.lookup('service:session');
     Ember.A([
       'sessionAuthenticationSucceeded',
       'sessionAuthenticationFailed',
@@ -55,7 +51,7 @@ export default Ember.Mixin.create({
       'sessionInvalidationFailed',
       'authorizationFailed'
     ]).forEach((event) => {
-      this.get('session').on(event, Ember.run.bind(this, function() {
+      sessionService.on(event, Ember.run.bind(this, function() {
         this.send(event, ...arguments);
       }));
     });
@@ -75,10 +71,11 @@ export default Ember.Mixin.create({
       @public
     */
     sessionAuthenticationSucceeded() {
-      let attemptedTransition = this.get('session').get('attemptedTransition');
+      const sessionService = this.container.lookup('service:session');
+      let attemptedTransition = sessionService.get('attemptedTransition');
       if (attemptedTransition) {
         attemptedTransition.retry();
-        this.get('session').set('attemptedTransition', null);
+        sessionService.set('attemptedTransition', null);
       } else {
         this.transitionTo(Configuration.base.routeAfterAuthentication);
       }
@@ -153,8 +150,9 @@ export default Ember.Mixin.create({
       @public
     */
     authorizationFailed() {
-      if (this.get('session').get('isAuthenticated')) {
-        this.get('session').invalidate();
+      const sessionService = this.container.lookup('service:session');
+      if (sessionService.get('isAuthenticated')) {
+        sessionService.invalidate();
       }
     }
   }
