@@ -8,21 +8,18 @@ import Session from 'ember-simple-auth/session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 import Authenticator from 'ember-simple-auth/authenticators/base';
 
-let store;
-let container;
-let authenticator;
 let session;
+let store;
+let authenticator;
 
 describe('Session', () => {
   beforeEach(() => {
+    let container = { lookup() {} };
     store         = EphemeralStore.create();
-    container     = {
-      lookup() {}
-    };
     authenticator = Authenticator.create();
     session       = Session.create();
     session.setProperties({ store, container });
-    sinon.stub(container, 'lookup').returns(authenticator);
+    sinon.stub(container, 'lookup').withArgs('authenticator').returns(authenticator);
   });
 
   it('does not allow data to be stored for the key "secure"', () => {
