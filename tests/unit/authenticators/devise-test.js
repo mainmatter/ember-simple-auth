@@ -144,7 +144,7 @@ describe('Devise', () => {
       });
 
       it('rejects with the correct error', (done) => {
-        authenticator.authenticate({ email: 'email@address.com', password: 'password' }).then(null, (error) => {
+        authenticator.authenticate({ email: 'email@address.com', password: 'password' }).catch((error) => {
           expect(error).to.eql({ error: 'invalid_grant' });
           done();
         });

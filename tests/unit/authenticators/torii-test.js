@@ -22,7 +22,7 @@ describe('Torii', () => {
   describe('#restore', () => {
     function itDoesNotRestore(data) {
       it('returns a rejecting promise', () => {
-        return authenticator.restore(data).then(null, () => {
+        return authenticator.restore(data).catch(() => {
           expect(true).to.be.true;
         });
       });
@@ -30,7 +30,7 @@ describe('Torii', () => {
       it('unsets the provider', () => {
         authenticator.provider = 'provider';
 
-        return authenticator.restore(data).then(null, () => {
+        return authenticator.restore(data).catch(() => {
           expect(authenticator.provider).to.be.null;
         });
       });
@@ -94,7 +94,7 @@ describe('Torii', () => {
       });
 
       it('returns a rejecting promise', () => {
-        return authenticator.authenticate('provider').then(null, () => {
+        return authenticator.authenticate('provider').catch(() => {
           expect(true).to.be.true;
         });
       });
@@ -128,7 +128,7 @@ describe('Torii', () => {
       });
 
       it('returns a rejecting promise', () => {
-        return authenticator.invalidate('provider').then(null, () => {
+        return authenticator.invalidate('provider').catch(() => {
           expect(true).to.be.true;
         });
       });
@@ -136,7 +136,7 @@ describe('Torii', () => {
       it('keeps the provider', () => {
         authenticator.provider = 'provider';
 
-        return authenticator.invalidate({ some: 'data' }).then(null, () => {
+        return authenticator.invalidate({ some: 'data' }).catch(() => {
           expect(authenticator.provider).to.eql('provider');
         });
       });

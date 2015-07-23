@@ -95,13 +95,13 @@ describe('Session', () => {
   describe('restore', () => {
     function itDoesNotRestore() {
       it('returns a rejecting promise', () => {
-        return session.restore().then(null, () => {
+        return session.restore().catch(() => {
           expect(true).to.be.true;
         });
       });
 
       it('is not authenticated', () => {
-        return session.restore().then(null, () => {
+        return session.restore().catch(() => {
           expect(session.get('isAuthenticated')).to.be.false;
         });
       });
@@ -109,7 +109,7 @@ describe('Session', () => {
       it('clears its secure section', () => {
         session.set('content', { secure: { some: 'other property' } });
 
-        return session.restore().then(null, () => {
+        return session.restore().catch(() => {
           expect(session.get('content.secure')).to.eql({});
         });
       });
@@ -118,7 +118,7 @@ describe('Session', () => {
         let triggered = false;
         session.one('sessionAuthenticationFailed', () => triggered = true);
 
-        return session.restore().then(null, () => {
+        return session.restore().catch(() => {
           expect(triggered).to.be.false;
         });
       });
@@ -266,7 +266,7 @@ describe('Session', () => {
       it('is not authenticated', () => {
         sinon.stub(authenticator, 'authenticate').returns(Ember.RSVP.reject('error auth'));
 
-        return session.authenticate('authenticator').then(null, () => {
+        return session.authenticate('authenticator').catch(() => {
           expect(session.get('isAuthenticated')).to.be.false;
         });
       });
@@ -274,7 +274,7 @@ describe('Session', () => {
       it('returns a rejecting promise', () => {
         sinon.stub(authenticator, 'authenticate').returns(Ember.RSVP.reject('error auth'));
 
-        return session.authenticate('authenticator').then(null, () => {
+        return session.authenticate('authenticator').catch(() => {
           expect(true).to.be.true;
         });
       });
@@ -283,7 +283,7 @@ describe('Session', () => {
         sinon.stub(authenticator, 'authenticate').returns(Ember.RSVP.reject('error auth'));
         session.set('content', { some: 'property', secure: { some: 'other property' } });
 
-        return session.authenticate('authenticator').then(null, () => {
+        return session.authenticate('authenticator').catch(() => {
           expect(session.get('content')).to.eql({ some: 'property', secure: {} });
         });
       });
@@ -292,7 +292,7 @@ describe('Session', () => {
         sinon.stub(authenticator, 'authenticate').returns(Ember.RSVP.reject('error auth'));
         session.set('content', { some: 'property', secure: { some: 'other property' } });
 
-        return session.authenticate('authenticator').then(null, () => {
+        return session.authenticate('authenticator').catch(() => {
           expect(store.restore()).to.eql({ some: 'property', secure: {} });
         });
       });
@@ -302,7 +302,7 @@ describe('Session', () => {
         sinon.stub(authenticator, 'authenticate').returns(Ember.RSVP.reject('error auth'));
         session.one('sessionAuthenticationSucceeded', () => triggered = true);
 
-        return session.authenticate('authenticator').then(null, () => {
+        return session.authenticate('authenticator').catch(() => {
           expect(triggered).to.be.false;
         });
       });
@@ -312,7 +312,7 @@ describe('Session', () => {
         sinon.stub(authenticator, 'authenticate').returns(Ember.RSVP.reject('error'));
         session.one('sessionAuthenticationFailed', (error) => triggered = error);
 
-        return session.authenticate('authenticator').then(null, () => {
+        return session.authenticate('authenticator').catch(() => {
           expect(triggered).to.eql('error');
         });
       });
@@ -381,7 +381,7 @@ describe('Session', () => {
       it('stays authenticated', () => {
         sinon.stub(authenticator, 'invalidate').returns(Ember.RSVP.reject('error'));
 
-        return session.invalidate().then(null, () => {
+        return session.invalidate().catch(() => {
           expect(session.get('isAuthenticated')).to.be.true;
         });
       });
@@ -389,7 +389,7 @@ describe('Session', () => {
       it('returns a rejecting promise', () => {
         sinon.stub(authenticator, 'invalidate').returns(Ember.RSVP.reject('error'));
 
-        return session.invalidate().then(null, () => {
+        return session.invalidate().catch(() => {
           expect(true).to.be.true;
         });
       });
@@ -397,7 +397,7 @@ describe('Session', () => {
       it('keeps its content', () => {
         sinon.stub(authenticator, 'invalidate').returns(Ember.RSVP.reject('error'));
 
-        return session.invalidate().then(null, () => {
+        return session.invalidate().catch(() => {
           expect(session.get('secure')).to.eql({ some: 'property', authenticator: 'authenticator' });
         });
       });
@@ -405,7 +405,7 @@ describe('Session', () => {
       it('does not update the store', () => {
         sinon.stub(authenticator, 'invalidate').returns(Ember.RSVP.reject('error'));
 
-        return session.invalidate().then(null, () => {
+        return session.invalidate().catch(() => {
           expect(store.restore()).to.eql({ secure: { some: 'property', authenticator: 'authenticator' } });
         });
       });
@@ -415,7 +415,7 @@ describe('Session', () => {
         sinon.stub(authenticator, 'invalidate').returns(Ember.RSVP.reject('error'));
         session.one('sessionInvalidationFailed', (error) => triggerd = error);
 
-        return session.invalidate().then(null, () => {
+        return session.invalidate().catch(() => {
           expect(triggerd).to.eql('error');
         });
       });
@@ -425,7 +425,7 @@ describe('Session', () => {
         let triggered = false;
         session.one('sessionInvalidationSucceeded', () => triggered = true);
 
-        return session.invalidate().then(null, () => {
+        return session.invalidate().catch(() => {
           expect(triggered).to.be.false;
         });
       });
