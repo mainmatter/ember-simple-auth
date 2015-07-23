@@ -6,36 +6,19 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import Session from 'ember-simple-auth/session';
-import LocalStorageStore from 'ember-simple-auth/stores/local-storage';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 import Configuration from 'ember-simple-auth/configuration';
 
 let session;
 let route;
-let container;
-let router;
-let store;
-let lookupStub;
 
 describe('ApplicationRouteMixin', () => {
   beforeEach(() => {
-    container = {
-      lookup() {}
-    };
-    router = {
-      get() {
-        return 'rootURL';
-      }
-    };
-    store = LocalStorageStore.create();
-
     session = Session.create();
     session.setProperties({ store: EphemeralStore.create() });
 
-    lookupStub = sinon.stub(container, 'lookup');
-    lookupStub.withArgs('router:main').returns(router);
-    lookupStub.withArgs('service:session').returns(session);
-    lookupStub.withArgs('session-store:local-storage').returns(store);
+    let container = { lookup() {} };
+    sinon.stub(container, 'lookup').withArgs('service:session').returns(session);
 
     route = Ember.Route.extend(ApplicationRouteMixin, {
       send() {},
@@ -45,7 +28,6 @@ describe('ApplicationRouteMixin', () => {
 
   describe('mapping of service events to route actions', () => {
     beforeEach(() => {
-      Configuration.base.store = 'session-store:local-storage';
       sinon.spy(route, 'send');
     });
 
@@ -98,7 +80,7 @@ describe('ApplicationRouteMixin', () => {
       route.beforeModel();
       session.trigger('sessionAuthenticationSucceeded');
 
-      Ember.run.next(function() {
+      Ember.run.next(() => {
         expect(route.send).to.have.been.calledOnce;
         done();
       });
