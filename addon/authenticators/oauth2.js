@@ -249,7 +249,7 @@ export default Base.extend({
       let base64ClientId = window.btoa(this.clientId.concat(':'));
       Ember.merge(options, {
         headers: {
-          Authorization: 'Basic '.concat(base64ClientId)
+          Authorization: `Basic ${base64ClientId}`
         }
       });
     }
