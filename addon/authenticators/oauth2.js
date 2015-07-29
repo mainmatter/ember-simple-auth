@@ -32,6 +32,19 @@ export default Base.extend({
   */
 
   /**
+    The client_id to be sent to the authorization server
+
+    This value can be configured via
+    [`SimpleAuth.Configuration.OAuth2#clientId`](#SimpleAuth-Configuration-OAuth2-clientId).
+
+    @property clientId
+    @type String
+    @default null
+    @public
+  */
+  clientId: null,
+
+  /**
     The endpoint on the server the authenticator acquires the access token
     from.
 
@@ -83,6 +96,7 @@ export default Base.extend({
     @private
   */
   init() {
+    this.clientId                      = Configuration.oauth2.clientId;
     this.serverTokenEndpoint           = Configuration.oauth2.serverTokenEndpoint;
     this.serverTokenRevocationEndpoint = Configuration.oauth2.serverTokenRevocationEndpoint;
     this.refreshAccessTokens           = Configuration.oauth2.refreshAccessTokens;
@@ -223,13 +237,24 @@ export default Base.extend({
     @public
   */
   makeRequest(url, data) {
-    return Ember.$.ajax({
+    let options = {
       url,
-      type:        'POST',
+      type:         'POST',
       data,
-      dataType:    'json',
-      contentType: 'application/x-www-form-urlencoded'
-    });
+      dataType:     'json',
+      contentType:  'application/x-www-form-urlencoded'
+    };
+
+    if (!Ember.isEmpty(this.clientId)) {
+      let base64ClientId = window.btoa(this.clientId.concat(':'));
+      Ember.merge(options, {
+        headers: {
+          Authorization: `Basic ${base64ClientId}`
+        }
+      });
+    }
+
+    return Ember.$.ajax(options);
   },
 
   /**
