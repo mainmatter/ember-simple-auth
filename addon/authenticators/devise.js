@@ -159,8 +159,9 @@ export default Base.extend({
     return Ember.$.ajax({
       url:        this.serverTokenEndpoint,
       type:       'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json; charset=UTF-8',
       dataType:   'json',
-      data,
       beforeSend(xhr, settings) {
         xhr.setRequestHeader('Accept', settings.accepts.json);
       }
