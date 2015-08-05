@@ -73,9 +73,6 @@ let didSetupAjaxHooks = false;
 
 export default function(instance) {
   const { container } = instance;
-  // TODO: setting applicationRootUrl should be done in Configuration.load and should read the value from ENV
-  Configuration.base.applicationRootUrl = container.lookup('router:main').get('rootURL') || '/';
-
   let session = container.lookup('simple-auth-session:main');
 
   crossOriginWhitelist = Ember.A(Configuration.base.crossOriginWhitelist).map(function(origin) {

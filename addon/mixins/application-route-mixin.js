@@ -124,7 +124,7 @@ export default Ember.Mixin.create({
     */
     sessionInvalidationSucceeded() {
       if (!Ember.testing) {
-        window.location.replace(Configuration.base.applicationRootUrl);
+        window.location.reload();
       }
     },
 
