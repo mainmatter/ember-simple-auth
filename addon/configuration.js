@@ -11,7 +11,7 @@ const defaults = {
     store:                       'session-store:ephemeral',
     localStorageKey:             'ember_simple_auth:session',
     crossOriginWhitelist:        [],
-    applicationRootUrl:          null
+    applicationRootUrl:          ''
   },
   cookie: {
     name:           'ember_simple_auth:session',
