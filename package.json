@@ -46,7 +46,7 @@
     "ember-suave": "0.1.12",
     "ember-try": "0.0.8",
     "express": "^4.8.5",
-    "handlebars": "2.0.0",
+    "handlebars": "3.0.3",
     "lodash": "^3.10.0",
     "marked": "^0.3.5",
     "sinon-chai": "2.8.0"
