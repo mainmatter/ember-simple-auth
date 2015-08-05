@@ -10,9 +10,9 @@ import Base from './base';
   _The factory for this authorizer is registered as
   `'simple-auth-authorizer:oauth2-bearer'` in Ember's container._
 
-  @class OAuth2
+  @class OAuth2Bearer
   @namespace Authorizers
-  @module authorizers/oauth2
+  @module authorizers/oauth2-bearer
   @extends Base
   @public
 */
