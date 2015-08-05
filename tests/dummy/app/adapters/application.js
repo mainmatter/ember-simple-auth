@@ -19,5 +19,14 @@ export default DS.JSONAPIAdapter.extend({
       }
     };
     return hash;
+  },
+
+  handleResponse(status, headers, payload) {
+    if (status === 401) {
+      this.get('session').invalidate();
+      return true;
+    } else {
+      return this._super(...arguments);
+    }
   }
 });
