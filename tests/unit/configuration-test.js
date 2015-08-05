@@ -51,6 +51,12 @@ describe('Configuration', () => {
     });
   });
 
+  describe('applicationRootUrl', () => {
+    it('defaults to ""', () => {
+      expect(Configuration.base.applicationRootUrl).to.eql('');
+    });
+  });
+
   describe('crossOriginWhitelist', () => {
     it('defaults to []', () => {
       expect(Configuration.base.crossOriginWhitelist).to.be.a('array');
