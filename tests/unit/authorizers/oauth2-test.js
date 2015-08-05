@@ -3,13 +3,13 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import OAuth2 from 'ember-simple-auth/authorizers/oauth2';
+import OAuth2Bearer from 'ember-simple-auth/authorizers/oauth2-bearer';
 import Session from 'ember-simple-auth/session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
-describe('OAuth2', function() {
+describe('OAuth2Bearer', function() {
   beforeEach(function() {
-    this.authorizer  = OAuth2.create();
+    this.authorizer  = OAuth2Bearer.create();
     this.request     = {
       setRequestHeader() {}
     };

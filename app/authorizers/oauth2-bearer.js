@@ -1,3 +1,3 @@
-import OAuth2 from 'ember-simple-auth/authorizers/oauth2';
+import OAuth2Bearer from 'ember-simple-auth/authorizers/oauth2-bearer';
 
-export default OAuth2;
+export default OAuth2Bearer;
