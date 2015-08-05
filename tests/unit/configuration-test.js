@@ -40,8 +40,8 @@ describe('Configuration', () => {
   });
 
   describe('store', () => {
-    it('defaults to "session-store:local-storage"', () => {
-      expect(Configuration.base.store).to.eq('session-store:local-storage');
+    it('defaults to "session-store:ephemeral"', () => {
+      expect(Configuration.base.store).to.eq('session-store:ephemeral');
     });
   });
 

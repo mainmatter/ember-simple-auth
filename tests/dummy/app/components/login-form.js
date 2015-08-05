@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   actions: {
     authenticate() {
       let data = this.getProperties('identification', 'password');
-      this.get('session').authenticate('authenticator:oauth2-password-grant', data).catch((reason) => {
+      this.get('session').authenticate('authenticator:application', data).catch((reason) => {
         this.set('errorMessage', reason.error);
       });
     }
