@@ -38,6 +38,8 @@ import Configuration from './../configuration';
   @public
 */
 export default Ember.Mixin.create({
+  // TODO: this has to be done differently as it doesn't handle the situation that the app hasn't finished transitioning into its
+  //       first route yet and thus actions cannot be sent to the router but have to be sent to the initial transition instead.
   /**
     @method _mapSessionEventsToActions
     @private
