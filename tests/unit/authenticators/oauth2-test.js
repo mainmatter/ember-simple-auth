@@ -5,16 +5,16 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import OAuth2 from 'ember-simple-auth/authenticators/oauth2';
+import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
 import Configuration from 'ember-simple-auth/configuration';
 
 let authenticator;
 let xhr;
 let server;
 
-describe('OAuth2', () => {
+describe('OAuth2PasswordGrant', () => {
   beforeEach(() => {
-    authenticator      = OAuth2.create();
+    authenticator      = OAuth2PasswordGrant.create();
     xhr                = sinon.useFakeXMLHttpRequest();
     server             = sinon.fakeServer.create();
     server.autoRespond = true;
@@ -30,19 +30,19 @@ describe('OAuth2', () => {
     it('assigns serverTokenEndpoint from the configuration object', () => {
       Configuration.oauth2.serverTokenEndpoint = 'serverTokenEndpoint';
 
-      expect(OAuth2.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
+      expect(OAuth2PasswordGrant.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
     });
 
     it('assigns serverTokenRevocationEndpoint from the configuration object', () => {
       Configuration.oauth2.serverTokenRevocationEndpoint = 'serverTokenRevocationEndpoint';
 
-      expect(OAuth2.create().serverTokenRevocationEndpoint).to.eq('serverTokenRevocationEndpoint');
+      expect(OAuth2PasswordGrant.create().serverTokenRevocationEndpoint).to.eq('serverTokenRevocationEndpoint');
     });
 
     it('assigns refreshAccessTokens from the configuration object', () => {
       Configuration.oauth2.refreshAccessTokens = false;
 
-      expect(OAuth2.create().refreshAccessTokens).to.be.false;
+      expect(OAuth2PasswordGrant.create().refreshAccessTokens).to.be.false;
     });
 
     it('assigns clientId from the configuration object', () => {

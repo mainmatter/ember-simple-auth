@@ -141,7 +141,7 @@
       });
 
       // the custom authenticator that handles the authenticated account
-      App.CustomAuthenticator = SimpleAuth.Authenticators.OAuth2.extend({
+      App.CustomAuthenticator = SimpleAuth.Authenticators.OAuth2PasswordGrant.extend({
         authenticate: function(credentials) {
           return new Ember.RSVP.Promise(function(resolve, reject) {
             // make the request to authenticate the user at endpoint /v3/token
