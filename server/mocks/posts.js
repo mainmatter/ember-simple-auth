@@ -30,5 +30,9 @@ module.exports = function(app) {
     }
   });
 
+  postsRouter.get('/3', function(req, res) {
+    res.status(401).end();
+  });
+
   app.use('/posts', postsRouter);
 };
