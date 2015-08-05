@@ -33,12 +33,6 @@ describe('Configuration', () => {
     });
   });
 
-  describe('session', () => {
-    it('defaults to "simple-auth-session:main"', () => {
-      expect(Configuration.base.session).to.eq('simple-auth-session:main');
-    });
-  });
-
   describe('store', () => {
     it('defaults to "session-store:ephemeral"', () => {
       expect(Configuration.base.store).to.eq('session-store:ephemeral');
@@ -147,12 +141,6 @@ describe('Configuration', () => {
       Configuration.load({ base: { authorizer: 'authorizer' } });
 
       expect(Configuration.base.authorizer).to.eql('authorizer');
-    });
-
-    it('sets session correctly', () => {
-      Configuration.load({ base: { session: 'session' } });
-
-      expect(Configuration.base.session).to.eql('session');
     });
 
     it('sets store correctly', () => {

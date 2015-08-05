@@ -7,7 +7,6 @@ const defaults = {
     routeAfterAuthentication:    'index',
     routeIfAlreadyAuthenticated: 'index',
     authorizer:                  null,
-    session:                     'simple-auth-session:main',
     store:                       'session-store:ephemeral',
     localStorageKey:             'ember_simple_auth:session',
     crossOriginWhitelist:        [],
