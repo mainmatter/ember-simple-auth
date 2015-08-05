@@ -15,9 +15,9 @@ import Configuration from './../configuration';
   `'simple-auth-authenticator:oauth2-password-grant'` in Ember's
   container._
 
-  @class OAuth2
+  @class OAuth2PasswordGrant
   @namespace Authenticators
-  @module authenticators/oauth2
+  @module authenticators/oauth2-password-grant
   @extends Base
   @public
 */
