@@ -48,7 +48,7 @@ describe('OAuth2PasswordGrant', () => {
     it('assigns clientId from the configuration object', () => {
       Configuration.oauth2.clientId = 'test-client';
 
-      expect(OAuth2.create().clientId).to.be.eq('test-client');
+      expect(OAuth2PasswordGrant.create().clientId).to.be.eq('test-client');
     });
 
     afterEach(() => {
