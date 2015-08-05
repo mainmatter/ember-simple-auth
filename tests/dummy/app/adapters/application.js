@@ -21,7 +21,7 @@ export default DS.JSONAPIAdapter.extend({
     return hash;
   },
 
-  handleResponse(status, headers, payload) {
+  handleResponse(status) {
     if (status === 401) {
       this.get('session').invalidate();
       return true;
