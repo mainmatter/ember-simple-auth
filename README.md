@@ -2,6 +2,10 @@
 
 __[Ember Simple Auth's API docs are available here](http://ember-simple-auth.com/ember-simple-auth-api-docs.html)__
 
+**This README covers Ember Simple Auth 0.8.0. For docs on Ember Simple Auth 1.0
+refer to the [dummy app](tests/dummy) until this README and the API docs have
+been updated to cover the latest changes.**
+
 #  Ember Simple Auth
 
 ![Logo](http://ember-simple-auth.com/images/logo.png)
