@@ -9,8 +9,7 @@ const defaults = {
     authorizer:                  null,
     store:                       'session-store:ephemeral',
     localStorageKey:             'ember_simple_auth:session',
-    crossOriginWhitelist:        [],
-    applicationRootUrl:          ''
+    crossOriginWhitelist:        []
   },
   cookie: {
     name:           'ember_simple_auth:session',
@@ -159,12 +158,6 @@ export default {
       @public
     */
     crossOriginWhitelist: defaults.base.crossOriginWhitelist,
-
-    /**
-      @property applicationRootUrl
-      @private
-    */
-    applicationRootUrl: defaults.base.applicationRootUrl,
 
     /**
       @method load

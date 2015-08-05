@@ -24,9 +24,6 @@ describe('setupAjaxPrefilter', () => {
     session            = Session.create();
     lookupStub         = sinon.stub(container, 'lookup');
     let router         = {
-      get() {
-        return 'rootURL';
-      },
       send() {}
     };
     let store          = LocalStorageStore.create();
@@ -55,12 +52,6 @@ describe('setupAjaxPrefilter', () => {
       setupAjaxPrefilter(application);
 
       expect(session.store).to.be.an.instanceof(LocalStorageStore);
-    });
-
-    it("sets applicationRootUrl to the application's root URL", () => {
-      setupAjaxPrefilter(application);
-
-      expect(Configuration.base.applicationRootUrl).to.eql('rootURL');
     });
   });
 
