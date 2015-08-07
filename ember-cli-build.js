@@ -1,10 +1,11 @@
 /* global require, module */
-var EmberApp = require('ember-cli/lib/broccoli/ember-addon');
-const Handlebars = require('handlebars'),
-  mergeTrees = require('broccoli-merge-trees'),
-  broccoliHandlebars = require('broccoli-handlebars'),
-  merge = require('lodash/object/merge');
-const sourceTrees = [];
+const EmberApp = require('ember-cli/lib/broccoli/ember-addon');
+const Handlebars = require('handlebars');
+const mergeTrees = require('broccoli-merge-trees');
+const broccoliHandlebars = require('broccoli-handlebars');
+const merge = require('lodash/object/merge');
+
+var sourceTrees = [];
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
@@ -17,7 +18,7 @@ module.exports = function(defaults) {
           errors = "";
         }
 
-        return "describe('JSCS - " + relativePath + "', function(){\n" +
+        return "describe('JSCS - " + relativePath + "', function() {\n" +
           "it('should pass jscs', function() { \n" +
           "  expect(" + !errors + ", '" + relativePath + " should pass jscs." + errors + "').to.be.ok; \n" +
           "})});\n";
