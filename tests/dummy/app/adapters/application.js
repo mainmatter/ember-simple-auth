@@ -10,7 +10,7 @@ export default DS.JSONAPIAdapter.extend({
     let hash = this._super(...arguments);
     let { beforeSend } = hash;
     hash.beforeSend = (xhr) => {
-      let accessToken = this.get('session.content.secure.access_token');
+      let accessToken = this.get('session.data.secure.access_token');
       if (this.get('session.isAuthenticated') && !Ember.isEmpty(accessToken)) {
         xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
       }
