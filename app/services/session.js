@@ -5,7 +5,7 @@ const { alias, oneWay } = computed;
 
 export default Ember.Service.extend(Ember.Evented, {
   isAuthenticated: oneWay('session.isAuthenticated'),
-  content:         alias('session.content'),
+  data:            alias('session.content'),
 
   _forwardSessionEvents: on('init', function() {
     Ember.A([
