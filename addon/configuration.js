@@ -117,19 +117,6 @@ export default {
     session: defaults.base.session,
 
     /**
-      The store factory to use as it is registered with Ember's container, see
-      [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register).
-
-      @property store
-      @readOnly
-      @static
-      @type String
-      @default session-store:local-storage
-      @public
-    */
-    store: defaults.base.store,
-
-    /**
       The key the store stores the data in.
 
       @property localStorageKey

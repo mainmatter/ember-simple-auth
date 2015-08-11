@@ -33,12 +33,6 @@ describe('Configuration', () => {
     });
   });
 
-  describe('store', () => {
-    it('defaults to "session-store:ephemeral"', () => {
-      expect(Configuration.base.store).to.eq('session-store:ephemeral');
-    });
-  });
-
   describe('localStorageKey', () => {
     it('defaults to "ember_simple_auth:session"', () => {
       expect(Configuration.base.localStorageKey).to.eql('ember_simple_auth:session');
@@ -135,12 +129,6 @@ describe('Configuration', () => {
       Configuration.load({ base: { authorizer: 'authorizer' } });
 
       expect(Configuration.base.authorizer).to.eql('authorizer');
-    });
-
-    it('sets store correctly', () => {
-      Configuration.load({ base: { store: 'store' } });
-
-      expect(Configuration.base.store).to.eql('store');
     });
 
     it('sets localStorageKey correctly', () => {
