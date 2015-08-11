@@ -5,10 +5,7 @@ export default function setupSessionRestoration(instance) {
   applicationRoute.reopen({
     beforeModel() {
       const superResult = this._super(...arguments);
-      const superReturn = function() {
-        return superResult;
-      };
-      return session.restore().then(superReturn, superReturn);
+      return session.restore().then(() => superResult, () => superResult);
     }
   });
 }
