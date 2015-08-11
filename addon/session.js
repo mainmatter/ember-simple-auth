@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const { on } = Ember;
+
 /**
   __The session provides access to the current authentication state as well as
   any data the authenticator resolved with__ (see
@@ -330,11 +332,10 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   },
 
   /**
-    @method bindToStoreEvents
+    @method _bindToStoreEvents
     @private
   */
-  // TODO: this should run on('init')
-  bindToStoreEvents: Ember.observer('store', function() {
+  _bindToStoreEvents: on('init', function() {
     this.store.on('sessionDataUpdated', (content) => {
       let { authenticator } = (content.secure || {});
       if (!!authenticator) {

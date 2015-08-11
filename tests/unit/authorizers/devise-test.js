@@ -15,8 +15,7 @@ describe('Devise', function() {
     this.request    = {
       setRequestHeader() {}
     };
-    this.session    = Session.create();
-    this.session.setProperties({ store: EphemeralStore.create() });
+    this.session = Session.create({ store: EphemeralStore.create() });
     this.authorizer.set('session', this.session);
     sinon.spy(this.request, 'setRequestHeader');
   });

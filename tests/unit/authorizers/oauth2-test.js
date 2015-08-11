@@ -13,8 +13,7 @@ describe('OAuth2Bearer', function() {
     this.request     = {
       setRequestHeader() {}
     };
-    let session     = Session.create();
-    session.setProperties({ store: EphemeralStore.create() });
+    let session = Session.create({ store: EphemeralStore.create() });
     this.authorizer.set('session', session);
     sinon.spy(this.request, 'setRequestHeader');
   });
