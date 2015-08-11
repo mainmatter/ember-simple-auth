@@ -21,7 +21,6 @@ describe('setupAjaxPrefilter', () => {
       lookup() {}
     };
     application = { container };
-    session            = Session.create();
     lookupStub         = sinon.stub(container, 'lookup');
     let router         = {
       send() {}
@@ -31,7 +30,7 @@ describe('setupAjaxPrefilter', () => {
       set() {},
       authorize() {}
     };
-    session.setProperties({ store, container });
+    session = Session.create({ store, container });
 
     lookupStub.withArgs('router:main').returns(router);
     lookupStub.withArgs('session-store:local-storage').returns(store);

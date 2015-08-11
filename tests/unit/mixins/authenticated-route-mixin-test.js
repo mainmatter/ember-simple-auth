@@ -27,8 +27,7 @@ describe('AuthenticatedRouteMixin', () => {
         transitionTo() {}
       });
 
-      session = Session.create();
-      session.setProperties({ store: EphemeralStore.create() });
+      session = Session.create({ store: EphemeralStore.create() });
       transition = {
         abort() {},
         send() {}

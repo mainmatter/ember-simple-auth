@@ -14,8 +14,7 @@ let route;
 
 describe('ApplicationRouteMixin', () => {
   beforeEach(() => {
-    session = Session.create();
-    session.setProperties({ store: EphemeralStore.create() });
+    session = Session.create({ store: EphemeralStore.create() });
 
     let container = { lookup() {} };
     sinon.stub(container, 'lookup').withArgs('service:session').returns(session);
