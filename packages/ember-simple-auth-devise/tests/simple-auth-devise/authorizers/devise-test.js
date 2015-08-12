@@ -109,5 +109,15 @@ describe('Devise', function() {
 
       itDoesNotAuthorizeTheRequest();
     });
+    context('when the session is destroyed', function () {
+      beforeEach(function (done) {
+        var session = Session.create();
+        this.authorizer.set('session', session);
+        session.destroy();
+        Ember.run.next(done);
+      });
+
+      itDoesNotAuthorizeTheRequest();
+    });
   });
 });
