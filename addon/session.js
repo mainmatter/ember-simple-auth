@@ -49,19 +49,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     [`ApplicationRouteMixin.actions#sessionAuthenticationSucceeded`](#SimpleAuth-ApplicationRouteMixin-sessionAuthenticationSucceeded)
     will be invoked whenever this event is triggered.
 
-    @event sessionAuthenticationSucceeded
-    @public
-  */
-
-  /**
-    Triggered __whenever an attempt to authenticate the session fails__. When
-    the application uses the
-    [`ApplicationRouteMixin` mixin](#SimpleAuth-ApplicationRouteMixin),
-    [`ApplicationRouteMixin.actions#sessionAuthenticationFailed`](#SimpleAuth-ApplicationRouteMixin-sessionAuthenticationFailed)
-    will be invoked whenever this event is triggered.
-
-    @event sessionAuthenticationFailed
-    @param {Object} error The error object; this depends on the authenticator in use, see [SimpleAuth.Authenticators.Base#authenticate](#SimpleAuth-Authenticators-Base-authenticate)
+    @event authenticationSucceeded
     @public
   */
 
@@ -72,19 +60,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     [`ApplicationRouteMixin.actions#sessionInvalidationSucceeded`](#SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)
     will be invoked whenever this event is triggered.
 
-    @event sessionInvalidationSucceeded
-    @public
-  */
-
-  /**
-    Triggered __whenever an attempt to invalidate the session fails__. When the
-    application uses the
-    [`ApplicationRouteMixin` mixin](#SimpleAuth-ApplicationRouteMixin),
-    [`ApplicationRouteMixin.actions#sessionInvalidationFailed`](#SimpleAuth-ApplicationRouteMixin-sessionInvalidationFailed)
-    will be invoked whenever this event is triggered.
-
-    @event sessionInvalidationFailed
-    @param {Object} error The error object; this depends on the authenticator in use, see [SimpleAuth.Authenticators.Base#invalidate](#SimpleAuth-Authenticators-Base-invalidate)
+    @event invalidationSucceeded
     @public
   */
 
@@ -177,7 +153,6 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         resolve();
       }, (error) => {
         this.clear();
-        this.trigger('sessionAuthenticationFailed', error);
         reject(error);
       });
     });
@@ -257,7 +232,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     this.updateStore();
     this.endPropertyChanges();
     if (trigger) {
-      this.trigger('sessionAuthenticationSucceeded');
+      this.trigger('authenticationSucceeded');
     }
   },
 
@@ -276,7 +251,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     this.updateStore();
     this.endPropertyChanges();
     if (trigger) {
-      this.trigger('sessionInvalidationSucceeded');
+      this.trigger('invalidationSucceeded');
     }
   },
 

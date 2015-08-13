@@ -95,7 +95,7 @@
           var applicationRoute = container.lookup('route:application');
           var session          = container.lookup('simple-auth-session:main');
           // handle the session events
-          session.on('sessionAuthenticationSucceeded', function() {
+          session.on('authenticationSucceeded', function() {
             applicationRoute.transitionTo('index');
           });
           session.on('sessionAuthenticationFailed', function() {
