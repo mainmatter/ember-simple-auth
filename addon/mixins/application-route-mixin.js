@@ -23,7 +23,7 @@ import Configuration from './../configuration';
       var applicationRoute = container.lookup('route:application');
       var session          = container.lookup('simple-auth-session:main');
       // handle the session events
-      session.on('sessionAuthenticationSucceeded', function() {
+      session.on('authenticationSucceeded', function() {
         applicationRoute.transitionTo('index');
       });
     }
@@ -45,13 +45,11 @@ export default Ember.Mixin.create({
   _mapSessionEventsToActions: Ember.on('init', function() {
     const sessionService = this.container.lookup('service:session');
     Ember.A([
-      'sessionAuthenticationSucceeded',
-      'sessionAuthenticationFailed',
-      'sessionInvalidationSucceeded',
-      'sessionInvalidationFailed'
-    ]).forEach((event) => {
-      sessionService.on(event, Ember.run.bind(this, function() {
-        this[event](...arguments);
+      ['authenticationSucceeded', 'sessionAuthenticated'],
+      ['invalidationSucceeded', 'sessionInvalidated']
+    ]).forEach(([event, method]) => {
+      sessionService.on(event, Ember.run.bind(this, () => {
+        this[method](...arguments);
       }));
     });
   }),
@@ -65,10 +63,10 @@ export default Ember.Mixin.create({
     to the
     [`Configuration.routeAfterAuthentication`](#SimpleAuth-Configuration-routeAfterAuthentication).
 
-    @method actions.sessionAuthenticationSucceeded
+    @method sessionAuthenticated
     @public
   */
-  sessionAuthenticationSucceeded() {
+  sessionAuthenticated() {
     const sessionService = this.container.lookup('service:session');
     let attemptedTransition = sessionService.get('attemptedTransition');
     if (attemptedTransition) {
@@ -77,31 +75,6 @@ export default Ember.Mixin.create({
     } else {
       this.transitionTo(Configuration.base.routeAfterAuthentication);
     }
-  },
-
-  /**
-    This action is triggered whenever session authentication fails. The
-    `error` argument is the error object that the promise the authenticator
-    returns rejects with. (see
-    [`Authenticators.Base#authenticate`](#SimpleAuth-Authenticators-Base-authenticate)).
-
-    It can be overridden to display error messages etc.:
-
-    ```js
-    App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin, {
-      actions: {
-        sessionAuthenticationFailed: function(error) {
-          this.controllerFor('application').set('loginErrorMessage', error.message);
-        }
-      }
-    });
-    ```
-
-    @method actions.sessionAuthenticationFailed
-    @param {any} error The error the promise returned by the authenticator rejects with, see [`Authenticators.Base#authenticate`](#SimpleAuth-Authenticators-Base-authenticate)
-    @public
-  */
-  sessionAuthenticationFailed() {
   },
 
   /**
@@ -117,24 +90,12 @@ export default Ember.Mixin.create({
     [cordova](http://cordova.apache.org)) this action can be overridden to
     simply transition to the `'index'` route.
 
-    @method actions.sessionInvalidationSucceeded
+    @method sessionInvalidated
     @public
   */
-  sessionInvalidationSucceeded() {
+  sessionInvalidated() {
     if (!Ember.testing) {
       window.location.reload();
     }
-  },
-
-  /**
-    This action is invoked whenever session invalidation fails. This mainly
-    serves as an extension point to add custom behavior and does nothing by
-    default.
-
-    @method actions.sessionInvalidationFailed
-    @param {any} error The error the promise returned by the authenticator rejects with, see [`Authenticators.Base#invalidate`](#SimpleAuth-Authenticators-Base-invalidate)
-    @public
-  */
-  sessionInvalidationFailed() {
   }
 });
