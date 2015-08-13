@@ -12,8 +12,7 @@ export default Ember.Service.extend(Ember.Evented, {
       'sessionAuthenticationSucceeded',
       'sessionAuthenticationFailed',
       'sessionInvalidationSucceeded',
-      'sessionInvalidationFailed',
-      'authorizationFailed'
+      'sessionInvalidationFailed'
     ]).forEach((event) => {
       this.get('session').on(event, () => {
         this.trigger(event, ...arguments);

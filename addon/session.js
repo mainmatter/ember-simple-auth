@@ -89,18 +89,6 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   */
 
   /**
-    Triggered __whenever the server rejects the authorization information
-    passed with a request and responds with status 401__. When the application
-    uses the
-    [`ApplicationRouteMixin` mixin](#SimpleAuth-ApplicationRouteMixin),
-    [`ApplicationRouteMixin.actions#authorizationFailed`](#SimpleAuth-ApplicationRouteMixin-authorizationFailed)
-    will be invoked whenever this event is triggered.
-
-    @event authorizationFailed
-    @public
-  */
-
-  /**
     The authenticator factory to use as it is registered with Ember's
     container, see
     [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register).

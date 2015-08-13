@@ -48,8 +48,7 @@ export default Ember.Mixin.create({
       'sessionAuthenticationSucceeded',
       'sessionAuthenticationFailed',
       'sessionInvalidationSucceeded',
-      'sessionInvalidationFailed',
-      'authorizationFailed'
+      'sessionInvalidationFailed'
     ]).forEach((event) => {
       sessionService.on(event, Ember.run.bind(this, function() {
         this[event](...arguments);
@@ -137,21 +136,5 @@ export default Ember.Mixin.create({
     @public
   */
   sessionInvalidationFailed() {
-  },
-
-  /**
-    This action is invoked when an authorization error occurs (which is
-    the case __when the server responds with HTTP status 401__). It
-    invalidates the session and reloads the application (see
-    [`ApplicationRouteMixin#sessionInvalidationSucceeded`](#SimpleAuth-ApplicationRouteMixin-sessionInvalidationSucceeded)).
-
-    @method actions.authorizationFailed
-    @public
-  */
-  authorizationFailed() {
-    const sessionService = this.container.lookup('service:session');
-    if (sessionService.get('isAuthenticated')) {
-      sessionService.invalidate();
-    }
   }
 });

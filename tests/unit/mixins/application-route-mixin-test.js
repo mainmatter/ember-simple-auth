@@ -30,7 +30,6 @@ describe('ApplicationRouteMixin', () => {
       sinon.spy(route, 'sessionAuthenticationFailed');
       sinon.spy(route, 'sessionInvalidationSucceeded');
       sinon.spy(route, 'sessionInvalidationFailed');
-      sinon.spy(route, 'authorizationFailed');
     });
 
     it("maps the services's 'sessionAuthenticationSucceeded' event into a method call", (done) => {
@@ -65,15 +64,6 @@ describe('ApplicationRouteMixin', () => {
 
       Ember.run.next(() => {
         expect(route.sessionInvalidationFailed).to.have.been.calledOnce;
-        done();
-      });
-    });
-
-    it("maps the services's 'authorizationFailed' event into a method call", (done) => {
-      session.trigger('authorizationFailed');
-
-      Ember.run.next(() => {
-        expect(route.authorizationFailed).to.have.been.calledOnce;
         done();
       });
     });
@@ -123,30 +113,6 @@ describe('ApplicationRouteMixin', () => {
         route.sessionAuthenticationSucceeded();
 
         expect(route.transitionTo).to.have.been.calledWith(Configuration.base.routeAfterAuthentication);
-      });
-    });
-  });
-
-  describe('authorizationFailed', () => {
-    describe('when the session is authenticated', () => {
-      beforeEach(() => {
-        session.set('isAuthenticated', true);
-      });
-
-      it('invalidates the session', () => {
-        sinon.stub(session, 'invalidate').returns(Ember.RSVP.resolve());
-        route.authorizationFailed();
-
-        expect(session.invalidate).to.have.been.calledOnce;
-      });
-    });
-
-    describe('when the session is not authenticated', () => {
-      it('does not try to invalidate the session', () => {
-        sinon.stub(session, 'invalidate').returns(Ember.RSVP.resolve());
-        route.authorizationFailed();
-
-        expect(session.invalidate).to.not.have.been.calledOnce;
       });
     });
   });
