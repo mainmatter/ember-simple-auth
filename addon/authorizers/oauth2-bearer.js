@@ -26,14 +26,13 @@ export default Base.extend({
     ```
 
     @method authorize
-    @param {jqXHR} jqXHR The XHR request to authorize (see http://api.jquery.com/jQuery.ajax/#jqXHR)
-    @param {Object} requestOptions The options as provided to the `$.ajax` method (see http://api.jquery.com/jQuery.ajaxPrefilter/)
+    @param {Function} block The block to call with the authoriztion data if the session is authenticated and authorization data is actually present
     @public
   */
-  authorize(jqXHR) {
+  authorize(block) {
     let accessToken = this.get('session.secure.access_token');
     if (this.get('session.isAuthenticated') && !Ember.isEmpty(accessToken)) {
-      jqXHR.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+      block('Authorization', `Bearer ${accessToken}`);
     }
   }
 });
