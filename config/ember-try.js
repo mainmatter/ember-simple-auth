@@ -8,11 +8,11 @@ module.exports = {
       name: 'ember-release',
       dependencies: {
         'ember': 'components/ember#release',
-        'ember-data': 'components/ember-data#release'
+        'ember-data': 'components/ember-data#beta'
       },
       resolutions: {
         'ember': 'release',
-        'ember-data': 'release'
+        'ember-data': 'beta'
       }
     },
     {
