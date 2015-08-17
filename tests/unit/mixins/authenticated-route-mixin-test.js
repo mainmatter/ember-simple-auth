@@ -33,10 +33,7 @@ describe('AuthenticatedRouteMixin', () => {
         send() {}
       };
 
-      let container = { lookup() {} };
-      sinon.stub(container, 'lookup').withArgs('service:session').returns(session);
-
-      route = Route.create({ container });
+      route = Route.create({ session });
       sinon.spy(transition, 'abort');
       sinon.spy(transition, 'send');
       sinon.spy(route, 'transitionTo');

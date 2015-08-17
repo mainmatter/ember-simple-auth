@@ -16,12 +16,11 @@ describe('ApplicationRouteMixin', () => {
   beforeEach(() => {
     session = Session.create({ store: EphemeralStore.create() });
 
-    let container = { lookup() {} };
-    sinon.stub(container, 'lookup').withArgs('service:session').returns(session);
-
     route = Ember.Route.extend(ApplicationRouteMixin, {
       transitionTo() {}
-    }).create({ container });
+    }).create({
+      session
+    });
   });
 
   describe('mapping of service events to route methods', () => {
