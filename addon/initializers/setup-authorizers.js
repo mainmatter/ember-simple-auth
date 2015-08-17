@@ -1,3 +1,3 @@
 export default function setupAuthorizers(registry) {
-  registry.injection('authorizer', 'session', 'simple-auth-session:main');
+  registry.injection('authorizer', 'session', 'session:main');
 }

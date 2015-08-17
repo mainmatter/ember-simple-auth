@@ -18,6 +18,6 @@ describe('setupSessionService', () => {
     sinon.spy(registry, 'injection');
     setupSessionService(registry);
 
-    expect(registry.injection).to.have.been.calledWith('service:session', 'session', 'simple-auth-session:main');
+    expect(registry.injection).to.have.been.calledWith('service:session', 'session', 'session:main');
   });
 });

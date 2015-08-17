@@ -18,6 +18,6 @@ describe('setupAuthorizers', () => {
     sinon.spy(registry, 'injection');
     setupAuthorizers(registry);
 
-    expect(registry.injection).to.have.been.calledWith('authorizer', 'session', 'simple-auth-session:main');
+    expect(registry.injection).to.have.been.calledWith('authorizer', 'session', 'session:main');
   });
 });

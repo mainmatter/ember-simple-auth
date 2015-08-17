@@ -21,13 +21,13 @@ describe('setupSession', () => {
     sinon.spy(registry, 'register');
     setupSession(registry);
 
-    expect(registry.register).to.have.been.calledWith('simple-auth-session:main', Session);
+    expect(registry.register).to.have.been.calledWith('session:main', Session);
   });
 
   it('injects the session store into the session', () => {
     sinon.spy(registry, 'injection');
     setupSession(registry);
 
-    expect(registry.injection).to.have.been.calledWith('simple-auth-session:main', 'store', Configuration.base.store);
+    expect(registry.injection).to.have.been.calledWith('session:main', 'store', Configuration.base.store);
   });
 });
