@@ -22,12 +22,11 @@ describe('UnauthenticatedRouteMixin', () => {
         send() {}
       };
 
-      let container = { lookup() {} };
-      sinon.stub(container, 'lookup').withArgs('service:session').returns(session);
-
       route = Ember.Route.extend(UnauthenticatedRouteMixin, {
         transitionTo() {}
-      }).create({ container });
+      }).create({
+        session
+      });
       sinon.spy(transition, 'abort');
       sinon.spy(route, 'transitionTo');
     });

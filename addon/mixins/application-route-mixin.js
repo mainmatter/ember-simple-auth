@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
+const { service } = Ember.inject;
+
 /**
   The mixin for the application route; defines actions that are triggered
   when authentication is required, when the session has successfully been
@@ -38,17 +40,18 @@ import Configuration from './../configuration';
   @public
 */
 export default Ember.Mixin.create({
+  session: service('session'),
+
   /**
     @method _mapSessionEventsToActions
     @private
   */
   _mapSessionEventsToActions: Ember.on('init', function() {
-    const sessionService = this.container.lookup('service:session');
     Ember.A([
       ['authenticationSucceeded', 'sessionAuthenticated'],
       ['invalidationSucceeded', 'sessionInvalidated']
     ]).forEach(([event, method]) => {
-      sessionService.on(event, Ember.run.bind(this, () => {
+      this.get('session').on(event, Ember.run.bind(this, () => {
         this[method](...arguments);
       }));
     });
@@ -67,11 +70,10 @@ export default Ember.Mixin.create({
     @public
   */
   sessionAuthenticated() {
-    const sessionService = this.container.lookup('service:session');
-    let attemptedTransition = sessionService.get('attemptedTransition');
+    let attemptedTransition = this.get('session').get('attemptedTransition');
     if (attemptedTransition) {
       attemptedTransition.retry();
-      sessionService.set('attemptedTransition', null);
+      this.get('session').set('attemptedTransition', null);
     } else {
       this.transitionTo(Configuration.base.routeAfterAuthentication);
     }
