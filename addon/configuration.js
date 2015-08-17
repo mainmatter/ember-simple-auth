@@ -107,7 +107,7 @@ export default {
       @readOnly
       @static
       @type String
-      @default 'simple-auth-session:main'
+      @default 'session:main'
       @public
     */
     session: defaults.base.session,

@@ -21,7 +21,7 @@ import Configuration from './../configuration';
     after:      'simple-auth',
     initialize: function(container, application) {
       var applicationRoute = container.lookup('route:application');
-      var session          = container.lookup('simple-auth-session:main');
+      var session          = container.lookup('session:main');
       // handle the session events
       session.on('authenticationSucceeded', function() {
         applicationRoute.transitionTo('index');
