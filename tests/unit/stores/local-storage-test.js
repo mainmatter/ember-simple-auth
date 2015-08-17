@@ -27,8 +27,8 @@ describe('Stores.LocalStorage', function() {
       expect(LocalStorage.create().key).to.eq('ember_simple_auth:session');
     });
 
-    it('assigns localStorageKey from the configuration object', () => {
-      Configuration.base.localStorageKey = 'localStorageKey';
+    it('assigns key from the configuration object', () => {
+      Configuration.localStorage.key = 'localStorageKey';
 
       expect(LocalStorage.create().key).to.eq('localStorageKey');
     });

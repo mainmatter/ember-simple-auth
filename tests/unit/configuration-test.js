@@ -27,9 +27,9 @@ describe('Configuration', () => {
     });
   });
 
-  describe('localStorageKey', () => {
+  describe('localStorage.key', () => {
     it('defaults to "ember_simple_auth:session"', () => {
-      expect(Configuration.base.localStorageKey).to.eql('ember_simple_auth:session');
+      expect(Configuration.localStorage.key).to.eql('ember_simple_auth:session');
     });
   });
 
@@ -112,10 +112,10 @@ describe('Configuration', () => {
       expect(Configuration.base.routeIfAlreadyAuthenticated).to.eql('routeIfAlreadyAuthenticated');
     });
 
-    it('sets localStorageKey correctly', () => {
-      Configuration.load({ base: { localStorageKey: 'localStorageKey' } });
+    it('sets localStorage.key correctly', () => {
+      Configuration.load({ localStorage: { key: 'localStorageKey' } });
 
-      expect(Configuration.base.localStorageKey).to.eql('localStorageKey');
+      expect(Configuration.localStorage.key).to.eql('localStorageKey');
     });
 
     it('sets cookieDomain correctly', () => {

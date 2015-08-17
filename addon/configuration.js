@@ -6,8 +6,10 @@ const defaults = {
     authenticationRoute:         'login',
     routeAfterAuthentication:    'index',
     routeIfAlreadyAuthenticated: 'index',
-    store:                       'session-store:ephemeral',
-    localStorageKey:             'ember_simple_auth:session'
+    store:                       'session-store:ephemeral'
+  },
+  localStorage: {
+    key: 'ember_simple_auth:session'
   },
   cookie: {
     name:           'ember_simple_auth:session',
@@ -99,20 +101,28 @@ export default {
     session: defaults.base.session,
 
     /**
-      The key the store stores the data in.
+      @method load
+      @private
+    */
+    load: loadConfig(defaults.base)
+  },
 
-      @property localStorageKey
+  localStorage: {
+    /**
+      The key the localStorage store stores the data in.
+
+      @property key
       @type String
       @default 'ember_simple_auth:session'
       @public
     */
-    localStorageKey: defaults.base.localStorageKey,
+    key: defaults.localStorage.key,
 
     /**
       @method load
       @private
     */
-    load: loadConfig(defaults.base)
+    load: loadConfig(defaults.localStorage)
   },
 
   cookie: {
@@ -285,7 +295,7 @@ export default {
   },
 
   load(config) {
-    Ember.A(['base', 'cookie', 'devise', 'oauth2']).forEach((section) => {
+    Ember.A(['base', 'localStorage', 'cookie', 'devise', 'oauth2']).forEach((section) => {
       this[section].load(config[section]);
     });
   }
