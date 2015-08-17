@@ -20,6 +20,9 @@ module.exports = function(environment) {
   };
 
   ENV['simple-auth'] = {
+    base: {
+      store: 'session-store:local-storage'
+    },
     oauth2: {
       serverTokenRevocationEndpoint: '/revoke'
     }
