@@ -8,8 +8,7 @@ const defaults = {
     routeIfAlreadyAuthenticated: 'index',
     authorizer:                  null,
     store:                       'session-store:ephemeral',
-    localStorageKey:             'ember_simple_auth:session',
-    crossOriginWhitelist:        []
+    localStorageKey:             'ember_simple_auth:session'
   },
   cookie: {
     name:           'ember_simple_auth:session',
@@ -125,26 +124,6 @@ export default {
       @public
     */
     localStorageKey: defaults.base.localStorageKey,
-
-    /**
-      Ember Simple Auth will never authorize requests going to a different origin
-      than the one the Ember.js application was loaded from; to explicitely
-      enable authorization for additional origins, whitelist those origins with
-      this setting. _Beware that origins consist of protocol, host and port (port
-      can be left out when it is 80 for HTTP or 443 for HTTPS)_, e.g.
-      `http://domain.com:1234`, `https://external.net`. You can also whitelist
-      all subdomains for a specific domain using wildcard expressions e.g.
-      `http://*.domain.com:1234`, `https://*.external.net` or whitelist all
-      external origins by specifying `['*']`.
-
-      @property crossOriginWhitelist
-      @readOnly
-      @static
-      @type Array
-      @default []
-      @public
-    */
-    crossOriginWhitelist: defaults.base.crossOriginWhitelist,
 
     /**
       @method load

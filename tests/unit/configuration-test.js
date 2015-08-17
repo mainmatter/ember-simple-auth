@@ -39,13 +39,6 @@ describe('Configuration', () => {
     });
   });
 
-  describe('crossOriginWhitelist', () => {
-    it('defaults to []', () => {
-      expect(Configuration.base.crossOriginWhitelist).to.be.a('array');
-      expect(Configuration.base.crossOriginWhitelist).to.be.empty;
-    });
-  });
-
   describe('cookie.domain', () => {
     it('defaults to null', () => {
       expect(Configuration.cookie.domain).to.be.null;
@@ -135,12 +128,6 @@ describe('Configuration', () => {
       Configuration.load({ base: { localStorageKey: 'localStorageKey' } });
 
       expect(Configuration.base.localStorageKey).to.eql('localStorageKey');
-    });
-
-    it('sets crossOriginWhitelist correctly', () => {
-      Configuration.load({ base: { crossOriginWhitelist: ['https://some.origin:1234'] } });
-
-      expect(Configuration.base.crossOriginWhitelist).to.eql(['https://some.origin:1234']);
     });
 
     it('sets cookieDomain correctly', () => {
