@@ -39,13 +39,6 @@ describe('DataAdapterMixin', () => {
       expect(hash).to.have.ownProperty('beforeSend');
     });
 
-    it('calls _super', () => {
-      sinon.spy(adapter, '_super');
-      adapter.ajaxOptions();
-
-      expect(adapter._super).to.have.been.calledOnce;
-    });
-
     it('preserves an existing beforeSend hook', () => {
       const existingBeforeSend = sinon.spy();
       hash.beforeSend = existingBeforeSend;
