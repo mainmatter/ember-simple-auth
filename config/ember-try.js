@@ -16,6 +16,17 @@ module.exports = {
       }
     },
     {
+      name: 'ember-earliest',
+      dependencies: {
+        'ember': 'components/ember#1.12',
+        'ember-data': 'components/ember-data#1.13'
+      },
+      resolutions: {
+        'ember': '1.12',
+        'ember-data': '1.13'
+      }
+    },
+    {
       name: 'ember-beta',
       dependencies: {
         'ember': 'components/ember#beta',
