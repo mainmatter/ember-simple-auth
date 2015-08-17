@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import setupSession from 'ember-simple-auth/initializers/setup-session';
 import Session from 'ember-simple-auth/session';
+import Configuration from 'ember-simple-auth/configuration';
 
 let registry;
 
@@ -27,6 +28,6 @@ describe('setupSession', () => {
     sinon.spy(registry, 'injection');
     setupSession(registry);
 
-    expect(registry.injection).to.have.been.calledWith('simple-auth-session:main', 'store', 'session-store:application');
+    expect(registry.injection).to.have.been.calledWith('simple-auth-session:main', 'store', Configuration.base.store);
   });
 });

@@ -87,6 +87,18 @@ export default {
     routeIfAlreadyAuthenticated: defaults.base.routeIfAlreadyAuthenticated,
 
     /**
+      The store store the session data in.
+
+      @property store
+      @readOnly
+      @static
+      @type String
+      @default 'index'
+      @public
+    */
+    store: 'session-store:ephemeral',
+
+    /**
       The session factory to use as it is registered with Ember's container,
       see
       [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register).
