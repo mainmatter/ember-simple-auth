@@ -6,7 +6,6 @@ const defaults = {
     authenticationRoute:         'login',
     routeAfterAuthentication:    'index',
     routeIfAlreadyAuthenticated: 'index',
-    authorizer:                  null,
     store:                       'session-store:ephemeral',
     localStorageKey:             'ember_simple_auth:session'
   },
@@ -84,22 +83,6 @@ export default {
       @public
     */
     routeIfAlreadyAuthenticated: defaults.base.routeIfAlreadyAuthenticated,
-
-    /**
-      The authorizer factory to use as it is registered with Ember's container,
-      see
-      [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register);
-      when the application does not interact with a server that requires
-      authorized requests, no auzthorizer is needed.
-
-      @property authorizer
-      @readOnly
-      @static
-      @type String
-      @default null
-      @public
-    */
-    authorizer: defaults.base.authorizer,
 
     /**
       The session factory to use as it is registered with Ember's container,

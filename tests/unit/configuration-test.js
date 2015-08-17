@@ -27,12 +27,6 @@ describe('Configuration', () => {
     });
   });
 
-  describe('authorizer', () => {
-    it('defaults to null', () => {
-      expect(Configuration.base.authorizer).to.be.null;
-    });
-  });
-
   describe('localStorageKey', () => {
     it('defaults to "ember_simple_auth:session"', () => {
       expect(Configuration.base.localStorageKey).to.eql('ember_simple_auth:session');
@@ -116,12 +110,6 @@ describe('Configuration', () => {
       Configuration.load({ base: { routeIfAlreadyAuthenticated: 'routeIfAlreadyAuthenticated' } });
 
       expect(Configuration.base.routeIfAlreadyAuthenticated).to.eql('routeIfAlreadyAuthenticated');
-    });
-
-    it('sets authorizer correctly', () => {
-      Configuration.load({ base: { authorizer: 'authorizer' } });
-
-      expect(Configuration.base.authorizer).to.eql('authorizer');
     });
 
     it('sets localStorageKey correctly', () => {
