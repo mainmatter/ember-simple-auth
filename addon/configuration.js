@@ -96,7 +96,7 @@ export default {
       @default 'index'
       @public
     */
-    store: 'session-store:ephemeral',
+    store: defaults.base.store,
 
     /**
       The session factory to use as it is registered with Ember's container,
