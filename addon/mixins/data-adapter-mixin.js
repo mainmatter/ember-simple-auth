@@ -3,32 +3,29 @@ import Ember from 'ember';
 const { service } = Ember.inject;
 
 /**
-  This mixin is for routes that require the session to be authenticated to be
-  accessible. Including this mixin in a route automatically adds a hook that
-  enforces the session to be authenticated and redirects to the
-  [`Configuration.authenticationRoute`](#SimpleAuth-Configuration-authenticationRoute)
-  if it is not.
+  This mixin is for adapters and will make authorizing requests as easy as
+  with the $.ajaxPrefilter before while being much cleaner. All that is to
+  be done to authorize all Ember Data requests with an authorizer of choice
+  is now:
 
   ```js
-  // app/routes/protected.js
-  import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+  // app/adapters/application.js
+  import DS from 'ember-data';
+  import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
-  export default Ember.Route.extend(AuthenticatedRouteMixin);
+  export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
+    authorizer: 'authorizer:application'
+  });
   ```
 
-  `AuthenticatedRouteMixin` performs the redirect in the `beforeModel` method
-  so that in all methods executed after that the session is guaranteed to be
-  authenticated. __If `beforeModel` is overridden, ensure that the custom
-  implementation calls `this._super(transition)`__ so that the session
-  enforcement code is actually executed.
-
-  @class AuthenticatedRouteMixin
+  @class DataAdapterMixin
   @namespace Mixins
-  @module ember-simple-auth/mixins/authenticated-route-mixin
+  @module ember-simple-auth/mixins/data-adapter-mixin
   @extends Ember.Mixin
   @static
   @public
 */
+
 export default Ember.Mixin.create({
   session: service('session'),
 
