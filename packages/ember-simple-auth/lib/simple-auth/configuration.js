@@ -155,7 +155,7 @@ export default {
     @method load
     @private
   */
-  load: loadConfig(defaults, function(container, config) {
+  load: loadConfig(defaults, function(container) {
     this.applicationRootUrl = container.lookup('router:main').get('rootURL') || '/';
   })
 };
