@@ -4,9 +4,9 @@ import setup from './setup';
 
 export default {
   name:       'simple-auth',
-  initialize: function(container, application) {
+  initialize: function(application) {
     var config = getGlobalConfig('simple-auth');
-    Configuration.load(container, config);
-    setup(container, application);
+    Configuration.load(application.container, config);
+    setup(application.container, application);
   }
 };
