@@ -16,7 +16,7 @@ describe('setupSessionRestoration', () => {
       lookup() {}
     };
 
-    const Route = Ember.Object.extend();
+    const Route = Ember.Route.extend();
     route = Route.create();
 
     containerStub = sinon.stub(container, 'lookup');
@@ -37,12 +37,11 @@ describe('setupSessionRestoration', () => {
         restore() {}
       };
 
-      const BaseRoute = Ember.Object.extend({
+      const Route = Ember.Route.extend({
         beforeModel() {
           return Ember.RSVP.resolve('test');
         }
       });
-      const Route = BaseRoute.extend();
       route = Route.create();
 
       containerStub.withArgs('session:main').returns(session);
@@ -54,7 +53,7 @@ describe('setupSessionRestoration', () => {
         sinon.stub(session, 'restore').returns(Ember.RSVP.resolve());
       });
 
-      it('returns the return value of _super', () => {
+      it('returns the return value of the original "beforeModel" method', () => {
         return route.beforeModel().then((value) => {
           expect(value).to.eq('test');
         });
@@ -66,7 +65,7 @@ describe('setupSessionRestoration', () => {
         sinon.stub(session, 'restore').returns(Ember.RSVP.reject());
       });
 
-      it('returns the return value of _super', () => {
+      it('returns the return value of the original "beforeModel" method', () => {
         return route.beforeModel().then((value) => {
           expect(value).to.eq('test');
         });
