@@ -15,7 +15,7 @@ const { on } = Ember;
   The session also provides methods to authenticate and to invalidate itself
   (see
   [`Session#authenticate`](#SimpleAuth-Session-authenticate),
-  [`Session#invaldiate`](#SimpleAuth-Session-invaldiate)).
+  [`Session#invalidate`](#SimpleAuth-Session-invalidate)).
   These methods are usually invoked through actions from routes or controllers.
   To authenticate the session manually, simple call the
   [`Session#authenticate`](#SimpleAuth-Session-authenticate)
