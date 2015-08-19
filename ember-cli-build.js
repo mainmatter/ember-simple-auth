@@ -28,6 +28,10 @@ module.exports = function(defaults) {
 
   app.import('bower_components/bootstrap/dist/css/bootstrap.css');
 
+  if (app.env === 'test') {
+    app.import('bower_components/es5-shim/es5-shim.js');
+  }
+
   sourceTrees.push(app.toTree());
 
   // Docs
