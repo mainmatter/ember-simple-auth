@@ -3,9 +3,9 @@ export default function setupSessionRestoration(instance) {
   const applicationRoute = container.lookup('route:application');
   const session = container.lookup('session:main');
   applicationRoute.reopen({
-    beforeModel() {
+    beforeModel(transition) {
       const boundSuper = this._super.bind(this);
-      return session.restore().then(() => boundSuper(...arguments), () => boundSuper(...arguments));
+      return session.restore().then(() => boundSuper(transition), () => boundSuper(transition));
     }
   });
 }
