@@ -20,10 +20,10 @@ describe('setupSessionRestoration', () => {
     route = Route.create();
 
     containerStub = sinon.stub(container, 'lookup');
-    containerStub.withArgs('route:application').returns(route);
   });
 
   it('adds a beforeModel method', () => {
+    containerStub.withArgs('route:application').returns(route);
     setupSessionRestoration({ container });
 
     expect(route).to.respondTo('beforeModel');
@@ -44,6 +44,7 @@ describe('setupSessionRestoration', () => {
       });
       route = Route.create();
 
+      containerStub.withArgs('route:application').returns(route);
       containerStub.withArgs('session:main').returns(session);
       setupSessionRestoration({ container });
     });
