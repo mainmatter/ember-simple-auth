@@ -101,7 +101,17 @@ export default Base.extend({
       if (!Ember.isEmpty(propertiesObject.get(this.tokenAttributeName)) && !Ember.isEmpty(propertiesObject.get(this.identificationAttributeName))) {
         resolve(properties);
       } else {
-        reject();
+        let resource = propertiesObject.get(this.resourceName);
+        if (typeof resource === 'object') {
+          propertiesObject = Ember.Object.create(resource);
+        } else {
+          propertiesObject = null;
+        }
+        if (propertiesObject && !Ember.isEmpty(propertiesObject.get(this.tokenAttributeName)) && !Ember.isEmpty(propertiesObject.get(this.identificationAttributeName))) {
+          resolve(properties);
+        } else {
+          reject();
+        }
       }
     });
   },
