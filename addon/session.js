@@ -121,7 +121,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @property content
     @private
   */
-  content: { secure: {} },
+  content: { authenticated: {} },
 
   /**
     Authenticates the session with an `authenticator` and appropriate
@@ -181,7 +181,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     Ember.assert('Session#invalidate requires the session to be authenticated!', this.get('isAuthenticated'));
     return new Ember.RSVP.Promise((resolve, reject) => {
       let authenticator = this.container.lookup(this.authenticator);
-      authenticator.invalidate(this.content.secure).then(() => {
+      authenticator.invalidate(this.content.authenticated).then(() => {
         authenticator.off('sessionDataUpdated');
         this.clear(true);
         resolve();
@@ -199,10 +199,10 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   restore() {
     return new Ember.RSVP.Promise((resolve, reject) => {
       let restoredContent   = this.store.restore();
-      let { authenticator } = (restoredContent.secure || {});
+      let { authenticator } = (restoredContent.authenticated || {});
       if (!!authenticator) {
-        delete restoredContent.secure.authenticator;
-        this.container.lookup(authenticator).restore(restoredContent.secure).then((content) => {
+        delete restoredContent.authenticated.authenticator;
+        this.container.lookup(authenticator).restore(restoredContent.authenticated).then((content) => {
           this.setup(authenticator, content);
           resolve();
         }, () => {
@@ -220,14 +220,14 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @method setup
     @private
   */
-  setup(authenticator, secureContent, trigger) {
+  setup(authenticator, authenticatedContend, trigger) {
     trigger = !!trigger && !this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated: true,
       authenticator
     });
-    Ember.set(this.content, 'secure', secureContent);
+    Ember.set(this.content, 'authenticated', authenticatedContend);
     this.bindToAuthenticatorEvents();
     this.updateStore();
     this.endPropertyChanges();
@@ -247,7 +247,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       isAuthenticated: false,
       authenticator:   null
     });
-    Ember.set(this.content, 'secure', {});
+    Ember.set(this.content, 'authenticated', {});
     this.updateStore();
     this.endPropertyChanges();
     if (trigger) {
@@ -260,7 +260,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     @private
   */
   setUnknownProperty(key, value) {
-    Ember.assert('"secure" is a reserved key used by Ember Simple Auth!', key !== 'secure');
+    Ember.assert('"authenticated" is a reserved key used by Ember Simple Auth!', key !== 'authenticated');
     let result = this._super(key, value);
     this.updateStore();
     return result;
@@ -273,7 +273,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   updateStore() {
     let data = this.content;
     if (!Ember.isEmpty(this.authenticator)) {
-      Ember.set(data, 'secure', Ember.merge({ authenticator: this.authenticator }, data.secure || {}));
+      Ember.set(data, 'authenticated', Ember.merge({ authenticator: this.authenticator }, data.authenticated || {}));
     }
     this.store.persist(data);
   },
@@ -300,12 +300,12 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   */
   _bindToStoreEvents: on('init', function() {
     this.store.on('sessionDataUpdated', (content) => {
-      let { authenticator } = (content.secure || {});
+      let { authenticator } = (content.authenticated || {});
       if (!!authenticator) {
-        delete content.secure.authenticator;
-        this.container.lookup(authenticator).restore(content.secure).then((secureContent) => {
+        delete content.authenticated.authenticator;
+        this.container.lookup(authenticator).restore(content.authenticated).then((authenticatedContent) => {
           this.set('content', content);
-          this.setup(authenticator, secureContent, true);
+          this.setup(authenticator, authenticatedContent, true);
         }, () => {
           this.set('content', content);
           this.clear(true);

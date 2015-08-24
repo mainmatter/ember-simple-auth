@@ -53,8 +53,8 @@ describe('Devise', () => {
 
       describe('when the session contains a non empty token and email', () => {
         beforeEach(() => {
-          authorizer.set('session.secure.token', 'secret token!');
-          authorizer.set('session.secure.email', 'user@email.com');
+          authorizer.set('session.authenticated.token', 'secret token!');
+          authorizer.set('session.authenticated.email', 'user@email.com');
         });
 
         it('calls the block with a header containing "token" and "email"', () => {
@@ -75,8 +75,8 @@ describe('Devise', () => {
         describe('when the session contains a non empty employee_token and employee_email', () => {
           beforeEach(() => {
             authorizer.set('session', session);
-            authorizer.set('session.secure.employee_token', 'secret token!');
-            authorizer.set('session.secure.employee_email', 'user@email.com');
+            authorizer.set('session.authenticated.employee_token', 'secret token!');
+            authorizer.set('session.authenticated.employee_email', 'user@email.com');
           });
 
           it('calls the block with a header containing "employee_token" and "employee_email"', () => {
@@ -93,7 +93,7 @@ describe('Devise', () => {
 
       describe('when the session does not contain a token', () => {
         beforeEach(() => {
-          authorizer.set('session.secure.token', null);
+          authorizer.set('session.authenticated.token', null);
         });
 
         itDoesNotAuthorizeTheRequest();
@@ -101,7 +101,7 @@ describe('Devise', () => {
 
       describe('when the session does not contain an email', () => {
         beforeEach(() => {
-          authorizer.set('session.secure.email', null);
+          authorizer.set('session.authenticated.email', null);
         });
 
         itDoesNotAuthorizeTheRequest();
