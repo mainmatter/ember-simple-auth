@@ -34,7 +34,7 @@ describe('OAuth2Bearer', () => {
 
       describe('when the session contains a non empty access_token', () => {
         beforeEach(() => {
-          authorizer.set('session.secure.access_token', 'secret token!');
+          authorizer.set('session.authenticated.access_token', 'secret token!');
         });
 
         it('calls the block with a Bearer token header', () => {
@@ -46,7 +46,7 @@ describe('OAuth2Bearer', () => {
 
       describe('when the session does not contain an access_token', () => {
         beforeEach(() => {
-          authorizer.set('session.secure.access_token', null);
+          authorizer.set('session.authenticated.access_token', null);
         });
 
         itDoesNotAuthorizeTheRequest();
