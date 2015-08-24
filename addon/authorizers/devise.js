@@ -69,9 +69,9 @@ export default Base.extend({
     @public
   */
   authorize(block) {
-    let secureData         = this.get('session.secure');
-    let userToken          = secureData[this.tokenAttributeName];
-    let userIdentification = secureData[this.identificationAttributeName];
+    let authenticatedData  = this.get('session.authenticated');
+    let userToken          = authenticatedData[this.tokenAttributeName];
+    let userIdentification = authenticatedData[this.identificationAttributeName];
     if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userIdentification)) {
       let authData = `${this.tokenAttributeName}="${userToken}", ${this.identificationAttributeName}="${userIdentification}"`;
       block('Authorization', `Token ${authData}`);
