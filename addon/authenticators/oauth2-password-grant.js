@@ -2,6 +2,8 @@
 import Ember from 'ember';
 import Base from './base';
 
+const { RSVP, isEmpty, run } = Ember;
+
 /**
   Authenticator that conforms to OAuth 2
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Resource
@@ -94,17 +96,17 @@ export default Base.extend({
     @public
   */
   restore(data) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
+    return new RSVP.Promise((resolve, reject) => {
       const now                 = (new Date()).getTime();
       const refreshAccessTokens = this.get('refreshAccessTokens');
-      if (!Ember.isEmpty(data['expires_at']) && data['expires_at'] < now) {
+      if (!isEmpty(data['expires_at']) && data['expires_at'] < now) {
         if (refreshAccessTokens) {
           this.refreshAccessToken(data['expires_in'], data['refresh_token']).then(resolve, reject);
         } else {
           reject();
         }
       } else {
-        if (Ember.isEmpty(data['access_token'])) {
+        if (isEmpty(data['access_token'])) {
           reject();
         } else {
           this.scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
@@ -140,26 +142,24 @@ export default Base.extend({
     @public
   */
   authenticate(options) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
+    return new RSVP.Promise((resolve, reject) => {
       const data                = { 'grant_type': 'password', username: options.identification, password: options.password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      if (!Ember.isEmpty(options.scope)) {
+      if (!isEmpty(options.scope)) {
         const scopesString = Ember.makeArray(options.scope).join(' ');
         Ember.merge(data, { scope: scopesString });
       }
       this.makeRequest(serverTokenEndpoint, data).then((response) => {
-        Ember.run(() => {
+        run(() => {
           const expiresAt = this.absolutizeExpirationTime(response['expires_in']);
           this.scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
-          if (!Ember.isEmpty(expiresAt)) {
+          if (!isEmpty(expiresAt)) {
             response = Ember.merge(response, { 'expires_at': expiresAt });
           }
           resolve(response);
         });
       }, (xhr) => {
-        Ember.run(() => {
-          reject(xhr.responseJSON || xhr.responseText);
-        });
+        run(null, reject, xhr.responseJSON || xhr.responseText);
       });
     });
   },
@@ -176,18 +176,18 @@ export default Base.extend({
   invalidate(data) {
     const serverTokenRevocationEndpoint = this.get('serverTokenRevocationEndpoint');
     function success(resolve) {
-      Ember.run.cancel(this._refreshTokenTimeout);
+      run.cancel(this._refreshTokenTimeout);
       delete this._refreshTokenTimeout;
       resolve();
     }
-    return new Ember.RSVP.Promise((resolve) => {
-      if (Ember.isEmpty(serverTokenRevocationEndpoint)) {
+    return new RSVP.Promise((resolve) => {
+      if (isEmpty(serverTokenRevocationEndpoint)) {
         success.apply(this, [resolve]);
       } else {
         const requests = [];
         Ember.A(['access_token', 'refresh_token']).forEach((tokenType) => {
           const token = data[tokenType];
-          if (!Ember.isEmpty(token)) {
+          if (!isEmpty(token)) {
             requests.push(this.makeRequest(serverTokenRevocationEndpoint, {
               'token_type_hint': tokenType, token
             }));
@@ -196,7 +196,7 @@ export default Base.extend({
         const succeed = () => {
           success.apply(this, [resolve]);
         };
-        Ember.RSVP.all(requests).then(succeed, succeed);
+        RSVP.all(requests).then(succeed, succeed);
       }
     });
   },
@@ -219,14 +219,14 @@ export default Base.extend({
   makeRequest(url, data) {
     const options = {
       url,
-      type:         'POST',
       data,
-      dataType:     'json',
-      contentType:  'application/x-www-form-urlencoded'
+      type:        'POST',
+      dataType:    'json',
+      contentType: 'application/x-www-form-urlencoded'
     };
     const clientId = this.get('clientId');
 
-    if (!Ember.isEmpty(clientId)) {
+    if (!isEmpty(clientId)) {
       const base64ClientId = window.btoa(clientId.concat(':'));
       Ember.merge(options, {
         headers: {
@@ -246,15 +246,15 @@ export default Base.extend({
     const refreshAccessTokens = this.get('refreshAccessTokens');
     if (refreshAccessTokens) {
       const now = (new Date()).getTime();
-      if (Ember.isEmpty(expiresAt) && !Ember.isEmpty(expiresIn)) {
+      if (isEmpty(expiresAt) && !isEmpty(expiresIn)) {
         expiresAt = new Date(now + expiresIn * 1000).getTime();
       }
       const offset = (Math.floor(Math.random() * 5) + 5) * 1000;
-      if (!Ember.isEmpty(refreshToken) && !Ember.isEmpty(expiresAt) && expiresAt > now - offset) {
-        Ember.run.cancel(this._refreshTokenTimeout);
+      if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now - offset) {
+        run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
         if (!Ember.testing) {
-          this._refreshTokenTimeout = Ember.run.later(this, this.refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
+          this._refreshTokenTimeout = run.later(this, this.refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
         }
       }
     }
@@ -267,9 +267,9 @@ export default Base.extend({
   refreshAccessToken(expiresIn, refreshToken) {
     const data                = { 'grant_type': 'refresh_token', 'refresh_token': refreshToken };
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
-    return new Ember.RSVP.Promise((resolve, reject) => {
+    return new RSVP.Promise((resolve, reject) => {
       this.makeRequest(serverTokenEndpoint, data).then((response) => {
-        Ember.run(() => {
+        run(() => {
           expiresIn       = response['expires_in'] || expiresIn;
           refreshToken    = response['refresh_token'] || refreshToken;
           const expiresAt = this.absolutizeExpirationTime(expiresIn);
@@ -290,7 +290,7 @@ export default Base.extend({
     @private
   */
   absolutizeExpirationTime(expiresIn) {
-    if (!Ember.isEmpty(expiresIn)) {
+    if (!isEmpty(expiresIn)) {
       return new Date((new Date().getTime()) + expiresIn * 1000).getTime();
     }
   }

@@ -1,16 +1,18 @@
 import Ember from 'ember';
 import Base from './base';
 
+const { RSVP } = Ember;
+
 export default Base.extend({
   restore() {
-    return Ember.RSVP.resolve();
+    return RSVP.resolve();
   },
 
   authenticate(data) {
-    return Ember.RSVP.resolve(data);
+    return RSVP.resolve(data);
   },
 
   invalidate() {
-    return Ember.RSVP.resolve();
+    return RSVP.resolve();
   }
 });

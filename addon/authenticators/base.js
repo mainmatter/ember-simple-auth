@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const { RSVP } = Ember;
+
 /**
   The base for all authenticators. __This serves as a starting point for
   implementing custom authenticators and must not be used directly.__
@@ -103,7 +105,7 @@ export default Ember.Object.extend(Ember.Evented, {
     @public
   */
   restore() {
-    return Ember.RSVP.reject();
+    return RSVP.reject();
   },
 
   /**
@@ -128,7 +130,7 @@ export default Ember.Object.extend(Ember.Evented, {
     @public
   */
   authenticate() {
-    return Ember.RSVP.reject();
+    return RSVP.reject();
   },
 
   /**
@@ -151,6 +153,6 @@ export default Ember.Object.extend(Ember.Evented, {
     @public
   */
   invalidate() {
-    return Ember.RSVP.resolve();
+    return RSVP.resolve();
   }
 });

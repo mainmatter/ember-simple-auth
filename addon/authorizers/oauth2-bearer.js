@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import Base from './base';
 
+const { isEmpty } = Ember;
+
 /**
   Authorizer that conforms to OAuth 2
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)) by sending a bearer token
@@ -31,7 +33,7 @@ export default Base.extend({
   */
   authorize(block) {
     const accessToken = this.get('session.authenticated.access_token');
-    if (this.get('session.isAuthenticated') && !Ember.isEmpty(accessToken)) {
+    if (this.get('session.isAuthenticated') && !isEmpty(accessToken)) {
       block('Authorization', `Bearer ${accessToken}`);
     }
   }
