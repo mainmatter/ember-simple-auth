@@ -1,6 +1,9 @@
 import Ember from 'ember';
 import Base from './base';
 
+const { RSVP, isEmpty, run } = Ember;
+const get = Ember.get;
+
 /**
   Authenticator that works with the Ruby gem
   [Devise](https://github.com/plataformatec/devise).
@@ -72,10 +75,11 @@ export default Base.extend({
     @public
   */
   restore(properties) {
-    const propertiesObject = Ember.Object.create(properties);
     const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      if (!Ember.isEmpty(propertiesObject.get(tokenAttributeName)) && !Ember.isEmpty(propertiesObject.get(identificationAttributeName))) {
+    const tokenAttribute = get(properties, tokenAttributeName);
+    const identificationAttribute = get(properties, identificationAttributeName);
+    return new RSVP.Promise((resolve, reject) => {
+      if (!isEmpty(tokenAttribute) && !isEmpty(identificationAttribute)) {
         resolve(properties);
       } else {
         reject();
@@ -98,7 +102,7 @@ export default Base.extend({
     @public
   */
   authenticate(credentials) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
+    return new RSVP.Promise((resolve, reject) => {
       const { resourceName, identificationAttributeName } = this.getProperties('resourceName', 'identificationAttributeName');
       const data         = {};
       data[resourceName] = {
@@ -107,13 +111,9 @@ export default Base.extend({
       data[resourceName][identificationAttributeName] = credentials.identification;
 
       this.makeRequest(data).then(function(response) {
-        Ember.run(function() {
-          resolve(response);
-        });
+        run(null, resolve, response);
       }, function(xhr) {
-        Ember.run(function() {
-          reject(xhr.responseJSON || xhr.responseText);
-        });
+        run(null, reject, xhr.responseJSON || xhr.responseText);
       });
     });
   },
@@ -126,7 +126,7 @@ export default Base.extend({
     @public
   */
   invalidate() {
-    return Ember.RSVP.resolve();
+    return RSVP.resolve();
   },
 
   /**
@@ -136,9 +136,9 @@ export default Base.extend({
   makeRequest(data) {
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return Ember.$.ajax({
-      url:        serverTokenEndpoint,
-      type:       'POST',
-      dataType:   'json',
+      url:      serverTokenEndpoint,
+      type:     'POST',
+      dataType: 'json',
       data,
       beforeSend(xhr, settings) {
         xhr.setRequestHeader('Accept', settings.accepts.json);

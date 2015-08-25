@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import Base from './base';
 
+const { isEmpty } = Ember;
+
 /**
   Authorizer that works with the Ruby gem
   [Devise](https://github.com/plataformatec/devise) by sending the `token` and
@@ -57,7 +59,7 @@ export default Base.extend({
     const authenticatedData  = this.get('session.authenticated');
     const userToken          = authenticatedData[tokenAttributeName];
     const userIdentification = authenticatedData[identificationAttributeName];
-    if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userIdentification)) {
+    if (this.get('session.isAuthenticated') && !isEmpty(userToken) && !isEmpty(userIdentification)) {
       const authData = `${tokenAttributeName}="${userToken}", ${identificationAttributeName}="${userIdentification}"`;
       block('Authorization', `Token ${authData}`);
     }

@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import Base from './base';
 
+const { RSVP, isEmpty } = Ember;
+
 /**
   Authenticator that wraps the
   [Torii library](https://github.com/Vestorly/torii).
@@ -36,9 +38,9 @@ export default Base.extend({
     @public
   */
   restore(data) {
-    data      = data || {};
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      if (!Ember.isEmpty(data.provider)) {
+    data = data || {};
+    return new RSVP.Promise((resolve, reject) => {
+      if (!isEmpty(data.provider)) {
         let { provider } = data;
         this.torii.fetch(data.provider, data).then((data) => {
           this.resolveWith(provider, data, resolve);
@@ -65,7 +67,7 @@ export default Base.extend({
     @public
   */
   authenticate(provider, options) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
+    return new RSVP.Promise((resolve, reject) => {
       this.torii.open(provider, options || {}).then((data) => {
         this.resolveWith(provider, data, resolve);
       }, reject);
@@ -81,7 +83,7 @@ export default Base.extend({
     @public
   */
   invalidate() {
-    return new Ember.RSVP.Promise((resolve, reject) => {
+    return new RSVP.Promise((resolve, reject) => {
       this.torii.close(this.provider).then(() => {
         delete this.provider;
         resolve();
