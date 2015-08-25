@@ -15,18 +15,6 @@ const defaults = {
     name:           'ember_simple_auth:session',
     domain:         null,
     expirationTime: null
-  },
-  devise: {
-    serverTokenEndpoint:         '/users/sign_in',
-    resourceName:                'user',
-    tokenAttributeName:          'token',
-    identificationAttributeName: 'email'
-  },
-  oauth2: {
-    serverTokenEndpoint:           '/token',
-    serverTokenRevocationEndpoint: null,
-    refreshAccessTokens:           true,
-    clientId:                      null
   }
 };
 
@@ -187,127 +175,8 @@ export default {
     load: loadConfig(defaults.cookie)
   },
 
-  devise: {
-    /**
-      The endpoint on the server the authenticator acquires the auth token
-      and email from.
-
-      @property serverTokenEndpoint
-      @readOnly
-      @static
-      @type String
-      @default '/users/sign_in'
-      @public
-    */
-    serverTokenEndpoint: defaults.devise.serverTokenEndpoint,
-
-    /**
-      The devise resource name.
-
-      @property resourceName
-      @readOnly
-      @static
-      @type String
-      @default 'user'
-      @public
-    */
-    resourceName: defaults.devise.resourceName,
-
-    /**
-      The token attribute name.
-
-      @property tokenAttributeName
-      @readOnly
-      @static
-      @type String
-      @default 'token'
-      @public
-    */
-    tokenAttributeName: defaults.devise.tokenAttributeName,
-
-    /**
-      The identification attribute name. This is the parameter that is sent to
-      [serverTokenEndpoint](#SimpleAuth-Configuration-Devise-serverTokenEndpoint)
-      during the authentication process, is expected in the response and is used
-      by the
-      [Devise authorizer](#SimpleAuth-Authorizers-Devise).
-
-      @property identificationAttributeName
-      @readOnly
-      @static
-      @type String
-      @default 'email'
-      @public
-    */
-    identificationAttributeName: defaults.devise.identificationAttributeName,
-
-    /**
-      @method load
-      @private
-    */
-    load: loadConfig(defaults.devise)
-  },
-
-  oauth2: {
-    /**
-      The client_id sent to the server
-
-      @property client_id
-      @readOnly
-      @static
-      @type String
-      @default null
-      @public
-    */
-    clientId: defaults.oauth2.clientId,
-
-    /**
-      The endpoint on the server the authenticator acquires the access token
-      from.
-
-      @property serverTokenEndpoint
-      @readOnly
-      @static
-      @type String
-      @default '/token'
-      @public
-    */
-    serverTokenEndpoint: defaults.oauth2.serverTokenEndpoint,
-
-    /**
-      The endpoint on the server the authenticator uses to revoke tokens. Only
-      set this if the server actually supports token revokation.
-
-      @property serverTokenRevocationEndpoint
-      @readOnly
-      @static
-      @type String
-      @default null
-      @public
-    */
-    serverTokenRevocationEndpoint: defaults.oauth2.serverTokenRevocationEndpoint,
-
-    /**
-      Sets whether the authenticator automatically refreshes access tokens.
-
-      @property refreshAccessTokens
-      @readOnly
-      @static
-      @type Boolean
-      @default true
-      @public
-    */
-    refreshAccessTokens: defaults.oauth2.refreshAccessTokens,
-
-    /**
-      @method load
-      @private
-    */
-    load: loadConfig(defaults.oauth2)
-  },
-
   load(config) {
-    Ember.A(['base', 'localStorage', 'cookie', 'devise', 'oauth2']).forEach((section) => {
+    Ember.A(['base', 'localStorage', 'cookie']).forEach((section) => {
       this[section].load(config[section]);
     });
   }

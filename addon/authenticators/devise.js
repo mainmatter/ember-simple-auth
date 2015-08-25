@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Base from './base';
-import Configuration from './../configuration';
 
 /**
   Authenticator that works with the Ruby gem
@@ -25,9 +24,6 @@ export default Base.extend({
     The endpoint on the server the authenticator acquires the auth token
     and email from.
 
-    This value can be configured via
-    [`SimpleAuth.Configuration.Devise#serverTokenEndpoint`](#SimpleAuth-Configuration-Devise-serverTokenEndpoint).
-
     @property serverTokenEndpoint
     @type String
     @default '/users/sign_in'
@@ -37,9 +33,6 @@ export default Base.extend({
 
   /**
     The devise resource name
-
-    This value can be configured via
-    [`SimpleAuth.Configuration.Devise#resourceName`](#SimpleAuth-Configuration-Devise-resourceName).
 
     @property resourceName
     @type String
@@ -51,9 +44,6 @@ export default Base.extend({
   /**
     The token attribute name.
 
-    This value can be configured via
-    [`SimpleAuth.Configuration.Devise#tokenAttributeName`](#SimpleAuth-Configuration-Devise-tokenAttributeName).
-
     @property tokenAttributeName
     @type String
     @default 'token'
@@ -64,26 +54,12 @@ export default Base.extend({
   /**
     The identification attribute name.
 
-    This value can be configured via
-    [`SimpleAuth.Configuration.Devise#identificationAttributeName`](#SimpleAuth-Configuration-Devise-identificationAttributeName).
-
     @property identificationAttributeName
     @type String
     @default 'email'
     @public
   */
   identificationAttributeName: 'email',
-
-  /**
-    @method init
-    @private
-  */
-  init() {
-    this.serverTokenEndpoint         = Configuration.devise.serverTokenEndpoint;
-    this.resourceName                = Configuration.devise.resourceName;
-    this.tokenAttributeName          = Configuration.devise.tokenAttributeName;
-    this.identificationAttributeName = Configuration.devise.identificationAttributeName;
-  },
 
   /**
     Restores the session from a set of session properties; __will return a

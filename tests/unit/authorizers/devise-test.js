@@ -1,12 +1,11 @@
 /* jshint expr:true */
 import { it } from 'ember-mocha';
-import { describe, beforeEach, afterEach } from 'mocha';
+import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Devise from 'ember-simple-auth/authorizers/devise';
 import Session from 'ember-simple-auth/session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
-import Configuration from 'ember-simple-auth/configuration';
 
 let authorizer;
 let session;
@@ -17,24 +16,6 @@ describe('Devise', () => {
     session    = Session.create({ store: EphemeralStore.create() });
     authorizer = Devise.create({ session });
     block      = sinon.spy();
-  });
-
-  describe('initilization', () => {
-    it('assigns tokenAttributeName from the configuration object', () => {
-      Configuration.devise.tokenAttributeName = 'tokenAttributeName';
-
-      expect(Devise.create().tokenAttributeName).to.eq('tokenAttributeName');
-    });
-
-    it('assigns identificationAttributeName from the configuration object', () => {
-      Configuration.devise.identificationAttributeName = 'identificationAttributeName';
-
-      expect(Devise.create().identificationAttributeName).to.eq('identificationAttributeName');
-    });
-
-    afterEach(() => {
-      Configuration.load({});
-    });
   });
 
   describe('#authorize', () => {
@@ -66,10 +47,7 @@ describe('Devise', () => {
 
       describe('when custom identification and token attribute names are configured', () => {
         beforeEach(() => {
-          Configuration.devise.tokenAttributeName          = 'employee_token';
-          Configuration.devise.identificationAttributeName = 'employee_email';
-
-          authorizer = Devise.create();
+          authorizer = Devise.extend({ tokenAttributeName: 'employee_token', identificationAttributeName: 'employee_email' }).create();
         });
 
         describe('when the session contains a non empty employee_token and employee_email', () => {
@@ -84,10 +62,6 @@ describe('Devise', () => {
 
             expect(block).to.have.been.calledWith('Authorization', 'Token employee_token="secret token!", employee_email="user@email.com"');
           });
-        });
-
-        afterEach(() => {
-          Configuration.load({});
         });
       });
 
