@@ -193,9 +193,10 @@ export default Base.extend({
             }));
           }
         });
-        Ember.$.when.apply(Ember.$, requests).always(() => {
+        const succeed = () => {
           success.apply(this, [resolve]);
-        });
+        };
+        Ember.RSVP.all(requests).then(succeed, succeed);
       }
     });
   },
