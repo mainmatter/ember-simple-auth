@@ -10,7 +10,7 @@ import Ember from 'ember';
   application's environment object:
 
   ```js
-  ENV['simple-auth'] = {
+  ENV['ember-simple-auth'] = {
     store: 'session-store:local-storage'
   }
   ```

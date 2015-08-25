@@ -19,7 +19,7 @@ module.exports = function(environment) {
     }
   };
 
-  ENV['simple-auth'] = {
+  ENV['ember-simple-auth'] = {
     base: {
       store: 'session-store:local-storage'
     }

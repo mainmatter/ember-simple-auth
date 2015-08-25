@@ -25,7 +25,7 @@ const defaults = {
   object:
 
   ```js
-  ENV['simple-auth'] = {
+  ENV['ember-simple-auth'] = {
     authenticationRoute: 'sign-in'
   };
   ```
