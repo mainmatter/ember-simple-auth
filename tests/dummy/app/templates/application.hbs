@@ -1,21 +1,4 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      {{#link-to 'index' classNames='navbar-brand'}}
-        Home
-      {{/link-to}}
-    </div>
-    <ul class="nav navbar-nav navbar-left">
-      {{#link-to 'protected' tagName='li'}}
-        <a>Protected Page</a>
-      {{/link-to}}
-      {{#link-to 'auth-error' tagName='li'}}
-        <a>Auth Error Page</a>
-      {{/link-to}}
-    </ul>
-    {{login-logout-button login='transitionToLoginRoute'}}
-  </div>
-</nav>
+{{main-navigation login='transitionToLoginRoute'}}
 <div class="container">
   {{outlet}}
 </div>
