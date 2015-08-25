@@ -59,8 +59,7 @@
     "authorization"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.0.0",
-    "torii": "^0.5.1"
+    "ember-cli-babel": "^5.0.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
