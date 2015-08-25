@@ -53,11 +53,12 @@ export default Base.extend({
     @public
   */
   authorize(block) {
-    let authenticatedData  = this.get('session.authenticated');
-    let userToken          = authenticatedData[this.tokenAttributeName];
-    let userIdentification = authenticatedData[this.identificationAttributeName];
+    const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
+    const authenticatedData  = this.get('session.authenticated');
+    const userToken          = authenticatedData[tokenAttributeName];
+    const userIdentification = authenticatedData[identificationAttributeName];
     if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userIdentification)) {
-      let authData = `${this.tokenAttributeName}="${userToken}", ${this.identificationAttributeName}="${userIdentification}"`;
+      const authData = `${tokenAttributeName}="${userToken}", ${identificationAttributeName}="${userIdentification}"`;
       block('Authorization', `Token ${authData}`);
     }
   }

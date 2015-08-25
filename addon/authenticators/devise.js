@@ -72,9 +72,10 @@ export default Base.extend({
     @public
   */
   restore(properties) {
-    let propertiesObject = Ember.Object.create(properties);
+    const propertiesObject = Ember.Object.create(properties);
+    const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
     return new Ember.RSVP.Promise((resolve, reject) => {
-      if (!Ember.isEmpty(propertiesObject.get(this.tokenAttributeName)) && !Ember.isEmpty(propertiesObject.get(this.identificationAttributeName))) {
+      if (!Ember.isEmpty(propertiesObject.get(tokenAttributeName)) && !Ember.isEmpty(propertiesObject.get(identificationAttributeName))) {
         resolve(properties);
       } else {
         reject();
@@ -98,11 +99,12 @@ export default Base.extend({
   */
   authenticate(credentials) {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      let data                = {};
-      data[this.resourceName] = {
+      const { resourceName, identificationAttributeName } = this.getProperties('resourceName', 'identificationAttributeName');
+      const data         = {};
+      data[resourceName] = {
         password: credentials.password
       };
-      data[this.resourceName][this.identificationAttributeName] = credentials.identification;
+      data[resourceName][identificationAttributeName] = credentials.identification;
 
       this.makeRequest(data).then(function(response) {
         Ember.run(function() {
@@ -132,8 +134,9 @@ export default Base.extend({
     @private
   */
   makeRequest(data) {
+    const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return Ember.$.ajax({
-      url:        this.serverTokenEndpoint,
+      url:        serverTokenEndpoint,
       type:       'POST',
       dataType:   'json',
       data,
