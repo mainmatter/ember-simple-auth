@@ -51,48 +51,6 @@ describe('Configuration', () => {
     });
   });
 
-  describe('serverTokenEndpoint', () => {
-    it('defaults to "/users/sign_in"', () => {
-      expect(Configuration.devise.serverTokenEndpoint).to.eql('/users/sign_in');
-    });
-  });
-
-  describe('resourceName', () => {
-    it('defaults to "user"', () => {
-      expect(Configuration.devise.resourceName).to.eq('user');
-    });
-  });
-
-  describe('tokenAttributeName', () => {
-    it('defaults to "token"', () => {
-      expect(Configuration.devise.tokenAttributeName).to.eql('token');
-    });
-  });
-
-  describe('identificationAttributeName', () => {
-    it('defaults to "email"', () => {
-      expect(Configuration.devise.identificationAttributeName).to.eq('email');
-    });
-  });
-
-  describe('serverTokenEndpoint', () => {
-    it('defaults to "/token"', () => {
-      expect(Configuration.oauth2.serverTokenEndpoint).to.eql('/token');
-    });
-  });
-
-  describe('serverTokenRevocationEndpoint', () => {
-    it('defaults to null', () => {
-      expect(Configuration.oauth2.serverTokenRevocationEndpoint).to.be.null;
-    });
-  });
-
-  describe('refreshAccessTokens', () => {
-    it('defaults to true', () => {
-      expect(Configuration.oauth2.refreshAccessTokens).to.be.true;
-    });
-  });
-
   describe('.load', () => {
     it('sets authenticationRoute correctly', () => {
       Configuration.load({ base: { authenticationRoute: 'authenticationRoute' } });
@@ -134,54 +92,6 @@ describe('Configuration', () => {
       Configuration.load({ cookie: { expirationTime: 1 } });
 
       expect(Configuration.cookie.expirationTime).to.eql(1);
-    });
-
-    it('sets serverTokenEndpoint correctly', () => {
-      Configuration.load({ devise: { serverTokenEndpoint: 'serverTokenEndpoint' } });
-
-      expect(Configuration.devise.serverTokenEndpoint).to.eql('serverTokenEndpoint');
-    });
-
-    it('sets resourceName correctly', () => {
-      Configuration.load({ devise: { resourceName: 'resourceName' } });
-
-      expect(Configuration.devise.resourceName).to.eql('resourceName');
-    });
-
-    it('sets identificationAttributeName correctly', () => {
-      Configuration.load({ devise: { identificationAttributeName: 'identificationAttributeName' } });
-
-      expect(Configuration.devise.identificationAttributeName).to.eql('identificationAttributeName');
-    });
-
-    it('sets tokenAttributeName correctly', () => {
-      Configuration.load({ devise: { tokenAttributeName: 'tokenAttributeName' } });
-
-      expect(Configuration.devise.tokenAttributeName).to.eql('tokenAttributeName');
-    });
-
-    it('sets clientId correctly', () => {
-      Configuration.load({ oauth2: { clientId: 'clientId' } });
-
-      expect(Configuration.oauth2.clientId).to.eql('clientId');
-    });
-
-    it('sets serverTokenEndpoint correctly', () => {
-      Configuration.load({ oauth2: { serverTokenEndpoint: 'serverTokenEndpoint' } });
-
-      expect(Configuration.oauth2.serverTokenEndpoint).to.eql('serverTokenEndpoint');
-    });
-
-    it('sets serverTokenRevocationEndpoint correctly', () => {
-      Configuration.load({ oauth2: { serverTokenRevocationEndpoint: 'serverTokenRevocationEndpoint' } });
-
-      expect(Configuration.oauth2.serverTokenRevocationEndpoint).to.eql('serverTokenRevocationEndpoint');
-    });
-
-    it('sets refreshAccessTokens correctly', () => {
-      Configuration.load({ oauth2: { refreshAccessTokens: false } });
-
-      expect(Configuration.oauth2.refreshAccessTokens).to.be.false;
     });
   });
 });

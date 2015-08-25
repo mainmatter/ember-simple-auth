@@ -5,7 +5,6 @@ import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Devise from 'ember-simple-auth/authenticators/devise';
-import Configuration from 'ember-simple-auth/configuration';
 
 let xhr;
 let server;
@@ -21,36 +20,6 @@ describe('Devise', () => {
 
   afterEach(() => {
     xhr.restore();
-  });
-
-  describe('initilization', () => {
-    it('assigns serverTokenEndpoint from the configuration object', () => {
-      Configuration.devise.serverTokenEndpoint = 'serverTokenEndpoint';
-
-      expect(Devise.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
-    });
-
-    it('assigns resourceName from the configuration object', () => {
-      Configuration.devise.resourceName = 'resourceName';
-
-      expect(Devise.create().resourceName).to.eq('resourceName');
-    });
-
-    it('assigns tokenAttributeName from the configuration object', () => {
-      Configuration.devise.tokenAttributeName = 'tokenAttributeName';
-
-      expect(Devise.create().tokenAttributeName).to.eq('tokenAttributeName');
-    });
-
-    it('assigns identificationAttributeName from the configuration object', () => {
-      Configuration.devise.identificationAttributeName = 'identificationAttributeName';
-
-      expect(Devise.create().identificationAttributeName).to.eq('identificationAttributeName');
-    });
-
-    afterEach(() => {
-      Configuration.load({});
-    });
   });
 
   describe('#restore', () => {
@@ -73,9 +42,7 @@ describe('Devise', () => {
 
     describe('when the data contains a custom token and email attribute', () => {
       beforeEach(() => {
-        Configuration.devise.tokenAttributeName          = 'employee.token';
-        Configuration.devise.identificationAttributeName = 'employee.email';
-        authenticator                                    = Devise.create();
+        authenticator = Devise.extend({ tokenAttributeName: 'employee.token', identificationAttributeName: 'employee.email' }).create();
       });
 
       it('resolves with the correct data', (done) => {
@@ -83,10 +50,6 @@ describe('Devise', () => {
           expect(content).to.eql({ employee: { token: 'secret token!', email: 'user@email.com' } });
           done();
         });
-      });
-
-      afterEach(() => {
-        Configuration.load({});
       });
     });
   });

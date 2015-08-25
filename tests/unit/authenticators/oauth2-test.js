@@ -6,7 +6,6 @@ import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
-import Configuration from 'ember-simple-auth/configuration';
 
 let authenticator;
 let xhr;
@@ -24,36 +23,6 @@ describe('OAuth2PasswordGrant', () => {
   afterEach(() => {
     xhr.restore();
     Ember.$.ajax.restore();
-  });
-
-  describe('initilization', () => {
-    it('assigns serverTokenEndpoint from the configuration object', () => {
-      Configuration.oauth2.serverTokenEndpoint = 'serverTokenEndpoint';
-
-      expect(OAuth2PasswordGrant.create().serverTokenEndpoint).to.eq('serverTokenEndpoint');
-    });
-
-    it('assigns serverTokenRevocationEndpoint from the configuration object', () => {
-      Configuration.oauth2.serverTokenRevocationEndpoint = 'serverTokenRevocationEndpoint';
-
-      expect(OAuth2PasswordGrant.create().serverTokenRevocationEndpoint).to.eq('serverTokenRevocationEndpoint');
-    });
-
-    it('assigns refreshAccessTokens from the configuration object', () => {
-      Configuration.oauth2.refreshAccessTokens = false;
-
-      expect(OAuth2PasswordGrant.create().refreshAccessTokens).to.be.false;
-    });
-
-    it('assigns clientId from the configuration object', () => {
-      Configuration.oauth2.clientId = 'test-client';
-
-      expect(OAuth2PasswordGrant.create().clientId).to.be.eq('test-client');
-    });
-
-    afterEach(() => {
-      Configuration.load({});
-    });
   });
 
   describe('#restore', () => {

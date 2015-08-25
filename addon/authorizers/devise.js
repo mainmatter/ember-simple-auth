@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Base from './base';
-import Configuration from './../configuration';
 
 /**
   Authorizer that works with the Ruby gem
@@ -24,9 +23,6 @@ export default Base.extend({
   /**
     The token attribute name.
 
-    This value can be configured via
-    [`SimpleAuth.Configuration.Devise#tokenAttributeName`](#SimpleAuth-Configuration-Devise-tokenAttributeName).
-
     @property tokenAttributeName
     @type String
     @default 'token'
@@ -37,24 +33,12 @@ export default Base.extend({
   /**
     The identification attribute name.
 
-    This value can be configured via
-    [`SimpleAuth.Configuration.Devise#identificationAttributeName`](#SimpleAuth-Configuration-Devise-identificationAttributeName).
-
     @property identificationAttributeName
     @type String
     @default 'email'
     @public
   */
   identificationAttributeName: 'email',
-
-  /**
-    @method init
-    @private
-  */
-  init() {
-    this.tokenAttributeName          = Configuration.devise.tokenAttributeName;
-    this.identificationAttributeName = Configuration.devise.identificationAttributeName;
-  },
 
   /**
     Authorizes an XHR request by sending the `token` and `email`

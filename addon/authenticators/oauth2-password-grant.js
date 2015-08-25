@@ -1,7 +1,6 @@
 /* jscs:disable requireDotNotation */
 import Ember from 'ember';
 import Base from './base';
-import Configuration from './../configuration';
 
 /**
   Authenticator that conforms to OAuth 2
@@ -34,9 +33,6 @@ export default Base.extend({
   /**
     The client_id to be sent to the authorization server
 
-    This value can be configured via
-    [`SimpleAuth.Configuration.OAuth2#clientId`](#SimpleAuth-Configuration-OAuth2-clientId).
-
     @property clientId
     @type String
     @default null
@@ -47,9 +43,6 @@ export default Base.extend({
   /**
     The endpoint on the server the authenticator acquires the access token
     from.
-
-    This value can be configured via
-    [`SimpleAuth.Configuration.OAuth2#serverTokenEndpoint`](#SimpleAuth-Configuration-OAuth2-serverTokenEndpoint).
 
     @property serverTokenEndpoint
     @type String
@@ -62,9 +55,6 @@ export default Base.extend({
     The endpoint on the server the authenticator uses to revoke tokens. Only
     set this if the server actually supports token revokation.
 
-    This value can be configured via
-    [`SimpleAuth.Configuration.OAuth2#serverTokenRevocationEndpoint`](#SimpleAuth-Configuration-OAuth2-serverTokenRevocationEndpoint).
-
     @property serverTokenRevocationEndpoint
     @type String
     @default null
@@ -74,9 +64,6 @@ export default Base.extend({
 
   /**
     Sets whether the authenticator automatically refreshes access tokens.
-
-    This value can be configured via
-    [`SimpleAuth.Configuration.OAuth2#refreshAccessTokens`](#SimpleAuth-Configuration-OAuth2-refreshAccessTokens).
 
     @property refreshAccessTokens
     @type Boolean
@@ -90,17 +77,6 @@ export default Base.extend({
     @private
   */
   _refreshTokenTimeout: null,
-
-  /**
-    @method init
-    @private
-  */
-  init() {
-    this.clientId                      = Configuration.oauth2.clientId;
-    this.serverTokenEndpoint           = Configuration.oauth2.serverTokenEndpoint;
-    this.serverTokenRevocationEndpoint = Configuration.oauth2.serverTokenRevocationEndpoint;
-    this.refreshAccessTokens           = Configuration.oauth2.refreshAccessTokens;
-  },
 
   /**
     Restores the session from a set of session properties; __will return a
