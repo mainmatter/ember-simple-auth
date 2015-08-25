@@ -30,7 +30,7 @@ export default Base.extend({
     @public
   */
   authorize(block) {
-    let accessToken = this.get('session.authenticated.access_token');
+    const accessToken = this.get('session.authenticated.access_token');
     if (this.get('session.isAuthenticated') && !Ember.isEmpty(accessToken)) {
       block('Authorization', `Bearer ${accessToken}`);
     }

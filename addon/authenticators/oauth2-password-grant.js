@@ -1,7 +1,6 @@
 /* jscs:disable requireDotNotation */
 import Ember from 'ember';
 import Base from './base';
-import Configuration from './../configuration';
 
 /**
   Authenticator that conforms to OAuth 2
@@ -34,9 +33,6 @@ export default Base.extend({
   /**
     The client_id to be sent to the authorization server
 
-    This value can be configured via
-    [`SimpleAuth.Configuration.OAuth2#clientId`](#SimpleAuth-Configuration-OAuth2-clientId).
-
     @property clientId
     @type String
     @default null
@@ -47,9 +43,6 @@ export default Base.extend({
   /**
     The endpoint on the server the authenticator acquires the access token
     from.
-
-    This value can be configured via
-    [`SimpleAuth.Configuration.OAuth2#serverTokenEndpoint`](#SimpleAuth-Configuration-OAuth2-serverTokenEndpoint).
 
     @property serverTokenEndpoint
     @type String
@@ -62,9 +55,6 @@ export default Base.extend({
     The endpoint on the server the authenticator uses to revoke tokens. Only
     set this if the server actually supports token revokation.
 
-    This value can be configured via
-    [`SimpleAuth.Configuration.OAuth2#serverTokenRevocationEndpoint`](#SimpleAuth-Configuration-OAuth2-serverTokenRevocationEndpoint).
-
     @property serverTokenRevocationEndpoint
     @type String
     @default null
@@ -74,9 +64,6 @@ export default Base.extend({
 
   /**
     Sets whether the authenticator automatically refreshes access tokens.
-
-    This value can be configured via
-    [`SimpleAuth.Configuration.OAuth2#refreshAccessTokens`](#SimpleAuth-Configuration-OAuth2-refreshAccessTokens).
 
     @property refreshAccessTokens
     @type Boolean
@@ -90,17 +77,6 @@ export default Base.extend({
     @private
   */
   _refreshTokenTimeout: null,
-
-  /**
-    @method init
-    @private
-  */
-  init() {
-    this.clientId                      = Configuration.oauth2.clientId;
-    this.serverTokenEndpoint           = Configuration.oauth2.serverTokenEndpoint;
-    this.serverTokenRevocationEndpoint = Configuration.oauth2.serverTokenRevocationEndpoint;
-    this.refreshAccessTokens           = Configuration.oauth2.refreshAccessTokens;
-  },
 
   /**
     Restores the session from a set of session properties; __will return a
@@ -119,9 +95,10 @@ export default Base.extend({
   */
   restore(data) {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      let now = (new Date()).getTime();
+      const now                 = (new Date()).getTime();
+      const refreshAccessTokens = this.get('refreshAccessTokens');
       if (!Ember.isEmpty(data['expires_at']) && data['expires_at'] < now) {
-        if (this.refreshAccessTokens) {
+        if (refreshAccessTokens) {
           this.refreshAccessToken(data['expires_in'], data['refresh_token']).then(resolve, reject);
         } else {
           reject();
@@ -164,14 +141,15 @@ export default Base.extend({
   */
   authenticate(options) {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      let data = { 'grant_type': 'password', username: options.identification, password: options.password };
+      const data                = { 'grant_type': 'password', username: options.identification, password: options.password };
+      const serverTokenEndpoint = this.get('serverTokenEndpoint');
       if (!Ember.isEmpty(options.scope)) {
-        let scopesString = Ember.makeArray(options.scope).join(' ');
+        const scopesString = Ember.makeArray(options.scope).join(' ');
         Ember.merge(data, { scope: scopesString });
       }
-      this.makeRequest(this.serverTokenEndpoint, data).then((response) => {
+      this.makeRequest(serverTokenEndpoint, data).then((response) => {
         Ember.run(() => {
-          let expiresAt = this.absolutizeExpirationTime(response['expires_in']);
+          const expiresAt = this.absolutizeExpirationTime(response['expires_in']);
           this.scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
           if (!Ember.isEmpty(expiresAt)) {
             response = Ember.merge(response, { 'expires_at': expiresAt });
@@ -196,20 +174,21 @@ export default Base.extend({
     @public
   */
   invalidate(data) {
+    const serverTokenRevocationEndpoint = this.get('serverTokenRevocationEndpoint');
     function success(resolve) {
       Ember.run.cancel(this._refreshTokenTimeout);
       delete this._refreshTokenTimeout;
       resolve();
     }
     return new Ember.RSVP.Promise((resolve) => {
-      if (Ember.isEmpty(this.serverTokenRevocationEndpoint)) {
+      if (Ember.isEmpty(serverTokenRevocationEndpoint)) {
         success.apply(this, [resolve]);
       } else {
-        let requests = [];
+        const requests = [];
         Ember.A(['access_token', 'refresh_token']).forEach((tokenType) => {
-          let token = data[tokenType];
+          const token = data[tokenType];
           if (!Ember.isEmpty(token)) {
-            requests.push(this.makeRequest(this.serverTokenRevocationEndpoint, {
+            requests.push(this.makeRequest(serverTokenRevocationEndpoint, {
               'token_type_hint': tokenType, token
             }));
           }
@@ -237,16 +216,17 @@ export default Base.extend({
     @public
   */
   makeRequest(url, data) {
-    let options = {
+    const options = {
       url,
       type:         'POST',
       data,
       dataType:     'json',
       contentType:  'application/x-www-form-urlencoded'
     };
+    const clientId = this.get('clientId');
 
-    if (!Ember.isEmpty(this.clientId)) {
-      let base64ClientId = window.btoa(this.clientId.concat(':'));
+    if (!Ember.isEmpty(clientId)) {
+      const base64ClientId = window.btoa(clientId.concat(':'));
       Ember.merge(options, {
         headers: {
           Authorization: `Basic ${base64ClientId}`
@@ -262,12 +242,13 @@ export default Base.extend({
     @private
   */
   scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
-    if (this.refreshAccessTokens) {
-      let now = (new Date()).getTime();
+    const refreshAccessTokens = this.get('refreshAccessTokens');
+    if (refreshAccessTokens) {
+      const now = (new Date()).getTime();
       if (Ember.isEmpty(expiresAt) && !Ember.isEmpty(expiresIn)) {
         expiresAt = new Date(now + expiresIn * 1000).getTime();
       }
-      let offset = (Math.floor(Math.random() * 5) + 5) * 1000;
+      const offset = (Math.floor(Math.random() * 5) + 5) * 1000;
       if (!Ember.isEmpty(refreshToken) && !Ember.isEmpty(expiresAt) && expiresAt > now - offset) {
         Ember.run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
@@ -283,14 +264,15 @@ export default Base.extend({
     @private
   */
   refreshAccessToken(expiresIn, refreshToken) {
-    let data  = { 'grant_type': 'refresh_token', 'refresh_token': refreshToken };
+    const data                = { 'grant_type': 'refresh_token', 'refresh_token': refreshToken };
+    const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return new Ember.RSVP.Promise((resolve, reject) => {
-      this.makeRequest(this.serverTokenEndpoint, data).then((response) => {
+      this.makeRequest(serverTokenEndpoint, data).then((response) => {
         Ember.run(() => {
-          expiresIn     = response['expires_in'] || expiresIn;
-          refreshToken  = response['refresh_token'] || refreshToken;
-          let expiresAt = this.absolutizeExpirationTime(expiresIn);
-          let data      = Ember.merge(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
+          expiresIn       = response['expires_in'] || expiresIn;
+          refreshToken    = response['refresh_token'] || refreshToken;
+          const expiresAt = this.absolutizeExpirationTime(expiresIn);
+          const data      = Ember.merge(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
           this.scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
           this.trigger('sessionDataUpdated', data);
           resolve(data);
