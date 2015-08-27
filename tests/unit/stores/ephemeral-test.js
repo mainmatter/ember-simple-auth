@@ -4,8 +4,8 @@ import itBehavesLikeAStore from './shared/store-behavior';
 
 let store;
 
-describe('Stores.Ephemeral', function() {
-  beforeEach(function() {
+describe('Stores.Ephemeral', () => {
+  beforeEach(() => {
     store = Ephemeral.create();
   });
 
