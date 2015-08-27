@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import loadConfig from './utils/load-config';
+import applyConfig from './utils/apply-config';
 
 const DEFAULTS = {
   base: {
@@ -104,7 +104,7 @@ export default {
       @method load
       @private
     */
-    load: loadConfig(DEFAULTS.base)
+    load: applyConfig(DEFAULTS.base)
   },
 
   localStorage: {
@@ -122,7 +122,7 @@ export default {
       @method load
       @private
     */
-    load: loadConfig(DEFAULTS.localStorage)
+    load: applyConfig(DEFAULTS.localStorage)
   },
 
   cookie: {
@@ -172,7 +172,7 @@ export default {
       @method load
       @private
     */
-    load: loadConfig(DEFAULTS.cookie)
+    load: applyConfig(DEFAULTS.cookie)
   },
 
   load(config) {
