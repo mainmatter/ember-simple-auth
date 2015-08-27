@@ -7,8 +7,8 @@ import itBehavesLikeAStore from './shared/store-behavior';
 
 let store;
 
-describe('Stores.LocalStorage', function() {
-  beforeEach(function() {
+describe('Stores.LocalStorage', () => {
+  beforeEach(() => {
     store = LocalStorage.create();
   });
 
