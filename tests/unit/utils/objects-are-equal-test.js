@@ -4,7 +4,7 @@ import { describe } from 'mocha';
 import { expect } from 'chai';
 import objectsAreEqual from 'ember-simple-auth/utils/objects-are-equal';
 
-describe('Utils.objectsAreEqual', () => {
+describe('objectsAreEqual', () => {
   it('is true for equal objects', () => {
     expect(objectsAreEqual({ a: 'b', c: 'd' }, { a: 'b', c: 'd' })).to.be.true;
   });
