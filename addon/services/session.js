@@ -20,12 +20,12 @@ export default Ember.Service.extend(Ember.Evented, {
 
   authenticate() {
     const session = this.get('session');
-    return session.authenticate.apply(session, arguments);
+    return session.authenticate(...arguments);
   },
 
   invalidate() {
     const session = this.get('session');
-    return session.invalidate.apply(session, arguments);
+    return session.invalidate(...arguments);
   },
 
   authorize(authorizerFactory, block) {
