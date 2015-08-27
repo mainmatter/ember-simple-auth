@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import loadConfig from './utils/load-config';
 
-const defaults = {
+const DEFAULTS = {
   base: {
     authenticationRoute:         'login',
     routeAfterAuthentication:    'index',
@@ -46,7 +46,7 @@ export default {
       @default 'login'
       @public
     */
-    authenticationRoute: defaults.base.authenticationRoute,
+    authenticationRoute: DEFAULTS.base.authenticationRoute,
 
     /**
       The route to transition to after successful authentication.
@@ -58,7 +58,7 @@ export default {
       @default 'index'
       @public
     */
-    routeAfterAuthentication: defaults.base.routeAfterAuthentication,
+    routeAfterAuthentication: DEFAULTS.base.routeAfterAuthentication,
 
     /**
       The route to transition to if a route that implements
@@ -72,7 +72,7 @@ export default {
       @default 'index'
       @public
     */
-    routeIfAlreadyAuthenticated: defaults.base.routeIfAlreadyAuthenticated,
+    routeIfAlreadyAuthenticated: DEFAULTS.base.routeIfAlreadyAuthenticated,
 
     /**
       The store store the session data in.
@@ -84,7 +84,7 @@ export default {
       @default 'index'
       @public
     */
-    store: defaults.base.store,
+    store: DEFAULTS.base.store,
 
     /**
       The session factory to use as it is registered with Ember's container,
@@ -98,13 +98,13 @@ export default {
       @default 'session:main'
       @public
     */
-    session: defaults.base.session,
+    session: DEFAULTS.base.session,
 
     /**
       @method load
       @private
     */
-    load: loadConfig(defaults.base)
+    load: loadConfig(DEFAULTS.base)
   },
 
   localStorage: {
@@ -116,13 +116,13 @@ export default {
       @default 'ember_simple_auth:session'
       @public
     */
-    key: defaults.localStorage.key,
+    key: DEFAULTS.localStorage.key,
 
     /**
       @method load
       @private
     */
-    load: loadConfig(defaults.localStorage)
+    load: loadConfig(DEFAULTS.localStorage)
   },
 
   cookie: {
@@ -140,7 +140,7 @@ export default {
       @default null
       @public
     */
-    domain: defaults.cookie.domain,
+    domain: DEFAULTS.cookie.domain,
 
     /**
       The name of the cookie the cookie store stores its data in.
@@ -152,7 +152,7 @@ export default {
       @default 'ember_simple_auth:'
       @public
     */
-    name: defaults.cookie.name,
+    name: DEFAULTS.cookie.name,
 
     /**
       The expiration time in seconds to use for the cookie store's cookie. A
@@ -166,13 +166,13 @@ export default {
       @default null
       @public
     */
-    expirationTime: defaults.cookie.expirationTime,
+    expirationTime: DEFAULTS.cookie.expirationTime,
 
     /**
       @method load
       @private
     */
-    load: loadConfig(defaults.cookie)
+    load: loadConfig(DEFAULTS.cookie)
   },
 
   load(config) {
