@@ -48,7 +48,9 @@ export default Base.extend({
     // in private browsing mode http://stackoverflow.com/a/14555361/483616
     try {
       localStorage.setItem(this.key, data);
-    } catch(e) {}
+    } catch(e) {
+      console.warn('Data not saved to localStorage due to limitations of this browser, see http://stackoverflow.com/a/14555361/483616');
+    }
 
     this._lastData = this.restore();
   },
