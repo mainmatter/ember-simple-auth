@@ -1,5 +1,10 @@
 [![Build Status](https://travis-ci.org/simplabs/ember-simple-auth.svg?branch=master)](https://travis-ci.org/simplabs/ember-simple-auth)
 
+__Ember Simple Auth does not work with Ember.js 2.0 yet but you can use the
+`jj-abrams` branch that is compatible with 2.0 and will be released as Ember
+Simple Auth 1.0 soon. See
+[#602](https://github.com/simplabs/ember-simple-auth/pull/602) for more info.__
+
 __[Ember Simple Auth's API docs are available here](http://ember-simple-auth.com/ember-simple-auth-api-docs.html)__
 
 #  Ember Simple Auth
