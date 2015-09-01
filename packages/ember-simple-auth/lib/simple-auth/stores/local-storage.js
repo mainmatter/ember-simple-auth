@@ -43,7 +43,13 @@ export default Base.extend({
   */
   persist: function(data) {
     data = JSON.stringify(data || {});
-    localStorage.setItem(this.key, data);
+
+    // Prevent certain iOS Safari versions from crashing
+    // in private browsing mode http://stackoverflow.com/a/14555361/483616
+    try {
+      localStorage.setItem(this.key, data);
+    } catch(e) {}
+
     this._lastData = this.restore();
   },
 
