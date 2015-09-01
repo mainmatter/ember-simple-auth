@@ -175,7 +175,7 @@ export default {
     load: applyConfig(DEFAULTS.cookie)
   },
 
-  load(config) {
+  load(config = {}) {
     Ember.A(['base', 'localStorage', 'cookie']).forEach((section) => {
       this[section].load(config[section]);
     });
