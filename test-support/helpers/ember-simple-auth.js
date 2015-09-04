@@ -1,22 +1,17 @@
-import Configuration from 'configuration';
+export function authenticateSession(app, sessionData) {
+  const session = app.__container__.lookup('service:session');
+  session.authenticate('authenticator:test', sessionData);
+  return wait();
+};
 
-export default function() {
-  Ember.Test.registerAsyncHelper('authenticateSession', function(app, sessionData) {
-    var session = app.__container__.lookup(Configuration.session);
-    session.authenticate('simple-auth-authenticator:test', sessionData);
-    return wait();
-  });
+export function currentSession(app) {
+  return app.__container__.lookup('service:session');
+};
 
-  Ember.Test.registerHelper('currentSession', function(app) {
-    var session = app.__container__.lookup(Configuration.session);
-    return session;
-  });
-
-  Ember.Test.registerAsyncHelper('invalidateSession', function(app) {
-    var session = app.__container__.lookup(Configuration.session);
-    if (session.get('isAuthenticated')) {
-      session.invalidate();
-    }
-    return wait();
-  });
-}
+export function invalidateSession(app) {
+  const session = app.__container__.lookup('service:session');
+  if (session.get('isAuthenticated')) {
+    session.invalidate();
+  }
+  return wait();
+};
