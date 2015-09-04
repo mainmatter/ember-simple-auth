@@ -1,5 +1,8 @@
 {{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
-<form {{action 'authenticate' on='submit'}}>
+<a {{action 'authenticateWithFacebook'}} class="btn btn-default" style="cursor: pointer;">Login with Facebook</a>
+<hr/>
+<p>or login with OAuth 2.0 <em>Resource Owner Password Credentials</em>:</p>
+<form {{action 'authenticateWithOAuth2' on='submit'}}>
   <div class="form-group">
     <label for="identification">Login</label>
     {{input value=identification placeholder='Enter Login' class='form-control'}}

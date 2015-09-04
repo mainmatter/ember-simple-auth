@@ -19,6 +19,14 @@ module.exports = function(environment) {
     }
   };
 
+  ENV.torii = {
+    providers: {
+      'facebook-oauth2': {
+        apiKey: '631252926924840'
+      }
+    }
+  };
+
   ENV['ember-simple-auth'] = {
     base: {
       store: 'session-store:local-storage'
