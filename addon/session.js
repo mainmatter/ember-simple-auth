@@ -206,6 +206,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
           this.setup(authenticator, content);
           resolve();
         }, () => {
+          Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
           this.clear();
           reject();
         });
@@ -307,6 +308,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
           this.set('content', content);
           this.setup(authenticator, authenticatedContent, true);
         }, () => {
+          Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
           this.set('content', content);
           this.clear(true);
         });
