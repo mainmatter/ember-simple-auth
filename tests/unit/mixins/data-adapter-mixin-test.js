@@ -39,6 +39,13 @@ describe('DataAdapterMixin', () => {
       expect(hash).to.have.ownProperty('beforeSend');
     });
 
+    it('asserts the presence of authorizer', () => {
+      adapter.set('authorizer', null);
+      expect(function() {
+        adapter.ajaxOptions();
+      }).to.throw(/You\'re using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: \'authorizer:application\'` to your adapter\./);
+    });
+
     it('preserves an existing beforeSend hook', () => {
       const existingBeforeSend = sinon.spy();
       hash.beforeSend = existingBeforeSend;
