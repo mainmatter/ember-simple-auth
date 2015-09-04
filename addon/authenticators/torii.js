@@ -18,12 +18,6 @@ const { RSVP, isEmpty } = Ember;
 */
 export default Base.extend({
   /**
-    @property torii
-    @private
-  */
-  torii: null,
-
-  /**
     @property provider
     @private
   */
@@ -42,7 +36,7 @@ export default Base.extend({
     return new RSVP.Promise((resolve, reject) => {
       if (!isEmpty(data.provider)) {
         let { provider } = data;
-        this.torii.fetch(data.provider, data).then((data) => {
+        this.get('torii').fetch(data.provider, data).then((data) => {
           this.resolveWith(provider, data, resolve);
         }, () => {
           delete this.provider;
@@ -68,7 +62,7 @@ export default Base.extend({
   */
   authenticate(provider, options) {
     return new RSVP.Promise((resolve, reject) => {
-      this.torii.open(provider, options || {}).then((data) => {
+      this.get('torii').open(provider, options || {}).then((data) => {
         this.resolveWith(provider, data, resolve);
       }, reject);
     });
@@ -84,7 +78,7 @@ export default Base.extend({
   */
   invalidate() {
     return new RSVP.Promise((resolve, reject) => {
-      this.torii.close(this.provider).then(() => {
+      this.get('torii').close(this.provider).then(() => {
         delete this.provider;
         resolve();
       }, reject);
