@@ -43,7 +43,7 @@ describe('DataAdapterMixin', () => {
       adapter.set('authorizer', null);
       expect(function() {
         adapter.ajaxOptions();
-      }).to.throw(/You\'re using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: \'authorizer:application\'` to your adapter\./);
+      }).to.throw(/Assertion Failed/);
     });
 
     it('preserves an existing beforeSend hook', () => {

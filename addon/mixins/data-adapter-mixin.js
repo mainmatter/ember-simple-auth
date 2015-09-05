@@ -31,10 +31,10 @@ export default Ember.Mixin.create({
 
   ajaxOptions() {
     const authorizer = this.get('authorizer');
+    Ember.assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", Ember.isPresent(authorizer));
+
     let hash = this._super(...arguments);
     let { beforeSend } = hash;
-
-    Ember.assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", Ember.isPresent(authorizer));
 
     hash.beforeSend = (xhr) => {
       this.get('session').authorize(authorizer, (headerName, headerValue) => {
