@@ -7,10 +7,10 @@ import OAuth2Bearer from 'ember-simple-auth/authorizers/oauth2-bearer';
 import Session from 'ember-simple-auth/session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
-let authorizer;
-let block;
+describe('OAuth2BearerAuthorizer', () => {
+  let authorizer;
+  let block;
 
-describe('OAuth2Bearer', () => {
   beforeEach(() => {
     authorizer = OAuth2Bearer.create({
       session: Session.create({ store: EphemeralStore.create() })

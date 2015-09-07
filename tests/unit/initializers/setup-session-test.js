@@ -7,9 +7,9 @@ import setupSession from 'ember-simple-auth/initializers/setup-session';
 import Session from 'ember-simple-auth/session';
 import Configuration from 'ember-simple-auth/configuration';
 
-let registry;
-
 describe('setupSession', () => {
+  let registry;
+
   beforeEach(() => {
     registry = {
       register() {},

@@ -5,9 +5,9 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import setupSessionService from 'ember-simple-auth/initializers/setup-session-service';
 
-let registry;
-
 describe('setupSessionService', () => {
+  let registry;
+
   beforeEach(() => {
     registry = {
       injection() {}

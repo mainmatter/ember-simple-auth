@@ -9,11 +9,11 @@ import Session from 'ember-simple-auth/session';
 import Configuration from 'ember-simple-auth/configuration';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
-let route;
-let session;
-let transition;
-
 describe('UnauthenticatedRouteMixin', () => {
+  let route;
+  let session;
+  let transition;
+
   describe('#beforeModel', () => {
     beforeEach(() => {
       session    = Session.create({ store: EphemeralStore.create() });

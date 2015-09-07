@@ -6,11 +6,11 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import Devise from 'ember-simple-auth/authenticators/devise';
 
-let xhr;
-let server;
-let authenticator;
+describe('DeviseAuthenticator', () => {
+  let xhr;
+  let server;
+  let authenticator;
 
-describe('Devise', () => {
   beforeEach(() => {
     xhr                = sinon.useFakeXMLHttpRequest();
     server             = sinon.fakeServer.create();

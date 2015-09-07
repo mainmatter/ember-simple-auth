@@ -8,11 +8,11 @@ import Session from 'ember-simple-auth/session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 import Authenticator from 'ember-simple-auth/authenticators/base';
 
-let session;
-let store;
-let authenticator;
-
 describe('Session', () => {
+  let session;
+  let store;
+  let authenticator;
+
   beforeEach(() => {
     let container = { lookup() {} };
     store         = EphemeralStore.create();

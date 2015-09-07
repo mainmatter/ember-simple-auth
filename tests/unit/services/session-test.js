@@ -6,11 +6,11 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import Session from 'ember-simple-auth/services/session';
 
-let sessionService;
-let session;
-let authorizer;
-
 describe('SessionService', () => {
+  let sessionService;
+  let session;
+  let authorizer;
+
   beforeEach(() => {
     session = Ember.Object.extend(Ember.Evented, {
       content: {}

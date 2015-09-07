@@ -6,10 +6,10 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import Torii from 'ember-simple-auth/authenticators/torii';
 
-let authenticator;
-let torii;
+describe('ToriiAuthenticator', () => {
+  let authenticator;
+  let torii;
 
-describe('Torii', () => {
   beforeEach(() => {
     torii = {
       fetch() {},

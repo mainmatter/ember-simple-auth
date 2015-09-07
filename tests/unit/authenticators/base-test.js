@@ -4,9 +4,9 @@ import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import Base from 'ember-simple-auth/authenticators/base';
 
-let authenticator;
+describe('BaseAuthenticator', () => {
+  let authenticator;
 
-describe('Authenticators.Base', () => {
   beforeEach(() => {
     authenticator = Base.create();
   });

@@ -7,11 +7,11 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
-let authenticator;
-let xhr;
-let server;
+describe('OAuth2PasswordGrantAuthenticator', () => {
+  let authenticator;
+  let xhr;
+  let server;
 
-describe('OAuth2PasswordGrant', () => {
   beforeEach(() => {
     authenticator      = OAuth2PasswordGrant.create();
     xhr                = sinon.useFakeXMLHttpRequest();

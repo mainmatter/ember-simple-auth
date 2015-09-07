@@ -6,11 +6,11 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
-let adapter;
-let sessionService;
-let hash;
-
 describe('DataAdapterMixin', () => {
+  let adapter;
+  let sessionService;
+  let hash;
+
   beforeEach(() => {
     hash = {};
     sessionService = {

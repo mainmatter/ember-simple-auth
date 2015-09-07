@@ -5,9 +5,9 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import setupAuthorizers from 'ember-simple-auth/initializers/setup-authorizers';
 
-let registry;
-
 describe('setupAuthorizers', () => {
+  let registry;
+
   beforeEach(() => {
     registry = {
       injection() {}
