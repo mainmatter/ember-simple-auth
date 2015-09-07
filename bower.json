@@ -14,5 +14,8 @@
     "sinonjs": "~1.14.1",
     "base64": "~0.3.0",
     "pretender": "^0.10.0"
+  },
+  "resolutions": {
+    "ember": "2.0.1"
   }
 }
