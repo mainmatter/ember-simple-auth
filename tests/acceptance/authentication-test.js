@@ -32,7 +32,7 @@ describe('Acceptance: Authentication', function() {
 
     it('can be visited when the session is authenticated', () => {
       server = new Pretender(function() {
-        this.get('/posts', () => [200, { 'Content-Type': 'application/json' }, '[]']);
+        this.get('/posts', () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
       authenticateSession(application);
       visit('/protected');
