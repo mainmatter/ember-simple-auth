@@ -4,6 +4,7 @@ import setupSessionStores from 'ember-simple-auth/initializers/setup-session-sto
 import setupSession from 'ember-simple-auth/initializers/setup-session';
 import setupSessionService from 'ember-simple-auth/initializers/setup-session-service';
 import setupAuthorizers from 'ember-simple-auth/initializers/setup-authorizers';
+import setupTesting from 'ember-simple-auth/initializers/setup-testing';
 
 export default {
   name:       'ember-simple-auth',
@@ -14,5 +15,6 @@ export default {
     setupSession(registry);
     setupSessionService(registry);
     setupAuthorizers(registry);
+    setupTesting(registry);
   }
 };
