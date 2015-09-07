@@ -13,8 +13,7 @@ describe('setupSessionRestoration', () => {
 
   beforeEach(() => {
     container = {
-      lookup() {},
-      register() {}
+      lookup() {}
     };
 
     const Route = Ember.Route.extend();
@@ -72,15 +71,6 @@ describe('setupSessionRestoration', () => {
           expect(value).to.eq('test');
         });
       });
-    });
-  });
-
-  describe('when no application route is defined', () => {
-    it('registers one', () => {
-      sinon.spy(container, 'register');
-      setupSessionRestoration({ container });
-
-      expect(container.register).to.have.been.calledWith('route:application'/* not sure how to expect that second argument is a "function (subclass of Ember.Route)…" */);
     });
   });
 });
