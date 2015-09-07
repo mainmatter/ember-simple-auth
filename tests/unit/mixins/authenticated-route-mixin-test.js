@@ -9,12 +9,12 @@ import Session from 'ember-simple-auth/session';
 import Configuration from 'ember-simple-auth/configuration';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
-let route;
-let session;
-let transition;
-let beforeModelReturnValue;
-
 describe('AuthenticatedRouteMixin', () => {
+  let route;
+  let session;
+  let transition;
+  let beforeModelReturnValue;
+
   describe('#beforeModel', () => {
     beforeEach(() => {
       let MixinImplementingBeforeModel = Ember.Mixin.create({

@@ -5,9 +5,9 @@ import LocalStorage from 'ember-simple-auth/stores/local-storage';
 import Configuration from 'ember-simple-auth/configuration';
 import itBehavesLikeAStore from './shared/store-behavior';
 
-let store;
+describe('LocalStorageStore', () => {
+  let store;
 
-describe('Stores.LocalStorage', () => {
   beforeEach(() => {
     store = LocalStorage.create();
   });

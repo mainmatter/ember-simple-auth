@@ -6,9 +6,9 @@ import sinon from 'sinon';
 import Test from 'ember-simple-auth/authenticators/test';
 import setupTesting from 'ember-simple-auth/initializers/setup-testing';
 
-let registry;
-
 describe('setupTesting', () => {
+  let registry;
+
   beforeEach(() => {
     registry = {
       register() {}

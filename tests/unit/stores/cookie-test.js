@@ -7,9 +7,9 @@ import Cookie from 'ember-simple-auth/stores/cookie';
 import Configuration from 'ember-simple-auth/configuration';
 import itBehavesLikeAStore from './shared/store-behavior';
 
-let store;
+describe('CookieStore', () => {
+  let store;
 
-describe('Stores.Cookie', () => {
   beforeEach(() => {
     store = Cookie.create();
   });

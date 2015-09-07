@@ -6,11 +6,11 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import setupSessionRestoration from 'ember-simple-auth/instance-initializers/setup-session-restoration';
 
-let container;
-let containerStub;
-let route;
-
 describe('setupSessionRestoration', () => {
+  let container;
+  let containerStub;
+  let route;
+
   beforeEach(() => {
     container = {
       lookup() {},

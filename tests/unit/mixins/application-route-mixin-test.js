@@ -9,10 +9,10 @@ import Session from 'ember-simple-auth/session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 import Configuration from 'ember-simple-auth/configuration';
 
-let session;
-let route;
-
 describe('ApplicationRouteMixin', () => {
+  let session;
+  let route;
+
   beforeEach(() => {
     session = Session.create({ store: EphemeralStore.create() });
 

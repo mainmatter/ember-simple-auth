@@ -7,11 +7,11 @@ import Devise from 'ember-simple-auth/authorizers/devise';
 import Session from 'ember-simple-auth/session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
-let authorizer;
-let session;
-let block;
+describe('DeviseAuthorizer', () => {
+  let authorizer;
+  let session;
+  let block;
 
-describe('Devise', () => {
   beforeEach(() => {
     session    = Session.create({ store: EphemeralStore.create() });
     authorizer = Devise.create({ session });

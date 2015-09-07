@@ -8,9 +8,9 @@ import LocalStorageStore from 'ember-simple-auth/stores/local-storage';
 import CookieStore from 'ember-simple-auth/stores/cookie';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
-let registry;
-
 describe('setupSessionStores', () => {
+  let registry;
+
   beforeEach(() => {
     registry = {
       register() {}
