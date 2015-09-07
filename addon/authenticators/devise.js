@@ -1,8 +1,7 @@
 import Ember from 'ember';
 import Base from './base';
 
-const { RSVP, isEmpty, run } = Ember;
-const get = Ember.get;
+const { RSVP, isEmpty, run, get } = Ember;
 
 /**
   Authenticator that works with the Ruby gem
