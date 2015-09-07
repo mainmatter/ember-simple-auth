@@ -1,6 +1,19 @@
+import Test from 'ember-simple-auth/authenticators/test';
+
+const TEST_CONTAINER_KEY = 'authenticator:test';
+
+function ensureAuthenticator(app, container) {
+  const authenticator = container.lookup(TEST_CONTAINER_KEY);
+  if (!authenticator) {
+    app.register(TEST_CONTAINER_KEY, Test);
+  }
+}
+
 export function authenticateSession(app, sessionData) {
-  const session = app.__container__.lookup('service:session');
-  session.authenticate('authenticator:test', sessionData);
+  const { __container__: container } = app;
+  const session = container.lookup('service:session');
+  ensureAuthenticator(app, container);
+  session.authenticate(TEST_CONTAINER_KEY, sessionData);
   return wait();
 };
 
