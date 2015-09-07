@@ -7,7 +7,7 @@ import setupAuthorizers from 'ember-simple-auth/initializers/setup-authorizers';
 
 export default {
   name:       'ember-simple-auth',
-  initialize: function(registry, application) {
+  initialize: function(registry) {
     var config = ENV['ember-simple-auth'];
     Configuration.load(config);
     setupSessionStores(registry);
