@@ -1,5 +1,6 @@
 /* global require, module */
 const EmberApp = require('ember-cli/lib/broccoli/ember-addon');
+const yuidoc = require('broccoli-yuidoc');
 const Handlebars = require('handlebars');
 const mergeTrees = require('broccoli-merge-trees');
 const broccoliHandlebars = require('broccoli-handlebars');
@@ -30,24 +31,33 @@ module.exports = function(defaults) {
 
   sourceTrees.push(app.toTree());
 
-  if (app.env === 'production') {
-    const docs = broccoliHandlebars('docs/theme', ['index.hbs'], {
-      handlebars: Handlebars,
-      helpers: require('./docs/theme/helpers'),
-      partials: 'docs/theme/partials',
-      context: function() {
-        return merge(
-          {},
-          require('./docs/config.json'),
-          require('./tmp/docs/data.json')
-        )
-      },
-      destFile: function (filename) {
-        return 'docs/' + filename.replace(/(hbs|handlebars)$/, 'html');
-      }
-    });
+  const yuidocTree = yuidoc('addon', {
+    srcDir: '/',
+    destDir: 'docs',
+    yuidoc: {
+      parseOnly: true
+    }
+  });
 
-    sourceTrees.push(docs);
+  const compiledDocsTree = broccoliHandlebars('docs/theme', ['index.hbs'], {
+    handlebars: Handlebars,
+    helpers: require('./docs/theme/helpers'),
+    partials: 'docs/theme/partials',
+    context: function() {
+      return merge(
+        {},
+        require('./docs/config.json'),
+        require('./tmp/docs/data.json')
+      );
+    },
+    destFile: function() {
+      return 'docs/index.html';
+    }
+  });
+
+  if (app.env === 'production') {
+    sourceTrees.push(yuidocTree);
+    sourceTrees.push(compiledDocsTree);
   }
 
   return mergeTrees(sourceTrees);
