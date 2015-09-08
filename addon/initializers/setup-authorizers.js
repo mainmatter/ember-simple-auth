@@ -1,4 +1,5 @@
+import inject from '../utils/inject';
+
 export default function setupAuthorizers(registry) {
-  const inject = registry.inject || registry.injection;
-  inject.call(registry, 'authorizer', 'session', 'session:main');
+  inject(registry, 'authorizer', 'session', 'session:main');
 }
