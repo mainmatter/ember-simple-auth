@@ -3,5 +3,6 @@ import Configuration from '../configuration';
 
 export default function setupSession(registry) {
   registry.register('session:main', Session);
-  registry.injection('session:main', 'store', Configuration.base.store);
+  const inject = registry.inject || registry.injection;
+  inject.call(registry, 'session:main', 'store', Configuration.base.store);
 }
