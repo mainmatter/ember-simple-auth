@@ -1,3 +1,4 @@
 export default function setupSessionStore(registry) {
-  registry.injection('service:session', 'session', 'session:main');
+  const inject = registry.inject || registry.injection;
+  inject.call(registry, 'service:session', 'session', 'session:main');
 }
