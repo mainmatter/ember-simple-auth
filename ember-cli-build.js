@@ -30,10 +30,7 @@ module.exports = function(defaults) {
 
   sourceTrees.push(app.toTree());
 
-  // Docs
-  const cmdOpts = process.argv.slice(3);
-
-  if (cmdOpts.indexOf('--docs') !== -1) {
+  if (app.env === 'production') {
     const docs = broccoliHandlebars('docs/theme', ['index.hbs'], {
       handlebars: Handlebars,
       helpers: require('./docs/theme/helpers'),
