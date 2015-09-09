@@ -62,7 +62,7 @@ describe('Session', () => {
         authenticator.trigger('sessionDataInvalidated');
 
         Ember.run.next(() => {
-          expect(session.get('content.authenticated')).to.eql({});
+          expect(session.get('content')).to.eql({ some: 'property', authenticated: {} });
           done();
         });
       });
@@ -106,10 +106,10 @@ describe('Session', () => {
       });
 
       it('clears its authenticated section', () => {
-        session.set('content', { authenticated: { some: 'other property' } });
+        store.persist({ some: 'property', authenticated: { some: 'other property' } });
 
         return session.restore().catch(() => {
-          expect(session.get('content.authenticated')).to.eql({});
+          expect(session.get('content')).to.eql({ some: 'property', authenticated: {} });
         });
       });
     }
@@ -506,7 +506,7 @@ describe('Session', () => {
           store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
 
           Ember.run.next(() => {
-            expect(session.get('content.authenticated')).to.eql({});
+            expect(session.get('content')).to.eql({ some: 'other property', authenticated: {} });
             done();
           });
         });
