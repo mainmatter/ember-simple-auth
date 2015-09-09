@@ -1,11 +1,22 @@
 import Ember from 'ember';
 
+const SESSION_DATA_KEY_PREFIX = /^data\./;
+
 const { computed, on }  = Ember;
-const { alias, oneWay } = computed;
 
 export default Ember.Service.extend(Ember.Evented, {
-  isAuthenticated: oneWay('session.isAuthenticated'),
-  data:            alias('session.content'),
+  isAuthenticated: computed.oneWay('session.isAuthenticated'),
+  data:            computed.oneWay('session.content'),
+
+  set(key, value) {
+    const setsSessionData = SESSION_DATA_KEY_PREFIX.test(key);
+    if (setsSessionData) {
+      const sessionDataKey = `session.${key.replace(SESSION_DATA_KEY_PREFIX, '')}`;
+      return this._super(sessionDataKey, value);
+    } else {
+      return this._super(...arguments);
+    }
+  },
 
   _forwardSessionEvents: on('init', function() {
     Ember.A([
