@@ -12,7 +12,7 @@ describe('SessionService', () => {
   let authorizer;
 
   beforeEach(() => {
-    session = Ember.Object.extend(Ember.Evented, {
+    session = Ember.ObjectProxy.extend(Ember.Evented, {
       content: {}
     }).create();
     authorizer = {
@@ -61,7 +61,7 @@ describe('SessionService', () => {
 
   describe('data', () => {
     it("is read from the session's content", () => {
-      session.content = { some: 'data' };
+      session.set('some', 'data');
 
       expect(sessionService.get('data')).to.eql({ some: 'data' });
     });
@@ -70,6 +70,12 @@ describe('SessionService', () => {
       sessionService.set('data.some', { other: 'data' });
 
       expect(session.content).to.eql({ some: { other: 'data' } });
+    });
+
+    it('is read-only', () => {
+      expect(() => {
+        sessionService.set('data', false);
+      }).to.throw;
     });
   });
 
