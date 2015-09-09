@@ -148,11 +148,12 @@ describe('Session', () => {
         });
 
         it('persists its content in the store', () => {
+          store.persist({ secure: { authenticator: 'authenticator' }, someOther: 'property' });
           return session.restore().then(() => {
             let properties = store.restore();
             delete properties.authenticator;
 
-            expect(properties).to.eql({ authenticated: { some: 'property', authenticator: 'authenticator' } });
+            expect(properties).to.eql({ authenticated: { some: 'property', authenticator: 'authenticator' }, someOther: 'property' });
           });
         });
 

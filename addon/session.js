@@ -204,6 +204,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       if (!!authenticator) {
         delete restoredContent.authenticated.authenticator;
         this.container.lookup(authenticator).restore(restoredContent.authenticated).then((content) => {
+          this.set('content', restoredContent);
           this.setup(authenticator, content);
           resolve();
         }, () => {
