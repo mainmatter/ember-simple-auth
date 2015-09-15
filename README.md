@@ -210,7 +210,7 @@ e.g.:
 // app/authenticators/custom.js
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 
-export default Base.extend({
+export default BaseAuthenticator.extend({
   restore: function(data) {
     …
   },
