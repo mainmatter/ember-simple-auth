@@ -14,30 +14,51 @@ authorization mechanisms.
 
 ## What does it do?
 
-* it __manages a client side session__ and synchronizes that across tabs/
+* it __manages a client side session__ and synchronizes its state across tabs/
   windows
 * it __authenticates the session__ against the application's own server, external
   providers like Facebook etc.
 * it __authorizes requests__ to backend servers
 * it is easily customizable and extensible
 
+## How does it work?
+
+Ember Simple Auth consists of 4 main building blocks - the session, a session store, authenticators and (optionally)
+authorizers.
+
+The __session__ is the main interface to the library. It provides methods for authentication and invalidation of the
+session as well as to set and read session data. It's available as a service that can be injected wherever
+needed in the application.
+
+The __session store__ persists the session and all of its data so that it survives a page reload. It also synchronizes the authentication status
+across multiple tabs or windows so that when the user logs out in one tab or window of the application, all sensitive data
+is also cleared in other tabs or windows of the same application as well.
+
+__Authenticators__ authenticate the session. They implement concrete mechanisms for verifying a user's identity so
+that an application can support multiple ways of authentication such as username and password, Facebook or github
+by leveraging multiple authenticators.
+
+__Authorizers__ use the authentication data retrieved by an authenticator and stored in the session to generate
+authorization data that can then be injected into outgoing requests such as Ember Data requests. The server can then
+use that authorization data to identify the user making the request and decide whether it's allowed or not.
+
 ## How do I use it?
+
+Installing the library is as easy as:
+
+```bash
+ember install ember-simple-auth
+```
 
 ### The Session
 
-Ember Simple Auth is built around the fundamental idea that __users are always
-using the application in the context of a (client side) session. This session
-can either be authenticated or not.__ Ember Simple Auth creates that session,
-provides functionality to authenticate and invalidate it and also has a set of
-mixins that provide default implementations for common scenarios like
-redirecting users to the login if they access a restricted page etc.
+Once the library is installed, the session service can be injected wherever needed in the application.
 
-The session can be accessed via the `session` service. That service defines
-(besides other things) the `isAuthenticated` property returns whether the session is authenticated or not.
-In order to e.g. show a login or logout button depending on the current authentication state,
-simple inject the service in the respective component or controller
+In order to display login/logout buttons in a `main-menu` component depending on the session's authentication state, simply query the
+session's `isAuthenticated` property:
 
 ```js
+// app/components/main-menu.js
 import Ember from 'ember';
 
 export default Ember.Component.extend({
@@ -45,9 +66,8 @@ export default Ember.Component.extend({
 });
 ```
 
-and add an `if` in the respective template:
-
-```html
+```handlebars
+{{!-- app/templates/components/main-menu.js --}}
 {{#if session.isAuthenticated}}
   <a {{ action 'invalidateSession' }}>Logout</a>
 {{else}}
@@ -55,10 +75,42 @@ and add an `if` in the respective template:
 {{/if}}
 ```
 
-For authenticating and invalidating the session, the service
-defines the `authenticate` and `invalidate` methods. The `authenticate` method
-expects the authenticator to use as first argument and additional arguments depending
-on the authenticator used, e.g.:
+and in the `invalidateSession` action, use the session service's `invalidate` method to
+invalidate the session and log the user out.
+
+```js
+// app/components/main-menu.js
+import Ember from 'ember';
+
+export default Ember.Component.extend({
+  session: Ember.inject.service('session'),
+
+  actions: {
+    invalidateSession: function() {
+      this.get('session').invalidate();
+    }
+  }
+});
+```
+
+To authenticate the session, the session service provides the `authenticate` method that takes the name of the
+authenticator to use as well as arguments depending on the authenticator. Given a login form component
+
+```handlebars
+<form {{action 'authenticate' on='submit'}}>
+  <div class="form-group">
+    <label for="identification">Login</label>
+    {{input value=identification placeholder='Enter Login' class='form-control'}}
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    {{input value=password placeholder='Enter Password' class='form-control' type='password'}}
+  </div>
+  <button type="submit" class="btn btn-default">Login</button>
+</form>
+```
+
+the implementation is as easy as:
 
 ```js
 import Ember from 'ember';
@@ -69,7 +121,7 @@ export default Ember.Component.extend({
   actions: {
     authenticate() {
       let data = this.getProperties('identification', 'password');
-      this.get('session').authenticate('authenticator:some', data).catch((reason) => {
+      this.get('session').authenticate('authenticator:oauth2', data).catch((reason) => {
         this.set('errorMessage', reason.error);
       });
     }
@@ -77,25 +129,9 @@ export default Ember.Component.extend({
 });
 ```
 
-`invalidate` doesn't expect any arguments:
-
-```js
-import Ember from 'ember';
-
-export default Ember.Component.extend({
-  session: Ember.inject.service('session'),
-
-  actions: {
-    invalidate() {
-      this.get('session').invalidate();
-    }
-  }
-});
-```
-
 The session service also provides the `sessionAuthenticated` and `sessionInvalidated` events that
 are triggered whenever the session is successfully authenticated or invalidated (which not only happens
-when the user submit the login form or clicks the login button but also when the session is authenticated
+when the user submits the login form or clicks the login button but also when the session is authenticated
 or invalidated in another tab or window which will then be synchronized to other tabs via the session store).
 To have these events handled in the default way automatically, simply mixin the `ApplicationRouteMixin`
 in the application route:
