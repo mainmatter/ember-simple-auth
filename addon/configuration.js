@@ -26,7 +26,9 @@ const DEFAULTS = {
 
   ```js
   ENV['ember-simple-auth'] = {
-    authenticationRoute: 'sign-in'
+    base: {
+      authenticationRoute: 'sign-in'
+    }
   };
   ```
 
@@ -35,11 +37,19 @@ const DEFAULTS = {
   @public
 */
 export default {
+  /**
+    @property {Object} base
+       @property {String} base.authenticationRoute
+       @property {String} base.routeAfterAuthentication
+       @property {String} base.routeIfAlreadyAuthenticated
+       @property {String} base.store
+    @public
+   */
   base: {
     /**
       The route to transition to for authentication.
 
-      @property authenticationRoute
+      @property base.authenticationRoute
       @readOnly
       @static
       @type String
@@ -51,7 +61,7 @@ export default {
     /**
       The route to transition to after successful authentication.
 
-      @property routeAfterAuthentication
+      @property base.routeAfterAuthentication
       @readOnly
       @static
       @type String
@@ -65,7 +75,7 @@ export default {
       [`UnauthenticatedRouteMixin`](#SimpleAuth-UnauthenticatedRouteMixin) is
       accessed when the session is authenticated.
 
-      @property routeIfAlreadyAuthenticated
+      @property base.routeIfAlreadyAuthenticated
       @readOnly
       @static
       @type String
@@ -75,43 +85,34 @@ export default {
     routeIfAlreadyAuthenticated: DEFAULTS.base.routeIfAlreadyAuthenticated,
 
     /**
-      The store store the session data in.
+      The store to store the session data in.
 
-      @property store
+      @property base.store
       @readOnly
       @static
       @type String
-      @default 'index'
+      @default 'session-store:ephemeral'
       @public
     */
     store: DEFAULTS.base.store,
 
     /**
-      The session factory to use as it is registered with Ember's container,
-      see
-      [Ember's API docs](http://emberjs.com/api/classes/Ember.Application.html#method_register).
-
-      @property session
-      @readOnly
-      @static
-      @type String
-      @default 'session:main'
-      @public
-    */
-    session: DEFAULTS.base.session,
-
-    /**
-      @method load
+      @method base.load
       @private
     */
     load: applyConfig(DEFAULTS.base)
   },
 
+  /**
+    @property {Object} localStorage
+      @property {String} key
+    @public
+  */
   localStorage: {
     /**
       The key the localStorage store stores the data in.
 
-      @property key
+      @property localStorage.key
       @type String
       @default 'ember_simple_auth:session'
       @public
@@ -125,17 +126,21 @@ export default {
     load: applyConfig(DEFAULTS.localStorage)
   },
 
+  /**
+    @property {Object} cookie
+      @property {String} domain
+      @property {String} name
+      @property {Integer} expirationTime
+    @public
+  */
   cookie: {
     /**
       The domain to use for the cookie store's cookie, e.g., "example.com"
       ".example.com" (includes all subdomains) or "subdomain.example.com". If not
       configured the cookie domain defaults to the domain the session was
-      authneticated on.
+      authenticated on.
 
-      This value can be configured via
-      [`SimpleAuth.Configuration.CookieStore#cookieDomain`](#SimpleAuth-Configuration-CookieStore-cookieDomain).
-
-      @property cookieDomain
+      @property cookie.domain
       @type String
       @default null
       @public
@@ -145,7 +150,7 @@ export default {
     /**
       The name of the cookie the cookie store stores its data in.
 
-      @property cookieName
+      @property cookie.name
       @readOnly
       @static
       @type String
@@ -159,7 +164,7 @@ export default {
       value of `null` will make the cookie a session cookie that expires when
       the browser is closed.
 
-      @property cookieExpirationTime
+      @property cookie.expirationTime
       @readOnly
       @static
       @type Integer

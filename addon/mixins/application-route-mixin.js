@@ -60,11 +60,11 @@ export default Ember.Mixin.create({
   /**
     This action is triggered whenever the session is successfully
     authenticated. If there is a transition that was previously intercepted
-    by
-    [`AuthenticatedRouteMixin#beforeModel`](#SimpleAuth-AuthenticatedRouteMixin-beforeModel)
+    by 
+    {{#crossLink "Mixins.AuthenticatedRouteMixin/beforeModel:method"}}AuthenticatedRouteMixin#beforeModel{{/crossLink}}
     it will retry it. If there is no such transition, this action transitions
-    to the
-    [`Configuration.routeAfterAuthentication`](#SimpleAuth-Configuration-routeAfterAuthentication).
+    to the {{#crossLink "Configuration/base.routeAfterAuthentication:property"}}Configuration.base.routeAfterAuthentication
+    {{/crossLink}}.
 
     @method sessionAuthenticated
     @public
