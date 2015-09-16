@@ -9,6 +9,12 @@ module.exports = function(app) {
       } else {
         res.status(400).send('{ "error": "invalid_grant" }');
       }
+    } else if (req.body.grant_type === 'facebook_auth_code') {
+      if (req.body.auth_code) {
+        res.status(200).send('{ "access_token": "secret token!", "account_id": 1 }');
+      } else {
+        res.status(400).send('{ "error": "invalid_grant" }');
+      }
     } else {
       res.status(400).send('{ "error": "unsupported_grant_type" }');
     }
