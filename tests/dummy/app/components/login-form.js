@@ -14,7 +14,7 @@ export default Ember.Component.extend({
     },
 
     authenticateWithFacebook() {
-      this.get('session').authenticate('authenticator:torii', 'facebook-oauth2');
+      this.get('session').authenticate('authenticator:torii', 'facebook');
     }
   }
 });
