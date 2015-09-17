@@ -32,6 +32,8 @@ export default Base.extend({
     @public
   */
   restore(data) {
+    this.assertToriiIsPresent();
+
     data = data || {};
     return new RSVP.Promise((resolve, reject) => {
       if (!isEmpty(data.provider)) {
@@ -61,6 +63,8 @@ export default Base.extend({
     @public
   */
   authenticate(provider, options) {
+    this.assertToriiIsPresent();
+
     return new RSVP.Promise((resolve, reject) => {
       this.get('torii').open(provider, options || {}).then((data) => {
         this.resolveWith(provider, data, resolve);
@@ -93,5 +97,14 @@ export default Base.extend({
     data.provider = provider;
     this.provider = data.provider;
     resolve(data);
+  },
+
+  /**
+    @method assertToriiIsPresent
+    @private
+  */
+  assertToriiIsPresent() {
+    const torii = this.get('torii');
+    Ember.assert('You are trying to use `torii-authenticator` but torii is not installed. Install torii using `ember install torii`.', Ember.isPresent(torii));
   }
 });
