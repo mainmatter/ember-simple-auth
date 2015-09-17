@@ -35,29 +35,15 @@ module.exports = function(defaults) {
     srcDir: '/',
     destDir: 'docs',
     yuidoc: {
-      parseOnly: true
-    }
-  });
-
-  const compiledDocsTree = broccoliHandlebars('docs/theme', ['index.hbs'], {
-    handlebars: Handlebars,
-    helpers: require('./docs/theme/helpers'),
-    partials: 'docs/theme/partials',
-    context: function() {
-      return merge(
-        {},
-        require('./docs/config.json'),
-        require('./tmp/docs/data.json')
-      );
-    },
-    destFile: function() {
-      return 'docs/index.html';
+      linkNatives: false,
+      quiet:       true,
+      parseOnly:   false,
+      lint:        false
     }
   });
 
   if (app.env === 'production') {
     sourceTrees.push(yuidocTree);
-    sourceTrees.push(compiledDocsTree);
   }
 
   return mergeTrees(sourceTrees);
