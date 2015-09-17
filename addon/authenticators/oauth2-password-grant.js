@@ -1,6 +1,6 @@
 /* jscs:disable requireDotNotation */
 import Ember from 'ember';
-import Base from './base';
+import BaseAuthenticator from './base';
 
 const { RSVP, isEmpty, run } = Ember;
 
@@ -12,17 +12,12 @@ const { RSVP, isEmpty, run } = Ember;
   This authenticator supports access token refresh (see
   [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
 
-  _The factory for this authenticator is registered as
-  `'simple-auth-authenticator:oauth2-password-grant'` in Ember's
-  container._
-
-  @class OAuth2PasswordGrant
-  @namespace Authenticators
-  @module authenticators/oauth2-password-grant
-  @extends Base
+  @class OAuth2PasswordGrantAuthenticator
+  @module ember-simple-auth/authenticators/oauth2-password-grant
+  @extends BaseAuthenticator
   @public
 */
-export default Base.extend({
+export default BaseAuthenticator.extend({
   /**
     Triggered when the authenticator refreshes the access token (see
     [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
@@ -82,13 +77,13 @@ export default Base.extend({
 
   /**
     Restores the session from a set of session properties; __will return a
-    resolving promise when there's a non-empty `access_token` in the `data`__
-    and a rejecting promise otherwise.
+    resolving promise when there's a non-empty `access_token` in the session
+    data__ and a rejecting promise otherwise.
 
     This method also schedules automatic token refreshing when there are values
     for `refresh_token` and `expires_in` in the `data` and automatic token
     refreshing is not disabled (see
-    [`Authenticators.OAuth2#refreshAccessTokens`](#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
+    {{#crossLink "OAuth2PasswordGrantAuthenticator/refreshAccessTokens:method"}}{{/crossLink}}).
 
     @method restore
     @param {Object} data The data to restore the session from
@@ -119,7 +114,7 @@ export default Base.extend({
   /**
     Authenticates the session with the specified `options`; makes a `POST`
     request to the
-    [`Authenticators.OAuth2#serverTokenEndpoint`](#SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint)
+    {{#crossLink "OAuth2PasswordGrantAuthenticator/serverTokenEndpoint:property"}}{{/crossLink}}
     with the passed credentials and optional scope and receives the token in
     response (see http://tools.ietf.org/html/rfc6749#section-4.3).
 
@@ -131,7 +126,7 @@ export default Base.extend({
     This method also schedules automatic token refreshing when there are values
     for `refresh_token` and `expires_in` in the server response and automatic
     token refreshing is not disabled (see
-    [`Authenticators.OAuth2#refreshAccessTokens`](#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
+    {{#crossLink "OAuth2PasswordGrantAuthenticator/refreshAccessTokens:method"}}{{/crossLink}}).
 
     @method authenticate
     @param {Object} options
@@ -202,19 +197,8 @@ export default Base.extend({
   },
 
   /**
-    Sends an `AJAX` request to the `url`. This will always be a _"POST"_
-    request with content type _"application/x-www-form-urlencoded"_ as
-    specified in [RFC 6749](http://tools.ietf.org/html/rfc6749).
-
-    This method is not meant to be used directly but serves as an extension
-    point to e.g. add _"Client Credentials"_ (see
-    [RFC 6749, section 2.3](http://tools.ietf.org/html/rfc6749#section-2.3)).
-
     @method makeRequest
-    @param {Object} url The url to send the request to
-    @param {Object} data The data to send with the request, e.g. username and password or the refresh token
-    @return {Deferred object} A Deferred object (see [the jQuery docs](http://api.jquery.com/category/deferred-object/)) that is compatible to Ember.RSVP.Promise; will resolve if the request succeeds, reject otherwise
-    @public
+    @private
   */
   makeRequest(url, data) {
     const options = {
