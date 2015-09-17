@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Base from './base';
+import BaseAuthenticator from './base';
 
 const { RSVP, isEmpty, run, get } = Ember;
 
@@ -12,19 +12,15 @@ const { RSVP, isEmpty, run, get } = Ember;
   see the README and
   [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
-  _The factory for this authenticator is registered as
-  `'simple-auth-authenticator:devise'` in Ember's container._
-
-  @class Devise
-  @namespace Authenticators
-  @module authenticators/devise
-  @extends Base
+  @class DeviseAuthenticator
+  @module ember-simple-auth/authenticators/devise
+  @extends BaseAuthenticator
   @public
 */
-export default Base.extend({
+export default BaseAuthenticator.extend({
   /**
-    The endpoint on the server the authenticator acquires the auth token
-    and email from.
+    The endpoint on the server the authenticator acquires the token and user
+    identification from.
 
     @property serverTokenEndpoint
     @type String
@@ -34,7 +30,7 @@ export default Base.extend({
   serverTokenEndpoint: '/users/sign_in',
 
   /**
-    The devise resource name
+    The devise resource name.
 
     @property resourceName
     @type String
@@ -65,15 +61,18 @@ export default Base.extend({
 
   /**
     Restores the session from a set of session properties; __will return a
-    resolving promise when there's a non-empty `token` and a non-empty
-    `email` in the `properties`__ and a rejecting promise otherwise.
+    resolving promise when there's a non-empty
+    {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
+    and a non-empty
+    {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}identification{{/crossLink}}
+    in `data`__ and a rejecting promise otherwise.
 
     @method restore
-    @param {Object} properties The properties to restore the session from
+    @param {Object} data The data to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
     @public
   */
-  restore(properties) {
+  restore(data) {
     const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
     const tokenAttribute = get(properties, tokenAttributeName);
     const identificationAttribute = get(properties, identificationAttributeName);
@@ -89,9 +88,12 @@ export default Base.extend({
   /**
     Authenticates the session with the specified `credentials`; the credentials
     are `POST`ed to the
-    [`Authenticators.Devise#serverTokenEndpoint`](#SimpleAuth-Authenticators-Devise-serverTokenEndpoint)
-    and if they are valid the server returns an auth token and email in
-    response. __If the credentials are valid and authentication succeeds, a
+    {{#crossLink "DeviseAuthenticator/serverTokenEndpoint:property"}}{{/crossLink}}
+    and if they are valid the server returns a
+    {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
+    and
+    {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}identification{{/crossLink}}
+    in response. __If the credentials are valid and authentication succeeds, a
     promise that resolves with the server's response is returned__, otherwise a
     promise that rejects with the server error is returned.
 

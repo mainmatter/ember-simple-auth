@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Base from './base';
+import BaseAuthenticator from './base';
 
 const { RSVP, isEmpty } = Ember;
 
@@ -7,16 +7,12 @@ const { RSVP, isEmpty } = Ember;
   Authenticator that wraps the
   [Torii library](https://github.com/Vestorly/torii).
 
-  _The factory for this authenticator is registered as
-  `'simple-auth-authenticator:torii'` in Ember's container._
-
-  @class Torii
-  @namespace Authenticators
-  @module authenticators/torii
-  @extends Base
+  @class ToriiAuthenticator
+  @module ember-simple-auth/authenticators/torii
+  @extends BaseAuthenticator
   @public
 */
-export default Base.extend({
+export default BaseAuthenticator.extend({
   /**
     @property provider
     @private
