@@ -143,4 +143,23 @@ describe('ToriiAuthenticator', () => {
     });
   });
 
+  describe('#assertToriiIsPresent', () => {
+    let errorMessage;
+
+    beforeEach(() => {
+      errorMessage = 'You are trying to use `torii-authenticator` but torii is not installed. Install torii using `ember install torii`.';
+    });
+
+    it('does not throw if torii is present', () => {
+      expect(authenticator.assertToriiIsPresent).to.not.throw(errorMessage);
+    });
+
+    it('throws if torii is not installed', () => {
+      authenticator.torii = null;
+      expect(() => {
+        authenticator.assertToriiIsPresent();
+      }).to.throw(errorMessage);
+    });
+  });
+
 });
