@@ -267,6 +267,9 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 });
 ```
 
+**If you set the authorizer to authorizer:application** you need to create an `authorizers/application.js` inside your application (app/authorizers/applications.js). See the following section on implementing a custom authorizer.
+
+
 #### Implementing a custom Authorizer
 
 Besides the option to use one of the predefined authorizers from the extension
@@ -285,6 +288,26 @@ export default BaseAuthorizer.extend({
 });
 ```
 
+For instance if you wanted to use the popular Json Web Tokens mechanism which involves sending an `Authorization: Bearer {token}` header in each request you could implement the authorizer like the following:
+
+```javascript
+import Ember from 'ember';
+import Base from 'ember-simple-auth/authorizers/base';
+
+const { isEmpty } = Ember;
+
+export default Base.extend({
+  authorize(block) {
+    const accessToken = this.get('session.authenticated.token');
+    if (this.get('session.isAuthenticated') && !isEmpty(accessToken)) {
+      block('Authorization', `Bearer ${accessToken}`);
+    }
+  }
+
+});
+
+```
+
 ### Stores
 
 Ember Simple Auth __persists the session state so it survives page reloads__.
@@ -293,8 +316,10 @@ environment object:
 
 ```js
 //config/environment.js
-ENV['simple-auth'] = {
-  store: 'session-store:local-storage'
+ENV['ember-simple-auth'] = {
+  base {
+  	store: 'session-store:local-storage'
+  }
 }
 ```
 
@@ -367,6 +392,46 @@ Ember Simple Auth is configured via the `'ember-simple-auth'` section in the
 application's `config/environment.js` file. See the
 [API docs](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Configuration))
 for the available settings.
+
+
+The configuration object can have the following options:
+
+```javascript
+ENV['ember-simple-auth'] = {
+  base: {
+    authenticationRoute:         'login',
+    routeAfterAuthentication:    'index',
+    routeIfAlreadyAuthenticated: 'index',
+    store:                       'session-store:ephemeral'
+  },
+  localStorage: {
+    key: 'ember_simple_auth:session'
+  },
+  cookie: {
+    name:           'ember_simple_auth:session',
+    domain:         null,
+    expirationTime: null
+  }
+}
+```
+The `base` object has the following properties
+
+* authenticationRoute: The route to transition to for authentication.
+* routeAfterAuthentication: The route to transition to after successful authentication.
+* routeIfAlreadyAuthenticated: The route to transition to if a route that implements 
+      [`UnauthenticatedRouteMixin`](#SimpleAuth-UnauthenticatedRouteMixin) is
+      accessed when the session is authenticated.
+* store: The name of the store where to persist session information (you can choose between `session-ephemeral`, `session-local-storage`, `session-cookie`)
+
+If you're using the `local-storage` store you can configure the key where the session information will be saved.
+
+```javascript
+localStorage: {
+  key: 'ember_simple_auth:session'
+}
+```
+The default key is `ember_simple_auth:session`
+
 
 ## License
 
