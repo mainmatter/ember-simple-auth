@@ -33,7 +33,7 @@ import Configuration from './../configuration';
   ```
 
   _The factory for this store is registered as
-  `'simple-auth-session-store:cookie'` in Ember's container._
+  `'session-store:cookie'` in Ember's container._
 
   @class Cookie
   @namespace Stores
