@@ -38,7 +38,8 @@ module.exports = function(defaults) {
       linkNatives: false,
       quiet:       true,
       parseOnly:   false,
-      lint:        false
+      lint:        false,
+      themedir:    'docs/theme'
     }
   });
 
