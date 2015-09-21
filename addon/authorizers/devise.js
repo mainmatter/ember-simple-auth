@@ -47,7 +47,7 @@ export default Base.extend({
 
     @method authorize
     @param {Object} data The data that the session currently holds
-    @param {Function} block The block to call with the authoriztion data if the session is authenticated and authorization data is actually present
+    @param {Function} block(headerName,headerContent) The callback to call with the authorization data
     @public
   */
   authorize(data, block) {
