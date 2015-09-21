@@ -4,7 +4,6 @@ const yuidoc = require('broccoli-yuidoc');
 const version = require('git-repo-version')();
 const Handlebars = require('handlebars');
 const mergeTrees = require('broccoli-merge-trees');
-const broccoliHandlebars = require('broccoli-handlebars');
 const merge = require('lodash/object/merge');
 
 var sourceTrees = [];
@@ -44,7 +43,7 @@ module.exports = function(defaults) {
       quiet:       true,
       parseOnly:   false,
       lint:        false,
-      themedir:    'docs/theme'
+      theme:       'simple'
     }
   });
 
