@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import ENV from '../config/environment';
 import Configuration from 'ember-simple-auth/configuration';
 import setupSessionStores from 'ember-simple-auth/initializers/setup-session-stores';
@@ -8,8 +9,11 @@ import setupAuthorizers from 'ember-simple-auth/initializers/setup-authorizers';
 export default {
   name:       'ember-simple-auth',
   initialize: function(registry) {
-    var config = ENV['ember-simple-auth'];
+    const config        = ENV['ember-simple-auth'] || {};
+    config.base         = config.base || {}
+    config.base.baseURL = ENV.baseURL;
     Configuration.load(config);
+
     setupSessionStores(registry);
     setupSession(registry);
     setupSessionService(registry);

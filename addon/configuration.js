@@ -37,6 +37,12 @@ const DEFAULTS = {
 export default {
   base: {
     /**
+      @property baseURL
+      @private
+    */
+    baseURL: null,
+
+    /**
       The route to transition to for authentication.
 
       @property authenticationRoute

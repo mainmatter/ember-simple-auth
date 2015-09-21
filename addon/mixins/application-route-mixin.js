@@ -97,7 +97,7 @@ export default Ember.Mixin.create({
   */
   sessionInvalidated() {
     if (!Ember.testing) {
-      window.location.reload();
+      window.location.replace(Configuration.base.baseURL);
     }
   }
 });
