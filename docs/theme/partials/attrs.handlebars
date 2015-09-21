@@ -4,7 +4,7 @@
     {{#if extended_from}}<em>`/* Extended from {{extended_from}} */`</em>{{/if}}
     {{#if overwritten_from}}<em>`/* Overwritten from {{name}} */`</em>{{/if}}
     <br>
-    <span class="foundat"><a href="../{{foundAt}}">`{{file}}:{{line}}`</a></span>
+    <span class="foundat"><a href="{{githubLink file line}}">`{{file}}:{{line}}`</a></span>
     {{{attrDescription}}}
     {{#if emit}}
     <div class="emits">
