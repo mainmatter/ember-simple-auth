@@ -43,7 +43,7 @@ module.exports = function(defaults) {
       quiet:       true,
       parseOnly:   false,
       lint:        false,
-      theme:       'simple'
+      themedir:    'docs/theme'
     }
   });
 
