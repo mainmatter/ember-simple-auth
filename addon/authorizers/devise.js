@@ -46,9 +46,7 @@ export default Base.extend({
     in the `Authorization` header.
 
     @method authorize
-    @param {Function} [block] The callback to call with the authorization data
-    @param {String} block.headerName The name of the header (will be `Authorization`)
-    @param {Object} block.headerContent The header content (will be the user's token and identification)
+    @param {Function} block(headerName,headerContent) The callback to call with the authorization data
     @public
   */
   authorize(block) {
