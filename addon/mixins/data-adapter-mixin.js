@@ -3,10 +3,14 @@ import Ember from 'ember';
 const { service } = Ember.inject;
 
 /**
-  This mixin is for adapters and will make authorizing requests as easy as
-  with the $.ajaxPrefilter before while being much cleaner. All that is to
-  be done to authorize all Ember Data requests with an authorizer of choice
-  is now:
+  This mixin is for Ember Data Adapters and will inject an authorization header
+  into API requests. It works with all authorizers that call the authorization
+  callback (see
+  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) with header
+  name and header content arguments.
+
+  The `DataAdapterMixin` will also invalidate the session when it receives a
+  401 response for an API request.
 
   ```js
   // app/adapters/application.js
@@ -19,7 +23,6 @@ const { service } = Ember.inject;
   ```
 
   @class DataAdapterMixin
-  @namespace Mixins
   @module ember-simple-auth/mixins/data-adapter-mixin
   @extends Ember.Mixin
   @static
@@ -27,8 +30,32 @@ const { service } = Ember.inject;
 */
 
 export default Ember.Mixin.create({
+  /**
+    The session service.
+
+    @property session
+    @type SessionService
+    @public
+  */
   session: service('session'),
 
+  /**
+    The authorizer that is used to authorize API requests.
+
+    @property session
+    @type SessionService
+    @default null
+    @public
+  */
+  authorizer: null,
+
+  /**
+    Authorizes an API request by adding an authorization header. The specific
+    header name and contents depend on the actual auhorizer that is used.
+  
+    @method ajaxOptions
+    @protected
+  */
   ajaxOptions() {
     const authorizer = this.get('authorizer');
     Ember.assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", Ember.isPresent(authorizer));
@@ -47,6 +74,15 @@ export default Ember.Mixin.create({
     return hash;
   },
 
+  /**
+    This method is called for every response that the adapter receives from the
+    API. If this method encounters a 401 response it will invalidate the
+    session.
+  
+    @method handleResponse
+    @param {Number} status The response status as received from the API
+    @protected
+  */
   handleResponse(status) {
     if (status === 401) {
       this.get('session').invalidate();
