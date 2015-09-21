@@ -4,18 +4,13 @@ import Configuration from './../configuration';
 const { service } = Ember.inject;
 
 /**
-  The mixin for the application route; defines actions that are triggered
-  when authentication is required, when the session has successfully been
-  authenticated or invalidated or when authentication or invalidation fails or
-  authorization is rejected by the server. These actions provide a good
-  starting point for adding custom behavior to these events.
+  The mixin for the application route; defines methods that are called when the
+  session has successfully been authenticated or invalidated. These methods
+  are called whenever the respective session events are triggered and provide a
+  good starting point for adding custom behavior for these situations.
 
-  __When this mixin is used and the application's `ApplicationRoute` defines
-  the `beforeModel` method, that method has to call `_super`.__
-
-  Using this mixin is optional. Without using it, the session's events will not
-  be automatically translated into route actions but would have to be handled
-  inidivially, e.g. in an initializer:
+  Using this mixin is optional. The session events could also be handled
+  manually of course, e.g. in an instance initializer:
 
   ```js
   Ember.Application.initializer({
@@ -28,25 +23,34 @@ const { service } = Ember.inject;
       session.on('authenticationSucceeded', function() {
         applicationRoute.transitionTo('index');
       });
+      session.on('invalidationSucceeded', function() {
+        window.location.reload();
+      });
     }
   });
   ```
 
   @class ApplicationRouteMixin
-  @namespace Mixins
   @module ember-simple-auth/mixins/application-route-mixin
   @extends Ember.Mixin
   @static
   @public
 */
 export default Ember.Mixin.create({
+  /**
+    The session service.
+
+    @property session
+    @type SessionService
+    @public
+  */
   session: service('session'),
 
   /**
-    @method _mapSessionEventsToActions
+    @method _subscribeToSessionEvents
     @private
   */
-  _mapSessionEventsToActions: Ember.on('init', function() {
+  _subscribeToSessionEvents: Ember.on('init', function() {
     Ember.A([
       ['authenticationSucceeded', 'sessionAuthenticated'],
       ['invalidationSucceeded', 'sessionInvalidated']
@@ -58,13 +62,13 @@ export default Ember.Mixin.create({
   }),
 
   /**
-    This action is triggered whenever the session is successfully
-    authenticated. If there is a transition that was previously intercepted
-    by
-    [`AuthenticatedRouteMixin#beforeModel`](#SimpleAuth-AuthenticatedRouteMixin-beforeModel)
+    This method handles the session's
+    {{#crossLink "Session/authenticationSucceeded:event"}}{{/crossLink}}
+    event. If there is a transition that was previously intercepted by
+    {{#crossLink "AuthenticatedRouteMixin/beforeModel:method"}}{{/crossLink}}
     it will retry it. If there is no such transition, this action transitions
     to the
-    [`Configuration.routeAfterAuthentication`](#SimpleAuth-Configuration-routeAfterAuthentication).
+    {{#crossLink "Configuration/routeAfterAuthentication:property"}}{{/crossLink}}.
 
     @method sessionAuthenticated
     @public
@@ -80,13 +84,12 @@ export default Ember.Mixin.create({
   },
 
   /**
-    This action is invoked whenever the session is successfully invalidated.
-    It reloads the Ember.js application by redirecting the browser to the
-    application's root URL so that all in-memory data (such as Ember Data
-    stores etc.) gets cleared. The root URL is automatically retrieved from
-    the Ember.js application's router (see
-    http://emberjs.com/guides/routing/#toc_specifying-a-root-url).
-
+    This method handles the session's
+    {{#crossLink "Session/invalidationSucceeded:event"}}{{/crossLink}}
+    event. It reloads the Ember.js application by redirecting the browser to
+    the application's root URL so that all in-memory data (such as Ember Data
+    stores etc.) gets cleared.
+  
     If your Ember.js application will be used in an environment where the
     users don't have direct access to any data stored on the client (e.g.
     [cordova](http://cordova.apache.org)) this action can be overridden to
