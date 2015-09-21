@@ -1,6 +1,7 @@
 /* global require, module */
 const EmberApp = require('ember-cli/lib/broccoli/ember-addon');
 const yuidoc = require('broccoli-yuidoc');
+const version = require('git-repo-version')();
 const Handlebars = require('handlebars');
 const mergeTrees = require('broccoli-merge-trees');
 const broccoliHandlebars = require('broccoli-handlebars');
@@ -35,6 +36,10 @@ module.exports = function(defaults) {
     srcDir: '/',
     destDir: 'docs',
     yuidoc: {
+      project: {
+        name:    'The Ember Simple Auth API',
+        version: version,
+      },
       linkNatives: false,
       quiet:       true,
       parseOnly:   false,
