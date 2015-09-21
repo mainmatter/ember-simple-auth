@@ -8,7 +8,7 @@
     {{else}}
         {{#if extended_from}} Defined in <a href="{{extended_from}}.html#method_{{name}}">{{extended_from}}</a>: {{/if}}
     {{/if}}
-        <a href="../{{foundAt}}">`{{file}}:{{line}}`</a>
+        <a href="{{githubLink file line}}">`{{file}}:{{line}}`</a>
     </span><br>
     {{{methodDescription}}}
     {{#if params}}
