@@ -1,64 +1,7 @@
-.navbar-nav > .active > a {
-  background: transparent !important;
-}
-.navbar .dropdown > a {
-  padding: 15px 10px 15px 0;
-}
-.navbar .navbar-collapse {
-  padding-left: 0;
-}
-h1.class, h3.property, h3.method, dl.params dt, span.type {
-  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
-  font-weight: bold;
-}
-p {
-  text-align: justify;
-}
-span.type {
-  color: #999;
-}
-span.type.return {
-  font-weight:bold
-}
-.overview h4:first-child {
-  margin-top: 0;
-}
-h3.section, h4.subsection {
-  padding-bottom: 5px;
-  border-bottom: 1px dotted #eee;
-}
-.panel-heading span.pull-right {
-  margin-left: 5px;
-}
-dl.params dl.props {
-  margin-left: 3em;
-  margin-top: 5px;
-}
-strong {
-  background-color: #fffebb;
-  font-weight: normal;
-  padding: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-}
-pre, code {
-  color: #333;
-  background: #f8f8ff;
-}
-a code {
-  color: #428bca;
-}
 body .container .alert:first-child {
   margin-top: 70px;
 }
-a.symbol-anchor {
-  display: block;
-  position: relative;
-  top: -55px;
-  height: 1px;
-}
-span.label-deprecation {
-  float: left;
-  line-height: inherit;
-  margin-right: 5px;
+
+.project-version {
+  margin-right: 0;
 }
