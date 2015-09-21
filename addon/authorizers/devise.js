@@ -12,13 +12,9 @@ const { isEmpty } = Ember;
   needs to implement some customizations__ to work with this authenticator -
   see the README for more information.
 
-  _The factory for this authorizer is registered as
-  `'simple-auth-authorizer:devise'` in Ember's container._
-
-  @class Devise
-  @namespace Authorizers
-  @module authorizers/devise
-  @extends Base
+  @class DeviseAuthorizer
+  @module ember-simple-auth/authorizers/devise
+  @extends BaseAuthorizer
   @public
 */
 export default Base.extend({
@@ -43,12 +39,11 @@ export default Base.extend({
   identificationAttributeName: 'email',
 
   /**
-    Authorizes an XHR request by sending the `token` and `email`
-    properties from the session in the `Authorization` header:
-
-    ```
-    Authorization: Token <tokenAttributeName>="<token>", <identificationAttributeName>="<user identification>"
-    ```
+    Combines the user's token (see
+    {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}{{/crossLink}})
+    and identification (see
+    {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}{{/crossLink}})
+    in the `Authorization` header.
 
     @method authorize
     @param {Object} data The data that the session currently holds
