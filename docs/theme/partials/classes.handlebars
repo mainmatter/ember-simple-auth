@@ -16,7 +16,7 @@
 {{#if extends}}
     Extends: {{#crossLink extends}}{{/crossLink}}<br>
 {{/if}}
-<span class="foundat">Class defined in: <a href="{{githubLink this githubUrl projectVersion file line}}">`{{file}}:{{line}}`</a></span>
+<span class="foundat">Class defined in: {{>source_link file=file line=line}}</span>
 <div class="intro">{{{classDescription}}}</div>
 
 {{#if is_constructor}}

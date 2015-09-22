@@ -54,7 +54,7 @@
     "morgan": "^1.5.2",
     "sinon-chai": "2.8.0",
     "torii": "Vestorly/torii#0.6.0-beta.7",
-    "yuidocjs": "~0.3.46"
+    "yuidocjs": "~0.9.0"
   },
   "keywords": [
     "ember-addon"
