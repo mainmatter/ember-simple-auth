@@ -293,7 +293,7 @@ environment object:
 
 ```js
 //config/environment.js
-ENV['simple-auth'] = {
+ENV['ember-simple-auth'] = {
   base: {
     store: 'session-store:local-storage'
   }
