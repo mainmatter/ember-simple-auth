@@ -31,14 +31,13 @@ module.exports = function(defaults) {
 
   sourceTrees.push(app.toTree());
 
-  const yuidocTree = new yuidoc(sourceTrees, {
+  const yuidocTree = new yuidoc(['addon', 'app'], {
     destDir: 'docs',
     yuidoc: {
       project: {
         name:    'The Ember Simple Auth API',
         version: version,
       },
-      paths:       'addon/**/*',
       linkNatives: false,
       quiet:       true,
       parseOnly:   false,
