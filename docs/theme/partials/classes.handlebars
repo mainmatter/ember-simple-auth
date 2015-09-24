@@ -1,21 +1,120 @@
-<h4>Class {{moduleName}}</h4>
-{{#if uses}}
-    Uses:
-    {{#each uses}}
-        <a href="{{this}}.html">{{this}}</a>
-    {{/each}}
-    <br>
-{{/if}}
-{{#if extension_for}}
-    Extension For:
-    {{#each extension_for}}
-        <a href="{{this}}.html">{{this}}</a>
-    {{/each}}
-    <br>
-{{/if}}
-{{#if extends}}
-    Extends: {{#crossLink extends}}{{/crossLink}}<br>
-{{/if}}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="page-header">
+          <h1 class="class">{{moduleName}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-9">
+        <pre><code>import {{moduleName}} from '{{module}}';</code></pre>
+        {{{classDescription}}}
+      </div>
+      <div class="quick-menu col-sm-3">
+        {{#if extends}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Extends</h4>
+              {{#crossLink extends}}{{/crossLink}}
+            </div>
+          </div>
+        {{/if}}
+        {{#if uses}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Uses</h4>
+              <ul class="list-unstyled">
+                {{#each uses}}
+                  <li><a href="{{this}}.html">{{this}}</a></li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+        {{#if extension_for}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Extension For</h4>
+              <ul class="list-unstyled">
+                {{#each extension_for}}
+                  <li><a href="{{this}}.html">{{this}}</a></li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+        {{#if methods}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                {{#methods}}
+                  <li><a href="#methods_{{name}}">{{name}}</a></li>
+                {{/methods}}
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+        {{#if properties}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                {{#properties}}
+                  <li><a href="#props_{{name}}">{{name}}</a></li>
+                {{/properties}}
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+        {{#if attrs}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Attributes</h4>
+              <ul class="list-unstyled">
+                {{#attrs}}
+                  <li><a href="#attrs_{{name}}">{{name}}</a></li>
+                {{/attrs}}
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+        {{#if events}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Events</h4>
+              <ul class="list-unstyled">
+                {{#events}}
+                  <li><a href="#events_{{name}}">{{name}}</a></li>
+                {{/events}}
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+    {{#if methods}}
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="section">Methods</h3>
+        </div>
+      </div>
+      {{#methods}}
+        <div class="row">
+          <div class="col-sm-12">
+            {{>method}}
+          </div>
+        </div>
+      {{/methods}}
+    {{/if}}
+  </div>
+</div>
+
+<hr/>
+
+
 <span class="foundat">Class defined in: {{>source_link file=file line=line}}</span>
 <div class="intro">{{{classDescription}}}</div>
 
