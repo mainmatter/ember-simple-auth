@@ -26,14 +26,16 @@
     </header>
     <div class="container">
       <div class="row">
-        <div class="alert alert-info">For a general overview of Ember Simple Auth, see the <a href="{{githubUrl}}#readme" title="Ember Simple Auth's README github" class="alert-link">README</a></div>
+        <div class="col-sm-12">
+          <div class="alert alert-info">For a general overview of Ember Simple Auth, see the <a href="{{githubUrl}}#readme" title="Ember Simple Auth's README github" class="alert-link">README</a></div>
+        </div>
       </div>
       <div class="row">
         <div id="sidebar" class="col-sm-3">
           {{>sidebar}}
         </div>
         <div id="main" class="col-sm-9">
-            <div class="content">{{>layout_content}}</div>
+          {{>layout_content}}
         </div>
       </div>
     </div>

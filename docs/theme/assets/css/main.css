@@ -2,6 +2,42 @@ body .container .alert:first-child {
   margin-top: 70px;
 }
 
-.project-version {
-  margin-right: 0;
+#sidebar h4 {
+  margin-top: 0;
+}
+
+.page-header {
+  margin-top: 0;
+}
+
+.page-header h1 {
+  margin-top: 0;
+}
+
+#main p {
+  text-align: justify;
+}
+
+.quick-menu .row:first-of-type h4 {
+  margin-top: 0;
+}
+
+h3.section {
+  border-bottom: 1px dotted #eee;
+}
+
+.label-access-public {
+  display: none;
+}
+
+.label-access-private {
+  background-color: #d9534f;
+}
+
+.label-access-protected {
+  background-color: #f0ad4e;
+}
+
+.panel-heading span.pull-right {
+  margin-left: 5px;
 }
