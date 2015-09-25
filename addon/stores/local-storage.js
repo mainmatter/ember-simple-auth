@@ -2,6 +2,8 @@ import Ember from 'ember';
 import Base from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
+const { on } = Ember;
+
 /**
   Store that saves its data in the browser's `localStorage`.
 
@@ -27,13 +29,9 @@ export default Base.extend({
   */
   key: 'ember_simple_auth:session',
 
-  /**
-    @method init
-    @private
-  */
-  init() {
-    this.bindToStorageEvents();
-  },
+  _setup: on('init', function() {
+    this._bindToStorageEvents();
+  }),
 
   /**
     Persists the `data` in the `localStorage`.
@@ -73,11 +71,7 @@ export default Base.extend({
     this._lastData = {};
   },
 
-  /**
-    @method bindToStorageEvents
-    @private
-  */
-  bindToStorageEvents() {
+  _bindToStorageEvents() {
     Ember.$(window).bind('storage', () => {
       let data = this.restore();
       if (!objectsAreEqual(data, this._lastData)) {

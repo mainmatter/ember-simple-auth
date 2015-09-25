@@ -111,7 +111,7 @@ export default BaseAuthenticator.extend({
       };
       data[resourceName][identificationAttributeName] = credentials.identification;
 
-      this.makeRequest(data).then(function(response) {
+      this._makeRequest(data).then(function(response) {
         run(null, resolve, response);
       }, function(xhr) {
         run(null, reject, xhr.responseJSON || xhr.responseText);
@@ -130,11 +130,7 @@ export default BaseAuthenticator.extend({
     return RSVP.resolve();
   },
 
-  /**
-    @method makeRequest
-    @private
-  */
-  makeRequest(data) {
+  _makeRequest(data) {
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return Ember.$.ajax({
       url:      serverTokenEndpoint,

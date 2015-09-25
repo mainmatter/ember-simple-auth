@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { service } = Ember.inject;
+const { service, on } = Ember.inject;
 
 /**
   The mixin for the application route; defines methods that are called when the
@@ -46,11 +46,7 @@ export default Ember.Mixin.create({
   */
   session: service('session'),
 
-  /**
-    @method _subscribeToSessionEvents
-    @private
-  */
-  _subscribeToSessionEvents: Ember.on('init', function() {
+  _subscribeToSessionEvents: on('init', function() {
     Ember.A([
       ['authenticationSucceeded', 'sessionAuthenticated'],
       ['invalidationSucceeded', 'sessionInvalidated']

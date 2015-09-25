@@ -13,11 +13,7 @@ const { RSVP, isEmpty } = Ember;
   @public
 */
 export default BaseAuthenticator.extend({
-  /**
-    @property provider
-    @private
-  */
-  provider: null,
+  _provider: null,
 
   /**
     Restores the session by calling the torii provider's `fetch` method.
@@ -28,20 +24,20 @@ export default BaseAuthenticator.extend({
     @public
   */
   restore(data) {
-    this.assertToriiIsPresent();
+    this._assertToriiIsPresent();
 
     data = data || {};
     return new RSVP.Promise((resolve, reject) => {
       if (!isEmpty(data.provider)) {
         let { provider } = data;
         this.get('torii').fetch(data.provider, data).then((data) => {
-          this.resolveWith(provider, data, resolve);
+          this._resolveWith(provider, data, resolve);
         }, () => {
-          delete this.provider;
+          delete this._provider;
           reject();
         });
       } else {
-        delete this.provider;
+        delete this._provider;
         reject();
       }
     });
@@ -59,11 +55,11 @@ export default BaseAuthenticator.extend({
     @public
   */
   authenticate(provider, options) {
-    this.assertToriiIsPresent();
+    this._assertToriiIsPresent();
 
     return new RSVP.Promise((resolve, reject) => {
       this.get('torii').open(provider, options || {}).then((data) => {
-        this.resolveWith(provider, data, resolve);
+        this._resolveWith(provider, data, resolve);
       }, reject);
     });
   },
@@ -78,28 +74,20 @@ export default BaseAuthenticator.extend({
   */
   invalidate() {
     return new RSVP.Promise((resolve, reject) => {
-      this.get('torii').close(this.provider).then(() => {
-        delete this.provider;
+      this.get('torii').close(this._provider).then(() => {
+        delete this._provider;
         resolve();
       }, reject);
     });
   },
 
-  /**
-    @method resolveWith
-    @private
-  */
-  resolveWith(provider, data, resolve) {
+  _resolveWith(provider, data, resolve) {
     data.provider = provider;
-    this.provider = data.provider;
+    this._provider = data.provider;
     resolve(data);
   },
 
-  /**
-    @method assertToriiIsPresent
-    @private
-  */
-  assertToriiIsPresent() {
+  _assertToriiIsPresent() {
     const torii = this.get('torii');
     Ember.assert('You are trying to use `torii-authenticator` but torii is not installed. Install torii using `ember install torii`.', Ember.isPresent(torii));
   }

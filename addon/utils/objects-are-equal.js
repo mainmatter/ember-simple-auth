@@ -1,9 +1,3 @@
-/**
-  This was taken from http://stackoverflow.com/questions/1068834/object-comparison-in-javascript#1144249
-
-  @method objectsAreEqual
-  @private
-*/
 export default function objectsAreEqual(a, b) {
   function compare(x, y) {
     let property;

@@ -1,5 +1,7 @@
 import Base from './base';
 
+const { on } = Ember;
+
 /**
   Store that saves its data in memory and thus __is not actually persistent__.
   It does also not synchronize the session's state across multiple tabs or
@@ -17,13 +19,9 @@ import Base from './base';
   @public
 */
 export default Base.extend({
-  /**
-    @method init
-    @private
-  */
-  init() {
+  _setup: on('init', function() {
     this.clear();
-  },
+  }),
 
   /**
     Persists the `data`.
