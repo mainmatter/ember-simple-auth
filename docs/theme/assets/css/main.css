@@ -1,3 +1,7 @@
+body {
+  position: relative;
+}
+
 body .container .alert:first-child {
   margin-top: 70px;
 }
