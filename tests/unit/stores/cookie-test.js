@@ -22,7 +22,7 @@ describe('CookieStore', () => {
       return store;
     },
     syncExternalChanges() {
-      store.syncData();
+      store._syncData();
     }
   });
 
@@ -51,7 +51,7 @@ describe('CookieStore', () => {
       store.cookieExpirationTime = 60;
       store.expires              = new Date().getTime() + store.cookieExpirationTime * 1000;
       store.persist({ key: 'value' });
-      store.renew();
+      store._renew();
     });
 
     it('stores the expiration time in a cookie named "test:session:expiration_time"', () => {
@@ -72,7 +72,7 @@ describe('CookieStore', () => {
 
     it('is not triggered when the cookie has not actually changed', (done) => {
       document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22value%22%7D;path=/;';
-      store.syncData();
+      store._syncData();
 
       Ember.run.next(() => {
         expect(triggered).to.be.false;
@@ -82,7 +82,7 @@ describe('CookieStore', () => {
 
     it('is triggered when the cookie changed', (done) => {
       document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22other%20value%22%7D;path=/;';
-      store.syncData();
+      store._syncData();
 
       Ember.run.next(() => {
         expect(triggered).to.be.true;
@@ -91,8 +91,8 @@ describe('CookieStore', () => {
     });
 
     it('is not triggered when the cookie expiration was renewed', (done) => {
-      store.renew({ key: 'value' });
-      store.syncData();
+      store._renew({ key: 'value' });
+      store._syncData();
 
       Ember.run.next(() => {
         expect(triggered).to.be.false;

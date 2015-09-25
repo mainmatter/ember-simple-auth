@@ -112,7 +112,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   isAuthenticated: false,
 
   /**
-    A previously attempted but intercepted transition (e.g. by the 
+    A previously attempted but intercepted transition (e.g. by the
     {{#crossLink "AuthenticatedRouteMixin"}}{{/crossLink}}). If an attempted
     transition is present, the
     {{#crossLink "ApplicationRouteMixin"}}{{/crossLink}} will retry it when the

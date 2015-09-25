@@ -74,11 +74,11 @@ export default BaseAuthenticator.extend({
   */
   restore(data) {
     const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
-    const tokenAttribute = get(properties, tokenAttributeName);
-    const identificationAttribute = get(properties, identificationAttributeName);
+    const tokenAttribute = get(data, tokenAttributeName);
+    const identificationAttribute = get(data, identificationAttributeName);
     return new RSVP.Promise((resolve, reject) => {
       if (!isEmpty(tokenAttribute) && !isEmpty(identificationAttribute)) {
-        resolve(properties);
+        resolve(data);
       } else {
         reject();
       }

@@ -236,7 +236,7 @@ export default BaseAuthenticator.extend({
     const data                = { 'grant_type': 'refresh_token', 'refresh_token': refreshToken };
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return new RSVP.Promise((resolve, reject) => {
-      this.makeRequest(serverTokenEndpoint, data).then((response) => {
+      this._makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
           expiresIn       = response['expires_in'] || expiresIn;
           refreshToken    = response['refresh_token'] || refreshToken;
