@@ -3,7 +3,7 @@ import Base from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import Configuration from './../configuration';
 
-const { $, run } = Ember;
+const { computed } = Ember;
 
 /**
   Store that saves its data in a cookie.
@@ -106,11 +106,10 @@ export default Base.extend({
   */
   renewExpirationTimeout: null,
 
-  /**
-    @property isPageVisible
-    @private
-  */
-  isPageVisible: true,
+  _isPageVisible: computed(function() {
+    const visibilityState = document.visibilityState || 'visible';
+    return visibilityState === 'visible';
+  }).volatile(),
 
   /**
     @method init
@@ -120,7 +119,6 @@ export default Base.extend({
     this.cookieName           = Configuration.cookie.name;
     this.cookieExpirationTime = Configuration.cookie.expirationTime;
     this.cookieDomain         = Configuration.cookie.domain;
-    this.initPageVisibility();
     this.syncData();
     this.renewExpiration();
   },
@@ -220,23 +218,6 @@ export default Base.extend({
   },
 
   /**
-    @method initPageVisibility
-    @private
-  */
-  initPageVisibility() {
-    const handlePageVisibilityChange = run.bind(this, function() {
-      const isVisible = document.visibilityState === 'visible';
-      this.set('isPageVisible', isVisible);
-    });
-    $(document).bind({
-      visibilitychange: handlePageVisibilityChange,
-      webkitvisibilitychange: handlePageVisibilityChange,
-      mozvisibilitychange: handlePageVisibilityChange,
-      msvisibilitychange: handlePageVisibilityChange
-    });
-  },
-
-  /**
     @method renew
     @private
   */
@@ -254,7 +235,7 @@ export default Base.extend({
     @private
   */
   renewExpiration() {
-    if (this.isPageVisible()) {
+    if (this.get('_isPageVisible')) {
       this.renew();
     }
     if (!Ember.testing) {
