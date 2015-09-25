@@ -33,7 +33,7 @@ module.exports = function(environment) {
 
   ENV['ember-simple-auth'] = {
     base: {
-      store: 'session-store:local-storage'
+      store: 'session-store:cookie'
     }
   };
 
