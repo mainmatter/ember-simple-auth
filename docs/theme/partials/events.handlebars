@@ -1,35 +1,63 @@
-<a name="events_{{name}}"></a>
-<div class="events item">
-    `{{name}}` {{#if type}}<strong>&lt;{{#crossLink type}}{{/crossLink}}&gt;</strong>{{/if}}
-    {{#if extended_from}}<em>`/* Extended from {{extended_from}} */</em>`{{/if}}
-    {{#if overwritten_from}}<em>`/* Overwritten from {{name}} */`</em>{{/if}}
-    <br>
-    <span class="foundat">{{>source_link file=file line=line}}</span>
-    {{{eventDescription}}}
-    {{#if params}}
-    <strong>Extra event object properties:</strong>
-    <ul>
-    {{#params}}
-        <li>
-        {{#if optional}}
-            `[{{name}}{{#if optdefault}}={{optdefault}}{{/if}}]` <strong>&lt;{{#crossLink type}}{{/crossLink}}&gt;</strong>
-        {{else}}
-            `{{name}}` <strong>&lt;{{#crossLink type}}{{/crossLink}}&gt;</strong>
-        {{/if}}
-        {{#if multiple}}
-            <abbr title="Denotes that this argument can contain (n) number">(*..n)</abbr>
-        {{/if}}
-        {{{description}}}
-            {{#if props}}
-            <ul>
-            {{#props}}
-                <li>`{{name}}` <strong>&lt;{{#crossLink type}}{{/crossLink}}&gt;</strong> {{{description}}}
-            {{/props}}
-            </ul>
-            {{/if}}
-        </li>
-    {{/params}}
-    </ul>
+<a name="events_{{name}}" class="symbol-anchor"></a>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {{>source_link file=file line=line}}
+    <h3 class="panel-title method">
+      <strong class="name">`{{name}}`</strong>
+      {{#if type}}
+        : <span class="type">&rarr; `{{#crossLink type}}{{/crossLink}}`</span>
+      {{/if}}
+    </h3>
+  </div>
+  <div class="panel-body">
+    {{#if deprecationMessage}}
+      <p><span class="label label-warning">Deprecated:</span>{{deprecationMessage}}</p>
     {{/if}}
+    {{#if overwritten_from}}
+      <p><span class="label label-default">Overrides:</span> <a href="{{overwritten_from/class}}.html#events_{{overwritten_from/name}}">`{{name}}` of  `{{overwritten_from/class}}`</a>.</p>
+    {{/if}}
+    {{#if extended_from}}
+      <p><span class="label label-default">Extends:</span> <a href="{{extended_from}}.html#events_{{name}}">`{{name}}` of `{{extended_from}}`</a>.</p>
+    {{/if}}
+    {{{eventDescription}}}
+    {{#if example}}
+      <h4 class="subsection">Example</h4>
+      {{{example}}}
+    {{/if}}
+    {{#if params}}
+      <h4 class="subsection">Arguments</h4>
+      <dl class="params">
+        {{#params}}
+          <dt>
+            {{#if optional}}
+              `[{{name}}{{#if optdefault}}={{optdefault}}{{/if}}]`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span>
+            {{else}}
+              `{{name}}`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span>
+            {{/if}}
+          </dt>
+          <dd>
+            {{{description}}}
+            {{#if props}}
+              <dl class="props">
+                {{#props}}
+                  <dt>`{{name}}`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span></dt>
+                  <dd>
+                    {{{description}}}
+                    {{#if props}}
+                      <dl>
+                        {{#props}}
+                          <dt>`{{name}}`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span></dt>
+                          <dd>{{{description}}}</dd>
+                        {{/props}}
+                      </ul>
+                    {{/if}}
+                  </dd>
+                {{/props}}
+              </dl>
+            {{/if}}
+          </dd>
+        {{/params}}
+      </dl>
+    {{/if}}
+  </div>
 </div>
-

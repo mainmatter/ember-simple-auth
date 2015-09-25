@@ -90,7 +90,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   store: null,
 
   /**
-    The Ember.js container,
+    The Ember.js container.
 
     @property container
     @type Container
