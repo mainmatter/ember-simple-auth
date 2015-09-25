@@ -40,8 +40,28 @@
       </div>
     </div>
     <script type="text/javascript" charset="utf-8">
-      $(function() {
-        hljs.initHighlightingOnLoad();
+      function fixLeadingWhitespace(codeBlock) {
+        var text = $(codeBlock).text();
+        var lines = text.split('\n');
+        var minLeadindSpaces = text.length;
+        $.each(lines.slice(1), function(i, line) {
+          var match = line.match(/^\s+/);
+          if (match) {
+            minLeadindSpaces = Math.min(match[0].length);
+          }
+        });
+        var regexp = new RegExp('^\\s{' + minLeadindSpaces + '}');
+        var fixedLines = lines.slice(0, 1).concat($.map(lines.slice(1), function(line) {
+          return line.replace(regexp, '');
+        }));
+        $(codeBlock).text(fixedLines.join('\n'));
+      }
+
+      $(document).ready(function() {
+        $('pre code').each(function(i, codeBlock) {
+          fixLeadingWhitespace(codeBlock);
+          hljs.highlightBlock(codeBlock);
+        });
       });
     </script>
   </body>
