@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { service, on } = Ember.inject;
+const { inject, on } = Ember;
 
 /**
   The mixin for the application route; defines methods that are called when the
@@ -44,7 +44,7 @@ export default Ember.Mixin.create({
     @type SessionService
     @public
   */
-  session: service('session'),
+  session: inject.service('session'),
 
   _subscribeToSessionEvents: on('init', function() {
     Ember.A([
@@ -85,7 +85,7 @@ export default Ember.Mixin.create({
     event. It reloads the Ember.js application by redirecting the browser to
     the application's root URL so that all in-memory data (such as Ember Data
     stores etc.) gets cleared.
-  
+
     If your Ember.js application will be used in an environment where the
     users don't have direct access to any data stored on the client (e.g.
     [cordova](http://cordova.apache.org)) this action can be overridden to

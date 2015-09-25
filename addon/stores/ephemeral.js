@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import Base from './base';
 
 const { on } = Ember;
