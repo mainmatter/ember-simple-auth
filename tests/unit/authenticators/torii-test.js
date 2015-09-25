@@ -26,14 +26,6 @@ describe('ToriiAuthenticator', () => {
           expect(true).to.be.true;
         });
       });
-
-      it('unsets the provider', () => {
-        authenticator.provider = 'provider';
-
-        return authenticator.restore(data).catch(() => {
-          expect(authenticator.provider).to.be.null;
-        });
-      });
     }
 
     describe('when there is a torii provider in the session data', () => {
@@ -45,12 +37,6 @@ describe('ToriiAuthenticator', () => {
         it('returns a promise that resolves with the session data', () => {
           return authenticator.restore({ some: 'data', provider: 'provider' }).then((data) => {
             expect(data).to.eql({ some: 'other data', provider: 'provider' });
-          });
-        });
-
-        it('remembers the provider', () => {
-          return authenticator.restore({ some: 'data', provider: 'provider' }).then(() => {
-            expect(authenticator.provider).to.eql('provider');
           });
         });
       });
@@ -80,12 +66,6 @@ describe('ToriiAuthenticator', () => {
           expect(data).to.eql({ some: 'data', provider: 'provider' });
         });
       });
-
-      it('remembers the provider', () => {
-        return authenticator.authenticate('provider').then(() => {
-          expect(authenticator.provider).to.eql('provider');
-        });
-      });
     });
 
     describe('when torii does not open successfully', () => {
@@ -112,14 +92,6 @@ describe('ToriiAuthenticator', () => {
           expect(true).to.be.true;
         });
       });
-
-      it('unsets the provider', () => {
-        authenticator.provider = 'provider';
-
-        return authenticator.invalidate({ some: 'data' }).then(() => {
-          expect(authenticator.provider).to.be.null;
-        });
-      });
     });
 
     describe('when torii does not close successfully', () => {
@@ -132,18 +104,11 @@ describe('ToriiAuthenticator', () => {
           expect(true).to.be.true;
         });
       });
-
-      it('keeps the provider', () => {
-        authenticator.provider = 'provider';
-
-        return authenticator.invalidate({ some: 'data' }).catch(() => {
-          expect(authenticator.provider).to.eql('provider');
-        });
-      });
     });
   });
 
-  describe('#assertToriiIsPresent', () => {
+  // TODO: this should be tested for the authenticate and restore method instead
+  describe('#_assertToriiIsPresent', () => {
     let errorMessage;
 
     beforeEach(() => {
@@ -151,13 +116,13 @@ describe('ToriiAuthenticator', () => {
     });
 
     it('does not throw if torii is present', () => {
-      expect(authenticator.assertToriiIsPresent).to.not.throw(errorMessage);
+      expect(authenticator._assertToriiIsPresent).to.not.throw(errorMessage);
     });
 
     it('throws if torii is not installed', () => {
       authenticator.torii = null;
       expect(() => {
-        authenticator.assertToriiIsPresent();
+        authenticator._assertToriiIsPresent();
       }).to.throw(errorMessage);
     });
   });

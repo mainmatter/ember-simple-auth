@@ -52,7 +52,7 @@ export default Ember.Mixin.create({
   /**
     Authorizes an API request by adding an authorization header. The specific
     header name and contents depend on the actual auhorizer that is used.
-  
+
     @method ajaxOptions
     @protected
   */
@@ -78,7 +78,7 @@ export default Ember.Mixin.create({
     This method is called for every response that the adapter receives from the
     API. If this method encounters a 401 response it will invalidate the
     session.
-  
+
     @method handleResponse
     @param {Number} status The response status as received from the API
     @protected

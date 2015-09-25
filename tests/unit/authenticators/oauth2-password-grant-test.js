@@ -278,9 +278,9 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
   });
 
   // testing private API here ;(
-  describe('#refreshAccessToken', () => {
+  describe('#_refreshAccessToken', () => {
     it('sends an AJAX request to the token endpoint', (done) => {
-      authenticator.refreshAccessToken(12345, 'refresh token!');
+      authenticator._refreshAccessToken(12345, 'refresh token!');
 
       Ember.run.next(() => {
         expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
@@ -311,7 +311,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           done();
         });
 
-        authenticator.refreshAccessToken(12345, 'refresh token!');
+        authenticator._refreshAccessToken(12345, 'refresh token!');
       });
 
       describe('when the server reponse includes updated expiration data', () => {
@@ -331,7 +331,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
             done();
           });
 
-          authenticator.refreshAccessToken(12345, 'refresh token!');
+          authenticator._refreshAccessToken(12345, 'refresh token!');
         });
       });
     });
