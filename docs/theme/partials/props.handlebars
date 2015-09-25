@@ -1,10 +1,35 @@
-<a name="props_{{name}}"></a>
-<div class="props item">
-    `{{name}}` &lt;<strong>{{#crossLink type}}{{/crossLink}}</strong>&gt;{{#if final}} <em>(final)</em>{{/if}}{{#if static}} <em>(static)</em>{{/if}}<br>
-    <span class="foundat">{{>source_link file=file line=line}}</span>
+<a name="props_{{name}}" class="symbol-anchor"></a>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {{>source_link file=file line=line}}
+    {{#if final}}
+      <span class="label label-info pull-right">final</span>
+    {{/if}}
+    {{#if static}}
+      <span class="label label-info pull-right">static</span>
+    {{/if}}
+    {{#if access}}
+      <span class="label label-access-{{access}} pull-right">{{access}}</span>
+    {{/if}}
+    {{#if readOnly}}
+      <span class="label label-warning pull-right">readonly</span>
+    {{/if}}
+    <h3 class="panel-title">
+      <strong class="name">`{{name}}`</strong>: `{{#crossLink type}}{{/crossLink}}`
+    </h3>
+  </div>
+  <div class="panel-body">
+    {{#if deprecationMessage}}
+      <p><span class="label label-warning">Deprecated:</span>{{deprecationMessage}}</p>
+    {{/if}}
+    {{#if default}}
+      <p><span class="label label-default">Default:</span> `{{{default}}}`</p>
+    {{/if}}
     {{{propertyDescription}}}
     {{#if example}}
-        <h5>Example</h5>
-        {{{example}}}
+      <h4 class="subsection">Example</h4>
+      {{{example}}}
     {{/if}}
+  </div>
 </div>
+    

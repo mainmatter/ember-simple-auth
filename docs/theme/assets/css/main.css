@@ -41,3 +41,10 @@ h3.section {
 .panel-heading span.pull-right {
   margin-left: 5px;
 }
+
+.symbol-anchor {
+  display: block;
+  position: relative;
+  top: -55px;
+  height: 1px;
+}
