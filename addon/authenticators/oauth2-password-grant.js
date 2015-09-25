@@ -69,10 +69,6 @@ export default BaseAuthenticator.extend({
   */
   refreshAccessTokens: true,
 
-  /**
-    @property _refreshTokenTimeout
-    @private
-  */
   _refreshTokenTimeout: null,
 
   /**
@@ -96,7 +92,7 @@ export default BaseAuthenticator.extend({
       const refreshAccessTokens = this.get('refreshAccessTokens');
       if (!isEmpty(data['expires_at']) && data['expires_at'] < now) {
         if (refreshAccessTokens) {
-          this.refreshAccessToken(data['expires_in'], data['refresh_token']).then(resolve, reject);
+          this._refreshAccessToken(data['expires_in'], data['refresh_token']).then(resolve, reject);
         } else {
           reject();
         }
@@ -104,7 +100,7 @@ export default BaseAuthenticator.extend({
         if (isEmpty(data['access_token'])) {
           reject();
         } else {
-          this.scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
+          this._scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
           resolve(data);
         }
       }
@@ -144,10 +140,10 @@ export default BaseAuthenticator.extend({
         const scopesString = Ember.makeArray(options.scope).join(' ');
         Ember.merge(data, { scope: scopesString });
       }
-      this.makeRequest(serverTokenEndpoint, data).then((response) => {
+      this._makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
-          const expiresAt = this.absolutizeExpirationTime(response['expires_in']);
-          this.scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
+          const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
+          this._scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
           if (!isEmpty(expiresAt)) {
             response = Ember.merge(response, { 'expires_at': expiresAt });
           }
@@ -183,7 +179,7 @@ export default BaseAuthenticator.extend({
         Ember.A(['access_token', 'refresh_token']).forEach((tokenType) => {
           const token = data[tokenType];
           if (!isEmpty(token)) {
-            requests.push(this.makeRequest(serverTokenRevocationEndpoint, {
+            requests.push(this._makeRequest(serverTokenRevocationEndpoint, {
               'token_type_hint': tokenType, token
             }));
           }
@@ -196,11 +192,7 @@ export default BaseAuthenticator.extend({
     });
   },
 
-  /**
-    @method makeRequest
-    @private
-  */
-  makeRequest(url, data) {
+  _makeRequest(url, data) {
     const options = {
       url,
       data,
@@ -222,11 +214,7 @@ export default BaseAuthenticator.extend({
     return Ember.$.ajax(options);
   },
 
-  /**
-    @method scheduleAccessTokenRefresh
-    @private
-  */
-  scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
+  _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
     const refreshAccessTokens = this.get('refreshAccessTokens');
     if (refreshAccessTokens) {
       const now = (new Date()).getTime();
@@ -238,17 +226,13 @@ export default BaseAuthenticator.extend({
         run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
         if (!Ember.testing) {
-          this._refreshTokenTimeout = run.later(this, this.refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
+          this._refreshTokenTimeout = run.later(this, this._refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
         }
       }
     }
   },
 
-  /**
-    @method refreshAccessToken
-    @private
-  */
-  refreshAccessToken(expiresIn, refreshToken) {
+  _refreshAccessToken(expiresIn, refreshToken) {
     const data                = { 'grant_type': 'refresh_token', 'refresh_token': refreshToken };
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return new RSVP.Promise((resolve, reject) => {
@@ -256,9 +240,9 @@ export default BaseAuthenticator.extend({
         run(() => {
           expiresIn       = response['expires_in'] || expiresIn;
           refreshToken    = response['refresh_token'] || refreshToken;
-          const expiresAt = this.absolutizeExpirationTime(expiresIn);
+          const expiresAt = this._absolutizeExpirationTime(expiresIn);
           const data      = Ember.merge(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
-          this.scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
+          this._scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
           this.trigger('sessionDataUpdated', data);
           resolve(data);
         });
@@ -269,11 +253,7 @@ export default BaseAuthenticator.extend({
     });
   },
 
-  /**
-    @method absolutizeExpirationTime
-    @private
-  */
-  absolutizeExpirationTime(expiresIn) {
+  _absolutizeExpirationTime(expiresIn) {
     if (!isEmpty(expiresIn)) {
       return new Date((new Date().getTime()) + expiresIn * 1000).getTime();
     }
