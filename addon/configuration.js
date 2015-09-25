@@ -24,61 +24,67 @@ const DEFAULTS = {
   @public
 */
 export default {
-  /**
-    @property baseURL
-    @private
-  */
-  baseURL: null,
+    /**
+      The base URL of the application as configured in `config/environment.js`.
 
-  /**
-    The route to transition to for authentication.
+      @property baseURL
+      @readOnly
+      @static
+      @type String
+      @default '/'
+      @public
+    */
+    baseURL: null,
 
-    @property authenticationRoute
-    @readOnly
-    @static
-    @type String
-    @default 'login'
-    @public
-  */
-  authenticationRoute: DEFAULTS.authenticationRoute,
+    /**
+      The route to transition to for authentication.
 
-  /**
-    The route to transition to after successful authentication.
+      @property authenticationRoute
+      @readOnly
+      @static
+      @type String
+      @default 'login'
+      @public
+    */
+    authenticationRoute: DEFAULTS.base.authenticationRoute,
 
-    @property routeAfterAuthentication
-    @readOnly
-    @static
-    @type String
-    @default 'index'
-    @public
-  */
-  routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
+    /**
+      The route to transition to after successful authentication.
 
-  /**
-    The route to transition to if a route that implements
-    [`UnauthenticatedRouteMixin`](#SimpleAuth-UnauthenticatedRouteMixin) is
-    accessed when the session is authenticated.
+      @property routeAfterAuthentication
+      @readOnly
+      @static
+      @type String
+      @default 'index'
+      @public
+    */
+    routeAfterAuthentication: DEFAULTS.base.routeAfterAuthentication,
 
-    @property routeIfAlreadyAuthenticated
-    @readOnly
-    @static
-    @type String
-    @default 'index'
-    @public
-  */
-  routeIfAlreadyAuthenticated: DEFAULTS.routeIfAlreadyAuthenticated,
+    /**
+      The route to transition to if a route that implements
+      [`UnauthenticatedRouteMixin`](#SimpleAuth-UnauthenticatedRouteMixin) is
+      accessed when the session is authenticated.
 
-  /**
-    The store store the session data in.
+      @property routeIfAlreadyAuthenticated
+      @readOnly
+      @static
+      @type String
+      @default 'index'
+      @public
+    */
+    routeIfAlreadyAuthenticated: DEFAULTS.base.routeIfAlreadyAuthenticated,
 
-    @property store
-    @readOnly
-    @static
-    @type String
-    @default 'index'
-    @public
-  */
-  store: DEFAULTS.store,
+    /**
+      The store store the session data in.
+
+      @property store
+      @readOnly
+      @static
+      @type String
+      @default 'index'
+      @public
+    */
+    store: DEFAULTS.base.store,
 
   /**
     @method load

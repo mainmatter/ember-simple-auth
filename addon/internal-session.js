@@ -112,15 +112,20 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   isAuthenticated: false,
 
   /**
+    A previously attempted but intercepted transition (e.g. by the 
+    {{#crossLink "AuthenticatedRouteMixin"}}{{/crossLink}}). If an attempted
+    transition is present, the
+    {{#crossLink "ApplicationRouteMixin"}}{{/crossLink}} will retry it when the
+    session becomes authenticated (see
+    {{#crossLink "ApplicationRouteMixin/sessionAuthenticated:method"}}{{/crossLink}}).
+
     @property attemptedTransition
-    @private
+    @type Transition
+    @default null
+    @public
   */
   attemptedTransition: null,
 
-  /**
-    @property content
-    @private
-  */
   content: { authenticated: {} },
 
   /**
@@ -149,10 +154,10 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     Ember.assert(`No authenticator for factory "${authenticator}" could be found!`, !Ember.isNone(theAuthenticator));
     return new Ember.RSVP.Promise((resolve, reject) => {
       theAuthenticator.authenticate.apply(theAuthenticator, args).then((content) => {
-        this.setup(authenticator, content, true);
+        this._setup(authenticator, content, true);
         resolve();
       }, (error) => {
-        this.clear();
+        this._clear();
         reject(error);
       });
     });
@@ -183,7 +188,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       let authenticator = this.container.lookup(this.authenticator);
       authenticator.invalidate(this.content.authenticated).then(() => {
         authenticator.off('sessionDataUpdated');
-        this.clear(true);
+        this._clear(true);
         resolve();
       }, (error) => {
         this.trigger('sessionInvalidationFailed', error);
@@ -192,10 +197,6 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     });
   },
 
-  /**
-    @method restore
-    @private
-  */
   restore() {
     return new Ember.RSVP.Promise((resolve, reject) => {
       let restoredContent   = this.store.restore();
@@ -204,28 +205,24 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         delete restoredContent.authenticated.authenticator;
         this.container.lookup(authenticator).restore(restoredContent.authenticated).then((content) => {
           this.set('content', restoredContent);
-          this.setup(authenticator, content);
+          this._setup(authenticator, content);
           resolve();
         }, () => {
           Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
           this.set('content', restoredContent);
-          this.clear();
+          this._clear();
           reject();
         });
       } else {
         delete (restoredContent || {}).authenticated;
         this.set('content', restoredContent);
-        this.clear();
+        this._clear();
         reject();
       }
     });
   },
 
-  /**
-    @method setup
-    @private
-  */
-  setup(authenticator, authenticatedContend, trigger) {
+  _setup(authenticator, authenticatedContend, trigger) {
     trigger = !!trigger && !this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
@@ -233,19 +230,15 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       authenticator
     });
     Ember.set(this.content, 'authenticated', authenticatedContend);
-    this.bindToAuthenticatorEvents();
-    this.updateStore();
+    this._bindToAuthenticatorEvents();
+    this._updateStore();
     this.endPropertyChanges();
     if (trigger) {
       this.trigger('authenticationSucceeded');
     }
   },
 
-  /**
-    @method clear
-    @private
-  */
-  clear(trigger) {
+  _clear(trigger) {
     trigger = !!trigger && this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
@@ -253,29 +246,21 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       authenticator:   null
     });
     Ember.set(this.content, 'authenticated', {});
-    this.updateStore();
+    this._updateStore();
     this.endPropertyChanges();
     if (trigger) {
       this.trigger('invalidationSucceeded');
     }
   },
 
-  /**
-    @method setUnknownProperty
-    @private
-  */
   setUnknownProperty(key, value) {
     Ember.assert('"authenticated" is a reserved key used by Ember Simple Auth!', key !== 'authenticated');
     let result = this._super(key, value);
-    this.updateStore();
+    this._updateStore();
     return result;
   },
 
-  /**
-    @method updateStore
-    @private
-  */
-  updateStore() {
+  _updateStore() {
     let data = this.content;
     if (!Ember.isEmpty(this.authenticator)) {
       Ember.set(data, 'authenticated', Ember.merge({ authenticator: this.authenticator }, data.authenticated || {}));
@@ -283,26 +268,18 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     this.store.persist(data);
   },
 
-  /**
-    @method bindToAuthenticatorEvents
-    @private
-  */
-  bindToAuthenticatorEvents() {
+  _bindToAuthenticatorEvents() {
     let authenticator = this.container.lookup(this.authenticator);
     authenticator.off('sessionDataUpdated');
     authenticator.off('sessionDataInvalidated');
     authenticator.on('sessionDataUpdated', (content) => {
-      this.setup(this.authenticator, content);
+      this._setup(this.authenticator, content);
     });
     authenticator.on('sessionDataInvalidated', () => {
-      this.clear(true);
+      this._clear(true);
     });
   },
 
-  /**
-    @method _bindToStoreEvents
-    @private
-  */
   _bindToStoreEvents: on('init', function() {
     this.store.on('sessionDataUpdated', (content) => {
       let { authenticator } = (content.authenticated || {});
@@ -310,15 +287,15 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         delete content.authenticated.authenticator;
         this.container.lookup(authenticator).restore(content.authenticated).then((authenticatedContent) => {
           this.set('content', content);
-          this.setup(authenticator, authenticatedContent, true);
+          this._setup(authenticator, authenticatedContent, true);
         }, () => {
           Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
           this.set('content', content);
-          this.clear(true);
+          this._clear(true);
         });
       } else {
         this.set('content', content);
-        this.clear(true);
+        this._clear(true);
       }
     });
   })
