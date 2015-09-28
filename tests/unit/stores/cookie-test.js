@@ -4,7 +4,6 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import Cookie from 'ember-simple-auth/stores/cookie';
-import Configuration from 'ember-simple-auth/configuration';
 import itBehavesLikeAStore from './shared/store-behavior';
 
 describe('CookieStore', () => {
@@ -25,30 +24,6 @@ describe('CookieStore', () => {
     syncExternalChanges() {
       store.syncData();
     }
-  });
-
-  describe('initilization', () => {
-    it('assigns cookieDomain from the configuration object', () => {
-      Configuration.cookie.domain = '.example.com';
-
-      expect(Cookie.create().cookieDomain).to.eq('.example.com');
-    });
-
-    it('assigns cookieName from the configuration object', () => {
-      Configuration.cookie.name = 'cookieName';
-
-      expect(Cookie.create().cookieName).to.eq('cookieName');
-    });
-
-    it('assigns cookieExpirationTime from the configuration object', () => {
-      Configuration.cookie.expirationTime = 123;
-
-      expect(Cookie.create().cookieExpirationTime).to.eq(123);
-    });
-
-    afterEach(() => {
-      Configuration.load({});
-    });
   });
 
   describe('#persist', () => {

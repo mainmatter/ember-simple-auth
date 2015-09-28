@@ -75,7 +75,7 @@ export default Ember.Mixin.create({
       attemptedTransition.retry();
       this.get('session').set('attemptedTransition', null);
     } else {
-      this.transitionTo(Configuration.base.routeAfterAuthentication);
+      this.transitionTo(Configuration.routeAfterAuthentication);
     }
   },
 
@@ -97,7 +97,7 @@ export default Ember.Mixin.create({
   */
   sessionInvalidated() {
     if (!Ember.testing) {
-      window.location.replace(Configuration.base.baseURL);
+      window.location.replace(Configuration.baseURL);
     }
   }
 });

@@ -62,7 +62,7 @@ describe('AuthenticatedRouteMixin', () => {
       it('does not transition to the authentication route', () => {
         route.beforeModel(transition);
 
-        expect(route.transitionTo).to.not.have.been.calledWith(Configuration.base.authenticationRoute);
+        expect(route.transitionTo).to.not.have.been.calledWith(Configuration.authenticationRoute);
       });
     });
 
@@ -85,7 +85,7 @@ describe('AuthenticatedRouteMixin', () => {
       it('transitions to the authentication route', () => {
         route.beforeModel(transition);
 
-        expect(route.transitionTo).to.have.been.calledWith(Configuration.base.authenticationRoute);
+        expect(route.transitionTo).to.have.been.calledWith(Configuration.authenticationRoute);
       });
     });
   });

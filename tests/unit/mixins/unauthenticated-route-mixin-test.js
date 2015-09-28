@@ -45,7 +45,7 @@ describe('UnauthenticatedRouteMixin', () => {
       it('transitions to routeIfAlreadyAuthenticated', () => {
         route.beforeModel(transition);
 
-        expect(route.transitionTo).to.have.been.calledWith(Configuration.base.routeIfAlreadyAuthenticated);
+        expect(route.transitionTo).to.have.been.calledWith(Configuration.routeIfAlreadyAuthenticated);
       });
     });
 

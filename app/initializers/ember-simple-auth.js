@@ -9,9 +9,8 @@ import setupAuthorizers from 'ember-simple-auth/initializers/setup-authorizers';
 export default {
   name:       'ember-simple-auth',
   initialize: function(registry) {
-    const config        = ENV['ember-simple-auth'] || {};
-    config.base         = config.base || {}
-    config.base.baseURL = ENV.baseURL;
+    const config   = ENV['ember-simple-auth'] || {};
+    config.baseURL = ENV.baseURL;
     Configuration.load(config);
 
     setupSessionStores(registry);
