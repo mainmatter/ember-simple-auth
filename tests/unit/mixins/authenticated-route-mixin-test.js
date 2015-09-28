@@ -13,13 +13,12 @@ describe('AuthenticatedRouteMixin', () => {
   let route;
   let session;
   let transition;
-  let beforeModelReturnValue;
 
   describe('#beforeModel', () => {
     beforeEach(() => {
       const MixinImplementingBeforeModel = Ember.Mixin.create({
         beforeModel() {
-          return Ember.RSVP.resolve(beforeModelReturnValue);
+          return Ember.RSVP.resolve('upstreamReturnValue');
         }
       });
       const Route = Ember.Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {
@@ -45,10 +44,8 @@ describe('AuthenticatedRouteMixin', () => {
       });
 
       it('returns the upstream promise', () => {
-        beforeModelReturnValue = 'authenticated';
-
         return route.beforeModel(transition).then((result) => {
-          expect(result).to.equal('authenticated');
+          expect(result).to.equal('upstreamReturnValue');
         });
       });
 
@@ -66,12 +63,8 @@ describe('AuthenticatedRouteMixin', () => {
     });
 
     describe('if the session is not authenticated', () => {
-      it('returns the upstream promise', () => {
-        beforeModelReturnValue = 'unauthenticated';
-
-        return route.beforeModel(transition).then((result) => {
-          expect(result).to.equal('unauthenticated');
-        });
+      it('does not return the upstream promise', () => {
+        expect(route.beforeModel(transition)).to.be.undefined;
       });
 
       it('aborts the transition', () => {
