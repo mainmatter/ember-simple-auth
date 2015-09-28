@@ -17,6 +17,12 @@ describe('TestAuthenticator', () => {
         expect(true).to.be.true;
       });
     });
+
+    it('resolves with session data', () => {
+      return authenticator.restore({ userId: 1, otherData: 'some-data' }).then((data) => {
+        expect(data).to.eql({ userId: 1, otherData: 'some-data' });
+      });
+    });
   });
 
   describe('#authenticate', () => {
