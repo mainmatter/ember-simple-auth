@@ -16,17 +16,23 @@ describe('UnauthenticatedRouteMixin', () => {
 
   describe('#beforeModel', () => {
     beforeEach(() => {
+      const MixinImplementingBeforeModel = Ember.Mixin.create({
+        beforeModel() {
+          return Ember.RSVP.resolve('upstreamReturnValue');
+        }
+      });
+      const Route = Ember.Route.extend(MixinImplementingBeforeModel, UnauthenticatedRouteMixin, {
+        // replace actual transitionTo as the router isn't set up etc.
+        transitionTo() {}
+      });
+
       session    = InternalSession.create({ store: EphemeralStore.create() });
       transition = {
         abort() {},
         send() {}
       };
 
-      route = Ember.Route.extend(UnauthenticatedRouteMixin, {
-        transitionTo() {}
-      }).create({
-        session
-      });
+      route = Route.create({ session });
       sinon.spy(transition, 'abort');
       sinon.spy(route, 'transitionTo');
     });
@@ -47,6 +53,10 @@ describe('UnauthenticatedRouteMixin', () => {
 
         expect(route.transitionTo).to.have.been.calledWith(Configuration.routeIfAlreadyAuthenticated);
       });
+
+      it('does not return the upstream promise', () => {
+        expect(route.beforeModel(transition)).to.be.undefined;
+      });
     });
 
     describe('if the session is not authenticated', () => {
@@ -60,6 +70,12 @@ describe('UnauthenticatedRouteMixin', () => {
         route.beforeModel(transition);
 
         expect(route.transitionTo).to.not.have.been.called;
+      });
+
+      it('returns the upstream promise', () => {
+        return route.beforeModel(transition).then((result) => {
+          expect(result).to.equal('upstreamReturnValue');
+        });
       });
     });
   });
