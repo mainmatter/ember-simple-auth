@@ -4,8 +4,8 @@ import Base from './base';
 const { RSVP } = Ember;
 
 export default Base.extend({
-  restore() {
-    return RSVP.resolve();
+  restore(data) {
+    return RSVP.resolve(data);
   },
 
   authenticate(data) {
