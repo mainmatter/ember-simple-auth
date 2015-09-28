@@ -47,7 +47,7 @@ export default Ember.Mixin.create({
     @public
   */
   beforeModel(transition) {
-    let superResult = this._super(transition);
+    const superResult = this._super(transition);
 
     if (!this.get('session.isAuthenticated')) {
       transition.abort();
