@@ -38,7 +38,7 @@
         {{#params}}
           <dt>
             {{#if optional}}
-              `[{{name}}{{#if optdefault}}={{optdefault}}{{/if}}]`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span>
+              `[{{#if multiple}}...{{/if}}{{name}}{{#if optdefault}}={{optdefault}}{{/if}}]`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span>
             {{else}}
               `{{name}}`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span>
             {{/if}}
