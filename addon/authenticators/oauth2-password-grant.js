@@ -9,7 +9,7 @@ const { RSVP, isEmpty, run } = Ember;
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Resource
   Owner Password Credentials Grant Type"_.
 
-  This authenticator supports access token refresh (see
+  This authenticator also supports access token refreshing (see
   [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
 
   @class OAuth2PasswordGrantAuthenticator
@@ -28,7 +28,7 @@ export default BaseAuthenticator.extend({
   */
 
   /**
-    The client_id to be sent to the authorization server
+    The client_id to be sent to the authentication server.
 
     @property clientId
     @type String
@@ -50,7 +50,11 @@ export default BaseAuthenticator.extend({
 
   /**
     The endpoint on the server the authenticator uses to revoke tokens. Only
-    set this if the server actually supports token revokation.
+    set this if the server actually supports token revokation. If this is
+    `null`, the authenticator will not revoke tokens on session invalidation.
+
+    __If token revocation is enabled but fails, session invalidation will be
+    intercepted and the session will remain authenticated.__
 
     @property serverTokenRevocationEndpoint
     @type String
@@ -72,18 +76,20 @@ export default BaseAuthenticator.extend({
   _refreshTokenTimeout: null,
 
   /**
-    Restores the session from a set of session properties; __will return a
-    resolving promise when there's a non-empty `access_token` in the session
-    data__ and a rejecting promise otherwise.
+    Restores the session from a session data object; __will return a resolving
+    promise when there is a non-empty `access_token` in the session data__ and
+    a rejecting promise otherwise.
 
-    This method also schedules automatic token refreshing when there are values
-    for `refresh_token` and `expires_in` in the `data` and automatic token
-    refreshing is not disabled (see
-    {{#crossLink "OAuth2PasswordGrantAuthenticator/refreshAccessTokens:method"}}{{/crossLink}}).
+    If the server issues expiring access tokens and there is an expired access
+    token in the session data along with a refresh token, the authenticator
+    will try to refresh the access token and return a promise that resolves
+    with the new access token if the refresh was successful. If there is no
+    refresh token or the token refresh is not successful, a rejecting promise
+    will be returned.
 
     @method restore
     @param {Object} data The data to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
     @public
   */
   restore(data) {
@@ -111,33 +117,27 @@ export default BaseAuthenticator.extend({
     Authenticates the session with the specified `options`; makes a `POST`
     request to the
     {{#crossLink "OAuth2PasswordGrantAuthenticator/serverTokenEndpoint:property"}}{{/crossLink}}
-    with the passed credentials and optional scope and receives the token in
-    response (see http://tools.ietf.org/html/rfc6749#section-4.3).
+    with the passed credentials and optional scope and receives the access
+    token in response (see http://tools.ietf.org/html/rfc6749#section-4.3).
 
     __If the credentials are valid (and the optionally requested scope is
     granted) and thus authentication succeeds, a promise that resolves with the
     server's response is returned__, otherwise a promise that rejects with the
-    error is returned.
-
-    This method also schedules automatic token refreshing when there are values
-    for `refresh_token` and `expires_in` in the server response and automatic
-    token refreshing is not disabled (see
-    {{#crossLink "OAuth2PasswordGrantAuthenticator/refreshAccessTokens:method"}}{{/crossLink}}).
+    error as returned by the server is returned.
 
     @method authenticate
-    @param {Object} options
-    @param {String} options.identification The resource owner username
-    @param {String} options.password The resource owner password
+    @param {String} identification The resource owner username
+    @param {String} password The resource owner password
     @param {String|Array} [options.scope] The scope of the access request (see [RFC 6749, section 3.3](http://tools.ietf.org/html/rfc6749#section-3.3))
-    @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
     @public
   */
-  authenticate(options) {
+  authenticate(identification, password, scope) {
     return new RSVP.Promise((resolve, reject) => {
-      const data                = { 'grant_type': 'password', username: options.identification, password: options.password };
+      const data                = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      if (!isEmpty(options.scope)) {
-        const scopesString = Ember.makeArray(options.scope).join(' ');
+      if (!isEmpty(scope)) {
+        const scopesString = Ember.makeArray(scope).join(' ');
         Ember.merge(data, { scope: scopesString });
       }
       this._makeRequest(serverTokenEndpoint, data).then((response) => {
@@ -156,12 +156,14 @@ export default BaseAuthenticator.extend({
   },
 
   /**
-    Cancels any outstanding automatic token refreshes and returns a resolving
-    promise.
+    If token revocation is enabled, this will revoke the access token (and the
+    refresh token if present). If token revocation succedds, this method
+    returns a resolving promise, otherwise it will return a rejecting promise,
+    thus intercepting session invalidation.
 
     @method invalidate
-    @param {Object} data The data of the session to be invalidated
-    @return {Ember.RSVP.Promise} A resolving promise
+    @param {Object} data The current authenticated session data
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
     @public
   */
   invalidate(data) {

@@ -60,16 +60,16 @@ export default BaseAuthenticator.extend({
   identificationAttributeName: 'email',
 
   /**
-    Restores the session from a set of session properties; __will return a
-    resolving promise when there's a non-empty
+    Restores the session from a session data object; __will return a
+    resolving promise when there are non-empty
     {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
-    and a non-empty
+    non-empty
     {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}identification{{/crossLink}}
-    in `data`__ and a rejecting promise otherwise.
+    values in `data`__ and a rejecting promise otherwise.
 
     @method restore
     @param {Object} data The data to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
     @public
   */
   restore(data) {
@@ -88,8 +88,8 @@ export default BaseAuthenticator.extend({
   /**
     Authenticates the session with the specified `credentials`; the credentials
     are `POST`ed to the
-    {{#crossLink "DeviseAuthenticator/serverTokenEndpoint:property"}}{{/crossLink}}
-    and if they are valid the server returns a
+    {{#crossLink "DeviseAuthenticator/serverTokenEndpoint:property"}}server{{/crossLink}}.
+    If the credentials are valid the server will return a
     {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
     and
     {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}identification{{/crossLink}}
@@ -99,7 +99,7 @@ export default BaseAuthenticator.extend({
 
     @method authenticate
     @param {Object} options The credentials to authenticate the session with
-    @return {Ember.RSVP.Promise} A promise that resolves when an auth token and email is successfully acquired from the server and rejects otherwise
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
     @public
   */
   authenticate(credentials) {
