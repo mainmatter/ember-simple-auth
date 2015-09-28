@@ -5,7 +5,7 @@ import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import Session from 'ember-simple-auth/session';
+import InternalSession from 'ember-simple-auth/internal-session';
 import Configuration from 'ember-simple-auth/configuration';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
@@ -27,7 +27,7 @@ describe('AuthenticatedRouteMixin', () => {
         transitionTo() {}
       });
 
-      session = Session.create({ store: EphemeralStore.create() });
+      session = InternalSession.create({ store: EphemeralStore.create() });
       transition = {
         abort() {},
         send() {}

@@ -4,7 +4,7 @@ import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Devise from 'ember-simple-auth/authorizers/devise';
-import Session from 'ember-simple-auth/session';
+import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('DeviseAuthorizer', () => {
@@ -13,7 +13,7 @@ describe('DeviseAuthorizer', () => {
   let block;
 
   beforeEach(() => {
-    session    = Session.create({ store: EphemeralStore.create() });
+    session    = InternalSession.create({ store: EphemeralStore.create() });
     authorizer = Devise.create({ session });
     block      = sinon.spy();
   });

@@ -4,11 +4,11 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import Session from 'ember-simple-auth/session';
+import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 import Authenticator from 'ember-simple-auth/authenticators/base';
 
-describe('Session', () => {
+describe('InternalSession', () => {
   let session;
   let store;
   let authenticator;
@@ -17,7 +17,7 @@ describe('Session', () => {
     let container = { lookup() {} };
     store         = EphemeralStore.create();
     authenticator = Authenticator.create();
-    session       = Session.create({ store, container });
+    session       = InternalSession.create({ store, container });
     sinon.stub(container, 'lookup').withArgs('authenticator').returns(authenticator);
   });
 
