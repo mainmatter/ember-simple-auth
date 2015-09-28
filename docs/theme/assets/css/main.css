@@ -52,3 +52,34 @@ h3.section {
   top: -55px;
   height: 1px;
 }
+
+pre, code {
+  color: #333;
+  background: #f8f8ff;
+}
+
+a code {
+  color: #428bca;
+}
+
+strong {
+  background-color: #fffebb;
+  font-weight: normal;
+  padding: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+
+h1.class, h3.signature, dl.params dt, span.type {
+  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+  font-weight: bold;
+}
+
+.panel-title.signature strong {
+  background-color: transparent;
+  font-weight: bold;
+}
+
+.panel-title.signature code {
+  background-color: transparent;
+}
