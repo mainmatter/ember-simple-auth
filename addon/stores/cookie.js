@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import Base from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
-import Configuration from './../configuration';
 
 const { computed } = Ember;
 
@@ -116,9 +115,6 @@ export default Base.extend({
     @private
   */
   init() {
-    this.cookieName           = Configuration.cookie.name;
-    this.cookieExpirationTime = Configuration.cookie.expirationTime;
-    this.cookieDomain         = Configuration.cookie.domain;
     this.syncData();
     this.renewExpiration();
   },

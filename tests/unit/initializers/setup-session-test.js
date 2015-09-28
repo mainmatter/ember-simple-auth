@@ -28,6 +28,6 @@ describe('setupSession', () => {
     sinon.spy(registry, 'injection');
     setupSession(registry);
 
-    expect(registry.injection).to.have.been.calledWith('session:main', 'store', Configuration.base.store);
+    expect(registry.injection).to.have.been.calledWith('session:main', 'store', Configuration.store);
   });
 });

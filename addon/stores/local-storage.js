@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import Base from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
-import Configuration from '../configuration';
 
 /**
   Store that saves its data in the browser's `localStorage`.
@@ -33,8 +32,6 @@ export default Base.extend({
     @private
   */
   init() {
-    this.key = Configuration.localStorage.key;
-
     this.bindToStorageEvents();
   },
 

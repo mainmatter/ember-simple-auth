@@ -88,10 +88,10 @@ describe('ApplicationRouteMixin', () => {
     });
 
     describe('when no attempted transition is stored in the session', () => {
-      it('transitions to "Configuration.base.routeAfterAuthentication"', () => {
+      it('transitions to "Configuration.routeAfterAuthentication"', () => {
         route.sessionAuthenticated();
 
-        expect(route.transitionTo).to.have.been.calledWith(Configuration.base.routeAfterAuthentication);
+        expect(route.transitionTo).to.have.been.calledWith(Configuration.routeAfterAuthentication);
       });
     });
   });

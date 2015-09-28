@@ -294,9 +294,7 @@ environment object:
 ```js
 //config/environment.js
 ENV['ember-simple-auth'] = {
-  base: {
-    store: 'session-store:local-storage'
-  }
+  store: 'session-store:local-storage'
 }
 ```
 
