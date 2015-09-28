@@ -47,7 +47,7 @@ export default {
     @default 'login'
     @public
   */
-  authenticationRoute: DEFAULTS.base.authenticationRoute,
+  authenticationRoute: DEFAULTS.authenticationRoute,
 
   /**
     The route to transition to after successful authentication.
@@ -59,7 +59,7 @@ export default {
     @default 'index'
     @public
   */
-  routeAfterAuthentication: DEFAULTS.base.routeAfterAuthentication,
+  routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
 
   /**
     The route to transition to if a route that implements
@@ -73,7 +73,7 @@ export default {
     @default 'index'
     @public
   */
-  routeIfAlreadyAuthenticated: DEFAULTS.base.routeIfAlreadyAuthenticated,
+  routeIfAlreadyAuthenticated: DEFAULTS.routeIfAlreadyAuthenticated,
 
   /**
     The store store the session data in.
@@ -85,7 +85,7 @@ export default {
     @default 'index'
     @public
   */
-  store: DEFAULTS.base.store,
+  store: DEFAULTS.store,
 
   /**
     @method load
