@@ -5,7 +5,8 @@ const { RSVP, isEmpty } = Ember;
 
 /**
   Authenticator that wraps the
-  [Torii library](https://github.com/Vestorly/torii).
+  [Torii library](https://github.com/Vestorly/torii) and thus allows to connect
+  any external authentication provider that torii defines a provider for.
 
   @class ToriiAuthenticator
   @module ember-simple-auth/authenticators/torii
@@ -18,9 +19,23 @@ export default BaseAuthenticator.extend({
   /**
     Restores the session by calling the torii provider's `fetch` method.
 
+    __Many torii providers do not implement the `fetch` method__. If the
+    provider in use does not implement the method simply, add it:
+
+    ```js
+    // app/providers/facebook.js
+    import FacebookOauth2Provider from 'torii/providers/facebook-oauth2';
+
+    export default FacebookOauth2Provider.extend({
+      fetch(data) {
+        return data;
+      }
+    });
+    ```
+
     @method restore
     @param {Object} data The data to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
     @public
   */
   restore(data) {
@@ -49,9 +64,9 @@ export default BaseAuthenticator.extend({
     [project's README](https://github.com/Vestorly/torii#readme).
 
     @method authenticate
-    @param {String} provider The provider to authenticate the session with
+    @param {String} provider The torii provider to authenticate the session with
     @param {Object} options The options to pass to the torii provider
-    @return {Ember.RSVP.Promise} A promise that resolves when the provider successfully authenticates a user and rejects otherwise
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
     @public
   */
   authenticate(provider, options) {
@@ -65,11 +80,12 @@ export default BaseAuthenticator.extend({
   },
 
   /**
-    Closes the torii provider.
+    Closes the torii provider. If the provider is successfully closed, this
+    method returns a resolving promise, otherwise it will return a rejecting
+    promise, thus intercepting session invalidation.
 
     @method invalidate
-    @param {Object} data The data that's stored in the session
-    @return {Ember.RSVP.Promise} A promise that resolves when the provider successfully closes and rejects otherwise
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
     @public
   */
   invalidate() {
