@@ -17,12 +17,12 @@ describe('AuthenticatedRouteMixin', () => {
 
   describe('#beforeModel', () => {
     beforeEach(() => {
-      let MixinImplementingBeforeModel = Ember.Mixin.create({
+      const MixinImplementingBeforeModel = Ember.Mixin.create({
         beforeModel() {
           return Ember.RSVP.resolve(beforeModelReturnValue);
         }
       });
-      let Route = Ember.Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {
+      const Route = Ember.Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {
         // replace actual transitionTo as the router isn't set up etc.
         transitionTo() {}
       });
@@ -47,10 +47,9 @@ describe('AuthenticatedRouteMixin', () => {
       it('returns the upstream promise', () => {
         beforeModelReturnValue = 'authenticated';
 
-        return route.beforeModel(transition)
-          .then((result) => {
-            expect(result).to.equal('authenticated');
-          });
+        return route.beforeModel(transition).then((result) => {
+          expect(result).to.equal('authenticated');
+        });
       });
 
       it('does not abort the transition', () => {
@@ -70,10 +69,9 @@ describe('AuthenticatedRouteMixin', () => {
       it('returns the upstream promise', () => {
         beforeModelReturnValue = 'unauthenticated';
 
-        return route.beforeModel(transition)
-          .then((result) => {
-            expect(result).to.equal('unauthenticated');
-          });
+        return route.beforeModel(transition).then((result) => {
+          expect(result).to.equal('unauthenticated');
+        });
       });
 
       it('aborts the transition', () => {
