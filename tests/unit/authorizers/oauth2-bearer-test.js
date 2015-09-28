@@ -4,7 +4,7 @@ import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import OAuth2Bearer from 'ember-simple-auth/authorizers/oauth2-bearer';
-import Session from 'ember-simple-auth/session';
+import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('OAuth2BearerAuthorizer', () => {
@@ -13,7 +13,7 @@ describe('OAuth2BearerAuthorizer', () => {
 
   beforeEach(() => {
     authorizer = OAuth2Bearer.create({
-      session: Session.create({ store: EphemeralStore.create() })
+      session: InternalSession.create({ store: EphemeralStore.create() })
     });
     block = sinon.spy();
   });

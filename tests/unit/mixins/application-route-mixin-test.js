@@ -5,7 +5,7 @@ import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
-import Session from 'ember-simple-auth/session';
+import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 import Configuration from 'ember-simple-auth/configuration';
 
@@ -14,7 +14,7 @@ describe('ApplicationRouteMixin', () => {
   let route;
 
   beforeEach(() => {
-    session = Session.create({ store: EphemeralStore.create() });
+    session = InternalSession.create({ store: EphemeralStore.create() });
 
     route = Ember.Route.extend(ApplicationRouteMixin, {
       transitionTo() {}
