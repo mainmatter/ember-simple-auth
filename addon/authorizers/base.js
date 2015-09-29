@@ -27,7 +27,7 @@ export default Ember.Object.extend({
     which will pass the current authenticated session data and a block.
     Depending on the mechanism it implements, the authorizer transforms the
     session data into authorization data and invokes the block with that data.
-  
+
     `BaseAuthorizer`'s implementation does nothing. __This method must be
     overridden in custom authorizers.__
 
