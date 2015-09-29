@@ -51,15 +51,15 @@ export default Base.extend({
     ```
 
     @method authorize
+    @param {Object} data The data that the session currently holds
     @param {Function} block The block to call with the authoriztion data if the session is authenticated and authorization data is actually present
     @public
   */
-  authorize(block) {
+  authorize(data, block) {
     const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
-    const authenticatedData  = this.get('session.authenticated');
-    const userToken          = authenticatedData[tokenAttributeName];
-    const userIdentification = authenticatedData[identificationAttributeName];
-    if (this.get('session.isAuthenticated') && !isEmpty(userToken) && !isEmpty(userIdentification)) {
+    const userToken          = data[tokenAttributeName];
+    const userIdentification = data[identificationAttributeName];
+    if (!isEmpty(userToken) && !isEmpty(userIdentification)) {
       const authData = `${tokenAttributeName}="${userToken}", ${identificationAttributeName}="${userIdentification}"`;
       block('Authorization', `Token ${authData}`);
     }

@@ -41,8 +41,8 @@ export default Ember.Object.extend({
     `SimpleAuth.Authorizers.Base`'s implementation does nothing.
 
     @method authorize
-    @param {jqXHR} jqXHR The XHR request to authorize (see http://api.jquery.com/jQuery.ajax/#jqXHR)
-    @param {Object} requestOptions The options as provided to the `$.ajax` method (see http://api.jquery.com/jQuery.ajaxPrefilter/)
+    @param {Object} data The data that the session currently holds
+    @param {Function} block The callback
     @public
   */
   authorize() {}

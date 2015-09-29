@@ -47,7 +47,7 @@ describe('SessionService', () => {
 
   describe('isAuthenticated', () => {
     it('is read from the session', () => {
-      session.isAuthenticated = true;
+      session.set('isAuthenticated', true);
 
       expect(sessionService.get('isAuthenticated')).to.be.true;
     });
@@ -122,11 +122,31 @@ describe('SessionService', () => {
   });
 
   describe('authorize', () => {
-    it('authorizes with the authorizer', () => {
-      sinon.spy(authorizer, 'authorize');
-      sessionService.authorize('authorizer', 'block');
+    describe('when the session is authenticated', () => {
+      beforeEach(() => {
+        sessionService.set('isAuthenticated', true);
+        sessionService.set('data', { authenticated: { some: 'data' } });
+      });
 
-      expect(authorizer.authorize).to.have.been.calledWith('block');
+      it('authorizes with the authorizer', () => {
+        sinon.spy(authorizer, 'authorize');
+        sessionService.authorize('authorizer', 'block');
+
+        expect(authorizer.authorize).to.have.been.calledWith({ some: 'data' }, 'block');
+      });
+    });
+
+    describe('when the session is not authenticated', () => {
+      beforeEach(() => {
+        sessionService.set('isAuthenticated', false);
+      });
+
+      it('does not authorize', () => {
+        sinon.spy(authorizer, 'authorize');
+        sessionService.authorize('authorizer', 'block');
+
+        expect(authorizer.authorize).to.not.have.been.called;
+      });
     });
   });
 });
