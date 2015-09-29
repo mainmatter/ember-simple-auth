@@ -1,23 +1,24 @@
 import Ember from 'ember';
-import Base from './base';
+import BaseAuthorizer from './base';
 
 const { isEmpty } = Ember;
 
 /**
   Authorizer that works with the Ruby gem
-  [Devise](https://github.com/plataformatec/devise) by sending the `token` and
-  `email` properties from the session in the `Authorization` header.
+  [Devise](https://github.com/plataformatec/devise); includes the user's token
+  and identification from the session data in the `Authorization` HTTP header.
 
   __As token authentication is not actually part of devise anymore, the server
   needs to implement some customizations__ to work with this authenticator -
-  see the README for more information.
+  see the README and
+  [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
   @class DeviseAuthorizer
   @module ember-simple-auth/authorizers/devise
   @extends BaseAuthorizer
   @public
 */
-export default Base.extend({
+export default BaseAuthorizer.extend({
   /**
     The token attribute name.
 
@@ -39,7 +40,7 @@ export default Base.extend({
   identificationAttributeName: 'email',
 
   /**
-    Combines the user's token (see
+    Includes the user's token (see
     {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}{{/crossLink}})
     and identification (see
     {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}{{/crossLink}})
@@ -47,7 +48,7 @@ export default Base.extend({
 
     @method authorize
     @param {Object} data The data that the session currently holds
-    @param {Function} block(headerName,headerContent) The callback to call with the authorization data
+    @param {Function} block(headerName,headerContent) The callback to call with the authorization data; will receive the header name and header content as arguments
     @public
   */
   authorize(data, block) {
