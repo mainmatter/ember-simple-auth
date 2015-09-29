@@ -55,6 +55,10 @@ pre, code {
   background: #f8f8ff;
 }
 
+.hljs {
+  background: transparent;
+}
+
 a code {
   color: #428bca;
 }
