@@ -1,21 +1,19 @@
 import Ember from 'ember';
 
 /**
-  The base for all authorizers. __This serves as a starting point for
+  The base class for all authorizers. __This serves as a starting point for
   implementing custom authorizers and must not be used directly.__
 
-  __The authorizer preprocesses all XHR requests__ (except ones to 3rd party
-  origins, see
-  [Configuration.crossOriginWhitelist](#SimpleAuth-Configuration-crossOriginWhitelist))
-  and makes sure they have the required data attached that allows the server to
-  identify the user making the request. This data might be an HTTP header,
-  query string parameters in the URL, cookies etc. __The authorizer has to fit
-  the authenticator__ (see
-  [SimpleAuth.Authenticators.Base](#SimpleAuth-Authenticators-Base))
+  Authorizers use the session data aqcuired by an authenticator when
+  authenticating the session to construct authrorization data that can e.g. be
+  injected into outgoing network requests etc. Depending on the authorization
+  mechanism the authorizer implements, that authorization data might be an HTTP
+  header, query string parameters in the URL, cookies etc. __The authorizer has
+  to fit the authenticator__ (see
+  {{#crossLink "BaseAuthenticator"}}{{/crossLink}})
   as it relies on data that the authenticator acquires during authentication.
 
-  @class Base
-  @namespace Authorizers
+  @class BaseAuthorizer
   @module ember-simple-auth/authorizers/base
   @extends Ember.Object
 @public
@@ -27,7 +25,7 @@ export default Ember.Object.extend({
 
     @property session
     @readOnly
-    @type SimpleAuth.Session
+    @type InernalSession
     @default the session instance
     @public
   */
