@@ -4,87 +4,77 @@ import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Devise from 'ember-simple-auth/authorizers/devise';
-import InternalSession from 'ember-simple-auth/internal-session';
-import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
 
 describe('DeviseAuthorizer', () => {
   let authorizer;
-  let session;
   let block;
+  let data;
 
   beforeEach(() => {
-    session    = InternalSession.create({ store: EphemeralStore.create() });
-    authorizer = Devise.create({ session });
+    authorizer = Devise.create();
     block      = sinon.spy();
   });
 
   describe('#authorize', () => {
     function itDoesNotAuthorizeTheRequest() {
       it('does not call the block', () => {
-        authorizer.authorize(block);
+        authorizer.authorize(data, block);
 
         expect(block).to.not.have.been.called;
       });
     }
 
-    describe('when the session is authenticated', () => {
+    describe('when the session data contains a non empty token and email', () => {
       beforeEach(() => {
-        authorizer.set('session.isAuthenticated', true);
+        data = {
+          token: 'secret token!',
+          email: 'user@email.com'
+        };
       });
 
-      describe('when the session contains a non empty token and email', () => {
-        beforeEach(() => {
-          authorizer.set('session.authenticated.token', 'secret token!');
-          authorizer.set('session.authenticated.email', 'user@email.com');
-        });
+      it('calls the block with a header containing "token" and "email"', () => {
+        authorizer.authorize(data, block);
 
-        it('calls the block with a header containing "token" and "email"', () => {
-          authorizer.authorize(block);
-
-          expect(block).to.have.been.calledWith('Authorization', 'Token token="secret token!", email="user@email.com"');
-        });
-      });
-
-      describe('when custom identification and token attribute names are configured', () => {
-        beforeEach(() => {
-          authorizer = Devise.extend({ tokenAttributeName: 'employee_token', identificationAttributeName: 'employee_email' }).create();
-        });
-
-        describe('when the session contains a non empty employee_token and employee_email', () => {
-          beforeEach(() => {
-            authorizer.set('session', session);
-            authorizer.set('session.authenticated.employee_token', 'secret token!');
-            authorizer.set('session.authenticated.employee_email', 'user@email.com');
-          });
-
-          it('calls the block with a header containing "employee_token" and "employee_email"', () => {
-            authorizer.authorize(block);
-
-            expect(block).to.have.been.calledWith('Authorization', 'Token employee_token="secret token!", employee_email="user@email.com"');
-          });
-        });
-      });
-
-      describe('when the session does not contain a token', () => {
-        beforeEach(() => {
-          authorizer.set('session.authenticated.token', null);
-        });
-
-        itDoesNotAuthorizeTheRequest();
-      });
-
-      describe('when the session does not contain an email', () => {
-        beforeEach(() => {
-          authorizer.set('session.authenticated.email', null);
-        });
-
-        itDoesNotAuthorizeTheRequest();
+        expect(block).to.have.been.calledWith('Authorization', 'Token token="secret token!", email="user@email.com"');
       });
     });
 
-    describe('when the session is not authenticated', () => {
+    describe('when custom identification and token attribute names are configured', () => {
       beforeEach(() => {
-        authorizer.set('session.isAuthenticated', false);
+        authorizer = Devise.extend({ tokenAttributeName: 'employee_token', identificationAttributeName: 'employee_email' }).create();
+      });
+
+      describe('when the session data contains a non empty employee_token and employee_email', () => {
+        beforeEach(() => {
+          data = {
+            'employee_token': 'secret token!',
+            'employee_email': 'user@email.com'
+          };
+        });
+
+        it('calls the block with a header containing "employee_token" and "employee_email"', () => {
+          authorizer.authorize(data, block);
+
+          expect(block).to.have.been.calledWith('Authorization', 'Token employee_token="secret token!", employee_email="user@email.com"');
+        });
+      });
+    });
+
+    describe('when the session data does not contain a token', () => {
+      beforeEach(() => {
+        data = {
+          email: 'user@email.com'
+        };
+      });
+
+      itDoesNotAuthorizeTheRequest();
+    });
+
+    describe('when the session data does not contain an email', () => {
+      beforeEach(() => {
+        data = {
+          token: 'secret token!'
+        };
       });
 
       itDoesNotAuthorizeTheRequest();

@@ -40,7 +40,10 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   authorize(authorizerFactory, block) {
-    const authorizer = this.container.lookup(authorizerFactory);
-    authorizer.authorize(block);
+    if (this.get('isAuthenticated')) {
+      const authorizer = this.container.lookup(authorizerFactory);
+      const sessionData = this.get('data.authenticated');
+      authorizer.authorize(sessionData, block);
+    }
   }
 });
