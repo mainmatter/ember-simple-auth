@@ -6,7 +6,8 @@ const { isEmpty } = Ember;
 
 /**
   Authorizer that conforms to OAuth 2
-  ([RFC 6749](http://tools.ietf.org/html/rfc6749)) by sending a bearer token
+  ([RFC 6749](http://tools.ietf.org/html/rfc6749)); includes the access token
+  from the session data as a bearer token
   ([RFC 6750](http://tools.ietf.org/html/rfc6750)) in the `Authorization`
   header.
 
@@ -17,8 +18,8 @@ const { isEmpty } = Ember;
 */
 export default Base.extend({
   /**
-    Puts the access token into the `Authorization` header as a Bearer token,
-    e.g.:
+    Includes the access token from the session data into the `Authorization`
+    header as a Bearer token, e.g.:
 
     ```
     Authorization: Bearer <access_token>
@@ -26,7 +27,7 @@ export default Base.extend({
 
     @method authorize
     @param {Object} data The data that the session currently holds
-    @param {Function} block(headerName,headerContent) The callback to call with the authorization data
+    @param {Function} block(headerName,headerContent) The callback to call with the authorization data; will receive the header name and header content as arguments
     @public
   */
   authorize(data, block) {

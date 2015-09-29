@@ -8,38 +8,31 @@ import Ember from 'ember';
   authenticating the session to construct authrorization data that can e.g. be
   injected into outgoing network requests etc. Depending on the authorization
   mechanism the authorizer implements, that authorization data might be an HTTP
-  header, query string parameters in the URL, cookies etc. __The authorizer has
-  to fit the authenticator__ (see
+  header, query string parameters, a cookie etc.
+
+  __The authorizer has to fit the authenticator__ (see
   {{#crossLink "BaseAuthenticator"}}{{/crossLink}})
-  as it relies on data that the authenticator acquires during authentication.
+  as it can only use data that the authenticator acquires when authenticating
+  the session.
 
   @class BaseAuthorizer
   @module ember-simple-auth/authorizers/base
   @extends Ember.Object
-@public
+  @public
 */
 export default Ember.Object.extend({
   /**
-    The session the authorizer gets the data it needs to authorize requests
-    from.
-
-    @property session
-    @readOnly
-    @type InernalSession
-    @default the session instance
-    @public
-  */
-  session: null,
-
-  /**
-    Authorizes an XHR request by adding some sort of secret information that
-    allows the server to identify the user making the request (e.g. a token in
-    the `Authorization` header or some other secret in the query string etc.).
-
-    `SimpleAuth.Authorizers.Base`'s implementation does nothing.
+    Authorizes a block of code. This method will be invoked by the session
+    service's {{#crossLink "SessionService/authrorize:method"}}{{/crossLink}}
+    which will pass the current authenticated session data and a block.
+    Depending on the mechanism it implements, the authorizer transforms the
+    session data into authorization data and invokes the block with that data.
+  
+    `BaseAuthorizer`'s implementation does nothing. __This method must be
+    overridden in custom authorizers.__
 
     @method authorize
-    @param {Object} data The data that the session currently holds
+    @param {Object} data The current authenticated session data
     @param {Function} block The callback to call with the authorization data
     @public
   */
