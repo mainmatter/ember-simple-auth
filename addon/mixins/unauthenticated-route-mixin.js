@@ -4,17 +4,12 @@ import Configuration from './../configuration';
 const { service } = Ember.inject;
 
 /**
-  This mixin is for routes that are only accessible if the session is not
-  authenticated. This is e.g. the case for the login route that is not
-  accessible when the session is already authenticated. Including this mixin
-  in a route automatically adds a hook that redirects to the
+  This mixin is used to make routes accessible only if the session is
+  not authenticated (e.g. login and registration routes). It will add a
+  `beforeModel` method that aborts the current transition and instead
+  transitions to the
   {{#crossLink "Configuration/routeIfAlreadyAuthenticated:property"}}{{/crossLink}}
-  if the session is already authenticated.
-
-  The `UnauthenticatedRouteMixin` performs the check for whether the session is
-  already authenticated in the `beforeModel` method. __If `beforeModel` is
-  overridden in a route that also uses this mixin, ensure that the custom
-  implementation calls `this._super(...arguments)`__.
+  if the session is authenticated.
 
   ```js
   // app/routes/login.js
@@ -26,7 +21,6 @@ const { service } = Ember.inject;
   @class UnauthenticatedRouteMixin
   @module ember-simple-auth/mixins/unauthenticated-route-mixin
   @extends Ember.Mixin
-  @static
   @public
 */
 export default Ember.Mixin.create({
@@ -34,17 +28,20 @@ export default Ember.Mixin.create({
     The session service.
 
     @property session
+    @readOnly
     @type SessionService
     @public
   */
   session: service('session'),
 
   /**
-    This method implements the enforcement of the session not being
-    authenticated. If the session is authenticated, the current transition will
-    be aborted and a redirect to the
-    {{#crossLink "Configuration/routeIfAlreadyAuthenticated:property"}}{{/crossLink}}
-    will be triggered.
+    Checks whether the session is not authenticated and if it is aborts the
+    current transition and instead transitions to the
+    {{#crossLink "Configuration/routeIfAlreadyAuthenticated:property"}}{{/crossLink}}.
+
+    __If `beforeModel` is overridden in a route that uses this mixin, the route's
+   implementation must call `this._super(...arguments)`__ so that the mixin's
+   `beforeModel` method is actually executed.
 
     @method beforeModel
     @param {Transition} transition The transition that lead to this route
