@@ -3,14 +3,14 @@ import Ember from 'ember';
 const { service } = Ember.inject;
 
 /**
-  This mixin is for Ember Data Adapters and will inject an authorization header
-  into API requests. It works with all authorizers that call the authorization
-  callback (see
+  This mixin can be used to make Ember Data adapters authorize all outgoing API
+  requests by injecting a header. It works with all authorizers that call the
+  authorization callback (see
   {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) with header
   name and header content arguments.
 
-  The `DataAdapterMixin` will also invalidate the session when it receives a
-  401 response for an API request.
+  The `DataAdapterMixin` will also invalidate the session whenever it receives
+  a 401 response for an API request.
 
   ```js
   // app/adapters/application.js
@@ -25,7 +25,6 @@ const { service } = Ember.inject;
   @class DataAdapterMixin
   @module ember-simple-auth/mixins/data-adapter-mixin
   @extends Ember.Mixin
-  @static
   @public
 */
 
@@ -34,24 +33,33 @@ export default Ember.Mixin.create({
     The session service.
 
     @property session
+    @readOnly
     @type SessionService
     @public
   */
   session: service('session'),
 
   /**
-    The authorizer that is used to authorize API requests.
+    The authorizer that is used to authorize API requests. The authorizer has
+    to call the authorization callback (see
+    {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) with header
+    name and header content arguments. __This property must be overridden in
+    adapters using this mixin.__
 
-    @property session
-    @type SessionService
+    @property authorizer
+    @type String
     @default null
     @public
   */
   authorizer: null,
 
   /**
-    Authorizes an API request by adding an authorization header. The specific
-    header name and contents depend on the actual auhorizer that is used.
+    Defines a `beforeSend` method that injects a request header containing the
+    authorization data as constructed by the
+    {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}} (see
+    {{#crossLink "SessionService/authorize:method"}}{{/crossLink}}). The
+    specific header name and contents depend on the actual auhorizer that is
+    used.
 
     @method ajaxOptions
     @protected
@@ -76,8 +84,8 @@ export default Ember.Mixin.create({
 
   /**
     This method is called for every response that the adapter receives from the
-    API. If this method encounters a 401 response it will invalidate the
-    session.
+    API. If the response has a 401 status code it invalidates the session (see
+    {{#crossLink "SessionService/invalidate:method"}}{{/crossLink}}).
 
     @method handleResponse
     @param {Number} status The response status as received from the API
