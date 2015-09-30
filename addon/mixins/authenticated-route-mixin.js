@@ -4,17 +4,11 @@ import Configuration from './../configuration';
 const { service } = Ember.inject;
 
 /**
-  This mixin is for routes that require the session to be authenticated to be
-  accessible. Including this mixin in a route automatically adds a hook that
-  enforces the session to be authenticated and redirects to the
+  This mixin is used to make routes accessible only if the session is
+  authenticated. It will add a `beforeModel` method that aborts the current
+  transition and instead transitions to the
   {{#crossLink "Configuration/authenticationRoute:property"}}{{/crossLink}} if
-  it is not.
-
-  The `AuthenticatedRouteMixin` performs the redirect in the `beforeModel`
-  method so that in all methods executed after that the session is guaranteed
-  to be authenticated. __If `beforeModel` is overridden in a route that also
-  uses this mixin, ensure that the custom implementation calls
-  `this._super(...arguments)`__ so that the mixin's code is actually executed.
+  the session is not authenticated.
 
   ```js
   // app/routes/protected.js
@@ -26,7 +20,6 @@ const { service } = Ember.inject;
   @class AuthenticatedRouteMixin
   @module ember-simple-auth/mixins/authenticated-route-mixin
   @extends Ember.Mixin
-  @static
   @public
 */
 export default Ember.Mixin.create({
@@ -34,19 +27,26 @@ export default Ember.Mixin.create({
     The session service.
 
     @property session
+    @readOnly
     @type SessionService
     @public
   */
   session: service('session'),
 
   /**
-    This method implements the enforcement of an authenticated session. If the
-    session is not authenticated, the current transition will be aborted and a
-    redirect to the
-    {{#crossLink "Configuration/authenticationRoute:property"}}{{/crossLink}}
-    will be triggered. The method also saves the intercepted transition so that
-    it can be retried after the session has been authenticated (see
+    Checks whether the session is authenticated and if it is not aborts the
+    current transition and instead transitions to the
+    {{#crossLink "Configuration/authenticationRoute:property"}}{{/crossLink}}.
+    If the current transition is aborted, this method will save it in the
+    session's
+    {{#crossLink "SessionService/attemptedTransition:property"}}{{/crossLink}}
+    property so that  it can be retried after the session was authenticated
+    (see
     {{#crossLink "ApplicationRouteMixin/sessionAuthenticated:method"}}{{/crossLink}}.
+
+    __If `beforeModel` is overridden in a route that uses this mixin, the route's
+   implementation must call `this._super(...arguments)`__ so that the mixin's
+   `beforeModel` method is actually executed.
 
     @method beforeModel
     @param {Transition} transition The transition that lead to this route
