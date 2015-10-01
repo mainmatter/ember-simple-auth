@@ -59,6 +59,34 @@ describe('SessionService', () => {
     });
   });
 
+  describe('store', () => {
+    it('is read from the session', () => {
+      session.set('store', 'some store');
+
+      expect(sessionService.get('store')).to.eq('some store');
+    });
+
+    it('is read-only', () => {
+      expect(() => {
+        sessionService.set('store', 'some other store');
+      }).to.throw;
+    });
+  });
+
+  describe('attemptedTransition', () => {
+    it('is read from the session', () => {
+      session.set('attemptedTransition', 'some transition');
+
+      expect(sessionService.get('attemptedTransition')).to.eq('some transition');
+    });
+
+    it('is written back to the session', () => {
+      sessionService.set('attemptedTransition', 'some other transition');
+
+      expect(session.get('attemptedTransition')).to.eq('some other transition');
+    });
+  });
+
   describe('data', () => {
     it("is read from the session's content", () => {
       session.set('some', 'data');
