@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Base from './base';
+import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
 const { computed } = Ember;
@@ -7,51 +7,57 @@ const { computed } = Ember;
 const { on } = Ember;
 
 /**
-  Store that saves its data in a cookie.
+  Session store that persists data in a cookie.
 
-  __In order to keep multiple tabs/windows of an application in sync, this
-  store has to periodically (every 500ms) check the cookie__ for changes as
-  there are no events that notify of changes in cookies. The recommended
-  alternative is `Stores.LocalStorage` that also persistently stores data but
-  instead of cookies relies on the `localStorage` API and does not need to poll
-  for external changes.
-
-  By default the cookie store will use a session cookie that expires and is
+  By default the cookie session store uses a session cookie that expires and is
   deleted when the browser is closed. The cookie expiration period can be
-  configured via setting
-  [`Stores.Cooke#cookieExpirationTime`](#SimpleAuth-Stores-Cookie-cookieExpirationTime)
-  though. This can also be used to implement "remember me" functionality that
+  configured by setting
+  {{#crossLink "SessionStore/cookieExpirationTime:property"}}{{/crossLink}}.
+  This coulds be used to implement "remember me" functionality that
   will either store the session persistently or in a session cookie depending
-  whether the user opted in or not:
+  on whether the user opted in or not:
 
   ```js
   // app/controllers/login.js
   export default Ember.Controller.extend({
     rememberMe: false,
 
-    rememberMeChanged: function() {
-      this.get('session.store').cookieExpirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;
-    }.observes('rememberMe')
+    _rememberMeChanged: Ember.observer('rememberMe', function() {
+      const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;
+      this.set('session.store.cookieExpirationTime', expirationTime);
+    }
   });
   ```
 
-  _The factory for this store is registered as
-  `'session-store:cookie'` in Ember's container._
+  __In order to keep multiple tabs/windows of an application in sync, this
+  store has to periodically (every 500ms) check the cookie for changes__ as
+  there are no events for cookie changes that the store could subscribe to. If
+  the application does not need to make sure all session data is deleted when
+  the browser is closed (which can be achieved with session cookies, see
+  {{#crossLink "SessionStore/cookieExpirationTime:property"}}{{/crossLink}}),
+  the
+  {{#crossLink "LocalStorageStore"}}`localStorage` session store{{/crossLink}}
+  should be used.
 
-  @class Cookie
-  @namespace Stores
-  @module stores/cookie
-  @extends Stores.Base
+  To use the cookie session store, configure it via
+
+  ```js
+  ENV['ember-simple-auth'] = {
+    store: 'session-store:cookie'
+  }
+  ```
+
+  @class CookieStore
+  @module ember-simple-auth/stores/cookie
+  @extends BaseStore
   @public
 */
-export default Base.extend({
+export default BaseStore.extend({
   /**
     The domain to use for the cookie, e.g., "example.com", ".example.com"
-    (includes all subdomains) or "subdomain.example.com". If not configured the
-    cookie domain defaults to the domain the session was authneticated on.
-
-    This value can be configured via
-    [`SimpleAuth.Configuration.CookieStore#cookieDomain`](#SimpleAuth-Configuration-CookieStore-cookieDomain).
+    (which includes all subdomains) or "subdomain.example.com". If not
+    explicitly set, the cookie domain defaults to the domain the session was
+    authneticated on.
 
     @property cookieDomain
     @type String
@@ -61,28 +67,22 @@ export default Base.extend({
   cookieDomain: null,
 
   /**
-    The name of the cookie the store stores its data in.
-
-    This value can be configured via
-    [`SimpleAuth.Configuration.CookieStore#cookieName`](#SimpleAuth-Configuration-CookieStore-cookieName).
+    The name of the cookie.
 
     @property cookieName
-    @readOnly
     @type String
+    @default ember_simple_auth:session
     @public
   */
   cookieName: 'ember_simple_auth:session',
 
   /**
-    The expiration time in seconds to use for the cookie. A value of `null`
-    will make the cookie a session cookie that expires when the browser is
-    closed.
-
-    This value can be configured via
-    [`SimpleAuth.Configuration.CookieStore#cookieExpirationTime`](#SimpleAuth-Configuration-CookieStore-cookieExpirationTime).
+    The expiration time for the cookie in seconds. A value of `null` will make
+    the cookie a session cookie that expires and gets deleted when the browser
+    is closed.
 
     @property cookieExpirationTime
-    @readOnly
+    @default null
     @type Integer
     @public
   */
@@ -105,7 +105,7 @@ export default Base.extend({
   }),
 
   /**
-    Persists the `data` in session cookies.
+    Persists the `data` in the cookie.
 
     @method persist
     @param {Object} data The data to persist
@@ -119,10 +119,10 @@ export default Base.extend({
   },
 
   /**
-    Restores all data currently saved in the cookie as a plain object.
+    Returns all data currently stored in the cookie as a plain object.
 
     @method restore
-    @return {Object} All data currently persisted in the cookie
+    @return {Object} The data currently persisted in the cookie.
     @public
   */
   restore() {
@@ -135,9 +135,7 @@ export default Base.extend({
   },
 
   /**
-    Clears the store by deleting all session cookies prefixed with the
-    `cookieName` (see
-    [`SimpleAuth.Stores.Cookie#cookieName`](#SimpleAuth-Stores-Cookie-cookieName)).
+    Clears the store by deleting the cookie.
 
     @method clear
     @public
