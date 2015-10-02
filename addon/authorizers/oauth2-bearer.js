@@ -9,7 +9,11 @@ const { isEmpty } = Ember;
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)); includes the access token
   from the session data as a bearer token
   ([RFC 6750](http://tools.ietf.org/html/rfc6750)) in the `Authorization`
-  header.
+  header, e.g.:
+
+  ```
+  Authorization: Bearer 234rtgjneroigne4
+  ```
 
   @class OAuth2BearerAuhtorizer
   @module ember-simple-auth/authorizers/oauth2-bearer
@@ -22,7 +26,7 @@ export default Base.extend({
     header as a Bearer token, e.g.:
 
     ```
-    Authorization: Bearer <access_token>
+    Authorization: Bearer 234rtgjneroigne4
     ```
 
     @method authorize

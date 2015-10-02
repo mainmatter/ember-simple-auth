@@ -5,7 +5,7 @@ const { RSVP, isEmpty, run, get } = Ember;
 
 /**
   Authenticator that works with the Ruby gem
-  [Devise](https://github.com/plataformatec/devise).
+  [devise](https://github.com/plataformatec/devise).
 
   __As token authentication is not actually part of devise anymore, the server
   needs to implement some customizations__ to work with this authenticator -
@@ -18,8 +18,7 @@ const { RSVP, isEmpty, run, get } = Ember;
 */
 export default BaseAuthenticator.extend({
   /**
-    The endpoint on the server the authenticator acquires the token and user
-    identification from.
+    The endpoint on the server that the authentication request is sent to.
 
     @property serverTokenEndpoint
     @type String
@@ -29,7 +28,8 @@ export default BaseAuthenticator.extend({
   serverTokenEndpoint: '/users/sign_in',
 
   /**
-    The devise resource name.
+    The devise resource name. __This will be used in the request and also be
+    expected in the server's response.__
 
     @property resourceName
     @type String
@@ -39,7 +39,8 @@ export default BaseAuthenticator.extend({
   resourceName: 'user',
 
   /**
-    The token attribute name.
+    The token attribute name. __This will be used in the request and also be
+    expected in the server's response.__
 
     @property tokenAttributeName
     @type String
@@ -49,7 +50,8 @@ export default BaseAuthenticator.extend({
   tokenAttributeName: 'token',
 
   /**
-    The identification attribute name.
+    The identification attribute name. __This will be used in the request and
+    also be expected in the server's response.__
 
     @property identificationAttributeName
     @type String
@@ -59,10 +61,10 @@ export default BaseAuthenticator.extend({
   identificationAttributeName: 'email',
 
   /**
-    Restores the session from a session data object; __will return a
-    resolving promise when there are non-empty
+    Restores the session from a session data object; __returns a resolving
+    promise when there are non-empty
     {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
-    non-empty
+    and
     {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}identification{{/crossLink}}
     values in `data`__ and a rejecting promise otherwise.
 
@@ -88,13 +90,13 @@ export default BaseAuthenticator.extend({
     Authenticates the session with the specified `identification` and
     `password`; the credentials are `POST`ed to the
     {{#crossLink "DeviseAuthenticator/serverTokenEndpoint:property"}}server{{/crossLink}}.
-    If the credentials are valid the server will return a
+    If the credentials are valid the server will responds with a
     {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
     and
-    {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}identification{{/crossLink}}
-    in response. __If the credentials are valid and authentication succeeds, a
-    promise that resolves with the server's response is returned__, otherwise a
-    promise that rejects with the server error is returned.
+    {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}identification{{/crossLink}}.
+    __If the credentials are valid and authentication succeeds, a promise that
+    resolves with the server's response is returned__, otherwise a promise that
+    rejects with the server error is returned.
 
     @method authenticate
     @param {String} identification The user's identification

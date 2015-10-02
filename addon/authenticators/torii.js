@@ -20,7 +20,7 @@ export default BaseAuthenticator.extend({
     Restores the session by calling the torii provider's `fetch` method.
 
     __Many torii providers do not implement the `fetch` method__. If the
-    provider in use does not implement the method simply, add it:
+    provider in use does not implement the method simply add it as follows:
 
     ```js
     // app/providers/facebook.js

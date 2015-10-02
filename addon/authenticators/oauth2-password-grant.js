@@ -9,8 +9,9 @@ const { RSVP, isEmpty, run } = Ember;
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Resource
   Owner Password Credentials Grant Type"_.
 
-  This authenticator also supports access token refreshing (see
-  [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
+  This authenticator also automatically refreshes access tokens (see
+  [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)) if the
+  server supports it.
 
   @class OAuth2PasswordGrantAuthenticator
   @module ember-simple-auth/authenticators/oauth2-password-grant
@@ -19,7 +20,7 @@ const { RSVP, isEmpty, run } = Ember;
 */
 export default BaseAuthenticator.extend({
   /**
-    Triggered when the authenticator refreshes the access token (see
+    Triggered when the authenticator refreshed the access token (see
     [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
 
     @event sessionDataUpdated
@@ -28,7 +29,10 @@ export default BaseAuthenticator.extend({
   */
 
   /**
-    The client_id to be sent to the authentication server.
+    The client_id to be sent to the authentication server (see
+    https://tools.ietf.org/html/rfc6749#appendix-A.1). __This should only be
+    used for statistics or logging etc. as it cannot actually be trusted since
+    it could have been manipulated on the client!__
 
     @property clientId
     @type String
@@ -38,8 +42,8 @@ export default BaseAuthenticator.extend({
   clientId: null,
 
   /**
-    The endpoint on the server the authenticator acquires the access token
-    from.
+    The endpoint on the server that authentication and token refresh requests
+    are sent to.
 
     @property serverTokenEndpoint
     @type String
@@ -49,12 +53,13 @@ export default BaseAuthenticator.extend({
   serverTokenEndpoint: '/token',
 
   /**
-    The endpoint on the server the authenticator uses to revoke tokens. Only
+    The endpoint on the server that token revocation requests are sent to. Only
     set this if the server actually supports token revokation. If this is
     `null`, the authenticator will not revoke tokens on session invalidation.
 
     __If token revocation is enabled but fails, session invalidation will be
-    intercepted and the session will remain authenticated.__
+    intercepted and the session will remain authenticated (see
+    {{#crossLink "OAuth2PasswordGrantAuthenticator/invalidate:method"}}{{/crossLink}}).__
 
     @property serverTokenRevocationEndpoint
     @type String
@@ -64,7 +69,8 @@ export default BaseAuthenticator.extend({
   serverTokenRevocationEndpoint: null,
 
   /**
-    Sets whether the authenticator automatically refreshes access tokens.
+    Sets whether the authenticator automatically refreshes access tokens if the
+    server supports it.
 
     @property refreshAccessTokens
     @type Boolean
@@ -114,31 +120,34 @@ export default BaseAuthenticator.extend({
   },
 
   /**
-    Authenticates the session with the specified `options`; makes a `POST`
-    request to the
+    Authenticates the session with the specified `identification`, `password`
+    and optional `scope`; issues a `POST` request to the
     {{#crossLink "OAuth2PasswordGrantAuthenticator/serverTokenEndpoint:property"}}{{/crossLink}}
-    with the passed credentials and optional scope and receives the access
-    token in response (see http://tools.ietf.org/html/rfc6749#section-4.3).
+    and receives the access token in response (see
+    http://tools.ietf.org/html/rfc6749#section-4.3).
 
     __If the credentials are valid (and the optionally requested scope is
     granted) and thus authentication succeeds, a promise that resolves with the
     server's response is returned__, otherwise a promise that rejects with the
     error as returned by the server is returned.
 
+    __If the server supports it, this method also schedules refresh requests
+    for the access token before it expires.__
+
     @method authenticate
     @param {String} identification The resource owner username
     @param {String} password The resource owner password
-    @param {String|Array} [options.scope] The scope of the access request (see [RFC 6749, section 3.3](http://tools.ietf.org/html/rfc6749#section-3.3))
+    @param {String|Array} scope The scope of the access request (see [RFC 6749, section 3.3](http://tools.ietf.org/html/rfc6749#section-3.3))
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
     @public
   */
-  authenticate(identification, password, scope) {
+  authenticate(identification, password, scope = []) {
     return new RSVP.Promise((resolve, reject) => {
       const data                = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      if (!isEmpty(scope)) {
-        const scopesString = Ember.makeArray(scope).join(' ');
-        Ember.merge(data, { scope: scopesString });
+      const scopesString = Ember.makeArray(scope).join(' ');
+      if (!Ember.isEmpty(scopesString)) {
+        data.scope = scopesString;
       }
       this._makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
@@ -160,6 +169,9 @@ export default BaseAuthenticator.extend({
     refresh token if present). If token revocation succedds, this method
     returns a resolving promise, otherwise it will return a rejecting promise,
     thus intercepting session invalidation.
+
+    If token revocation is not enabled this method simply returns a resolving
+    promise.
 
     @method invalidate
     @param {Object} data The current authenticated session data

@@ -17,7 +17,7 @@ const { on } = Ember;
 
   @class LocalStorageStore
   @module ember-simple-auth/stores/local-storage
-  @extends Stores.Base
+  @extends BaseStore
   @public
 */
 export default BaseStore.extend({
