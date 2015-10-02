@@ -15,7 +15,7 @@
       <span class="label label-warning pull-right">readonly</span>
     {{/if}}
     <h3 class="panel-title signature">
-      <strong class="name">`{{name}}`</strong>: `{{#crossLink type}}{{/crossLink}}`
+      <strong class="name">`{{name}}`</strong>: <code>{{#crossLink type}}{{/crossLink}}</code>
     </h3>
   </div>
   <div class="panel-body">
@@ -26,10 +26,6 @@
       <p><span class="label label-default">Default:</span> `{{{default}}}`</p>
     {{/if}}
     {{{propertyDescription}}}
-    {{#if example}}
-      <h4 class="subsection">Example</h4>
-      {{{example}}}
-    {{/if}}
   </div>
 </div>
     

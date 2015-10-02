@@ -1,4 +1,4 @@
-<a name="events_{{name}}" class="symbol-anchor"></a>
+<a name="event_{{name}}" class="symbol-anchor"></a>
 <div class="panel panel-default">
   <div class="panel-heading">
     {{>source_link file=file line=line}}
@@ -14,16 +14,12 @@
       <p><span class="label label-warning">Deprecated:</span>{{deprecationMessage}}</p>
     {{/if}}
     {{#if overwritten_from}}
-      <p><span class="label label-default">Overrides:</span> <a href="{{overwritten_from/class}}.html#events_{{overwritten_from/name}}">`{{name}}` of  `{{overwritten_from/class}}`</a>.</p>
+      <p><span class="label label-default">Overrides:</span> <a href="{{overwritten_from/class}}.html#event_{{overwritten_from/name}}">`{{name}}` of  `{{overwritten_from/class}}`</a>.</p>
     {{/if}}
     {{#if extended_from}}
-      <p><span class="label label-default">Extends:</span> <a href="{{extended_from}}.html#events_{{name}}">`{{name}}` of `{{extended_from}}`</a>.</p>
+      <p><span class="label label-default">Extends:</span> <a href="{{extended_from}}.html#event_{{name}}">`{{name}}` of `{{extended_from}}`</a>.</p>
     {{/if}}
     {{{eventDescription}}}
-    {{#if example}}
-      <h4 class="subsection">Example</h4>
-      {{{example}}}
-    {{/if}}
     {{#if params}}
       <h4 class="subsection">Arguments</h4>
       <dl class="params">
