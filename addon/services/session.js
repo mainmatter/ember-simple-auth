@@ -5,10 +5,9 @@ const SESSION_DATA_KEY_PREFIX = /^data\./;
 const { computed, on }  = Ember;
 
 /**
-  The session service provides access to the current session as well as methods
-  to authenticate and invalidate the session etc. This is the main interface
-  for an application to Ember Simple Auth's functionality. It can be injected
-  via
+  __The session service provides access to the current session as well as
+  methods to authenticate and invalidate it__ etc. It is the main interface for
+  the application to Ember Simple Auth's functionality. It can be injected via
 
   ```js
   // app/components/login-form.js
@@ -136,12 +135,12 @@ export default Ember.Service.extend(Ember.Evented, {
   }),
 
   /**
-    Authenticates the session with an `authenticator` and appropriate
+    __Authenticates the session with an `authenticator`__ and appropriate
     arguments. The authenticator implements the actual steps necessary to
     authenticate the session (see
     {{#crossLink "BaseAuthenticator/authenticate:method"}}{{/crossLink}}) and
     returns a promise after doing so. The session handles the returned promise
-    and when that resolves becomes authenticated, otherwise remains
+    and when it resolves becomes authenticated, otherwise remains
     unauthenticated. All data the authenticator resolves with will be
     accessible via the
     {{#crossLink "SessionService/data:property"}}session data's{{/crossLink}}
@@ -150,7 +149,9 @@ export default Ember.Service.extend(Ember.Evented, {
     __This method returns a promise. A resolving promise indicates that the
     session was successfully authenticated__ while a rejecting promise
     indicates that authentication failed and the session remains
-    unauthenticated.
+    unauthenticated. The promise does not resolve with a value; instead, the
+    data returned from the authenticator is available via the
+    {{#crossLink "SessionService/data:property"}}{{/crossLink}} property.
 
     When authentication succeeds this will trigger the
     {{#crossLink "SessionService/authenticationSucceeded:event"}}{{/crossLink}}
@@ -168,15 +169,15 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   /**
-    Invalidates the session with the authenticator it is currently
-    authenticated with (see
+    __Invalidates the session with the authenticator it is currently
+    authenticated with__ (see
     {{#crossLink "SessionService/authenticate:method"}}{{/crossLink}}). This
     invokes the authenticator's
     {{#crossLink "BaseAuthenticator/invalidate:method"}}{{/crossLink}} method
     and handles the returned promise accordingly.
 
     This method returns a promise. A resolving promise indicates that the
-    session was successfully invalidated__ while a rejecting promise indicates
+    session was successfully invalidated while a rejecting promise indicates
     that invalidation failed and the session remains authenticated. Once the
     session is successfully invalidated it clears all of its authenticated data
     (see {{#crossLink "SessionService/data:property"}}{{/crossLink}}).

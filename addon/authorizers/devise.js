@@ -5,13 +5,17 @@ const { isEmpty } = Ember;
 
 /**
   Authorizer that works with the Ruby gem
-  [Devise](https://github.com/plataformatec/devise); includes the user's token
-  and identification from the session data in the `Authorization` HTTP header.
+  [devise](https://github.com/plataformatec/devise); includes the user's token
+  and identification from the session data in the `Authorization` HTTP header,
+  e.g.:
+
+  ```
+  Authorization: token="234rtgjneroigne4" email="user@domain.tld"
+  ```
 
   __As token authentication is not actually part of devise anymore, the server
   needs to implement some customizations__ to work with this authenticator -
-  see the README and
-  [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
+  see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
   @class DeviseAuthorizer
   @module ember-simple-auth/authorizers/devise

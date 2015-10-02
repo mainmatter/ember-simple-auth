@@ -4,11 +4,12 @@ import BaseStore from './base';
 const { on } = Ember;
 
 /**
-  Session store that persists data in memory and thus __is not actually
+  Session store that __persists data in memory and thus is not actually
   persistent__. It does also not synchronize the session's state across
-  multiple tabs or windows as those cannot share memory.
+  multiple tabs or windows as those cannot share memory. __This store is mainly
+  useful for testing.__
 
-  __This store is mainly useful for testing.__
+  To use the ephemeral session store, configure it via
 
   ```js
   ENV['ember-simple-auth'] = {
