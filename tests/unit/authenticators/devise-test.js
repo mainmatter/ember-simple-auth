@@ -64,7 +64,7 @@ describe('DeviseAuthenticator', () => {
     });
 
     it('sends an AJAX request to the sign in endpoint', (done) => {
-      authenticator.authenticate({ identification: 'identification', password: 'password' });
+      authenticator.authenticate('identification', 'password');
 
       Ember.run.next(() => {
         let [args] = Ember.$.ajax.getCall(0).args;
@@ -89,7 +89,7 @@ describe('DeviseAuthenticator', () => {
       });
 
       it('resolves with the correct data', (done) => {
-        authenticator.authenticate({ email: 'email@address.com', password: 'password' }).then((data) => {
+        authenticator.authenticate('email@address.com', 'password').then((data) => {
           expect(true).to.be.true;
           expect(data).to.eql({ 'access_token': 'secret token!' });
           done();
@@ -107,7 +107,7 @@ describe('DeviseAuthenticator', () => {
       });
 
       it('rejects with the correct error', (done) => {
-        authenticator.authenticate({ email: 'email@address.com', password: 'password' }).catch((error) => {
+        authenticator.authenticate('email@address.com', 'password').catch((error) => {
           expect(error).to.eql({ error: 'invalid_grant' });
           done();
         });

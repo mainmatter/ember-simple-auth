@@ -15,12 +15,12 @@ const { RSVP } = Ember;
   {{#crossLink "BaseAuthenticator/authenticate:method"}}{{/crossLink}}
   method is stored in the session and can be accessed via the session service
   and be used by the authorizer (see
-  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}} to e.g.
+  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) to e.g.
   authorize outgoing requests.
 
   The authenticator also decides whether a set of data that was restored from
   the session store (see
-  {{#crossLink "BaseStore/restore:method"}}{{/crossLink}} makes up an
+  {{#crossLink "BaseStore/restore:method"}}{{/crossLink}}) makes up an
   authenticated session or not.
 
   __Authenticators for an application are defined in the `app/authenticators`
@@ -85,17 +85,18 @@ export default Ember.Object.extend(Ember.Evented, {
 
   /**
     Restores the session from a session data object. __This method is invoked
-    by the session either on the application startup if session data is
-    restored from the session store__ or when properties in the store change
-    due to external events (e.g. in another tab) and the new session data needs
-    to be validated for whether it constitutes an authenticated session.
+    by the session either on application startup if session data is restored
+    from the session store__ or when properties in the store change due to
+    external events (e.g. in another tab) and the new session data needs to be
+    validated for whether it constitutes an authenticated session.
 
-    __This method returns a promise. A resolving promise will result in the
-    session becoming or remaining authenticated.__ Any data the promise
-    resolves with will be saved in and accessible via the session service's
-    `data.authenticated` property. A rejecting promise indicates that `data`
-    does not constitute a valid session and will result in the session being
-    invalidated or remaining unauthencicated.
+    __This method returns a promise. A resolving promise results in the session
+    becoming or remaining authenticated.__ Any data the promise resolves with
+    will be saved in and accessible via the session service's
+    `data.authenticated` property (see
+    {{#crossLink "SessionService/data:property"}}{{/crossLink}}). A rejecting
+    promise indicates that `data` does not constitute a valid session and will
+    result in the session being invalidated or remaining unauthencicated.
 
     The `BaseAuthenticator`'s implementation always returns a rejecting
     promise. __This method must be overridden in subclasses.__
@@ -114,13 +115,14 @@ export default Ember.Object.extend(Ember.Evented, {
     depending on the actual authentication mechanism the authenticator
     implements (e.g. a set of credentials or a Facebook account id etc.). __The
     session will invoke this method in order to authenticate itself__ (see
-    {{#crossLink "SessionService/authenticate:method"}}{{/crossLink}}.
+    {{#crossLink "SessionService/authenticate:method"}}{{/crossLink}}).
 
     __This method returns a promise. A resolving promise will result in the
     session becoming authenticated.__ Any data the promise resolves with will
     be saved in and accessible via the session service's `data.authenticated`
-    property. A rejecting promise indicates that authentication failed and will
-    result in the session remaining unauthenticated.
+    property (see {{#crossLink "SessionService/data:property"}}{{/crossLink}}).
+    A rejecting promise indicates that authentication failed and will result in
+    the session remaining unauthenticated.
 
     The `BaseAuthenticator`'s implementation always returns a rejecting promise
     and thus never authenticates the session. __This method must be overridden

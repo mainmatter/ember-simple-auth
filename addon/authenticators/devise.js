@@ -9,8 +9,7 @@ const { RSVP, isEmpty, run, get } = Ember;
 
   __As token authentication is not actually part of devise anymore, the server
   needs to implement some customizations__ to work with this authenticator -
-  see the README and
-  [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
+  see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
   @class DeviseAuthenticator
   @module ember-simple-auth/authenticators/devise
@@ -86,8 +85,8 @@ export default BaseAuthenticator.extend({
   },
 
   /**
-    Authenticates the session with the specified `credentials`; the credentials
-    are `POST`ed to the
+    Authenticates the session with the specified `identification` and
+    `password`; the credentials are `POST`ed to the
     {{#crossLink "DeviseAuthenticator/serverTokenEndpoint:property"}}server{{/crossLink}}.
     If the credentials are valid the server will return a
     {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
@@ -98,18 +97,17 @@ export default BaseAuthenticator.extend({
     promise that rejects with the server error is returned.
 
     @method authenticate
-    @param {Object} options The credentials to authenticate the session with
+    @param {String} identification The user's identification
+    @param {String} password The user's password
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
     @public
   */
-  authenticate(credentials) {
+  authenticate(identification, password) {
     return new RSVP.Promise((resolve, reject) => {
       const { resourceName, identificationAttributeName } = this.getProperties('resourceName', 'identificationAttributeName');
       const data         = {};
-      data[resourceName] = {
-        password: credentials.password
-      };
-      data[resourceName][identificationAttributeName] = credentials.identification;
+      data[resourceName] = { password };
+      data[resourceName][identificationAttributeName] = identification;
 
       this._makeRequest(data).then(function(response) {
         run(null, resolve, response);

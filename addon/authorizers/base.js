@@ -23,8 +23,9 @@ import Ember from 'ember';
 export default Ember.Object.extend({
   /**
     Authorizes a block of code. This method will be invoked by the session
-    service's {{#crossLink "SessionService/authrorize:method"}}{{/crossLink}}
-    which will pass the current authenticated session data and a block.
+    service's {{#crossLink "SessionService/authorize:method"}}{{/crossLink}}
+    method which will pass the current authenticated session data (see
+    {{#crossLink "SessionService/data:property"}}{{/crossLink}}) and a block.
     Depending on the mechanism it implements, the authorizer transforms the
     session data into authorization data and invokes the block with that data.
 
