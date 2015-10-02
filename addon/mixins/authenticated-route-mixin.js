@@ -4,8 +4,8 @@ import Configuration from './../configuration';
 const { service } = Ember.inject;
 
 /**
-  This mixin is used to make routes accessible only if the session is
-  authenticated. It will add a `beforeModel` method that aborts the current
+  __This mixin is used to make routes accessible only if the session is
+  authenticated.__ It defines a `beforeModel` method that aborts the current
   transition and instead transitions to the
   {{#crossLink "Configuration/authenticationRoute:property"}}{{/crossLink}} if
   the session is not authenticated.
@@ -38,7 +38,7 @@ export default Ember.Mixin.create({
     current transition and instead transitions to the
     {{#crossLink "Configuration/authenticationRoute:property"}}{{/crossLink}}.
     If the current transition is aborted, this method will save it in the
-    session's
+    session service's
     {{#crossLink "SessionService/attemptedTransition:property"}}{{/crossLink}}
     property so that  it can be retried after the session was authenticated
     (see

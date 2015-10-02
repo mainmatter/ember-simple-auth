@@ -4,13 +4,13 @@ import Configuration from './../configuration';
 const { inject, on } = Ember;
 
 /**
-  The mixin for the application route; defines methods that are called when the
-  session was successfully authenticated (see
+  The mixin for the application route; __defines methods that are called when
+  the session was successfully authenticated (see
   {{#crossLink "SessionService/authenticationSucceeded:event"}}{{/crossLink}})
-  or invalidated (see
+  or invalidated__ (see
   {{#crossLink "SessionService/invalidationSucceeded:event"}}{{/crossLink}}).
 
-  Using this mixin is optional. The session events could also be handled
+  Using this mixin is optional. The session events can also be handled
   manually, e.g. in an instance initializer:
 
   ```js
@@ -62,9 +62,9 @@ export default Ember.Mixin.create({
     This method handles the session's
     {{#crossLink "SessionService/authenticationSucceeded:event"}}{{/crossLink}}
     event. If there is a transition that was previously intercepted by
-    {{#crossLink "AuthenticatedRouteMixin/beforeModel:method"}}{{/crossLink}}
-    it will retry it. If there is no such transition, this action transitions
-    to the
+    {{#crossLink "AuthenticatedRouteMixin/beforeModel:method"}}the
+    AuthenticatedRouteMixin's `beforeModel` method{{/crossLink}} it will retry
+    it. If there is no such transition, this action transitions to the
     {{#crossLink "Configuration/routeAfterAuthentication:property"}}{{/crossLink}}.
 
     @method sessionAuthenticated
@@ -83,14 +83,14 @@ export default Ember.Mixin.create({
   /**
     This method handles the session's
     {{#crossLink "SessionService/invalidationSucceeded:event"}}{{/crossLink}}
-    event. It reloads the Ember.js application by redirecting the browser to
-    the application's root URL so that all in-memory data (such as Ember Data
-    stores etc.) gets cleared.
+    event. __It reloads the Ember.js application__ by redirecting the browser
+    to the application's root URL so that all in-memory data (such as Ember
+    Data stores etc.) gets cleared.
 
     If the Ember.js application will be used in an environment where the users
     don't have direct access to any data stored on the client (e.g.
-    [cordova](http://cordova.apache.org)) this action can be overridden to
-    simply transition to the `'index'` route.
+    [cordova](http://cordova.apache.org)) this action can be overridden to e.g.
+    simply transition to the index route.
 
     @method sessionInvalidated
     @public
