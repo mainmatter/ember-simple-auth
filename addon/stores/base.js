@@ -4,9 +4,9 @@ import Ember from 'ember';
   The base class for all session stores. __This serves as a starting point for
   implementing custom session stores and must not be used directly.__
 
-  Session Stores persist the session's state so thst it survives a page reload
+  Session Stores persist the session's state so that it survives a page reload
   and is synchronized across multiple tabs or windows of the same application.
-  The session store to be used with the application can be configured on the
+  The session store to be used for an application can be configured on the
   application's environment object, e.g.:
 
   ```js

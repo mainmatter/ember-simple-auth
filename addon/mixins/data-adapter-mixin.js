@@ -3,14 +3,14 @@ import Ember from 'ember';
 const { service } = Ember.inject;
 
 /**
-  This mixin can be used to make Ember Data adapters authorize all outgoing API
-  requests by injecting a header. It works with all authorizers that call the
-  authorization callback (see
+  __This mixin can be used to make Ember Data adapters authorize all outgoing
+  API requests by injecting a header.__ It works with all authorizers that call
+  the authorization callback (see
   {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) with header
   name and header content arguments.
 
-  The `DataAdapterMixin` will also invalidate the session whenever it receives
-  a 401 response for an API request.
+  __The `DataAdapterMixin` will also invalidate the session whenever it
+  receives a 401 response for an API request.__
 
   ```js
   // app/adapters/application.js
@@ -54,9 +54,10 @@ export default Ember.Mixin.create({
   authorizer: null,
 
   /**
-    Defines a `beforeSend` method that injects a request header containing the
-    authorization data as constructed by the
-    {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}} (see
+    Defines a `beforeSend` hook (see http://api.jquery.com/jQuery.ajax/) that
+    injects a request header containing the authorization data as constructed
+    by the {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}}
+    (see
     {{#crossLink "SessionService/authorize:method"}}{{/crossLink}}). The
     specific header name and contents depend on the actual auhorizer that is
     used.

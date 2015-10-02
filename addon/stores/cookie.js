@@ -11,11 +11,11 @@ const { on } = Ember;
 
   By default the cookie session store uses a session cookie that expires and is
   deleted when the browser is closed. The cookie expiration period can be
-  configured by setting
-  {{#crossLink "SessionStore/cookieExpirationTime:property"}}{{/crossLink}}.
-  This coulds be used to implement "remember me" functionality that
-  will either store the session persistently or in a session cookie depending
-  on whether the user opted in or not:
+  configured by setting the
+  {{#crossLink "CookieStore/cookieExpirationTime:property"}}{{/crossLink}}
+  property. This can be used to implement "remember me" functionality that will
+  either store the session persistently or in a session cookie depending on
+  whether the user opted in or not:
 
   ```js
   // app/controllers/login.js
@@ -33,9 +33,7 @@ const { on } = Ember;
   store has to periodically (every 500ms) check the cookie for changes__ as
   there are no events for cookie changes that the store could subscribe to. If
   the application does not need to make sure all session data is deleted when
-  the browser is closed (which can be achieved with session cookies, see
-  {{#crossLink "SessionStore/cookieExpirationTime:property"}}{{/crossLink}}),
-  the
+  the browser is closed, the
   {{#crossLink "LocalStorageStore"}}`localStorage` session store{{/crossLink}}
   should be used.
 

@@ -11,7 +11,7 @@ const DEFAULTS = {
   Ember Simple Auth's configuration object.
 
   To change any of these values, set them on the application's environment
-  object:
+  object, e.g.:
 
   ```js
   // config/environment.js
@@ -21,6 +21,7 @@ const DEFAULTS = {
   ```
 
   @class Configuration
+  @extends Object
   @module ember-simple-auth/configuration
   @public
 */
@@ -39,7 +40,7 @@ export default {
 
   /**
     The route to transition to for authentication. The
-    {{#crossLink "UnauthenticatedRouteMixin"}}{{/crossLink}} will transition to
+    {{#crossLink "AuthenticatedRouteMixin"}}{{/crossLink}} will transition to
     this route when a route that implements the mixin is accessed when the
     route is not authenticated.
 
