@@ -1,7 +1,8 @@
+import lookup from '../utils/lookup';
+
 export default function setupSessionRestoration(instance) {
-  const { container } = instance;
-  const applicationRoute = container.lookup('route:application');
-  const session = container.lookup('session:main');
+  const applicationRoute = lookup(instance, 'route:application');
+  const session = lookup(instance, 'session:main');
   const originalBeforeModel = applicationRoute.beforeModel;
   const applyOriginalBeforeModel = function() {
     return originalBeforeModel.apply(applicationRoute, arguments);
