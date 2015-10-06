@@ -31,6 +31,9 @@ const { inject, on } = Ember;
   });
   ```
 
+  __When using the `ApplicationRouteMixin` you need to specify
+  `needs: ['service:session']` in the application route's unit test.__
+
   @class ApplicationRouteMixin
   @module ember-simple-auth/mixins/application-route-mixin
   @extends Ember.Mixin

@@ -128,9 +128,13 @@ export default Ember.Service.extend(Ember.Evented, {
       'authenticationSucceeded',
       'invalidationSucceeded'
     ]).forEach((event) => {
-      this.get('session').on(event, () => {
-        this.trigger(event, ...arguments);
-      });
+      // the internal session won't be available in route unit tests
+      const session = this.get('session');
+      if (session) {
+        session.on(event, () => {
+          this.trigger(event, ...arguments);
+        });
+      }
     });
   }),
 
