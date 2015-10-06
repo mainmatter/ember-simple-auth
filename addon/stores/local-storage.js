@@ -15,6 +15,11 @@ const { on } = Ember;
   }
   ```
 
+  __`localStorage` is not available in Safari when running  in private mode. If
+  the application needs to support Safari's private mode, it should use the
+  cookie store instead or change the configuration dynamically to only use the
+  cookie store when `localStorage` is not available.__
+
   @class LocalStorageStore
   @module ember-simple-auth/stores/local-storage
   @extends BaseStore
