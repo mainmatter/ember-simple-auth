@@ -1,24 +1,28 @@
 import Ember from 'ember';
-import Base from './base';
+import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
+const { on } = Ember;
+
 /**
-  Store that saves its data in the browser's `localStorage`.
+  Session store that persists data in the browser's `localStorage`.
 
-  _The factory for this store is registered as
-  `'session-store:local-storage'` in Ember's container._
+  To use the local storage session store, configure it via
 
-  __`Stores.LocalStorage` is Ember Simple Auth's default store.__
+  ```js
+  ENV['ember-simple-auth'] = {
+    store: 'session-store:local-storage'
+  }
+  ```
 
-  @class LocalStorage
-  @namespace Stores
-  @module stores/local-storage
-  @extends Stores.Base
+  @class LocalStorageStore
+  @module ember-simple-auth/stores/local-storage
+  @extends BaseStore
   @public
 */
-export default Base.extend({
+export default BaseStore.extend({
   /**
-    The key the store stores the data in.
+    The `localStorage` key the store persists data in.
 
     @property key
     @type String
@@ -27,13 +31,9 @@ export default Base.extend({
   */
   key: 'ember_simple_auth:session',
 
-  /**
-    @method init
-    @private
-  */
-  init() {
-    this.bindToStorageEvents();
-  },
+  _setup: on('init', function() {
+    this._bindToStorageEvents();
+  }),
 
   /**
     Persists the `data` in the `localStorage`.
@@ -49,11 +49,10 @@ export default Base.extend({
   },
 
   /**
-    Restores all data currently saved in the `localStorage` identified by the
-    `keyPrefix` as one plain object.
+    Returns all data currently stored in the `localStorage` as a plain object.
 
     @method restore
-    @return {Object} All data currently persisted in the `localStorage`
+    @return {Object} The data currently persisted in the `localStorage`.
     @public
   */
   restore() {
@@ -62,8 +61,9 @@ export default Base.extend({
   },
 
   /**
-    Clears the store by deleting all `localStorage` keys prefixed with the
-    `keyPrefix`.
+    Clears the store by deleting the
+    {{#crossLink "LocalStorageStore/key:property"}}{{/crossLink}} from
+    `localStorage`.
 
     @method clear
     @public
@@ -73,11 +73,7 @@ export default Base.extend({
     this._lastData = {};
   },
 
-  /**
-    @method bindToStorageEvents
-    @private
-  */
-  bindToStorageEvents() {
+  _bindToStorageEvents() {
     Ember.$(window).bind('storage', () => {
       let data = this.restore();
       if (!objectsAreEqual(data, this._lastData)) {

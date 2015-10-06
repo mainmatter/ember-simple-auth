@@ -1,48 +1,40 @@
 import Ember from 'ember';
 
 /**
-  The base for all authorizers. __This serves as a starting point for
+  The base class for all authorizers. __This serves as a starting point for
   implementing custom authorizers and must not be used directly.__
 
-  __The authorizer preprocesses all XHR requests__ (except ones to 3rd party
-  origins, see
-  [Configuration.crossOriginWhitelist](#SimpleAuth-Configuration-crossOriginWhitelist))
-  and makes sure they have the required data attached that allows the server to
-  identify the user making the request. This data might be an HTTP header,
-  query string parameters in the URL, cookies etc. __The authorizer has to fit
-  the authenticator__ (see
-  [SimpleAuth.Authenticators.Base](#SimpleAuth-Authenticators-Base))
-  as it relies on data that the authenticator acquires during authentication.
+  Authorizers use the session data aqcuired by an authenticator when
+  authenticating the session to construct authrorization data that can e.g. be
+  injected into outgoing network requests etc. Depending on the authorization
+  mechanism the authorizer implements, that authorization data might be an HTTP
+  header, query string parameters, a cookie etc.
 
-  @class Base
-  @namespace Authorizers
+  __The authorizer has to fit the authenticator__ (see
+  {{#crossLink "BaseAuthenticator"}}{{/crossLink}})
+  as it can only use data that the authenticator acquires when authenticating
+  the session.
+
+  @class BaseAuthorizer
   @module ember-simple-auth/authorizers/base
   @extends Ember.Object
-@public
+  @public
 */
 export default Ember.Object.extend({
   /**
-    The session the authorizer gets the data it needs to authorize requests
-    from.
+    Authorizes a block of code. This method will be invoked by the session
+    service's {{#crossLink "SessionService/authorize:method"}}{{/crossLink}}
+    method which will pass the current authenticated session data (see
+    {{#crossLink "SessionService/data:property"}}{{/crossLink}}) and a block.
+    Depending on the mechanism it implements, the authorizer transforms the
+    session data into authorization data and invokes the block with that data.
 
-    @property session
-    @readOnly
-    @type SimpleAuth.Session
-    @default the session instance
-    @public
-  */
-  session: null,
-
-  /**
-    Authorizes an XHR request by adding some sort of secret information that
-    allows the server to identify the user making the request (e.g. a token in
-    the `Authorization` header or some other secret in the query string etc.).
-
-    `SimpleAuth.Authorizers.Base`'s implementation does nothing.
+    `BaseAuthorizer`'s implementation does nothing. __This method must be
+    overridden in custom authorizers.__
 
     @method authorize
-    @param {Object} data The data that the session currently holds
-    @param {Function} block The callback
+    @param {Object} data The current authenticated session data
+    @param {Function} block The callback to call with the authorization data
     @public
   */
   authorize() {}

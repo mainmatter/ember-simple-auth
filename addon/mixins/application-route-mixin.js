@@ -1,52 +1,53 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { service } = Ember.inject;
+const { inject, on } = Ember;
 
 /**
-  The mixin for the application route; defines actions that are triggered
-  when authentication is required, when the session has successfully been
-  authenticated or invalidated or when authentication or invalidation fails or
-  authorization is rejected by the server. These actions provide a good
-  starting point for adding custom behavior to these events.
+  The mixin for the application route; __defines methods that are called when
+  the session was successfully authenticated (see
+  {{#crossLink "SessionService/authenticationSucceeded:event"}}{{/crossLink}})
+  or invalidated__ (see
+  {{#crossLink "SessionService/invalidationSucceeded:event"}}{{/crossLink}}).
 
-  __When this mixin is used and the application's `ApplicationRoute` defines
-  the `beforeModel` method, that method has to call `_super`.__
-
-  Using this mixin is optional. Without using it, the session's events will not
-  be automatically translated into route actions but would have to be handled
-  inidivially, e.g. in an initializer:
+  Using this mixin is optional. The session events can also be handled
+  manually, e.g. in an instance initializer:
 
   ```js
+  // app/instance-initializers/session-events.js
   Ember.Application.initializer({
-    name:       'authentication',
-    after:      'simple-auth',
+    name:       'session-events',
+    after:      'ember-simple-auth',
     initialize: function(container, application) {
       var applicationRoute = container.lookup('route:application');
-      var session          = container.lookup('session:main');
-      // handle the session events
+      var session          = container.lookup('service:session');
       session.on('authenticationSucceeded', function() {
         applicationRoute.transitionTo('index');
+      });
+      session.on('invalidationSucceeded', function() {
+        window.location.reload();
       });
     }
   });
   ```
 
   @class ApplicationRouteMixin
-  @namespace Mixins
   @module ember-simple-auth/mixins/application-route-mixin
   @extends Ember.Mixin
-  @static
   @public
 */
 export default Ember.Mixin.create({
-  session: service('session'),
-
   /**
-    @method _mapSessionEventsToActions
-    @private
+    The session service.
+
+    @property session
+    @readOnly
+    @type SessionService
+    @public
   */
-  _mapSessionEventsToActions: Ember.on('init', function() {
+  session: inject.service('session'),
+
+  _subscribeToSessionEvents: on('init', function() {
     Ember.A([
       ['authenticationSucceeded', 'sessionAuthenticated'],
       ['invalidationSucceeded', 'sessionInvalidated']
@@ -58,39 +59,38 @@ export default Ember.Mixin.create({
   }),
 
   /**
-    This action is triggered whenever the session is successfully
-    authenticated. If there is a transition that was previously intercepted
-    by
-    [`AuthenticatedRouteMixin#beforeModel`](#SimpleAuth-AuthenticatedRouteMixin-beforeModel)
-    it will retry it. If there is no such transition, this action transitions
-    to the
-    [`Configuration.routeAfterAuthentication`](#SimpleAuth-Configuration-routeAfterAuthentication).
+    This method handles the session's
+    {{#crossLink "SessionService/authenticationSucceeded:event"}}{{/crossLink}}
+    event. If there is a transition that was previously intercepted by
+    {{#crossLink "AuthenticatedRouteMixin/beforeModel:method"}}the
+    AuthenticatedRouteMixin's `beforeModel` method{{/crossLink}} it will retry
+    it. If there is no such transition, this action transitions to the
+    {{#crossLink "Configuration/routeAfterAuthentication:property"}}{{/crossLink}}.
 
     @method sessionAuthenticated
     @public
   */
   sessionAuthenticated() {
-    let attemptedTransition = this.get('session').get('attemptedTransition');
+    let attemptedTransition = this.get('session.attemptedTransition');
     if (attemptedTransition) {
       attemptedTransition.retry();
-      this.get('session').set('attemptedTransition', null);
+      this.set('session.attemptedTransition', null);
     } else {
       this.transitionTo(Configuration.routeAfterAuthentication);
     }
   },
 
   /**
-    This action is invoked whenever the session is successfully invalidated.
-    It reloads the Ember.js application by redirecting the browser to the
-    application's root URL so that all in-memory data (such as Ember Data
-    stores etc.) gets cleared. The root URL is automatically retrieved from
-    the Ember.js application's router (see
-    http://emberjs.com/guides/routing/#toc_specifying-a-root-url).
+    This method handles the session's
+    {{#crossLink "SessionService/invalidationSucceeded:event"}}{{/crossLink}}
+    event. __It reloads the Ember.js application__ by redirecting the browser
+    to the application's root URL so that all in-memory data (such as Ember
+    Data stores etc.) gets cleared.
 
-    If your Ember.js application will be used in an environment where the
-    users don't have direct access to any data stored on the client (e.g.
-    [cordova](http://cordova.apache.org)) this action can be overridden to
-    simply transition to the `'index'` route.
+    If the Ember.js application will be used in an environment where the users
+    don't have direct access to any data stored on the client (e.g.
+    [cordova](http://cordova.apache.org)) this action can be overridden to e.g.
+    simply transition to the index route.
 
     @method sessionInvalidated
     @public

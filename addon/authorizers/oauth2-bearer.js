@@ -6,31 +6,32 @@ const { isEmpty } = Ember;
 
 /**
   Authorizer that conforms to OAuth 2
-  ([RFC 6749](http://tools.ietf.org/html/rfc6749)) by sending a bearer token
-  ([RFC 6750](http://tools.ietf.org/html/rfc6750)) in the request's
-  `Authorization` header.
+  ([RFC 6749](http://tools.ietf.org/html/rfc6749)); includes the access token
+  from the session data as a bearer token
+  ([RFC 6750](http://tools.ietf.org/html/rfc6750)) in the `Authorization`
+  header, e.g.:
 
-  _The factory for this authorizer is registered as
-  `'simple-auth-authorizer:oauth2-bearer'` in Ember's container._
+  ```
+  Authorization: Bearer 234rtgjneroigne4
+  ```
 
-  @class OAuth2Bearer
-  @namespace Authorizers
-  @module authorizers/oauth2-bearer
-  @extends Base
+  @class OAuth2BearerAuhtorizer
+  @module ember-simple-auth/authorizers/oauth2-bearer
+  @extends BaseAuthorizer
   @public
 */
 export default Base.extend({
   /**
-    Authorizes an XHR request by sending the `access_token` property from the
-    session as a bearer token in the `Authorization` header:
+    Includes the access token from the session data into the `Authorization`
+    header as a Bearer token, e.g.:
 
     ```
-    Authorization: Bearer <access_token>
+    Authorization: Bearer 234rtgjneroigne4
     ```
 
     @method authorize
     @param {Object} data The data that the session currently holds
-    @param {Function} block The block to call with the authoriztion data if the session is authenticated and authorization data is actually present
+    @param {Function} block(headerName,headerContent) The callback to call with the authorization data; will receive the header name and header content as arguments
     @public
   */
   authorize(data, block) {

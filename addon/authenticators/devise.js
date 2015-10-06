@@ -1,30 +1,24 @@
 import Ember from 'ember';
-import Base from './base';
+import BaseAuthenticator from './base';
 
 const { RSVP, isEmpty, run, get } = Ember;
 
 /**
   Authenticator that works with the Ruby gem
-  [Devise](https://github.com/plataformatec/devise).
+  [devise](https://github.com/plataformatec/devise).
 
   __As token authentication is not actually part of devise anymore, the server
   needs to implement some customizations__ to work with this authenticator -
-  see the README and
-  [discussion here](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
+  see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
-  _The factory for this authenticator is registered as
-  `'simple-auth-authenticator:devise'` in Ember's container._
-
-  @class Devise
-  @namespace Authenticators
-  @module authenticators/devise
-  @extends Base
+  @class DeviseAuthenticator
+  @module ember-simple-auth/authenticators/devise
+  @extends BaseAuthenticator
   @public
 */
-export default Base.extend({
+export default BaseAuthenticator.extend({
   /**
-    The endpoint on the server the authenticator acquires the auth token
-    and email from.
+    The endpoint on the server that the authentication request is sent to.
 
     @property serverTokenEndpoint
     @type String
@@ -34,7 +28,8 @@ export default Base.extend({
   serverTokenEndpoint: '/users/sign_in',
 
   /**
-    The devise resource name
+    The devise resource name. __This will be used in the request and also be
+    expected in the server's response.__
 
     @property resourceName
     @type String
@@ -44,7 +39,8 @@ export default Base.extend({
   resourceName: 'user',
 
   /**
-    The token attribute name.
+    The token attribute name. __This will be used in the request and also be
+    expected in the server's response.__
 
     @property tokenAttributeName
     @type String
@@ -54,7 +50,8 @@ export default Base.extend({
   tokenAttributeName: 'token',
 
   /**
-    The identification attribute name.
+    The identification attribute name. __This will be used in the request and
+    also be expected in the server's response.__
 
     @property identificationAttributeName
     @type String
@@ -64,22 +61,25 @@ export default Base.extend({
   identificationAttributeName: 'email',
 
   /**
-    Restores the session from a set of session properties; __will return a
-    resolving promise when there's a non-empty `token` and a non-empty
-    `email` in the `properties`__ and a rejecting promise otherwise.
+    Restores the session from a session data object; __returns a resolving
+    promise when there are non-empty
+    {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
+    and
+    {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}identification{{/crossLink}}
+    values in `data`__ and a rejecting promise otherwise.
 
     @method restore
-    @param {Object} properties The properties to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
+    @param {Object} data The data to restore the session from
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
     @public
   */
-  restore(properties) {
+  restore(data) {
     const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
-    const tokenAttribute = get(properties, tokenAttributeName);
-    const identificationAttribute = get(properties, identificationAttributeName);
+    const tokenAttribute = get(data, tokenAttributeName);
+    const identificationAttribute = get(data, identificationAttributeName);
     return new RSVP.Promise((resolve, reject) => {
       if (!isEmpty(tokenAttribute) && !isEmpty(identificationAttribute)) {
-        resolve(properties);
+        resolve(data);
       } else {
         reject();
       }
@@ -87,29 +87,31 @@ export default Base.extend({
   },
 
   /**
-    Authenticates the session with the specified `credentials`; the credentials
-    are `POST`ed to the
-    [`Authenticators.Devise#serverTokenEndpoint`](#SimpleAuth-Authenticators-Devise-serverTokenEndpoint)
-    and if they are valid the server returns an auth token and email in
-    response. __If the credentials are valid and authentication succeeds, a
-    promise that resolves with the server's response is returned__, otherwise a
-    promise that rejects with the server error is returned.
+    Authenticates the session with the specified `identification` and
+    `password`; the credentials are `POST`ed to the
+    {{#crossLink "DeviseAuthenticator/serverTokenEndpoint:property"}}server{{/crossLink}}.
+    If the credentials are valid the server will responds with a
+    {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
+    and
+    {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}identification{{/crossLink}}.
+    __If the credentials are valid and authentication succeeds, a promise that
+    resolves with the server's response is returned__, otherwise a promise that
+    rejects with the server error is returned.
 
     @method authenticate
-    @param {Object} options The credentials to authenticate the session with
-    @return {Ember.RSVP.Promise} A promise that resolves when an auth token and email is successfully acquired from the server and rejects otherwise
+    @param {String} identification The user's identification
+    @param {String} password The user's password
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
     @public
   */
-  authenticate(credentials) {
+  authenticate(identification, password) {
     return new RSVP.Promise((resolve, reject) => {
       const { resourceName, identificationAttributeName } = this.getProperties('resourceName', 'identificationAttributeName');
       const data         = {};
-      data[resourceName] = {
-        password: credentials.password
-      };
-      data[resourceName][identificationAttributeName] = credentials.identification;
+      data[resourceName] = { password };
+      data[resourceName][identificationAttributeName] = identification;
 
-      this.makeRequest(data).then(function(response) {
+      this._makeRequest(data).then(function(response) {
         run(null, resolve, response);
       }, function(xhr) {
         run(null, reject, xhr.responseJSON || xhr.responseText);
@@ -128,11 +130,7 @@ export default Base.extend({
     return RSVP.resolve();
   },
 
-  /**
-    @method makeRequest
-    @private
-  */
-  makeRequest(data) {
+  _makeRequest(data) {
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return Ember.$.ajax({
       url:      serverTokenEndpoint,

@@ -103,7 +103,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
   describe('#authenticate', () => {
     it('sends an AJAX request to the token endpoint', (done) => {
-      authenticator.authenticate({ identification: 'username', password: 'password' });
+      authenticator.authenticate('username', 'password');
 
       Ember.run.next(() => {
         expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
@@ -119,7 +119,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
     it('sends an AJAX request to the token endpoint with client_id Basic Auth header', function(done) {
       authenticator.set('clientId', 'test-client');
-      authenticator.authenticate({ identification: 'username', password: 'password' });
+      authenticator.authenticate('username', 'password');
 
       Ember.run.next(() => {
         expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
@@ -135,7 +135,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     });
 
     it('sends a single OAuth scope to the token endpoint', function(done) {
-      authenticator.authenticate({ identification: 'username', password: 'password', scope: 'public' });
+      authenticator.authenticate('username', 'password', 'public');
 
       Ember.run.next(() => {
         expect(Ember.$.ajax.getCall(0).args[0].data.scope).to.eql('public');
@@ -144,7 +144,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     });
 
     it('sends multiple OAuth scopes to the token endpoint', (done) => {
-      authenticator.authenticate({ identification: 'username', password: 'password', scope: ['public', 'private'] });
+      authenticator.authenticate('username', 'password', ['public', 'private']);
 
       Ember.run.next(() => {
         expect(Ember.$.ajax.getCall(0).args[0].data.scope).to.eql('public private');
@@ -162,7 +162,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
 
       it('resolves with the correct data', (done) => {
-        authenticator.authenticate({ identification: 'username', password: 'password' }).then((data) => {
+        authenticator.authenticate('username', 'password').then((data) => {
           expect(true).to.be.true;
           expect(data).to.eql({ 'access_token': 'secret token!' });
           done();
@@ -179,7 +179,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         });
 
         it('resolves with the correct data', (done) => {
-          authenticator.authenticate({ identification: 'username', password: 'password' }).then((data) => {
+          authenticator.authenticate('username', 'password').then((data) => {
             expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
             delete data['expires_at'];
             expect(data).to.eql({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
@@ -199,7 +199,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
 
       it('rejects with the correct error', (done) => {
-        authenticator.authenticate({ identification: 'username', password: 'password' }).catch((error) => {
+        authenticator.authenticate('username', 'password').catch((error) => {
           expect(error).to.eql({ error: 'invalid_grant' });
           done();
         });
@@ -278,9 +278,9 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
   });
 
   // testing private API here ;(
-  describe('#refreshAccessToken', () => {
+  describe('#_refreshAccessToken', () => {
     it('sends an AJAX request to the token endpoint', (done) => {
-      authenticator.refreshAccessToken(12345, 'refresh token!');
+      authenticator._refreshAccessToken(12345, 'refresh token!');
 
       Ember.run.next(() => {
         expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
@@ -311,7 +311,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           done();
         });
 
-        authenticator.refreshAccessToken(12345, 'refresh token!');
+        authenticator._refreshAccessToken(12345, 'refresh token!');
       });
 
       describe('when the server reponse includes updated expiration data', () => {
@@ -331,7 +331,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
             done();
           });
 
-          authenticator.refreshAccessToken(12345, 'refresh token!');
+          authenticator._refreshAccessToken(12345, 'refresh token!');
         });
       });
     });

@@ -1,13 +1,13 @@
 import Ember from 'ember';
 
 /**
-  The base for all store types. __This serves as a starting point for
-  implementing custom stores and must not be used directly.__
+  The base class for all session stores. __This serves as a starting point for
+  implementing custom session stores and must not be used directly.__
 
-  Stores are used to persist the session's state so it survives a page reload
+  Session Stores persist the session's state so that it survives a page reload
   and is synchronized across multiple tabs or windows of the same application.
-  The store to be used with the application can be configured on the
-  application's environment object:
+  The session store to be used for an application can be configured on the
+  application's environment object, e.g.:
 
   ```js
   ENV['ember-simple-auth'] = {
@@ -15,8 +15,7 @@ import Ember from 'ember';
   }
   ```
 
-  @class Base
-  @namespace Stores
+  @class BaseStore
   @module ember-simple-auth/stores/base
   @extends Ember.Object
   @uses Ember.Evented
@@ -24,12 +23,11 @@ import Ember from 'ember';
 */
 export default Ember.Object.extend(Ember.Evented, {
   /**
-    __Triggered when the data that constitutes the session changes in the
-    store. This usually happens because the session is authenticated or
-    invalidated in another tab or window.__ The session automatically catches
-    that event, passes the updated data to its authenticator's
-    [`Authenticators.Base#restore`](#SimpleAuth-Authenticators-Base-restore)
-    method and handles the result of that invocation accordingly.
+    Triggered when the session store's data changes due to an external event,
+    e.g. from another tab or window of the same application. The session
+    handles that event, passes the updated data to its authenticator's
+    {{#crossLink "BaseAuthenticator/restore:method"}}{{/crossLink}} method and
+    handles the result of that invocation accordingly.
 
     @event sessionDataUpdated
     @param {Object} data The updated session data
@@ -37,10 +35,10 @@ export default Ember.Object.extend(Ember.Evented, {
   */
 
   /**
-    Persists the `data` in the store. This actually replaces all currently
-    stored data.
+    Persists the `data`. This replaces all currently stored data.
 
-    `Stores.Base`'s implementation does nothing.
+    `BaseStores`'s implementation does nothing. __This method must be
+    overridden in subclasses__.
 
     @method persist
     @param {Object} data The data to persist
@@ -49,9 +47,10 @@ export default Ember.Object.extend(Ember.Evented, {
   persist() {},
 
   /**
-    Restores all data currently saved in the store as a plain object.
+    Returns all data currently stored as a plain object.
 
-    `Stores.Base`'s implementation always returns an empty plain Object.
+    `BaseStores`'s implementation returns an empty object. __This method must
+    be overridden in subclasses__.
 
     @method restore
     @return {Object} The data currently persisted in the store.
@@ -64,7 +63,8 @@ export default Ember.Object.extend(Ember.Evented, {
   /**
     Clears the store.
 
-    `Stores.Base`'s implementation does nothing.
+    `BaseStores`'s implementation does nothing. __This method must be
+    overridden in subclasses__.
 
     @method clear
     @public

@@ -1,32 +1,34 @@
-import Base from './base';
+import Ember from 'ember';
+import BaseStore from './base';
+
+const { on } = Ember;
 
 /**
-  Store that saves its data in memory and thus __is not actually persistent__.
-  It does also not synchronize the session's state across multiple tabs or
-  windows as those cannot share memory.
+  Session store that __persists data in memory and thus is not actually
+  persistent__. It does also not synchronize the session's state across
+  multiple tabs or windows as those cannot share memory. __This store is mainly
+  useful for testing.__
 
-  __This store is mainly useful for testing.__
+  To use the ephemeral session store, configure it via
 
-  _The factory for this store is registered as
-  `'session-store:ephemeral'` in Ember's container._
+  ```js
+  ENV['ember-simple-auth'] = {
+    store: 'session-store:ephemeral'
+  }
+  ```
 
-  @class Ephemeral
-  @namespace Stores
-  @module stores/ephemeral
-  @extends Stores.Base
+  @class EphemeralStore
+  @module ember-simple-auth/stores/ephemeral
+  @extends BaseStore
   @public
 */
-export default Base.extend({
-  /**
-    @method init
-    @private
-  */
-  init() {
+export default BaseStore.extend({
+  _setup: on('init', function() {
     this.clear();
-  },
+  }),
 
   /**
-    Persists the `data`.
+    Persists the `data`. This replaces all currently stored data.
 
     @method persist
     @param {Object} data The data to persist
@@ -37,10 +39,10 @@ export default Base.extend({
   },
 
   /**
-    Restores all data currently saved as a plain object.
+    Returns all data currently stored as a plain object.
 
     @method restore
-    @return {Object} All data currently persisted
+    @return {Object} The data currently persisted in the store.
     @public
   */
   restore() {

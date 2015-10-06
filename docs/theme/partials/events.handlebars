@@ -1,0 +1,59 @@
+<a name="event_{{name}}" class="symbol-anchor"></a>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {{>source_link file=file line=line}}
+    <h3 class="panel-title signature">
+      <strong class="name">`{{name}}`</strong>
+      {{#if type}}
+        : <span class="type">&rarr; `{{#crossLink type}}{{/crossLink}}`</span>
+      {{/if}}
+    </h3>
+  </div>
+  <div class="panel-body">
+    {{#if deprecationMessage}}
+      <p><span class="label label-warning">Deprecated:</span>{{deprecationMessage}}</p>
+    {{/if}}
+    {{#if overwritten_from}}
+      <p><span class="label label-default">Overrides:</span> <a href="{{overwritten_from/class}}.html#event_{{overwritten_from/name}}">`{{name}}` of  `{{overwritten_from/class}}`</a>.</p>
+    {{/if}}
+    {{#if extended_from}}
+      <p><span class="label label-default">Inherited from:</span> <a href="{{extended_from}}.html#event_{{name}}">`{{name}}` of `{{extended_from}}`</a>.</p>
+    {{/if}}
+    {{{eventDescription}}}
+    {{#if params}}
+      <h4 class="subsection">Arguments</h4>
+      <dl class="params">
+        {{#params}}
+          <dt>
+            {{#if optional}}
+              `[{{name}}{{#if optdefault}}={{optdefault}}{{/if}}]`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span>
+            {{else}}
+              `{{name}}`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span>
+            {{/if}}
+          </dt>
+          <dd>
+            {{{description}}}
+            {{#if props}}
+              <dl class="props">
+                {{#props}}
+                  <dt>`{{name}}`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span></dt>
+                  <dd>
+                    {{{description}}}
+                    {{#if props}}
+                      <dl>
+                        {{#props}}
+                          <dt>`{{name}}`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span></dt>
+                          <dd>{{{description}}}</dd>
+                        {{/props}}
+                      </ul>
+                    {{/if}}
+                  </dd>
+                {{/props}}
+              </dl>
+            {{/if}}
+          </dd>
+        {{/params}}
+      </dl>
+    {{/if}}
+  </div>
+</div>

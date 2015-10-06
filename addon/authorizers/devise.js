@@ -1,27 +1,28 @@
 import Ember from 'ember';
-import Base from './base';
+import BaseAuthorizer from './base';
 
 const { isEmpty } = Ember;
 
 /**
   Authorizer that works with the Ruby gem
-  [Devise](https://github.com/plataformatec/devise) by sending the `token` and
-  `email` properties from the session in the `Authorization` header.
+  [devise](https://github.com/plataformatec/devise); includes the user's token
+  and identification from the session data in the `Authorization` HTTP header,
+  e.g.:
+
+  ```
+  Authorization: token="234rtgjneroigne4" email="user@domain.tld"
+  ```
 
   __As token authentication is not actually part of devise anymore, the server
   needs to implement some customizations__ to work with this authenticator -
-  see the README for more information.
+  see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
-  _The factory for this authorizer is registered as
-  `'simple-auth-authorizer:devise'` in Ember's container._
-
-  @class Devise
-  @namespace Authorizers
-  @module authorizers/devise
-  @extends Base
+  @class DeviseAuthorizer
+  @module ember-simple-auth/authorizers/devise
+  @extends BaseAuthorizer
   @public
 */
-export default Base.extend({
+export default BaseAuthorizer.extend({
   /**
     The token attribute name.
 
@@ -43,16 +44,15 @@ export default Base.extend({
   identificationAttributeName: 'email',
 
   /**
-    Authorizes an XHR request by sending the `token` and `email`
-    properties from the session in the `Authorization` header:
-
-    ```
-    Authorization: Token <tokenAttributeName>="<token>", <identificationAttributeName>="<user identification>"
-    ```
+    Includes the user's token (see
+    {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}{{/crossLink}})
+    and identification (see
+    {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}{{/crossLink}})
+    in the `Authorization` header.
 
     @method authorize
     @param {Object} data The data that the session currently holds
-    @param {Function} block The block to call with the authoriztion data if the session is authenticated and authorization data is actually present
+    @param {Function} block(headerName,headerContent) The callback to call with the authorization data; will receive the header name and header content as arguments
     @public
   */
   authorize(data, block) {

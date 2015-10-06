@@ -1,6 +1,6 @@
 /* jscs:disable requireDotNotation */
 import Ember from 'ember';
-import Base from './base';
+import BaseAuthenticator from './base';
 
 const { RSVP, isEmpty, run } = Ember;
 
@@ -9,22 +9,18 @@ const { RSVP, isEmpty, run } = Ember;
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Resource
   Owner Password Credentials Grant Type"_.
 
-  This authenticator supports access token refresh (see
-  [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
+  This authenticator also automatically refreshes access tokens (see
+  [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)) if the
+  server supports it.
 
-  _The factory for this authenticator is registered as
-  `'simple-auth-authenticator:oauth2-password-grant'` in Ember's
-  container._
-
-  @class OAuth2PasswordGrant
-  @namespace Authenticators
-  @module authenticators/oauth2-password-grant
-  @extends Base
+  @class OAuth2PasswordGrantAuthenticator
+  @module ember-simple-auth/authenticators/oauth2-password-grant
+  @extends BaseAuthenticator
   @public
 */
-export default Base.extend({
+export default BaseAuthenticator.extend({
   /**
-    Triggered when the authenticator refreshes the access token (see
+    Triggered when the authenticator refreshed the access token (see
     [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
 
     @event sessionDataUpdated
@@ -33,7 +29,10 @@ export default Base.extend({
   */
 
   /**
-    The client_id to be sent to the authorization server
+    The client_id to be sent to the authentication server (see
+    https://tools.ietf.org/html/rfc6749#appendix-A.1). __This should only be
+    used for statistics or logging etc. as it cannot actually be trusted since
+    it could have been manipulated on the client!__
 
     @property clientId
     @type String
@@ -43,8 +42,8 @@ export default Base.extend({
   clientId: null,
 
   /**
-    The endpoint on the server the authenticator acquires the access token
-    from.
+    The endpoint on the server that authentication and token refresh requests
+    are sent to.
 
     @property serverTokenEndpoint
     @type String
@@ -54,8 +53,13 @@ export default Base.extend({
   serverTokenEndpoint: '/token',
 
   /**
-    The endpoint on the server the authenticator uses to revoke tokens. Only
-    set this if the server actually supports token revokation.
+    The endpoint on the server that token revocation requests are sent to. Only
+    set this if the server actually supports token revokation. If this is
+    `null`, the authenticator will not revoke tokens on session invalidation.
+
+    __If token revocation is enabled but fails, session invalidation will be
+    intercepted and the session will remain authenticated (see
+    {{#crossLink "OAuth2PasswordGrantAuthenticator/invalidate:method"}}{{/crossLink}}).__
 
     @property serverTokenRevocationEndpoint
     @type String
@@ -65,7 +69,8 @@ export default Base.extend({
   serverTokenRevocationEndpoint: null,
 
   /**
-    Sets whether the authenticator automatically refreshes access tokens.
+    Sets whether the authenticator automatically refreshes access tokens if the
+    server supports it.
 
     @property refreshAccessTokens
     @type Boolean
@@ -74,25 +79,23 @@ export default Base.extend({
   */
   refreshAccessTokens: true,
 
-  /**
-    @property _refreshTokenTimeout
-    @private
-  */
   _refreshTokenTimeout: null,
 
   /**
-    Restores the session from a set of session properties; __will return a
-    resolving promise when there's a non-empty `access_token` in the `data`__
-    and a rejecting promise otherwise.
+    Restores the session from a session data object; __will return a resolving
+    promise when there is a non-empty `access_token` in the session data__ and
+    a rejecting promise otherwise.
 
-    This method also schedules automatic token refreshing when there are values
-    for `refresh_token` and `expires_in` in the `data` and automatic token
-    refreshing is not disabled (see
-    [`Authenticators.OAuth2#refreshAccessTokens`](#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
+    If the server issues expiring access tokens and there is an expired access
+    token in the session data along with a refresh token, the authenticator
+    will try to refresh the access token and return a promise that resolves
+    with the new access token if the refresh was successful. If there is no
+    refresh token or the token refresh is not successful, a rejecting promise
+    will be returned.
 
     @method restore
     @param {Object} data The data to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being authenticated
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
     @public
   */
   restore(data) {
@@ -101,7 +104,7 @@ export default Base.extend({
       const refreshAccessTokens = this.get('refreshAccessTokens');
       if (!isEmpty(data['expires_at']) && data['expires_at'] < now) {
         if (refreshAccessTokens) {
-          this.refreshAccessToken(data['expires_in'], data['refresh_token']).then(resolve, reject);
+          this._refreshAccessToken(data['expires_in'], data['refresh_token']).then(resolve, reject);
         } else {
           reject();
         }
@@ -109,7 +112,7 @@ export default Base.extend({
         if (isEmpty(data['access_token'])) {
           reject();
         } else {
-          this.scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
+          this._scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
           resolve(data);
         }
       }
@@ -117,42 +120,39 @@ export default Base.extend({
   },
 
   /**
-    Authenticates the session with the specified `options`; makes a `POST`
-    request to the
-    [`Authenticators.OAuth2#serverTokenEndpoint`](#SimpleAuth-Authenticators-OAuth2-serverTokenEndpoint)
-    with the passed credentials and optional scope and receives the token in
-    response (see http://tools.ietf.org/html/rfc6749#section-4.3).
+    Authenticates the session with the specified `identification`, `password`
+    and optional `scope`; issues a `POST` request to the
+    {{#crossLink "OAuth2PasswordGrantAuthenticator/serverTokenEndpoint:property"}}{{/crossLink}}
+    and receives the access token in response (see
+    http://tools.ietf.org/html/rfc6749#section-4.3).
 
     __If the credentials are valid (and the optionally requested scope is
     granted) and thus authentication succeeds, a promise that resolves with the
     server's response is returned__, otherwise a promise that rejects with the
-    error is returned.
+    error as returned by the server is returned.
 
-    This method also schedules automatic token refreshing when there are values
-    for `refresh_token` and `expires_in` in the server response and automatic
-    token refreshing is not disabled (see
-    [`Authenticators.OAuth2#refreshAccessTokens`](#SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
+    __If the server supports it, this method also schedules refresh requests
+    for the access token before it expires.__
 
     @method authenticate
-    @param {Object} options
-    @param {String} options.identification The resource owner username
-    @param {String} options.password The resource owner password
-    @param {String|Array} [options.scope] The scope of the access request (see [RFC 6749, section 3.3](http://tools.ietf.org/html/rfc6749#section-3.3))
-    @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
+    @param {String} identification The resource owner username
+    @param {String} password The resource owner password
+    @param {String|Array} scope The scope of the access request (see [RFC 6749, section 3.3](http://tools.ietf.org/html/rfc6749#section-3.3))
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
     @public
   */
-  authenticate(options) {
+  authenticate(identification, password, scope = []) {
     return new RSVP.Promise((resolve, reject) => {
-      const data                = { 'grant_type': 'password', username: options.identification, password: options.password };
+      const data                = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      if (!isEmpty(options.scope)) {
-        const scopesString = Ember.makeArray(options.scope).join(' ');
-        Ember.merge(data, { scope: scopesString });
+      const scopesString = Ember.makeArray(scope).join(' ');
+      if (!Ember.isEmpty(scopesString)) {
+        data.scope = scopesString;
       }
-      this.makeRequest(serverTokenEndpoint, data).then((response) => {
+      this._makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
-          const expiresAt = this.absolutizeExpirationTime(response['expires_in']);
-          this.scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
+          const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
+          this._scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
           if (!isEmpty(expiresAt)) {
             response = Ember.merge(response, { 'expires_at': expiresAt });
           }
@@ -165,12 +165,17 @@ export default Base.extend({
   },
 
   /**
-    Cancels any outstanding automatic token refreshes and returns a resolving
+    If token revocation is enabled, this will revoke the access token (and the
+    refresh token if present). If token revocation succedds, this method
+    returns a resolving promise, otherwise it will return a rejecting promise,
+    thus intercepting session invalidation.
+
+    If token revocation is not enabled this method simply returns a resolving
     promise.
 
     @method invalidate
-    @param {Object} data The data of the session to be invalidated
-    @return {Ember.RSVP.Promise} A resolving promise
+    @param {Object} data The current authenticated session data
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
     @public
   */
   invalidate(data) {
@@ -188,7 +193,7 @@ export default Base.extend({
         Ember.A(['access_token', 'refresh_token']).forEach((tokenType) => {
           const token = data[tokenType];
           if (!isEmpty(token)) {
-            requests.push(this.makeRequest(serverTokenRevocationEndpoint, {
+            requests.push(this._makeRequest(serverTokenRevocationEndpoint, {
               'token_type_hint': tokenType, token
             }));
           }
@@ -201,22 +206,7 @@ export default Base.extend({
     });
   },
 
-  /**
-    Sends an `AJAX` request to the `url`. This will always be a _"POST"_
-    request with content type _"application/x-www-form-urlencoded"_ as
-    specified in [RFC 6749](http://tools.ietf.org/html/rfc6749).
-
-    This method is not meant to be used directly but serves as an extension
-    point to e.g. add _"Client Credentials"_ (see
-    [RFC 6749, section 2.3](http://tools.ietf.org/html/rfc6749#section-2.3)).
-
-    @method makeRequest
-    @param {Object} url The url to send the request to
-    @param {Object} data The data to send with the request, e.g. username and password or the refresh token
-    @return {Deferred object} A Deferred object (see [the jQuery docs](http://api.jquery.com/category/deferred-object/)) that is compatible to Ember.RSVP.Promise; will resolve if the request succeeds, reject otherwise
-    @public
-  */
-  makeRequest(url, data) {
+  _makeRequest(url, data) {
     const options = {
       url,
       data,
@@ -238,11 +228,7 @@ export default Base.extend({
     return Ember.$.ajax(options);
   },
 
-  /**
-    @method scheduleAccessTokenRefresh
-    @private
-  */
-  scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
+  _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
     const refreshAccessTokens = this.get('refreshAccessTokens');
     if (refreshAccessTokens) {
       const now = (new Date()).getTime();
@@ -254,27 +240,23 @@ export default Base.extend({
         run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
         if (!Ember.testing) {
-          this._refreshTokenTimeout = run.later(this, this.refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
+          this._refreshTokenTimeout = run.later(this, this._refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
         }
       }
     }
   },
 
-  /**
-    @method refreshAccessToken
-    @private
-  */
-  refreshAccessToken(expiresIn, refreshToken) {
+  _refreshAccessToken(expiresIn, refreshToken) {
     const data                = { 'grant_type': 'refresh_token', 'refresh_token': refreshToken };
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return new RSVP.Promise((resolve, reject) => {
-      this.makeRequest(serverTokenEndpoint, data).then((response) => {
+      this._makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
           expiresIn       = response['expires_in'] || expiresIn;
           refreshToken    = response['refresh_token'] || refreshToken;
-          const expiresAt = this.absolutizeExpirationTime(expiresIn);
+          const expiresAt = this._absolutizeExpirationTime(expiresIn);
           const data      = Ember.merge(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
-          this.scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
+          this._scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
           this.trigger('sessionDataUpdated', data);
           resolve(data);
         });
@@ -285,11 +267,7 @@ export default Base.extend({
     });
   },
 
-  /**
-    @method absolutizeExpirationTime
-    @private
-  */
-  absolutizeExpirationTime(expiresIn) {
+  _absolutizeExpirationTime(expiresIn) {
     if (!isEmpty(expiresIn)) {
       return new Date((new Date().getTime()) + expiresIn * 1000).getTime();
     }

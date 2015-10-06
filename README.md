@@ -183,7 +183,7 @@ Ember Simple Auth comes with 3 authenticators:
 * `DeviseAuthenticator`: an authenticator compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
 * `ToriiAuthenticator`: an authenticator that wraps the [torii library](https://github.com/Vestorly/torii)
 
-To use one of these authenticator in an application, simply extend it:
+To use one of these authenticators in an application, simply extend it:
 
 ```js
 // app/authenticators/oauth2.js
