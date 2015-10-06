@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import ENV from '../config/environment';
 import Configuration from 'ember-simple-auth/configuration';
-import setupSessionStores from 'ember-simple-auth/initializers/setup-session-stores';
 import setupSession from 'ember-simple-auth/initializers/setup-session';
 import setupSessionService from 'ember-simple-auth/initializers/setup-session-service';
 
@@ -12,7 +11,6 @@ export default {
     config.baseURL = ENV.baseURL;
     Configuration.load(config);
 
-    setupSessionStores(registry);
     setupSession(registry);
     setupSessionService(registry);
   }
