@@ -143,7 +143,7 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password, scope = []) {
     return new RSVP.Promise((resolve, reject) => {
-      const data                = { 'grant_type': 'password', username: identification, password };
+      const data                = { 'grant_type': 'password', username: identification, password: password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
       const scopesString = Ember.makeArray(scope).join(' ');
       if (!Ember.isEmpty(scopesString)) {
