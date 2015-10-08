@@ -298,7 +298,7 @@ do is to extend the base authorizer and implement one method (see the
 import BaseAuthorizer from 'ember-simple-auth/authorizers/base';
 
 export default BaseAuthorizer.extend({
-  authorize(block) {
+  authorize(sessionData, block) {
     …
   }
 });
