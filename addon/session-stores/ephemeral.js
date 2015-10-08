@@ -18,7 +18,7 @@ const { on } = Ember;
   ```
 
   @class EphemeralStore
-  @module ember-simple-auth/stores/ephemeral
+  @module ember-simple-auth/session-stores/ephemeral
   @extends BaseStore
   @public
 */

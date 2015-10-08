@@ -5,7 +5,7 @@ import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import InternalSession from 'ember-simple-auth/internal-session';
-import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
+import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import Authenticator from 'ember-simple-auth/authenticators/base';
 
 describe('InternalSession', () => {

@@ -16,7 +16,7 @@ import Ember from 'ember';
   ```
 
   @class BaseStore
-  @module ember-simple-auth/stores/base
+  @module ember-simple-auth/session-stores/base
   @extends Ember.Object
   @uses Ember.Evented
   @public

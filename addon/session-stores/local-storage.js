@@ -21,7 +21,7 @@ const { on } = Ember;
   cookie store when `localStorage` is not available.__
 
   @class LocalStorageStore
-  @module ember-simple-auth/stores/local-storage
+  @module ember-simple-auth/session-stores/local-storage
   @extends BaseStore
   @public
 */

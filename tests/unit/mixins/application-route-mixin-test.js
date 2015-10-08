@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
-import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
+import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import Configuration from 'ember-simple-auth/configuration';
 
 describe('ApplicationRouteMixin', () => {

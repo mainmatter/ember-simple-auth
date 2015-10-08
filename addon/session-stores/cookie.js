@@ -46,7 +46,7 @@ const { on } = Ember;
   ```
 
   @class CookieStore
-  @module ember-simple-auth/stores/cookie
+  @module ember-simple-auth/session-stores/cookie
   @extends BaseStore
   @public
 */
