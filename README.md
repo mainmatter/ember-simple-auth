@@ -9,8 +9,8 @@ __[Ember Simple Auth's API docs are available here](http://ember-simple-auth.com
 Ember Simple Auth is a __lightweight library for implementing authentication/
 authorization with [Ember.js](http://emberjs.com) applications__. It has
 minimal requirements with respect to application structure, routes etc. With
-its pluggable strategies it can support all kinds of authentication and
-authorization mechanisms.
+its pluggable strategies it __can support all kinds of authentication and
+authorization mechanisms__.
 
 ## What does it do?
 
@@ -23,22 +23,20 @@ authorization mechanisms.
 
 ## How does it work?
 
-Ember Simple Auth consists of 4 main building blocks - the session, a session store, authenticators and (optionally)
+Ember Simple Auth consists of __4 main building blocks__ - the session, a session store, authenticators and (optionally)
 authorizers.
 
-The __session__ service is the main interface to the library. It provides methods for authenticating and invalidating the
-session as well as for setting and reading session data. Being an Ember Service, it can be injected wherever
-needed in the application.
+The __session service is the main interface to the library__. It provides __methods for authenticating and invalidating the
+session__ as well as for setting and reading session data.
 
-The __session store__ persists the session and its data so that it survives a page reload. It also synchronizes the session state
+The __session store persists the session state__ so that it survives a page reload. It also synchronizes the session state
 across multiple tabs or windows of the application so that e.g. a logout in one tab or window also results in a logout in all other tabs or windows of the application.
 
-__Authenticators__ authenticate the session. They implement the concrete mechanisms for verifying a user's identity so
-that an application can support multiple ways of authentication such as sending credentials to the application's own backend server, Facebook, github etc.
-by leveraging multiple authenticators.
+__Authenticators authenticate the session__. An application can leverage multiple authenticators to support multiple ways
+of authentication such as sending credentials to the application's own backend server, Facebook, github etc.
 
-__Authorizers__ use the data retrieved by an authenticator and stored in the session to generate
-authorization data that can be injected into outgoing requests such as Ember Data requests.
+__Authorizers__ use the data retrieved by an authenticator and stored in the session to __generate
+authorization data that can be injected into outgoing requests such as Ember Data requests__.
 
 ## How do I use it?
 
@@ -46,12 +44,16 @@ __Ember Simple Auth comes with a
 [dummy app](https://github.com/simplabs/ember-simple-auth/tree/master/tests/dummy)
 that implementes a complete auth solution__ including authentication against
 the application's own server as well as Facebook, authorization of Ember Data
-requests and error handling. __Check out that dummy app for reference.__ To run
-it, clone this repository and run
+requests and error handling. __Check out that dummy app for reference.__ To start
+it, run
 
 ```
+git clone git@github.com:simplabs/ember-simple-auth.git
+cd ember-simple-auth
 npm install && bower install && ember serve
 ```
+
+and go to [http://localhost:4200](http://localhost:4200).
 
 ### Installation
 
@@ -61,7 +63,7 @@ Installing the library is as easy as:
 ember install ember-simple-auth
 ```
 
-### The Session
+### Basic Usage
 
 Once the library is installed, __the session service can be injected wherever needed in the application__. In order to e.g.
 display login/logout buttons depending on the current session state, inject the service into the respective
@@ -113,7 +115,7 @@ export default Ember.Controller.extend({
 ```
 
 For authenticating the session, __the session service provides the `authenticate` method__ that takes the name of the
-authenticator to use as well as other arguments depending on the authenticator. __To define an authenticator, add a new file
+authenticator to use as well as other arguments depending on specific authenticator used. __To define an authenticator, add a new file
 in `app/authenticators`__ and extend one of the authenticators the library comes with, e.g.:
 
 ```js
@@ -194,7 +196,7 @@ This will make the route (and all of its subroutes) transition to a configurable
 To prevent a route from being accessed when the session is authenticated (which
 makes sense for login and registration routes for example), mixin the UnauthenticatedRouteMixin into the respective route.
 
-In order to add authorization information to outgoing API requests the application must define an authorizer. To do so,
+In order to add authorization information to outgoing API requests the application can define an authorizer. To do so,
 add a new file to `app/authorizers`, e.g.:
 
 ```js
@@ -214,7 +216,7 @@ this.get('session').authorize('authorizer:oauth2', (headerName, headerValue) => 
 });
 ```
 
-In order to include authorization info in all Ember Data requests if the session is authenticated, mixin the DataAdapterMixin into the application adapter:
+To include authorization info in all Ember Data requests if the session is authenticated, mixin the DataAdapterMixin into the application adapter:
 
 ```js
 // app/adapters/application.js
@@ -224,6 +226,21 @@ import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
   authorizer: 'authorizer:oauth2'
 });
+```
+
+## The Session Service
+
+The session service is the main interface to the library. It defines the `authenticate`, `invalidate` and `authorize` methods
+as well as the session events as shown above.
+
+It also provides the __`isAuthenticated` as well as the `data` properties. The latter
+can be used to get and set the session data__. While the special `authenticated` section in the session data is contains the data
+that was acquired by the authenticator when it authenticated the session and is read-only, all other session data
+can be written and will also remain in the session after session invalidation. It can be used to store all kinds of client side
+data that needs to be persisted and synchronized across tabs and windows, e.g.:
+
+```js
+this.get('session').set('data.locale', 'de');
 ```
 
 ## Authenticators
