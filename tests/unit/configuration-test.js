@@ -28,8 +28,8 @@ describe('Configuration', () => {
   });
 
   describe('store', () => {
-    it('defaults to "session-store:ephemeral"', () => {
-      expect(Configuration.store).to.eql('session-store:ephemeral');
+    it('defaults to "session-store:local-storage"', () => {
+      expect(Configuration.store).to.eql('session-store:local-storage');
     });
   });
 

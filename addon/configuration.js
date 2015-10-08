@@ -4,7 +4,7 @@ const DEFAULTS = {
   authenticationRoute:         'login',
   routeAfterAuthentication:    'index',
   routeIfAlreadyAuthenticated: 'index',
-  store:                       'session-store:ephemeral'
+  store:                       'session-store:local-storage'
 };
 
 /**
