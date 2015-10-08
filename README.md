@@ -185,9 +185,9 @@ events__ that are triggered whenever the session is successfully authenticated
 or invalidated (which not only happens when the user submits the login form or
 clicks the logout button but also when the session is authenticated or
 invalidated in another tab or window of the application). __To have these
-events handled automatically, simply mixin the
+events handled automatically, simply mix
 [`ApplicationRouteMixin`](http://ember-simple-auth.com/api/classes/ApplicationRouteMixin.html)
-in the application route__:
+into the application route__:
 
 ```js
 // app/routes/application.js
@@ -206,7 +206,7 @@ configurable route while the `sessionInvalidated` method will reload the page
 to clear all potentially sensitive data from memory.
 
 __To make a route in the application accessible only when the session is
-authenticated__, mixin the
+authenticated__, mix the
 [`AuthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/AuthenticatedRouteMixin.html)
 into the respective route:
 
@@ -221,7 +221,7 @@ This will make the route (and all of its subroutes) transition to a
 configurable login route when the session is not authenticated.
 
 To prevent a route from being accessed when the session is authenticated (which
-makes sense for login and registration routes for example), mixin the
+makes sense for login and registration routes for example), mix the
 [`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/UnauthenticatedRouteMixin.html)
 into the respective route.
 
@@ -249,7 +249,7 @@ this.get('session').authorize('authorizer:oauth2', (headerName, headerValue) => 
 ```
 
 To include authorization info in all Ember Data requests if the session is
-authenticated, mixin the
+authenticated, mix the
 [`DataAdapterMixin`](http://ember-simple-auth.com/api/classes/DataAdapterMixin.html)
 into the application adapter:
 
@@ -386,7 +386,7 @@ __Unlike in previous versions of Ember Simple Auth, authorization will not
 happen automatically for all requests the application issues anymore__ but has
 to be initiated explicitly via the service.
 
-When using Ember Data you can mixin the `DataAdapterMixin` in the application
+When using Ember Data you can mix the `DataAdapterMixin` in the application
 adapter to automatically authorize all API requests:
 
 ```js
