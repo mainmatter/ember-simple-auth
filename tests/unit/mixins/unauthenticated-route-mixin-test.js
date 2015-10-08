@@ -7,7 +7,7 @@ import sinon from 'sinon';
 import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
 import Configuration from 'ember-simple-auth/configuration';
-import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
+import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
 describe('UnauthenticatedRouteMixin', () => {
   let route;

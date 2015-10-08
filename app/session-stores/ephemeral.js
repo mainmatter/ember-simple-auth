@@ -1,3 +1,3 @@
-import EphemeralStore from 'ember-simple-auth/stores/ephemeral';
+import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
 export default EphemeralStore;

@@ -3,7 +3,7 @@ import Ember from 'ember';
 import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
-import Cookie from 'ember-simple-auth/stores/cookie';
+import Cookie from 'ember-simple-auth/session-stores/cookie';
 import itBehavesLikeAStore from './shared/store-behavior';
 
 describe('CookieStore', () => {
