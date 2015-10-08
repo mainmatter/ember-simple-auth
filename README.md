@@ -234,9 +234,9 @@ The session service is the main interface to the library. It defines the `authen
 as well as the session events as shown above.
 
 It also provides the __`isAuthenticated` as well as the `data` properties. The latter
-can be used to get and set the session data__. While the special `authenticated` section in the session data is contains the data
+can be used to get and set the session data__. While the special `authenticated` section in the session data contains the data
 that was acquired by the authenticator when it authenticated the session and is read-only, all other session data
-can be written and will also remain in the session after session invalidation. It can be used to store all kinds of client side
+can be written and will also remain in the session after it is invalidated. It can be used to store all kinds of client side
 data that needs to be persisted and synchronized across tabs and windows, e.g.:
 
 ```js
@@ -246,7 +246,7 @@ this.get('session').set('data.locale', 'de');
 ## Authenticators
 
 __Authenticators implement the concrete steps necessary to authenticate the
-session.__ An application can have several authenticators for different kinds
+session.__ An application can leverage several authenticators for different kinds
 of authentication mechanisms (e.g. the application's own backend server,
 external authentication providers like Facebook etc.) while the session is only
 ever authenticated with one authenticator at a time (see the
@@ -255,14 +255,14 @@ The authenticator to use is chosen when authentication is triggered via the
 name it is registered with in the Ember container:
 
 ```js
-this.get('session').authenticate('authenticator:some', {});
+this.get('session').authenticate('authenticator:some');
 ```
 
 Ember Simple Auth comes with 3 authenticators:
 
-* `OAuth2PasswordGrantAuthenticator`: an OAuth 2.0 authenticator that implements the _"Resource Owner Password Credentials Grant Type"_
-* `DeviseAuthenticator`: an authenticator compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
-* `ToriiAuthenticator`: an authenticator that wraps the [torii library](https://github.com/Vestorly/torii)
+* `OAuth2PasswordGrant`: an OAuth 2.0 authenticator that implements the _"Resource Owner Password Credentials Grant Type"_
+* `Devise`: an authenticator compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
+* `Torii`: an authenticator that wraps the [torii library](https://github.com/Vestorly/torii)
 
 To use any of these authenticators in an application, define a new authenticator in `app/authenticators`, extend if from the Ember Simple Auth authenticator
 
@@ -282,7 +282,7 @@ this.get('session').authenticate('authenticator:some', data);
 ### Implementing a custom Authenticator
 
 Besides extending one of the predefined authenticators, an application can also implement fully custom authenticators. In order to
-do that, extend the abstract base authenticator that Ember Simple Auth comes with and implement the `authenticate`, `restore`
+do that, extend the abstract base authenticator that Ember Simple Auth comes with and override the `authenticate`, `restore`
 and (optionally) `invalidate` methods:
 
 ```js
@@ -310,10 +310,10 @@ __authorizers and authenticators have to fit together__.
 
 Ember Simple Auth comes with 2 authorizers:
 
-* `OAuth2BearerAuthorizer`: an OAuth 2.0 authorizer that uses Bearer tokens
-* `DeviseAuthorizer`: an authorizer compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
+* `OAuth2Bearer`: an OAuth 2.0 authorizer that uses Bearer tokens
+* `Devise`: an authorizer compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
 
-To use any of these authorizers in an application, define a new authroizer in `app/authroizer`, extend if from the Ember Simple Auth authroizer
+To use any of these authorizers in an application, define a new authroizer in `app/authorizers`, extend if from the Ember Simple Auth authorizer
 
 ```js
 // app/authorizers/oauth2.js
@@ -322,7 +322,7 @@ import OAuth2Bearer from 'ember-simple-auth/authorizers/oauth2-bearer';
 export default OAuth2Bearer.extend();
 ```
 
-and invoke the session service's `authorize` method with the respective:
+and invoke the session service's `authorize` method with the respective name:
 
 ```js
 this.get('session').authorize('authenticator:some', () => {
@@ -331,7 +331,7 @@ this.get('session').authorize('authenticator:some', () => {
 ```
 
 __Unlike in previous versions of Ember Simple Auth, authorization will not happen automatically for
-all requests the application issues anymore__ but has to be initiated explicitly via the service.__
+all requests the application issues anymore__ but has to be initiated explicitly via the service.
 
 When using Ember Data you can mixin the `DataAdapterMixin` in the application adapter to automatically authorize all API requests:
 
@@ -348,7 +348,7 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 ### Implementing a custom Authorizer
 
 Besides extending one of the predefined authorizers, an application can also implement fully custom authorizers. In order to
-do that, extend the abstract base authorizer that Ember Simple Auth comes with and implement the `authorize` method:
+do that, extend the abstract base authorizer that Ember Simple Auth comes with and override the `authorize` method:
 
 ```js
 // app/authorizers/custom.js
@@ -365,12 +365,12 @@ export default Base.extend({
 
 Ember Simple Auth __persists the session state via a session store so it survives page reloads__.
 There is only one store per application that can be configured in the application's
-environment object:
+environment object, e.g.:
 
 ```js
 //config/environment.js
 ENV['ember-simple-auth'] = {
-  store: 'session-store:local-storage'
+  store: 'session-store:cookie'
 }
 ```
 
@@ -394,13 +394,13 @@ stores its data in a cookie
 
 The ephemeral store (see the
 [API docs for `Stores.Ephemeral`](http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Stores-Ephemeral))
-stores its data in memory and thus __is not actually persistent__. This store
-is mainly useful for testing. Also the ephemeral store cannot keep multiple
+stores its data in memory and thus __is not actually persistent. This store
+is mainly useful for testing.__ Also the ephemeral store cannot keep multiple
 tabs or windows in sync as tabs/windows cannot share memory.
 
 ### Implementing a custom Store
 
-Besides using one of the predefined session stores, an application can also implement fully custom store. In order to
+Besides using one of the predefined session stores, an application can also implement fully custom stores. In order to
 do that, extend the abstract base session store that Ember Simple Auth comes with and implement the `persist`
 and `restore` methods:
 
@@ -421,7 +421,7 @@ export default Base.extend({
 
 ## Testing
 
-Ember Simple Auth comes with a set up test helpers that can be used in acceptance tests:
+Ember Simple Auth comes with a __set of test helpers that can be used in acceptance tests__:
 
 * `currentSession(app)`: returns the current session.
 * `authenticateSession(app, sessionData)`: authenticates the session; the optional
