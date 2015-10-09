@@ -11,7 +11,7 @@ const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 /**
   Session store that persists data in the browser's `localStorage` (see
   {{#crossLink "LocalStorageStore"}}{{/crossLink}}) if that is available or in
-  a cookie (see {{#crossLink "CookieStore"}}{{/crossLink}})if it is not.
+  a cookie (see {{#crossLink "CookieStore"}}{{/crossLink}}) if it is not.
 
   __This is the default store that Ember Simple Auth will use when the
   application doesn't define a custom store.__
