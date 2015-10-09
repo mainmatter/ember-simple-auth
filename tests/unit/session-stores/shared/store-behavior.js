@@ -4,15 +4,15 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 
-export default function(options = {}) {
+export default function(options) {
   let syncExternalChanges = options.syncExternalChanges || Ember.K;
   let store;
 
-  describe('#persist', () => {
-    beforeEach(() => {
-      store = options.store();
-    });
+  beforeEach(() => {
+    store = options.store();
+  });
 
+  describe('#persist', () => {
     it('persists an object', () => {
       store.persist({ key: 'value' });
 

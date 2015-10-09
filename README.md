@@ -432,24 +432,33 @@ import Cookie from 'ember-simple-auth/session-stores/cookie';
 export default Cookie.extend();
 ```
 
-If the application does not define a session store, the `localStorage` store
-will be used by default. To customize the `localStorage` store, define a custom
-store in `app/session-stores/application.js` that extends it and overrides the
+If the application does not define a session store, the adaptive store which
+uses `localStorage` if that is available or a cookie if it is not, will be used
+by default. To customize the adaptive store, define a custom store in
+`app/session-stores/application.js` that extends it and overrides the
 properties to customize.
 
 ### Store Types
 
-Ember Simple Auth comes with 3 stores:
+Ember Simple Auth comes with 4 stores:
+
+#### Adaptive Store
+
+[The adaptive store](http://ember-simple-auth.com/api/classes/AdaptiveStore.html)
+stores its data in the browser's `localStorage` if that is available or in a
+cookie if it is not; __this is the default store__.
 
 #### `localStorage` Store
 
 [The `localStorage` store](http://ember-simple-auth.com/api/classes/LocalStorageStore.html)
-stores its data in the browser's `localStorage`; __this is the default store__.
+stores its data in the browser's `localStorage`. This is used by the adaptive
+store if `localStorage` is available.
 
 #### Cookie Store
 
 [The Cookie store](http://ember-simple-auth.com/api/classes/CookieStore.html)
-stores its data in a cookie
+stores its data in a cookie. This is used by the adaptive store if
+`localStorage` is not available.
 
 #### Ephemeral Store
 

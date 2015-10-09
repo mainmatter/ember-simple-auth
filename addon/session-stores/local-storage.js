@@ -1,3 +1,4 @@
+/* global localStorage */
 import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
@@ -7,13 +8,11 @@ const { on } = Ember;
 /**
   Session store that persists data in the browser's `localStorage`.
 
-  __This is the default store that Ember Simple Auth will use when the
-  application doesn't define a custom store.__
-
-  __`localStorage` is not available in Safari when running  in private mode. If
-  the application needs to support Safari's private mode, it should use the
-  cookie store instead or change the configuration dynamically to only use the
-  cookie store when `localStorage` is not available.__
+  __`localStorage` is not available in Safari when running in private mode. In
+  general it is better to use the
+  {{#crossLink "AdaptiveStore"}}{{/crossLink}} that automatically falls back to
+  the {{#crossLink "CookieStore"}}{{/crossLink}} when `localStorage` is not
+  available.__
 
   @class LocalStorageStore
   @module ember-simple-auth/session-stores/local-storage
