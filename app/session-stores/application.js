@@ -1,3 +1,3 @@
-import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
+import Adaptive from 'ember-simple-auth/session-stores/adaptive';
 
-export default LocalStorage.extend();
+export default Adaptive.extend();
