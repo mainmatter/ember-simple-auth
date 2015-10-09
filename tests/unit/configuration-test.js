@@ -27,12 +27,6 @@ describe('Configuration', () => {
     });
   });
 
-  describe('store', () => {
-    it('defaults to "session-store:local-storage"', () => {
-      expect(Configuration.store).to.eql('session-store:local-storage');
-    });
-  });
-
   describe('.load', () => {
     it('sets authenticationRoute correctly', () => {
       Configuration.load({ authenticationRoute: 'authenticationRoute' });
@@ -50,12 +44,6 @@ describe('Configuration', () => {
       Configuration.load({ routeIfAlreadyAuthenticated: 'routeIfAlreadyAuthenticated' });
 
       expect(Configuration.routeIfAlreadyAuthenticated).to.eql('routeIfAlreadyAuthenticated');
-    });
-
-    it('sets store correctly', () => {
-      Configuration.load({ store: 'session-store:application' });
-
-      expect(Configuration.store).to.eql('session-store:application');
     });
   });
 });

@@ -3,8 +3,7 @@ import Ember from 'ember';
 const DEFAULTS = {
   authenticationRoute:         'login',
   routeAfterAuthentication:    'index',
-  routeIfAlreadyAuthenticated: 'index',
-  store:                       'session-store:local-storage'
+  routeIfAlreadyAuthenticated: 'index'
 };
 
 /**
@@ -78,18 +77,6 @@ export default {
     @public
   */
   routeIfAlreadyAuthenticated: DEFAULTS.routeIfAlreadyAuthenticated,
-
-  /**
-    The session store that the session data is stored in.
-
-    @property store
-    @readOnly
-    @static
-    @type String
-    @default 'index'
-    @public
-  */
-  store: DEFAULTS.store,
 
   load(config) {
     let wrappedConfig = Ember.Object.create(config);

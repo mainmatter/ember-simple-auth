@@ -7,13 +7,8 @@ const { on } = Ember;
 /**
   Session store that persists data in the browser's `localStorage`.
 
-  To use the local storage session store, configure it via
-
-  ```js
-  ENV['ember-simple-auth'] = {
-    store: 'session-store:local-storage'
-  }
-  ```
+  __This is the default store that Ember Simple Auth will use when the
+  application doesn't define a custom store.__
 
   __`localStorage` is not available in Safari when running  in private mode. If
   the application needs to support Safari's private mode, it should use the
