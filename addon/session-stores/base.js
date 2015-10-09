@@ -6,14 +6,6 @@ import Ember from 'ember';
 
   Session Stores persist the session's state so that it survives a page reload
   and is synchronized across multiple tabs or windows of the same application.
-  The session store to be used for an application can be configured on the
-  application's environment object, e.g.:
-
-  ```js
-  ENV['ember-simple-auth'] = {
-    store: 'session-store:local-storage'
-  }
-  ```
 
   @class BaseStore
   @module ember-simple-auth/session-stores/base

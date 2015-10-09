@@ -423,14 +423,19 @@ export default Base.extend({
 
 Ember Simple Auth __persists the session state via a session store so it
 survives page reloads__. There is only one store per application that can be
-configured in the application's environment object, e.g.:
+defined in `app/session-stores/application.js`:
 
 ```js
-//config/environment.js
-ENV['ember-simple-auth'] = {
-  store: 'session-store:cookie'
-}
+// app/session-stores/application.js
+import Cookie from 'ember-simple-auth/session-stores/cookie';
+
+export default Cookie.extend();
 ```
+
+If the application does not define a session store, the `localStorage` store
+will be used by default. To customize the `localStorage` store, define a custom
+store in `app/session-stores/application.js` that extends it and overrides the
+properties to customize.
 
 ### Store Types
 
@@ -466,7 +471,7 @@ and
 methods:
 
 ```js
-// app/session-stores/custom.js
+// app/session-stores/application.js
 import Base from 'ember-simple-auth/session-stores/base';
 
 export default Base.extend({
@@ -498,7 +503,7 @@ application's `config/environment.js` file, e.g.:
 
 ```js
 ENV['ember-simple-auth'] = {
-  store: 'session-store:cookie'
+  authenticationRoute: 'signin'
 };
 ```
 

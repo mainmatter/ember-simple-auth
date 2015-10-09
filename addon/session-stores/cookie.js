@@ -37,14 +37,6 @@ const { on } = Ember;
   {{#crossLink "LocalStorageStore"}}`localStorage` session store{{/crossLink}}
   should be used.
 
-  To use the cookie session store, configure it via
-
-  ```js
-  ENV['ember-simple-auth'] = {
-    store: 'session-store:cookie'
-  }
-  ```
-
   @class CookieStore
   @module ember-simple-auth/session-stores/cookie
   @extends BaseStore
