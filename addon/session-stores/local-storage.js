@@ -39,24 +39,32 @@ export default BaseStore.extend({
 
     @method persist
     @param {Object} data The data to persist
+    @return {Ember.RSVP.Promise} The promise object persisting the data in the store.
     @public
   */
   persist(data) {
-    data = JSON.stringify(data || {});
-    localStorage.setItem(this.key, data);
-    this._lastData = this.restore();
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      data = JSON.stringify(data || {});
+      localStorage.setItem(this.key, data);
+      this.restore().then((restoredContent) => {
+        this._lastData = restoredContent;
+        resolve();
+      }, reject);
+    });
   },
 
   /**
     Returns all data currently stored in the `localStorage` as a plain object.
 
     @method restore
-    @return {Object} The data currently persisted in the `localStorage`.
+    @return {Ember.RSVP.Promise} The promise object resolving the data currently persisted in the `localStorage`.
     @public
   */
   restore() {
-    let data = localStorage.getItem(this.key);
-    return JSON.parse(data) || {};
+    return new Ember.RSVP.Promise((resolve) => {
+      let data = localStorage.getItem(this.key);
+      resolve(JSON.parse(data) || {});
+    });
   },
 
   /**
@@ -65,11 +73,15 @@ export default BaseStore.extend({
     `localStorage`.
 
     @method clear
+    @return {Ember.RSVP.Promise} The promise object clearing the store.
     @public
   */
   clear() {
-    localStorage.removeItem(this.key);
-    this._lastData = {};
+    return new Ember.RSVP.Promise((resolve) => {
+      localStorage.removeItem(this.key);
+      this._lastData = {};
+      resolve();
+    });
   },
 
   _bindToStorageEvents() {

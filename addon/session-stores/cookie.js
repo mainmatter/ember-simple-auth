@@ -90,8 +90,9 @@ export default BaseStore.extend({
   }).volatile(),
 
   _setup: on('init', function() {
-    this._syncData();
-    this._renewExpiration();
+    this._syncData().then(() => {
+      this._renewExpiration();
+    });
   }),
 
   /**
@@ -99,40 +100,52 @@ export default BaseStore.extend({
 
     @method persist
     @param {Object} data The data to persist
+    @return {Ember.RSVP.Promise} The promise object persisting the data in the store.
     @public
   */
   persist(data) {
-    data           = JSON.stringify(data || {});
-    let expiration = this._calculateExpirationTime();
-    this._write(data, expiration);
-    this._lastData = this.restore();
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      data           = JSON.stringify(data || {});
+      let expiration = this._calculateExpirationTime();
+      this._write(data, expiration);
+      this.restore().then((restoredContent) => {
+        this._lastData = restoredContent;
+        resolve();
+      }, reject);
+    });
   },
 
   /**
     Returns all data currently stored in the cookie as a plain object.
 
     @method restore
-    @return {Object} The data currently persisted in the cookie.
+    @return {Ember.RSVP.Promise} The promise object resolving the data currently persisted in the cookie.
     @public
   */
   restore() {
-    let data = this._read(this.cookieName);
-    if (Ember.isEmpty(data)) {
-      return {};
-    } else {
-      return JSON.parse(data);
-    }
+    return new Ember.RSVP.Promise((resolve) => {
+      let data = this._read(this.cookieName);
+      if (Ember.isEmpty(data)) {
+        resolve({});
+      } else {
+        resolve(JSON.parse(data));
+      }
+    });
   },
 
   /**
     Clears the store by deleting the cookie.
 
     @method clear
+    @return {Ember.RSVP.Promise} The promise object clearing the store.
     @public
   */
   clear() {
-    this._write(null, 0);
-    this._lastData = {};
+    return new Ember.RSVP.Promise((resolve) => {
+      this._write(null, 0);
+      this._lastData = {};
+      resolve();
+    });
   },
 
   _read(name) {
@@ -159,33 +172,43 @@ export default BaseStore.extend({
   },
 
   _syncData() {
-    let data = this.restore();
-    if (!objectsAreEqual(data, this._lastData)) {
-      this._lastData = data;
-      this.trigger('sessionDataUpdated', data);
-    }
-    if (!Ember.testing) {
-      Ember.run.cancel(this._syncDataTimeout);
-      this._syncDataTimeout = Ember.run.later(this, this._syncData, 500);
-    }
+    return new Ember.RSVP.Promise((resolve) => {
+      this.restore().then((data) => {
+        if (!objectsAreEqual(data, this._lastData)) {
+          this._lastData = data;
+          this.trigger('sessionDataUpdated', data);
+        }
+        if (!Ember.testing) {
+          Ember.run.cancel(this._syncDataTimeout);
+          this._syncDataTimeout = Ember.run.later(this, this._syncData, 500);
+        }
+        resolve();
+      });
+    });
   },
 
   _renew() {
-    let data = this.restore();
-    if (!Ember.isEmpty(data) && data !== {}) {
-      data           = Ember.typeOf(data) === 'string' ? data : JSON.stringify(data || {});
-      let expiration = this._calculateExpirationTime();
-      this._write(data, expiration);
-    }
+    return new Ember.RSVP.Promise((resolve) => {
+      this.restore().then((data) => {
+        if (!Ember.isEmpty(data) && data !== {}) {
+          data           = Ember.typeOf(data) === 'string' ? data : JSON.stringify(data || {});
+          let expiration = this._calculateExpirationTime();
+          this._write(data, expiration);
+        }
+        resolve();
+      });
+    });
   },
 
   _renewExpiration() {
-    if (this.get('_isPageVisible')) {
-      this._renew();
-    }
-    if (!Ember.testing) {
-      Ember.run.cancel(this._renewExpirationTimeout);
-      this._renewExpirationTimeout = Ember.run.later(this, this._renewExpiration, 60000);
-    }
+    return new Ember.RSVP.Promise((resolve) => {
+      if (this.get('_isPageVisible')) {
+        this._renew().then(resolve);
+      }
+      if (!Ember.testing) {
+        Ember.run.cancel(this._renewExpirationTimeout);
+        this._renewExpirationTimeout = Ember.run.later(this, this._renewExpiration, 60000);
+      }
+    });
   }
 });
