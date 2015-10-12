@@ -133,7 +133,7 @@ new file in `app/authenticators`__ and extend one of the authenticators the
 library comes with, e.g.:
 
 ```js
-// app/authenticator/oauth2.js
+// app/authenticators/oauth2.js
 import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
 export default OAuth2PasswordGrant.extend();
