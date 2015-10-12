@@ -13,17 +13,24 @@ export default function(options) {
   });
 
   describe('#persist', () => {
-    it('persists an object', () => {
-      store.persist({ key: 'value' });
-
-      expect(store.restore()).to.eql({ key: 'value' });
+    it('persists an object', (done) => {
+      store.persist({ key: 'value' }).then(() => {
+        store.restore().then((restoredContent) => {
+          expect(restoredContent).to.eql({ key: 'value' });
+          done();
+        });
+      });
     });
 
-    it('overrides existing data', () => {
-      store.persist({ key1: 'value1' });
-      store.persist({ key2: 'value2' });
-
-      expect(store.restore()).to.eql({ key2: 'value2' });
+    it('overrides existing data', (done) => {
+      store.persist({ key1: 'value1' }).then(() => {
+        store.persist({ key2: 'value2' }).then(() => {
+          store.restore().then((restoredContent) => {
+            expect(restoredContent).to.eql({ key2: 'value2' });
+            done();
+          });
+        });
+      });
     });
 
     it('does not trigger the "sessionDataUpdated" event', (done) => {
@@ -41,36 +48,50 @@ export default function(options) {
 
   describe('#restore', () => {
     describe('when the store is empty', () => {
-      it('returns an empty object', () => {
-        store.clear();
-        expect(store.restore()).to.eql({});
+      it('returns an empty object', (done) => {
+        store.clear().then(() => {
+          store.restore().then((restoredContent) => {
+            expect(restoredContent).to.eql({});
+            done();
+          });
+        });
       });
     });
 
     describe('when the store has data', () => {
       beforeEach(() => {
-        store.persist({ key1: 'value1', key2: 'value2' });
+        return store.persist({ key1: 'value1', key2: 'value2' });
       });
 
       it('returns all data in the store', () => {
-        expect(store.restore()).to.eql({ key1: 'value1', key2: 'value2' });
+        return store.restore().then((restoredContent) => {
+          expect(restoredContent).to.eql({ key1: 'value1', key2: 'value2' });
+        });
       });
 
-      it('returns a copy of the stored data', () => {
-        let data = store.restore();
-        data.key1 = 'another value!';
+      it('returns a copy of the stored data', (done) => {
+        store.restore().then((data) => {
+          data.key1 = 'another value!';
 
-        expect(store.restore()).to.eql({ key1: 'value1', key2: 'value2' });
+          store.restore().then((restoredContent) => {
+            expect(restoredContent).to.eql({ key1: 'value1', key2: 'value2' });
+            done();
+          });
+        });
       });
     });
   });
 
   describe('#clear', () => {
-    it('empties the store', () => {
-      store.persist({ key1: 'value1', key2: 'value2' });
-      store.clear();
-
-      expect(store.restore()).to.eql({});
+    it('empties the store', (done) => {
+      store.persist({ key1: 'value1', key2: 'value2' }).then(() => {
+        store.clear().then(() => {
+          store.restore().then((restoredContent) => {
+            expect(restoredContent).to.eql({});
+            done();
+          });
+        });
+      });
     });
   });
 }

@@ -104,10 +104,11 @@ export default Base.extend({
 
     @method persist
     @param {Object} data The data to persist
+    @return {Ember.RSVP.Promise} The promise object persisting the data in the store.
     @public
   */
   persist() {
-    this.get('_store').persist(...arguments);
+    return this.get('_store').persist(...arguments);
   },
 
   /**
@@ -115,7 +116,7 @@ export default Base.extend({
     available - or if it is not, in the cookie - as a plain object.
 
     @method restore
-    @return {Object} The data currently persisted in the `localStorage`.
+    @return {Ember.RSVP.Promise} The promise object resolving the data currently persisted in the `localStorage`.
     @public
   */
   restore() {
@@ -128,9 +129,10 @@ export default Base.extend({
     `localStorage` if that is available or by deleting the cookie if it is not.
 
     @method clear
+    @return {Ember.RSVP.Promise} The promise object clearing the store.
     @public
   */
   clear() {
-    this.get('_store').clear();
+    return this.get('_store').clear();
   }
 });

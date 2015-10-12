@@ -44,26 +44,30 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
 
   restore() {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      let restoredContent   = this.store.restore();
-      let { authenticator } = (restoredContent.authenticated || {});
-      if (!!authenticator) {
-        delete restoredContent.authenticated.authenticator;
-        this.container.lookup(authenticator).restore(restoredContent.authenticated).then((content) => {
-          this.set('content', restoredContent);
-          this._setup(authenticator, content);
-          resolve();
-        }, () => {
-          Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
+      this.store.restore().then((restoredContent) => {
+        let { authenticator } = (restoredContent.authenticated || {});
+        if (!!authenticator) {
+          delete restoredContent.authenticated.authenticator;
+          this.container.lookup(authenticator).restore(restoredContent.authenticated).then((content) => {
+            this.set('content', restoredContent);
+            this._setup(authenticator, content);
+            resolve();
+          }, () => {
+            Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
+            this.set('content', restoredContent);
+            this._clear();
+            reject();
+          });
+        } else {
+          delete (restoredContent || {}).authenticated;
           this.set('content', restoredContent);
           this._clear();
           reject();
-        });
-      } else {
-        delete (restoredContent || {}).authenticated;
-        this.set('content', restoredContent);
+        }
+      }, () => {
         this._clear();
         reject();
-      }
+      });
     });
   },
 

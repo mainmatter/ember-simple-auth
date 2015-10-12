@@ -34,9 +34,12 @@ export default Ember.Object.extend(Ember.Evented, {
 
     @method persist
     @param {Object} data The data to persist
+    @return {Ember.RSVP.Promise} The promise object persisting the data in the store.
     @public
   */
-  persist() {},
+  persist() {
+    return Ember.RSVP.Promise.reject();
+  },
 
   /**
     Returns all data currently stored as a plain object.
@@ -45,11 +48,11 @@ export default Ember.Object.extend(Ember.Evented, {
     be overridden in subclasses__.
 
     @method restore
-    @return {Object} The data currently persisted in the store.
+    @return {Ember.RSVP.Promise} The promise object resolving the data currently persisted in the store.
     @public
   */
   restore() {
-    return {};
+    return Ember.RSVP.Promise.reject();
   },
 
   /**
@@ -59,7 +62,10 @@ export default Ember.Object.extend(Ember.Evented, {
     overridden in subclasses__.
 
     @method clear
+    @return {Ember.RSVP.Promise} The promise object clearing the store.
     @public
   */
-  clear() {}
+  clear() {
+    return Ember.RSVP.Promise.reject();
+  }
 });

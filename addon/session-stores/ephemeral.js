@@ -24,31 +24,41 @@ export default BaseStore.extend({
 
     @method persist
     @param {Object} data The data to persist
+    @return {Ember.RSVP.Promise} The promise object persisting the data in the store.
     @public
   */
   persist(data) {
-    this._data = JSON.stringify(data || {});
+    return new Ember.RSVP.Promise((resolve) => {
+      this._data = JSON.stringify(data || {});
+      resolve();
+    });
   },
 
   /**
     Returns all data currently stored as a plain object.
 
     @method restore
-    @return {Object} The data currently persisted in the store.
+    @return {Ember.RSVP.Promise} The promise object resolving data currently persisted in the store.
     @public
   */
   restore() {
-    return JSON.parse(this._data) || {};
+    return new Ember.RSVP.Promise((resolve) => {
+      resolve(JSON.parse(this._data) || {});
+    });
   },
 
   /**
     Clears the store.
 
     @method clear
+    @return {Ember.RSVP.Promise} The promise object clearing the store.
     @public
   */
   clear() {
-    delete this._data;
-    this._data = '{}';
+    return new Ember.RSVP.Promise((resolve) => {
+      delete this._data;
+      this._data = '{}';
+      resolve();
+    });
   }
 });
