@@ -134,26 +134,15 @@
         margin-left: 10%;
       }
 
+      #intro i.main-logo {
+        margin: 130px 0 58px 0;
+      }
+
       hr {
         border-bottom: 1px solid #e53613;
         margin: 60px 0 0 0;
       }
 
-      i.main-logo {
-        display: inline-block;
-        width: 300px;
-        height: 185px;
-        background-image: url("images/logo.png");
-        margin: 130px 0 58px 0;
-      }
-      
-      @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6 / 2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-        i.main-logo {
-          background-image: url("images/logo@2x.png");
-          background-size: 300px 185px;
-        }
-      }
-      
       #intro p {
         text-align: center;
       }
@@ -181,18 +170,104 @@
       
       #footer a i.simplabs {
         display: inline-block;
-        background-position: center left;
-        background-repeat: no-repeat;
         width: 69px;
         height: 12px;
-        margin: auto auto;
         background-image: url("images/simplabs.png");
+      }
+      
+      .reference-project {
+        padding: 20px 0;
+        text-align: center;
+      }
+      
+      i.main-logo {
+        display: inline-block;
+        width: 300px;
+        height: 185px;
+        background-image: url("images/logo.png");
+      }
+      
+      i.ghost {
+        display: inline-block;
+        width: 125px;
+        height: 40px;
+        background-image: url("images/ghost.png");
+      }
+      
+      i.runtastic {
+        display: inline-block;
+        width: 154px;
+        height: 40px;
+        background-image: url("images/runtastic.png");
+      }
+      
+      i.foko {
+        display: inline-block;
+        width: 45px;
+        height: 40px;
+        background-image: url("images/foko.png");
+      }
+      
+      i.krit {
+        display: inline-block;
+        width: 106px;
+        height: 40px;
+        background-image: url("images/krit.png");
+      }
+      
+      i.crowdly {
+        display: inline-block;
+        width: 116px;
+        height: 40px;
+        background-image: url("images/crowdly.png");
+      }
+      
+      i.timify {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-image: url("images/timify.png");
       }
       
       @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6 / 2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
         #footer a i.simplabs {
           background-image: url("images/simplabs@2x.png");
           background-size: 69px 12px;
+        }
+
+        i.main-logo {
+          background-image: url("images/logo@2x.png");
+          background-size: 300px 185px;
+        }
+        
+        i.ghost {
+          background-image: url("images/ghost@2x.png");
+          background-size: 125px 40px;
+        }
+        
+        i.runtastic {
+          background-image: url("images/runtastic@2x.png");
+          background-size: 154px 40px;
+        }
+        
+        i.foko {
+          background-image: url("images/foko@2x.png");
+          background-size: 45px 40px;
+        }
+        
+        i.krit {
+          background-image: url("images/krit@2x.png");
+          background-size: 106px 40px;
+        }
+        
+        i.crowdly {
+          background-image: url("images/crowdly@2x.png");
+          background-size: 116px 40px;
+        }
+        
+        i.timify {
+          background-image: url("images/timify@2x.png");
+          background-size: 40px 40px;
         }
       }
       
@@ -271,7 +346,27 @@
             This is only a very brief overview of Ember Simple Auth's features. More and detailed docs can be found in the <a href="http://github.com/simplabs/ember-simple-auth#readme">README</a> and the <a href="/api">API docs</a>.
           </p>
           <hr/>
+        </div>
+        <div class="col-md-6 col-md-offset-3 col-xs-12">
           <h2>Projects and Companies using Ember Simple Auth</h2>
+        </div>
+        <div class="col-sm-2 col-sm-offset-3 col-xs-6 reference-project">
+          <i class="ghost"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="runtastic"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="foko"></i>
+        </div>
+        <div class="col-sm-2 col-sm-offset-3 col-xs-6 reference-project">
+          <i class="krit"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="crowdly"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="timify"></i>
         </div>
       </div>
     </div>
