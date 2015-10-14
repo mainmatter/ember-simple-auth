@@ -1,3 +1,40 @@
+# 1.0.0
+
+__Ember Simple Auth 1.0.0 changes a lot of external API, a large part of these
+changes being breaking changes.__ Because of that this changelog entry does not
+mark these breaking changes individually but merely offers an overview of what
+has changed.
+
+* Ember Simple Auth is __now compatible with all Ember version starting with
+  1.13.0__.
+* Ember Simple Auth is __only available as an Ember CLI Addon__ - the
+  globalized and bower distributions are no longer maintained.
+* The __session is no longer injected__ into routes and controllers but instead
+  __exposed as a service__. The service has most of the methods that the
+  session had before. The session can also no longer be extended. Instead
+  either extend the session service or add another service that uses the
+  session service to provide additional functionality.
+* __Auto-authorization of all AJAX request has been dropped__. All
+  authorization now has to be initiated explicitly via the session service's
+  `authorize` method. There is the new `DataAdapterMixin` that can be used to
+  simply authorize all Ember Data requests.
+* All authenticators and authorizers the application uses now have to be
+  defined in `app/authenticators` and `app/authorizers` respectively while in
+  most cases they will simply inherit one of the predefined authenticators/
+  authorizers. Also configuration of authenticators and authorizers is no
+  longer done via `config/environment.js` but instead by overriding properties
+  in the extended authenticators/authorizers.
+* The `ApplicationRouteMixin` now maps the session events to the
+  `sessionAuthenticated` and `sessionInvalidated` methods instead of the
+  actions from previous versions.
+* The default session store is now the adaptive store that will use
+  `localStorage` if available and a cookie otherwise. When testing, Ember
+  Simple Auth will always use the ephemeral store.
+* The test helpers now take the application instance as the first argument and
+  must be imported explicitly in the respective test.
+* The session is now restored in the application route's `beforeModel` method
+  instead of in an initializer.
+
 # 0.8.0
 
 * Correctly initialize the session's `content`, see #556.
