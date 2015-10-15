@@ -2,6 +2,8 @@
 
 __[Ember Simple Auth API docs](http://ember-simple-auth.com/api/)__
 
+Ember Simple Auth __supports all Ember.js versions starting with 1.12.__
+
 #  Ember Simple Auth
 
 ![Logo](http://ember-simple-auth.com/images/logo.png)
