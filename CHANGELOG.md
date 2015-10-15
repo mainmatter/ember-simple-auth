@@ -6,7 +6,7 @@ mark these breaking changes individually but merely offers an overview of what
 has changed.
 
 * Ember Simple Auth is __now compatible with all Ember version starting with
-  1.13.0__.
+  1.12.0__.
 * Ember Simple Auth is __only available as an Ember CLI Addon__ - the
   globalized and bower distributions are no longer maintained.
 * The __session is no longer injected__ into routes and controllers but instead
