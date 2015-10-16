@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ember-simple-auth/authorizers/oauth2-bearer - The Ember Simple Auth API</title>
+    <title>addon/session-stores/ephemeral.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/vendor/css/github.css">
@@ -55,32 +55,67 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
+          <h1 class="file-heading">File: addon/session-stores/ephemeral.js</h1>
           
-          <h2>ember-simple-auth/authorizers/oauth2-bearer</h2>
-          <div class="intro"><p>Authorizer that conforms to OAuth 2
-          (<a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>); includes the access token
-          from the session data as a bearer token
-          (<a href="http://tools.ietf.org/html/rfc6750">RFC 6750</a>) in the <code>Authorization</code>
-          header, e.g.:</p>
-          <pre class="code prettyprint"><code>Authorization: Bearer 234rtgjneroigne4
-          </code></pre>
-          </div>
+          <div class="file">
+              <pre class="code prettyprint linenums">
+          import Ember from &#x27;ember&#x27;;
+          import BaseStore from &#x27;./base&#x27;;
           
-          <div class="yui3-g">
-              <div class="yui3-u-1-2">
-                  <p>This module has the following classes:</p>
-                  <ul>
-                      <li><a href="../classes/OAuth2BearerAuhtorizer.html">OAuth2BearerAuhtorizer</a></li>
-                  </ul>
-              </div>
-              <div class="yui3-u-1-2">
-              </div>
+          const { on } = Ember;
+          
+          /**
+            Session store that __persists data in memory and thus is not actually
+            persistent__. It does also not synchronize the session&#x27;s state across
+            multiple tabs or windows as those cannot share memory. __This store is mainly
+            useful for testing and will automatically be used when running tests.__
+          
+            @class EphemeralStore
+            @module ember-simple-auth/session-stores/ephemeral
+            @extends BaseStore
+            @public
+          */
+          export default BaseStore.extend({
+            _setup: on(&#x27;init&#x27;, function() {
+              this.clear();
+            }),
+          
+            /**
+              Persists the &#x60;data&#x60;. This replaces all currently stored data.
+          
+              @method persist
+              @param {Object} data The data to persist
+              @public
+            */
+            persist(data) {
+              this._data = JSON.stringify(data || {});
+            },
+          
+            /**
+              Returns all data currently stored as a plain object.
+          
+              @method restore
+              @return {Object} The data currently persisted in the store.
+              @public
+            */
+            restore() {
+              return JSON.parse(this._data) || {};
+            },
+          
+            /**
+              Clears the store.
+          
+              @method clear
+              @public
+            */
+            clear() {
+              delete this._data;
+              this._data = &#x27;{}&#x27;;
+            }
+          });
+          
+              </pre>
           </div>
-          <br><br>
-          <span class="foundat">Module description found: <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/authorizers/oauth2-bearer.js#L7">
-            <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
-          </a>
-          </span>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ember-simple-auth/authorizers/oauth2-bearer - The Ember Simple Auth API</title>
+    <title>ember-simple-auth/session-stores/ephemeral - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/vendor/css/github.css">
@@ -56,28 +56,25 @@
         </div>
         <div id="main" class="col-sm-9">
           
-          <h2>ember-simple-auth/authorizers/oauth2-bearer</h2>
-          <div class="intro"><p>Authorizer that conforms to OAuth 2
-          (<a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>); includes the access token
-          from the session data as a bearer token
-          (<a href="http://tools.ietf.org/html/rfc6750">RFC 6750</a>) in the <code>Authorization</code>
-          header, e.g.:</p>
-          <pre class="code prettyprint"><code>Authorization: Bearer 234rtgjneroigne4
-          </code></pre>
+          <h2>ember-simple-auth/session-stores/ephemeral</h2>
+          <div class="intro"><p>Session store that <strong>persists data in memory and thus is not actually
+          persistent</strong>. It does also not synchronize the session's state across
+          multiple tabs or windows as those cannot share memory. <strong>This store is mainly
+          useful for testing and will automatically be used when running tests.</strong></p>
           </div>
           
           <div class="yui3-g">
               <div class="yui3-u-1-2">
                   <p>This module has the following classes:</p>
                   <ul>
-                      <li><a href="../classes/OAuth2BearerAuhtorizer.html">OAuth2BearerAuhtorizer</a></li>
+                      <li><a href="../classes/EphemeralStore.html">EphemeralStore</a></li>
                   </ul>
               </div>
               <div class="yui3-u-1-2">
               </div>
           </div>
           <br><br>
-          <span class="foundat">Module description found: <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/authorizers/oauth2-bearer.js#L7">
+          <span class="foundat">Module description found: <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/ephemeral.js#L6">
             <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
           </a>
           </span>

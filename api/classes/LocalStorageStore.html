@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.0.0+0af13876"><span class="label label-primary">1.0.0+0af13876</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.0.0"><span class="label label-primary">1.0.0</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -32,6 +32,7 @@
             <div id="classes" class="col-sm-12">
               <h4>Classes</h4>
               <ul class="list-unstyled">
+                  <li><a href="../classes/AdaptiveStore.html">AdaptiveStore</a></li>
                   <li><a href="../classes/ApplicationRouteMixin.html">ApplicationRouteMixin</a></li>
                   <li><a href="../classes/AuthenticatedRouteMixin.html">AuthenticatedRouteMixin</a></li>
                   <li><a href="../classes/BaseAuthenticator.html">BaseAuthenticator</a></li>
@@ -68,17 +69,13 @@
                 <div class="col-sm-9">
                   <div class="row">
                     <div class="col-sm-12">
-                        <pre><code>import LocalStorageStore from 'ember-simple-auth/stores/local-storage';</code></pre>
+                        <pre><code>import LocalStorageStore from 'ember-simple-auth/session-stores/local-storage';</code></pre>
                       <p>Session store that persists data in the browser's <code>localStorage</code>.</p>
-          <p>To use the local storage session store, configure it via</p>
-          <pre class="code prettyprint"><code class="language-js">ENV['ember-simple-auth'] = {
-            store: 'session-store:local-storage'
-          }
-          </code></pre>
-          <p><strong><code>localStorage</code> is not available in Safari when running  in private mode. If
-          the application needs to support Safari's private mode, it should use the
-          cookie store instead or change the configuration dynamically to only use the
-          cookie store when <code>localStorage</code> is not available.</strong></p>
+          <p><strong><code>localStorage</code> is not available in Safari when running in private mode. In
+          general it is better to use the
+          <a href="../classes/AdaptiveStore.html" class="crosslink">AdaptiveStore</a> that automatically falls back to
+          the <a href="../classes/CookieStore.html" class="crosslink">CookieStore</a> when <code>localStorage</code> is not
+          available.</strong></p>
           
                     </div>
                   </div>
@@ -92,7 +89,7 @@
                           <a name="method_clear" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0+0af13876/addon/stores/local-storage.js#L68">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/local-storage.js#L62">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -115,7 +112,7 @@
                           <a name="method_persist" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0+0af13876/addon/stores/local-storage.js#L43">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/local-storage.js#L37">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -146,7 +143,7 @@
                           <a name="method_restore" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0+0af13876/addon/stores/local-storage.js#L56">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/local-storage.js#L50">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -179,7 +176,7 @@
                           <a name="property_key" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0+0af13876/addon/stores/local-storage.js#L29">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/local-storage.js#L23">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -205,7 +202,7 @@
                           <a name="event_sessionDataUpdated" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0+0af13876/addon/stores/base.js#L25">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/base.js#L17">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                               <h3 class="panel-title signature">

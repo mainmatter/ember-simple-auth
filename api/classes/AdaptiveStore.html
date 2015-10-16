@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>EphemeralStore - The Ember Simple Auth API</title>
+    <title>AdaptiveStore - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/vendor/css/github.css">
@@ -61,7 +61,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="page-header">
-                    <h1 class="class">EphemeralStore</h1>
+                    <h1 class="class">AdaptiveStore</h1>
                   </div>
                 </div>
               </div>
@@ -69,11 +69,12 @@
                 <div class="col-sm-9">
                   <div class="row">
                     <div class="col-sm-12">
-                        <pre><code>import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';</code></pre>
-                      <p>Session store that <strong>persists data in memory and thus is not actually
-          persistent</strong>. It does also not synchronize the session's state across
-          multiple tabs or windows as those cannot share memory. <strong>This store is mainly
-          useful for testing and will automatically be used when running tests.</strong></p>
+                        <pre><code>import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';</code></pre>
+                      <p>Session store that persists data in the browser's <code>localStorage</code> (see
+          <a href="../classes/LocalStorageStore.html" class="crosslink">LocalStorageStore</a>) if that is available or in
+          a cookie (see <a href="../classes/CookieStore.html" class="crosslink">CookieStore</a>) if it is not.</p>
+          <p><strong>This is the default store that Ember Simple Auth will use when the
+          application doesn't define a custom store.</strong></p>
           
                     </div>
                   </div>
@@ -87,7 +88,7 @@
                           <a name="method_clear" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/ephemeral.js#L44">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/adaptive.js#L125">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -97,7 +98,9 @@
                             </div>
                             <div class="panel-body">
                                 <p><span class="label label-default">Overrides:</span> <a href="BaseStore.html#method_clear"><code>clear</code> of  <code>BaseStore</code></a>.</p>
-                              <p>Clears the store.</p>
+                              <p>Clears the store by deleting the
+                          <a href="../classes/LocalStorageStore.html#property_key" class="crosslink">key</a> from
+                          <code>localStorage</code> if that is available or by deleting the cookie if it is not.</p>
                           
                             </div>
                           </div>
@@ -108,7 +111,7 @@
                           <a name="method_persist" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/ephemeral.js#L22">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/adaptive.js#L101">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -118,7 +121,8 @@
                             </div>
                             <div class="panel-body">
                                 <p><span class="label label-default">Overrides:</span> <a href="BaseStore.html#method_persist"><code>persist</code> of  <code>BaseStore</code></a>.</p>
-                              <p>Persists the <code>data</code>. This replaces all currently stored data.</p>
+                              <p>Persists the <code>data</code> in the <code>localStorage</code> if it is available or in a cookie
+                          if it is not.</p>
                           
                                 <h4 class="subsection">Arguments</h4>
                                 <dl class="params">
@@ -139,7 +143,7 @@
                           <a name="method_restore" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/ephemeral.js#L33">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/adaptive.js#L113">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -150,17 +154,113 @@
                             </div>
                             <div class="panel-body">
                                 <p><span class="label label-default">Overrides:</span> <a href="BaseStore.html#method_restore"><code>restore</code> of  <code>BaseStore</code></a>.</p>
-                              <p>Returns all data currently stored as a plain object.</p>
+                              <p>Returns all data currently stored in the <code>localStorage</code> if that is
+                          available - or if it is not, in the cookie - as a plain object.</p>
                           
                                   <h4 class="subsection">Returns</h4>
                                   <p>
                                       <span class="type return">&rarr; <code>Object</code></span>
                                   </p>
-                                  <p>The data currently persisted in the store.</p>
+                                  <p>The data currently persisted in the <code>localStorage</code>.</p>
                           
                             </div>
                           </div>
                         </div>
+                      </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <h3 class="section">Properties</h3>
+                      </div>
+                    </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <a name="property_cookieDomain" class="symbol-anchor"></a>
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/adaptive.js#L36">
+                                <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
+                              </a>
+                                <span class="label label-access-public pull-right">public</span>
+                              <h3 class="panel-title signature">
+                                <strong class="name"><code>cookieDomain</code></strong>: <code>String</code>
+                              </h3>
+                            </div>
+                            <div class="panel-body">
+                                <p><span class="label label-default">Default:</span> <code>null</code></p>
+                              <p>The domain to use for the cookie if <code>localStorage</code> is not available, e.g.,
+                          &quot;<a href="http://example.com">example.com</a>&quot;, &quot;.example.com&quot; (which includes all subdomains) or
+                          &quot;<a href="http://subdomain.example.com">subdomain.example.com</a>&quot;. If not explicitly set, the cookie domain defaults
+                          to the domain the session was authneticated on.</p>
+                          
+                            </div>
+                          </div>
+                                            </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <a name="property_cookieExpirationTime" class="symbol-anchor"></a>
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/adaptive.js#L59">
+                                <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
+                              </a>
+                                <span class="label label-access-public pull-right">public</span>
+                              <h3 class="panel-title signature">
+                                <strong class="name"><code>cookieExpirationTime</code></strong>: <code>Integer</code>
+                              </h3>
+                            </div>
+                            <div class="panel-body">
+                                <p><span class="label label-default">Default:</span> <code>null</code></p>
+                              <p>The expiration time for the cookie in seconds if <code>localStorage</code> is not
+                          available. A value of <code>null</code> will make the cookie a session cookie that
+                          expires and gets deleted when the browser is closed.</p>
+                          
+                            </div>
+                          </div>
+                                            </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <a name="property_cookieName" class="symbol-anchor"></a>
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/adaptive.js#L49">
+                                <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
+                              </a>
+                                <span class="label label-access-public pull-right">public</span>
+                              <h3 class="panel-title signature">
+                                <strong class="name"><code>cookieName</code></strong>: <code>String</code>
+                              </h3>
+                            </div>
+                            <div class="panel-body">
+                                <p><span class="label label-default">Default:</span> <code>ember_simple_auth:session</code></p>
+                              <p>The name of the cookie to use if <code>localStorage</code> is not available.</p>
+                          
+                            </div>
+                          </div>
+                                            </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <a name="property_localStorageKey" class="symbol-anchor"></a>
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.0/addon/session-stores/adaptive.js#L25">
+                                <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
+                              </a>
+                                <span class="label label-access-public pull-right">public</span>
+                              <h3 class="panel-title signature">
+                                <strong class="name"><code>localStorageKey</code></strong>: <code>String</code>
+                              </h3>
+                            </div>
+                            <div class="panel-body">
+                                <p><span class="label label-default">Default:</span> <code>&#x27;ember_simple_auth:session&#x27;</code></p>
+                              <p>The <code>localStorage</code> key the store persists data in if <code>localStorage</code> is
+                          available.</p>
+                          
+                            </div>
+                          </div>
+                                            </div>
                       </div>
                     <div class="row">
                       <div class="col-sm-12">
@@ -181,20 +281,18 @@
                             </div>
                             <div class="panel-body">
                                 <p><span class="label label-default">Inherited from:</span> <a href="BaseStore.html#event_sessionDataUpdated"><code>sessionDataUpdated</code> of <code>BaseStore</code></a>.</p>
-                              <p>Triggered when the session store's data changes due to an external event,
+                              Triggered when the session store's data changes due to an external event,
                           e.g. from another tab or window of the same application. The session
                           handles that event, passes the updated data to its authenticator's
-                          <a href="../classes/BaseAuthenticator.html#method_restore" class="crosslink">restore</a> method and
-                          handles the result of that invocation accordingly.</p>
-                          
+                          {{#crossLink "BaseAuthenticator/restore:method"}}{{/crossLink}} method and
+                          handles the result of that invocation accordingly.
                                 <h4 class="subsection">Arguments</h4>
                                 <dl class="params">
                                     <dt>
                                         <code>data</code>: <span class="type"><code>Object</code></span>
                                     </dt>
                                     <dd>
-                                      <p>The updated session data</p>
-                          
+                                      The updated session data
                                     </dd>
                                 </dl>
                             </div>
@@ -215,6 +313,17 @@
                             <li><a href="#method_clear">clear</a></li>
                             <li><a href="#method_persist">persist</a></li>
                             <li><a href="#method_restore">restore</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <h4>Properties</h4>
+                        <ul class="list-unstyled">
+                            <li><a href="#property_cookieDomain">cookieDomain</a></li>
+                            <li><a href="#property_cookieExpirationTime">cookieExpirationTime</a></li>
+                            <li><a href="#property_cookieName">cookieName</a></li>
+                            <li><a href="#property_localStorageKey">localStorageKey</a></li>
                         </ul>
                       </div>
                     </div>

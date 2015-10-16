@@ -55,6 +55,14 @@ pre, code {
   background: #f8f8ff;
 }
 
+pre {
+  word-wrap: normal;
+}
+
+pre code {
+  white-space: inherit;
+}
+
 .hljs {
   background: transparent;
 }
