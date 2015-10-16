@@ -28,6 +28,14 @@ describe('ToriiAuthenticator', () => {
       });
     }
 
+    it('throws if torii is not installed', () => {
+      authenticator.set('torii', null);
+
+      expect(() => {
+        authenticator.authenticate();
+      }).to.throw;
+    });
+
     describe('when there is a torii provider in the session data', () => {
       describe('when torii fetches successfully', () => {
         beforeEach(() => {
@@ -56,6 +64,14 @@ describe('ToriiAuthenticator', () => {
   });
 
   describe('#authenticate', () => {
+    it('throws if torii is not installed', () => {
+      authenticator.set('torii', null);
+
+      expect(() => {
+        authenticator.authenticate();
+      }).to.throw;
+    });
+
     describe('when torii opens successfully', () => {
       beforeEach(() => {
         sinon.stub(torii, 'open').returns(Ember.RSVP.resolve({ some: 'data' }));
@@ -106,25 +122,4 @@ describe('ToriiAuthenticator', () => {
       });
     });
   });
-
-  // TODO: this should be tested for the authenticate and restore method instead
-  describe('#_assertToriiIsPresent', () => {
-    let errorMessage;
-
-    beforeEach(() => {
-      errorMessage = 'You are trying to use `torii-authenticator` but torii is not installed. Install torii using `ember install torii`.';
-    });
-
-    it('does not throw if torii is present', () => {
-      expect(authenticator._assertToriiIsPresent).to.not.throw(errorMessage);
-    });
-
-    it('throws if torii is not installed', () => {
-      authenticator.torii = null;
-      expect(() => {
-        authenticator._assertToriiIsPresent();
-      }).to.throw(errorMessage);
-    });
-  });
-
 });
