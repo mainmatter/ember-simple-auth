@@ -1,0 +1,25 @@
+{{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
+<a {{action 'authenticateWithFacebook'}} class="btn btn-default" style="cursor: pointer;">Login with Facebook</a>
+<hr/>
+<p>or login with OAuth 2.0 <em>Resource Owner Password Credentials</em>:</p>
+<form {{action 'authenticateWithOAuth2' on='submit'}}>
+  <div class="form-group">
+    <label for="identification">Login</label>
+    {{input value=identification placeholder='Enter Login' class='form-control'}}
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    {{input value=password placeholder='Enter Password' class='form-control' type='password'}}
+  </div>
+  <button type="submit" class="btn btn-default">Login</button>
+</form>
+{{#if errorMessage}}
+  <div class="alert alert-danger">
+    <p>
+      <strong>Login failed:</strong> <code>{{errorMessage}}</code>
+    </p>
+    <p>
+      Documentation of the error codes can be found in the <a href="http://tools.ietf.org/html/rfc6749#section-5.2" title="RFC 6749 - Error Response">Error Response section of RFC 6749</a>.
+    </p>
+  </div>
+{{/if}}

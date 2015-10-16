@@ -1,0 +1,16 @@
+{
+  "name": "ember-simple-auth",
+  "options": {
+    "paths": [
+      "addon"
+    ],
+    "exclude": "vendor",
+    "outdir": "../docs",
+    "yuidoc": {
+      "linkNatives": true,
+      "quiet": true,
+      "parseOnly": true,
+      "lint": false
+    }
+  }
+}

@@ -1,0 +1,94 @@
+body {
+  position: relative;
+  margin-top: 70px;
+}
+
+#sidebar h4 {
+  margin-top: 0;
+}
+
+.page-header {
+  margin-top: 0;
+}
+
+.page-header h1 {
+  margin-top: 0;
+}
+
+#main p {
+  text-align: justify;
+}
+
+.quick-menu .row:first-of-type h4 {
+  margin-top: 0;
+}
+
+h3.section {
+  border-bottom: 1px dotted #eee;
+}
+
+.label-access-public {
+  display: none;
+}
+
+.label-access-private {
+  background-color: #d9534f;
+}
+
+.label-access-protected {
+  background-color: #f0ad4e;
+}
+
+.panel-heading span.pull-right {
+  margin-left: 5px;
+}
+
+.symbol-anchor {
+  display: block;
+  position: relative;
+  top: -55px;
+  height: 1px;
+}
+
+pre, code {
+  color: #333;
+  background: #f8f8ff;
+}
+
+pre {
+  word-wrap: normal;
+}
+
+pre code {
+  white-space: inherit;
+}
+
+.hljs {
+  background: transparent;
+}
+
+a code {
+  color: #428bca;
+}
+
+strong {
+  background-color: #fffebb;
+  font-weight: normal;
+  padding: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+
+h1.class, h3.signature, dl.params dt, span.type {
+  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+  font-weight: bold;
+}
+
+.panel-title.signature strong {
+  background-color: transparent;
+  font-weight: bold;
+}
+
+.panel-title.signature code {
+  background-color: transparent;
+}

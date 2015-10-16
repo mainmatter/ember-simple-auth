@@ -1,0 +1,31 @@
+<a name="property_{{name}}" class="symbol-anchor"></a>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {{>source_link file=file line=line}}
+    {{#if final}}
+      <span class="label label-info pull-right">final</span>
+    {{/if}}
+    {{#if static}}
+      <span class="label label-info pull-right">static</span>
+    {{/if}}
+    {{#if access}}
+      <span class="label label-access-{{access}} pull-right">{{access}}</span>
+    {{/if}}
+    {{#if readOnly}}
+      <span class="label label-warning pull-right">readonly</span>
+    {{/if}}
+    <h3 class="panel-title signature">
+      <strong class="name">`{{name}}`</strong>: <code>{{#crossLink type}}{{/crossLink}}</code>
+    </h3>
+  </div>
+  <div class="panel-body">
+    {{#if deprecationMessage}}
+      <p><span class="label label-warning">Deprecated:</span>{{deprecationMessage}}</p>
+    {{/if}}
+    {{#if default}}
+      <p><span class="label label-default">Default:</span> `{{{default}}}`</p>
+    {{/if}}
+    {{{propertyDescription}}}
+  </div>
+</div>
+    

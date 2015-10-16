@@ -1,0 +1,7 @@
+body {
+  padding-top: 50px;
+}
+
+.nav.navbar-nav li {
+  cursor: pointer;
+}

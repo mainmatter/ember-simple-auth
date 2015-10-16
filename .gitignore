@@ -1,6 +1,19 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
 .DS_Store
-dist
-tmp
-docs/build
-.ruby-version
-node_modules
+
+# compiled output
+/dist
+/tmp
+
+# dependencies
+/node_modules
+/bower_components
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log

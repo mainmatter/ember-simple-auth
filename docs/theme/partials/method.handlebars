@@ -1,0 +1,78 @@
+<a name="method_{{name}}" class="symbol-anchor"></a>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {{>source_link file=file line=line}}
+    {{#if final}}
+      <span class="label label-info pull-right">final</span>
+    {{/if}}
+    {{#if access}}
+      <span class="label label-access-{{access}} pull-right">{{access}}</span>
+    {{/if}}
+    <h3 class="panel-title signature">
+      <strong class="name">`{{name}}`</strong>(`{{paramsList}}`)
+      {{#if return}}
+        {{#return}}
+          <span class="type">&rarr; `{{#crossLink type}}{{/crossLink}}`</span>
+        {{/return}}
+      {{/if}}
+    </h3>
+  </div>
+  <div class="panel-body">
+    {{#if deprecationMessage}}
+      <p><span class="label label-warning">Deprecated:</span>{{deprecationMessage}}</p>
+    {{/if}}
+    {{#if overwritten_from}}
+      <p><span class="label label-default">Overrides:</span> <a href="{{overwritten_from/class}}.html#method_{{overwritten_from/name}}">`{{name}}` of  `{{overwritten_from/class}}`</a>.</p>
+    {{/if}}
+    {{#if extended_from}}
+      <p><span class="label label-default">Inherited from:</span> <a href="{{extended_from}}.html#method_{{name}}">`{{name}}` of `{{extended_from}}`</a>.</p>
+    {{/if}}
+    {{{methodDescription}}}
+    {{#if params}}
+      <h4 class="subsection">Arguments</h4>
+      <dl class="params">
+        {{#params}}
+          <dt>
+            {{#if optional}}
+              `[{{#if multiple}}...{{/if}}{{name}}{{#if optdefault}}={{optdefault}}{{/if}}]`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span>
+            {{else}}
+              `{{name}}`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span>
+            {{/if}}
+          </dt>
+          <dd>
+            {{{description}}}
+            {{#if props}}
+              <dl class="props">
+                {{#props}}
+                  <dt>`{{name}}`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span></dt>
+                  <dd>
+                    {{{description}}}
+                    {{#if props}}
+                      <dl>
+                        {{#props}}
+                          <dt>`{{name}}`: <span class="type">`{{#crossLink type}}{{/crossLink}}`</span></dt>
+                          <dd>{{{description}}}</dd>
+                        {{/props}}
+                      </ul>
+                    {{/if}}
+                  </dd>
+                {{/props}}
+              </dl>
+            {{/if}}
+          </dd>
+        {{/params}}
+      </dl>
+    {{/if}}
+    {{#if return}}
+      {{#return}}
+        <h4 class="subsection">Returns</h4>
+        <p>
+          {{#if type}}
+            <span class="type return">&rarr; `{{#crossLink type}}{{/crossLink}}`</span>
+          {{/if}}
+        </p>
+        {{{description}}}
+      {{/return}}
+    {{/if}}
+  </div>
+</div>

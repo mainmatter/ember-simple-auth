@@ -1,0 +1,11 @@
+<div class="page-header">
+  <h1>Ember Simple Auth example app</h1>
+</div>
+{{#unless session.isAuthenticated}}
+  <div class="alert alert-info">
+    You can {{#link-to 'login' classNames='alert-link'}}log in{{/link-to}} with login <code>letme</code> and password <code>in</code>.
+  </div>
+{{/unless}}
+<div class="alert alert-info">
+  The dummy app provides two routes - the {{#link-to 'protected'}}Protected Page{{/link-to}} that loads some Ember Data models where the API validates that the request is authorized and the {{#link-to 'auth-error'}}Auth Error Page{{/link-to}} that simulates an authorization error (it loads Ember Data models as well but will always receive a 401 response) and will result in the session being invalidated.
+</div>
