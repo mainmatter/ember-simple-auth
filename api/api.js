@@ -1,6 +1,7 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
+        "AdaptiveStore",
         "ApplicationRouteMixin",
         "AuthenticatedRouteMixin",
         "BaseAuthenticator",
@@ -33,10 +34,11 @@ YUI.add("yuidoc-meta", function(Y) {
         "ember-simple-auth_mixins_data-adapter-mixin",
         "ember-simple-auth_mixins_unauthenticated-route-mixin",
         "ember-simple-auth_services_session",
-        "ember-simple-auth_stores_base",
-        "ember-simple-auth_stores_cookie",
-        "ember-simple-auth_stores_ephemeral",
-        "ember-simple-auth_stores_local-storage"
+        "ember-simple-auth_session-stores_adaptive",
+        "ember-simple-auth_session-stores_base",
+        "ember-simple-auth_session-stores_cookie",
+        "ember-simple-auth_session-stores_ephemeral",
+        "ember-simple-auth_session-stores_local-storage"
     ],
     "allModules": [
         {
@@ -105,24 +107,29 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "__The session service provides access to the current session as well as\nmethods to authenticate and invalidate it__ etc. It is the main interface for\nthe application to Ember Simple Auth's functionality. It can be injected via\n\n```js\n// app/components/login-form.js\nimport Ember from 'ember';\n\nexport default Ember.Component.extend({\n  session: Ember.inject.service('session')\n});\n```"
         },
         {
-            "displayName": "ember-simple-auth/stores/base",
-            "name": "ember-simple-auth_stores_base",
-            "description": "The base class for all session stores. __This serves as a starting point for\nimplementing custom session stores and must not be used directly.__\n\nSession Stores persist the session's state so that it survives a page reload\nand is synchronized across multiple tabs or windows of the same application.\nThe session store to be used for an application can be configured on the\napplication's environment object, e.g.:\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:local-storage'\n}\n```"
+            "displayName": "ember-simple-auth/session-stores/adaptive",
+            "name": "ember-simple-auth_session-stores_adaptive",
+            "description": "Session store that persists data in the browser's `localStorage` (see\n{{#crossLink \"LocalStorageStore\"}}{{/crossLink}}) if that is available or in\na cookie (see {{#crossLink \"CookieStore\"}}{{/crossLink}}) if it is not.\n\n__This is the default store that Ember Simple Auth will use when the\napplication doesn't define a custom store.__"
         },
         {
-            "displayName": "ember-simple-auth/stores/cookie",
-            "name": "ember-simple-auth_stores_cookie",
-            "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: false,\n\n  _rememberMeChanged: Ember.observer('rememberMe', function() {\n    const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;\n    this.set('session.store.cookieExpirationTime', expirationTime);\n  }\n});\n```\n\n__In order to keep multiple tabs/windows of an application in sync, this\nstore has to periodically (every 500ms) check the cookie for changes__ as\nthere are no events for cookie changes that the store could subscribe to. If\nthe application does not need to make sure all session data is deleted when\nthe browser is closed, the\n{{#crossLink \"LocalStorageStore\"}}`localStorage` session store{{/crossLink}}\nshould be used.\n\nTo use the cookie session store, configure it via\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:cookie'\n}\n```"
+            "displayName": "ember-simple-auth/session-stores/base",
+            "name": "ember-simple-auth_session-stores_base",
+            "description": "The base class for all session stores. __This serves as a starting point for\nimplementing custom session stores and must not be used directly.__\n\nSession Stores persist the session's state so that it survives a page reload\nand is synchronized across multiple tabs or windows of the same application."
         },
         {
-            "displayName": "ember-simple-auth/stores/ephemeral",
-            "name": "ember-simple-auth_stores_ephemeral",
-            "description": "Session store that __persists data in memory and thus is not actually\npersistent__. It does also not synchronize the session's state across\nmultiple tabs or windows as those cannot share memory. __This store is mainly\nuseful for testing.__\n\nTo use the ephemeral session store, configure it via\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:ephemeral'\n}\n```"
+            "displayName": "ember-simple-auth/session-stores/cookie",
+            "name": "ember-simple-auth_session-stores_cookie",
+            "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: false,\n\n  _rememberMeChanged: Ember.observer('rememberMe', function() {\n    const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;\n    this.set('session.store.cookieExpirationTime', expirationTime);\n  }\n});\n```\n\n__In order to keep multiple tabs/windows of an application in sync, this\nstore has to periodically (every 500ms) check the cookie for changes__ as\nthere are no events for cookie changes that the store could subscribe to. If\nthe application does not need to make sure all session data is deleted when\nthe browser is closed, the\n{{#crossLink \"LocalStorageStore\"}}`localStorage` session store{{/crossLink}}\nshould be used."
         },
         {
-            "displayName": "ember-simple-auth/stores/local-storage",
-            "name": "ember-simple-auth_stores_local-storage",
-            "description": "Session store that persists data in the browser's `localStorage`.\n\nTo use the local storage session store, configure it via\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:local-storage'\n}\n```\n\n__`localStorage` is not available in Safari when running  in private mode. If\nthe application needs to support Safari's private mode, it should use the\ncookie store instead or change the configuration dynamically to only use the\ncookie store when `localStorage` is not available.__"
+            "displayName": "ember-simple-auth/session-stores/ephemeral",
+            "name": "ember-simple-auth_session-stores_ephemeral",
+            "description": "Session store that __persists data in memory and thus is not actually\npersistent__. It does also not synchronize the session's state across\nmultiple tabs or windows as those cannot share memory. __This store is mainly\nuseful for testing and will automatically be used when running tests.__"
+        },
+        {
+            "displayName": "ember-simple-auth/session-stores/local-storage",
+            "name": "ember-simple-auth_session-stores_local-storage",
+            "description": "Session store that persists data in the browser's `localStorage`.\n\n__`localStorage` is not available in Safari when running in private mode. In\ngeneral it is better to use the\n{{#crossLink \"AdaptiveStore\"}}{{/crossLink}} that automatically falls back to\nthe {{#crossLink \"CookieStore\"}}{{/crossLink}} when `localStorage` is not\navailable.__"
         }
     ],
     "elements": []

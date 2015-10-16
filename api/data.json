@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "The Ember Simple Auth API",
-        "version": "1.0.0+0af13876"
+        "version": "1.0.0"
     },
     "files": {
         "addon/authenticators/base.js": {
@@ -136,10 +136,21 @@
             "fors": {},
             "namespaces": {}
         },
-        "addon/stores/base.js": {
-            "name": "addon/stores/base.js",
+        "addon/session-stores/adaptive.js": {
+            "name": "addon/session-stores/adaptive.js",
             "modules": {
-                "ember-simple-auth/stores/base": 1
+                "ember-simple-auth/session-stores/adaptive": 1
+            },
+            "classes": {
+                "AdaptiveStore": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "addon/session-stores/base.js": {
+            "name": "addon/session-stores/base.js",
+            "modules": {
+                "ember-simple-auth/session-stores/base": 1
             },
             "classes": {
                 "BaseStore": 1
@@ -147,10 +158,10 @@
             "fors": {},
             "namespaces": {}
         },
-        "addon/stores/cookie.js": {
-            "name": "addon/stores/cookie.js",
+        "addon/session-stores/cookie.js": {
+            "name": "addon/session-stores/cookie.js",
             "modules": {
-                "ember-simple-auth/stores/cookie": 1
+                "ember-simple-auth/session-stores/cookie": 1
             },
             "classes": {
                 "CookieStore": 1
@@ -158,10 +169,10 @@
             "fors": {},
             "namespaces": {}
         },
-        "addon/stores/ephemeral.js": {
-            "name": "addon/stores/ephemeral.js",
+        "addon/session-stores/ephemeral.js": {
+            "name": "addon/session-stores/ephemeral.js",
             "modules": {
-                "ember-simple-auth/stores/ephemeral": 1
+                "ember-simple-auth/session-stores/ephemeral": 1
             },
             "classes": {
                 "EphemeralStore": 1
@@ -169,10 +180,10 @@
             "fors": {},
             "namespaces": {}
         },
-        "addon/stores/local-storage.js": {
-            "name": "addon/stores/local-storage.js",
+        "addon/session-stores/local-storage.js": {
+            "name": "addon/session-stores/local-storage.js",
             "modules": {
-                "ember-simple-auth/stores/local-storage": 1
+                "ember-simple-auth/session-stores/local-storage": 1
             },
             "classes": {
                 "LocalStorageStore": 1
@@ -361,8 +372,22 @@
             "line": 7,
             "description": "__The session service provides access to the current session as well as\nmethods to authenticate and invalidate it__ etc. It is the main interface for\nthe application to Ember Simple Auth's functionality. It can be injected via\n\n```js\n// app/components/login-form.js\nimport Ember from 'ember';\n\nexport default Ember.Component.extend({\n  session: Ember.inject.service('session')\n});\n```"
         },
-        "ember-simple-auth/stores/base": {
-            "name": "ember-simple-auth/stores/base",
+        "ember-simple-auth/session-stores/adaptive": {
+            "name": "ember-simple-auth/session-stores/adaptive",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "AdaptiveStore": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "addon/session-stores/adaptive.js",
+            "line": 11,
+            "description": "Session store that persists data in the browser's `localStorage` (see\n{{#crossLink \"LocalStorageStore\"}}{{/crossLink}}) if that is available or in\na cookie (see {{#crossLink \"CookieStore\"}}{{/crossLink}}) if it is not.\n\n__This is the default store that Ember Simple Auth will use when the\napplication doesn't define a custom store.__"
+        },
+        "ember-simple-auth/session-stores/base": {
+            "name": "ember-simple-auth/session-stores/base",
             "submodules": {},
             "elements": {},
             "classes": {
@@ -371,12 +396,12 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "addon/stores/base.js",
+            "file": "addon/session-stores/base.js",
             "line": 3,
-            "description": "The base class for all session stores. __This serves as a starting point for\nimplementing custom session stores and must not be used directly.__\n\nSession Stores persist the session's state so that it survives a page reload\nand is synchronized across multiple tabs or windows of the same application.\nThe session store to be used for an application can be configured on the\napplication's environment object, e.g.:\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:local-storage'\n}\n```"
+            "description": "The base class for all session stores. __This serves as a starting point for\nimplementing custom session stores and must not be used directly.__\n\nSession Stores persist the session's state so that it survives a page reload\nand is synchronized across multiple tabs or windows of the same application."
         },
-        "ember-simple-auth/stores/cookie": {
-            "name": "ember-simple-auth/stores/cookie",
+        "ember-simple-auth/session-stores/cookie": {
+            "name": "ember-simple-auth/session-stores/cookie",
             "submodules": {},
             "elements": {},
             "classes": {
@@ -385,12 +410,12 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "addon/stores/cookie.js",
+            "file": "addon/session-stores/cookie.js",
             "line": 9,
-            "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: false,\n\n  _rememberMeChanged: Ember.observer('rememberMe', function() {\n    const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;\n    this.set('session.store.cookieExpirationTime', expirationTime);\n  }\n});\n```\n\n__In order to keep multiple tabs/windows of an application in sync, this\nstore has to periodically (every 500ms) check the cookie for changes__ as\nthere are no events for cookie changes that the store could subscribe to. If\nthe application does not need to make sure all session data is deleted when\nthe browser is closed, the\n{{#crossLink \"LocalStorageStore\"}}`localStorage` session store{{/crossLink}}\nshould be used.\n\nTo use the cookie session store, configure it via\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:cookie'\n}\n```"
+            "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: false,\n\n  _rememberMeChanged: Ember.observer('rememberMe', function() {\n    const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;\n    this.set('session.store.cookieExpirationTime', expirationTime);\n  }\n});\n```\n\n__In order to keep multiple tabs/windows of an application in sync, this\nstore has to periodically (every 500ms) check the cookie for changes__ as\nthere are no events for cookie changes that the store could subscribe to. If\nthe application does not need to make sure all session data is deleted when\nthe browser is closed, the\n{{#crossLink \"LocalStorageStore\"}}`localStorage` session store{{/crossLink}}\nshould be used."
         },
-        "ember-simple-auth/stores/ephemeral": {
-            "name": "ember-simple-auth/stores/ephemeral",
+        "ember-simple-auth/session-stores/ephemeral": {
+            "name": "ember-simple-auth/session-stores/ephemeral",
             "submodules": {},
             "elements": {},
             "classes": {
@@ -399,12 +424,12 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "addon/stores/ephemeral.js",
+            "file": "addon/session-stores/ephemeral.js",
             "line": 6,
-            "description": "Session store that __persists data in memory and thus is not actually\npersistent__. It does also not synchronize the session's state across\nmultiple tabs or windows as those cannot share memory. __This store is mainly\nuseful for testing.__\n\nTo use the ephemeral session store, configure it via\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:ephemeral'\n}\n```"
+            "description": "Session store that __persists data in memory and thus is not actually\npersistent__. It does also not synchronize the session's state across\nmultiple tabs or windows as those cannot share memory. __This store is mainly\nuseful for testing and will automatically be used when running tests.__"
         },
-        "ember-simple-auth/stores/local-storage": {
-            "name": "ember-simple-auth/stores/local-storage",
+        "ember-simple-auth/session-stores/local-storage": {
+            "name": "ember-simple-auth/session-stores/local-storage",
             "submodules": {},
             "elements": {},
             "classes": {
@@ -413,9 +438,9 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "addon/stores/local-storage.js",
-            "line": 7,
-            "description": "Session store that persists data in the browser's `localStorage`.\n\nTo use the local storage session store, configure it via\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:local-storage'\n}\n```\n\n__`localStorage` is not available in Safari when running  in private mode. If\nthe application needs to support Safari's private mode, it should use the\ncookie store instead or change the configuration dynamically to only use the\ncookie store when `localStorage` is not available.__"
+            "file": "addon/session-stores/local-storage.js",
+            "line": 8,
+            "description": "Session store that persists data in the browser's `localStorage`.\n\n__`localStorage` is not available in Safari when running in private mode. In\ngeneral it is better to use the\n{{#crossLink \"AdaptiveStore\"}}{{/crossLink}} that automatically falls back to\nthe {{#crossLink \"CookieStore\"}}{{/crossLink}} when `localStorage` is not\navailable.__"
         },
         "ember-simple-auth/configuration": {
             "name": "ember-simple-auth/configuration",
@@ -428,7 +453,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/configuration.js",
-            "line": 10,
+            "line": 9,
             "description": "Ember Simple Auth's configuration object.\n\nTo change any of these values, set them on the application's environment\nobject, e.g.:\n\n```js\n// config/environment.js\nENV['ember-simple-auth'] = {\n  authenticationRoute: 'sign-in'\n};\n```"
         }
     },
@@ -642,6 +667,23 @@
             "access": "public",
             "tagname": ""
         },
+        "AdaptiveStore": {
+            "name": "AdaptiveStore",
+            "shortname": "AdaptiveStore",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "ember-simple-auth/session-stores/adaptive",
+            "namespace": "",
+            "file": "addon/session-stores/adaptive.js",
+            "line": 11,
+            "description": "Session store that persists data in the browser's `localStorage` (see\n{{#crossLink \"LocalStorageStore\"}}{{/crossLink}}) if that is available or in\na cookie (see {{#crossLink \"CookieStore\"}}{{/crossLink}}) if it is not.\n\n__This is the default store that Ember Simple Auth will use when the\napplication doesn't define a custom store.__",
+            "extends": "BaseStore",
+            "access": "public",
+            "tagname": ""
+        },
         "BaseStore": {
             "name": "BaseStore",
             "shortname": "BaseStore",
@@ -650,11 +692,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "ember-simple-auth/stores/base",
+            "module": "ember-simple-auth/session-stores/base",
             "namespace": "",
-            "file": "addon/stores/base.js",
+            "file": "addon/session-stores/base.js",
             "line": 3,
-            "description": "The base class for all session stores. __This serves as a starting point for\nimplementing custom session stores and must not be used directly.__\n\nSession Stores persist the session's state so that it survives a page reload\nand is synchronized across multiple tabs or windows of the same application.\nThe session store to be used for an application can be configured on the\napplication's environment object, e.g.:\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:local-storage'\n}\n```",
+            "description": "The base class for all session stores. __This serves as a starting point for\nimplementing custom session stores and must not be used directly.__\n\nSession Stores persist the session's state so that it survives a page reload\nand is synchronized across multiple tabs or windows of the same application.",
             "extends": "Ember.Object",
             "uses": [
                 "Ember.Evented"
@@ -670,11 +712,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "ember-simple-auth/stores/cookie",
+            "module": "ember-simple-auth/session-stores/cookie",
             "namespace": "",
-            "file": "addon/stores/cookie.js",
+            "file": "addon/session-stores/cookie.js",
             "line": 9,
-            "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: false,\n\n  _rememberMeChanged: Ember.observer('rememberMe', function() {\n    const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;\n    this.set('session.store.cookieExpirationTime', expirationTime);\n  }\n});\n```\n\n__In order to keep multiple tabs/windows of an application in sync, this\nstore has to periodically (every 500ms) check the cookie for changes__ as\nthere are no events for cookie changes that the store could subscribe to. If\nthe application does not need to make sure all session data is deleted when\nthe browser is closed, the\n{{#crossLink \"LocalStorageStore\"}}`localStorage` session store{{/crossLink}}\nshould be used.\n\nTo use the cookie session store, configure it via\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:cookie'\n}\n```",
+            "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: false,\n\n  _rememberMeChanged: Ember.observer('rememberMe', function() {\n    const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;\n    this.set('session.store.cookieExpirationTime', expirationTime);\n  }\n});\n```\n\n__In order to keep multiple tabs/windows of an application in sync, this\nstore has to periodically (every 500ms) check the cookie for changes__ as\nthere are no events for cookie changes that the store could subscribe to. If\nthe application does not need to make sure all session data is deleted when\nthe browser is closed, the\n{{#crossLink \"LocalStorageStore\"}}`localStorage` session store{{/crossLink}}\nshould be used.",
             "extends": "BaseStore",
             "access": "public",
             "tagname": ""
@@ -687,11 +729,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "ember-simple-auth/stores/ephemeral",
+            "module": "ember-simple-auth/session-stores/ephemeral",
             "namespace": "",
-            "file": "addon/stores/ephemeral.js",
+            "file": "addon/session-stores/ephemeral.js",
             "line": 6,
-            "description": "Session store that __persists data in memory and thus is not actually\npersistent__. It does also not synchronize the session's state across\nmultiple tabs or windows as those cannot share memory. __This store is mainly\nuseful for testing.__\n\nTo use the ephemeral session store, configure it via\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:ephemeral'\n}\n```",
+            "description": "Session store that __persists data in memory and thus is not actually\npersistent__. It does also not synchronize the session's state across\nmultiple tabs or windows as those cannot share memory. __This store is mainly\nuseful for testing and will automatically be used when running tests.__",
             "extends": "BaseStore",
             "access": "public",
             "tagname": ""
@@ -704,11 +746,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "ember-simple-auth/stores/local-storage",
+            "module": "ember-simple-auth/session-stores/local-storage",
             "namespace": "",
-            "file": "addon/stores/local-storage.js",
-            "line": 7,
-            "description": "Session store that persists data in the browser's `localStorage`.\n\nTo use the local storage session store, configure it via\n\n```js\nENV['ember-simple-auth'] = {\n  store: 'session-store:local-storage'\n}\n```\n\n__`localStorage` is not available in Safari when running  in private mode. If\nthe application needs to support Safari's private mode, it should use the\ncookie store instead or change the configuration dynamically to only use the\ncookie store when `localStorage` is not available.__",
+            "file": "addon/session-stores/local-storage.js",
+            "line": 8,
+            "description": "Session store that persists data in the browser's `localStorage`.\n\n__`localStorage` is not available in Safari when running in private mode. In\ngeneral it is better to use the\n{{#crossLink \"AdaptiveStore\"}}{{/crossLink}} that automatically falls back to\nthe {{#crossLink \"CookieStore\"}}{{/crossLink}} when `localStorage` is not\navailable.__",
             "extends": "BaseStore",
             "access": "public",
             "tagname": ""
@@ -724,7 +766,7 @@
             "module": "ember-simple-auth/configuration",
             "namespace": "",
             "file": "addon/configuration.js",
-            "line": 10,
+            "line": 9,
             "description": "Ember Simple Auth's configuration object.\n\nTo change any of these values, set them on the application's environment\nobject, e.g.:\n\n```js\n// config/environment.js\nENV['ember-simple-auth'] = {\n  authenticationRoute: 'sign-in'\n};\n```",
             "extends": "Object",
             "access": "public",
@@ -947,6 +989,28 @@
             "module": "ember-simple-auth/authenticators/devise"
         },
         {
+            "file": "addon/authenticators/devise.js",
+            "line": 133,
+            "description": "Makes a request to the devise server.",
+            "itemtype": "method",
+            "name": "makeRequest",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The request data",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "A promise like jQuery.Deferred as returned by `$.ajax`",
+                "type": "jQuery.Deferred"
+            },
+            "access": "protected",
+            "tagname": "",
+            "class": "DeviseAuthenticator",
+            "module": "ember-simple-auth/authenticators/devise"
+        },
+        {
             "file": "addon/authenticators/oauth2-password-grant.js",
             "line": 22,
             "description": "Triggered when the authenticator refreshed the access token (see\n[RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).",
@@ -1088,6 +1152,33 @@
                 "type": "Ember.RSVP.Promise"
             },
             "access": "public",
+            "tagname": "",
+            "class": "OAuth2PasswordGrantAuthenticator",
+            "module": "ember-simple-auth/authenticators/oauth2-password-grant"
+        },
+        {
+            "file": "addon/authenticators/oauth2-password-grant.js",
+            "line": 209,
+            "description": "Makes a request to the OAuth 2.0 server.",
+            "itemtype": "method",
+            "name": "makeRequest",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "The request URL",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "The request data",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "A promise like jQuery.Deferred as returned by `$.ajax`",
+                "type": "jQuery.Deferred"
+            },
+            "access": "protected",
             "tagname": "",
             "class": "OAuth2PasswordGrantAuthenticator",
             "module": "ember-simple-auth/authenticators/oauth2-password-grant"
@@ -1548,8 +1639,104 @@
             "module": "ember-simple-auth/services/session"
         },
         {
-            "file": "addon/stores/base.js",
+            "file": "addon/session-stores/adaptive.js",
             "line": 25,
+            "description": "The `localStorage` key the store persists data in if `localStorage` is\navailable.",
+            "itemtype": "property",
+            "name": "localStorageKey",
+            "type": "String",
+            "default": "'ember_simple_auth:session'",
+            "access": "public",
+            "tagname": "",
+            "class": "AdaptiveStore",
+            "module": "ember-simple-auth/session-stores/adaptive"
+        },
+        {
+            "file": "addon/session-stores/adaptive.js",
+            "line": 36,
+            "description": "The domain to use for the cookie if `localStorage` is not available, e.g.,\n\"example.com\", \".example.com\" (which includes all subdomains) or\n\"subdomain.example.com\". If not explicitly set, the cookie domain defaults\nto the domain the session was authneticated on.",
+            "itemtype": "property",
+            "name": "cookieDomain",
+            "type": "String",
+            "default": "null",
+            "access": "public",
+            "tagname": "",
+            "class": "AdaptiveStore",
+            "module": "ember-simple-auth/session-stores/adaptive"
+        },
+        {
+            "file": "addon/session-stores/adaptive.js",
+            "line": 49,
+            "description": "The name of the cookie to use if `localStorage` is not available.",
+            "itemtype": "property",
+            "name": "cookieName",
+            "type": "String",
+            "default": "ember_simple_auth:session",
+            "access": "public",
+            "tagname": "",
+            "class": "AdaptiveStore",
+            "module": "ember-simple-auth/session-stores/adaptive"
+        },
+        {
+            "file": "addon/session-stores/adaptive.js",
+            "line": 59,
+            "description": "The expiration time for the cookie in seconds if `localStorage` is not\navailable. A value of `null` will make the cookie a session cookie that\nexpires and gets deleted when the browser is closed.",
+            "itemtype": "property",
+            "name": "cookieExpirationTime",
+            "default": "null",
+            "type": "Integer",
+            "access": "public",
+            "tagname": "",
+            "class": "AdaptiveStore",
+            "module": "ember-simple-auth/session-stores/adaptive"
+        },
+        {
+            "file": "addon/session-stores/adaptive.js",
+            "line": 101,
+            "description": "Persists the `data` in the `localStorage` if it is available or in a cookie\nif it is not.",
+            "itemtype": "method",
+            "name": "persist",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The data to persist",
+                    "type": "Object"
+                }
+            ],
+            "access": "public",
+            "tagname": "",
+            "class": "AdaptiveStore",
+            "module": "ember-simple-auth/session-stores/adaptive"
+        },
+        {
+            "file": "addon/session-stores/adaptive.js",
+            "line": 113,
+            "description": "Returns all data currently stored in the `localStorage` if that is\navailable - or if it is not, in the cookie - as a plain object.",
+            "itemtype": "method",
+            "name": "restore",
+            "return": {
+                "description": "The data currently persisted in the `localStorage`.",
+                "type": "Object"
+            },
+            "access": "public",
+            "tagname": "",
+            "class": "AdaptiveStore",
+            "module": "ember-simple-auth/session-stores/adaptive"
+        },
+        {
+            "file": "addon/session-stores/adaptive.js",
+            "line": 125,
+            "description": "Clears the store by deleting the\n{{#crossLink \"LocalStorageStore/key:property\"}}{{/crossLink}} from\n`localStorage` if that is available or by deleting the cookie if it is not.",
+            "itemtype": "method",
+            "name": "clear",
+            "access": "public",
+            "tagname": "",
+            "class": "AdaptiveStore",
+            "module": "ember-simple-auth/session-stores/adaptive"
+        },
+        {
+            "file": "addon/session-stores/base.js",
+            "line": 17,
             "description": "Triggered when the session store's data changes due to an external event,\ne.g. from another tab or window of the same application. The session\nhandles that event, passes the updated data to its authenticator's\n{{#crossLink \"BaseAuthenticator/restore:method\"}}{{/crossLink}} method and\nhandles the result of that invocation accordingly.",
             "itemtype": "event",
             "name": "sessionDataUpdated",
@@ -1563,11 +1750,11 @@
             "access": "public",
             "tagname": "",
             "class": "BaseStore",
-            "module": "ember-simple-auth/stores/base"
+            "module": "ember-simple-auth/session-stores/base"
         },
         {
-            "file": "addon/stores/base.js",
-            "line": 37,
+            "file": "addon/session-stores/base.js",
+            "line": 29,
             "description": "Persists the `data`. This replaces all currently stored data.\n\n`BaseStores`'s implementation does nothing. __This method must be\noverridden in subclasses__.",
             "itemtype": "method",
             "name": "persist",
@@ -1581,11 +1768,11 @@
             "access": "public",
             "tagname": "",
             "class": "BaseStore",
-            "module": "ember-simple-auth/stores/base"
+            "module": "ember-simple-auth/session-stores/base"
         },
         {
-            "file": "addon/stores/base.js",
-            "line": 49,
+            "file": "addon/session-stores/base.js",
+            "line": 41,
             "description": "Returns all data currently stored as a plain object.\n\n`BaseStores`'s implementation returns an empty object. __This method must\nbe overridden in subclasses__.",
             "itemtype": "method",
             "name": "restore",
@@ -1596,22 +1783,22 @@
             "access": "public",
             "tagname": "",
             "class": "BaseStore",
-            "module": "ember-simple-auth/stores/base"
+            "module": "ember-simple-auth/session-stores/base"
         },
         {
-            "file": "addon/stores/base.js",
-            "line": 63,
+            "file": "addon/session-stores/base.js",
+            "line": 55,
             "description": "Clears the store.\n\n`BaseStores`'s implementation does nothing. __This method must be\noverridden in subclasses__.",
             "itemtype": "method",
             "name": "clear",
             "access": "public",
             "tagname": "",
             "class": "BaseStore",
-            "module": "ember-simple-auth/stores/base"
+            "module": "ember-simple-auth/session-stores/base"
         },
         {
-            "file": "addon/stores/cookie.js",
-            "line": 54,
+            "file": "addon/session-stores/cookie.js",
+            "line": 46,
             "description": "The domain to use for the cookie, e.g., \"example.com\", \".example.com\"\n(which includes all subdomains) or \"subdomain.example.com\". If not\nexplicitly set, the cookie domain defaults to the domain the session was\nauthneticated on.",
             "itemtype": "property",
             "name": "cookieDomain",
@@ -1620,11 +1807,11 @@
             "access": "public",
             "tagname": "",
             "class": "CookieStore",
-            "module": "ember-simple-auth/stores/cookie"
+            "module": "ember-simple-auth/session-stores/cookie"
         },
         {
-            "file": "addon/stores/cookie.js",
-            "line": 67,
+            "file": "addon/session-stores/cookie.js",
+            "line": 59,
             "description": "The name of the cookie.",
             "itemtype": "property",
             "name": "cookieName",
@@ -1633,11 +1820,11 @@
             "access": "public",
             "tagname": "",
             "class": "CookieStore",
-            "module": "ember-simple-auth/stores/cookie"
+            "module": "ember-simple-auth/session-stores/cookie"
         },
         {
-            "file": "addon/stores/cookie.js",
-            "line": 77,
+            "file": "addon/session-stores/cookie.js",
+            "line": 69,
             "description": "The expiration time for the cookie in seconds. A value of `null` will make\nthe cookie a session cookie that expires and gets deleted when the browser\nis closed.",
             "itemtype": "property",
             "name": "cookieExpirationTime",
@@ -1646,11 +1833,11 @@
             "access": "public",
             "tagname": "",
             "class": "CookieStore",
-            "module": "ember-simple-auth/stores/cookie"
+            "module": "ember-simple-auth/session-stores/cookie"
         },
         {
-            "file": "addon/stores/cookie.js",
-            "line": 105,
+            "file": "addon/session-stores/cookie.js",
+            "line": 97,
             "description": "Persists the `data` in the cookie.",
             "itemtype": "method",
             "name": "persist",
@@ -1664,11 +1851,11 @@
             "access": "public",
             "tagname": "",
             "class": "CookieStore",
-            "module": "ember-simple-auth/stores/cookie"
+            "module": "ember-simple-auth/session-stores/cookie"
         },
         {
-            "file": "addon/stores/cookie.js",
-            "line": 119,
+            "file": "addon/session-stores/cookie.js",
+            "line": 111,
             "description": "Returns all data currently stored in the cookie as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -1679,22 +1866,22 @@
             "access": "public",
             "tagname": "",
             "class": "CookieStore",
-            "module": "ember-simple-auth/stores/cookie"
+            "module": "ember-simple-auth/session-stores/cookie"
         },
         {
-            "file": "addon/stores/cookie.js",
-            "line": 135,
+            "file": "addon/session-stores/cookie.js",
+            "line": 127,
             "description": "Clears the store by deleting the cookie.",
             "itemtype": "method",
             "name": "clear",
             "access": "public",
             "tagname": "",
             "class": "CookieStore",
-            "module": "ember-simple-auth/stores/cookie"
+            "module": "ember-simple-auth/session-stores/cookie"
         },
         {
-            "file": "addon/stores/ephemeral.js",
-            "line": 30,
+            "file": "addon/session-stores/ephemeral.js",
+            "line": 22,
             "description": "Persists the `data`. This replaces all currently stored data.",
             "itemtype": "method",
             "name": "persist",
@@ -1708,11 +1895,11 @@
             "access": "public",
             "tagname": "",
             "class": "EphemeralStore",
-            "module": "ember-simple-auth/stores/ephemeral"
+            "module": "ember-simple-auth/session-stores/ephemeral"
         },
         {
-            "file": "addon/stores/ephemeral.js",
-            "line": 41,
+            "file": "addon/session-stores/ephemeral.js",
+            "line": 33,
             "description": "Returns all data currently stored as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -1723,22 +1910,22 @@
             "access": "public",
             "tagname": "",
             "class": "EphemeralStore",
-            "module": "ember-simple-auth/stores/ephemeral"
+            "module": "ember-simple-auth/session-stores/ephemeral"
         },
         {
-            "file": "addon/stores/ephemeral.js",
-            "line": 52,
+            "file": "addon/session-stores/ephemeral.js",
+            "line": 44,
             "description": "Clears the store.",
             "itemtype": "method",
             "name": "clear",
             "access": "public",
             "tagname": "",
             "class": "EphemeralStore",
-            "module": "ember-simple-auth/stores/ephemeral"
+            "module": "ember-simple-auth/session-stores/ephemeral"
         },
         {
-            "file": "addon/stores/local-storage.js",
-            "line": 29,
+            "file": "addon/session-stores/local-storage.js",
+            "line": 23,
             "description": "The `localStorage` key the store persists data in.",
             "itemtype": "property",
             "name": "key",
@@ -1747,11 +1934,11 @@
             "access": "public",
             "tagname": "",
             "class": "LocalStorageStore",
-            "module": "ember-simple-auth/stores/local-storage"
+            "module": "ember-simple-auth/session-stores/local-storage"
         },
         {
-            "file": "addon/stores/local-storage.js",
-            "line": 43,
+            "file": "addon/session-stores/local-storage.js",
+            "line": 37,
             "description": "Persists the `data` in the `localStorage`.",
             "itemtype": "method",
             "name": "persist",
@@ -1765,11 +1952,11 @@
             "access": "public",
             "tagname": "",
             "class": "LocalStorageStore",
-            "module": "ember-simple-auth/stores/local-storage"
+            "module": "ember-simple-auth/session-stores/local-storage"
         },
         {
-            "file": "addon/stores/local-storage.js",
-            "line": 56,
+            "file": "addon/session-stores/local-storage.js",
+            "line": 50,
             "description": "Returns all data currently stored in the `localStorage` as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -1780,22 +1967,22 @@
             "access": "public",
             "tagname": "",
             "class": "LocalStorageStore",
-            "module": "ember-simple-auth/stores/local-storage"
+            "module": "ember-simple-auth/session-stores/local-storage"
         },
         {
-            "file": "addon/stores/local-storage.js",
-            "line": 68,
+            "file": "addon/session-stores/local-storage.js",
+            "line": 62,
             "description": "Clears the store by deleting the\n{{#crossLink \"LocalStorageStore/key:property\"}}{{/crossLink}} from\n`localStorage`.",
             "itemtype": "method",
             "name": "clear",
             "access": "public",
             "tagname": "",
             "class": "LocalStorageStore",
-            "module": "ember-simple-auth/stores/local-storage"
+            "module": "ember-simple-auth/session-stores/local-storage"
         },
         {
             "file": "addon/configuration.js",
-            "line": 29,
+            "line": 28,
             "description": "The base URL of the application as configured in `config/environment.js`.",
             "itemtype": "property",
             "name": "baseURL",
@@ -1810,7 +1997,7 @@
         },
         {
             "file": "addon/configuration.js",
-            "line": 41,
+            "line": 40,
             "description": "The route to transition to for authentication. The\n{{#crossLink \"AuthenticatedRouteMixin\"}}{{/crossLink}} will transition to\nthis route when a route that implements the mixin is accessed when the\nroute is not authenticated.",
             "itemtype": "property",
             "name": "authenticationRoute",
@@ -1825,7 +2012,7 @@
         },
         {
             "file": "addon/configuration.js",
-            "line": 56,
+            "line": 55,
             "description": "The route to transition to after successful authentication.",
             "itemtype": "property",
             "name": "routeAfterAuthentication",
@@ -1840,25 +2027,10 @@
         },
         {
             "file": "addon/configuration.js",
-            "line": 68,
+            "line": 67,
             "description": "The route to transition to if a route that implements the\n{{#crossLink \"UnauthenticatedRouteMixin\"}}{{/crossLink}} is accessed when\nthe session is authenticated.",
             "itemtype": "property",
             "name": "routeIfAlreadyAuthenticated",
-            "readonly": "",
-            "static": 1,
-            "type": "String",
-            "default": "'index'",
-            "access": "public",
-            "tagname": "",
-            "class": "Configuration",
-            "module": "ember-simple-auth/configuration"
-        },
-        {
-            "file": "addon/configuration.js",
-            "line": 82,
-            "description": "The session store that the session data is stored in.",
-            "itemtype": "property",
-            "name": "store",
             "readonly": "",
             "static": 1,
             "type": "String",
