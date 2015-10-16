@@ -9,7 +9,7 @@
 		<meta name="language" content="en"/>
 		<meta name="content-language" content="en"/>
 		<meta name="publisher" content="simplabs - Marco Otte-Witte" />
-    <title>Ember Simple Auth - lightweight authentication/authorization library for Ember.js</title>
+    <title>Ember Simple Auth</title>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
     <link rel="apple-touch-icon" href="images/apple-57.png">
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-72.png">
@@ -31,21 +31,18 @@
       body {
         line-height: 1.7;
         font-weight: 300;
-        letter-spacing: 1px;
         color: #384147;
       }
     
       a, a:visited {
-        color: #e24b31;
-        border-bottom: 2px solid #eee;
+        color: #e53613;
         text-decoration: none;
         padding: 2px;
         transition: all .25s;
       }
       
       a:hover {
-        color: #384147;
-        border-bottom: 2px solid #e24b31;
+        color: #e53613;
         text-decoration: none;
       }
       
@@ -59,24 +56,45 @@
 
       h1, h2, h3 {
         font-family: 'Ubuntu', sans-serif;
+        font-weight: lighter;
+      }
+
+      h2 {
+        margin: 60px 0 10px 0;
+        font-size: 24px;
       }
 
       strong {
-        background-color: #fbfeda;
         padding: 2px;
       }
       
       code {
-        background-color: #f8f8ff;
+        background-color: #f6f6f6;
         color: #000;
       }
       
+      #main-content ul {
+        display: table;
+        margin-left: 0;
+        padding-left: 0;
+        list-style: none;
+      }
+      
+      #main-content ul li {
+        display: table-row;
+      }
+      
+      #main-content ul li:before {
+        content: "•";
+        display: table-cell;
+        padding-right: 0.4em;
+      }
+      
       div.code {
-        background-color: #f8f8ff;
+        background-color: #f6f6f6;
         overflow-x: scroll;
         line-height: 120%;
         font-size: 120%;
-        border: 1px solid #eee;
         border-radius: 0;
         margin: 1em 0;
       }
@@ -85,15 +103,26 @@
         margin: 0;
         border: none;
         background-color: transparent;
+        word-wrap: normal;
+      }
+
+      div.code pre code {
+        background-color: #f6f6f6;
+        white-space: inherit;
+      }
+
+      div.video {
+        margin: 1em 0;
+        text-align: center;
       }
 
       #header {
-        background-color: #e24b31;
+        background-color: #e53613;
       }
 
       #header a {
         color: #fff !important;
-        background-color: #e24b31 !important;
+        background-color: #e53613 !important;
         border: none;
       }
 
@@ -101,258 +130,279 @@
         padding-left: 0 !important;
       }
 
-      #header .dropdown-menu {
-        background-color: #e24b31 !important;
-        border-top: 1px solid #fff;
-      }
-
-      #main-logo {
-        background: #eee;
-      }
-
-      #main-logo .row {
+      #intro .row {
         text-align: center;
       }
 
-      #main-logo i {
-        display: inline-block;
-        width: 300px;
-        height: 134px;
-        background-image: url("images/logo.png");
-        margin: 100px 0 50px 0;
+      #intro p {
+        margin-right: 10%;
+        margin-left: 10%;
+      }
+
+      #intro i.main-logo {
+        margin: 130px 0 58px 0;
+      }
+
+      hr {
+        border-bottom: 1px solid #e53613;
+        margin: 60px 0 0 0;
+      }
+
+      #intro p {
+        text-align: center;
       }
       
-      @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6 / 2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-        #main-logo i {
-          background-image: url("images/logo@2x.png");
-          background-size: 300px 134px;
-        }
+      p.abstract {
+        font-weight: bold;
       }
       
       #footer {
         margin-top: 50px;
         margin-bottom: 0;
-        background-color: #eee;
+        background-color: #f6f6f6;
         font-size: 80%;
       }
       
-      #footer .navbar-text {
-        margin-left: 0;
-        margin-right: 0;
+      #footer p {
+        margin: 20px 0;
         float: none;
-        text-align: center;
+        text-align: right;
       }
       
-      #footer a.simplabs {
-        margin: 15px auto 0 auto;
-        display: block;
-        border: none;
+      #footer p.copyright {
+        text-align: left;
       }
       
-      #footer a.simplabs i {
+      #footer a i.simplabs {
         display: inline-block;
-        background-position: center left;
-        background-repeat: no-repeat;
-        transition: background .25s;
-        width: 173px;
-        height: 30px;
-        margin: auto auto;
+        width: 69px;
+        height: 12px;
         background-image: url("images/simplabs.png");
       }
       
+      .reference-project {
+        padding: 20px 0;
+        text-align: center;
+      }
+      
+      i.main-logo {
+        display: inline-block;
+        width: 300px;
+        height: 185px;
+        background-image: url("images/logo.png");
+      }
+      
+      i.ghost {
+        display: inline-block;
+        width: 125px;
+        height: 40px;
+        background-image: url("images/ghost.png");
+      }
+      
+      i.runtastic {
+        display: inline-block;
+        width: 154px;
+        height: 40px;
+        background-image: url("images/runtastic.png");
+      }
+      
+      i.foko {
+        display: inline-block;
+        width: 45px;
+        height: 40px;
+        background-image: url("images/foko.png");
+      }
+      
+      i.krit {
+        display: inline-block;
+        width: 106px;
+        height: 40px;
+        background-image: url("images/krit.png");
+      }
+      
+      i.crowdly {
+        display: inline-block;
+        width: 116px;
+        height: 40px;
+        background-image: url("images/crowdly.png");
+      }
+      
+      i.timify {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-image: url("images/timify.png");
+      }
+      
+      i.heroku {
+        display: inline-block;
+        width: 115px;
+        height: 40px;
+        background-image: url("images/heroku.png");
+      }
+      
       @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6 / 2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-        #footer a.simplabs i {
+        #footer a i.simplabs {
           background-image: url("images/simplabs@2x.png");
-          background-size: 173px 30px;
+          background-size: 69px 12px;
+        }
+
+        i.main-logo {
+          background-image: url("images/logo@2x.png");
+          background-size: 300px 185px;
+        }
+        
+        i.ghost {
+          background-image: url("images/ghost@2x.png");
+          background-size: 125px 40px;
+        }
+        
+        i.runtastic {
+          background-image: url("images/runtastic@2x.png");
+          background-size: 154px 40px;
+        }
+        
+        i.foko {
+          background-image: url("images/foko@2x.png");
+          background-size: 45px 40px;
+        }
+        
+        i.krit {
+          background-image: url("images/krit@2x.png");
+          background-size: 106px 40px;
+        }
+        
+        i.crowdly {
+          background-image: url("images/crowdly@2x.png");
+          background-size: 116px 40px;
+        }
+        
+        i.timify {
+          background-image: url("images/timify@2x.png");
+          background-size: 40px 40px;
+        }
+        
+        i.heroku {
+          background-image: url("images/heroku@2x.png");
+          background-size: 115px 40px;
         }
       }
       
-      @media (max-width:768px) {
+      @media (max-width: 768px) {
         #header a.github {
           padding-left: 15px !important;
         }
-        #main-logo i {
-          margin-top: 150px;
+        i.main-logo {
+          margin-top: 160px;
+        }
+      }
+
+      @media (max-width: 992px) {
+        #footer p {
+          text-align: left;
+          margin-bottom: 0;
+        }
+        #footer {
+          padding-bottom: 20px;
         }
       }
     </style>
   </head>
 	<body>
     <nav id="header" class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div id="main-content" class="row">
-          <div class="col-md-8 col-md-offset-2 col-xs-12">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
             <ul class="nav navbar-nav">
               <li>
                 <a href="https://github.com/simplabs/ember-simple-auth" class="github"><i class="icon icon-github"></i> simplabs/ember-simple-auth</a>
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">API Docs <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="ember-simple-auth-api-docs.html">Ember Simple Auth</a></li>
-                  <li><a href="ember-simple-auth-oauth2-api-docs.html">Ember Simple Auth OAuth 2.0</a></li>
-                  <li><a href="ember-simple-auth-devise-api-docs.html">Ember Simple Auth Devise</a></li>
-                  <li><a href="ember-simple-auth-cookie-store-api-docs.html">Ember Simple Auth Cookie Store</a></li>
-                  <li><a href="ember-simple-auth-torii-api-docs.html">Ember Simple Auth torii</a></li>
-                </ul>
+              <li>
+                <a href="api/">API Docs</a>
               </li>
             </ul>
           </div>
         </div>
       </div>
     </nav>
-    <div class="container-fluid" id="main-logo">
+    <div class="container-fluid" id="intro">
       <div class="row">
-        <div class="col-md-12">
-          <i></i>
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+          <i class="main-logo"></i>
+        </div>
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+          <p class="abstract"><a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Ember Simple Auth</a> is a lightweight library for implementing authentication/authorization with <a href="http://emberjs.com" title="Ember.js">Ember.js</a> applications.</p>
+          <p>It has minimal requirements with respect to application structure, routes etc. With its pluggable strategies it can support all kinds of authentication and authorization mechanisms.</p>
+          <hr/>
         </div>
       </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
       <div id="main-content" class="row">
-        <div class="col-md-8 col-md-offset-2 col-xs-12">
-          <h1>Ember Simple Auth</h1>
-          <p>
-            <a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Ember Simple Auth</a> is a <strong>lightweight library for implementing authentication/authorization with <a href="http://emberjs.com" title="Ember.js">Ember.js</a> applications</strong>. It has minimal requirements with respect to application structure, routes etc. With its pluggable strategies it can support all kinds of authentication and authorization mechanisms.
-          </p>
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
           <h2>What does it do?</h2>
           <ul>
-            <li>it <strong>manages a client side session</strong> synchronizes that across browser tabs/windows</li>
+            <li>it <strong>maintains a client side session</strong> and synchronizes its state across multiple tabs/windows of the application</li>
             <li>it <strong>authenticates the session</strong> against the application's own server, external providers like Facebook etc.</li>
             <li>it <strong>authorizes requests</strong> to backend servers</li>
-            <li>it is easily customizable and extensible</li>
+            <li>it is <strong>easily customizable and extensible</strong></li>
           </ul>
+          <h2>Installation</h2>
+          <p>
+            Install Ember Simple Auth as an <a href="https://ember-cli.com">Ember CLI</a> Addon:
+          </p>
+          <div class="code">
+            <pre><code class="bash">ember install ember-simple-auth</code></pre>
+          </div>
           <h2>How to use it</h2>
-          <p>
-          	<strong>Ember Simple Auth is best used with <a href="https://github.com/stefanpenner/ember-cli" title="Ember CLI @ github">Ember CLI</a></strong>. Simply add it to the project by installing the Ember CLI Addon from npm:
-          </p>
-          <div class="code">
-            <pre><code class="javascript">npm install --save-dev ember-cli-simple-auth
-ember generate ember-cli-simple-auth</code></pre>
+          <div class="video">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/e9LGVn0mnuk?rel=0" frameborder="0" allowfullscreen></iframe>
           </div>
-          <h3>The Session</h3>
+          <h2>More information</h2>
           <p>
-            Ember Simple Auth is built around the fundamental idea that users are always using the application in the context of a (client side) session. This session can either be authenticated or not. Ember Simple Auth creates that session, provides functionality to authenticate and invalidate it and also has a set of mixins that provide default implementations for common scenarios like redirecting users to the login if they access a restricted page etc.
+            This is only a very brief overview of Ember Simple Auth's features. More and detailed docs can be found in the <a href="http://github.com/simplabs/ember-simple-auth#readme">README</a> and the <a href="/api">API docs</a>.
           </p>
-          <p>
-            While not necessary, the easiest way to use the session is to include the <code>ApplicationRouteMixin</code> mixin provided by Ember Simple Auth in the application route:
-          </p>
-          <div class="code">
-            <pre><code class="javascript">// app/routes/application.js
-import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
-
-export default Ember.Route.extend(ApplicationRouteMixin);</code></pre>
-          </div>
-          <p>
-            This adds some actions to the application route like <code>authenticateSession</code> and <code>invalidateSession</code> as well as callback actions that are triggered when the session's authentication state changes like <code>sessionAuthenticationSucceeded</code> or <code>sessionInvalidationSucceeded</code> (see the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-ApplicationRouteMixin" title="Ember Simple Auth API docs">API docs for <code>ApplicationRouteMixin</code></a>).
-            Displaying e.g. login/logout buttons in the UI depending on the session's
-            authentication state then is as easy as:
-          </p>
-          <div class="code">
-            <pre><code class="handlebars">{{#if session.isAuthenticated}}
-  &lt;a {{ action 'invalidateSession' }}&gt;Logout&lt;/a&gt;
-{{else}}
-  &lt;a {{ action 'authenticateSession' }}&gt;Login&lt;/a&gt;
-{{/if}}</code></pre>
-          </div>
-          <p>
-            To make a route in the application require the session to be authenticated, there is another mixin that Ember Simple Auth provides and that is included in the respective route (see the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-AuthenticatedRouteMixin" title="Ember Simple Auth API docs">API docs for <code>AuthenticatedRouteMixin</code></a>):
-          </p>
-          <div class="code">
-            <pre><code class="javascript">// app/routes/protected.js
-import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
-
-export default Ember.Route.extend(AuthenticatedRouteMixin);</code></pre>
-          </div>
-          <p>
-            This will make the route transition to <code>/login</code> (or a different URL if configured) when the session is not authenticated in the <code>beforeModel</code> method.
-          </p>
-          <h3>Authenticators</h3>
-          <p>
-            <strong>Authenticators implement the concrete steps necessary to authenticate the session.</strong> An application can have several authenticators for different kinds of authentication mechanisms (e.g. the application's own backend server, external authentication providers like Facebook etc.) while the session is only authenticated with one authenticator at a time (see the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Session-authenticate" title="Ember Simple Auth API docs">API docs for <code>Session#authenticate</code></a>). The authenticator to use is chosen when authentication is triggered:
-          </p>
-          <div class="code">
-            <pre><code class="javascript">this.get('session').authenticate('authenticator:custom', {});</code></pre>
-          </div>
-          <p>
-            or when you're using the <a href="http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-LoginControllerMixin" title="Ember Simple Auth API docs"><code>LoginControllerMixin</code></a>:
-          </p>
-          <div class="code">
-            <pre><code class="javascript">// app/controllers/login.js
-import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
-
-export default Ember.Controller.extend(LoginControllerMixin, {
-  authenticator: 'authenticator:custom'
-});</code></pre>
-          </div>
-          <p>
-            Ember Simple Auth does not include any authenticators in the base library but has extension libraries that can be loaded as needed:
-          </p>
-          <ul>
-            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-oauth2"><strong>simple-auth-oauth2</strong></a> provides an OAuth 2.0 authenticator</li>
-            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-devise"><strong>simple-auth-devise</strong></a> provides an authenticator compatible with the popular Ruby on Rails authentication plugin <a href="https://github.com/plataformatec/devise">devise</a></li>
-            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-torii"><strong>simple-auth-torii</strong></a> provides an authenticator that wraps the <a href="https://github.com/Vestorly/torii">torii library</a></li>
-          </ul>
-          <h3>Authorizers</h3>
-          <p>
-            If the Ember.js application makes requests to a backend server that requires authorization and an authorizer is configured, Ember Simple Auth sets up an <a href="http://api.jquery.com/jQuery.ajaxPrefilter/" title="jQuery docs"><code>$.ajaxPrefilter</code></a> that is used to authorize AJAX requests. An authorizer can be configured in the application's environment object:
-          </p>
-          <div class="code">
-            <pre><code class="javascript">//config/environment.js
-ENV['simple-auth'] = {
-  authorizer: 'simple-auth-authorizer:oauth2-bearer'
-}</code></pre>
-          </div>
-          <p>
-            While the authenticator acquires some sort of secret information from an authentication provider when it authenticates the session, <strong>the authorizer uses that secret information acquired by the authenticator to authorize subsequent requests, thus the authenticator and authorizer have to fit together</strong>. An application always only has one authorizer.
-          </p>
-          <p>
-            Ember Simple Auth does not include any authorizers in the base library but offers extension libraries that can be loaded in the application as needed:
-          </p>
-          <ul>
-            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-oauth2"><strong>simple-auth-oauth2</strong></a> provides an OAuth 2.0 authorizer</li>
-            <li><a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-devise"><strong>simple-auth-devise</strong></a> provides an authorizer compatible with the popular Ruby on Rails authentication plugin <a href="https://github.com/plataformatec/devise">devise</a></li>
-          </ul>
-          <h3>Stores</h3>
-          <p>
-            Ember Simple Auth <strong>persists the session state so it survives page reloads</strong>. There is only one store per application that can be configured in the global configuration object:
-          </p>
-          <div class="code">
-            <pre><code class="javascript">//config/environment.js
-ENV['simple-auth'] = {
-  store: 'simple-auth-session-store:local-storage'
-}</code></pre>
-          </div>
-          <p>
-            Ember Simple Auth comes with 2 bundled stores:
-          </p>
-          <ul>
-            <li><strong><code>localStorage</code> Store</strong> stores its data in the browser's <code>localStorage</code>; <strong>this is the default store</strong>.</li>
-            <li><strong>Ephemeral Store</strong> stores its data in memory and thus <strong>is not actually persistent</strong>. This store is mainly useful for testing</li>
-          </ul>
-          <p>
-            A cookie based store is available in the extension library <a href="https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-cookie-store">simple-auth-cookie-store</a>.
-          </p>
-          <p>
-            <a href="http://github.com/simplabs/ember-simple-auth" title="Ember Simple Auth @ github">Find more documentation, examples for using the library without Ember CLI and of course the source on github</a>.
-          </p>
+          <hr/>
+        </div>
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+          <h2>Projects and Companies using Ember Simple Auth</h2>
+        </div>
+        <div class="col-sm-2 col-sm-offset-3 col-xs-6 reference-project">
+          <i class="ghost"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="runtastic"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="heroku"></i>
+        </div>
+        <div class="col-sm-2 col-sm-offset-3 col-xs-6 reference-project">
+          <i class="krit"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="crowdly"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="timify"></i>
+        </div>
+        <div class="col-sm-2 col-sm-offset-5 col-xs-6 reference-project">
+          <i class="foko"></i>
         </div>
       </div>
     </div>
     <nav id="footer" class="navbar" role="navigation">
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
-          <div class="col-md-8 col-md-offset-2 col-xs-12">
-            <p class="navbar-text">
-              <a href="http://simplabs.com" title="simplabs.com" class="simplabs"><i></i></a>
+          <div class="col-md-3 col-md-offset-3 col-sm-4 col-sm-offset-2 col-xs-12">
+            <p class="copyright">
+              &copy; 2015 <a href="http://simplabs.com"><i class="simplabs"></i></a>
             </p>
-            <p class="navbar-text">
-            	Ember Simple Auth is not an official part of <a href="http://emberjs.com" title="Ember.js">Ember.js</a> and is not maintained by the Ember.js Core Team.
-            </p>
-            <p class="navbar-text">
-              The Ember Simple Auth logo has been designed by <a href="https://github.com/jdhines" title="jdhines @ github">jdhines</a>.
+          </div>
+          <div class="col-md-3 col-sm-4 col-xs-12">
+            <p>
+            	Ember Simple Auth is not an official part of <a href="http://emberjs.com">Ember.js</a> and is not maintained by the Ember.js Core Team.
             </p>
           </div>
         </div>
