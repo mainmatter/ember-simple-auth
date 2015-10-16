@@ -15,7 +15,7 @@ const { isEmpty } = Ember;
   Authorization: Bearer 234rtgjneroigne4
   ```
 
-  @class OAuth2BearerAuhtorizer
+  @class OAuth2BearerAuthorizer
   @module ember-simple-auth/authorizers/oauth2-bearer
   @extends BaseAuthorizer
   @public

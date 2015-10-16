@@ -363,7 +363,7 @@ __authorizers and authenticators have to fit together__.
 
 Ember Simple Auth comes with 2 authorizers:
 
-* [`OAuth2BearerAuthorizer`](http://ember-simple-auth.com/api/classes/OAuth2BearerAuhtorizer.html): an OAuth 2.0 authorizer that uses Bearer tokens
+* [`OAuth2BearerAuthorizer`](http://ember-simple-auth.com/api/classes/OAuth2BearerAuthorizer.html): an OAuth 2.0 authorizer that uses Bearer tokens
 * [`DeviseAuthorizer`](http://ember-simple-auth.com/api/classes/DeviseAuthorizer.html): an authorizer compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
 
 To use any of these authorizers in an application, define a new authroizer in
