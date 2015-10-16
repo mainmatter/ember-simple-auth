@@ -149,7 +149,7 @@ export default BaseAuthenticator.extend({
       if (!Ember.isEmpty(scopesString)) {
         data.scope = scopesString;
       }
-      this._makeRequest(serverTokenEndpoint, data).then((response) => {
+      this.makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
           const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
           this._scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
@@ -193,7 +193,7 @@ export default BaseAuthenticator.extend({
         Ember.A(['access_token', 'refresh_token']).forEach((tokenType) => {
           const token = data[tokenType];
           if (!isEmpty(token)) {
-            requests.push(this._makeRequest(serverTokenRevocationEndpoint, {
+            requests.push(this.makeRequest(serverTokenRevocationEndpoint, {
               'token_type_hint': tokenType, token
             }));
           }
@@ -206,7 +206,16 @@ export default BaseAuthenticator.extend({
     });
   },
 
-  _makeRequest(url, data) {
+  /**
+    Makes a request to the OAuth 2.0 server.
+
+    @method makeRequest
+    @param {String} url The request URL
+    @param {Object} data The request data
+    @return {jQuery.Deferred} A promise like jQuery.Deferred as returned by `$.ajax`
+    @protected
+  */
+  makeRequest(url, data) {
     const options = {
       url,
       data,
@@ -250,7 +259,7 @@ export default BaseAuthenticator.extend({
     const data                = { 'grant_type': 'refresh_token', 'refresh_token': refreshToken };
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return new RSVP.Promise((resolve, reject) => {
-      this._makeRequest(serverTokenEndpoint, data).then((response) => {
+      this.makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
           expiresIn       = response['expires_in'] || expiresIn;
           refreshToken    = response['refresh_token'] || refreshToken;

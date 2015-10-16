@@ -111,7 +111,7 @@ export default BaseAuthenticator.extend({
       data[resourceName] = { password };
       data[resourceName][identificationAttributeName] = identification;
 
-      this._makeRequest(data).then(function(response) {
+      this.makeRequest(data).then(function(response) {
         run(null, resolve, response);
       }, function(xhr) {
         run(null, reject, xhr.responseJSON || xhr.responseText);
@@ -130,7 +130,15 @@ export default BaseAuthenticator.extend({
     return RSVP.resolve();
   },
 
-  _makeRequest(data) {
+  /**
+    Makes a request to the devise server.
+
+    @method makeRequest
+    @param {Object} data The request data
+    @return {jQuery.Deferred} A promise like jQuery.Deferred as returned by `$.ajax`
+    @protected
+  */
+  makeRequest(data) {
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return Ember.$.ajax({
       url:      serverTokenEndpoint,
