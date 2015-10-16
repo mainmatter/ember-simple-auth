@@ -45,7 +45,11 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
 
   restore() {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      this.store.restore().then((restoredContent) => {
+      let restored = this.store.restore();
+      if (typeof restored === 'undefined' || typeof restored.then === 'undefined') {
+        restored = Ember.RSVP.Promise.resolve(restored || {});
+      }
+      restored.then((restoredContent) => {
         let { authenticator } = (restoredContent.authenticated || {});
         if (!!authenticator) {
           delete restoredContent.authenticated.authenticator;

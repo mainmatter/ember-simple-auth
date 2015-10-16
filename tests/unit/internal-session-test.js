@@ -199,6 +199,34 @@ describe('InternalSession', () => {
     describe('when the restored data does not contain an authenticator factory', () => {
       itDoesNotRestore();
     });
+
+    describe('with older synchronous stores (< v1.1.0)', function() {
+      describe('when restoring the session', function() {
+        describe('when the store resolves restoration', function() {
+          beforeEach(() => {
+            sinon.stub(store, 'restore').returns({ authenticated: { authenticator: 'authenticator' } });
+          });
+
+          it('is authenticated', () => {
+            return session.restore().then(() => {
+              expect(session.get('isAuthenticated')).to.be.true;
+            });
+          });
+        });
+
+        describe('when the store rejects restoration', function() {
+          beforeEach(() => {
+            sinon.stub(store, 'restore').returns({});
+          });
+
+          it('is not authenticated', () => {
+            return session.restore().then(() => {
+              expect(session.get('isAuthenticated')).to.be.false;
+            });
+          });
+        });
+      });
+    });
   });
 
   describe('authentication', () => {
