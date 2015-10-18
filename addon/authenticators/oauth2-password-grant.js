@@ -224,9 +224,10 @@ export default BaseAuthenticator.extend({
       contentType: 'application/x-www-form-urlencoded'
     };
     const clientId = this.get('clientId');
+    const clientSecret = this.get('clientSecret');
 
     if (!isEmpty(clientId)) {
-      const base64ClientId = window.btoa(clientId.concat(':'));
+      const base64ClientId = window.btoa(clientId.concat(':', clientSecret));
       Ember.merge(options, {
         headers: {
           Authorization: `Basic ${base64ClientId}`
