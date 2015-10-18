@@ -356,7 +356,7 @@ export default Base.extend({
 
 ## Authorizers
 
-__Authorizers use the session data aqcuired by the authenticator to construct
+__Authorizers use the session data acquired by the authenticator to construct
 authorization data__ that can be injected into outgoing network requests. As
 the authorizer depends on the data that the authenticator acquires,
 __authorizers and authenticators have to fit together__.
