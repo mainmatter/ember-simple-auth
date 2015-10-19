@@ -105,29 +105,37 @@ describe('DataAdapterMixin', () => {
       sinon.spy(sessionService, 'invalidate');
     });
 
-    describe('when the response status is 401 and the session is authenticated', () => {
-      it('invalidates the session', () => {
-        sessionService.set('isAuthenticated', true);
-        adapter.handleResponse(401);
+    describe('when the response status is 401', () => {
+      describe('when the session is authenticated', () => {
+        beforeEach(() => {
+          sessionService.set('isAuthenticated', true);
+        });
 
-        expect(sessionService.invalidate).to.have.been.calledOnce;
+        it('invalidates the session', () => {
+          adapter.handleResponse(401);
+
+          expect(sessionService.invalidate).to.have.been.calledOnce;
+        });
+
+        it('returns true', () => {
+          expect(adapter.handleResponse(401)).to.be.true;
+        });
       });
 
-      it('returns true', () => {
-        expect(adapter.handleResponse(401)).to.be.true;
-      });
-    });
+      describe('when the session is not authenticated', () => {
+        beforeEach(() => {
+          sessionService.set('isAuthenticated', false);
+        });
 
-    describe('when the response status is 401 and the session is not authenticated', () => {
-      it('invalidates the session', () => {
-        sessionService.set('isAuthenticated', false);
-        adapter.handleResponse(401);
+        it('does not invalidate the session', () => {
+          adapter.handleResponse(401);
 
-        expect(sessionService.invalidate).to.not.have.been.calledOnce;
-      });
+          expect(sessionService.invalidate).to.not.have.been.called;
+        });
 
-      it('returns true', () => {
-        expect(adapter.handleResponse(401)).to.be.true;
+        it('returns true', () => {
+          expect(adapter.handleResponse(401)).to.be.true;
+        });
       });
     });
 
