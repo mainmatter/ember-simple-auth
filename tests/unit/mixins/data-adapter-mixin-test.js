@@ -13,10 +13,10 @@ describe('DataAdapterMixin', () => {
 
   beforeEach(() => {
     hash = {};
-    sessionService = {
+    sessionService = Ember.Object.create({
       authorize() {},
       invalidate() {}
-    };
+    });
 
     const BaseAdapter = Ember.Object.extend({
       ajaxOptions() {
@@ -105,11 +105,25 @@ describe('DataAdapterMixin', () => {
       sinon.spy(sessionService, 'invalidate');
     });
 
-    describe('when the response status is 401', () => {
+    describe('when the response status is 401 and the session is authenticated', () => {
       it('invalidates the session', () => {
+        sessionService.set('isAuthenticated', true);
         adapter.handleResponse(401);
 
         expect(sessionService.invalidate).to.have.been.calledOnce;
+      });
+
+      it('returns true', () => {
+        expect(adapter.handleResponse(401)).to.be.true;
+      });
+    });
+
+    describe('when the response status is 401 and the session is not authenticated', () => {
+      it('invalidates the session', () => {
+        sessionService.set('isAuthenticated', false);
+        adapter.handleResponse(401);
+
+        expect(sessionService.invalidate).to.not.have.been.calledOnce;
       });
 
       it('returns true', () => {
