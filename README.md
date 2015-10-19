@@ -165,7 +165,7 @@ the __session can be authenticated with the
 // app/controllers/login.js
 import Ember from 'ember';
 
-export default Ember.Component.extend({
+export default Ember.Controller.extend({
   session: Ember.inject.service('session'),
 
   actions: {
