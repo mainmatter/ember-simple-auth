@@ -507,6 +507,14 @@ acceptance tests__:
   response - e.g. a token.
 * `invalidateSession(app)`: invalidates the session.
 
+The test helpers can be imported from the the `helpers/ember-simple-auth`
+module in the application's namespace:
+
+```js
+// tests/acceptance/…
+import { currentSession, authenticateSession, invalidateSession } from '<app-name>/helpers/ember-simple-auth';
+```
+
 ## Configuration
 
 Ember Simple Auth is configured via the `'ember-simple-auth'` section in the
