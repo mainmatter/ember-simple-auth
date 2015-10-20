@@ -8,9 +8,7 @@ export default Ember.Component.extend({
 
   actions: {
     login() {
-      const { onLogin } = this.attrs;
-
-      onLogin();
+      this.sendAction('onLogin');
     },
 
     logout() {
