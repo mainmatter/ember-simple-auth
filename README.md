@@ -100,7 +100,7 @@ export default Ember.Controller.extend({
   {{else}}
     {{#link-to 'login'}}Login{{/link-to}}
   {{/if}}
-</menu>
+</div>
 <div class="main">
   {{outlet}}
 </div>
