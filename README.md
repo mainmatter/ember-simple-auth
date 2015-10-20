@@ -120,7 +120,7 @@ export default Ember.Controller.extend({
   …
 
   actions: {
-    invalidateSession: function() {
+    invalidateSession() {
       this.get('session').invalidate();
     }
   }
@@ -342,13 +342,13 @@ methods:
 import Base from 'ember-simple-auth/authenticators/base';
 
 export default Base.extend({
-  restore: function(data) {
+  restore(data) {
     …
   },
-  authenticate: function(options) {
+  authenticate(options) {
     …
   },
-  invalidate: function(data) {
+  invalidate(data) {
     …
   }
 });
