@@ -8,6 +8,19 @@ const { RSVP, isEmpty } = Ember;
   [Torii library](https://github.com/Vestorly/torii) and thus allows to connect
   any external authentication provider that torii defines a provider for.
 
+  In order to use this authenticator, __the application needs to have the
+  [torii addon](https://github.com/Vestorly/torii) installed and must inject
+  the torii service into the authenticator__:
+
+  ```js
+  // app/authenticators/torii.js
+  import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
+
+  export default ToriiAuthenticator.extend(
+    torii: Ember.inject.service()
+  )
+  ```
+
   @class ToriiAuthenticator
   @module ember-simple-auth/authenticators/torii
   @extends BaseAuthenticator
@@ -105,6 +118,6 @@ export default BaseAuthenticator.extend({
 
   _assertToriiIsPresent() {
     const torii = this.get('torii');
-    Ember.assert('You are trying to use `torii-authenticator` but torii is not installed. Install torii using `ember install torii`.', Ember.isPresent(torii));
+    Ember.assert('You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with "torii: Ember.inject.service()".', Ember.isPresent(torii));
   }
 });
