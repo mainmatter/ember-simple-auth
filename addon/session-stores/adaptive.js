@@ -80,8 +80,8 @@ export default Base.extend({
 
   _createStore(storeType, options) {
     const store = storeType.create(options);
-    store.on('sessionDataUpdated', () => {
-      this.trigger('sessionDataUpdated', ...arguments);
+    store.on('sessionDataUpdated', (data) => {
+      this.trigger('sessionDataUpdated', data);
     });
     return store;
   },
