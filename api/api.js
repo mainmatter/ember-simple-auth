@@ -14,7 +14,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "DeviseAuthorizer",
         "EphemeralStore",
         "LocalStorageStore",
-        "OAuth2BearerAuhtorizer",
+        "OAuth2BearerAuthorizer",
         "OAuth2PasswordGrantAuthenticator",
         "SessionService",
         "ToriiAuthenticator",
@@ -59,7 +59,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "ember-simple-auth/authenticators/torii",
             "name": "ember-simple-auth_authenticators_torii",
-            "description": "Authenticator that wraps the\n[Torii library](https://github.com/Vestorly/torii) and thus allows to connect\nany external authentication provider that torii defines a provider for."
+            "description": "Authenticator that wraps the\n[Torii library](https://github.com/Vestorly/torii) and thus allows to connect\nany external authentication provider that torii defines a provider for.\n\nIn order to use this authenticator, __the application needs to have the\n[torii addon](https://github.com/Vestorly/torii) installed and must inject\nthe torii service into the authenticator__:\n\n```js\n// app/authenticators/torii.js\nimport ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';\n\nexport default ToriiAuthenticator.extend(\n  torii: Ember.inject.service()\n)\n```"
         },
         {
             "displayName": "ember-simple-auth/authorizers/base",

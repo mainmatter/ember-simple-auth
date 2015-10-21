@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "The Ember Simple Auth API",
-        "version": "1.0.0"
+        "version": "1.0.1"
     },
     "files": {
         "addon/authenticators/base.js": {
@@ -76,7 +76,7 @@
                 "ember-simple-auth/authorizers/oauth2-bearer": 1
             },
             "classes": {
-                "OAuth2BearerAuhtorizer": 1
+                "OAuth2BearerAuthorizer": 1
             },
             "fors": {},
             "namespaces": {}
@@ -258,7 +258,7 @@
             "tag": "module",
             "file": "addon/authenticators/torii.js",
             "line": 6,
-            "description": "Authenticator that wraps the\n[Torii library](https://github.com/Vestorly/torii) and thus allows to connect\nany external authentication provider that torii defines a provider for."
+            "description": "Authenticator that wraps the\n[Torii library](https://github.com/Vestorly/torii) and thus allows to connect\nany external authentication provider that torii defines a provider for.\n\nIn order to use this authenticator, __the application needs to have the\n[torii addon](https://github.com/Vestorly/torii) installed and must inject\nthe torii service into the authenticator__:\n\n```js\n// app/authenticators/torii.js\nimport ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';\n\nexport default ToriiAuthenticator.extend(\n  torii: Ember.inject.service()\n)\n```"
         },
         "ember-simple-auth/authorizers/base": {
             "name": "ember-simple-auth/authorizers/base",
@@ -293,7 +293,7 @@
             "submodules": {},
             "elements": {},
             "classes": {
-                "OAuth2BearerAuhtorizer": 1
+                "OAuth2BearerAuthorizer": 1
             },
             "fors": {},
             "namespaces": {},
@@ -523,7 +523,7 @@
             "namespace": "",
             "file": "addon/authenticators/torii.js",
             "line": 6,
-            "description": "Authenticator that wraps the\n[Torii library](https://github.com/Vestorly/torii) and thus allows to connect\nany external authentication provider that torii defines a provider for.",
+            "description": "Authenticator that wraps the\n[Torii library](https://github.com/Vestorly/torii) and thus allows to connect\nany external authentication provider that torii defines a provider for.\n\nIn order to use this authenticator, __the application needs to have the\n[torii addon](https://github.com/Vestorly/torii) installed and must inject\nthe torii service into the authenticator__:\n\n```js\n// app/authenticators/torii.js\nimport ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';\n\nexport default ToriiAuthenticator.extend(\n  torii: Ember.inject.service()\n)\n```",
             "extends": "BaseAuthenticator",
             "access": "public",
             "tagname": ""
@@ -562,9 +562,9 @@
             "access": "public",
             "tagname": ""
         },
-        "OAuth2BearerAuhtorizer": {
-            "name": "OAuth2BearerAuhtorizer",
-            "shortname": "OAuth2BearerAuhtorizer",
+        "OAuth2BearerAuthorizer": {
+            "name": "OAuth2BearerAuthorizer",
+            "shortname": "OAuth2BearerAuthorizer",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -1185,7 +1185,7 @@
         },
         {
             "file": "addon/authenticators/torii.js",
-            "line": 19,
+            "line": 32,
             "description": "Restores the session by calling the torii provider's `fetch` method.\n\n__Many torii providers do not implement the `fetch` method__. If the\nprovider in use does not implement the method simply add it as follows:\n\n```js\n// app/providers/facebook.js\nimport FacebookOauth2Provider from 'torii/providers/facebook-oauth2';\n\nexport default FacebookOauth2Provider.extend({\n  fetch(data) {\n    return data;\n  }\n});\n```",
             "itemtype": "method",
             "name": "restore",
@@ -1207,7 +1207,7 @@
         },
         {
             "file": "addon/authenticators/torii.js",
-            "line": 61,
+            "line": 74,
             "description": "Authenticates the session by opening the torii provider. For more\ndocumentation on torii, see the\n[project's README](https://github.com/Vestorly/torii#readme).",
             "itemtype": "method",
             "name": "authenticate",
@@ -1234,7 +1234,7 @@
         },
         {
             "file": "addon/authenticators/torii.js",
-            "line": 82,
+            "line": 95,
             "description": "Closes the torii provider. If the provider is successfully closed, this\nmethod returns a resolving promise, otherwise it will return a rejecting\npromise, thus intercepting session invalidation.",
             "itemtype": "method",
             "name": "invalidate",
@@ -1339,7 +1339,7 @@
             ],
             "access": "public",
             "tagname": "",
-            "class": "OAuth2BearerAuhtorizer",
+            "class": "OAuth2BearerAuthorizer",
             "module": "ember-simple-auth/authorizers/oauth2-bearer"
         },
         {
