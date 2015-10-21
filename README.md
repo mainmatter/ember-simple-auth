@@ -379,7 +379,7 @@ export default OAuth2Bearer.extend();
 and invoke the session service's `authorize` method with the respective name:
 
 ```js
-this.get('session').authorize('authenticator:some', () => {
+this.get('session').authorize('authorizer:some', () => {
   …
 });
 ```
