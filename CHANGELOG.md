@@ -1,3 +1,11 @@
+# 1.0.1
+
+* A bug in the mechanism that forwards events from the internal session through
+  the session service was fixed, see #736, #730.
+* The documentation and assertions for the torii authenticator was fixed,
+  see #734, #735.
+* A typo in the documentation was fixed, see #738.
+
 # 1.0.0
 
 __Ember Simple Auth 1.0.0 changes a lot of external API, a large part of these
