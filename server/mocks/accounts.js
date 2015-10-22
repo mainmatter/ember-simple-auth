@@ -15,7 +15,6 @@ module.exports = function(app) {
         }
       };
       res.status(200).send(response);
-      res.status(200).send('{ "account": { "id": 1, "login": "letme", "name": "Some Person"} }');
     } else {
       res.status(401).end();
     }
