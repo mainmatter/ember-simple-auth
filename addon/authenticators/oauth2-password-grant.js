@@ -166,7 +166,7 @@ export default BaseAuthenticator.extend({
 
   /**
     If token revocation is enabled, this will revoke the access token (and the
-    refresh token if present). If token revocation succedds, this method
+    refresh token if present). If token revocation succeeds, this method
     returns a resolving promise, otherwise it will return a rejecting promise,
     thus intercepting session invalidation.
 
