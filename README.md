@@ -512,7 +512,7 @@ module in the application's namespace:
 
 ```js
 // tests/acceptance/…
-import { currentSession, authenticateSession, invalidateSession } from '<app-name>/helpers/ember-simple-auth';
+import { currentSession, authenticateSession, invalidateSession } from '<app-name>/tests/helpers/ember-simple-auth';
 ```
 
 ## Configuration
