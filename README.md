@@ -56,7 +56,7 @@ requests and error handling. __Check out that dummy app for reference.__ To
 start it, run
 
 ```
-git clone git@github.com:simplabs/ember-simple-auth.git
+git clone https://github.com/simplabs/ember-simple-auth.git
 cd ember-simple-auth
 npm install && bower install && ember serve
 ```
