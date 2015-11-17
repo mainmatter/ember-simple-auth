@@ -2,6 +2,8 @@
 
 __[Ember Simple Auth API docs](http://ember-simple-auth.com/api/)__
 
+__[![Slack Status](https://ember-community-slackin.herokuapp.com/badge.svg)](https://embercommunity.slack.com/messages/ember-simple-auth/)__
+
 Ember Simple Auth __supports all Ember.js versions starting with 1.12.__
 
 #  Ember Simple Auth
