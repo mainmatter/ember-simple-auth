@@ -28,8 +28,8 @@ const { inject, on } = Ember;
 
   export default {
     initialize,
-    name:    'session-events',
-    after:   'ember-simple-auth',
+    name:  'session-events',
+    after: 'ember-simple-auth'
   };
   ```
 
