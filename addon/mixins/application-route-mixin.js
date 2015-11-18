@@ -3,6 +3,8 @@ import Configuration from './../configuration';
 
 const { inject, on } = Ember;
 
+
+
 /**
   The mixin for the application route; __defines methods that are called when
   the session was successfully authenticated (see
@@ -15,20 +17,22 @@ const { inject, on } = Ember;
 
   ```js
   // app/instance-initializers/session-events.js
-  Ember.Application.initializer({
-    name:       'session-events',
-    after:      'ember-simple-auth',
-    initialize: function(container, application) {
-      var applicationRoute = container.lookup('route:application');
-      var session          = container.lookup('service:session');
+  export function initialize(instance) {
+      var applicationRoute = instance.container.lookup('route:application');
+      var session          = instance.container.lookup('service:session');
       session.on('authenticationSucceeded', function() {
         applicationRoute.transitionTo('index');
       });
       session.on('invalidationSucceeded', function() {
         window.location.reload();
       });
-    }
   });
+
+  export default {
+    name:       'session-events',
+    after:      'ember-simple-auth',
+    initialize: initialize
+  };
   ```
 
   __When using the `ApplicationRouteMixin` you need to specify
