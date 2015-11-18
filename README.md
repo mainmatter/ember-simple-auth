@@ -153,7 +153,9 @@ With that authenticator and a login form like
   <label for="password">Password</label>
   {{input id='password' placeholder='Enter Password' type='password' value=password}}
   <button type="submit">Login</button>
-  <p>{{loginFailureMessage}}</p>
+  {{#if errorMessage}}
+    <p>{{errorMessage}}</p>
+  {{/if}}
 </form>
 ```
 
