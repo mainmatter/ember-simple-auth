@@ -148,15 +148,14 @@ With that authenticator and a login form like
 ```handlebars
 {{!-- app/templates/login.hbs --}}
 <form {{action 'authenticate' on='submit'}}>
-  <div class="form-group">
-    <label for="identification">Login</label>
-    {{input value=identification placeholder='Enter Login' class='form-control'}}
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    {{input value=password placeholder='Enter Password' class='form-control' type='password'}}
-  </div>
-  <button type="submit" class="btn btn-default">Login</button>
+  <label for="identification">Login</label>
+  {{input id='identification' placeholder='Enter Login' value=identification}}
+  <label for="password">Password</label>
+  {{input id='password' placeholder='Enter Password' type='password' value=password}}
+  <button type="submit">Login</button>
+  {{#if errorMessage}}
+    <p>{{errorMessage}}</p>
+  {{/if}}
 </form>
 ```
 
@@ -174,7 +173,7 @@ export default Ember.Controller.extend({
     authenticate() {
       let { identification, password } = this.getProperties('identification', 'password');
       this.get('session').authenticate('authenticator:oauth2', identification, password).catch((reason) => {
-        this.set('errorMessage', reason.error);
+        this.set('errorMessage', reason.error || reason);
       });
     }
   }
