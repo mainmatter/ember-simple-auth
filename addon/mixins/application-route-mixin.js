@@ -3,8 +3,6 @@ import Configuration from './../configuration';
 
 const { inject, on } = Ember;
 
-
-
 /**
   The mixin for the application route; __defines methods that are called when
   the session was successfully authenticated (see
@@ -29,9 +27,9 @@ const { inject, on } = Ember;
   });
 
   export default {
-    name:       'session-events',
-    after:      'ember-simple-auth',
-    initialize: initialize
+    initialize,
+    name:    'session-events',
+    after:   'ember-simple-auth',
   };
   ```
 
