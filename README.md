@@ -73,6 +73,9 @@ Installing the library is as easy as:
 ember install ember-simple-auth
 ```
 
+### Upgrading from ember-cli-simple-auth / pre-1.0 release?
+The 1.0 release of ember-simple-auth introduced a lot of breaking changes, but thankfully [the upgrade path isn't too hard](http://log.simplabs.com/post/131698328145/updating-to-ember-simple-auth-10).
+
 ### Basic Usage
 
 Once the library is installed, __the session service can be injected wherever
