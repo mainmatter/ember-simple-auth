@@ -1,5 +1,5 @@
 /* global require, module */
-const EmberApp = require('ember-cli/lib/broccoli/ember-addon');
+const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 const yuidoc = require('broccoli-yuidoc');
 const version = require('git-repo-version')();
 const Handlebars = require('handlebars');
@@ -9,7 +9,7 @@ const merge = require('lodash/object/merge');
 var sourceTrees = [];
 
 module.exports = function(defaults) {
-  var app = new EmberApp(defaults, {
+  var app = new EmberAddon(defaults, {
     jscsOptions: {
       enabled: true,
       testGenerator: function(relativePath, errors) {

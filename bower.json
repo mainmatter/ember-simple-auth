@@ -2,20 +2,20 @@
   "name": "ember-simple-auth",
   "dependencies": {
     "bootstrap": "~3.3.5",
-    "ember": "2.1.0",
-    "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.5",
-    "ember-cli-test-loader": "ember-cli-test-loader#0.1.3",
-    "ember-data": "2.1.0",
-    "ember-load-initializers": "ember-cli/ember-load-initializers#0.1.7",
-    "ember-mocha": "~0.8.2",
-    "ember-resolver": "~0.1.18",
+    "ember": "~2.2.0",
+    "ember-cli-shims": "0.0.6",
+    "ember-cli-test-loader": "0.2.1",
+    "ember-data": "~2.2.0",
+    "ember-load-initializers": "0.1.7",
+    "ember-mocha": "~0.8.7",
+    "ember-resolver": "~0.1.20",
     "jquery": "^1.11.3",
-    "loader.js": "ember-cli/loader.js#3.2.1",
-    "sinonjs": "~1.14.1",
+    "loader.js": "ember-cli/loader.js#3.4.0",
+    "sinonjs": "~1.17.1",
     "base64": "~0.3.0",
-    "pretender": "^0.10.0"
+    "pretender": "^0.10.1"
   },
   "resolutions": {
-    "ember": "2.0.1"
+    "ember": "~2.2.0"
   }
 }
