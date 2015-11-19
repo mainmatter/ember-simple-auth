@@ -22,6 +22,8 @@ const { service } = Ember.inject;
   });
   ```
 
+  __The `DataAdapterMixin` requires Ember Data 1.13 or later.__
+
   @class DataAdapterMixin
   @module ember-simple-auth/mixins/data-adapter-mixin
   @extends Ember.Mixin
