@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import startApp from '../helpers/start-app';
 import Pretender from 'pretender';
 import { invalidateSession, authenticateSession, currentSession } from '../helpers/ember-simple-auth';
+import destroyApp from '../helpers/destroy-app';
 
 describe('Acceptance: Authentication', function() {
   let application;
@@ -16,7 +17,7 @@ describe('Acceptance: Authentication', function() {
 
   afterEach(function() {
     Ember.tryInvoke(server, 'shutdown');
-    Ember.run(application, 'destroy');
+    destroyApp(application);
   });
 
   describe('the protected route', () => {
