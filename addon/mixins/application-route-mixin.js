@@ -15,20 +15,22 @@ const { inject, on } = Ember;
 
   ```js
   // app/instance-initializers/session-events.js
-  Ember.Application.initializer({
-    name:       'session-events',
-    after:      'ember-simple-auth',
-    initialize: function(container, application) {
-      var applicationRoute = container.lookup('route:application');
-      var session          = container.lookup('service:session');
-      session.on('authenticationSucceeded', function() {
-        applicationRoute.transitionTo('index');
-      });
-      session.on('invalidationSucceeded', function() {
-        window.location.reload();
-      });
-    }
+  export function initialize(instance) {
+    var applicationRoute = instance.container.lookup('route:application');
+    var session          = instance.container.lookup('service:session');
+    session.on('authenticationSucceeded', function() {
+      applicationRoute.transitionTo('index');
+    });
+    session.on('invalidationSucceeded', function() {
+      window.location.reload();
+    });
   });
+
+  export default {
+    initialize,
+    name:  'session-events',
+    after: 'ember-simple-auth'
+  };
   ```
 
   __When using the `ApplicationRouteMixin` you need to specify
