@@ -3,7 +3,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { on } = Ember;
+const { RSVP, on } = Ember;
 
 /**
   Session store that persists data in the browser's `localStorage`.
@@ -39,32 +39,26 @@ export default BaseStore.extend({
 
     @method persist
     @param {Object} data The data to persist
-    @return {Ember.RSVP.Promise} The promise object persisting the data in the store.
+    @return {Ember.RSVP.Promise} A promise that resolves when the data has been persisted and rejects otherwise.
     @public
   */
   persist(data) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      data = JSON.stringify(data || {});
-      localStorage.setItem(this.key, data);
-      this.restore().then((restoredContent) => {
-        this._lastData = restoredContent;
-        resolve();
-      }, reject);
-    });
+    this._lastData = data;
+    data = JSON.stringify(data || {});
+    localStorage.setItem(this.key, data);
+    return RSVP.resolve();
   },
 
   /**
     Returns all data currently stored in the `localStorage` as a plain object.
 
     @method restore
-    @return {Ember.RSVP.Promise} The promise object resolving the data currently persisted in the `localStorage`.
+    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the `localStorage` when the data has been restored and rejects otherwise.
     @public
   */
   restore() {
-    return new Ember.RSVP.Promise((resolve) => {
-      let data = localStorage.getItem(this.key);
-      resolve(JSON.parse(data) || {});
-    });
+    let data = localStorage.getItem(this.key);
+    return RSVP.resolve(JSON.parse(data) || {});
   },
 
   /**
@@ -73,24 +67,23 @@ export default BaseStore.extend({
     `localStorage`.
 
     @method clear
-    @return {Ember.RSVP.Promise} The promise object clearing the store.
+    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared and rejects otherwise.
     @public
   */
   clear() {
-    return new Ember.RSVP.Promise((resolve) => {
-      localStorage.removeItem(this.key);
-      this._lastData = {};
-      resolve();
-    });
+    localStorage.removeItem(this.key);
+    this._lastData = {};
+    return RSVP.resolve();
   },
 
   _bindToStorageEvents() {
     Ember.$(window).bind('storage', () => {
-      let data = this.restore();
-      if (!objectsAreEqual(data, this._lastData)) {
-        this._lastData = data;
-        this.trigger('sessionDataUpdated', data);
-      }
+      this.restore().then((data) => {
+        if (!objectsAreEqual(data, this._lastData)) {
+          this._lastData = data;
+          this.trigger('sessionDataUpdated', data);
+        }
+      });
     });
   }
 });

@@ -2,9 +2,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { computed } = Ember;
-
-const { on } = Ember;
+const { RSVP, computed, on } = Ember;
 
 /**
   Session store that persists data in a cookie.
@@ -100,52 +98,44 @@ export default BaseStore.extend({
 
     @method persist
     @param {Object} data The data to persist
-    @return {Ember.RSVP.Promise} The promise object persisting the data in the store.
+    @return {Ember.RSVP.Promise} A promise that resolves when the data has been persisted and rejects otherwise.
     @public
   */
   persist(data) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      data           = JSON.stringify(data || {});
-      let expiration = this._calculateExpirationTime();
-      this._write(data, expiration);
-      this.restore().then((restoredContent) => {
-        this._lastData = restoredContent;
-        resolve();
-      }, reject);
-    });
+    this._lastData = data;
+    data           = JSON.stringify(data || {});
+    let expiration = this._calculateExpirationTime();
+    this._write(data, expiration);
+    return RSVP.resolve();
   },
 
   /**
     Returns all data currently stored in the cookie as a plain object.
 
     @method restore
-    @return {Ember.RSVP.Promise} The promise object resolving the data currently persisted in the cookie.
+    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the cookie when the data has been restored and rejects otherwise.
     @public
   */
   restore() {
-    return new Ember.RSVP.Promise((resolve) => {
-      let data = this._read(this.cookieName);
-      if (Ember.isEmpty(data)) {
-        resolve({});
-      } else {
-        resolve(JSON.parse(data));
-      }
-    });
+    let data = this._read(this.cookieName);
+    if (Ember.isEmpty(data)) {
+      return RSVP.resolve({});
+    } else {
+      return RSVP.resolve(JSON.parse(data));
+    }
   },
 
   /**
     Clears the store by deleting the cookie.
 
     @method clear
-    @return {Ember.RSVP.Promise} The promise object clearing the store.
+    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared and rejects otherwise.
     @public
   */
   clear() {
-    return new Ember.RSVP.Promise((resolve) => {
-      this._write(null, 0);
-      this._lastData = {};
-      resolve();
-    });
+    this._write(null, 0);
+    this._lastData = {};
+    return RSVP.resolve();
   },
 
   _read(name) {
@@ -172,7 +162,7 @@ export default BaseStore.extend({
   },
 
   _syncData() {
-    return new Ember.RSVP.Promise((resolve) => {
+    return new RSVP.Promise((resolve, reject) => {
       this.restore().then((data) => {
         if (!objectsAreEqual(data, this._lastData)) {
           this._lastData = data;
@@ -183,12 +173,12 @@ export default BaseStore.extend({
           this._syncDataTimeout = Ember.run.later(this, this._syncData, 500);
         }
         resolve();
-      });
+      }, reject);
     });
   },
 
   _renew() {
-    return new Ember.RSVP.Promise((resolve) => {
+    return new RSVP.Promise((resolve, reject) => {
       this.restore().then((data) => {
         if (!Ember.isEmpty(data) && data !== {}) {
           data           = Ember.typeOf(data) === 'string' ? data : JSON.stringify(data || {});
@@ -196,14 +186,14 @@ export default BaseStore.extend({
           this._write(data, expiration);
         }
         resolve();
-      });
+      }, reject);
     });
   },
 
   _renewExpiration() {
-    return new Ember.RSVP.Promise((resolve) => {
+    return new RSVP.Promise((resolve, reject) => {
       if (this.get('_isPageVisible')) {
-        this._renew().then(resolve);
+        this._renew().then(resolve, reject);
       }
       if (!Ember.testing) {
         Ember.run.cancel(this._renewExpirationTimeout);

@@ -13,21 +13,19 @@ export default function(options) {
   });
 
   describe('#persist', () => {
-    it('persists an object', (done) => {
-      store.persist({ key: 'value' }).then(() => {
-        store.restore().then((restoredContent) => {
+    it('persists an object', () => {
+      return store.persist({ key: 'value' }).then(() => {
+        return store.restore().then((restoredContent) => {
           expect(restoredContent).to.eql({ key: 'value' });
-          done();
         });
       });
     });
 
-    it('overrides existing data', (done) => {
-      store.persist({ key1: 'value1' }).then(() => {
-        store.persist({ key2: 'value2' }).then(() => {
-          store.restore().then((restoredContent) => {
+    it('overrides existing data', () => {
+      return store.persist({ key1: 'value1' }).then(() => {
+        return store.persist({ key2: 'value2' }).then(() => {
+          return store.restore().then((restoredContent) => {
             expect(restoredContent).to.eql({ key2: 'value2' });
-            done();
           });
         });
       });
@@ -48,11 +46,10 @@ export default function(options) {
 
   describe('#restore', () => {
     describe('when the store is empty', () => {
-      it('returns an empty object', (done) => {
-        store.clear().then(() => {
-          store.restore().then((restoredContent) => {
+      it('returns an empty object', () => {
+        return store.clear().then(() => {
+          return store.restore().then((restoredContent) => {
             expect(restoredContent).to.eql({});
-            done();
           });
         });
       });
@@ -69,13 +66,12 @@ export default function(options) {
         });
       });
 
-      it('returns a copy of the stored data', (done) => {
-        store.restore().then((data) => {
+      it('returns a copy of the stored data', () => {
+        return store.restore().then((data) => {
           data.key1 = 'another value!';
 
-          store.restore().then((restoredContent) => {
+          return store.restore().then((restoredContent) => {
             expect(restoredContent).to.eql({ key1: 'value1', key2: 'value2' });
-            done();
           });
         });
       });
@@ -83,12 +79,11 @@ export default function(options) {
   });
 
   describe('#clear', () => {
-    it('empties the store', (done) => {
-      store.persist({ key1: 'value1', key2: 'value2' }).then(() => {
-        store.clear().then(() => {
-          store.restore().then((restoredContent) => {
+    it('empties the store', () => {
+      return store.persist({ key1: 'value1', key2: 'value2' }).then(() => {
+        return store.clear().then(() => {
+          return store.restore().then((restoredContent) => {
             expect(restoredContent).to.eql({});
-            done();
           });
         });
       });
