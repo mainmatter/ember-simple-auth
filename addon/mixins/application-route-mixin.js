@@ -16,15 +16,15 @@ const { inject, on } = Ember;
   ```js
   // app/instance-initializers/session-events.js
   export function initialize(instance) {
-    var applicationRoute = instance.container.lookup('route:application');
-    var session          = instance.container.lookup('service:session');
+    const applicationRoute = instance.container.lookup('route:application');
+    const session          = instance.container.lookup('service:session');
     session.on('authenticationSucceeded', function() {
       applicationRoute.transitionTo('index');
     });
     session.on('invalidationSucceeded', function() {
       window.location.reload();
     });
-  });
+  };
 
   export default {
     initialize,
