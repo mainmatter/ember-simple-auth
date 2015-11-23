@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 
 const { on } = Ember;
 
@@ -14,7 +15,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     let args          = Array.prototype.slice.call(arguments);
     let authenticator = args.shift();
     Ember.assert(`Session#authenticate requires the authenticator to be specified, was "${authenticator}"!`, !Ember.isEmpty(authenticator));
-    let theAuthenticator = this.container.lookup(authenticator);
+    let theAuthenticator = getOwner(this).lookup(authenticator);
     Ember.assert(`No authenticator for factory "${authenticator}" could be found!`, !Ember.isNone(theAuthenticator));
     return new Ember.RSVP.Promise((resolve, reject) => {
       theAuthenticator.authenticate.apply(theAuthenticator, args).then((content) => {
