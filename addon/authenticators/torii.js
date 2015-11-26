@@ -72,9 +72,11 @@ export default BaseAuthenticator.extend({
   },
 
   /**
-    Authenticates the session by opening the torii provider. For more
-    documentation on torii, see the
-    [project's README](https://github.com/Vestorly/torii#readme).
+    Authenticates the session by opening the specified torii provider. For more
+    documentation on torii and its providers abstraction, see the
+    [project's README](https://github.com/Vestorly/torii#readme), specifically
+    the
+    [section on providers](https://github.com/Vestorly/torii#configuring-a-torii-provider).
 
     @method authenticate
     @param {String} provider The torii provider to authenticate the session with
