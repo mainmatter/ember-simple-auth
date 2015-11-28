@@ -31,7 +31,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   invalidate() {
     Ember.assert('Session#invalidate requires the session to be authenticated!', this.get('isAuthenticated'));
     return new Ember.RSVP.Promise((resolve, reject) => {
-      let authenticator = this.container.lookup(this.authenticator);
+      let authenticator = getOwner(this).lookup(this.authenticator);
       authenticator.invalidate(this.content.authenticated).then(() => {
         authenticator.off('sessionDataUpdated');
         this._clear(true);
@@ -49,7 +49,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       let { authenticator } = (restoredContent.authenticated || {});
       if (!!authenticator) {
         delete restoredContent.authenticated.authenticator;
-        this.container.lookup(authenticator).restore(restoredContent.authenticated).then((content) => {
+        getOwner(this).lookup(authenticator).restore(restoredContent.authenticated).then((content) => {
           this.set('content', restoredContent);
           this._setup(authenticator, content);
           resolve();
@@ -115,7 +115,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   },
 
   _bindToAuthenticatorEvents() {
-    let authenticator = this.container.lookup(this.authenticator);
+    let authenticator = getOwner(this).lookup(this.authenticator);
     authenticator.off('sessionDataUpdated');
     authenticator.off('sessionDataInvalidated');
     authenticator.on('sessionDataUpdated', (content) => {
@@ -131,7 +131,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       let { authenticator } = (content.authenticated || {});
       if (!!authenticator) {
         delete content.authenticated.authenticator;
-        this.container.lookup(authenticator).restore(content.authenticated).then((authenticatedContent) => {
+        getOwner(this).lookup(authenticator).restore(content.authenticated).then((authenticatedContent) => {
           this.set('content', content);
           this._setup(authenticator, authenticatedContent, true);
         }, () => {
