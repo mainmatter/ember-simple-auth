@@ -103,12 +103,24 @@ export default BaseAuthenticator.extend({
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
     @public
   */
-  invalidate() {
+  invalidate(data) {
+    this._assertToriiIsPresent();
+
+    data = data || {};
     return new RSVP.Promise((resolve, reject) => {
-      this.get('torii').close(this._provider).then(() => {
+      if (!isEmpty(data.provider)) {
+        let { provider } = data;
+        this.get('torii').close(data.provider, data).then((data) => {
+          data = data || {};
+          this._resolveWith(provider, data, resolve);
+        }, () => {
+          delete this._provider;
+          reject();
+        });
+      } else {
         delete this._provider;
-        resolve();
-      }, reject);
+        reject();
+      }
     });
   },
 
