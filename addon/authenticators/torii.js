@@ -104,23 +104,11 @@ export default BaseAuthenticator.extend({
     @public
   */
   invalidate(data) {
-    this._assertToriiIsPresent();
-
-    data = data || {};
     return new RSVP.Promise((resolve, reject) => {
-      if (!isEmpty(data.provider)) {
-        let { provider } = data;
-        this.get('torii').close(data.provider, data).then((data) => {
-          data = data || {};
-          this._resolveWith(provider, data, resolve);
-        }, () => {
-          delete this._provider;
-          reject();
-        });
-      } else {
+      this.get('torii').close(this._provider, data).then(() => {
         delete this._provider;
-        reject();
-      }
+        resolve();
+      }, reject);
     });
   },
 
