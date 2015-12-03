@@ -15,7 +15,7 @@
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "Marco Otte-Witte",
+  "author": "simplabs GmbH",
   "license": "MIT",
   "devDependencies": {
     "body-parser": "^1.2.0",
