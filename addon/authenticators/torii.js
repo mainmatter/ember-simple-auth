@@ -36,7 +36,7 @@ export default BaseAuthenticator.extend({
     provider in use does not implement the method simply add it as follows:
 
     ```js
-    // app/providers/facebook.js
+    // app/torii-providers/facebook.js
     import FacebookOauth2Provider from 'torii/providers/facebook-oauth2';
 
     export default FacebookOauth2Provider.extend({
