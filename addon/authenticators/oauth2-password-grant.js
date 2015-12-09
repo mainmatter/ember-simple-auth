@@ -42,6 +42,19 @@ export default BaseAuthenticator.extend({
   clientId: null,
 
   /**
+   The client_secret to be sent to the authentication server (see
+   https://tools.ietf.org/html/rfc6749#appendix-A.1). __This should only be
+   used for statistics or logging etc. as it cannot actually be trusted since
+   it could have been manipulated on the client!__
+
+   @property clientSecret
+   @type String
+   @default null
+   @public
+   */
+  clientSecret: null,
+
+  /**
     The endpoint on the server that authentication and token refresh requests
     are sent to.
 
@@ -226,7 +239,10 @@ export default BaseAuthenticator.extend({
     const clientId = this.get('clientId');
 
     if (!isEmpty(clientId)) {
-      const base64ClientId = window.btoa(clientId.concat(':'));
+      let clientSecret = this.get('clientSecret');
+      clientSecret = (clientSecret !== 'undefined') ? clientSecret : '';
+      const clientIdSecret = clientId.concat(':'.concat(clientSecret));
+      const base64ClientId = window.btoa(clientIdSecret);
       Ember.merge(options, {
         headers: {
           Authorization: `Basic ${base64ClientId}`

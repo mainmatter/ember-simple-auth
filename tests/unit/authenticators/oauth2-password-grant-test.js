@@ -128,7 +128,25 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           data:        { 'grant_type': 'password', username: 'username', password: 'password' },
           dataType:    'json',
           contentType: 'application/x-www-form-urlencoded',
-          headers:     { Authorization: 'Basic dGVzdC1jbGllbnQ6' }
+          headers:     { Authorization: 'Basic dGVzdC1jbGllbnQ6bnVsbA==' }
+        });
+        done();
+      });
+    });
+
+    it('sends an AJAX request to the token endpoint with client_id and client_secret Basic Auth header', function(done) {
+      authenticator.set('clientId', 'test-client');
+      authenticator.set('clientSecret', 'test-client-secret');
+      authenticator.authenticate('username', 'password');
+
+      Ember.run.next(() => {
+        expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
+          url:         '/token',
+          type:        'POST',
+          data:        { 'grant_type': 'password', username: 'username', password: 'password' },
+          dataType:    'json',
+          contentType: 'application/x-www-form-urlencoded',
+          headers:     { Authorization: 'Basic dGVzdC1jbGllbnQ6dGVzdC1jbGllbnQtc2VjcmV0' }
         });
         done();
       });
