@@ -14,7 +14,11 @@ module.exports = function(app) {
           }
         }
       };
-      res.status(200).send(response);
+
+      // delay this a bit so we see the loading template
+      setTimeout(function() {
+        res.status(200).send(response);
+      }, 1000);
     } else {
       res.status(401).end();
     }
