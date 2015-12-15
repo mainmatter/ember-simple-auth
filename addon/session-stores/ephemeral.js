@@ -24,7 +24,7 @@ export default BaseStore.extend({
 
     @method persist
     @param {Object} data The data to persist
-    @return {Ember.RSVP.Promise} A promise that resolves when the data has been persisted and rejects otherwise.
+    @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
   persist(data) {
@@ -36,7 +36,7 @@ export default BaseStore.extend({
     Returns all data currently stored as a plain object.
 
     @method restore
-    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored and rejects otherwise.
+    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
   */
   restore() {
@@ -47,7 +47,7 @@ export default BaseStore.extend({
     Clears the store.
 
     @method clear
-    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared and rejects otherwise.
+    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public
   */
   clear() {
