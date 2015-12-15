@@ -6,7 +6,6 @@ const { RSVP, on } = Ember;
 export default Ember.ObjectProxy.extend(Ember.Evented, {
   authenticator:       null,
   store:               null,
-  container:           null,
   isAuthenticated:     false,
   attemptedTransition: null,
   content:             { authenticated: {} },

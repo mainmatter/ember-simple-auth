@@ -17,7 +17,7 @@ describe('InternalSession', () => {
     let container = { lookup() {} };
     store         = EphemeralStore.create();
     authenticator = Authenticator.create();
-    session       = InternalSession.create({ store, container });
+    session       = InternalSession.create({ store });
     sinon.stub(container, 'lookup').withArgs('authenticator').returns(authenticator);
   });
 
