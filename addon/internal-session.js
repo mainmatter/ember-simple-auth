@@ -70,7 +70,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   },
 
   _callStoreAsync(method, ...params) {
-    let result = this.store[method].apply(this.store, params);
+    let result = this.store[method](...params);
     if (typeof result === 'undefined' || typeof result.then === 'undefined') {
       Ember.deprecate(`Ember Simple Auth: Synchronous stores have been deprecated. Make sure your custom store's ${method} method returns a promise.`, false, {
         id: `ember-simple-auth.session-store.synchronous-${method}`,
