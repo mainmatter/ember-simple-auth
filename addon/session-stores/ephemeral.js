@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import BaseStore from './base';
 
-const { on } = Ember;
+const { RSVP, on } = Ember;
 
 /**
   Session store that __persists data in memory and thus is not actually
@@ -24,31 +24,35 @@ export default BaseStore.extend({
 
     @method persist
     @param {Object} data The data to persist
+    @return {Ember.RSVP.Promise} A promise that resolves when the data has been persisted and rejects otherwise.
     @public
   */
   persist(data) {
     this._data = JSON.stringify(data || {});
+    return RSVP.resolve();
   },
 
   /**
     Returns all data currently stored as a plain object.
 
     @method restore
-    @return {Object} The data currently persisted in the store.
+    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored and rejects otherwise.
     @public
   */
   restore() {
-    return JSON.parse(this._data) || {};
+    return RSVP.resolve(JSON.parse(this._data) || {});
   },
 
   /**
     Clears the store.
 
     @method clear
+    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared and rejects otherwise.
     @public
   */
   clear() {
     delete this._data;
     this._data = '{}';
+    return RSVP.resolve();
   }
 });

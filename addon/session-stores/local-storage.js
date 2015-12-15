@@ -3,7 +3,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { on } = Ember;
+const { RSVP, on } = Ember;
 
 /**
   Session store that persists data in the browser's `localStorage`.
@@ -39,24 +39,26 @@ export default BaseStore.extend({
 
     @method persist
     @param {Object} data The data to persist
+    @return {Ember.RSVP.Promise} A promise that resolves when the data has been persisted and rejects otherwise.
     @public
   */
   persist(data) {
+    this._lastData = data;
     data = JSON.stringify(data || {});
     localStorage.setItem(this.key, data);
-    this._lastData = this.restore();
+    return RSVP.resolve();
   },
 
   /**
     Returns all data currently stored in the `localStorage` as a plain object.
 
     @method restore
-    @return {Object} The data currently persisted in the `localStorage`.
+    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the `localStorage` when the data has been restored and rejects otherwise.
     @public
   */
   restore() {
     let data = localStorage.getItem(this.key);
-    return JSON.parse(data) || {};
+    return RSVP.resolve(JSON.parse(data) || {});
   },
 
   /**
@@ -65,20 +67,23 @@ export default BaseStore.extend({
     `localStorage`.
 
     @method clear
+    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared and rejects otherwise.
     @public
   */
   clear() {
     localStorage.removeItem(this.key);
     this._lastData = {};
+    return RSVP.resolve();
   },
 
   _bindToStorageEvents() {
     Ember.$(window).bind('storage', () => {
-      let data = this.restore();
-      if (!objectsAreEqual(data, this._lastData)) {
-        this._lastData = data;
-        this.trigger('sessionDataUpdated', data);
-      }
+      this.restore().then((data) => {
+        if (!objectsAreEqual(data, this._lastData)) {
+          this._lastData = data;
+          this.trigger('sessionDataUpdated', data);
+        }
+      });
     });
   }
 });

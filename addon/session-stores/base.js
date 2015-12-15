@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const { RSVP } = Ember;
+
 /**
   The base class for all session stores. __This serves as a starting point for
   implementing custom session stores and must not be used directly.__
@@ -34,9 +36,12 @@ export default Ember.Object.extend(Ember.Evented, {
 
     @method persist
     @param {Object} data The data to persist
+    @return {Ember.RSVP.Promise} A promise that always rejects.
     @public
   */
-  persist() {},
+  persist() {
+    return RSVP.reject();
+  },
 
   /**
     Returns all data currently stored as a plain object.
@@ -45,11 +50,11 @@ export default Ember.Object.extend(Ember.Evented, {
     be overridden in subclasses__.
 
     @method restore
-    @return {Object} The data currently persisted in the store.
+    @return {Ember.RSVP.Promise} A promise that always rejects.
     @public
   */
   restore() {
-    return {};
+    return RSVP.reject();
   },
 
   /**
@@ -59,7 +64,10 @@ export default Ember.Object.extend(Ember.Evented, {
     overridden in subclasses__.
 
     @method clear
+    @return {Ember.RSVP.Promise} A promise that always rejects.
     @public
   */
-  clear() {}
+  clear() {
+    return RSVP.reject();
+  }
 });
