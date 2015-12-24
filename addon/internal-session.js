@@ -53,8 +53,11 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
           getOwner(this).lookup(authenticator).restore(restoredContent.authenticated).then((content) => {
             this.set('content', restoredContent);
             this._setup(authenticator, content).then(resolve, reject);
-          }, () => {
+          }, (err) => {
             Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
+            if (err) {
+              Ember.Logger.debug(err);
+            }
             this.set('content', restoredContent);
             this._clear().then(reject, reject);
           });
@@ -167,8 +170,11 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         getOwner(this).lookup(authenticator).restore(content.authenticated).then((authenticatedContent) => {
           this.set('content', content);
           this._setup(authenticator, authenticatedContent, true);
-        }, () => {
+        }, (err) => {
           Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
+          if (err) {
+            Ember.Logger.debug(err);
+          }
           this.set('content', content);
           this._clear(true);
         });
