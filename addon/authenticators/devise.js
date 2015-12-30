@@ -140,7 +140,7 @@ export default BaseAuthenticator.extend({
   */
   makeRequest(data) {
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
-    return Ember.$.ajax({
+    return Ember.$.ajax(this.adjustAjaxConfig({
       url:      serverTokenEndpoint,
       type:     'POST',
       dataType: 'json',
@@ -148,6 +148,19 @@ export default BaseAuthenticator.extend({
       beforeSend(xhr, settings) {
         xhr.setRequestHeader('Accept', settings.accepts.json);
       }
-    });
+    }));
+  },
+
+  /**
+    Optional hook that can be over-ridden if the ajax request needs tweaking
+
+    @method adjustAjaxConfig
+    @param {Object} config The argument to be sent to `$.ajax`.
+    @return {Object} The adjusted version of the config.
+    @public
+  */
+  adjustAjaxConfig(config) {
+    /* Default implementation is to not make any adjustments. */
+    return config;
   }
 });
