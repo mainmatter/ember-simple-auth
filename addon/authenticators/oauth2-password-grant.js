@@ -245,6 +245,23 @@ export default BaseAuthenticator.extend({
     return Ember.$.ajax(options);
   },
 
+  /**
+    Specify the offset time in milliseconds to refresh the token.
+
+    By default, this returns a random number between 5 and 10. This randomization
+    is needed because in case of multiple tabs, we need to prevent the tabs from
+    sending refresh token request at the same exact moment.
+
+    @method tokenRefreshOffset
+    @return {Integer} The time in milliseonds to refresh the token.
+  */
+  tokenRefreshOffset: computed(function() {
+    const min = 5;
+    const max = 10;
+
+    return (Math.floor(Math.random() * min) + (max - min)) * 1000;
+  }).volatile(),
+
   _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
     const refreshAccessTokens = this.get('refreshAccessTokens');
     if (refreshAccessTokens) {
@@ -252,7 +269,7 @@ export default BaseAuthenticator.extend({
       if (isEmpty(expiresAt) && !isEmpty(expiresIn)) {
         expiresAt = new Date(now + expiresIn * 1000).getTime();
       }
-      const offset = (Math.floor(Math.random() * 5) + 5) * 1000;
+      const offset = this.get('tokenRefreshOffset');
       if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now - offset) {
         run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
