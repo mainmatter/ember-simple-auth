@@ -23,6 +23,10 @@ module.exports = function(environment) {
     }
   };
 
+  ENV.browserify = {
+    tests: true
+  };
+
   ENV.torii = {
     providers: {
       'facebook-oauth2': {
