@@ -12,11 +12,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
 
   init() {
     this._super(...arguments);
-<<<<<<< d70020c710e1f35560089ec482dba25f3027ffc9
-    this.set('content', { authenticated: {} });
-=======
     this._updateContent({ authenticated: {} });
->>>>>>> use an ember object for session data
   },
 
   authenticate() {
