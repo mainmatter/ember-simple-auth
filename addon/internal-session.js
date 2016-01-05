@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import SessionData from './session-data';
 import getOwner from 'ember-getowner-polyfill';
 
 const { RSVP, on } = Ember;
@@ -80,8 +81,8 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   },
 
   _updateContent(content) {
-    const contentObject = Ember.Object.create(content);
-    this.set('content', contentObject);
+    const sessionData = SessionData.create(content);
+    this.set('content', sessionData);
   },
 
   _callStoreAsync(method, ...params) {
@@ -147,15 +148,15 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     });
   },
 
-  setUnknownProperty(key, value) {
+  /*setUnknownProperty(key, value) {
     Ember.assert('"authenticated" is a reserved key used by Ember Simple Auth!', key !== 'authenticated');
     let result = this._super(key, value);
     this._updateStore();
     return result;
-  },
+  },*/
 
   _updateStore() {
-    let data = this.content;
+    let data = this.get('content');
     if (!Ember.isEmpty(this.authenticator)) {
       Ember.set(data, 'authenticated', Ember.merge({ authenticator: this.authenticator }, data.authenticated || {}));
     }

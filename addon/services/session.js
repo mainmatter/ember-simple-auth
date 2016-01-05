@@ -114,15 +114,15 @@ export default Ember.Service.extend(Ember.Evented, {
   */
   attemptedTransition: computed.alias('session.attemptedTransition'),
 
-  set(key, value) {
+  /*set(key, value) {
     const setsSessionData = SESSION_DATA_KEY_PREFIX.test(key);
     if (setsSessionData) {
-      const sessionDataKey = `session.${key.replace(SESSION_DATA_KEY_PREFIX, '')}`;
+      const sessionDataKey = `session.content.${key.replace(SESSION_DATA_KEY_PREFIX, '')}`;
       return this._super(sessionDataKey, value);
     } else {
       return this._super(...arguments);
     }
-  },
+  },*/
 
   _forwardSessionEvents: on('init', function() {
     Ember.A([
