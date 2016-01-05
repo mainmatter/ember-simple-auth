@@ -11,7 +11,11 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
 
   init() {
     this._super(...arguments);
+<<<<<<< d70020c710e1f35560089ec482dba25f3027ffc9
     this.set('content', { authenticated: {} });
+=======
+    this._updateContent({ authenticated: {} });
+>>>>>>> use an ember object for session data
   },
 
   authenticate() {
@@ -54,25 +58,30 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         if (!!authenticator) {
           delete restoredContent.authenticated.authenticator;
           getOwner(this).lookup(authenticator).restore(restoredContent.authenticated).then((content) => {
-            this.set('content', restoredContent);
+            this._updateContent(restoredContent);
             this._setup(authenticator, content).then(resolve, reject);
           }, (err) => {
             Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
             if (err) {
               Ember.Logger.debug(err);
             }
-            this.set('content', restoredContent);
+            this._updateContent(restoredContent);
             this._clear().then(reject, reject);
           });
         } else {
           delete (restoredContent || {}).authenticated;
-          this.set('content', restoredContent);
+          this._updateContent(restoredContent);
           this._clear().then(reject, reject);
         }
       }, () => {
         this._clear().then(reject, reject);
       });
     });
+  },
+
+  _updateContent(content) {
+    const contentObject = Ember.Object.create(content);
+    this.set('content', contentObject);
   },
 
   _callStoreAsync(method, ...params) {
@@ -171,18 +180,18 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       if (!!authenticator) {
         delete content.authenticated.authenticator;
         getOwner(this).lookup(authenticator).restore(content.authenticated).then((authenticatedContent) => {
-          this.set('content', content);
+          this._updateContent(content);
           this._setup(authenticator, authenticatedContent, true);
         }, (err) => {
           Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
           if (err) {
             Ember.Logger.debug(err);
           }
-          this.set('content', content);
+          this._updateContent(content);
           this._clear(true);
         });
       } else {
-        this.set('content', content);
+        this._updateContent(content);
         this._clear(true);
       }
     });
