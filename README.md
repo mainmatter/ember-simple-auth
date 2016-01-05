@@ -330,6 +330,20 @@ name, specifying more arguments as needed by the authenticator:
 this.get('session').authenticate('authenticator:some', data);
 ```
 
+### Customizing an Authenticator
+
+Authenticators are easily customized by setting the respective properties,
+e.g.:
+
+```js
+// app/authenticators/oauth2.js
+import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
+
+export default OAuth2PasswordGrant.extend({
+  serverTokenEndpoint: '/custom/endpoint'
+});
+```
+
 ### Implementing a custom Authenticator
 
 Besides extending one of the predefined authenticators, an application can also
@@ -406,6 +420,19 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 });
 ```
 
+### Customizing an Authorizer
+
+Authorizers are easily customized by setting the respective properties, e.g.:
+
+```js
+// app/authenticators/oauth2.js
+import DeviseAuthorizer from 'ember-simple-auth/authorizers/devise';
+
+export default DeviseAuthorizer.extend({
+  identificationAttributeName: 'login'
+});
+```
+
 ### Implementing a custom Authorizer
 
 Besides extending one of the predefined authorizers, an application can also
@@ -473,6 +500,20 @@ stores its data in a cookie. This is used by the adaptive store if
 stores its data in memory and thus __is not actually persistent. This store is
 mainly useful for testing.__ Also the ephemeral store cannot keep multiple tabs
 or windows in sync as tabs/windows cannot share memory.
+
+### Customizing the Store
+
+The session store is easily customized by setting the respective properties,
+e.g.:
+
+```js
+// app/session-stores/application.js
+import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
+
+export default AdaptiveStore.extend({
+  cookieName: 'my-apps-session-cookie'
+});
+```
 
 ### Implementing a custom Store
 
