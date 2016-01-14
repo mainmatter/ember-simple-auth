@@ -302,7 +302,7 @@ describe('InternalSession', () => {
         session.one('authenticationSucceeded', () => triggered = true);
 
         return session.authenticate('authenticator').then(() => {
-          expect(true).to.be.true;
+          expect(triggered).to.be.true;
         });
       });
 
