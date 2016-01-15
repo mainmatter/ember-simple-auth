@@ -302,7 +302,7 @@ describe('InternalSession', () => {
         session.one('authenticationSucceeded', () => triggered = true);
 
         return session.authenticate('authenticator').then(() => {
-          expect(true).to.be.true;
+          expect(triggered).to.be.true;
         });
       });
 
@@ -648,6 +648,7 @@ describe('InternalSession', () => {
           it('does not trigger the "invalidationSucceeded" event', (done) => {
             let triggered = false;
             session.one('invalidationSucceeded', () => triggered = true);
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
 
             Ember.run.next(() => {
               expect(triggered).to.be.false;
@@ -715,6 +716,7 @@ describe('InternalSession', () => {
         it('does not trigger the "invalidationSucceeded" event', (done) => {
           let triggered = false;
           session.one('invalidationSucceeded', () => triggered = true);
+          store.trigger('sessionDataUpdated', { some: 'other property' });
 
           Ember.run.next(() => {
             expect(triggered).to.be.false;
