@@ -35,6 +35,7 @@ export default Ember.Object.extend({
     @method authorize
     @param {Object} data The current authenticated session data
     @param {Function} block The callback to call with the authorization data
+    @param {Object} xhrSettings The settings for the xhr requesting the authorization
     @public
   */
   authorize() {}
