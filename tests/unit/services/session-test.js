@@ -20,7 +20,7 @@ describe('SessionService', () => {
     };
     let container = { lookup() {} };
     sinon.stub(container, 'lookup').withArgs('authorizer').returns(authorizer);
-    sessionService = Session.create({ session });
+    sessionService = Session.create({ container, session });
   });
 
   it('forwards the "authenticationSucceeded" event from the session', (done) => {
