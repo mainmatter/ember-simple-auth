@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 const DEFAULTS = {
+  baseURL:                     '',
   authenticationRoute:         'login',
   routeAfterAuthentication:    'index',
   routeIfAlreadyAuthenticated: 'index'
@@ -32,10 +33,10 @@ export default {
     @readOnly
     @static
     @type String
-    @default '/'
+    @default ''
     @public
   */
-  baseURL: null,
+  baseURL: DEFAULTS.baseURL,
 
   /**
     The route to transition to for authentication. The
