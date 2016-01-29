@@ -74,10 +74,10 @@ export default Ember.Mixin.create({
     let hash = this._super(...arguments);
     let { beforeSend } = hash;
 
-    hash.beforeSend = (xhr) => {
+    hash.beforeSend = (xhr, ajaxSetup) => {
       this.get('session').authorize(authorizer, (headerName, headerValue) => {
         xhr.setRequestHeader(headerName, headerValue);
-      });
+      }, ajaxSetup);
       if (beforeSend) {
         beforeSend(xhr);
       }
