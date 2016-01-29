@@ -1,6 +1,9 @@
 import Ember from 'ember';
 
+const { getWithDefault } = Ember;
+
 const DEFAULTS = {
+  baseURL:                     '',
   authenticationRoute:         'login',
   routeAfterAuthentication:    'index',
   routeIfAlreadyAuthenticated: 'index'
@@ -32,10 +35,10 @@ export default {
     @readOnly
     @static
     @type String
-    @default '/'
+    @default ''
     @public
   */
-  baseURL: null,
+  baseURL: DEFAULTS.baseURL,
 
   /**
     The route to transition to for authentication. The
@@ -79,10 +82,9 @@ export default {
   routeIfAlreadyAuthenticated: DEFAULTS.routeIfAlreadyAuthenticated,
 
   load(config) {
-    let wrappedConfig = Ember.Object.create(config);
     for (let property in this) {
       if (this.hasOwnProperty(property) && Ember.typeOf(this[property]) !== 'function') {
-        this[property] = wrappedConfig.getWithDefault(property, DEFAULTS[property]);
+        this[property] = getWithDefault(config, property, DEFAULTS[property]);
       }
     }
   }
