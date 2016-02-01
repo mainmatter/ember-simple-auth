@@ -553,7 +553,7 @@ acceptance tests__:
   response - e.g. a token.
 * `invalidateSession(app)`: invalidates the session.
 
-The test helpers can be imported from the the `helpers/ember-simple-auth`
+The test helpers can be imported from the `helpers/ember-simple-auth`
 module in the application's namespace:
 
 ```js
