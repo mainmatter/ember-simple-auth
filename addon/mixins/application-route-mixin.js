@@ -10,7 +10,7 @@ const { inject, on } = Ember;
   or invalidated__ (see
   {{#crossLink "SessionService/invalidationSucceeded:event"}}{{/crossLink}}).
 
-  Using this mixin is optional. The session events can also be handled
+  __Using this mixin is optional.__ The session events can also be handled
   manually, e.g. in an instance initializer:
 
   ```js
