@@ -63,6 +63,19 @@ describe('DeviseAuthenticator', () => {
       Ember.$.ajax.restore();
     });
 
+    it('can customize the ajax request', (done) => {
+      sinon.stub(authenticator, 'adjustAjaxConfig', function(config) {
+        config.contentType = 'application/json';
+        return config;
+      });
+      authenticator.authenticate('identification', 'password');
+      Ember.run.next(() => {
+        let [args] = Ember.$.ajax.getCall(0).args;
+        expect(args.contentType).to.eql('application/json');
+        done();
+      });
+    });
+
     it('sends an AJAX request to the sign in endpoint', (done) => {
       authenticator.authenticate('identification', 'password');
 
