@@ -395,11 +395,11 @@ import OAuth2Bearer from 'ember-simple-auth/authorizers/oauth2-bearer';
 export default OAuth2Bearer.extend();
 ```
 
-and invoke the session service's `authorize` method with the respective name:
+and invoke the session service's [`authorize`](http://ember-simple-auth.com/api/classes/SessionService.html#method_authorize) method with the respective name:
 
 ```js
-this.get('session').authorize('authorizer:some', () => {
-  …
+this.get('session').authorize('authorizer:some', (/*authorization data*/) => {
+  // Use authorization data
 });
 ```
 
