@@ -113,6 +113,20 @@ describe('DeviseAuthenticator', () => {
         });
       });
     });
+
+    it('can customize the ajax request', (done) => {
+      authenticator = Devise.extend({
+        makeRequest(config) {
+          return this._super(config, { contentType: 'application/json' });
+        }
+      }).create();
+      authenticator.authenticate('identification', 'password');
+      Ember.run.next(() => {
+        let [args] = Ember.$.ajax.getCall(0).args;
+        expect(args.contentType).to.eql('application/json');
+        done();
+      });
+    });
   });
 
   describe('#invalidate', () => {
