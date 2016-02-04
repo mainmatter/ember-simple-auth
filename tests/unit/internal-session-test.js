@@ -18,7 +18,8 @@ describe('InternalSession', () => {
     store         = EphemeralStore.create();
     authenticator = Authenticator.create();
     session       = InternalSession.create({ store, container });
-    sinon.stub(container, 'lookup').withArgs('authenticator').returns(authenticator);
+    sinon.stub(container, 'lookup').withArgs('authenticator').returns(authenticator)
+      .withArgs('authenticator:test').returns(authenticator);
   });
 
   it('does not allow data to be stored for the key "authenticated"', () => {
