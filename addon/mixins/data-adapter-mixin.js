@@ -56,6 +56,19 @@ export default Ember.Mixin.create({
   authorizer: null,
 
   /**
+    Return parameters for the
+    {{#crossLink "SessionService/authorize:method"}}{{/crossLink}} method.
+
+    This function should return an array or "extra" parameters for the
+    `authorize()` method. Be default an empty array is returned. If your
+    authorizer needs more information from the HTTP request, you should
+    override this method in your authorizer implementation.
+   */
+  getAuthorizerParams(/*xhr, ajaxSetup*/) {
+    return [];
+  },
+
+  /**
     Defines a `beforeSend` hook (see http://api.jquery.com/jQuery.ajax/) that
     injects a request header containing the authorization data as constructed
     by the {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}}
@@ -75,9 +88,11 @@ export default Ember.Mixin.create({
     let { beforeSend } = hash;
 
     hash.beforeSend = (xhr, ajaxSetup) => {
-      this.get('session').authorize(authorizer, (headerName, headerValue) => {
+      const authorizerParams = [authorizer].concat(this.getAuthorizerParams(xhr, ajaxSetup));
+      authorizerParams.push((headerName, headerValue) => {
         xhr.setRequestHeader(headerName, headerValue);
-      }, ajaxSetup);
+      });
+      this.get('session').authorize(...authorizerParams);
       if (beforeSend) {
         beforeSend(xhr);
       }
