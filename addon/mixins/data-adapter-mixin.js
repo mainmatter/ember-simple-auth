@@ -60,9 +60,13 @@ export default Ember.Mixin.create({
     {{#crossLink "SessionService/authorize:method"}}{{/crossLink}} method.
 
     This function should return an array or "extra" parameters for the
-    `authorize()` method. Be default an empty array is returned. If your
-    authorizer needs more information from the HTTP request, you should
-    override this method in your authorizer implementation.
+    `authorize()` method. By default an empty array is returned. If your
+    authorizer needs more information about the issued HTTP request, you should
+    override this method in your authorizer implementation and return any
+    data from the `xhr` and `ajaxSetup` objects.
+
+    @param {Object} xhr the jQuery xhr object.
+    @param {Object} ajaxSetup the jQuery ajaxSetup object.
    */
   getAuthorizerParams(/*xhr, ajaxSetup*/) {
     return [];

@@ -9,6 +9,7 @@ import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 describe('DataAdapterMixin', () => {
   let adapter;
   let sessionService;
+  let customAdapter;
   let hash;
 
   beforeEach(() => {
@@ -30,6 +31,12 @@ describe('DataAdapterMixin', () => {
       authorizer: 'authorizer:some'
     });
     adapter = Adapter.create({ session: sessionService });
+
+    const AdapterWithCustomAuth = BaseAdapter.extend(DataAdapterMixin, {
+      authorizer: 'authorizer:some',
+      getAuthorizerParams: (xhr, ajaxOptions) => [ajaxOptions.url, ajaxOptions.type]
+    });
+    customAdapter = AdapterWithCustomAuth.create({ session: sessionService });
   });
 
   describe('#ajaxOptions', () => {
@@ -61,6 +68,26 @@ describe('DataAdapterMixin', () => {
       hash.beforeSend();
 
       expect(sessionService.authorize).to.have.been.calledWith('authorizer:some');
+    });
+
+    it('calls getAuthorizerParams', () => {
+      sinon.spy(adapter, 'getAuthorizerParams');
+      adapter.ajaxOptions();
+      hash.beforeSend({ readyState: 1 }, { type: 'post' });
+
+      expect(adapter.getAuthorizerParams).to.have.been.calledOnce;
+      expect(adapter.getAuthorizerParams).to.have.been.calledWith(
+        sinon.match.has('readyState', 1), sinon.match.has('type', 'post'));
+    });
+
+    it('getAuthorizerParams returns extra parameters', () => {
+      sinon.spy(sessionService, 'authorize');
+      customAdapter.ajaxOptions();
+      hash.beforeSend({ readyState: 1 }, { type: 'post', url: '/comments/' });
+
+      expect(sessionService.authorize).to.have.been.calledOnce;
+      expect(sessionService.authorize).to.have.been.calledWith(
+        'authorizer:some', '/comments/', 'post', sinon.match.func);
     });
 
     describe('the beforeSend hook', () => {

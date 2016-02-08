@@ -150,6 +150,50 @@ describe('SessionService', () => {
   });
 
   describe('authorize', () => {
+    const block = () => {};
+
+    describe('when called with varying number of parameters', () => {
+      beforeEach(() => {
+        sessionService.set('isAuthenticated', true);
+        sessionService.set('data', { authenticated: { data: 'session data' } });
+      });
+
+      it('called with too few parameters', () => {
+        expect(() => {
+          sessionService.authorize();
+        }).to.throw(/at.least.two.parameters/);
+
+        expect(() => {
+          sessionService.authorize('oauth2');
+        }).to.throw(/at.least.two.parameters/);
+      });
+
+      it('called with wrong type of parameters', () => {
+        expect(() => {
+          sessionService.authorize(43, () => {});
+        }).to.throw(/must.be.string/);
+
+        expect(() => {
+          sessionService.authorize('oauth2', 'some data');
+        }).to.throw(/must.be.function/);
+      });
+
+      it('called with two parameters', () => {
+        sinon.spy(authorizer, 'authorize');
+        sessionService.authorize('authorizer', block);
+
+        expect(authorizer.authorize).to.have.been.calledWith({ data: 'session data' }, block);
+      });
+
+      it('called with four parameters', () => {
+        sinon.spy(authorizer, 'authorize');
+        sessionService.authorize('authorizer', '/comments/', 'post', block);
+
+        expect(authorizer.authorize).to.have.been.calledWith(
+          { data: 'session data' }, '/comments/', 'post', block);
+      });
+    });
+
     describe('when the session is authenticated', () => {
       beforeEach(() => {
         sessionService.set('isAuthenticated', true);
@@ -158,9 +202,9 @@ describe('SessionService', () => {
 
       it('authorizes with the authorizer', () => {
         sinon.spy(authorizer, 'authorize');
-        sessionService.authorize('authorizer', 'block');
+        sessionService.authorize('authorizer', block);
 
-        expect(authorizer.authorize).to.have.been.calledWith({ some: 'data' }, 'block');
+        expect(authorizer.authorize).to.have.been.calledWith({ some: 'data' }, block);
       });
     });
 
@@ -171,7 +215,7 @@ describe('SessionService', () => {
 
       it('does not authorize', () => {
         sinon.spy(authorizer, 'authorize');
-        sessionService.authorize('authorizer', 'block');
+        sessionService.authorize('authorizer', block);
 
         expect(authorizer.authorize).to.not.have.been.called;
       });
