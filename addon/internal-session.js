@@ -4,7 +4,7 @@ import getOwner from 'ember-getowner-polyfill';
 
 const { RSVP, on } = Ember;
 
-export default Ember.ObjectProxy.extend(Ember.Evented, {
+export default Ember.Object.extend(Ember.Evented, {
   authenticator:       null,
   store:               null,
   isAuthenticated:     false,
