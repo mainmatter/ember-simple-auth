@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -222,7 +223,7 @@ export default Ember.Service.extend(Ember.Evented, {
     const authorizerFactory = args.shift();
 
     if (this.get('isAuthenticated')) {
-      const authorizer = this.container.lookup(authorizerFactory);
+      const authorizer = getOwner(this).lookup(authorizerFactory);
       const sessionData = this.get('data.authenticated');
       args.unshift(sessionData);
 
