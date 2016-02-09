@@ -225,8 +225,8 @@ export default Ember.Service.extend(Ember.Evented, {
   */
   authorize(...args) {
     Ember.assert('session.authorize() must be called with at least two parameters', args.length >= 2);
-    Ember.assert('First parameter to session.authorize() must be string with the name of the used authorizer', typeof args[0] === 'string');
-    Ember.assert('Second parameter to session.authorize() must be function', typeof args[args.length - 1] === 'function');
+    Ember.assert('The first parameter to session.authorize() must be string with the name of the used authorizer', typeof args[0] === 'string');
+    Ember.assert('The last parameter to session.authorize() must be function', typeof args[args.length - 1] === 'function');
 
     // The first parameter is the name of the authorizer
     const authorizerFactory = args.shift();
