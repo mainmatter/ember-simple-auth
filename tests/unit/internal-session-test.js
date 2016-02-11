@@ -11,8 +11,10 @@ describeModule('internal-session:main', 'InternalSession', {}, () => {
   let session;
   let store;
   let authenticator;
+  let emberTestContext;
 
   beforeEach(function() {
+    emberTestContext = this;
     store         = EphemeralStore.create();
     session       = this.subject({ store });
     authenticator = Authenticator.create();
@@ -722,6 +724,23 @@ describeModule('internal-session:main', 'InternalSession', {}, () => {
           });
         });
       });
+    });
+  });
+
+  describe('multiple internal sessions', () => {
+    let session2;
+
+    beforeEach(() => {
+      let internalSessionFactory = emberTestContext.container.lookupFactory('internal-session:main');
+      session2 = internalSessionFactory.create({ store: EphemeralStore.create() });
+    });
+
+    it('uses separate content objects', (done) => {
+      Ember.run(function() {
+        session.set('content.secret', 'I see dead people.');
+      });
+      expect(session2.get('content.secret')).to.be.undefined;
+      done();
     });
   });
 });
