@@ -19,11 +19,13 @@ module.exports = {
       name: 'ember-earliest',
       dependencies: {
         'ember': 'components/ember#1.12',
-        'ember-data': 'components/ember-data#1.13'
+        'ember-data': 'components/ember-data#1.13',
+        'ember-cli-shims': '0.0.6'
       },
       resolutions: {
         'ember': '1.12',
-        'ember-data': '1.13'
+        'ember-data': '1.13',
+        'ember-cli-shims': '0.0.6'
       }
     },
     {
