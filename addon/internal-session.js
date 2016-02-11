@@ -6,10 +6,9 @@ const { RSVP, on } = Ember;
 export default Ember.ObjectProxy.extend(Ember.Evented, {
   authenticator:       null,
   store:               null,
-  container:           null,
   isAuthenticated:     false,
   attemptedTransition: null,
-  content:             { authenticated: {} },
+  content:             null,
 
   authenticate() {
     let args          = Array.prototype.slice.call(arguments);
@@ -183,5 +182,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         this._clear(true);
       }
     });
+  }),
+
+  _setupContent: on('init', function() {
+    this.set('content', { authenticated: {} });
   })
 });
