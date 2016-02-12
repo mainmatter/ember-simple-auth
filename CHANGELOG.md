@@ -1,3 +1,27 @@
+# 1.1.0-beta.1
+
+* Session Stores are now asynchronous. Synchronous session stores will still
+  work but are now deprecated and will be removed in Ember Simple Auth 2.0, see
+  #714, #717.
+* Ember Simple auth now comes with blueprints for creating authenticators and
+  authorizers, see #879.
+* The requests that the devise authenticator makes can now be customized with
+  additional options, see #886.
+* The default for (Ember Simple Auth's internal) `baseURL` property is now
+  `''`, see #881.
+* `browserify` is now only enabled for Ember Simple Auth's own tests, fixing
+  potential problems in apps, see #833.
+* When the authenticator fails to restore the session with an error, that error
+  will now be logged, see #829.
+* When invalidating a torii session, the session data will now be passed to the
+  torii provider, see #808.
+* ember-getowner-polyfill is now include in Ember Simple Auth's dependencies so
+  that applications don't have to install it explicitly, see #806.
+* Ember Simple Auth will no longer trigger a deprecation regarding use of the
+  `container` property, see #894, #804, #796.
+* The `DataAdapterMixin` will now only invalidate the session on 401 responses
+  when it is actually currently authenticated, see #722.
+
 # 1.0.1
 
 * A bug in the mechanism that forwards events from the internal session through
