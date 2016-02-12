@@ -116,10 +116,6 @@ describe('DataAdapterMixin', () => {
 
           expect(sessionService.invalidate).to.have.been.calledOnce;
         });
-
-        it('returns true', () => {
-          expect(adapter.handleResponse(401)).to.be.true;
-        });
       });
 
       describe('when the session is not authenticated', () => {
@@ -132,10 +128,6 @@ describe('DataAdapterMixin', () => {
 
           expect(sessionService.invalidate).to.not.have.been.called;
         });
-
-        it('returns true', () => {
-          expect(adapter.handleResponse(401)).to.be.true;
-        });
       });
     });
 
@@ -145,10 +137,10 @@ describe('DataAdapterMixin', () => {
 
         expect(sessionService.invalidate).to.not.have.been.called;
       });
+    });
 
-      it("returns _super's return value", () => {
-        expect(adapter.handleResponse(200)).to.eq('_super return value');
-      });
+    it("returns _super's return value", () => {
+      expect(adapter.handleResponse(401)).to.eq('_super return value');
     });
   });
 });
