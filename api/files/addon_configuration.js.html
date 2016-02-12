@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.0.1"><span class="label label-primary">1.0.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.1"><span class="label label-primary">1.1.0-beta.1</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -61,7 +61,10 @@
               <pre class="code prettyprint linenums">
           import Ember from &#x27;ember&#x27;;
           
+          const { getWithDefault } = Ember;
+          
           const DEFAULTS = {
+            baseURL:                     &#x27;&#x27;,
             authenticationRoute:         &#x27;login&#x27;,
             routeAfterAuthentication:    &#x27;index&#x27;,
             routeIfAlreadyAuthenticated: &#x27;index&#x27;
@@ -93,10 +96,10 @@
               @readOnly
               @static
               @type String
-              @default &#x27;/&#x27;
+              @default &#x27;&#x27;
               @public
             */
-            baseURL: null,
+            baseURL: DEFAULTS.baseURL,
           
             /**
               The route to transition to for authentication. The
@@ -140,10 +143,9 @@
             routeIfAlreadyAuthenticated: DEFAULTS.routeIfAlreadyAuthenticated,
           
             load(config) {
-              let wrappedConfig = Ember.Object.create(config);
               for (let property in this) {
                 if (this.hasOwnProperty(property) &amp;&amp; Ember.typeOf(this[property]) !== &#x27;function&#x27;) {
-                  this[property] = wrappedConfig.getWithDefault(property, DEFAULTS[property]);
+                  this[property] = getWithDefault(config, property, DEFAULTS[property]);
                 }
               }
             }

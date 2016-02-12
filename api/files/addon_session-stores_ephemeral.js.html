@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.0.1"><span class="label label-primary">1.0.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.1"><span class="label label-primary">1.1.0-beta.1</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -62,7 +62,7 @@
           import Ember from &#x27;ember&#x27;;
           import BaseStore from &#x27;./base&#x27;;
           
-          const { on } = Ember;
+          const { RSVP, on } = Ember;
           
           /**
             Session store that __persists data in memory and thus is not actually
@@ -85,32 +85,36 @@
           
               @method persist
               @param {Object} data The data to persist
+              @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
               @public
             */
             persist(data) {
               this._data = JSON.stringify(data || {});
+              return RSVP.resolve();
             },
           
             /**
               Returns all data currently stored as a plain object.
           
               @method restore
-              @return {Object} The data currently persisted in the store.
+              @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
               @public
             */
             restore() {
-              return JSON.parse(this._data) || {};
+              return RSVP.resolve(JSON.parse(this._data) || {});
             },
           
             /**
               Clears the store.
           
               @method clear
+              @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
               @public
             */
             clear() {
               delete this._data;
               this._data = &#x27;{}&#x27;;
+              return RSVP.resolve();
             }
           });
           

@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.0.1"><span class="label label-primary">1.0.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.1"><span class="label label-primary">1.1.0-beta.1</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -60,6 +60,7 @@
           <div class="file">
               <pre class="code prettyprint linenums">
           import Ember from &#x27;ember&#x27;;
+          import getOwner from &#x27;ember-getowner-polyfill&#x27;;
           
           const SESSION_DATA_KEY_PREFIX = /^data\./;
           
@@ -279,7 +280,7 @@
             */
             authorize(authorizerFactory, block) {
               if (this.get(&#x27;isAuthenticated&#x27;)) {
-                const authorizer = this.container.lookup(authorizerFactory);
+                const authorizer = getOwner(this).lookup(authorizerFactory);
                 const sessionData = this.get(&#x27;data.authenticated&#x27;);
                 authorizer.authorize(sessionData, block);
               }

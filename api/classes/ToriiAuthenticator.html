@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.0.1"><span class="label label-primary">1.0.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.1"><span class="label label-primary">1.1.0-beta.1</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -96,7 +96,7 @@
                           <a name="method_authenticate" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.1/addon/authenticators/torii.js#L74">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.1.0-beta.1/addon/authenticators/torii.js#L74">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -107,9 +107,11 @@
                             </div>
                             <div class="panel-body">
                                 <p><span class="label label-default">Overrides:</span> <a href="BaseAuthenticator.html#method_authenticate"><code>authenticate</code> of  <code>BaseAuthenticator</code></a>.</p>
-                              <p>Authenticates the session by opening the torii provider. For more
-                          documentation on torii, see the
-                          <a href="https://github.com/Vestorly/torii#readme">project's README</a>.</p>
+                              <p>Authenticates the session by opening the specified torii provider. For more
+                          documentation on torii and its providers abstraction, see the
+                          <a href="https://github.com/Vestorly/torii#readme">project's README</a>, specifically
+                          the
+                          <a href="https://github.com/Vestorly/torii#configuring-a-torii-provider">section on providers</a>.</p>
                           
                                 <h4 class="subsection">Arguments</h4>
                                 <dl class="params">
@@ -143,7 +145,7 @@
                           <a name="method_invalidate" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.1/addon/authenticators/torii.js#L95">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.1.0-beta.1/addon/authenticators/torii.js#L97">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -173,7 +175,7 @@
                           <a name="method_restore" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.1/addon/authenticators/torii.js#L32">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.1.0-beta.1/addon/authenticators/torii.js#L32">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -187,7 +189,7 @@
                               <p>Restores the session by calling the torii provider's <code>fetch</code> method.</p>
                           <p><strong>Many torii providers do not implement the <code>fetch</code> method</strong>. If the
                           provider in use does not implement the method simply add it as follows:</p>
-                          <pre class="code prettyprint"><code class="language-js">// app/providers/facebook.js
+                          <pre class="code prettyprint"><code class="language-js">// app/torii-providers/facebook.js
                           import FacebookOauth2Provider from 'torii/providers/facebook-oauth2';
                           
                           export default FacebookOauth2Provider.extend({
@@ -227,7 +229,7 @@
                           <a name="event_sessionDataInvalidated" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.1/addon/authenticators/base.js#L75">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.1.0-beta.1/addon/authenticators/base.js#L75">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                               <h3 class="panel-title signature">
@@ -250,7 +252,7 @@
                           <a name="event_sessionDataUpdated" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.0.1/addon/authenticators/base.js#L61">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.1.0-beta.1/addon/authenticators/base.js#L61">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                               <h3 class="panel-title signature">

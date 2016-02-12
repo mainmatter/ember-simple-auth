@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.0.1"><span class="label label-primary">1.0.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.1"><span class="label label-primary">1.1.0-beta.1</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -196,12 +196,14 @@
           
               @method makeRequest
               @param {Object} data The request data
+              @param {Object} options Ajax configuration object merged into argument of &#x60;$.ajax&#x60;
               @return {jQuery.Deferred} A promise like jQuery.Deferred as returned by &#x60;$.ajax&#x60;
               @protected
             */
-            makeRequest(data) {
+            makeRequest(data, options) {
               const serverTokenEndpoint = this.get(&#x27;serverTokenEndpoint&#x27;);
-              return Ember.$.ajax({
+              options = options || {};
+              return Ember.$.ajax(Ember.$.extend({}, {
                 url:      serverTokenEndpoint,
                 type:     &#x27;POST&#x27;,
                 dataType: &#x27;json&#x27;,
@@ -209,7 +211,7 @@
                 beforeSend(xhr, settings) {
                   xhr.setRequestHeader(&#x27;Accept&#x27;, settings.accepts.json);
                 }
-              });
+              }, options));
             }
           });
           

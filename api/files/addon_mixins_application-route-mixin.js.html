@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.0.1"><span class="label label-primary">1.0.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.1"><span class="label label-primary">1.1.0-beta.1</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -71,25 +71,27 @@
             or invalidated__ (see
             {{#crossLink &quot;SessionService/invalidationSucceeded:event&quot;}}{{/crossLink}}).
           
-            Using this mixin is optional. The session events can also be handled
+            __Using this mixin is optional.__ The session events can also be handled
             manually, e.g. in an instance initializer:
           
             &#x60;&#x60;&#x60;js
             // app/instance-initializers/session-events.js
-            Ember.Application.initializer({
-              name:       &#x27;session-events&#x27;,
-              after:      &#x27;ember-simple-auth&#x27;,
-              initialize: function(container, application) {
-                var applicationRoute = container.lookup(&#x27;route:application&#x27;);
-                var session          = container.lookup(&#x27;service:session&#x27;);
-                session.on(&#x27;authenticationSucceeded&#x27;, function() {
-                  applicationRoute.transitionTo(&#x27;index&#x27;);
-                });
-                session.on(&#x27;invalidationSucceeded&#x27;, function() {
-                  window.location.reload();
-                });
-              }
-            });
+            export function initialize(instance) {
+              const applicationRoute = instance.container.lookup(&#x27;route:application&#x27;);
+              const session          = instance.container.lookup(&#x27;service:session&#x27;);
+              session.on(&#x27;authenticationSucceeded&#x27;, function() {
+                applicationRoute.transitionTo(&#x27;index&#x27;);
+              });
+              session.on(&#x27;invalidationSucceeded&#x27;, function() {
+                window.location.reload();
+              });
+            };
+          
+            export default {
+              initialize,
+              name:  &#x27;session-events&#x27;,
+              after: &#x27;ember-simple-auth&#x27;
+            };
             &#x60;&#x60;&#x60;
           
             __When using the &#x60;ApplicationRouteMixin&#x60; you need to specify

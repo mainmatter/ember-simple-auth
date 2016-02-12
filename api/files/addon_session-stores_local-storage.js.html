@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.0.1"><span class="label label-primary">1.0.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.1"><span class="label label-primary">1.1.0-beta.1</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -64,7 +64,7 @@
           import BaseStore from &#x27;./base&#x27;;
           import objectsAreEqual from &#x27;../utils/objects-are-equal&#x27;;
           
-          const { on } = Ember;
+          const { RSVP, on } = Ember;
           
           /**
             Session store that persists data in the browser&#x27;s &#x60;localStorage&#x60;.
@@ -100,24 +100,26 @@
           
               @method persist
               @param {Object} data The data to persist
+              @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
               @public
             */
             persist(data) {
+              this._lastData = data;
               data = JSON.stringify(data || {});
               localStorage.setItem(this.key, data);
-              this._lastData = this.restore();
+              return RSVP.resolve();
             },
           
             /**
               Returns all data currently stored in the &#x60;localStorage&#x60; as a plain object.
           
               @method restore
-              @return {Object} The data currently persisted in the &#x60;localStorage&#x60;.
+              @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
               @public
             */
             restore() {
               let data = localStorage.getItem(this.key);
-              return JSON.parse(data) || {};
+              return RSVP.resolve(JSON.parse(data) || {});
             },
           
             /**
@@ -126,20 +128,23 @@
               &#x60;localStorage&#x60;.
           
               @method clear
+              @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
               @public
             */
             clear() {
               localStorage.removeItem(this.key);
               this._lastData = {};
+              return RSVP.resolve();
             },
           
             _bindToStorageEvents() {
               Ember.$(window).bind(&#x27;storage&#x27;, () =&gt; {
-                let data = this.restore();
-                if (!objectsAreEqual(data, this._lastData)) {
-                  this._lastData = data;
-                  this.trigger(&#x27;sessionDataUpdated&#x27;, data);
-                }
+                this.restore().then((data) =&gt; {
+                  if (!objectsAreEqual(data, this._lastData)) {
+                    this._lastData = data;
+                    this.trigger(&#x27;sessionDataUpdated&#x27;, data);
+                  }
+                });
               });
             }
           });
