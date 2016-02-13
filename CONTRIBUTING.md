@@ -18,8 +18,8 @@ when submitting issues:
 3. Update to the latest releases of Ember.js, jQuery, Ember Data if possible
 4. Include as much information as possible - this includes full stack traces
   etc.
-5. Set up a demo that demonstrates the issue on [JSFiddle](http://jsfiddle.net)
-  or [JSBin](http://jsfiddle.net). If your project is open source, provide a
+5. Set up a demo that demonstrates the issue on [JSFiddle](https://jsfiddle.net/)
+  or [JSBin](https://jsbin.com/). If your project is open source, provide a
   link to the online repo.
 
 ## Pull Requests
@@ -29,8 +29,7 @@ Here's a few steps to follow to make sure your pull request gets accepted:
 1. Fork the repository and implement your changes; also add tests for any added
   functionality - remember that untested code is broken code!
 2. Run the tests - pull requests with failing tests can't be accepted of
-  course - find instructions on how to run the tests in the
-  [README](https://github.com/simplabs/ember-simple-auth#building)
+  course - find instructions on how to run the tests below.
 3. Adhere to Ember Simple Auth's coding style; while there's no official style
   guide it should be clear by looking at the existing code what the agreed upon
   rules are.
@@ -38,3 +37,11 @@ Here's a few steps to follow to make sure your pull request gets accepted:
   easier to review them.
 5. Provide a good description for your pull request - what does it add, why is
   that needed etc.?
+
+## Run Tests
+
+After you forked the repository run `npm install` and `bower install`.
+Also install [PhantomJS](http://phantomjs.org/) to run the tests.
+
+Afterwards you can run all tests with `ember test`. If you want to test your
+change against multiple versions of Ember and Ember Data run `ember try:testall`.
