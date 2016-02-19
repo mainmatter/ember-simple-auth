@@ -29,6 +29,7 @@ export default BaseStore.extend({
   */
   persist(data) {
     this._data = JSON.stringify(data || {});
+
     return RSVP.resolve();
   },
 
@@ -40,7 +41,9 @@ export default BaseStore.extend({
     @public
   */
   restore() {
-    return RSVP.resolve(JSON.parse(this._data) || {});
+    const data = JSON.parse(this._data) || {};
+
+    return RSVP.resolve(data);
   },
 
   /**
@@ -53,6 +56,7 @@ export default BaseStore.extend({
   clear() {
     delete this._data;
     this._data = '{}';
+
     return RSVP.resolve();
   }
 });

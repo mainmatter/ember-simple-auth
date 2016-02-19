@@ -129,8 +129,8 @@ export default Ember.Service.extend(Ember.Evented, {
       'authenticationSucceeded',
       'invalidationSucceeded'
     ]).forEach((event) => {
-      // the internal session won't be available in route unit tests
       const session = this.get('session');
+      // the internal session won't be available in route unit tests
       if (session) {
         session.on(event, () => {
           this.trigger(event, ...arguments);
@@ -170,6 +170,7 @@ export default Ember.Service.extend(Ember.Evented, {
   */
   authenticate() {
     const session = this.get('session');
+
     return session.authenticate(...arguments);
   },
 
@@ -197,6 +198,7 @@ export default Ember.Service.extend(Ember.Evented, {
   */
   invalidate() {
     const session = this.get('session');
+
     return session.invalidate(...arguments);
   },
 

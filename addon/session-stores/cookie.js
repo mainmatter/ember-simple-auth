@@ -162,43 +162,37 @@ export default BaseStore.extend({
   },
 
   _syncData() {
-    return new RSVP.Promise((resolve, reject) => {
-      this.restore().then((data) => {
-        if (!objectsAreEqual(data, this._lastData)) {
-          this._lastData = data;
-          this.trigger('sessionDataUpdated', data);
-        }
-        if (!Ember.testing) {
-          Ember.run.cancel(this._syncDataTimeout);
-          this._syncDataTimeout = Ember.run.later(this, this._syncData, 500);
-        }
-        resolve();
-      }, reject);
+    return this.restore().then((data) => {
+      if (!objectsAreEqual(data, this._lastData)) {
+        this._lastData = data;
+        this.trigger('sessionDataUpdated', data);
+      }
+      if (!Ember.testing) {
+        Ember.run.cancel(this._syncDataTimeout);
+        this._syncDataTimeout = Ember.run.later(this, this._syncData, 500);
+      }
     });
   },
 
   _renew() {
-    return new RSVP.Promise((resolve, reject) => {
-      this.restore().then((data) => {
-        if (!Ember.isEmpty(data) && data !== {}) {
-          data           = Ember.typeOf(data) === 'string' ? data : JSON.stringify(data || {});
-          let expiration = this._calculateExpirationTime();
-          this._write(data, expiration);
-        }
-        resolve();
-      }, reject);
+    return this.restore().then((data) => {
+      if (!Ember.isEmpty(data) && data !== {}) {
+        data           = Ember.typeOf(data) === 'string' ? data : JSON.stringify(data || {});
+        let expiration = this._calculateExpirationTime();
+        this._write(data, expiration);
+      }
     });
   },
 
   _renewExpiration() {
-    return new RSVP.Promise((resolve, reject) => {
-      if (this.get('_isPageVisible')) {
-        this._renew().then(resolve, reject);
-      }
-      if (!Ember.testing) {
-        Ember.run.cancel(this._renewExpirationTimeout);
-        this._renewExpirationTimeout = Ember.run.later(this, this._renewExpiration, 60000);
-      }
-    });
+    if (!Ember.testing) {
+      Ember.run.cancel(this._renewExpirationTimeout);
+      this._renewExpirationTimeout = Ember.run.later(this, this._renewExpiration, 60000);
+    }
+    if (this.get('_isPageVisible')) {
+      return this._renew();
+    } else {
+      return RSVP.resolve();
+    }
   }
 });

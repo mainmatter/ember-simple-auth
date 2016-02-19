@@ -4,7 +4,7 @@ import Base from 'ember-simple-auth/session-stores/base';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
 
-const { computed, on } = Ember;
+const { computed } = Ember;
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 
@@ -78,15 +78,9 @@ export default Base.extend({
     }
   }),
 
-  _createStore(storeType, options) {
-    const store = storeType.create(options);
-    store.on('sessionDataUpdated', (data) => {
-      this.trigger('sessionDataUpdated', data);
-    });
-    return store;
-  },
+  init() {
+    this._super(...arguments);
 
-  _setupStore: on('init', function() {
     let store;
     if (this.get('_isLocalStorageAvailable')) {
       const options = { key: this.get('localStorageKey') };
@@ -96,7 +90,16 @@ export default Base.extend({
       store = this._createStore(Cookie, options);
     }
     this.set('_store', store);
-  }),
+  },
+
+  _createStore(storeType, options) {
+    const store = storeType.create(options);
+
+    store.on('sessionDataUpdated', (data) => {
+      this.trigger('sessionDataUpdated', data);
+    });
+    return store;
+  },
 
   /**
     Persists the `data` in the `localStorage` if it is available or in a cookie

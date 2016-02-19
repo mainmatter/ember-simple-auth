@@ -55,20 +55,17 @@ export default BaseAuthenticator.extend({
     this._assertToriiIsPresent();
 
     data = data || {};
-    return new RSVP.Promise((resolve, reject) => {
-      if (!isEmpty(data.provider)) {
-        let { provider } = data;
-        this.get('torii').fetch(data.provider, data).then((data) => {
-          this._resolveWith(provider, data, resolve);
-        }, () => {
-          delete this._provider;
-          reject();
-        });
-      } else {
-        delete this._provider;
-        reject();
-      }
-    });
+    if (!isEmpty(data.provider)) {
+      const { provider } = data;
+
+      return this.get('torii').fetch(data.provider, data).then((data) => {
+        this._authenticateWithProvider(provider, data);
+        return data;
+      }, () => delete this._provider);
+    } else {
+      delete this._provider;
+      return RSVP.reject();
+    }
   },
 
   /**
@@ -87,10 +84,9 @@ export default BaseAuthenticator.extend({
   authenticate(provider, options) {
     this._assertToriiIsPresent();
 
-    return new RSVP.Promise((resolve, reject) => {
-      this.get('torii').open(provider, options || {}).then((data) => {
-        this._resolveWith(provider, data, resolve);
-      }, reject);
+    return this.get('torii').open(provider, options || {}).then((data) => {
+      this._authenticateWithProvider(provider, data);
+      return data;
     });
   },
 
@@ -104,18 +100,14 @@ export default BaseAuthenticator.extend({
     @public
   */
   invalidate(data) {
-    return new RSVP.Promise((resolve, reject) => {
-      this.get('torii').close(this._provider, data).then(() => {
-        delete this._provider;
-        resolve();
-      }, reject);
+    return this.get('torii').close(this._provider, data).then(() => {
+      delete this._provider;
     });
   },
 
-  _resolveWith(provider, data, resolve) {
+  _authenticateWithProvider(provider, data) {
     data.provider = provider;
     this._provider = data.provider;
-    resolve(data);
   },
 
   _assertToriiIsPresent() {

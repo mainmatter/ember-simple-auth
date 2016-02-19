@@ -3,7 +3,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, on } = Ember;
+const { RSVP } = Ember;
 
 /**
   Session store that persists data in the browser's `localStorage`.
@@ -30,9 +30,11 @@ export default BaseStore.extend({
   */
   key: 'ember_simple_auth:session',
 
-  _setup: on('init', function() {
+  init() {
+    this._super(...arguments);
+
     this._bindToStorageEvents();
-  }),
+  },
 
   /**
     Persists the `data` in the `localStorage`.
@@ -46,6 +48,7 @@ export default BaseStore.extend({
     this._lastData = data;
     data = JSON.stringify(data || {});
     localStorage.setItem(this.key, data);
+
     return RSVP.resolve();
   },
 
@@ -58,6 +61,7 @@ export default BaseStore.extend({
   */
   restore() {
     let data = localStorage.getItem(this.key);
+
     return RSVP.resolve(JSON.parse(data) || {});
   },
 
@@ -73,6 +77,7 @@ export default BaseStore.extend({
   clear() {
     localStorage.removeItem(this.key);
     this._lastData = {};
+
     return RSVP.resolve();
   },
 
