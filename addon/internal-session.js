@@ -1,9 +1,10 @@
 import Ember from 'ember';
+import SessionData from './session-data';
 import getOwner from 'ember-getowner-polyfill';
 
 const { RSVP, on } = Ember;
 
-export default Ember.ObjectProxy.extend(Ember.Evented, {
+export default Ember.Object.extend(Ember.Evented, {
   authenticator:       null,
   store:               null,
   isAuthenticated:     false,
@@ -11,7 +12,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
 
   init() {
     this._super(...arguments);
-    this.set('content', { authenticated: {} });
+    this._updateContent({ authenticated: {} });
   },
 
   authenticate() {
@@ -54,25 +55,30 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         if (!!authenticator) {
           delete restoredContent.authenticated.authenticator;
           getOwner(this).lookup(authenticator).restore(restoredContent.authenticated).then((content) => {
-            this.set('content', restoredContent);
+            this._updateContent(restoredContent);
             this._setup(authenticator, content).then(resolve, reject);
           }, (err) => {
             Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
             if (err) {
               Ember.Logger.debug(err);
             }
-            this.set('content', restoredContent);
+            this._updateContent(restoredContent);
             this._clear().then(reject, reject);
           });
         } else {
           delete (restoredContent || {}).authenticated;
-          this.set('content', restoredContent);
+          this._updateContent(restoredContent);
           this._clear().then(reject, reject);
         }
       }, () => {
         this._clear().then(reject, reject);
       });
     });
+  },
+
+  _updateContent(content) {
+    const sessionData = SessionData.create(content);
+    this.set('content', sessionData);
   },
 
   _callStoreAsync(method, ...params) {
@@ -138,15 +144,15 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     });
   },
 
-  setUnknownProperty(key, value) {
+  /*setUnknownProperty(key, value) {
     Ember.assert('"authenticated" is a reserved key used by Ember Simple Auth!', key !== 'authenticated');
     let result = this._super(key, value);
     this._updateStore();
     return result;
-  },
+  },*/
 
   _updateStore() {
-    let data = this.content;
+    let data = this.get('content');
     if (!Ember.isEmpty(this.authenticator)) {
       Ember.set(data, 'authenticated', Ember.merge({ authenticator: this.authenticator }, data.authenticated || {}));
     }
@@ -171,18 +177,18 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       if (!!authenticator) {
         delete content.authenticated.authenticator;
         getOwner(this).lookup(authenticator).restore(content.authenticated).then((authenticatedContent) => {
-          this.set('content', content);
+          this._updateContent(content);
           this._setup(authenticator, authenticatedContent, true);
         }, (err) => {
           Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
           if (err) {
             Ember.Logger.debug(err);
           }
-          this.set('content', content);
+          this._updateContent(content);
           this._clear(true);
         });
       } else {
-        this.set('content', content);
+        this._updateContent(content);
         this._clear(true);
       }
     });
