@@ -30,20 +30,18 @@ describe('Acceptance: Authentication', function() {
       });
     });
 
-    it('can be visited when the session is authenticated', () => {
+    it('can be visited when the session is authenticated', (done) => {
       server = new Pretender(function() {
         this.get('/posts', () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
       authenticateSession(application, { userId: 1, otherData: 'some-data' });
 
-      visit('/protected');
-
-      return andThen(() => {
+      return visit('/protected').then(() => {
         expect(currentPath()).to.eq('protected');
         let session = currentSession(application);
         expect(session.get('data.authenticated.userId')).to.eql(1);
         expect(session.get('data.authenticated.otherData')).to.eql('some-data');
-      });
+      }).then(done, done);
     });
   });
 
