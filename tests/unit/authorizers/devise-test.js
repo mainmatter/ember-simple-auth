@@ -32,10 +32,20 @@ describe('DeviseAuthorizer', () => {
         };
       });
 
-      it('calls the block with a header containing "token" and "email"', () => {
+      it('synchronously calls the block with a header containing "token" and "email"', () => {
         authorizer.authorize(data, block);
 
         expect(block).to.have.been.calledWith('Authorization', 'Token token="secret token!", email="user@email.com"');
+      });
+
+      it('asynchronously calls the block with a header containing "token" and "email"', (done) => {
+        const result = authorizer.authorize(data);
+        expect(result.then).to.be.a('function');
+        result.then((auth) => {
+          const { headerName, headerValue } = auth;
+          expect(headerName).to.be.equal('Authorization');
+          expect(headerValue).to.be.equal('Token token="secret token!", email="user@email.com"');
+        }).then(done, done);
       });
     });
 
@@ -52,10 +62,20 @@ describe('DeviseAuthorizer', () => {
           };
         });
 
-        it('calls the block with a header containing "employee_token" and "employee_email"', () => {
+        it('synchronously calls the block with a header containing "employee_token" and "employee_email"', () => {
           authorizer.authorize(data, block);
 
           expect(block).to.have.been.calledWith('Authorization', 'Token employee_token="secret token!", employee_email="user@email.com"');
+        });
+
+        it('asynchronously calls the block with a header containing "employee_token" and "employee_email"', (done) => {
+          const result = authorizer.authorize(data);
+          expect(result.then).to.be.a('function');
+          result.then((auth) => {
+            const { headerName, headerValue } = auth;
+            expect(headerName).to.be.equal('Authorization');
+            expect(headerValue).to.be.equal('Token employee_token="secret token!", employee_email="user@email.com"');
+          }).then(done, done);
         });
       });
     });

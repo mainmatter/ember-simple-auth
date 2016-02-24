@@ -31,10 +31,20 @@ describe('OAuth2BearerAuthorizer', () => {
         };
       });
 
-      it('calls the block with a Bearer token header', () => {
+      it('synchronously calls the block with a Bearer token header', () => {
         authorizer.authorize(data, block);
 
         expect(block).to.have.been.calledWith('Authorization', 'Bearer secret token!');
+      });
+
+      it('asynchronously calls the block with a Bearer token header', (done) => {
+        const result = authorizer.authorize(data);
+        expect(result.then).to.be.a('function');
+        result.then((auth) => {
+          const { headerName, headerValue } = auth;
+          expect(headerName).to.be.equal('Authorization');
+          expect(headerValue).to.be.equal('Bearer secret token!');
+        }).then(done, done);
       });
     });
 

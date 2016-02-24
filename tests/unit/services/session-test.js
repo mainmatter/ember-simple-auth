@@ -152,72 +152,105 @@ describe('SessionService', () => {
   describe('authorize', () => {
     const block = () => {};
 
-    describe('when called with varying number of parameters', () => {
-      beforeEach(() => {
-        sessionService.set('isAuthenticated', true);
-        sessionService.set('data', { authenticated: { data: 'session data' } });
+    describe('promise based API (with synchronous authorizer)', () => {
+      describe('when the session is authenticated', () => {
+        beforeEach(() => {
+          sessionService.set('isAuthenticated', true);
+          sessionService.set('data', { authenticated: { some: 'data' } });
+        });
+
+        it('authorizes with the authorizer', (done) => {
+          sinon.spy(authorizer, 'authorize');
+          const result = sessionService.authorize('authorizer', { key: 'value' });
+          expect(result.then).to.be.a('function');
+          result.then(() => {
+            expect(authorizer.authorize).to.have.been.calledWith({ some: 'data' }, { key: 'value' });
+          }).then(done, done);
+        });
       });
 
-      it('called with too few parameters', () => {
-        expect(() => {
-          sessionService.authorize();
-        }).to.throw(/at.least.two.parameters/);
+      describe('when the session is not authenticated', () => {
+        beforeEach(() => {
+          sessionService.set('isAuthenticated', false);
+        });
 
-        expect(() => {
-          sessionService.authorize('oauth2');
-        }).to.throw(/at.least.two.parameters/);
-      });
-
-      it('called with wrong type of parameters', () => {
-        expect(() => {
-          sessionService.authorize(43, () => {});
-        }).to.throw(/must.be.string/);
-
-        expect(() => {
-          sessionService.authorize('oauth2', 'some data');
-        }).to.throw(/must.be.function/);
-      });
-
-      it('called with two parameters', () => {
-        sinon.spy(authorizer, 'authorize');
-        sessionService.authorize('authorizer', block);
-
-        expect(authorizer.authorize).to.have.been.calledWith({ data: 'session data' }, block);
-      });
-
-      it('called with four parameters', () => {
-        sinon.spy(authorizer, 'authorize');
-        sessionService.authorize('authorizer', '/comments/', 'post', block);
-
-        expect(authorizer.authorize).to.have.been.calledWith(
-          { data: 'session data' }, '/comments/', 'post', block);
+        it('does not authorize', (done) => {
+          sinon.spy(authorizer, 'authorize');
+          const result = sessionService.authorize('authorizer');
+          expect(result.then).to.be.a('function');
+          result.then(() => {
+            expect(authorizer.authorize).to.not.have.been.called;
+          }).then(done, done);
+        });
       });
     });
 
-    describe('when the session is authenticated', () => {
+    describe('promise based API (with asynchronous authorizer)', () => {
       beforeEach(() => {
-        sessionService.set('isAuthenticated', true);
-        sessionService.set('data', { authenticated: { some: 'data' } });
+        authorizer.authorize = () => {
+          return Ember.RSVP.resolve({ headerName: 'myname', headerValue: 'myvalue' });
+        };
       });
 
-      it('authorizes with the authorizer', () => {
-        sinon.spy(authorizer, 'authorize');
-        sessionService.authorize('authorizer', block);
+      describe('when the session is authenticated', () => {
+        beforeEach(() => {
+          sessionService.set('isAuthenticated', true);
+          sessionService.set('data', { authenticated: { some: 'data' } });
+        });
 
-        expect(authorizer.authorize).to.have.been.calledWith({ some: 'data' }, block);
+        it('authorizes with the authorizer', (done) => {
+          sinon.spy(authorizer, 'authorize');
+          const result = sessionService.authorize('authorizer', { key: 'value' });
+          expect(result.then).to.be.a('function');
+          result.then((auth) => {
+            expect(auth).to.deep.equal({ headerName: 'myname', 'headerValue': 'myvalue' });
+            expect(authorizer.authorize).to.have.been.calledWith({ some: 'data' }, { key: 'value' });
+          }).then(done, done);
+        });
+      });
+
+      describe('when the session is not authenticated', () => {
+        beforeEach(() => {
+          sessionService.set('isAuthenticated', false);
+        });
+
+        it('does not authorize', (done) => {
+          sinon.spy(authorizer, 'authorize');
+          const result = sessionService.authorize('authorizer');
+          expect(result.then).to.be.a('function');
+          result.then(() => {
+            expect(authorizer.authorize).to.not.have.been.called;
+          }).then(done, done);
+        });
       });
     });
 
-    describe('when the session is not authenticated', () => {
-      beforeEach(() => {
-        sessionService.set('isAuthenticated', false);
+    describe('deprecated synchronous API', () => {
+      describe('when the session is authenticated', () => {
+        beforeEach(() => {
+          sessionService.set('isAuthenticated', true);
+          sessionService.set('data', { authenticated: { some: 'data' } });
+        });
+
+        it('authorizes with the authorizer', () => {
+          sinon.spy(authorizer, 'authorize');
+          sessionService.authorize('authorizer', block);
+
+          expect(authorizer.authorize).to.have.been.calledWith({ some: 'data' }, block);
+        });
       });
 
-      it('does not authorize', () => {
-        sinon.spy(authorizer, 'authorize');
-        sessionService.authorize('authorizer', block);
+      describe('when the session is not authenticated', () => {
+        beforeEach(() => {
+          sessionService.set('isAuthenticated', false);
+        });
 
-        expect(authorizer.authorize).to.not.have.been.called;
+        it('does not authorize', () => {
+          sinon.spy(authorizer, 'authorize');
+          sessionService.authorize('authorizer', block);
+
+          expect(authorizer.authorize).to.not.have.been.called;
+        });
       });
     });
   });

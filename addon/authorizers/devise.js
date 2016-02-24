@@ -52,16 +52,28 @@ export default BaseAuthorizer.extend({
 
     @method authorize
     @param {Object} data The data that the session currently holds
-    @param {Function} block(headerName,headerContent) The callback to call with the authorization data; will receive the header name and header content as arguments
+    @return {Ember.RSVP.Promise} A promise that resolves after authrorization is complete with an object that has two keys: headerName and headerValue.
     @public
   */
-  authorize(data, block) {
+  authorize(data, ...args) {
     const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
     const userToken          = data[tokenAttributeName];
     const userIdentification = data[identificationAttributeName];
     if (!isEmpty(userToken) && !isEmpty(userIdentification)) {
       const authData = `${tokenAttributeName}="${userToken}", ${identificationAttributeName}="${userIdentification}"`;
-      block('Authorization', `Token ${authData}`);
+      const headerName = 'Authorization';
+      const headerValue = `Token ${authData}`;
+
+      if (typeof args[0] === 'function') {
+        Ember.deprecate(`Ember Simple Auth: Synchronous authorizers have been deprecated. You shouldn't pass callback function to authorizer.authorize anymore, it returns promise.`, false, {
+          id: 'ember-simple-auth.DeviseAuthorizer.authorize',
+          until: '2.0.0'
+        });
+
+        args[0](headerName, headerValue);
+      } else {
+        return Ember.RSVP.resolve({ headerName, headerValue });
+      }
     }
   }
 });

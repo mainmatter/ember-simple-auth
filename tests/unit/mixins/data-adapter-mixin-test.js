@@ -9,17 +9,21 @@ import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 describe('DataAdapterMixin', () => {
   let adapter;
   let sessionService;
-  let customAdapter;
   let hash;
 
   beforeEach(() => {
     hash = {};
     sessionService = Ember.Object.create({
-      authorize() {},
+      authorize() {
+        return Ember.RSVP.resolve();
+      },
       invalidate() {}
     });
 
     const BaseAdapter = Ember.Object.extend({
+      ajax() {
+        return Ember.RSVP.resolve();
+      },
       ajaxOptions() {
         return hash;
       },
@@ -31,12 +35,74 @@ describe('DataAdapterMixin', () => {
       authorizer: 'authorizer:some'
     });
     adapter = Adapter.create({ session: sessionService });
+  });
 
-    const AdapterWithCustomAuth = BaseAdapter.extend(DataAdapterMixin, {
-      authorizer: 'authorizer:some',
-      getAuthorizerParams: (xhr, ajaxOptions) => [ajaxOptions.url, ajaxOptions.type]
+  describe('#ajax', () => {
+    it('authorizes with the given authorizer', () => {
+      sinon.spy(sessionService, 'authorize');
+      adapter.ajax();
+
+      expect(sessionService.authorize).to.have.been.calledWith('authorizer:some');
     });
-    customAdapter = AdapterWithCustomAuth.create({ session: sessionService });
+
+    it('returns a promise', () => {
+      const result = adapter.ajax();
+      expect(result.then).to.be.a('function');
+    });
+
+    it('session.authorize receives ajaxOptions', () => {
+      sinon.spy(sessionService, 'authorize');
+      adapter.ajax('/', 'get', { mykey: 'myval' });
+      expect(sessionService.authorize).to.have.been.calledWith('authorizer:some', { type: 'get', url: '/', mykey: 'myval' });
+    });
+
+    it('adds beforeSend hook when session returns headers', (done) => {
+      sinon.stub(sessionService, 'authorize').returns(Ember.RSVP.resolve({ headerName: 'myname', headerValue: 'myvalue' }));
+      sinon.spy(adapter, 'ajax');
+
+      const options = {};
+      adapter.ajax('/', 'get', options).then(() => {
+        expect(options).to.have.property('beforeSend');
+        expect(adapter.ajax).to.have.been.calledWith('/', 'get', {
+          beforeSend: sinon.match.func
+        });
+        done();
+      });
+    });
+
+    it("doesn't add beforeSend hook when session doesn't return headers", (done) => {
+      // sinon.stub(sessionService, 'authorize').returns(Ember.RSVP.resolve({ headerName: 'myname', headerValue: 'myvalue' }));
+      sinon.spy(adapter, 'ajax');
+
+      const options = {};
+      adapter.ajax('/', 'get', options).then(() => {
+        expect(adapter.ajax).to.have.been.calledWith('/', 'get', {});
+        done();
+      });
+    });
+
+    describe('the beforeSend hook', () => {
+      let xhr;
+
+      beforeEach((done) => {
+        xhr = {
+          setRequestHeader() {}
+        };
+        sinon.stub(sessionService, 'authorize').returns(Ember.RSVP.resolve({ headerName: 'header', headerValue: 'value' }));
+        sinon.spy(xhr, 'setRequestHeader');
+        return adapter.ajax('/', 'get', hash).then(done, done);
+      });
+
+      describe('when the authorizer calls the block', () => {
+        beforeEach(() => {
+          hash.beforeSend(xhr);
+        });
+
+        it('adds a request header as given by the authorizer', () => {
+          expect(xhr.setRequestHeader).to.have.been.calledWith('header', 'value');
+        });
+      });
+    });
   });
 
   describe('#ajaxOptions', () => {
@@ -60,70 +126,6 @@ describe('DataAdapterMixin', () => {
       hash.beforeSend();
 
       expect(existingBeforeSend).to.have.been.called;
-    });
-
-    it('authorizes with the given authorizer', () => {
-      sinon.spy(sessionService, 'authorize');
-      adapter.ajaxOptions();
-      hash.beforeSend();
-
-      expect(sessionService.authorize).to.have.been.calledWith('authorizer:some');
-    });
-
-    it('calls getAuthorizerParams', () => {
-      sinon.spy(adapter, 'getAuthorizerParams');
-      adapter.ajaxOptions();
-      hash.beforeSend({ readyState: 1 }, { type: 'post' });
-
-      expect(adapter.getAuthorizerParams).to.have.been.calledOnce;
-      expect(adapter.getAuthorizerParams).to.have.been.calledWith(
-        sinon.match.has('readyState', 1), sinon.match.has('type', 'post'));
-    });
-
-    it('getAuthorizerParams returns extra parameters', () => {
-      sinon.spy(sessionService, 'authorize');
-      customAdapter.ajaxOptions();
-      hash.beforeSend({ readyState: 1 }, { type: 'post', url: '/comments/' });
-
-      expect(sessionService.authorize).to.have.been.calledOnce;
-      expect(sessionService.authorize).to.have.been.calledWith(
-        'authorizer:some', '/comments/', 'post', sinon.match.func);
-    });
-
-    describe('the beforeSend hook', () => {
-      let xhr;
-
-      beforeEach(() => {
-        adapter.ajaxOptions();
-        xhr = {
-          setRequestHeader() {}
-        };
-        sinon.spy(xhr, 'setRequestHeader');
-      });
-
-      describe('when the authorizer calls the block', () => {
-        beforeEach(() => {
-          sinon.stub(sessionService, 'authorize', (authorizer, block) => {
-            block('header', 'value');
-          });
-          hash.beforeSend(xhr);
-        });
-
-        it('adds a request header as given by the authorizer', () => {
-          expect(xhr.setRequestHeader).to.have.been.calledWith('header', 'value');
-        });
-      });
-
-      describe('when the authorizer does not call the block', () => {
-        beforeEach(() => {
-          sinon.stub(sessionService, 'authorize');
-          hash.beforeSend(xhr);
-        });
-
-        it('does not add a request header', () => {
-          expect(xhr.setRequestHeader).to.not.have.been.called;
-        });
-      });
     });
   });
 

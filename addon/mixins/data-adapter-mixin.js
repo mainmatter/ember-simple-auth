@@ -1,5 +1,6 @@
 import Ember from 'ember';
 
+const { isEmpty } = Ember;
 const { service } = Ember.inject;
 
 /**
@@ -56,20 +57,36 @@ export default Ember.Mixin.create({
   authorizer: null,
 
   /**
-    Return parameters for the
-    {{#crossLink "SessionService/authorize:method"}}{{/crossLink}} method.
+    First authorizes the request and then calls base class' `ajax()`.
 
-    This function should return an array or "extra" parameters for the
-    `authorize()` method. By default an empty array is returned. If your
-    authorizer needs more information about the issued HTTP request, you should
-    override this method in your authorizer implementation and return any
-    data from the `xhr` and `ajaxSetup` objects.
+    @param {String} url The requested URL.
+    @param {String} type The method of the HTTP request.
+    @param {Object} options Additional XHR options.
+  */
+  ajax(url, type, options) {
+    // tests benefit from doing it like this (instead of just `options = options || {}`).
+    if (!options) {
+      options = {};
+    }
+    const authorizer = this.get('authorizer');
+    Ember.assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", Ember.isPresent(authorizer));
 
-    @param {Object} xhr the jQuery xhr object.
-    @param {Object} ajaxSetup the jQuery ajaxSetup object.
-   */
-  getAuthorizerParams(/*xhr, ajaxSetup*/) {
-    return [];
+    // Because of the way _super() works, we need to store references to base
+    // class implementation here in order to be able to use it in the callback below.
+    const me = this;
+    const supr = this._super;
+
+    return this.get('session').authorize(authorizer, Ember.merge({ url, type }, options))
+      .then((result) => {
+        let { headerName, headerValue } = result || {};
+        if (!isEmpty(headerName) && !isEmpty(headerValue)) {
+          options.beforeSend = (xhr) => {
+            xhr.setRequestHeader(headerName, headerValue);
+          };
+        }
+        // call base class ajax()
+        return supr.call(me, url, type, options);
+      });
   },
 
   /**
@@ -84,23 +101,24 @@ export default Ember.Mixin.create({
     @method ajaxOptions
     @protected
   */
-  ajaxOptions() {
+  ajaxOptions(url, type, options) {
     const authorizer = this.get('authorizer');
     Ember.assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", Ember.isPresent(authorizer));
 
-    let hash = this._super(...arguments);
+    options = options || {};
+    const mixinBeforeSend = options.beforeSend;
+    let hash = this._super(url, type, options);
     let { beforeSend } = hash;
 
-    hash.beforeSend = (xhr, ajaxSetup) => {
-      const authorizerParams = [authorizer].concat(this.getAuthorizerParams(xhr, ajaxSetup));
-      authorizerParams.push((headerName, headerValue) => {
-        xhr.setRequestHeader(headerName, headerValue);
-      });
-      this.get('session').authorize(...authorizerParams);
+    hash.beforeSend = (xhr) => {
+      if (mixinBeforeSend) {
+        mixinBeforeSend(xhr);
+      }
       if (beforeSend) {
         beforeSend(xhr);
       }
     };
+
     return hash;
   },
 
