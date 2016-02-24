@@ -12,9 +12,10 @@ describe('InternalSession', () => {
   let session;
   let store;
   let authenticator;
+  let container;
 
   beforeEach(() => {
-    let container = { lookup() {} };
+    container     = { lookup() {} };
     store         = EphemeralStore.create();
     authenticator = Authenticator.create();
     session       = InternalSession.create({ store, container });
@@ -725,5 +726,11 @@ describe('InternalSession', () => {
         });
       });
     });
+  });
+
+  it('does not share the content object between multiple instances', () => {
+    let session2 = InternalSession.create({ store, container });
+
+    expect(session2.get('content')).to.not.equal(session.get('content'));
   });
 });

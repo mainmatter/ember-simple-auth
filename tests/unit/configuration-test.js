@@ -9,6 +9,14 @@ describe('Configuration', () => {
     Configuration.load({});
   });
 
+  describe('baseURL', () => {
+    it('defaults to ""', () => {
+      Configuration.load({});
+
+      expect(Configuration.baseURL).to.eql('');
+    });
+  });
+
   describe('authenticationRoute', () => {
     it('defaults to "login"', () => {
       expect(Configuration.authenticationRoute).to.eql('login');
@@ -28,6 +36,12 @@ describe('Configuration', () => {
   });
 
   describe('.load', () => {
+    it('sets baseURL correctly', () => {
+      Configuration.load({ baseURL: '/baseURL' });
+
+      expect(Configuration.baseURL).to.eql('/baseURL');
+    });
+
     it('sets authenticationRoute correctly', () => {
       Configuration.load({ authenticationRoute: 'authenticationRoute' });
 

@@ -135,12 +135,14 @@ export default BaseAuthenticator.extend({
 
     @method makeRequest
     @param {Object} data The request data
+    @param {Object} options Ajax configuration object merged into argument of `$.ajax`
     @return {jQuery.Deferred} A promise like jQuery.Deferred as returned by `$.ajax`
     @protected
   */
-  makeRequest(data) {
+  makeRequest(data, options) {
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
-    return Ember.$.ajax({
+    options = options || {};
+    return Ember.$.ajax(Ember.$.extend({}, {
       url:      serverTokenEndpoint,
       type:     'POST',
       dataType: 'json',
@@ -148,6 +150,6 @@ export default BaseAuthenticator.extend({
       beforeSend(xhr, settings) {
         xhr.setRequestHeader('Accept', settings.accepts.json);
       }
-    });
+    }, options));
   }
 });
