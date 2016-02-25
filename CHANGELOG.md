@@ -1,3 +1,13 @@
+# 1.1.0-beta.2
+
+* The `silent-error` package was added as a dependency (previously it was only
+  a dev dependency), fixing a bug that occurred when running the new
+  generators, see #911.
+* The API docs for token expiration and refresh were improved, see #921.
+* Lots of Ember Simple Auth's internal where cleaned up to take more advantage
+  of Babel in order to make the code more concise and easier to maintain, see
+  #905.
+
 # 1.1.0-beta.1
 
 * Session Stores are now asynchronous. Synchronous session stores will still
