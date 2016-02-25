@@ -86,12 +86,13 @@ export default BaseAuthenticator.extend({
     promise when there is a non-empty `access_token` in the session data__ and
     a rejecting promise otherwise.
 
-    If the server issues expiring access tokens and there is an expired access
-    token in the session data along with a refresh token, the authenticator
-    will try to refresh the access token and return a promise that resolves
-    with the new access token if the refresh was successful. If there is no
-    refresh token or the token refresh is not successful, a rejecting promise
-    will be returned.
+    If the server issues
+    [expiring access tokens](https://tools.ietf.org/html/rfc6749#section-5.1)
+    and there is an expired access token in the session data along with a
+    refresh token, the authenticator will try to refresh the access token and
+    return a promise that resolves with the new access token if the refresh was
+    successful. If there is no refresh token or the token refresh is not
+    successful, a rejecting promise will be returned.
 
     @method restore
     @param {Object} data The data to restore the session from
@@ -131,8 +132,10 @@ export default BaseAuthenticator.extend({
     server's response is returned__, otherwise a promise that rejects with the
     error as returned by the server is returned.
 
-    __If the server supports it, this method also schedules refresh requests
-    for the access token before it expires.__
+    __If the
+    [server supports it](https://tools.ietf.org/html/rfc6749#section-5.1), this
+    method also schedules refresh requests for the access token before it
+    expires.__
 
     @method authenticate
     @param {String} identification The resource owner username
