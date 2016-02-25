@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import getOwner from 'ember-getowner-polyfill';
 
-const { RSVP, on } = Ember;
+const { RSVP, on, isNone, isEmpty } = Ember;
 
 export default Ember.ObjectProxy.extend(Ember.Evented, {
   authenticator:       null,
@@ -14,69 +14,63 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     this.set('content', { authenticated: {} });
   },
 
-  authenticate() {
-    let args          = Array.prototype.slice.call(arguments);
-    let authenticator = args.shift();
-    Ember.assert(`Session#authenticate requires the authenticator to be specified, was "${authenticator}"!`, !Ember.isEmpty(authenticator));
-    let theAuthenticator = getOwner(this).lookup(authenticator);
-    Ember.assert(`No authenticator for factory "${authenticator}" could be found!`, !Ember.isNone(theAuthenticator));
-    return new RSVP.Promise((resolve, reject) => {
-      theAuthenticator.authenticate.apply(theAuthenticator, args).then((content) => {
-        this._setup(authenticator, content, true).then(resolve, reject);
-      }, (error) => {
-        this._clear().then(() => {
-          reject(error);
-        }, () => {
-          reject(error);
-        });
-      });
+  authenticate(authenticatorFactory, ...args) {
+    Ember.assert(`Session#authenticate requires the authenticator to be specified, was "${authenticatorFactory}"!`, !isEmpty(authenticatorFactory));
+    const authenticator = this._lookupAuthenticator(authenticatorFactory);
+    Ember.assert(`No authenticator for factory "${authenticatorFactory}" could be found!`, !isNone(authenticator));
+
+    return authenticator.authenticate(...args).then((content) => {
+      return this._setup(authenticatorFactory, content, true);
+    }, (error) => {
+      const rejectWithError = () => RSVP.Promise.reject(error);
+
+      return this._clear().then(rejectWithError, rejectWithError);
     });
   },
 
   invalidate() {
     Ember.assert('Session#invalidate requires the session to be authenticated!', this.get('isAuthenticated'));
-    return new RSVP.Promise((resolve, reject) => {
-      let authenticator = getOwner(this).lookup(this.authenticator);
-      authenticator.invalidate(this.content.authenticated).then(() => {
-        authenticator.off('sessionDataUpdated');
-        this._clear(true).then(resolve, reject);
-      }, (error) => {
-        this.trigger('sessionInvalidationFailed', error);
-        reject(error);
-      });
+
+    let authenticator = this._lookupAuthenticator(this.authenticator);
+    return authenticator.invalidate(this.content.authenticated).then(() => {
+      authenticator.off('sessionDataUpdated');
+      return this._clear(true);
+    }, (error) => {
+      this.trigger('sessionInvalidationFailed', error);
+      return RSVP.Promise.reject(error);
     });
   },
 
   restore() {
-    return new RSVP.Promise((resolve, reject) => {
-      this._callStoreAsync('restore').then((restoredContent) => {
-        let { authenticator } = (restoredContent.authenticated || {});
-        if (!!authenticator) {
-          delete restoredContent.authenticated.authenticator;
-          getOwner(this).lookup(authenticator).restore(restoredContent.authenticated).then((content) => {
-            this.set('content', restoredContent);
-            this._setup(authenticator, content).then(resolve, reject);
-          }, (err) => {
-            Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
-            if (err) {
-              Ember.Logger.debug(err);
-            }
-            this.set('content', restoredContent);
-            this._clear().then(reject, reject);
-          });
-        } else {
-          delete (restoredContent || {}).authenticated;
+    const reject = () => RSVP.Promise.reject();
+
+    return this._callStoreAsync('restore').then((restoredContent) => {
+      let { authenticator: authenticatorFactory } = restoredContent.authenticated || {};
+      if (!!authenticatorFactory) {
+        delete restoredContent.authenticated.authenticator;
+        const authenticator = this._lookupAuthenticator(authenticatorFactory);
+        return authenticator.restore(restoredContent.authenticated).then((content) => {
           this.set('content', restoredContent);
-          this._clear().then(reject, reject);
-        }
-      }, () => {
-        this._clear().then(reject, reject);
-      });
+          return this._setup(authenticatorFactory, content);
+        }, (err) => {
+          Ember.Logger.debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
+          if (err) {
+            Ember.Logger.debug(err);
+          }
+          return this._clearWithContent(restoredContent).then(reject, reject);
+        });
+      } else {
+        delete (restoredContent || {}).authenticated;
+        return this._clearWithContent(restoredContent).then(reject, reject);
+      }
+    }, () => {
+      return this._clear().then(reject, reject);
     });
   },
 
   _callStoreAsync(method, ...params) {
-    let result = this.store[method](...params);
+    const result = this.store[method](...params);
+
     if (typeof result === 'undefined' || typeof result.then === 'undefined') {
       Ember.deprecate(`Ember Simple Auth: Synchronous stores have been deprecated. Make sure your custom store's ${method} method returns a promise.`, false, {
         id: `ember-simple-auth.session-store.synchronous-${method}`,
@@ -89,53 +83,50 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   },
 
   _setup(authenticator, authenticatedContent, trigger) {
-    return new RSVP.Promise((resolve, reject) => {
-      trigger = !!trigger && !this.get('isAuthenticated');
-      this.beginPropertyChanges();
+    trigger = !!trigger && !this.get('isAuthenticated');
+    this.beginPropertyChanges();
+    this.setProperties({
+      isAuthenticated: true,
+      authenticator
+    });
+    Ember.set(this.content, 'authenticated', authenticatedContent);
+    this._bindToAuthenticatorEvents();
+
+    return this._updateStore().then(() => {
+      this.endPropertyChanges();
+      if (trigger) {
+        this.trigger('authenticationSucceeded');
+      }
+    }, () => {
       this.setProperties({
-        isAuthenticated: true,
-        authenticator
+        isAuthenticated: false,
+        authenticator: null
       });
-      Ember.set(this.content, 'authenticated', authenticatedContent);
-      this._bindToAuthenticatorEvents();
-      this._updateStore().then(() => {
-        this.endPropertyChanges();
-        if (trigger) {
-          this.trigger('authenticationSucceeded');
-        }
-        resolve();
-      }, () => {
-        this.setProperties({
-          isAuthenticated: false,
-          authenticator: null
-        });
-        Ember.set(this.content, 'authenticated', {});
-        this.endPropertyChanges();
-        reject();
-      });
+      Ember.set(this.content, 'authenticated', {});
+      this.endPropertyChanges();
     });
   },
 
   _clear(trigger) {
-    return new RSVP.Promise((resolve, reject) => {
-      trigger = !!trigger && this.get('isAuthenticated');
-      this.beginPropertyChanges();
-      this.setProperties({
-        isAuthenticated: false,
-        authenticator:   null
-      });
-      Ember.set(this.content, 'authenticated', {});
-      this._updateStore().then(() => {
-        this.endPropertyChanges();
-        if (trigger) {
-          this.trigger('invalidationSucceeded');
-        }
-        resolve();
-      }, () => {
-        this.endPropertyChanges();
-        reject();
-      });
+    trigger = !!trigger && this.get('isAuthenticated');
+    this.beginPropertyChanges();
+    this.setProperties({
+      isAuthenticated: false,
+      authenticator:   null
     });
+    Ember.set(this.content, 'authenticated', {});
+
+    return this._updateStore().then(() => {
+      this.endPropertyChanges();
+      if (trigger) {
+        this.trigger('invalidationSucceeded');
+      }
+    }, () => this.endPropertyChanges());
+  },
+
+  _clearWithContent(content, trigger) {
+    this.set('content', content);
+    return this._clear(trigger);
   },
 
   setUnknownProperty(key, value) {
@@ -154,7 +145,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   },
 
   _bindToAuthenticatorEvents() {
-    let authenticator = getOwner(this).lookup(this.authenticator);
+    const authenticator = this._lookupAuthenticator(this.authenticator);
     authenticator.off('sessionDataUpdated');
     authenticator.off('sessionDataInvalidated');
     authenticator.on('sessionDataUpdated', (content) => {
@@ -167,24 +158,27 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
 
   _bindToStoreEvents: on('init', function() {
     this.store.on('sessionDataUpdated', (content) => {
-      let { authenticator } = (content.authenticated || {});
-      if (!!authenticator) {
+      let { authenticator: authenticatorFactory } = (content.authenticated || {});
+      if (!!authenticatorFactory) {
         delete content.authenticated.authenticator;
-        getOwner(this).lookup(authenticator).restore(content.authenticated).then((authenticatedContent) => {
+        const authenticator = this._lookupAuthenticator(authenticatorFactory);
+        authenticator.restore(content.authenticated).then((authenticatedContent) => {
           this.set('content', content);
-          this._setup(authenticator, authenticatedContent, true);
+          this._setup(authenticatorFactory, authenticatedContent, true);
         }, (err) => {
-          Ember.Logger.debug(`The authenticator "${authenticator}" rejected to restore the session - invalidating…`);
+          Ember.Logger.debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
           if (err) {
             Ember.Logger.debug(err);
           }
-          this.set('content', content);
-          this._clear(true);
+          this._clearWithContent(content, true);
         });
       } else {
-        this.set('content', content);
-        this._clear(true);
+        this._clearWithContent(content, true);
       }
     });
-  })
+  }),
+
+  _lookupAuthenticator(authenticator) {
+    return getOwner(this).lookup(authenticator);
+  }
 });

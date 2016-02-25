@@ -112,7 +112,7 @@ describe('ToriiAuthenticator', () => {
 
     describe('when torii does not close successfully', () => {
       beforeEach(() => {
-        sinon.stub(torii, 'open').returns(Ember.RSVP.reject());
+        sinon.stub(torii, 'close').returns(Ember.RSVP.reject());
       });
 
       it('returns a rejecting promise', () => {

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 
-const { RSVP, isEmpty, run, get } = Ember;
+const { RSVP: { Promise }, isEmpty, run, get, $ } = Ember;
 
 /**
   Authenticator that works with the Ruby gem
@@ -77,13 +77,12 @@ export default BaseAuthenticator.extend({
     const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
     const tokenAttribute = get(data, tokenAttributeName);
     const identificationAttribute = get(data, identificationAttributeName);
-    return new RSVP.Promise((resolve, reject) => {
-      if (!isEmpty(tokenAttribute) && !isEmpty(identificationAttribute)) {
-        resolve(data);
-      } else {
-        reject();
-      }
-    });
+
+    if (!isEmpty(tokenAttribute) && !isEmpty(identificationAttribute)) {
+      return Promise.resolve(data);
+    } else {
+      return Promise.reject();
+    }
   },
 
   /**
@@ -105,17 +104,16 @@ export default BaseAuthenticator.extend({
     @public
   */
   authenticate(identification, password) {
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const { resourceName, identificationAttributeName } = this.getProperties('resourceName', 'identificationAttributeName');
       const data         = {};
       data[resourceName] = { password };
       data[resourceName][identificationAttributeName] = identification;
 
-      this.makeRequest(data).then(function(response) {
-        run(null, resolve, response);
-      }, function(xhr) {
-        run(null, reject, xhr.responseJSON || xhr.responseText);
-      });
+      return this.makeRequest(data).then(
+        (response) => run(null, resolve, response),
+        (xhr) => run(null, reject, xhr.responseJSON || xhr.responseText)
+      );
     });
   },
 
@@ -127,7 +125,7 @@ export default BaseAuthenticator.extend({
     @public
   */
   invalidate() {
-    return RSVP.resolve();
+    return Promise.resolve();
   },
 
   /**
@@ -141,8 +139,7 @@ export default BaseAuthenticator.extend({
   */
   makeRequest(data, options) {
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
-    options = options || {};
-    return Ember.$.ajax(Ember.$.extend({}, {
+    const requestOptions = $.extend({}, {
       url:      serverTokenEndpoint,
       type:     'POST',
       dataType: 'json',
@@ -150,6 +147,8 @@ export default BaseAuthenticator.extend({
       beforeSend(xhr, settings) {
         xhr.setRequestHeader('Accept', settings.accepts.json);
       }
-    }, options));
+    }, options || {});
+
+    return $.ajax(requestOptions);
   }
 });

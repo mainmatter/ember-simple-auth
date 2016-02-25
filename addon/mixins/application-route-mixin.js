@@ -76,7 +76,8 @@ export default Ember.Mixin.create({
     @public
   */
   sessionAuthenticated() {
-    let attemptedTransition = this.get('session.attemptedTransition');
+    const attemptedTransition = this.get('session.attemptedTransition');
+
     if (attemptedTransition) {
       attemptedTransition.retry();
       this.set('session.attemptedTransition', null);

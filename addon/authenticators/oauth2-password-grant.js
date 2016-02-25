@@ -2,7 +2,7 @@
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 
-const { RSVP, isEmpty, run } = Ember;
+const { RSVP, isEmpty, run, computed } = Ember;
 
 /**
   Authenticator that conforms to OAuth 2
@@ -80,6 +80,15 @@ export default BaseAuthenticator.extend({
   refreshAccessTokens: true,
 
   _refreshTokenTimeout: null,
+
+  _clientIdHeader: computed('clientId', function() {
+    const clientId = this.get('clientId');
+
+    if (!isEmpty(clientId)) {
+      const base64ClientId = window.btoa(clientId.concat(':'));
+      return { Authorization: `Basic ${base64ClientId}` };
+    }
+  }),
 
   /**
     Restores the session from a session data object; __will return a resolving
@@ -226,15 +235,10 @@ export default BaseAuthenticator.extend({
       dataType:    'json',
       contentType: 'application/x-www-form-urlencoded'
     };
-    const clientId = this.get('clientId');
 
-    if (!isEmpty(clientId)) {
-      const base64ClientId = window.btoa(clientId.concat(':'));
-      Ember.merge(options, {
-        headers: {
-          Authorization: `Basic ${base64ClientId}`
-        }
-      });
+    const clientIdHeader = this.get('_clientIdHeader');
+    if (!isEmpty(clientIdHeader)) {
+      options.headers = clientIdHeader;
     }
 
     return Ember.$.ajax(options);
