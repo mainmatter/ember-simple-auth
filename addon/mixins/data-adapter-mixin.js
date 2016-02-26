@@ -74,7 +74,8 @@ export default Ember.Mixin.create({
     // Because of the way _super() works, we need to store references to base
     // class implementation here in order to be able to use it in the callback below.
     const me = this;
-    const supr = this._super;
+    const supr = this._super;  // for ember 2.x
+    const nextsuper = this.__nextSuper;  // for ember 1.x
 
     return this.get('session').authorize(authorizer, Ember.merge({ url, type }, options))
       .then((result) => {
@@ -84,8 +85,12 @@ export default Ember.Mixin.create({
             xhr.setRequestHeader(headerName, headerValue);
           };
         }
-        // call base class ajax()
-        return supr.call(me, url, type, options);
+
+        if (Ember.VERSION < '2.0.0') {
+          return nextsuper.call(me, url, type, options);
+        } else {
+          return supr.call(me, url, type, options);
+        }
       });
   },
 
