@@ -40,7 +40,6 @@ describe('DeviseAuthorizer', () => {
 
       it('asynchronously calls the block with a header containing "token" and "email"', (done) => {
         const result = authorizer.authorize(data);
-        expect(result.then).to.be.a('function');
         result.then((auth) => {
           const { headerName, headerValue } = auth;
           expect(headerName).to.be.equal('Authorization');
@@ -70,7 +69,6 @@ describe('DeviseAuthorizer', () => {
 
         it('asynchronously calls the block with a header containing "employee_token" and "employee_email"', (done) => {
           const result = authorizer.authorize(data);
-          expect(result.then).to.be.a('function');
           result.then((auth) => {
             const { headerName, headerValue } = auth;
             expect(headerName).to.be.equal('Authorization');
