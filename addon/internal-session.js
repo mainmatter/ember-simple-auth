@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import getOwner from 'ember-getowner-polyfill';
 
-const { RSVP, on, isNone, isEmpty } = Ember;
+const { RSVP, isNone, isEmpty } = Ember;
 
 export default Ember.ObjectProxy.extend(Ember.Evented, {
   authenticator:       null,
@@ -12,6 +12,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   init() {
     this._super(...arguments);
     this.set('content', { authenticated: {} });
+    this._bindToStoreEvents();
   },
 
   authenticate(authenticatorFactory, ...args) {
@@ -156,7 +157,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     });
   },
 
-  _bindToStoreEvents: on('init', function() {
+  _bindToStoreEvents() {
     this.store.on('sessionDataUpdated', (content) => {
       let { authenticator: authenticatorFactory } = (content.authenticated || {});
       if (!!authenticatorFactory) {
@@ -176,7 +177,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         this._clearWithContent(content, true);
       }
     });
-  }),
+  },
 
   _lookupAuthenticator(authenticator) {
     return getOwner(this).lookup(authenticator);

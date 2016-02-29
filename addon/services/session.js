@@ -3,7 +3,7 @@ import getOwner from 'ember-getowner-polyfill';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
-const { computed, on }  = Ember;
+const { computed }  = Ember;
 
 /**
   __The session service provides access to the current session as well as
@@ -114,6 +114,11 @@ export default Ember.Service.extend(Ember.Evented, {
   */
   attemptedTransition: computed.alias('session.attemptedTransition'),
 
+  init() {
+    this._super(...arguments);
+    this._forwardSessionEvents();
+  },
+
   set(key, value) {
     const setsSessionData = SESSION_DATA_KEY_PREFIX.test(key);
     if (setsSessionData) {
@@ -124,7 +129,7 @@ export default Ember.Service.extend(Ember.Evented, {
     }
   },
 
-  _forwardSessionEvents: on('init', function() {
+  _forwardSessionEvents() {
     Ember.A([
       'authenticationSucceeded',
       'invalidationSucceeded'
@@ -137,7 +142,7 @@ export default Ember.Service.extend(Ember.Evented, {
         });
       }
     });
-  }),
+  },
 
   /**
     __Authenticates the session with an `authenticator`__ and appropriate
