@@ -79,8 +79,10 @@ export default function(options) {
       sync(store);
 
       Ember.run.next(() => {
-        expect(triggered).to.be.true;
-        done();
+        Ember.run.next(() => {
+          expect(triggered).to.be.true;
+          done();
+        });
       });
     });
 
