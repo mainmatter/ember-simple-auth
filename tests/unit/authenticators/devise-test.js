@@ -127,6 +127,21 @@ describe('DeviseAuthenticator', () => {
         done();
       });
     });
+
+    it('can handle a resp with the namespace of the resource name', (done) => {
+      server.respondWith('POST', '/users/sign_in', [
+        201,
+        { 'Content-Type': 'application/json' },
+        '{ "user": { "access_token": "secret token!" } }'
+      ]);
+
+      authenticator.authenticate('email@address.com', 'password').then((data) => {
+        expect(true).to.be.true;
+        expect(data).to.eql({ 'access_token': 'secret token!' });
+        done();
+      });
+    });
+
   });
 
   describe('#invalidate', () => {
