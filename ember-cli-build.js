@@ -4,7 +4,7 @@ const yuidoc = require('broccoli-yuidoc');
 const version = require('git-repo-version')();
 const Handlebars = require('handlebars');
 const mergeTrees = require('broccoli-merge-trees');
-const merge = require('lodash/object/merge');
+const merge = require('lodash/merge');
 
 var sourceTrees = [];
 
