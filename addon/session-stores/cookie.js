@@ -2,7 +2,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, computed, on } = Ember;
+const { RSVP, computed, on, run: { next } } = Ember;
 
 /**
   Session store that persists data in a cookie.
@@ -88,8 +88,10 @@ export default BaseStore.extend({
   }).volatile(),
 
   _setup: on('init', function() {
-    this._syncData().then(() => {
-      this._renewExpiration();
+    next(() => {
+      this._syncData().then(() => {
+        this._renewExpiration();
+      });
     });
   }),
 
