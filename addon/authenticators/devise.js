@@ -111,7 +111,7 @@ export default BaseAuthenticator.extend({
       data[resourceName][identificationAttributeName] = identification;
 
       return this.makeRequest(data).then(
-        (response) => run(null, resolve, response),
+        (response) => run(null, resolve, response[resourceName] || response),
         (xhr) => run(null, reject, xhr.responseJSON || xhr.responseText)
       );
     });
