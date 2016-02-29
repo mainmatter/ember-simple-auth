@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import BaseStore from './base';
 
-const { RSVP, on } = Ember;
+const { RSVP } = Ember;
 
 /**
   Session store that __persists data in memory and thus is not actually
@@ -15,9 +15,10 @@ const { RSVP, on } = Ember;
   @public
 */
 export default BaseStore.extend({
-  _setup: on('init', function() {
+  init() {
+    this._super(...arguments);
     this.clear();
-  }),
+  },
 
   /**
     Persists the `data`. This replaces all currently stored data.
