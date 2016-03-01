@@ -1,3 +1,14 @@
+# 1.1.0-beta.3
+
+* The `ember-cli-is-package-missing` package was added as a dependency
+  (previously it was only a dev dependency), fixing a bug that occurred when
+  running the new generators, see #913.
+* A regression in the cookie store was fixed causing a transition to the
+  `routeAfterAuthentication` after session restoration, see #915.
+* The code base now consistently overrides the `init` method instead of relying
+  on `on('init', …` which results in easier to understand and maintain code,
+  see #917.
+
 # 1.1.0-beta.2
 
 * The `silent-error` package was added as a dependency (previously it was only
