@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "The Ember Simple Auth API",
-        "version": "1.1.0-beta.1"
+        "version": "1.1.0-beta.3"
     },
     "files": {
         "addon/authenticators/base.js": {
@@ -948,7 +948,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 89,
+            "line": 88,
             "description": "Authenticates the session with the specified `identification` and\n`password`; the credentials are `POST`ed to the\n{{#crossLink \"DeviseAuthenticator/serverTokenEndpoint:property\"}}server{{/crossLink}}.\nIf the credentials are valid the server will responds with a\n{{#crossLink \"DeviseAuthenticator/tokenAttributeName:property\"}}token{{/crossLink}}\nand\n{{#crossLink \"DeviseAuthenticator/identificationAttributeName:property\"}}identification{{/crossLink}}.\n__If the credentials are valid and authentication succeeds, a promise that\nresolves with the server's response is returned__, otherwise a promise that\nrejects with the server error is returned.",
             "itemtype": "method",
             "name": "authenticate",
@@ -975,7 +975,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 122,
+            "line": 120,
             "description": "Does nothing",
             "itemtype": "method",
             "name": "invalidate",
@@ -990,7 +990,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 133,
+            "line": 131,
             "description": "Makes a request to the devise server.",
             "itemtype": "method",
             "name": "makeRequest",
@@ -1087,8 +1087,8 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 84,
-            "description": "Restores the session from a session data object; __will return a resolving\npromise when there is a non-empty `access_token` in the session data__ and\na rejecting promise otherwise.\n\nIf the server issues expiring access tokens and there is an expired access\ntoken in the session data along with a refresh token, the authenticator\nwill try to refresh the access token and return a promise that resolves\nwith the new access token if the refresh was successful. If there is no\nrefresh token or the token refresh is not successful, a rejecting promise\nwill be returned.",
+            "line": 93,
+            "description": "Restores the session from a session data object; __will return a resolving\npromise when there is a non-empty `access_token` in the session data__ and\na rejecting promise otherwise.\n\nIf the server issues\n[expiring access tokens](https://tools.ietf.org/html/rfc6749#section-5.1)\nand there is an expired access token in the session data along with a\nrefresh token, the authenticator will try to refresh the access token and\nreturn a promise that resolves with the new access token if the refresh was\nsuccessful. If there is no refresh token or the token refresh is not\nsuccessful, a rejecting promise will be returned.",
             "itemtype": "method",
             "name": "restore",
             "params": [
@@ -1109,8 +1109,8 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 122,
-            "description": "Authenticates the session with the specified `identification`, `password`\nand optional `scope`; issues a `POST` request to the\n{{#crossLink \"OAuth2PasswordGrantAuthenticator/serverTokenEndpoint:property\"}}{{/crossLink}}\nand receives the access token in response (see\nhttp://tools.ietf.org/html/rfc6749#section-4.3).\n\n__If the credentials are valid (and the optionally requested scope is\ngranted) and thus authentication succeeds, a promise that resolves with the\nserver's response is returned__, otherwise a promise that rejects with the\nerror as returned by the server is returned.\n\n__If the server supports it, this method also schedules refresh requests\nfor the access token before it expires.__",
+            "line": 132,
+            "description": "Authenticates the session with the specified `identification`, `password`\nand optional `scope`; issues a `POST` request to the\n{{#crossLink \"OAuth2PasswordGrantAuthenticator/serverTokenEndpoint:property\"}}{{/crossLink}}\nand receives the access token in response (see\nhttp://tools.ietf.org/html/rfc6749#section-4.3).\n\n__If the credentials are valid (and the optionally requested scope is\ngranted) and thus authentication succeeds, a promise that resolves with the\nserver's response is returned__, otherwise a promise that rejects with the\nerror as returned by the server is returned.\n\n__If the\n[server supports it](https://tools.ietf.org/html/rfc6749#section-5.1), this\nmethod also schedules refresh requests for the access token before it\nexpires.__",
             "itemtype": "method",
             "name": "authenticate",
             "params": [
@@ -1141,7 +1141,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 167,
+            "line": 179,
             "description": "If token revocation is enabled, this will revoke the access token (and the\nrefresh token if present). If token revocation succeeds, this method\nreturns a resolving promise, otherwise it will return a rejecting promise,\nthus intercepting session invalidation.\n\nIf token revocation is not enabled this method simply returns a resolving\npromise.",
             "itemtype": "method",
             "name": "invalidate",
@@ -1163,7 +1163,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 209,
+            "line": 221,
             "description": "Makes a request to the OAuth 2.0 server.",
             "itemtype": "method",
             "name": "makeRequest",
@@ -1212,7 +1212,7 @@
         },
         {
             "file": "addon/authenticators/torii.js",
-            "line": 74,
+            "line": 71,
             "description": "Authenticates the session by opening the specified torii provider. For more\ndocumentation on torii and its providers abstraction, see the\n[project's README](https://github.com/Vestorly/torii#readme), specifically\nthe\n[section on providers](https://github.com/Vestorly/torii#configuring-a-torii-provider).",
             "itemtype": "method",
             "name": "authenticate",
@@ -1239,7 +1239,7 @@
         },
         {
             "file": "addon/authenticators/torii.js",
-            "line": 97,
+            "line": 93,
             "description": "Closes the torii provider. If the provider is successfully closed, this\nmethod returns a resolving promise, otherwise it will return a rejecting\npromise, thus intercepting session invalidation.",
             "itemtype": "method",
             "name": "invalidate",
@@ -1362,7 +1362,7 @@
         },
         {
             "file": "addon/mixins/application-route-mixin.js",
-            "line": 66,
+            "line": 71,
             "description": "This method handles the session's\n{{#crossLink \"SessionService/authenticationSucceeded:event\"}}{{/crossLink}}\nevent. If there is a transition that was previously intercepted by\n{{#crossLink \"AuthenticatedRouteMixin/beforeModel:method\"}}the\nAuthenticatedRouteMixin's `beforeModel` method{{/crossLink}} it will retry\nit. If there is no such transition, this action transitions to the\n{{#crossLink \"Configuration/routeAfterAuthentication:property\"}}{{/crossLink}}.",
             "itemtype": "method",
             "name": "sessionAuthenticated",
@@ -1373,7 +1373,7 @@
         },
         {
             "file": "addon/mixins/application-route-mixin.js",
-            "line": 88,
+            "line": 94,
             "description": "This method handles the session's\n{{#crossLink \"SessionService/invalidationSucceeded:event\"}}{{/crossLink}}\nevent. __It reloads the Ember.js application__ by redirecting the browser\nto the application's root URL so that all in-memory data (such as Ember\nData stores etc.) gets cleared.\n\nIf the Ember.js application will be used in an environment where the users\ndon't have direct access to any data stored on the client (e.g.\n[cordova](http://cordova.apache.org)) this action can be overridden to e.g.\nsimply transition to the index route.",
             "itemtype": "method",
             "name": "sessionInvalidated",
@@ -1578,7 +1578,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 142,
+            "line": 147,
             "description": "__Authenticates the session with an `authenticator`__ and appropriate\narguments. The authenticator implements the actual steps necessary to\nauthenticate the session (see\n{{#crossLink \"BaseAuthenticator/authenticate:method\"}}{{/crossLink}}) and\nreturns a promise after doing so. The session handles the returned promise\nand when it resolves becomes authenticated, otherwise remains\nunauthenticated. All data the authenticator resolves with will be\naccessible via the\n{{#crossLink \"SessionService/data:property\"}}session data's{{/crossLink}}\n`authenticated` property.\n\n__This method returns a promise. A resolving promise indicates that the\nsession was successfully authenticated__ while a rejecting promise\nindicates that authentication failed and the session remains\nunauthenticated. The promise does not resolve with a value; instead, the\ndata returned from the authenticator is available via the\n{{#crossLink \"SessionService/data:property\"}}{{/crossLink}} property.\n\nWhen authentication succeeds this will trigger the\n{{#crossLink \"SessionService/authenticationSucceeded:event\"}}{{/crossLink}}\nevent.",
             "itemtype": "method",
             "name": "authenticate",
@@ -1607,7 +1607,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 176,
+            "line": 182,
             "description": "__Invalidates the session with the authenticator it is currently\nauthenticated with__ (see\n{{#crossLink \"SessionService/authenticate:method\"}}{{/crossLink}}). This\ninvokes the authenticator's\n{{#crossLink \"BaseAuthenticator/invalidate:method\"}}{{/crossLink}} method\nand handles the returned promise accordingly.\n\nThis method returns a promise. A resolving promise indicates that the\nsession was successfully invalidated while a rejecting promise indicates\nthat invalidation failed and the session remains authenticated. Once the\nsession is successfully invalidated it clears all of its authenticated data\n(see {{#crossLink \"SessionService/data:property\"}}{{/crossLink}}).\n\nWhen invalidation succeeds this will trigger the\n{{#crossLink \"SessionService/invalidationSucceeded:event\"}}{{/crossLink}}\nevent.",
             "itemtype": "method",
             "name": "invalidate",
@@ -1622,7 +1622,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 203,
+            "line": 210,
             "description": "Authorizes a block of code with an authorizer (see\n{{#crossLink \"BaseAuthorizer/authorize:method\"}}{{/crossLink}}) if the\nsession is authenticated. If the session is not currently authenticated\nthis method does nothing.\n\n```js\nthis.get('session').authorize('authorizer:oauth2-bearer', (headerName, headerValue) => {\n  xhr.setRequestHeader(headerName, headerValue);\n});\n```",
             "itemtype": "method",
             "name": "authorize",
@@ -1697,7 +1697,7 @@
         },
         {
             "file": "addon/session-stores/adaptive.js",
-            "line": 101,
+            "line": 104,
             "description": "Persists the `data` in the `localStorage` if it is available or in a cookie\nif it is not.",
             "itemtype": "method",
             "name": "persist",
@@ -1719,7 +1719,7 @@
         },
         {
             "file": "addon/session-stores/adaptive.js",
-            "line": 114,
+            "line": 117,
             "description": "Returns all data currently stored in the `localStorage` if that is\navailable - or if it is not, in the cookie - as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -1734,7 +1734,7 @@
         },
         {
             "file": "addon/session-stores/adaptive.js",
-            "line": 126,
+            "line": 129,
             "description": "Clears the store by deleting the\n{{#crossLink \"LocalStorageStore/key:property\"}}{{/crossLink}} from\n`localStorage` if that is available or by deleting the cookie if it is not.",
             "itemtype": "method",
             "name": "clear",
@@ -1858,7 +1858,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 96,
+            "line": 100,
             "description": "Persists the `data` in the cookie.",
             "itemtype": "method",
             "name": "persist",
@@ -1880,7 +1880,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 112,
+            "line": 116,
             "description": "Returns all data currently stored in the cookie as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -1895,7 +1895,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 128,
+            "line": 132,
             "description": "Clears the store by deleting the cookie.",
             "itemtype": "method",
             "name": "clear",
@@ -1910,7 +1910,7 @@
         },
         {
             "file": "addon/session-stores/ephemeral.js",
-            "line": 22,
+            "line": 23,
             "description": "Persists the `data`. This replaces all currently stored data.",
             "itemtype": "method",
             "name": "persist",
@@ -1932,7 +1932,7 @@
         },
         {
             "file": "addon/session-stores/ephemeral.js",
-            "line": 35,
+            "line": 37,
             "description": "Returns all data currently stored as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -1947,7 +1947,7 @@
         },
         {
             "file": "addon/session-stores/ephemeral.js",
-            "line": 46,
+            "line": 50,
             "description": "Clears the store.",
             "itemtype": "method",
             "name": "clear",
@@ -1975,7 +1975,7 @@
         },
         {
             "file": "addon/session-stores/local-storage.js",
-            "line": 37,
+            "line": 39,
             "description": "Persists the `data` in the `localStorage`.",
             "itemtype": "method",
             "name": "persist",
@@ -1997,7 +1997,7 @@
         },
         {
             "file": "addon/session-stores/local-storage.js",
-            "line": 52,
+            "line": 55,
             "description": "Returns all data currently stored in the `localStorage` as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -2012,7 +2012,7 @@
         },
         {
             "file": "addon/session-stores/local-storage.js",
-            "line": 64,
+            "line": 68,
             "description": "Clears the store by deleting the\n{{#crossLink \"LocalStorageStore/key:property\"}}{{/crossLink}} from\n`localStorage`.",
             "itemtype": "method",
             "name": "clear",

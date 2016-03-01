@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.1"><span class="label label-primary">1.1.0-beta.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.3"><span class="label label-primary">1.1.0-beta.3</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -116,20 +116,17 @@
               this._assertToriiIsPresent();
           
               data = data || {};
-              return new RSVP.Promise((resolve, reject) =&gt; {
-                if (!isEmpty(data.provider)) {
-                  let { provider } = data;
-                  this.get(&#x27;torii&#x27;).fetch(data.provider, data).then((data) =&gt; {
-                    this._resolveWith(provider, data, resolve);
-                  }, () =&gt; {
-                    delete this._provider;
-                    reject();
-                  });
-                } else {
-                  delete this._provider;
-                  reject();
-                }
-              });
+              if (!isEmpty(data.provider)) {
+                const { provider } = data;
+          
+                return this.get(&#x27;torii&#x27;).fetch(data.provider, data).then((data) =&gt; {
+                  this._authenticateWithProvider(provider, data);
+                  return data;
+                }, () =&gt; delete this._provider);
+              } else {
+                delete this._provider;
+                return RSVP.reject();
+              }
             },
           
             /**
@@ -148,10 +145,9 @@
             authenticate(provider, options) {
               this._assertToriiIsPresent();
           
-              return new RSVP.Promise((resolve, reject) =&gt; {
-                this.get(&#x27;torii&#x27;).open(provider, options || {}).then((data) =&gt; {
-                  this._resolveWith(provider, data, resolve);
-                }, reject);
+              return this.get(&#x27;torii&#x27;).open(provider, options || {}).then((data) =&gt; {
+                this._authenticateWithProvider(provider, data);
+                return data;
               });
             },
           
@@ -165,18 +161,14 @@
               @public
             */
             invalidate(data) {
-              return new RSVP.Promise((resolve, reject) =&gt; {
-                this.get(&#x27;torii&#x27;).close(this._provider, data).then(() =&gt; {
-                  delete this._provider;
-                  resolve();
-                }, reject);
+              return this.get(&#x27;torii&#x27;).close(this._provider, data).then(() =&gt; {
+                delete this._provider;
               });
             },
           
-            _resolveWith(provider, data, resolve) {
+            _authenticateWithProvider(provider, data) {
               data.provider = provider;
               this._provider = data.provider;
-              resolve(data);
             },
           
             _assertToriiIsPresent() {

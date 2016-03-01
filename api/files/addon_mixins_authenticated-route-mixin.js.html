@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.1"><span class="label label-primary">1.1.0-beta.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.3"><span class="label label-primary">1.1.0-beta.3</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -115,9 +115,10 @@
             */
             beforeModel(transition) {
               if (!this.get(&#x27;session.isAuthenticated&#x27;)) {
-                transition.abort();
-                this.get(&#x27;session&#x27;).set(&#x27;attemptedTransition&#x27;, transition);
                 Ember.assert(&#x27;The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!&#x27;, this.get(&#x27;routeName&#x27;) !== Configuration.authenticationRoute);
+          
+                transition.abort();
+                this.set(&#x27;session.attemptedTransition&#x27;, transition);
                 this.transitionTo(Configuration.authenticationRoute);
               } else {
                 return this._super(...arguments);

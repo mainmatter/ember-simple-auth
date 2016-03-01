@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.1"><span class="label label-primary">1.1.0-beta.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.3"><span class="label label-primary">1.1.0-beta.3</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -65,7 +65,7 @@
           import LocalStorage from &#x27;ember-simple-auth/session-stores/local-storage&#x27;;
           import Cookie from &#x27;ember-simple-auth/session-stores/cookie&#x27;;
           
-          const { computed, on } = Ember;
+          const { computed } = Ember;
           
           const LOCAL_STORAGE_TEST_KEY = &#x27;_ember_simple_auth_test_key&#x27;;
           
@@ -139,15 +139,9 @@
               }
             }),
           
-            _createStore(storeType, options) {
-              const store = storeType.create(options);
-              store.on(&#x27;sessionDataUpdated&#x27;, (data) =&gt; {
-                this.trigger(&#x27;sessionDataUpdated&#x27;, data);
-              });
-              return store;
-            },
+            init() {
+              this._super(...arguments);
           
-            _setupStore: on(&#x27;init&#x27;, function() {
               let store;
               if (this.get(&#x27;_isLocalStorageAvailable&#x27;)) {
                 const options = { key: this.get(&#x27;localStorageKey&#x27;) };
@@ -157,7 +151,16 @@
                 store = this._createStore(Cookie, options);
               }
               this.set(&#x27;_store&#x27;, store);
-            }),
+            },
+          
+            _createStore(storeType, options) {
+              const store = storeType.create(options);
+          
+              store.on(&#x27;sessionDataUpdated&#x27;, (data) =&gt; {
+                this.trigger(&#x27;sessionDataUpdated&#x27;, data);
+              });
+              return store;
+            },
           
             /**
               Persists the &#x60;data&#x60; in the &#x60;localStorage&#x60; if it is available or in a cookie
