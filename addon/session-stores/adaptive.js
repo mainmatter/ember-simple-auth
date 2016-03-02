@@ -3,6 +3,7 @@ import Ember from 'ember';
 import Base from 'ember-simple-auth/session-stores/base';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
+import Ephemeral from 'ember-simple-auth/session-stores/ephemeral';
 
 const { computed } = Ember;
 
@@ -82,7 +83,9 @@ export default Base.extend({
     this._super(...arguments);
 
     let store;
-    if (this.get('_isLocalStorageAvailable')) {
+    if (typeof FastBoot !== "undefined") {
+      store = this._createStore(Ephemeral);
+    } else if (this.get('_isLocalStorageAvailable')) {
       const options = { key: this.get('localStorageKey') };
       store = this._createStore(LocalStorage, options);
     } else {
