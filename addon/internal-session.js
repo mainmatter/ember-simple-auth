@@ -11,10 +11,6 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
 
   init() {
     this._super(...arguments);
-    if (isEmpty(this.get('content'))) {
-      this.set('content', { authenticated: {} });
-    }
-    this._bindToStoreEvents();
   },
 
   authenticate(authenticatorFactory, ...args) {
