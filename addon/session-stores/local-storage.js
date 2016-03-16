@@ -82,13 +82,15 @@ export default BaseStore.extend({
   },
 
   _bindToStorageEvents() {
-    Ember.$(window).bind('storage', () => {
-      this.restore().then((data) => {
-        if (!objectsAreEqual(data, this._lastData)) {
-          this._lastData = data;
-          this.trigger('sessionDataUpdated', data);
-        }
-      });
+    Ember.$(window).bind('storage', (e) => {
+      if (e.originalEvent.key === this.key) {
+        this.restore().then((data) => {
+          if (!objectsAreEqual(data, this._lastData)) {
+            this._lastData = data;
+            this.trigger('sessionDataUpdated', data);
+          }
+        });
+      }
     });
   }
 });
