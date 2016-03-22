@@ -581,7 +581,7 @@ for the available settings.
 Ember Simple Auth is developed by and &copy;
 [simplabs GmbH/Marco Otte-Witte](http://simplabs.com) and contributors. It is
 released under the
-[MIT License](https://github.com/simplabs/ember-simple-auth/blob/master/LICENSE).
+[MIT License](https://github.com/simplabs/ember-simple-auth/blob/master/LICENSE.md).
 
 Ember Simple Auth is not an official part of [Ember.js](http://emberjs.com) and
 is not maintained by the Ember.js Core Team.

@@ -2,9 +2,9 @@
   "name": "ember-simple-auth",
   "dependencies": {
     "bootstrap": "~3.3.5",
-    "ember": "~2.3.0",
+    "ember": "~2.4.3",
     "ember-cli-shims": "0.1.0",
-    "ember-cli-test-loader": "0.2.1",
+    "ember-cli-test-loader": "0.2.2",
     "ember-load-initializers": "0.1.7",
     "ember-mocha": "~0.8.7",
     "ember-resolver": "~0.1.20",
@@ -15,6 +15,6 @@
     "pretender": "^0.10.1"
   },
   "resolutions": {
-    "ember": "~2.2.0"
+    "ember": "~2.4.3"
   }
 }
