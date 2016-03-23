@@ -155,7 +155,11 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password, scope = []) {
     return new RSVP.Promise((resolve, reject) => {
+      const client_id = this.get('clientId');
       const data                = { 'grant_type': 'password', username: identification, password };
+      if (!Ember.isEmpty(client_id)) {
+        data.client_id = client_id;
+      }
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
       const scopesString = Ember.makeArray(scope).join(' ');
       if (!Ember.isEmpty(scopesString)) {
@@ -236,10 +240,10 @@ export default BaseAuthenticator.extend({
       contentType: 'application/x-www-form-urlencoded'
     };
 
-    const clientIdHeader = this.get('_clientIdHeader');
-    if (!isEmpty(clientIdHeader)) {
-      options.headers = clientIdHeader;
-    }
+    // const clientIdHeader = this.get('_clientIdHeader');
+    // if (!isEmpty(clientIdHeader)) {
+    //   options.headers = clientIdHeader;
+    // }
 
     return Ember.$.ajax(options);
   },
