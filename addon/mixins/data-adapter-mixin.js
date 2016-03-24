@@ -95,13 +95,9 @@ export default Ember.Mixin.create({
     @protected
   */
   handleResponse(status) {
-    if (status === 401) {
-      if (this.get('session.isAuthenticated')) {
-        this.get('session').invalidate();
-      }
-      return true;
-    } else {
-      return this._super(...arguments);
+    if (status === 401 && this.get('session.isAuthenticated')) {
+      this.get('session').invalidate();
     }
+    return this._super(...arguments);
   }
 });
