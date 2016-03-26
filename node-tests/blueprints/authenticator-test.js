@@ -9,6 +9,7 @@ describe('Acceptance: ember generate and destroy authenticator', function() {
   setupTestHooks(this);
   
   it('generates a torii authenticator', function() {
+    debugger;
     return generateAndDestroy(['authenticator', 'application', '--base-class=torii'], {
       files: [
         { file: 'app/authenticators/application.js', contains: ['\
@@ -20,7 +21,7 @@ export default Torii.extend({' + EOL + '\
 });' + EOL + '\
 ']}
       ]
-    });
+    }).then(function() { debugger; }, function() { debugger; });
   });
 
   it('generates an OAuth 2.0 authenticator', function() {
