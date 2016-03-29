@@ -2,6 +2,7 @@ import Ember from 'ember';
 import getOwner from 'ember-getowner-polyfill';
 
 const { RSVP, isNone, isEmpty } = Ember;
+const assign = Ember.assign || Ember.merge;
 
 export default Ember.ObjectProxy.extend(Ember.Evented, {
   authenticator:       null,
@@ -140,7 +141,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   _updateStore() {
     let data = this.content;
     if (!Ember.isEmpty(this.authenticator)) {
-      Ember.set(data, 'authenticated', Ember.merge({ authenticator: this.authenticator }, data.authenticated || {}));
+      Ember.set(data, 'authenticated', assign({ authenticator: this.authenticator }, data.authenticated || {}));
     }
     return this._callStoreAsync('persist', data);
   },

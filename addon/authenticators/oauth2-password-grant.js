@@ -3,6 +3,7 @@ import Ember from 'ember';
 import BaseAuthenticator from './base';
 
 const { RSVP, isEmpty, run, computed } = Ember;
+const assign = Ember.assign || Ember.merge;
 
 /**
   Authenticator that conforms to OAuth 2
@@ -166,7 +167,7 @@ export default BaseAuthenticator.extend({
           const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
           this._scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
           if (!isEmpty(expiresAt)) {
-            response = Ember.merge(response, { 'expires_at': expiresAt });
+            response = assign(response, { 'expires_at': expiresAt });
           }
           resolve(response);
         });
@@ -271,7 +272,7 @@ export default BaseAuthenticator.extend({
           expiresIn       = response['expires_in'] || expiresIn;
           refreshToken    = response['refresh_token'] || refreshToken;
           const expiresAt = this._absolutizeExpirationTime(expiresIn);
-          const data      = Ember.merge(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
+          const data      = assign(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
           this._scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
           this.trigger('sessionDataUpdated', data);
           resolve(data);
