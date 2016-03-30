@@ -66,23 +66,14 @@ export default Ember.Mixin.create({
   /**
     This method handles the session's
     {{#crossLink "SessionService/authenticationSucceeded:event"}}{{/crossLink}}
-    event. If there is a transition that was previously intercepted by
-    {{#crossLink "AuthenticatedRouteMixin/beforeModel:method"}}the
-    AuthenticatedRouteMixin's `beforeModel` method{{/crossLink}} it will retry
-    it. If there is no such transition, this action transitions to the
-    {{#crossLink "Configuration/routeAfterAuthentication:property"}}{{/crossLink}}.
+    event.
 
     @method sessionAuthenticated
     @public
   */
   sessionAuthenticated() {
-    let attemptedTransition = this.get('session.attemptedTransition');
-    if (attemptedTransition) {
-      attemptedTransition.retry();
-      this.set('session.attemptedTransition', null);
-    } else {
-      this.transitionTo(Configuration.routeAfterAuthentication);
-    }
+    this.send('authenticatedTransition');
+
   },
 
   /**
@@ -104,5 +95,30 @@ export default Ember.Mixin.create({
     if (!Ember.testing) {
       window.location.replace(Configuration.baseURL);
     }
+  },
+
+  actions: {
+    /**
+      If there is a transition that was previously intercepted by
+      {{#crossLink "AuthenticatedRouteMixin/beforeModel:method"}}the
+      AuthenticatedRouteMixin's `beforeModel` method{{/crossLink}} it will retry
+      it. If there is no such transition, this action transitions to the
+      {{#crossLink "Configuration/routeAfterAuthentication:property"}}{{/crossLink}}.
+
+      @method authenticatedTransition
+      @public
+    */
+    authenticatedTransition() {
+      const attemptedTransition = this.get('session.attemptedTransition');
+
+      if (attemptedTransition) {
+        attemptedTransition.retry();
+        this.set('session.attemptedTransition', null);
+      } else {
+        this.transitionTo(Configuration.routeAfterAuthentication);
+      }
+
+    }
   }
+
 });
