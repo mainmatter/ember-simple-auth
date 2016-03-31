@@ -5,13 +5,13 @@ const { RSVP: { Promise }, isEmpty, run, get, $ } = Ember;
 
 /**
   Authenticator that works with the Ruby gem
-  [devise](https://github.com/plataformatec/devise).
+  [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth).
 
   __As token authentication is not actually part of devise anymore, the server
   needs to implement some customizations__ to work with this authenticator -
   see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
-  @class DeviseAuthenticator
+  @class DeviseTokenAuthAuthenticator
   @module ember-simple-auth/authenticators/devise-token-auth
   @extends BaseAuthenticator
   @public
@@ -131,11 +131,11 @@ export default BaseAuthenticator.extend({
                                                                 'expiryHeaderAttributeName',
                                                                 'uidHeaderAttributeName',
                                                                 'tokenHeaderTypeAttributeName');
-    const tokenHeaderAttribute = get(data.headers, tokenHeaderAttributeName);
-    const clientHeaderAttribute = get(data.headers, clientHeaderAttributeName);
-    const expiryHeaderAttribute = get(data.headers, expiryHeaderAttributeName);
-    const uidHeaderAttribute = get(data.headers, uidHeaderAttributeName);
-    const tokenHeaderTypeAttribute = get(data.headers, tokenHeaderTypeAttributeName);
+    const tokenHeaderAttribute = get(data, tokenHeaderAttributeName);
+    const clientHeaderAttribute = get(data, clientHeaderAttributeName);
+    const expiryHeaderAttribute = get(data, expiryHeaderAttributeName);
+    const uidHeaderAttribute = get(data, uidHeaderAttributeName);
+    const tokenHeaderTypeAttribute = get(data, tokenHeaderTypeAttributeName);
 
     if (!isEmpty(tokenHeaderAttribute)
         && !isEmpty(clientHeaderAttribute)
@@ -190,12 +190,11 @@ export default BaseAuthenticator.extend({
 
       return this.makeRequest(data).then(
         function (response, textStatus, jqXHR) {
-          response.headers = {};
-          response.headers[tokenHeaderAttributeName]     = jqXHR.getResponseHeader(tokenHeaderAttributeName);
-          response.headers[clientHeaderAttributeName]    = jqXHR.getResponseHeader(clientHeaderAttributeName);
-          response.headers[expiryHeaderAttributeName]    = jqXHR.getResponseHeader(expiryHeaderAttributeName);
-          response.headers[uidHeaderAttributeName]       = jqXHR.getResponseHeader(uidHeaderAttributeName);
-          response.headers[tokenHeaderTypeAttributeName] = jqXHR.getResponseHeader(tokenHeaderTypeAttributeName);
+          response[tokenHeaderAttributeName]     = jqXHR.getResponseHeader(tokenHeaderAttributeName);
+          response[clientHeaderAttributeName]    = jqXHR.getResponseHeader(clientHeaderAttributeName);
+          response[expiryHeaderAttributeName]    = jqXHR.getResponseHeader(expiryHeaderAttributeName);
+          response[uidHeaderAttributeName]       = jqXHR.getResponseHeader(uidHeaderAttributeName);
+          response[tokenHeaderTypeAttributeName] = jqXHR.getResponseHeader(tokenHeaderTypeAttributeName);
           run(null, resolve, response);
         },
         (xhr) => run(null, reject, xhr.responseJSON || xhr.responseText)
