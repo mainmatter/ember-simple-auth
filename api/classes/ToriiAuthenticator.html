@@ -55,7 +55,7 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
-          
+
           <div class="row">
             <div class="col-sm-12">
               <div class="row">
@@ -78,12 +78,12 @@
           the torii service into the authenticator</strong>:</p>
           <pre class="code prettyprint"><code class="language-js">// app/authenticators/torii.js
           import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
-          
-          export default ToriiAuthenticator.extend(
+
+          export default ToriiAuthenticator.extend({
             torii: Ember.inject.service()
-          )
+          });
           </code></pre>
-          
+
                     </div>
                   </div>
                     <div class="row">
@@ -112,7 +112,7 @@
                           <a href="https://github.com/Vestorly/torii#readme">project's README</a>, specifically
                           the
                           <a href="https://github.com/Vestorly/torii#configuring-a-torii-provider">section on providers</a>.</p>
-                          
+
                                 <h4 class="subsection">Arguments</h4>
                                 <dl class="params">
                                     <dt>
@@ -120,14 +120,14 @@
                                     </dt>
                                     <dd>
                                       <p>The torii provider to authenticate the session with</p>
-                          
+
                                     </dd>
                                     <dt>
                                         <code>options</code>: <span class="type"><code>Object</code></span>
                                     </dt>
                                     <dd>
                                       <p>The options to pass to the torii provider</p>
-                          
+
                                     </dd>
                                 </dl>
                                   <h4 class="subsection">Returns</h4>
@@ -135,7 +135,7 @@
                                       <span class="type return">&rarr; <code>Ember.RSVP.Promise</code></span>
                                   </p>
                                   <p>A promise that when it resolves results in the session becoming authenticated</p>
-                          
+
                             </div>
                           </div>
                         </div>
@@ -159,13 +159,13 @@
                               <p>Closes the torii provider. If the provider is successfully closed, this
                           method returns a resolving promise, otherwise it will return a rejecting
                           promise, thus intercepting session invalidation.</p>
-                          
+
                                   <h4 class="subsection">Returns</h4>
                                   <p>
                                       <span class="type return">&rarr; <code>Ember.RSVP.Promise</code></span>
                                   </p>
                                   <p>A promise that when it resolves results in the session being invalidated</p>
-                          
+
                             </div>
                           </div>
                         </div>
@@ -191,14 +191,14 @@
                           provider in use does not implement the method simply add it as follows:</p>
                           <pre class="code prettyprint"><code class="language-js">// app/torii-providers/facebook.js
                           import FacebookOauth2Provider from 'torii/providers/facebook-oauth2';
-                          
+
                           export default FacebookOauth2Provider.extend({
                             fetch(data) {
                               return data;
                             }
                           });
                           </code></pre>
-                          
+
                                 <h4 class="subsection">Arguments</h4>
                                 <dl class="params">
                                     <dt>
@@ -206,7 +206,7 @@
                                     </dt>
                                     <dd>
                                       <p>The data to restore the session from</p>
-                          
+
                                     </dd>
                                 </dl>
                                   <h4 class="subsection">Returns</h4>
@@ -214,7 +214,7 @@
                                       <span class="type return">&rarr; <code>Ember.RSVP.Promise</code></span>
                                   </p>
                                   <p>A promise that when it resolves results in the session becoming or remaining authenticated</p>
-                          
+
                             </div>
                           </div>
                         </div>
@@ -243,7 +243,7 @@
                           expires or an event is triggered from an external authentication provider
                           that the authenticator uses. The session handles that event and will
                           invalidate itself when it is triggered.</p>
-                          
+
                             </div>
                           </div>              </div>
                       </div>
@@ -268,7 +268,7 @@
                           handles that event, passes the updated data back to the authenticator's
                           <a href="../classes/BaseAuthenticator.html#method_restore" class="crosslink">restore</a>
                           method and handles the result of that invocation accordingly.</p>
-                          
+
                                 <h4 class="subsection">Arguments</h4>
                                 <dl class="params">
                                     <dt>
@@ -276,7 +276,7 @@
                                     </dt>
                                     <dd>
                                       <p>The updated session data</p>
-                          
+
                                     </dd>
                                 </dl>
                             </div>
