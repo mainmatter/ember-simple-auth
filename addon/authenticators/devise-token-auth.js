@@ -7,9 +7,7 @@ const { RSVP: { Promise }, isEmpty, run, get, $ } = Ember;
   Authenticator that works with the Ruby gem
   [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth).
 
-  __As token authentication is not actually part of devise anymore, the server
-  needs to implement some customizations__ to work with this authenticator -
-  see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
+  It handles refreshing the token after each call.
 
   @class DeviseTokenAuthAuthenticator
   @module ember-simple-auth/authenticators/devise-token-auth

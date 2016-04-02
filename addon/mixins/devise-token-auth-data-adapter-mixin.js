@@ -3,15 +3,13 @@ import Ember from 'ember';
 const { service } = Ember.inject;
 
 /**
-  __This mixin can be used to make Ember Data adapters authorize all outgoing
-  API requests by injecting a header.__ It works with all authorizers that call
-  the authorization callback (see
-  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) with header
-  name and header content arguments.
 
   __The `DeviseTokenAuthDataAdapterMixin` will update the session store with the new
   access-tokens and expiry after each call. It will also invalidate the session whenever it
   receives a 401 response for an API request.__
+
+  __This mixin must be used in conjunction with DataAdapterMixin so the other standard
+  methods are run properly.__
 
   ```js
   // app/adapters/application.js

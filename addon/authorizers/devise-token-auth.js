@@ -11,12 +11,12 @@ const { isEmpty, get } = Ember;
   e.g.:
 
   ```
-  Authorization: token="234rtgjneroigne4" email="user@domain.tld"
+  access-token: 3q8aQQvgHGSMnLVKwuKKJg
+  client: JMmX-w6PtSReFKZ6PsD6wA
+  uid: me@jaiivarsson.com
+  expiry: 1460798714
+  token-type: Bearer
   ```
-
-  __As token authentication is not actually part of devise anymore, the server
-  needs to implement some customizations__ to work with this authenticator -
-  see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
   @class DeviseTokenAuthAuthorizer
   @module ember-simple-auth/authorizers/devise
@@ -90,11 +90,13 @@ export default BaseAuthorizer.extend({
   identificationAttributeName: 'email',
 
   /**
-    Includes the user's token (see
-    {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}{{/crossLink}})
-    and identification (see
-    {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}{{/crossLink}})
-    in the `Authorization` header.
+    Includes the appropriate headers (see
+    {{#crossLink "DeviseTokenAuthAuthenticator/tokenHeaderAttributeName:property"}}access-token{{/crossLink}},
+    {{#crossLink "DeviseTokenAuthAuthenticator/clientHeaderAttributeName:property"}}client{{/crossLink}},
+    {{#crossLink "DeviseTokenAuthAuthenticator/expiryHeaderAttributeName:property"}}expiry{{/crossLink}},
+    {{#crossLink "DeviseTokenAuthAuthenticator/uidHeaderAttributeName:property"}}uid{{/crossLink}},
+    and
+    {{#crossLink "DeviseTokenAuthAuthenticator/tokenHeaderTypeAttributeName:property"}}token-type{{/crossLink}}).
 
     @method authorize
     @param {Object} data The data that the session currently holds
