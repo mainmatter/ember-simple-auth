@@ -224,8 +224,19 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 export default Ember.Route.extend(AuthenticatedRouteMixin);
 ```
 
-This will make the route (and all of its subroutes) transition to a
-configurable login route when the session is not authenticated.
+This will make the route (and all of its subroutes) transition to the `login`
+route if the session is not authenticated. Add the `login` route in the router
+like this:
+
+```js
+// app/router.js
+Router.map(function() {
+  this.route('login');
+}
+```
+
+The route to transition to if the session is not authenticated can also be
+[configured](#configuration) to be another one than `login`.
 
 To prevent a route from being accessed when the session is authenticated (which
 makes sense for login and registration routes for example), mix the
