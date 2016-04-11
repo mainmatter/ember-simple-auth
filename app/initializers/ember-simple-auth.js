@@ -10,9 +10,7 @@ export default {
     const config = ENV['ember-simple-auth'] || {};
     
     // We need to use the default Ember baseURL if one hasn't been set
-    if (ENV['ember-simple-auth'] && ENV['ember-simple-auth'].baseURL) {
-      config.baseURL = ENV['ember-simple-auth'].baseURL;
-    } else {
+    if (!(ENV['ember-simple-auth'] && ENV['ember-simple-auth'].baseURL)) {
       config.baseURL = ENV.baseURL;
     }
     
