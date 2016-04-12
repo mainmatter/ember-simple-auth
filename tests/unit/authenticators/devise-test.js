@@ -84,14 +84,17 @@ describe('DeviseAuthenticator', () => {
         server.respondWith('POST', '/users/sign_in', [
           201,
           { 'Content-Type': 'application/json' },
-          '{ "access_token": "secret token!" }'
+          '{ "token": "secret token!", "email": "email@address.com" }'
         ]);
       });
 
       it('resolves with the correct data', (done) => {
         authenticator.authenticate('email@address.com', 'password').then((data) => {
           expect(true).to.be.true;
-          expect(data).to.eql({ 'access_token': 'secret token!' });
+          expect(data).to.eql({
+            'token': 'secret token!',
+            'email': 'email@address.com'
+          });
           done();
         });
       });

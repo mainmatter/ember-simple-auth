@@ -105,13 +105,21 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password) {
     return new Promise((resolve, reject) => {
-      const { resourceName, identificationAttributeName } = this.getProperties('resourceName', 'identificationAttributeName');
+      const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties('resourceName', 'identificationAttributeName', 'tokenAttributeName');
       const data         = {};
       data[resourceName] = { password };
       data[resourceName][identificationAttributeName] = identification;
 
       return this.makeRequest(data).then(
-        (response) => run(null, resolve, response[resourceName] || response),
+        (response) => {
+          if (isEmpty(response[tokenAttributeName])) {
+            throw new Error(`${tokenAttributeName} is missing in server response`);
+          }
+          if (isEmpty(response[identificationAttributeName])) {
+            throw new Error(`${identificationAttributeName} is missing in server response`);
+          }
+          run(null, resolve, response);
+        },
         (xhr) => run(null, reject, xhr.responseJSON || xhr.responseText)
       );
     });
