@@ -186,6 +186,19 @@ export default BaseAuthenticator.extend({
       }
       this.makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
+          if (isEmpty(response['access_token'])) {
+            throw new Error('access_token is missing in server response')
+          }
+          const refreshAccessTokens = this.get('refreshAccessTokens');
+          if (refreshAccessTokens) {
+            if (isEmpty(response['expires_in'])) {
+              throw new Error('expires_in is missing in server response')
+            }
+            if (isEmpty(response['refresh_token'])) {
+              throw new Error('refresh_token is missing in server response')
+            }
+          }
+
           const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
           this._scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
           if (!isEmpty(expiresAt)) {

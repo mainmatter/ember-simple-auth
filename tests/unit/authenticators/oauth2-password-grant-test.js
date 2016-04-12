@@ -162,6 +162,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
 
       it('resolves with the correct data', (done) => {
+        authenticator.set('refreshAccessTokens', false);
         authenticator.authenticate('username', 'password').then((data) => {
           expect(true).to.be.true;
           expect(data).to.eql({ 'access_token': 'secret token!' });
