@@ -30,13 +30,14 @@ const DEFAULTS = {
 export default {
   /**
     The base URL of the application as configured in `config/environment.js`.
+    This is an internal property and should not be configured manually.
 
     @property baseURL
     @readOnly
     @static
     @type String
     @default ''
-    @public
+    @protected
   */
   baseURL: DEFAULTS.baseURL,
 
