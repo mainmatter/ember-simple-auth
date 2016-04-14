@@ -60,6 +60,11 @@ export default BaseAuthenticator.extend({
   */
   identificationAttributeName: 'email',
 
+
+  beforeRestore: (data) => { return data; },
+  beforeReject: (data) => { return data; },
+  beforeAuthenticate: (response) => { return response; },
+
   /**
     Restores the session from a session data object; __returns a resolving
     promise when there are non-empty
@@ -79,8 +84,10 @@ export default BaseAuthenticator.extend({
     const identificationAttribute = get(data, identificationAttributeName);
 
     if (!isEmpty(tokenAttribute) && !isEmpty(identificationAttribute)) {
+      data = beforeRestore(data);
       return Promise.resolve(data);
     } else {
+      data = beforeReject(data);
       return Promise.reject();
     }
   },
@@ -111,7 +118,10 @@ export default BaseAuthenticator.extend({
       data[resourceName][identificationAttributeName] = identification;
 
       return this.makeRequest(data).then(
-        (response) => run(null, resolve, response),
+        (response) => {
+          response = beforeAuthenticate(response);
+          run(null, resolve, response);
+        },
         (xhr) => run(null, reject, xhr.responseJSON || xhr.responseText)
       );
     });
