@@ -436,7 +436,7 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 Authorizers are easily customized by setting the respective properties, e.g.:
 
 ```js
-// app/authenticators/devise.js
+// app/authorizers/devise.js
 import DeviseAuthorizer from 'ember-simple-auth/authorizers/devise';
 
 export default DeviseAuthorizer.extend({
