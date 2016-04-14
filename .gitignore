@@ -4,6 +4,7 @@
 
 # compiled output
 /dist
+/fastboot-dist
 /tmp
 
 # dependencies
