@@ -60,10 +60,10 @@ export default BaseStore.extend({
 
     @property cookieName
     @type String
-    @default ember_simple_auth-session
+    @default ember_simple_auth:session
     @public
   */
-  cookieName: 'ember_simple_auth-session',
+  cookieName: 'ember_simple_auth:session',
 
   /**
     The expiration time for the cookie in seconds. A value of `null` will make
@@ -93,7 +93,7 @@ export default BaseStore.extend({
     if (this.get('_fastboot.isFastBoot')) {
       return this.get('_fastboot._fastbootInfo.request.hostname').indexOf('https:') === 0;
     } else {
-      return window.location.protocol === 'https:'
+      return window.location.protocol === 'https:';
     }
   }).volatile(),
 
@@ -174,17 +174,17 @@ export default BaseStore.extend({
   },
 
   _calculateExpirationTime() {
-    let cachedExpirationTime = this._read(`${this.cookieName}-expiration_time`);
+    let cachedExpirationTime = this._read(`${this.cookieName}:expiration_time`);
     cachedExpirationTime     = !!cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
     return !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : cachedExpirationTime;
   },
 
   _write(value, expiration) {
-    this.get('_cookies').write(this.cookieName, value, {
+    this.get('cookies').write(this.cookieName, value, {
       domain:   this.cookieDomain,
-      expires:  expiration ? new Date(expiration) : null,
-      path:     '/',
-      secure:   !!this.get('_secureCookies')
+      expires:  new Date(expiration).toUTCString(),
+      path:     '; path=/',
+      secure:   !!this._secureCookies,
     });
   },
 

@@ -14,5 +14,5 @@ export default function setupSession(registry) {
     registry.register(store, Ephemeral);
   }
 
-  inject(registry, 'session:main', 'store', store);
+  inject(registry, store, 'cookies', 'service:cookies');
 }

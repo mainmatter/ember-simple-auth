@@ -34,6 +34,11 @@ export default Base.extend({
   localStorageKey: 'ember_simple_auth-session',
 
   /**
+    The cookie store injected by initializers/setup-session
+  */
+  cookies: null,
+
+  /**
     The domain to use for the cookie if `localStorage` is not available, e.g.,
     "example.com", ".example.com" (which includes all subdomains) or
     "subdomain.example.com". If not explicitly set, the cookie domain defaults
@@ -86,7 +91,7 @@ export default Base.extend({
       const options = { key: this.get('localStorageKey') };
       store = this._createStore(LocalStorage, options);
     } else {
-      const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime');
+      const options = this.getProperties('cookies', 'cookieDomain', 'cookieName', 'cookieExpirationTime');
       store = this._createStore(Cookie, options);
     }
     this.set('_store', store);
