@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "ember build",
+    "fastboot": "ember fastboot --serve-assets",
     "start": "ember server",
     "test": "ember try:each",
     "nodetest": "node node-tests/nodetest-runner.js"
@@ -31,6 +32,7 @@
     "ember-cli-blueprint-test-helpers": "~0.13.0",
     "ember-cli-content-security-policy": "~0.5.0",
     "ember-cli-dependency-checker": "^1.2.0",
+    "ember-cli-fastboot": "ember-fastboot/ember-cli-fastboot",
     "ember-cli-htmlbars": "^1.0.3",
     "ember-cli-htmlbars-inline-precompile": "^0.3.1",
     "ember-cli-inject-live-reload": "^1.4.0",
@@ -69,6 +71,7 @@
   "dependencies": {
     "ember-cli-babel": "^5.1.6",
     "ember-cli-is-package-missing": "^1.0.0",
+    "ember-cookies": "0.0.4",
     "ember-getowner-polyfill": "1.0.1",
     "silent-error": "^1.0.0"
   },
