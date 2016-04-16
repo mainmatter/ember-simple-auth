@@ -76,14 +76,16 @@ export default BaseStore.extend({
   */
   cookieExpirationTime: null,
 
-  _secureCookies: window.location.protocol === 'https:',
+  _secureCookies: computed(function () {
+    return window ? window.location.protocol === 'https:' : _fastbootInfo.host().includes('https:');
+  }).volatile(),
 
   _syncDataTimeout: null,
 
   _renewExpirationTimeout: null,
 
   _isPageVisible: computed(function() {
-    const visibilityState = document.visibilityState || 'visible';
+    const visibilityState = document ? document.visibilityState || 'visible' : false;
     return visibilityState === 'visible';
   }).volatile(),
 
@@ -143,8 +145,8 @@ export default BaseStore.extend({
   },
 
   _read(name) {
-    let value = document.cookie.match(new RegExp(`${name}=([^;]+)`)) || [];
-    return decodeURIComponent(value[1] || '');
+    const value = this.get('cookies').read(name) || '';
+    return decodeURIComponent(value);
   },
 
   _calculateExpirationTime() {
@@ -154,15 +156,12 @@ export default BaseStore.extend({
   },
 
   _write(value, expiration) {
-    let path        = '; path=/';
-    let domain      = Ember.isEmpty(this.cookieDomain) ? '' : `; domain=${this.cookieDomain}`;
-    let expires     = Ember.isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
-    let secure      = !!this._secureCookies ? ';secure' : '';
-    document.cookie = `${this.cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
-    if (expiration !== null) {
-      let cachedExpirationTime = this._read(`${this.cookieName}:expiration_time`);
-      document.cookie = `${this.cookieName}:expiration_time=${encodeURIComponent(this.cookieExpirationTime || cachedExpirationTime)}${domain}${path}${expires}${secure}`;
-    }
+    this.get('cookies').write(this.cookieName, value, {
+      domain:   this.cookieDomain,
+      expires:  new Date(expiration).toUTCString(),
+      path:     '; path=/',
+      secure:   !!this._secureCookies,
+    });
   },
 
   _syncData() {
