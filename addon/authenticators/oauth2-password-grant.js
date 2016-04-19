@@ -2,7 +2,7 @@
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 
-const { RSVP, isEmpty, run, computed } = Ember;
+const { RSVP, isEmpty, run, computed, get } = Ember;
 const assign = Ember.assign || Ember.merge;
 
 /**
@@ -142,12 +142,9 @@ export default BaseAuthenticator.extend({
           reject();
         }
       } else {
-        if (isEmpty(data['access_token'])) {
-          reject();
-        } else {
-          this._scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
-          resolve(data);
-        }
+        this._validate(reject, data, 'access_token');
+        this._scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
+        resolve(data);
       }
     });
   },
@@ -186,17 +183,11 @@ export default BaseAuthenticator.extend({
       }
       this.makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
-          if (isEmpty(response['access_token'])) {
-            throw new Error('access_token is missing in server response')
-          }
+          this._validate(reject, response, 'access_token');
           const refreshAccessTokens = this.get('refreshAccessTokens');
           if (refreshAccessTokens) {
-            if (isEmpty(response['expires_in'])) {
-              throw new Error('expires_in is missing in server response')
-            }
-            if (isEmpty(response['refresh_token'])) {
-              throw new Error('refresh_token is missing in server response')
-            }
+            this._validate(reject, response, 'expires_in');
+            this._validate(reject, response, 'refresh_token');
           }
 
           const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
@@ -204,6 +195,7 @@ export default BaseAuthenticator.extend({
           if (!isEmpty(expiresAt)) {
             response = assign(response, { 'expires_at': expiresAt });
           }
+
           resolve(response);
         });
       }, (xhr) => {
@@ -322,6 +314,13 @@ export default BaseAuthenticator.extend({
   _absolutizeExpirationTime(expiresIn) {
     if (!isEmpty(expiresIn)) {
       return new Date((new Date().getTime()) + expiresIn * 1000).getTime();
+    }
+  },
+
+  _validate(reject, data, attributeName) {
+    const attribute = get(data, attributeName);
+    if (isEmpty(attribute)) {
+      run(null, reject, `${attributeName} is missing in server response`);
     }
   }
 });

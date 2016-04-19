@@ -188,6 +188,49 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           });
         });
       });
+
+      describe('when the server returns incomplete data', () => {
+        it('fails when no access_token is present', (done) => {
+          server.respondWith('POST', '/token', [
+              200,
+              { 'Content-Type': 'application/json' },
+              '{}'
+          ]);
+
+          authenticator.authenticate('username', 'password').catch((error) => {
+            expect(error).to.eql('access_token is missing in server response');
+            done();
+          });
+        });
+
+        it('fails when token refresh data is expected and there is none', (done) => {
+          server.respondWith('POST', '/token', [
+              200,
+              { 'Content-Type': 'application/json' },
+              '{ "access_token": "secret token!" }'
+          ]);
+
+          authenticator.authenticate('username', 'password').catch((error) => {
+            expect(error).to.eql('expires_in is missing in server response');
+            done();
+          });
+
+          describe('when expires_in is present', () => {
+            it('fails if refresh_token is missing', (done) => {
+              server.respondWith('POST', '/token', [
+                  200,
+                  { 'Content-Type': 'application/json' },
+                  '{ "access_token": "secret token!", "expires_in": 12345 }'
+              ]);
+
+              authenticator.authenticate('username', 'password').catch((error) => {
+                expect(error).to.eql({ error: 'invalid_grant' });
+                done();
+              });
+            });
+          });
+        });
+      });
     });
 
     describe('when the authentication request fails', () => {
