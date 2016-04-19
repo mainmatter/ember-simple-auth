@@ -98,6 +98,34 @@ describe('DeviseAuthenticator', () => {
           done();
         });
       });
+
+      describe('when the server returns incomplete data', () => {
+        it('fails when token is missing', (done) => {
+          server.respondWith('POST', '/users/sign_in', [
+              201,
+              { 'Content-Type': 'application/json' },
+              '{ "email": "email@address.com" }'
+          ]);
+
+          authenticator.authenticate('email@address.com', 'password').catch((error) => {
+            expect(error).to.eql('token is missing in server response');
+            done();
+          });
+        });
+
+        it('fails when identification is missing', (done) => {
+          server.respondWith('POST', '/users/sign_in', [
+              201,
+              { 'Content-Type': 'application/json' },
+              '{ "token": "secret token!" }'
+          ]);
+
+          authenticator.authenticate('email@address.com', 'password').catch((error) => {
+            expect(error).to.eql('email is missing in server response');
+            done();
+          });
+        });
+      });
     });
 
     describe('when the authentication request fails', () => {
