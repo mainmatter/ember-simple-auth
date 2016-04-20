@@ -65,6 +65,8 @@ npm install && bower install && ember serve
 
 and go to [http://localhost:4200](http://localhost:4200).
 
+There is also a nice writeup at [https://github.com/ryanlabouve/ember-jwt-esa-blog](https://github.com/ryanlabouve/ember-jwt-esa-blog) which describes how to write a thorough tested authenticated app.
+
 ### Installation
 
 Installing the library is as easy as:
