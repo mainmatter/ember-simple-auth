@@ -81,8 +81,6 @@ export default BaseAuthenticator.extend({
     if (!isEmpty(tokenAttribute) && !isEmpty(identificationAttribute)) {
       return Promise.resolve(data);
     } else {
-      this._validate(Promise.reject, data, tokenAttributeName);
-      this._validate(Promise.reject, data, identificationAttributeName);
       return Promise.reject();
     }
   },
@@ -114,9 +112,11 @@ export default BaseAuthenticator.extend({
 
       return this.makeRequest(data).then(
         (response) => {
-          this._validate(reject, response, tokenAttributeName);
-          this._validate(reject, response, identificationAttributeName);
-          run(null, resolve, response);
+          if (!this._validate(response)) {
+            run(null, reject, `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`);
+          } else {
+            run(null, resolve, response);
+          }
         },
         (xhr) => run(null, reject, xhr.responseJSON || xhr.responseText)
       );
@@ -158,10 +158,9 @@ export default BaseAuthenticator.extend({
     return $.ajax(requestOptions);
   },
 
-  _validate(reject, data, attributeName) {
-    const attribute = get(data, attributeName);
-    if (isEmpty(attribute)) {
-      run(null, reject, `${attributeName} is missing in server response`);
-    }
+  _validate(data) {
+    const tokenAttributeName = this.get('tokenAttributeName');
+    const identificationAttributeName = this.get('identificationAttributeName');
+    return !isEmpty(data[tokenAttributeName]) && !isEmpty(data[identificationAttributeName]);
   }
 });

@@ -142,9 +142,12 @@ export default BaseAuthenticator.extend({
           reject();
         }
       } else {
-        this._validate(reject, data, 'access_token');
-        this._scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
-        resolve(data);
+        if (!this._validate(data)) {
+          reject();
+        } else {
+          this._scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
+          resolve(data);
+        }
       }
     });
   },
@@ -184,10 +187,8 @@ export default BaseAuthenticator.extend({
       this.makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
           this._validate(reject, response, 'access_token');
-          const refreshAccessTokens = this.get('refreshAccessTokens');
-          if (refreshAccessTokens) {
-            this._validate(reject, response, 'expires_in');
-            this._validate(reject, response, 'refresh_token');
+          if (!this._validate(response)) {
+            run(null, reject, 'access_token is missing in server response');
           }
 
           const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
@@ -317,10 +318,7 @@ export default BaseAuthenticator.extend({
     }
   },
 
-  _validate(reject, data, attributeName) {
-    const attribute = get(data, attributeName);
-    if (isEmpty(attribute)) {
-      run(null, reject, `${attributeName} is missing in server response`);
-    }
+  _validate(data) {
+    return !isEmpty(data['access_token']);
   }
 });

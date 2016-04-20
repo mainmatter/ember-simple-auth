@@ -108,7 +108,7 @@ describe('DeviseAuthenticator', () => {
           ]);
 
           authenticator.authenticate('email@address.com', 'password').catch((error) => {
-            expect(error).to.eql('token is missing in server response');
+            expect(error).to.eql('Check that server response includes token and email');
             done();
           });
         });
@@ -121,7 +121,7 @@ describe('DeviseAuthenticator', () => {
           ]);
 
           authenticator.authenticate('email@address.com', 'password').catch((error) => {
-            expect(error).to.eql('email is missing in server response');
+            expect(error).to.eql('Check that server response includes token and email');
             done();
           });
         });
