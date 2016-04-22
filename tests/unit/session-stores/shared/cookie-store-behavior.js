@@ -3,6 +3,8 @@ import Ember from 'ember';
 import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
+import sinon from 'sinon';
+import FakeCookieService from '../../../helpers/fake-cookie-service';
 
 const { run: { next } } = Ember;
 
@@ -11,48 +13,52 @@ export default function(options) {
   let createStore;
   let renew;
   let sync;
+  let cookieService;
 
   beforeEach(() => {
     createStore = options.createStore;
     renew = options.renew;
     sync = options.sync;
-    store = createStore();
+    cookieService = FakeCookieService.create();
+    sinon.spy(cookieService, 'read');
+    sinon.spy(cookieService, 'write');
+    store = createStore(cookieService);
   });
 
   afterEach(() => {
+    cookieService.read.restore();
+    cookieService.write.restore();
     store.clear();
   });
 
   describe('#persist', () => {
     it('respects the configured cookieName', () => {
-      store = createStore({ cookieName: 'test-session' });
+      store = createStore(cookieService, { cookieName: 'test-session' });
       store.persist({ key: 'value' });
 
-      expect(document.cookie).to.contain('test-session=%7B%22key%22%3A%22value%22%7D');
+      expect(cookieService.write).to.have.been.calledWith('test-session', JSON.stringify({ key: 'value' }), { domain: null, expires: null, path: '/', secure: false });
     });
 
     it('respects the configured cookieDomain', () => {
-      store = createStore({ cookieDomain: 'example.com' });
+      store = createStore(cookieService, { cookieDomain: 'example.com' });
       store.persist({ key: 'value' });
 
-      expect(document.cookie).to.not.contain('test-session=%7B%22key%22%3A%22value%22%7D');
+      expect(cookieService.write).to.have.been.calledWith('ember_simple_auth-session', JSON.stringify({ key: 'value' }), { domain: 'example.com', expires: null, path: '/', secure: false });
     });
   });
 
   describe('#renew', () => {
-    beforeEach(() => {
-      store = createStore({
+    beforeEach((done) => {
+      store = createStore(cookieService, {
         cookieName:           'test-session',
         cookieExpirationTime: 60,
         expires:              new Date().getTime() + store.cookieExpirationTime * 1000
       });
       store.persist({ key: 'value' });
-      renew(store);
+      renew(store).then(done);
     });
 
-    it('stores the expiration time in a cookie named "test-session-expiration_time"', () => {
-      expect(document.cookie).to.contain(`${store.cookieName}-expiration_time=60`);
-    });
+    it('stores the expiration time in a cookie named "test-session-expiration_time"');
   });
 
   describe('the "sessionDataUpdated" event', () => {
@@ -77,7 +83,7 @@ export default function(options) {
     });
 
     it('is triggered when the cookie changed', (done) => {
-      document.cookie = 'ember_simple_auth-session=%7B%22key%22%3A%22other%20value%22%7D;path=/;';
+      store.get('_cookies._content')['ember_simple_auth-session'] = '%7B%22key%22%3A%22other%20value%22%7D';
       sync(store);
 
       next(() => {
