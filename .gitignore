@@ -4,6 +4,7 @@
 
 # compiled output
 /dist
+/fastboot-dist
 /tmp
 
 # dependencies
@@ -17,3 +18,17 @@
 /libpeerconnection.log
 npm-debug.log
 testem.log
+
+# Created by https://www.gitignore.io/api/vim
+
+### Vim ###
+# swap
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+# session
+Session.vim
+# temporary
+.netrwhist
+*~
+# auto-generated tag files
+tags
