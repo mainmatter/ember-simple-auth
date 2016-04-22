@@ -6,6 +6,7 @@ import startApp from '../helpers/start-app';
 import Pretender from 'pretender';
 import { invalidateSession, authenticateSession, currentSession } from '../helpers/ember-simple-auth';
 import destroyApp from '../helpers/destroy-app';
+import config from '../../config/environment';
 
 describe('Acceptance: Authentication', function() {
   let application;
@@ -32,7 +33,7 @@ describe('Acceptance: Authentication', function() {
 
     it('can be visited when the session is authenticated', () => {
       server = new Pretender(function() {
-        this.get('/posts', () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
+        this.get(`${config.apiEndpoint}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
       authenticateSession(application, { userId: 1, otherData: 'some-data' });
 
