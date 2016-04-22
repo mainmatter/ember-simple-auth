@@ -26,6 +26,8 @@ describe('AdaptiveStore', () => {
   describe('when localStorage is not available', () => {
     beforeEach(() => {
       store = Adaptive.create({ _isLocalStorageAvailable: false });
+      store.set('_store._cookies', FakeCookieService.create());
+      store.set('_store._fastboot', { isFastBoot: false });
     });
 
     itBehavesLikeAStore({
@@ -40,7 +42,7 @@ describe('AdaptiveStore', () => {
         const store = Adaptive.create(options);
         store.set('_store._cookies', cookiesService);
         store.set('_store._fastboot', { isFastBoot: false });
-        return cookiesService;
+        return store;
       },
       renew(store, data) {
         store.get('_store')._renew(data);

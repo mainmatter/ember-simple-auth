@@ -29,7 +29,7 @@ export default function(options) {
     store.clear();
   });
 
-  describe('#persist', () => {
+  describe('#persist', function() {
     it('respects the configured cookieName', () => {
       store = createStore(cookieService, { cookieName: 'test:session' });
       store.persist({ key: 'value' });
@@ -82,7 +82,8 @@ export default function(options) {
     });
 
     it('is triggered when the cookie changed', (done) => {
-      store.get('_cookies._content')['ember_simple_auth:session'] = '%7B%22key%22%3A%22other%20value%22%7D';
+      const cookiesService = store.get('_cookies') || store.get('_store._cookies');
+      cookiesService._content['ember_simple_auth:session'] = '%7B%22key%22%3A%22other%20value%22%7D';
       sync(store);
 
       Ember.run.next(() => {
