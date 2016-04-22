@@ -540,7 +540,9 @@ store if `localStorage` is available.
 
 [The Cookie store](http://ember-simple-auth.com/api/classes/CookieStore.html)
 stores its data in a cookie. This is used by the adaptive store if
-`localStorage` is not available.
+`localStorage` is not available. __This store must be used when the
+application uses
+[FastBoot](https://github.com/ember-fastboot/ember-cli-fastboot).__
 
 #### Ephemeral Store
 
@@ -588,6 +590,19 @@ export default Base.extend({
     …
   }
 });
+```
+
+## FastBoot
+
+Ember Simple Auth works with FastBoot out of the box as long as the Cookie
+session store is being used. In order to enable the cookie store, define it as
+the application store:
+
+```js
+// app/session-stores/application.js
+import CookieStore from 'ember-simple-auth/session-stores/cookie';
+
+export default CookieStore.extend();
 ```
 
 ## Testing
