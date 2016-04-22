@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
+import getOwner from 'ember-getowner-polyfill';
 
 const { RSVP, computed, run: { next } } = Ember;
 
@@ -76,8 +77,24 @@ export default BaseStore.extend({
   */
   cookieExpirationTime: null,
 
-  _secureCookies: computed(function () {
-    return window ? window.location.protocol === 'https:' : _fastbootInfo.host().includes('https:');
+  _cookies: computed(function() {
+    let owner = getOwner(this);
+
+    return owner.lookup('service:cookies');
+  }),
+
+  _fastboot: computed(function() {
+    let owner = getOwner(this);
+
+    return owner.lookup('service:fastboot');
+  }),
+
+  _secureCookies: computed(function() {
+    if (this.get('_fastboot.isFastBoot')) {
+      return this.get('_fastboot._fastbootInfo.request.hostname').indexOf('https:') === 0;
+    } else {
+      return window.location.protocol === 'https:'
+    }
   }).volatile(),
 
   _syncDataTimeout: null,
@@ -85,18 +102,26 @@ export default BaseStore.extend({
   _renewExpirationTimeout: null,
 
   _isPageVisible: computed(function() {
-    const visibilityState = document ? document.visibilityState || 'visible' : false;
-    return visibilityState === 'visible';
+    if (this.get('_fastboot.isFastBoot')) {
+      return false;
+    } else {
+      const visibilityState = document.visibilityState || 'visible';
+      return visibilityState === 'visible';
+    }
   }).volatile(),
 
   init() {
     this._super(...arguments);
 
-    next(() => {
-      this._syncData().then(() => {
-        this._renewExpiration();
+    if (!this.get('_fastboot.isFastBoot')) {
+      next(() => {
+        this._syncData().then(() => {
+          this._renewExpiration();
+        });
       });
-    });
+    } else {
+      this._renew();
+    }
   },
 
   /**
@@ -145,7 +170,7 @@ export default BaseStore.extend({
   },
 
   _read(name) {
-    const value = this.get('cookies').read(name) || '';
+    const value = this.get('_cookies').read(name) || '';
     return decodeURIComponent(value);
   },
 
@@ -156,11 +181,11 @@ export default BaseStore.extend({
   },
 
   _write(value, expiration) {
-    this.get('cookies').write(this.cookieName, value, {
+    this.get('_cookies').write(this.cookieName, value, {
       domain:   this.cookieDomain,
-      expires:  new Date(expiration).toUTCString(),
-      path:     '; path=/',
-      secure:   !!this._secureCookies,
+      expires:  expiration ? new Date(expiration) : null,
+      path:     '/',
+      secure:   !!this.get('_secureCookies')
     });
   },
 
