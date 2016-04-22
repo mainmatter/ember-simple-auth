@@ -108,7 +108,7 @@ export default BaseStore.extend({
 
   init() {
     this._super(...arguments);
-
+/*
     if (!this.get('_fastboot.isFastBoot')) {
       next(() => {
         this._syncData().then(() => {
@@ -117,7 +117,7 @@ export default BaseStore.extend({
       });
     } else {
       this._renew();
-    }
+    }*/
   },
 
   /**
@@ -166,8 +166,7 @@ export default BaseStore.extend({
   },
 
   _read(name) {
-    const value = this.get('_cookies').read(name) || '';
-    return decodeURIComponent(value);
+    return this.get('_cookies').read(name) || '';
   },
 
   _calculateExpirationTime() {
