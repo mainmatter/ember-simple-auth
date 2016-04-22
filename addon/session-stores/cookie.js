@@ -170,8 +170,7 @@ export default BaseStore.extend({
   },
 
   _read(name) {
-    const value = this.get('_cookies').read(name) || '';
-    return decodeURIComponent(value);
+    return this.get('_cookies').read(name) || '';
   },
 
   _calculateExpirationTime() {
