@@ -6,5 +6,5 @@ const { JSONAPIAdapter } = DS;
 
 export default JSONAPIAdapter.extend(DataAdapterMixin, {
   authorizer: 'authorizer:application',
-  host: config.apiEndpoint
+  host: config.apiHost
 });
