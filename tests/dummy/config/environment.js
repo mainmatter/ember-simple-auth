@@ -34,7 +34,7 @@ module.exports = function(environment) {
       }
     },
 
-    apiEndpoint: 'http://localhost:4200'
+    apiHost: 'http://localhost:4200'
   };
 
   if (environment === 'development') {
