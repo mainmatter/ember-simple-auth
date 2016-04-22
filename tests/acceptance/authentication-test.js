@@ -33,7 +33,7 @@ describe('Acceptance: Authentication', function() {
 
     it('can be visited when the session is authenticated', () => {
       server = new Pretender(function() {
-        this.get(`${config.apiEndpoint}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
+        this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
       authenticateSession(application, { userId: 1, otherData: 'some-data' });
 
