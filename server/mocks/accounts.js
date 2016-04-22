@@ -3,6 +3,7 @@ module.exports = function(app) {
   var accountsRouter = express.Router();
 
   accountsRouter.get('/1', function(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     if (/Bearer .+/.test(req.headers.authorization)) {
       const response = {
         data: {
