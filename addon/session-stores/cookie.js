@@ -112,7 +112,6 @@ export default BaseStore.extend({
 
   init() {
     this._super(...arguments);
-/*
     if (!this.get('_fastboot.isFastBoot')) {
       next(() => {
         this._syncData().then(() => {
@@ -121,7 +120,7 @@ export default BaseStore.extend({
       });
     } else {
       this._renew();
-    }*/
+    }
   },
 
   /**
@@ -170,7 +169,8 @@ export default BaseStore.extend({
   },
 
   _read(name) {
-    return this.get('_cookies').read(name) || '';
+    const value = this.get('_cookies').read(name) || '';
+    return decodeURIComponent(value);
   },
 
   _calculateExpirationTime() {
@@ -180,11 +180,11 @@ export default BaseStore.extend({
   },
 
   _write(value, expiration) {
-    this.get('cookies').write(this.cookieName, value, {
+    this.get('_cookies').write(this.cookieName, value, {
       domain:   this.cookieDomain,
-      expires:  new Date(expiration).toUTCString(),
-      path:     '; path=/',
-      secure:   !!this._secureCookies,
+      expires:  expiration ? new Date(expiration) : null,
+      path:     '/',
+      secure:   !!this.get('_secureCookies')
     });
   },
 
