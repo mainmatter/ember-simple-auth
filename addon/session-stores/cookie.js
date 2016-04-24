@@ -3,7 +3,7 @@ import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import getOwner from 'ember-getowner-polyfill';
 
-const { RSVP, computed, run: { next } } = Ember;
+const { RSVP, computed, inject: { service }, run: { next } } = Ember;
 
 /**
   Session store that persists data in a cookie.
@@ -77,11 +77,7 @@ export default BaseStore.extend({
   */
   cookieExpirationTime: null,
 
-  _cookies: computed(function() {
-    let owner = getOwner(this);
-
-    return owner.lookup('service:cookies');
-  }),
+  _cookies: service('cookies'),
 
   _fastboot: computed(function() {
     let owner = getOwner(this);
