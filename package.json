@@ -72,7 +72,7 @@
   "dependencies": {
     "ember-cli-babel": "^5.1.5",
     "ember-cli-is-package-missing": "^1.0.0",
-    "ember-cookies": "simplabs/ember-cookies#5379c7273d181cf54c487f394c69f6417c4061b3",
+    "ember-cookies": "~0.0.6",
     "ember-getowner-polyfill": "1.0.0",
     "silent-error": "^1.0.0"
   },
