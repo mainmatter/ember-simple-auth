@@ -148,6 +148,7 @@ export default BaseStore.extend({
     if (isEmpty(data)) {
       return RSVP.resolve({});
     } else {
+      data = decodeURIComponent(data);
       return RSVP.resolve(JSON.parse(data));
     }
   },
