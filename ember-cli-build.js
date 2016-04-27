@@ -10,6 +10,7 @@ var sourceTrees = [];
 
 module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
+    storeConfigInMeta: true,
     jscsOptions: {
       enabled: true,
       testGenerator: function(relativePath, errors) {
