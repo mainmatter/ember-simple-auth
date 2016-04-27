@@ -22,6 +22,8 @@ describe('AuthenticatedRouteMixin', () => {
         }
       });
       const Route = Ember.Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {
+        // pretend this is never FastBoot
+        _isFastBoot: false,
         // replace actual transitionTo as the router isn't set up etc.
         transitionTo() {}
       });
