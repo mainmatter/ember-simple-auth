@@ -9,7 +9,7 @@ import InternalSession from 'ember-simple-auth/internal-session';
 import Configuration from 'ember-simple-auth/configuration';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
-const { Mixin, RSVP, Route } = Ember;
+const { Mixin, RSVP, Route: EmberRoute } = Ember;
 
 describe('UnauthenticatedRouteMixin', () => {
   let route;
@@ -22,6 +22,12 @@ describe('UnauthenticatedRouteMixin', () => {
         beforeModel() {
           return RSVP.resolve('upstreamReturnValue');
         }
+      });
+      const Route = EmberRoute.extend(MixinImplementingBeforeModel, UnauthenticatedRouteMixin, {
+        // pretend this is never FastBoot
+        _isFastBoot: false,
+        // replace actual transitionTo as the router isn't set up etc.
+        transitionTo() {}
       });
 
       session    = InternalSession.create({ store: EphemeralStore.create() });

@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import Configuration from './../configuration';
 
-const { inject: { service }, Mixin, assert } = Ember;
+const { inject: { service }, Mixin, assert, computed } = Ember;
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -34,6 +35,12 @@ export default Mixin.create({
   */
   session: service('session'),
 
+  _isFastBoot: computed(function() {
+    const fastboot = getOwner(this).lookup('service:fastboot');
+
+    return fastboot ? fastboot.get('isFastBoot') : false;
+  }),
+
   /**
     Checks whether the session is authenticated and if it is aborts the current
     transition and instead transitions to the
@@ -49,6 +56,10 @@ export default Mixin.create({
   */
   beforeModel() {
     if (this.get('session').get('isAuthenticated')) {
+      if (!this.get('_isFastBoot')) {
+        transition.abort();
+      }
+
       assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== Configuration.routeIfAlreadyAuthenticated);
       return this.transitionTo(Configuration.routeIfAlreadyAuthenticated);
     } else {
