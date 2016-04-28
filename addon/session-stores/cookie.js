@@ -60,10 +60,10 @@ export default BaseStore.extend({
 
     @property cookieName
     @type String
-    @default ember_simple_auth:session
+    @default ember_simple_auth-session
     @public
   */
-  cookieName: 'ember_simple_auth:session',
+  cookieName: 'ember_simple_auth-session',
 
   /**
     The expiration time for the cookie in seconds. A value of `null` will make
@@ -87,7 +87,7 @@ export default BaseStore.extend({
 
   _secureCookies: computed(function() {
     if (this.get('_fastboot.isFastBoot')) {
-      return this.get('_fastboot._fastbootInfo.request.hostname').indexOf('https:') === 0;
+      return this.get('_fastboot.request.host').indexOf('https:') === 0;
     } else {
       return window.location.protocol === 'https:'
     }
@@ -101,7 +101,7 @@ export default BaseStore.extend({
     if (this.get('_fastboot.isFastBoot')) {
       return false;
     } else {
-      const visibilityState = document.visibilityState || 'visible';
+      const visibilityState = typeof document !== 'undefined' ? document.visibilityState || 'visible' : false;
       return visibilityState === 'visible';
     }
   }).volatile(),
@@ -148,7 +148,6 @@ export default BaseStore.extend({
     if (isEmpty(data)) {
       return RSVP.resolve({});
     } else {
-      data = decodeURIComponent(data);
       return RSVP.resolve(JSON.parse(data));
     }
   },
