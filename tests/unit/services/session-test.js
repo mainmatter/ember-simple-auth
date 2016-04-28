@@ -100,6 +100,12 @@ describe('SessionService', () => {
       expect(session.content).to.eql({ some: { other: 'data' } });
     });
 
+    it('can be set with Ember.set', () => {
+      Ember.set(sessionService, 'data.emberSet', 'ember-set-data');
+
+      expect(session.content).to.eql({ emberSet: 'ember-set-data' });
+    });
+
     it('is read-only', () => {
       expect(() => {
         sessionService.set('data', false);
