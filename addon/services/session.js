@@ -207,7 +207,7 @@ export default Ember.Service.extend(Ember.Evented, {
     this method does nothing.
 
     ```js
-    this.get('session').authroize('authorizer:oauth2-bearer').then((auth) => {
+    this.get('session').authorize('authorizer:oauth2-bearer').then((auth) => {
       xhr.setRequestHeader(auth.headerName, auth.headerValue);
     });
     ```
