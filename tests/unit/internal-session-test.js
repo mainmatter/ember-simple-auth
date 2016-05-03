@@ -517,84 +517,169 @@ describe('InternalSession', () => {
   });
 
   describe('when the store triggers the "sessionDataUpdated" event', () => {
-    describe('when there is an authenticator factory in the event data', () => {
-      describe('when the authenticator resolves restoration', () => {
-        beforeEach(() => {
-          sinon.stub(authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'other property' }));
-        });
+    describe('when the session is currently busy', () => {
+      beforeEach(() => {
+        sinon.stub(store, 'restore').returns(new Ember.RSVP.Promise((resolve) => {
+          Ember.run.next(() => resolve({ some: 'other property' }));
+        }));
+      });
 
-        it('is authenticated', (done) => {
-          store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+      it('does not process the event', (done) => {
+        sinon.spy(authenticator, 'restore');
+        session.restore().then(done).catch(done);
+        store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
 
-          Ember.run.next(() => {
-            expect(session.get('isAuthenticated')).to.be.true;
-            done();
+        expect(authenticator.restore).to.not.have.been.called;
+      });
+    });
+
+    describe('when the session is not currently busy', () => {
+      describe('when there is an authenticator factory in the event data', () => {
+        describe('when the authenticator resolves restoration', () => {
+          beforeEach(() => {
+            sinon.stub(authenticator, 'restore').returns(Ember.RSVP.resolve({ some: 'other property' }));
           });
-        });
 
-        it('stores the data the authenticator resolves with in its authenticated section', (done) => {
-          store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator' } });
+          it('is authenticated', (done) => {
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
 
-          Ember.run.next(() => {
-            expect(session.get('authenticated')).to.eql({ some: 'other property', authenticator: 'authenticator' });
-            done();
-          });
-        });
-
-        it('persists its content in the store', (done) => {
-          store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator' } });
-
-          Ember.run.next(() => {
-            store.restore().then((properties) => {
-
-              expect(properties).to.eql({ some: 'property', authenticated: { some: 'other property', authenticator: 'authenticator' } });
+            Ember.run.next(() => {
+              expect(session.get('isAuthenticated')).to.be.true;
               done();
+            });
+          });
+
+          it('stores the data the authenticator resolves with in its authenticated section', (done) => {
+            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator' } });
+
+            Ember.run.next(() => {
+              expect(session.get('authenticated')).to.eql({ some: 'other property', authenticator: 'authenticator' });
+              done();
+            });
+          });
+
+          it('persists its content in the store', (done) => {
+            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator' } });
+
+            Ember.run.next(() => {
+              store.restore().then((properties) => {
+
+                expect(properties).to.eql({ some: 'property', authenticated: { some: 'other property', authenticator: 'authenticator' } });
+                done();
+              });
+            });
+          });
+
+          describe('when the session is already authenticated', () => {
+            beforeEach(() => {
+              session.set('isAuthenticated', true);
+            });
+
+            it('does not trigger the "authenticationSucceeded" event', (done) => {
+              let triggered = false;
+              session.one('authenticationSucceeded', () => triggered = true);
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+
+              Ember.run.next(() => {
+                expect(triggered).to.be.false;
+                done();
+              });
+            });
+          });
+
+          describe('when the session is not already authenticated', () => {
+            beforeEach(() => {
+              session.set('isAuthenticated', false);
+            });
+
+            it('triggers the "authenticationSucceeded" event', (done) => {
+              let triggered = false;
+              session.one('authenticationSucceeded', () => triggered = true);
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+
+              Ember.run.next(() => {
+                expect(triggered).to.be.true;
+                done();
+              });
             });
           });
         });
 
-        describe('when the session is already authenticated', () => {
+        describe('when the authenticator rejects restoration', () => {
           beforeEach(() => {
-            session.set('isAuthenticated', true);
+            sinon.stub(authenticator, 'restore').returns(Ember.RSVP.reject());
           });
 
-          it('does not trigger the "authenticationSucceeded" event', (done) => {
-            let triggered = false;
-            session.one('authenticationSucceeded', () => triggered = true);
+          it('is not authenticated', (done) => {
             store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
 
             Ember.run.next(() => {
-              expect(triggered).to.be.false;
+              expect(session.get('isAuthenticated')).to.be.false;
               done();
             });
           });
-        });
 
-        describe('when the session is not already authenticated', () => {
-          beforeEach(() => {
-            session.set('isAuthenticated', false);
-          });
-
-          it('triggers the "authenticationSucceeded" event', (done) => {
-            let triggered = false;
-            session.one('authenticationSucceeded', () => triggered = true);
+          it('clears its authenticated section', (done) => {
+            session.set('content', { some: 'property', authenticated: { some: 'other property' } });
             store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
 
             Ember.run.next(() => {
-              expect(triggered).to.be.true;
+              expect(session.get('content')).to.eql({ some: 'other property', authenticated: {} });
               done();
+            });
+          });
+
+          it('updates the store', (done) => {
+            session.set('content', { some: 'property', authenticated: { some: 'other property' } });
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+
+            Ember.run.next(() => {
+              store.restore().then((properties) => {
+                expect(properties).to.eql({ some: 'other property', authenticated: {} });
+                done();
+              });
+            });
+          });
+
+          describe('when the session is authenticated', () => {
+            beforeEach(() => {
+              session.set('isAuthenticated', true);
+            });
+
+            it('triggers the "invalidationSucceeded" event', (done) => {
+              let triggered = false;
+              session.one('invalidationSucceeded', () => triggered = true);
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+
+              Ember.run.next(() => {
+                expect(triggered).to.be.true;
+                done();
+              });
+            });
+          });
+
+          describe('when the session is not authenticated', () => {
+            beforeEach(() => {
+              session.set('isAuthenticated', false);
+            });
+
+            it('does not trigger the "invalidationSucceeded" event', (done) => {
+              let triggered = false;
+              session.one('invalidationSucceeded', () => triggered = true);
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+
+              Ember.run.next(() => {
+                expect(triggered).to.be.false;
+                done();
+              });
             });
           });
         });
       });
 
-      describe('when the authenticator rejects restoration', () => {
-        beforeEach(() => {
-          sinon.stub(authenticator, 'restore').returns(Ember.RSVP.reject());
-        });
-
+      describe('when there is no authenticator factory in the store', () => {
         it('is not authenticated', (done) => {
-          store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+          store.trigger('sessionDataUpdated', { some: 'other property' });
 
           Ember.run.next(() => {
             expect(session.get('isAuthenticated')).to.be.false;
@@ -604,7 +689,7 @@ describe('InternalSession', () => {
 
         it('clears its authenticated section', (done) => {
           session.set('content', { some: 'property', authenticated: { some: 'other property' } });
-          store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+          store.trigger('sessionDataUpdated', { some: 'other property' });
 
           Ember.run.next(() => {
             expect(session.get('content')).to.eql({ some: 'other property', authenticated: {} });
@@ -614,7 +699,7 @@ describe('InternalSession', () => {
 
         it('updates the store', (done) => {
           session.set('content', { some: 'property', authenticated: { some: 'other property' } });
-          store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+          store.trigger('sessionDataUpdated', { some: 'other property' });
 
           Ember.run.next(() => {
             store.restore().then((properties) => {
@@ -632,7 +717,7 @@ describe('InternalSession', () => {
           it('triggers the "invalidationSucceeded" event', (done) => {
             let triggered = false;
             session.one('invalidationSucceeded', () => triggered = true);
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'other property' });
 
             Ember.run.next(() => {
               expect(triggered).to.be.true;
@@ -649,79 +734,12 @@ describe('InternalSession', () => {
           it('does not trigger the "invalidationSucceeded" event', (done) => {
             let triggered = false;
             session.one('invalidationSucceeded', () => triggered = true);
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'other property' });
 
             Ember.run.next(() => {
               expect(triggered).to.be.false;
               done();
             });
-          });
-        });
-      });
-    });
-
-    describe('when there is no authenticator factory in the store', () => {
-      it('is not authenticated', (done) => {
-        store.trigger('sessionDataUpdated', { some: 'other property' });
-
-        Ember.run.next(() => {
-          expect(session.get('isAuthenticated')).to.be.false;
-          done();
-        });
-      });
-
-      it('clears its authenticated section', (done) => {
-        session.set('content', { some: 'property', authenticated: { some: 'other property' } });
-        store.trigger('sessionDataUpdated', { some: 'other property' });
-
-        Ember.run.next(() => {
-          expect(session.get('content')).to.eql({ some: 'other property', authenticated: {} });
-          done();
-        });
-      });
-
-      it('updates the store', (done) => {
-        session.set('content', { some: 'property', authenticated: { some: 'other property' } });
-        store.trigger('sessionDataUpdated', { some: 'other property' });
-
-        Ember.run.next(() => {
-          store.restore().then((properties) => {
-            expect(properties).to.eql({ some: 'other property', authenticated: {} });
-            done();
-          });
-        });
-      });
-
-      describe('when the session is authenticated', () => {
-        beforeEach(() => {
-          session.set('isAuthenticated', true);
-        });
-
-        it('triggers the "invalidationSucceeded" event', (done) => {
-          let triggered = false;
-          session.one('invalidationSucceeded', () => triggered = true);
-          store.trigger('sessionDataUpdated', { some: 'other property' });
-
-          Ember.run.next(() => {
-            expect(triggered).to.be.true;
-            done();
-          });
-        });
-      });
-
-      describe('when the session is not authenticated', () => {
-        beforeEach(() => {
-          session.set('isAuthenticated', false);
-        });
-
-        it('does not trigger the "invalidationSucceeded" event', (done) => {
-          let triggered = false;
-          session.one('invalidationSucceeded', () => triggered = true);
-          store.trigger('sessionDataUpdated', { some: 'other property' });
-
-          Ember.run.next(() => {
-            expect(triggered).to.be.false;
-            done();
           });
         });
       });
