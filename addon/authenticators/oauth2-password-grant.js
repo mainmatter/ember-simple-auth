@@ -186,7 +186,6 @@ export default BaseAuthenticator.extend({
       }
       this.makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
-          this._validate(reject, response, 'access_token');
           if (!this._validate(response)) {
             run(null, reject, 'access_token is missing in server response');
           }

@@ -74,15 +74,7 @@ export default BaseAuthenticator.extend({
     @public
   */
   restore(data) {
-    const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
-    const tokenAttribute = get(data, tokenAttributeName);
-    const identificationAttribute = get(data, identificationAttributeName);
-
-    if (!isEmpty(tokenAttribute) && !isEmpty(identificationAttribute)) {
-      return Promise.resolve(data);
-    } else {
-      return Promise.reject();
-    }
+    return this._validate(data) ? Promise.resolve(data) : Promise.reject();
   },
 
   /**
