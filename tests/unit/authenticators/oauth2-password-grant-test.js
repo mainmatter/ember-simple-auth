@@ -190,16 +190,15 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
 
       describe('when the server returns incomplete data', () => {
-        it('fails when no access_token is present', (done) => {
+        it('fails when no access_token is present', () => {
           server.respondWith('POST', '/token', [
               200,
               { 'Content-Type': 'application/json' },
               '{}'
           ]);
 
-          authenticator.authenticate('username', 'password').catch((error) => {
+          return authenticator.authenticate('username', 'password').catch((error) => {
             expect(error).to.eql('access_token is missing in server response');
-            done();
           });
         });
       });

@@ -45,10 +45,9 @@ describe('DeviseAuthenticator', () => {
         authenticator = Devise.extend({ tokenAttributeName: 'employee.token', identificationAttributeName: 'employee.email' }).create();
       });
 
-      it('resolves with the correct data', (done) => {
-        authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then((content) => {
+      it('resolves with the correct data', () => {
+        return authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then((content) => {
           expect(content).to.eql({ employee: { token: 'secret token!', email: 'user@email.com' } });
-          done();
         });
       });
     });
@@ -100,29 +99,27 @@ describe('DeviseAuthenticator', () => {
       });
 
       describe('when the server returns incomplete data', () => {
-        it('fails when token is missing', (done) => {
+        it('fails when token is missing', () => {
           server.respondWith('POST', '/users/sign_in', [
               201,
               { 'Content-Type': 'application/json' },
               '{ "email": "email@address.com" }'
           ]);
 
-          authenticator.authenticate('email@address.com', 'password').catch((error) => {
+          return authenticator.authenticate('email@address.com', 'password').catch((error) => {
             expect(error).to.eql('Check that server response includes token and email');
-            done();
           });
         });
 
-        it('fails when identification is missing', (done) => {
+        it('fails when identification is missing', () => {
           server.respondWith('POST', '/users/sign_in', [
               201,
               { 'Content-Type': 'application/json' },
               '{ "token": "secret token!" }'
           ]);
 
-          authenticator.authenticate('email@address.com', 'password').catch((error) => {
+          return authenticator.authenticate('email@address.com', 'password').catch((error) => {
             expect(error).to.eql('Check that server response includes token and email');
-            done();
           });
         });
       });
