@@ -1,3 +1,7 @@
+# 1.1.0
+
+There were no changes since 1.1.0-beta.5.
+
 # 1.1.0-beta.5
 
 * The session will now ignore session store events when it is currently
