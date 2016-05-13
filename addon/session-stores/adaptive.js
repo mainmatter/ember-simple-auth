@@ -28,10 +28,10 @@ export default Base.extend({
 
     @property localStorageKey
     @type String
-    @default 'ember_simple_auth:session'
+    @default 'ember_simple_auth-session'
     @public
   */
-  localStorageKey: 'ember_simple_auth:session',
+  localStorageKey: 'ember_simple_auth-session',
 
   /**
     The domain to use for the cookie if `localStorage` is not available, e.g.,
@@ -51,10 +51,10 @@ export default Base.extend({
 
     @property cookieName
     @type String
-    @default ember_simple_auth:session
+    @default ember_simple_auth-session
     @public
   */
-  cookieName: 'ember_simple_auth:session',
+  cookieName: 'ember_simple_auth-session',
 
   /**
     The expiration time for the cookie in seconds if `localStorage` is not

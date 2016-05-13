@@ -60,10 +60,10 @@ export default BaseStore.extend({
 
     @property cookieName
     @type String
-    @default ember_simple_auth:session
+    @default ember_simple_auth-session
     @public
   */
-  cookieName: 'ember_simple_auth:session',
+  cookieName: 'ember_simple_auth-session',
 
   /**
     The expiration time for the cookie in seconds. A value of `null` will make
@@ -174,7 +174,7 @@ export default BaseStore.extend({
   },
 
   _calculateExpirationTime() {
-    let cachedExpirationTime = this._read(`${this.cookieName}:expiration_time`);
+    let cachedExpirationTime = this._read(`${this.cookieName}-expiration_time`);
     cachedExpirationTime     = !!cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
     return !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : cachedExpirationTime;
   },
