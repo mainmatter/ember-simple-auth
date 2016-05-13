@@ -23,24 +23,24 @@ export default function(options) {
 
   describe('#persist', () => {
     it('respects the configured cookieName', () => {
-      store = createStore({ cookieName: 'test:session' });
+      store = createStore({ cookieName: 'test-session' });
       store.persist({ key: 'value' });
 
-      expect(document.cookie).to.contain('test:session=%7B%22key%22%3A%22value%22%7D');
+      expect(document.cookie).to.contain('test-session=%7B%22key%22%3A%22value%22%7D');
     });
 
     it('respects the configured cookieDomain', () => {
       store = createStore({ cookieDomain: 'example.com' });
       store.persist({ key: 'value' });
 
-      expect(document.cookie).to.not.contain('test:session=%7B%22key%22%3A%22value%22%7D');
+      expect(document.cookie).to.not.contain('test-session=%7B%22key%22%3A%22value%22%7D');
     });
   });
 
   describe('#renew', () => {
     beforeEach(() => {
       store = createStore({
-        cookieName:           'test:session',
+        cookieName:           'test-session',
         cookieExpirationTime: 60,
         expires:              new Date().getTime() + store.cookieExpirationTime * 1000
       });
@@ -48,8 +48,8 @@ export default function(options) {
       renew(store);
     });
 
-    it('stores the expiration time in a cookie named "test:session:expiration_time"', () => {
-      expect(document.cookie).to.contain(`${store.cookieName}:expiration_time=60`);
+    it('stores the expiration time in a cookie named "test-session-expiration_time"', () => {
+      expect(document.cookie).to.contain(`${store.cookieName}-expiration_time=60`);
     });
   });
 
@@ -65,7 +65,7 @@ export default function(options) {
     });
 
     it('is not triggered when the cookie has not actually changed', (done) => {
-      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22value%22%7D;path=/;';
+      document.cookie = 'ember_simple_auth-session=%7B%22key%22%3A%22value%22%7D;path=/;';
       sync(store);
 
       Ember.run.next(() => {
@@ -75,7 +75,7 @@ export default function(options) {
     });
 
     it('is triggered when the cookie changed', (done) => {
-      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22other%20value%22%7D;path=/;';
+      document.cookie = 'ember_simple_auth-session=%7B%22key%22%3A%22other%20value%22%7D;path=/;';
       sync(store);
 
       Ember.run.next(() => {

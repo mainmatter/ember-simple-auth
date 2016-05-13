@@ -25,10 +25,10 @@ export default BaseStore.extend({
 
     @property key
     @type String
-    @default 'ember_simple_auth:session'
+    @default 'ember_simple_auth-session'
     @public
   */
-  key: 'ember_simple_auth:session',
+  key: 'ember_simple_auth-session',
 
   init() {
     this._super(...arguments);
