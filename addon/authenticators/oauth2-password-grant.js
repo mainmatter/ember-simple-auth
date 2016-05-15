@@ -187,7 +187,7 @@ export default BaseAuthenticator.extend({
       this.makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
           if (!this._validate(response)) {
-            run(null, reject, 'access_token is missing in server response');
+            reject('access_token is missing in server response');
           }
 
           const expiresAt = this._absolutizeExpirationTime(response['expires_in']);

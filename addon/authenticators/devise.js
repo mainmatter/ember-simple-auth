@@ -104,10 +104,10 @@ export default BaseAuthenticator.extend({
 
       return this.makeRequest(data).then(
         (response) => {
-          if (!this._validate(response)) {
-            run(null, reject, `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`);
-          } else {
+          if (this._validate(response)) {
             run(null, resolve, response);
+          } else {
+            run(null, reject, `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`);
           }
         },
         (xhr) => run(null, reject, xhr.responseJSON || xhr.responseText)
