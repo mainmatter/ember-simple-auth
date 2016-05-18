@@ -277,6 +277,14 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     });
   });
 
+  describe('#tokenRefreshOffset', () => {
+    it('returns a number between 5000 and 10000', (done) => {
+      expect(authenticator.get('tokenRefreshOffset')).to.be.at.least(5000);
+      expect(authenticator.get('tokenRefreshOffset')).to.be.below(10000);
+      done();
+    });
+  });
+
   // testing private API here ;(
   describe('#_refreshAccessToken', () => {
     it('sends an AJAX request to the token endpoint', (done) => {
