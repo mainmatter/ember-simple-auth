@@ -4,7 +4,10 @@ import Base from 'ember-simple-auth/session-stores/base';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
 
-const { computed } = Ember;
+const {
+  computed,
+  observer
+} = Ember;
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 
@@ -137,5 +140,10 @@ export default Base.extend({
   */
   clear() {
     return this.get('_store').clear();
-  }
+  },
+
+  _cookieDataChanged: observer('cookieDomain', 'cookieName', 'cookieExpirationTime', function() {
+    const data = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime');
+    return this.get('_store').persist(data);
+  })
 });

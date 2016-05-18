@@ -107,6 +107,21 @@ export default BaseStore.extend({
   */
   persist(data) {
     this._lastData = data;
+    if (data.hasOwnProperty('cookieDomain')) {
+      this.set('cookieDomain', data.cookieDomain);
+      delete data.cookieDomain;
+    }
+
+    if (data.hasOwnProperty('cookieName')) {
+      this.set('cookieName', data.cookieName);
+      delete data.cookieName;
+    }
+
+    if (data.hasOwnProperty('cookieExpirationTime')) {
+      this.set('cookieExpirationTime', data.cookieExpirationTime);
+      delete data.cookieExpirationTime;
+    }
+
     data           = JSON.stringify(data || {});
     let expiration = this._calculateExpirationTime();
     this._write(data, expiration);
@@ -137,7 +152,10 @@ export default BaseStore.extend({
     @public
   */
   clear() {
-    this._write(null, 0);
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c.replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
     this._lastData = {};
     return RSVP.resolve();
   },
@@ -159,9 +177,20 @@ export default BaseStore.extend({
     let expires     = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
     let secure      = !!this._secureCookies ? ';secure' : '';
     document.cookie = `${this.cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
+    // let path        = 'path=/';
+    // let domain      = Ember.isEmpty(this.cookieDomain) ? '' : `domain=${this.cookieDomain}`;
+    // let expires     = Ember.isEmpty(expiration) ? '' : `expires=${new Date(expiration).toUTCString()}`;
+    // let secure      = !!this._secureCookies ? 'secure' : '';
+
+    // document.cookie = `${this.cookieName}=${encodeURIComponent(value)}`;
+    // document.cookie = domain;
+    // document.cookie = path;
+    // document.cookie = secure;
+    // document.cookie = expires;
+// >>>>>>> Persist to cookie when relevant attributes change
     if (expiration !== null) {
       let cachedExpirationTime = this._read(`${this.cookieName}-expiration_time`);
-      document.cookie = `${this.cookieName}-expiration_time=${encodeURIComponent(this.cookieExpirationTime || cachedExpirationTime)}${domain}${path}${expires}${secure}`;
+      document.cookie = `${this.cookieName}-expiration_time=${encodeURIComponent(this.cookieExpirationTime || cachedExpirationTime)}`;
     }
   },
 
