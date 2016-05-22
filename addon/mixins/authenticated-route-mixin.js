@@ -34,6 +34,18 @@ export default Ember.Mixin.create({
   session: service('session'),
 
   /**
+    The authentication route.
+
+    @property authenticationRoute
+    @readOnly
+    @type String
+    @public
+  */
+  authenticationRoute: Ember.computed(function() {
+    return Configuration.authenticationRoute;
+  }),
+
+  /**
     Checks whether the session is authenticated and if it is not aborts the
     current transition and instead transitions to the
     {{#crossLink "Configuration/authenticationRoute:property"}}{{/crossLink}}.
@@ -54,11 +66,11 @@ export default Ember.Mixin.create({
   */
   beforeModel(transition) {
     if (!this.get('session.isAuthenticated')) {
-      Ember.assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== Configuration.authenticationRoute);
+      Ember.assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== this.get('authenticationRoute'));
 
       transition.abort();
       this.set('session.attemptedTransition', transition);
-      this.transitionTo(Configuration.authenticationRoute);
+      this.transitionTo(this.get('authenticationRoute'));
     } else {
       return this._super(...arguments);
     }

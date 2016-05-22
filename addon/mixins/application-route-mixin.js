@@ -52,6 +52,18 @@ export default Ember.Mixin.create({
   */
   session: inject.service('session'),
 
+  /**
+    The transition route after authentication.
+
+    @property routeAfterAuthentication
+    @readOnly
+    @type String
+    @public
+  */
+  routeAfterAuthentication: Ember.computed(function() {
+    return Configuration.routeAfterAuthentication;
+  }),
+
   init() {
     this._super(...arguments);
     this._subscribeToSessionEvents();
@@ -87,7 +99,7 @@ export default Ember.Mixin.create({
       attemptedTransition.retry();
       this.set('session.attemptedTransition', null);
     } else {
-      this.transitionTo(Configuration.routeAfterAuthentication);
+      this.transitionTo(this.get('routeAfterAuthentication'));
     }
   },
 
