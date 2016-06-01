@@ -105,7 +105,9 @@ export default BaseAuthenticator.extend({
       return this.makeRequest(data).then(
         (response) => {
           if (this._validate(response)) {
-            run(null, resolve, response);
+            const resourceName = this.get('resourceName');
+            const _response = response[resourceName] ? response[resourceName] : response;
+            run(null, resolve, _response);
           } else {
             run(null, reject, `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`);
           }
@@ -153,6 +155,11 @@ export default BaseAuthenticator.extend({
   _validate(data) {
     const tokenAttributeName = this.get('tokenAttributeName');
     const identificationAttributeName = this.get('identificationAttributeName');
-    return !isEmpty(data[tokenAttributeName]) && !isEmpty(data[identificationAttributeName]);
+    const resourceName = this.get('resourceName');
+    if (data[resourceName]) {
+      return !isEmpty(data[resourceName][tokenAttributeName]) && !isEmpty(data[resourceName][identificationAttributeName]);
+    } else {
+      return !isEmpty(data[tokenAttributeName]) && !isEmpty(data[identificationAttributeName]);
+    }
   }
 });
