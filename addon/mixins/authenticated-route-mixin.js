@@ -56,9 +56,8 @@ export default Ember.Mixin.create({
     if (!this.get('session.isAuthenticated')) {
       Ember.assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== Configuration.authenticationRoute);
 
-      transition.abort();
       this.set('session.attemptedTransition', transition);
-      this.transitionTo(Configuration.authenticationRoute);
+      return this.transitionTo(Configuration.authenticationRoute);
     } else {
       return this._super(...arguments);
     }
