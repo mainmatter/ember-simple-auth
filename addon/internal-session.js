@@ -64,9 +64,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
           this._busy = false;
           return this._setup(authenticatorFactory, content);
         }, (err) => {
-          Ember.Logger.debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
+          Ember.debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
           if (err) {
-            Ember.Logger.debug(err);
+            Ember.debug(err);
           }
           this._busy = false;
           return this._clearWithContent(restoredContent).then(reject, reject);
@@ -183,9 +183,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
             this._busy = false;
             this._setup(authenticatorFactory, authenticatedContent, true);
           }, (err) => {
-            Ember.Logger.debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
+            Ember.debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
             if (err) {
-              Ember.Logger.debug(err);
+              Ember.debug(err);
             }
             this._busy = false;
             this._clearWithContent(content, true);

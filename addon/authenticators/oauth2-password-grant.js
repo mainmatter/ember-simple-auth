@@ -300,7 +300,7 @@ export default BaseAuthenticator.extend({
           resolve(data);
         });
       }, (xhr, status, error) => {
-        Ember.Logger.warn(`Access token could not be refreshed - server responded with ${error}.`);
+        Ember.warn(`Access token could not be refreshed - server responded with ${error}.`);
         reject();
       });
     });
