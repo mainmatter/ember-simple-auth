@@ -30,24 +30,16 @@ describe('UnauthenticatedRouteMixin', () => {
 
       session    = InternalSession.create({ store: EphemeralStore.create() });
       transition = {
-        abort() {},
         send() {}
       };
 
       route = Route.create({ session });
-      sinon.spy(transition, 'abort');
       sinon.spy(route, 'transitionTo');
     });
 
     describe('if the session is authenticated', () => {
       beforeEach(() => {
         session.set('isAuthenticated', true);
-      });
-
-      it('aborts the transition', () => {
-        route.beforeModel(transition);
-
-        expect(transition.abort).to.have.been.called;
       });
 
       it('transitions to routeIfAlreadyAuthenticated', () => {
@@ -62,12 +54,6 @@ describe('UnauthenticatedRouteMixin', () => {
     });
 
     describe('if the session is not authenticated', () => {
-      it('does not abort the transition', () => {
-        route.beforeModel(transition);
-
-        expect(transition.abort).to.not.have.been.called;
-      });
-
       it('does not call route transitionTo', () => {
         route.beforeModel(transition);
 

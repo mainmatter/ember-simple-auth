@@ -67,7 +67,9 @@ export default Ember.Mixin.create({
         transition.abort();
         this.set('session.attemptedTransition', transition);
       }
-      this.transitionTo(Configuration.authenticationRoute);
+
+      this.set('session.attemptedTransition', transition);
+      return this.transitionTo(Configuration.authenticationRoute);
     } else {
       return this._super(...arguments);
     }
