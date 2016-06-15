@@ -2,7 +2,7 @@
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 
-const { RSVP, isEmpty, run, computed } = Ember;
+const { RSVP, isEmpty, run, computed, get } = Ember;
 const assign = Ember.assign || Ember.merge;
 
 /**
@@ -142,7 +142,7 @@ export default BaseAuthenticator.extend({
           reject();
         }
       } else {
-        if (isEmpty(data['access_token'])) {
+        if (!this._validate(data)) {
           reject();
         } else {
           this._scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
@@ -186,11 +186,16 @@ export default BaseAuthenticator.extend({
       }
       this.makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
+          if (!this._validate(response)) {
+            reject('access_token is missing in server response');
+          }
+
           const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
           this._scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
           if (!isEmpty(expiresAt)) {
             response = assign(response, { 'expires_at': expiresAt });
           }
+
           resolve(response);
         });
       }, (xhr) => {
@@ -310,5 +315,9 @@ export default BaseAuthenticator.extend({
     if (!isEmpty(expiresIn)) {
       return new Date((new Date().getTime()) + expiresIn * 1000).getTime();
     }
+  },
+
+  _validate(data) {
+    return !isEmpty(data['access_token']);
   }
 });

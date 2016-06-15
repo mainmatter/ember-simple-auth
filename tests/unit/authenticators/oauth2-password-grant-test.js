@@ -162,6 +162,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
 
       it('resolves with the correct data', (done) => {
+        authenticator.set('refreshAccessTokens', false);
         authenticator.authenticate('username', 'password').then((data) => {
           expect(true).to.be.true;
           expect(data).to.eql({ 'access_token': 'secret token!' });
@@ -184,6 +185,20 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
             delete data['expires_at'];
             expect(data).to.eql({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
             done();
+          });
+        });
+      });
+
+      describe('when the server returns incomplete data', () => {
+        it('fails when no access_token is present', () => {
+          server.respondWith('POST', '/token', [
+              200,
+              { 'Content-Type': 'application/json' },
+              '{}'
+          ]);
+
+          return authenticator.authenticate('username', 'password').catch((error) => {
+            expect(error).to.eql('access_token is missing in server response');
           });
         });
       });

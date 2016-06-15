@@ -74,15 +74,7 @@ export default BaseAuthenticator.extend({
     @public
   */
   restore(data) {
-    const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
-    const tokenAttribute = get(data, tokenAttributeName);
-    const identificationAttribute = get(data, identificationAttributeName);
-
-    if (!isEmpty(tokenAttribute) && !isEmpty(identificationAttribute)) {
-      return Promise.resolve(data);
-    } else {
-      return Promise.reject();
-    }
+    return this._validate(data) ? Promise.resolve(data) : Promise.reject();
   },
 
   /**
@@ -105,13 +97,21 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password) {
     return new Promise((resolve, reject) => {
-      const { resourceName, identificationAttributeName } = this.getProperties('resourceName', 'identificationAttributeName');
+      const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties('resourceName', 'identificationAttributeName', 'tokenAttributeName');
       const data         = {};
       data[resourceName] = { password };
       data[resourceName][identificationAttributeName] = identification;
 
       return this.makeRequest(data).then(
-        (response) => run(null, resolve, response[resourceName] || response),
+        (response) => {
+          if (this._validate(response)) {
+            const resourceName = this.get('resourceName');
+            const _response = response[resourceName] ? response[resourceName] : response;
+            run(null, resolve, _response);
+          } else {
+            run(null, reject, `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`);
+          }
+        },
         (xhr) => run(null, reject, xhr.responseJSON || xhr.responseText)
       );
     });
@@ -150,5 +150,14 @@ export default BaseAuthenticator.extend({
     }, options || {});
 
     return $.ajax(requestOptions);
+  },
+
+  _validate(data) {
+    const tokenAttributeName = this.get('tokenAttributeName');
+    const identificationAttributeName = this.get('identificationAttributeName');
+    const resourceName = this.get('resourceName');
+    const _data = data[resourceName] ? data[resourceName] : data;
+
+    return !isEmpty(_data[tokenAttributeName]) && !isEmpty(_data[identificationAttributeName]);
   }
 });
