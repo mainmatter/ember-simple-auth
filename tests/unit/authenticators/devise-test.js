@@ -45,10 +45,9 @@ describe('DeviseAuthenticator', () => {
         authenticator = Devise.extend({ tokenAttributeName: 'employee.token', identificationAttributeName: 'employee.email' }).create();
       });
 
-      it('resolves with the correct data', (done) => {
-        authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then((content) => {
+      it('resolves with the correct data', () => {
+        return authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then((content) => {
           expect(content).to.eql({ employee: { token: 'secret token!', email: 'user@email.com' } });
-          done();
         });
       });
     });
@@ -84,15 +83,44 @@ describe('DeviseAuthenticator', () => {
         server.respondWith('POST', '/users/sign_in', [
           201,
           { 'Content-Type': 'application/json' },
-          '{ "access_token": "secret token!" }'
+          '{ "token": "secret token!", "email": "email@address.com" }'
         ]);
       });
 
       it('resolves with the correct data', (done) => {
         authenticator.authenticate('email@address.com', 'password').then((data) => {
           expect(true).to.be.true;
-          expect(data).to.eql({ 'access_token': 'secret token!' });
+          expect(data).to.eql({
+            'token': 'secret token!',
+            'email': 'email@address.com'
+          });
           done();
+        });
+      });
+
+      describe('when the server returns incomplete data', () => {
+        it('fails when token is missing', () => {
+          server.respondWith('POST', '/users/sign_in', [
+              201,
+              { 'Content-Type': 'application/json' },
+              '{ "email": "email@address.com" }'
+          ]);
+
+          return authenticator.authenticate('email@address.com', 'password').catch((error) => {
+            expect(error).to.eql('Check that server response includes token and email');
+          });
+        });
+
+        it('fails when identification is missing', () => {
+          server.respondWith('POST', '/users/sign_in', [
+              201,
+              { 'Content-Type': 'application/json' },
+              '{ "token": "secret token!" }'
+          ]);
+
+          return authenticator.authenticate('email@address.com', 'password').catch((error) => {
+            expect(error).to.eql('Check that server response includes token and email');
+          });
         });
       });
     });
@@ -132,12 +160,12 @@ describe('DeviseAuthenticator', () => {
       server.respondWith('POST', '/users/sign_in', [
         201,
         { 'Content-Type': 'application/json' },
-        '{ "user": { "access_token": "secret token!" } }'
+        '{ "user": { "token": "secret token!", "email": "email@address.com" } }'
       ]);
 
       authenticator.authenticate('email@address.com', 'password').then((data) => {
         expect(true).to.be.true;
-        expect(data).to.eql({ 'access_token': 'secret token!' });
+        expect(data).to.eql({ 'token': 'secret token!', 'email': 'email@address.com' });
         done();
       });
     });
