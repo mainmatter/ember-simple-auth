@@ -156,10 +156,8 @@ export default BaseAuthenticator.extend({
     const tokenAttributeName = this.get('tokenAttributeName');
     const identificationAttributeName = this.get('identificationAttributeName');
     const resourceName = this.get('resourceName');
-    if (data[resourceName]) {
-      return !isEmpty(data[resourceName][tokenAttributeName]) && !isEmpty(data[resourceName][identificationAttributeName]);
-    } else {
-      return !isEmpty(data[tokenAttributeName]) && !isEmpty(data[identificationAttributeName]);
-    }
+    const _data = data[resourceName] ? data[resourceName] : data;
+
+    return !isEmpty(_data[tokenAttributeName]) && !isEmpty(_data[identificationAttributeName]);
   }
 });
