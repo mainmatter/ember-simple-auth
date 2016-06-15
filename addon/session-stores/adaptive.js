@@ -47,7 +47,7 @@ export default Base.extend({
     @default null
     @public
   */
-  cookieDomain: null,
+  cookieDomain: computed.alias('_store.cookieDomain'),
 
   /**
     The name of the cookie to use if `localStorage` is not available.
@@ -57,7 +57,9 @@ export default Base.extend({
     @default ember_simple_auth-session
     @public
   */
-  cookieName: 'ember_simple_auth-session',
+  cookieName: computed('_store.cookieName', function() {
+    return this.get('_store.cookieName') || 'ember_simple_auth-session';
+  }),
 
   /**
     The expiration time for the cookie in seconds if `localStorage` is not
@@ -69,7 +71,7 @@ export default Base.extend({
     @type Integer
     @public
   */
-  cookieExpirationTime: null,
+  cookieExpirationTime: computed.alias('_store.cookieExpirationTime'),
 
   _isLocalStorageAvailable: computed(function() {
     try {
@@ -140,10 +142,5 @@ export default Base.extend({
   */
   clear() {
     return this.get('_store').clear();
-  },
-
-  _cookieDataChanged: observer('cookieDomain', 'cookieName', 'cookieExpirationTime', function() {
-    const data = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime');
-    return this.get('_store').persist(data);
-  })
+  }
 });

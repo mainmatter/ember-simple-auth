@@ -28,6 +28,7 @@ export default function(options) {
       store = createStore({ cookieName: 'test-session' });
       store.persist({ key: 'value' });
 
+      // FIXME: determine why cookie.js#210 returns undefined when this._cookieName has a value
       expect(document.cookie).to.contain('test-session=%7B%22key%22%3A%22value%22%7D');
     });
 
@@ -44,14 +45,15 @@ export default function(options) {
       store = createStore({
         cookieName:           'test-session',
         cookieExpirationTime: 60,
-        expires:              new Date().getTime() + store.cookieExpirationTime * 1000
+        expires:              new Date().getTime() + store.get('cookieExpirationTime') * 1000
       });
       store.persist({ key: 'value' });
       renew(store);
     });
 
     it('stores the expiration time in a cookie named "test-session-expiration_time"', () => {
-      expect(document.cookie).to.contain(`${store.cookieName}-expiration_time=60`);
+      let cookieName = store.get('cookieName');
+      expect(document.cookie).to.contain('test-session-expiration_time=60');
     });
   });
 
