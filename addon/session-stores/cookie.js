@@ -2,7 +2,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, computed, run: { next, cancel, later }, isEmpty, typeOf, testing } = Ember;
+const { RSVP, computed, run: { next, cancel, later }, isEmpty, isBlank, typeOf, testing } = Ember;
 
 /**
   Session store that persists data in a cookie.
@@ -52,7 +52,16 @@ export default BaseStore.extend({
     @default null
     @public
   */
-  cookieDomain: null,
+  _cookieDomain: null,
+  cookieDomain: computed({
+    get() {
+      return this._cookieDomain;
+    },
+    set(_, value) {
+      this._cookieDomain = value;
+      this.rewriteCookie();
+    }
+  }),
 
   /**
     The name of the cookie.
@@ -62,7 +71,17 @@ export default BaseStore.extend({
     @default ember_simple_auth-session
     @public
   */
-  cookieName: 'ember_simple_auth-session',
+  _cookieName: 'ember_simple-auth-session',
+  cookieName: computed('_cookieName', {
+    get() {
+      return this._cookieName;
+    },
+    set(_, value) {
+      this._oldcookieName = this._cookieName;
+      this._cookieName = value;
+      this.rewriteCookie();
+    }
+  }),
 
   /**
     The expiration time for the cookie in seconds. A value of `null` will make
@@ -74,7 +93,16 @@ export default BaseStore.extend({
     @type Integer
     @public
   */
-  cookieExpirationTime: null,
+  _cookieExpirationTime: null,
+  cookieExpirationTime: computed({
+    get() {
+      return this.get('_cookieExpirationTime');
+    },
+    set(_, value) {
+      this._cookieExpirationTime = value;
+      this.rewriteCookie();
+    }
+  }),
 
   _secureCookies: window.location.protocol === 'https:',
 
@@ -136,7 +164,7 @@ export default BaseStore.extend({
     @public
   */
   restore() {
-    let data = this._read(this.cookieName);
+    let data = this._read(this.get('cookieName'));
     if (isEmpty(data)) {
       return RSVP.resolve({});
     } else {
@@ -166,17 +194,19 @@ export default BaseStore.extend({
   },
 
   _calculateExpirationTime() {
-    let cachedExpirationTime = this._read(`${this.cookieName}-expiration_time`);
+    let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
     cachedExpirationTime     = !!cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
-    return !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : cachedExpirationTime;
+    return !this.cookieExpirationTime ? new Date().getTime() + this.get('cookieExpirationTime') * 1000 : cachedExpirationTime;
   },
 
   _write(value, expiration) {
     let path        = '; path=/';
-    let domain      = isEmpty(this.cookieDomain) ? '' : `; domain=${this.cookieDomain}`;
     let expires     = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
     let secure      = !!this._secureCookies ? ';secure' : '';
-    document.cookie = `${this.cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
+    let cookieName = this.get('cookieName');
+    let cookieDomain = this.get('cookieDomain');
+    let domain      = Ember.isEmpty(cookieDomain) ? '' : `domain=${cookieDomain}`;
+    document.cookie = `${cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
     // let path        = 'path=/';
     // let domain      = Ember.isEmpty(this.cookieDomain) ? '' : `domain=${this.cookieDomain}`;
     // let expires     = Ember.isEmpty(expiration) ? '' : `expires=${new Date(expiration).toUTCString()}`;
@@ -187,10 +217,18 @@ export default BaseStore.extend({
     // document.cookie = path;
     // document.cookie = secure;
     // document.cookie = expires;
-// >>>>>>> Persist to cookie when relevant attributes change
+    // let path        = 'path=/';
+
+    // document.cookie = `${cookieName}=${encodeURIComponent(value)}`;
+    // document.cookie = domain;
+    // document.cookie = path;
+    // document.cookie = secure;
+    // document.cookie = expires;
+
+// >>>>>>> Refactor cookie properties on adaptive store
     if (expiration !== null) {
-      let cachedExpirationTime = this._read(`${this.cookieName}-expiration_time`);
-      document.cookie = `${this.cookieName}-expiration_time=${encodeURIComponent(this.cookieExpirationTime || cachedExpirationTime)}`;
+      let cachedExpirationTime = this._read(`${cookieName}-expiration_time`);
+      document.cookie = `${cookieName}-expiration_time=${encodeURIComponent(this.get('cookieExpirationTime') || cachedExpirationTime)}`;
     }
   },
 
@@ -227,5 +265,12 @@ export default BaseStore.extend({
     } else {
       return RSVP.resolve();
     }
+  },
+
+  rewriteCookie() {
+    const cookieName = this.get('cookieName');
+    const data = this._read(this._oldCookieName);
+    const expiration = this._calculateExpirationTime();
+    this._write(data, expiration);
   }
 });
