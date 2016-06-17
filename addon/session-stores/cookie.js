@@ -82,7 +82,7 @@ export default BaseStore.extend({
   _fastboot: computed(function() {
     let owner = getOwner(this);
 
-    return owner.lookup('service:fastboot');
+    return owner && owner.lookup('service:fastboot');
   }),
 
   _secureCookies: computed(function() {
@@ -108,7 +108,7 @@ export default BaseStore.extend({
 
   init() {
     this._super(...arguments);
-/*
+
     if (!this.get('_fastboot.isFastBoot')) {
       next(() => {
         this._syncData().then(() => {
@@ -117,7 +117,7 @@ export default BaseStore.extend({
       });
     } else {
       this._renew();
-    }*/
+    }
   },
 
   /**
