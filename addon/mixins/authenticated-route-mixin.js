@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import Configuration from './../configuration';
 
-const { service } = Ember.inject;
+const { inject: { service }, computed } = Ember;
 
 /**
   __This mixin is used to make routes accessible only if the session is
