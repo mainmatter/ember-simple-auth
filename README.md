@@ -51,7 +51,7 @@ requests such as Ember Data requests__.
 ## How do I use it?
 
 __Ember Simple Auth comes with a
-[dummy app](https://github.com/simplabs/ember-simple-auth/tree/master/tests/dummy)
+[dummy app](tests/dummy)
 that implementes a complete auth solution__ including authentication against
 the application's own server as well as Facebook, authorization of Ember Data
 requests and error handling. __Check out that dummy app for reference.__ To
@@ -572,6 +572,10 @@ module in the application's namespace:
 import { currentSession, authenticateSession, invalidateSession } from '<app-name>/tests/helpers/ember-simple-auth';
 ```
 
+## Other guides
+
+* [Managing Current User](guides/set-current-user.md)
+
 ## Configuration
 
 Ember Simple Auth is configured via the `'ember-simple-auth'` section in the
@@ -592,7 +596,7 @@ for the available settings.
 Ember Simple Auth is developed by and &copy;
 [simplabs GmbH/Marco Otte-Witte](http://simplabs.com) and contributors. It is
 released under the
-[MIT License](https://github.com/simplabs/ember-simple-auth/blob/master/LICENSE).
+[MIT License](LICENSE).
 
 Ember Simple Auth is not an official part of [Ember.js](http://emberjs.com) and
 is not maintained by the Ember.js Core Team.
