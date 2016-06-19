@@ -57,9 +57,7 @@ export default Base.extend({
     @default ember_simple_auth-session
     @public
   */
-  cookieName: computed('_store.cookieName', function() {
-    return this.get('_store.cookieName') || 'ember_simple_auth-session';
-  }),
+  cookieName: computed.alias('_store.cookieName'),
 
   /**
     The expiration time for the cookie in seconds if `localStorage` is not
