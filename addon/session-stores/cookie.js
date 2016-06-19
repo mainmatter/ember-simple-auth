@@ -53,13 +53,14 @@ export default BaseStore.extend({
     @public
   */
   _cookieDomain: null,
-  cookieDomain: computed({
-    get() {
-      return this._cookieDomain;
+  cookieDomain: computed('_cookieDomain', {
+    get(key) {
+      return this.get('_cookieDomain');
     },
-    set(_, value) {
-      this._cookieDomain = value;
+    set(key, value) {
+      this.set('_cookieDomain', value);
       this.rewriteCookie();
+      return value;
     }
   }),
 
@@ -71,15 +72,16 @@ export default BaseStore.extend({
     @default ember_simple_auth-session
     @public
   */
-  _cookieName: 'ember_simple-auth-session',
+  _cookieName: 'ember_simple_auth-session',
   cookieName: computed('_cookieName', {
-    get() {
-      return this._cookieName;
+    get(key) {
+      return this.get('_cookieName');
     },
-    set(_, value) {
-      this._oldcookieName = this._cookieName;
-      this._cookieName = value;
+    set(key, value) {
+      this._oldCookieName = this._cookieName;
+      this.set('_cookieName', value);
       this.rewriteCookie();
+      return value;
     }
   }),
 
@@ -94,13 +96,14 @@ export default BaseStore.extend({
     @public
   */
   _cookieExpirationTime: null,
-  cookieExpirationTime: computed({
+  cookieExpirationTime: computed('_cookieExpirationTime', {
     get() {
       return this.get('_cookieExpirationTime');
     },
-    set(_, value) {
-      this._cookieExpirationTime = value;
+    set(key, value) {
+      this.set('_cookieExpirationTime', value);
       this.rewriteCookie();
+      return value;
     }
   }),
 
@@ -194,41 +197,24 @@ export default BaseStore.extend({
   },
 
   _calculateExpirationTime() {
-    let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
+    let cachedExpirationTime = this._read(`${this._cookieName}-expiration_time`);
     cachedExpirationTime     = !!cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
-    return !this.cookieExpirationTime ? new Date().getTime() + this.get('cookieExpirationTime') * 1000 : cachedExpirationTime;
+    return this._cookieExpirationTime ? new Date().getTime() + this._cookieExpirationTime * 1000 : cachedExpirationTime;
   },
 
   _write(value, expiration) {
     let path        = '; path=/';
     let expires     = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
     let secure      = !!this._secureCookies ? ';secure' : '';
-    let cookieName = this.get('cookieName');
-    let cookieDomain = this.get('cookieDomain');
-    let domain      = Ember.isEmpty(cookieDomain) ? '' : `domain=${cookieDomain}`;
+    let cookieName = this.get('_cookieName');
+    let cookieDomain = this.get('_cookieDomain');
+    let domain      = isEmpty(cookieDomain) ? '' : `domain=${cookieDomain}`;
+    let cookieExpirationTime = this.get('_cookieExpirationTime');
     document.cookie = `${cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
-    // let path        = 'path=/';
-    // let domain      = Ember.isEmpty(this.cookieDomain) ? '' : `domain=${this.cookieDomain}`;
-    // let expires     = Ember.isEmpty(expiration) ? '' : `expires=${new Date(expiration).toUTCString()}`;
-    // let secure      = !!this._secureCookies ? 'secure' : '';
-
-    // document.cookie = `${this.cookieName}=${encodeURIComponent(value)}`;
-    // document.cookie = domain;
-    // document.cookie = path;
-    // document.cookie = secure;
-    // document.cookie = expires;
-    // let path        = 'path=/';
-
-    // document.cookie = `${cookieName}=${encodeURIComponent(value)}`;
-    // document.cookie = domain;
-    // document.cookie = path;
-    // document.cookie = secure;
-    // document.cookie = expires;
-
-// >>>>>>> Refactor cookie properties on adaptive store
-    if (expiration !== null) {
+    if (expiration !== null && cookieExpirationTime !== null) {
       let cachedExpirationTime = this._read(`${cookieName}-expiration_time`);
-      document.cookie = `${cookieName}-expiration_time=${encodeURIComponent(this.get('cookieExpirationTime') || cachedExpirationTime)}`;
+      let expiry = encodeURIComponent(cookieExpirationTime) || cachedExpirationTime;
+      document.cookie = `${cookieName}-expiration_time=${expiry}${domain}${path}${expires}${secure}`;
     }
   },
 
@@ -267,8 +253,10 @@ export default BaseStore.extend({
     }
   },
 
+  // FIXME: maybe be causing getter bugs with rewriteCookie called before
+  // setter can return value
   rewriteCookie() {
-    const cookieName = this.get('cookieName');
+    const cookieName = this._cookieName;
     const data = this._read(this._oldCookieName);
     const expiration = this._calculateExpirationTime();
     this._write(data, expiration);
