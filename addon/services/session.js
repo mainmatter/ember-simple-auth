@@ -3,7 +3,7 @@ import getOwner from 'ember-getowner-polyfill';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
-const { computed }  = Ember;
+const { computed, A, Service, Evented }  = Ember;
 
 /**
   __The session service provides access to the current session as well as
@@ -25,7 +25,7 @@ const { computed }  = Ember;
   @uses Ember.Evented
   @public
 */
-export default Ember.Service.extend(Ember.Evented, {
+export default Service.extend(Evented, {
   /**
     Triggered whenever the session is successfully authenticated. This happens
     when the session gets authenticated via
@@ -130,7 +130,7 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   _forwardSessionEvents() {
-    Ember.A([
+    A([
       'authenticationSucceeded',
       'invalidationSucceeded'
     ]).forEach((event) => {

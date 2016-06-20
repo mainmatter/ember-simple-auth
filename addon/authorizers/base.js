@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const { Object: EmberObject } = Ember;
+
 /**
   The base class for all authorizers. __This serves as a starting point for
   implementing custom authorizers and must not be used directly.__
@@ -20,7 +22,7 @@ import Ember from 'ember';
   @extends Ember.Object
   @public
 */
-export default Ember.Object.extend({
+export default EmberObject.extend({
   /**
     Authorizes a block of code. This method will be invoked by the session
     service's {{#crossLink "SessionService/authorize:method"}}{{/crossLink}}

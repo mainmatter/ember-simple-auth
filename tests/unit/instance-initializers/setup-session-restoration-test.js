@@ -6,6 +6,8 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import setupSessionRestoration from 'ember-simple-auth/instance-initializers/setup-session-restoration';
 
+const { Route, RSVP } = Ember;
+
 describe('setupSessionRestoration', () => {
   let container;
   let containerStub;
@@ -16,8 +18,7 @@ describe('setupSessionRestoration', () => {
       lookup() {}
     };
 
-    const Route = Ember.Route.extend();
-    route = Route.create();
+    route = Route.extend().create();
 
     containerStub = sinon.stub(container, 'lookup');
   });
@@ -37,12 +38,11 @@ describe('setupSessionRestoration', () => {
         restore() {}
       };
 
-      const Route = Ember.Route.extend({
+      route = Route.extend({
         beforeModel() {
-          return Ember.RSVP.resolve('test');
+          return RSVP.resolve('test');
         }
-      });
-      route = Route.create();
+      }).create();
 
       containerStub.withArgs('route:application').returns(route);
       containerStub.withArgs('session:main').returns(session);
@@ -51,7 +51,7 @@ describe('setupSessionRestoration', () => {
 
     describe('when session restoration resolves', () => {
       beforeEach(() => {
-        sinon.stub(session, 'restore').returns(Ember.RSVP.resolve());
+        sinon.stub(session, 'restore').returns(RSVP.resolve());
       });
 
       it('returns the return value of the original "beforeModel" method', () => {
@@ -63,7 +63,7 @@ describe('setupSessionRestoration', () => {
 
     describe('when session restoration rejects', () => {
       beforeEach(() => {
-        sinon.stub(session, 'restore').returns(Ember.RSVP.reject());
+        sinon.stub(session, 'restore').returns(RSVP.reject());
       });
 
       it('returns the return value of the original "beforeModel" method', () => {

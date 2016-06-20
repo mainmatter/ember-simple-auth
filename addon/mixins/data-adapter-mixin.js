@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { service } = Ember.inject;
+const { inject: { service }, Mixin, assert, isPresent } = Ember;
 
 /**
   __This mixin can be used to make Ember Data adapters authorize all outgoing
@@ -30,7 +30,7 @@ const { service } = Ember.inject;
   @public
 */
 
-export default Ember.Mixin.create({
+export default Mixin.create({
   /**
     The session service.
 
@@ -69,7 +69,7 @@ export default Ember.Mixin.create({
   */
   ajaxOptions() {
     const authorizer = this.get('authorizer');
-    Ember.assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", Ember.isPresent(authorizer));
+    assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", isPresent(authorizer));
 
     let hash = this._super(...arguments);
     let { beforeSend } = hash;

@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 
-const { RSVP: { Promise }, isEmpty, run, get, $ } = Ember;
+const { RSVP: { Promise }, isEmpty, run, $: jQuery, assign: emberAssign, merge } = Ember;
+const assign = emberAssign || merge;
 
 /**
   Authenticator that works with the Ruby gem
@@ -139,7 +140,8 @@ export default BaseAuthenticator.extend({
   */
   makeRequest(data, options) {
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
-    const requestOptions = $.extend({}, {
+    let requestOptions = {};
+    assign(requestOptions, {
       url:      serverTokenEndpoint,
       type:     'POST',
       dataType: 'json',
@@ -147,9 +149,10 @@ export default BaseAuthenticator.extend({
       beforeSend(xhr, settings) {
         xhr.setRequestHeader('Accept', settings.accepts.json);
       }
-    }, options || {});
+    });
+    assign(requestOptions, options || {});
 
-    return $.ajax(requestOptions);
+    return jQuery.ajax(requestOptions);
   },
 
   _validate(data) {

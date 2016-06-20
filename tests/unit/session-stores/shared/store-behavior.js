@@ -4,8 +4,10 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 
+const { run: { next }, K } = Ember;
+
 export default function(options) {
-  let syncExternalChanges = options.syncExternalChanges || Ember.K;
+  let syncExternalChanges = options.syncExternalChanges || K;
   let store;
 
   beforeEach(() => {
@@ -37,7 +39,7 @@ export default function(options) {
       store.persist({ key: 'other value' });
       syncExternalChanges();
 
-      Ember.run.next(() => {
+      next(() => {
         expect(triggered).to.be.false;
         done();
       });

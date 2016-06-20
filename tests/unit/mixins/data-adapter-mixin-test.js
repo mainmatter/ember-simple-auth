@@ -6,6 +6,8 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
+const { Object: EmberObject } = Ember;
+
 describe('DataAdapterMixin', () => {
   let adapter;
   let sessionService;
@@ -13,12 +15,12 @@ describe('DataAdapterMixin', () => {
 
   beforeEach(() => {
     hash = {};
-    sessionService = Ember.Object.create({
+    sessionService = EmberObject.create({
       authorize() {},
       invalidate() {}
     });
 
-    const BaseAdapter = Ember.Object.extend({
+    const BaseAdapter = EmberObject.extend({
       ajaxOptions() {
         return hash;
       },

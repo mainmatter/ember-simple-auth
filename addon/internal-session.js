@@ -1,10 +1,22 @@
 import Ember from 'ember';
 import getOwner from 'ember-getowner-polyfill';
 
-const { RSVP, isNone, isEmpty } = Ember;
-const assign = Ember.assign || Ember.merge;
+const {
+  RSVP,
+  isNone,
+  isEmpty,
+  ObjectProxy,
+  Evented,
+  assign: emberAssign,
+  merge,
+  assert,
+  deprecate,
+  set,
+  debug
+} = Ember;
+const assign = emberAssign || merge;
 
-export default Ember.ObjectProxy.extend(Ember.Evented, {
+export default ObjectProxy.extend(Evented, {
   authenticator:       null,
   store:               null,
   isAuthenticated:     false,
@@ -19,9 +31,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
 
   authenticate(authenticatorFactory, ...args) {
     this._busy = true;
-    Ember.assert(`Session#authenticate requires the authenticator to be specified, was "${authenticatorFactory}"!`, !isEmpty(authenticatorFactory));
+    assert(`Session#authenticate requires the authenticator to be specified, was "${authenticatorFactory}"!`, !isEmpty(authenticatorFactory));
     const authenticator = this._lookupAuthenticator(authenticatorFactory);
-    Ember.assert(`No authenticator for factory "${authenticatorFactory}" could be found!`, !isNone(authenticator));
+    assert(`No authenticator for factory "${authenticatorFactory}" could be found!`, !isNone(authenticator));
 
     return authenticator.authenticate(...args).then((content) => {
       this._busy = false;
@@ -36,7 +48,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
 
   invalidate() {
     this._busy = true;
-    Ember.assert('Session#invalidate requires the session to be authenticated!', this.get('isAuthenticated'));
+    assert('Session#invalidate requires the session to be authenticated!', this.get('isAuthenticated'));
 
     let authenticator = this._lookupAuthenticator(this.authenticator);
     return authenticator.invalidate(this.content.authenticated).then(() => {
@@ -64,9 +76,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
           this._busy = false;
           return this._setup(authenticatorFactory, content);
         }, (err) => {
-          Ember.debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
+          debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
           if (err) {
-            Ember.debug(err);
+            debug(err);
           }
           this._busy = false;
           return this._clearWithContent(restoredContent).then(reject, reject);
@@ -86,7 +98,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
     const result = this.store[method](...params);
 
     if (typeof result === 'undefined' || typeof result.then === 'undefined') {
-      Ember.deprecate(`Ember Simple Auth: Synchronous stores have been deprecated. Make sure your custom store's ${method} method returns a promise.`, false, {
+      deprecate(`Ember Simple Auth: Synchronous stores have been deprecated. Make sure your custom store's ${method} method returns a promise.`, false, {
         id: `ember-simple-auth.session-store.synchronous-${method}`,
         until: '2.0.0'
       });
@@ -103,7 +115,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       isAuthenticated: true,
       authenticator
     });
-    Ember.set(this.content, 'authenticated', authenticatedContent);
+    set(this.content, 'authenticated', authenticatedContent);
     this._bindToAuthenticatorEvents();
 
     return this._updateStore().then(() => {
@@ -116,7 +128,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         isAuthenticated: false,
         authenticator: null
       });
-      Ember.set(this.content, 'authenticated', {});
+      set(this.content, 'authenticated', {});
       this.endPropertyChanges();
     });
   },
@@ -128,7 +140,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
       isAuthenticated: false,
       authenticator:   null
     });
-    Ember.set(this.content, 'authenticated', {});
+    set(this.content, 'authenticated', {});
 
     return this._updateStore().then(() => {
       this.endPropertyChanges();
@@ -144,7 +156,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
   },
 
   setUnknownProperty(key, value) {
-    Ember.assert('"authenticated" is a reserved key used by Ember Simple Auth!', key !== 'authenticated');
+    assert('"authenticated" is a reserved key used by Ember Simple Auth!', key !== 'authenticated');
     let result = this._super(key, value);
     this._updateStore();
     return result;
@@ -152,8 +164,8 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
 
   _updateStore() {
     let data = this.content;
-    if (!Ember.isEmpty(this.authenticator)) {
-      Ember.set(data, 'authenticated', assign({ authenticator: this.authenticator }, data.authenticated || {}));
+    if (!isEmpty(this.authenticator)) {
+      set(data, 'authenticated', assign({ authenticator: this.authenticator }, data.authenticated || {}));
     }
     return this._callStoreAsync('persist', data);
   },
@@ -183,9 +195,9 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
             this._busy = false;
             this._setup(authenticatorFactory, authenticatedContent, true);
           }, (err) => {
-            Ember.debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
+            debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
             if (err) {
-              Ember.debug(err);
+              debug(err);
             }
             this._busy = false;
             this._clearWithContent(content, true);

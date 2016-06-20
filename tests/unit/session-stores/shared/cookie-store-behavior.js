@@ -6,6 +6,8 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';
 
+const { run: { next } } = Ember;
+
 export default function(options) {
   let store;
   let createStore;
@@ -74,7 +76,7 @@ export default function(options) {
       document.cookie = 'ember_simple_auth-session=%7B%22key%22%3A%22value%22%7D;path=/;';
       sync(store);
 
-      Ember.run.next(() => {
+      next(() => {
         expect(triggered).to.be.false;
         done();
       });
@@ -84,8 +86,8 @@ export default function(options) {
       document.cookie = 'ember_simple_auth-session=%7B%22key%22%3A%22other%20value%22%7D;path=/;';
       sync(store);
 
-      Ember.run.next(() => {
-        Ember.run.next(() => {
+      next(() => {
+        next(() => {
           expect(triggered).to.be.true;
           done();
         });
@@ -96,7 +98,7 @@ export default function(options) {
       renew(store, { key: 'value' });
       sync(store);
 
-      Ember.run.next(() => {
+      next(() => {
         expect(triggered).to.be.false;
         done();
       });
