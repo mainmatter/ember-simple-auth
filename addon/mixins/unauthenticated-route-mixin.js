@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { service } = Ember.inject;
+const { inject: { service }, Mixin, assert } = Ember;
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -23,7 +23,7 @@ const { service } = Ember.inject;
   @extends Ember.Mixin
   @public
 */
-export default Ember.Mixin.create({
+export default Mixin.create({
   /**
     The session service.
 
@@ -49,7 +49,7 @@ export default Ember.Mixin.create({
   */
   beforeModel() {
     if (this.get('session').get('isAuthenticated')) {
-      Ember.assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== Configuration.routeIfAlreadyAuthenticated);
+      assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== Configuration.routeIfAlreadyAuthenticated);
       return this.transitionTo(Configuration.routeIfAlreadyAuthenticated);
     } else {
       return this._super(...arguments);

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { RSVP } = Ember;
+const { RSVP, Object: EmberObject, Evented } = Ember;
 
 /**
   The base class for all session stores. __This serves as a starting point for
@@ -15,7 +15,7 @@ const { RSVP } = Ember;
   @uses Ember.Evented
   @public
 */
-export default Ember.Object.extend(Ember.Evented, {
+export default EmberObject.extend(Evented, {
   /**
     Triggered when the session store's data changes due to an external event,
     e.g. from another tab or window of the same application. The session

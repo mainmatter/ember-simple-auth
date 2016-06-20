@@ -7,6 +7,8 @@ import Pretender from 'pretender';
 import { invalidateSession, authenticateSession, currentSession } from '../helpers/ember-simple-auth';
 import destroyApp from '../helpers/destroy-app';
 
+const { tryInvoke } = Ember;
+
 describe('Acceptance: Authentication', function() {
   let application;
   let server;
@@ -16,7 +18,7 @@ describe('Acceptance: Authentication', function() {
   });
 
   afterEach(function() {
-    Ember.tryInvoke(server, 'shutdown');
+    tryInvoke(server, 'shutdown');
     destroyApp(application);
   });
 

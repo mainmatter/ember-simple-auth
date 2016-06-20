@@ -2,6 +2,7 @@
 /config/ember-try.js
 /dist
 /tests
+/node-tests
 /tmp
 **/.gitkeep
 .bowerrc
@@ -14,4 +15,4 @@
 bower.json
 ember-cli-build.js
 testem.json
-node-tests/
+testem.js
