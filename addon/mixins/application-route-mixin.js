@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { inject } = Ember;
+const { inject, Mixin, A, run: { bind }, testing } = Ember;
 
 /**
   The mixin for the application route; __defines methods that are called when
@@ -41,7 +41,7 @@ const { inject } = Ember;
   @extends Ember.Mixin
   @public
 */
-export default Ember.Mixin.create({
+export default Mixin.create({
   /**
     The session service.
 
@@ -58,11 +58,11 @@ export default Ember.Mixin.create({
   },
 
   _subscribeToSessionEvents() {
-    Ember.A([
+    A([
       ['authenticationSucceeded', 'sessionAuthenticated'],
       ['invalidationSucceeded', 'sessionInvalidated']
     ]).forEach(([event, method]) => {
-      this.get('session').on(event, Ember.run.bind(this, () => {
+      this.get('session').on(event, bind(this, () => {
         this[method](...arguments);
       }));
     });
@@ -107,7 +107,7 @@ export default Ember.Mixin.create({
     @public
   */
   sessionInvalidated() {
-    if (!Ember.testing) {
+    if (!testing) {
       window.location.replace(Configuration.baseURL);
     }
   }

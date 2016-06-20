@@ -2,8 +2,20 @@
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 
-const { RSVP, isEmpty, run, computed, get } = Ember;
-const assign = Ember.assign || Ember.merge;
+const {
+  RSVP,
+  isEmpty,
+  run,
+  computed,
+  makeArray,
+  assign: emberAssign,
+  merge,
+  A,
+  $: jQuery,
+  testing,
+  warn
+} = Ember;
+const assign = emberAssign || merge;
 
 /**
   Authenticator that conforms to OAuth 2
@@ -180,8 +192,8 @@ export default BaseAuthenticator.extend({
     return new RSVP.Promise((resolve, reject) => {
       const data                = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      const scopesString = Ember.makeArray(scope).join(' ');
-      if (!Ember.isEmpty(scopesString)) {
+      const scopesString = makeArray(scope).join(' ');
+      if (!isEmpty(scopesString)) {
         data.scope = scopesString;
       }
       this.makeRequest(serverTokenEndpoint, data).then((response) => {
@@ -230,7 +242,7 @@ export default BaseAuthenticator.extend({
         success.apply(this, [resolve]);
       } else {
         const requests = [];
-        Ember.A(['access_token', 'refresh_token']).forEach((tokenType) => {
+        A(['access_token', 'refresh_token']).forEach((tokenType) => {
           const token = data[tokenType];
           if (!isEmpty(token)) {
             requests.push(this.makeRequest(serverTokenRevocationEndpoint, {
@@ -269,7 +281,7 @@ export default BaseAuthenticator.extend({
       options.headers = clientIdHeader;
     }
 
-    return Ember.$.ajax(options);
+    return jQuery.ajax(options);
   },
 
   _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
@@ -283,7 +295,7 @@ export default BaseAuthenticator.extend({
       if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now - offset) {
         run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
-        if (!Ember.testing) {
+        if (!testing) {
           this._refreshTokenTimeout = run.later(this, this._refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
         }
       }
@@ -305,7 +317,7 @@ export default BaseAuthenticator.extend({
           resolve(data);
         });
       }, (xhr, status, error) => {
-        Ember.warn(`Access token could not be refreshed - server responded with ${error}.`);
+        warn(`Access token could not be refreshed - server responded with ${error}.`);
         reject();
       });
     });

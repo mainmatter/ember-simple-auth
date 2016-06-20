@@ -6,6 +6,8 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import Torii from 'ember-simple-auth/authenticators/torii';
 
+const { RSVP } = Ember;
+
 describe('ToriiAuthenticator', () => {
   let authenticator;
   let torii;
@@ -39,7 +41,7 @@ describe('ToriiAuthenticator', () => {
     describe('when there is a torii provider in the session data', () => {
       describe('when torii fetches successfully', () => {
         beforeEach(() => {
-          sinon.stub(torii, 'fetch').returns(Ember.RSVP.resolve({ some: 'other data' }));
+          sinon.stub(torii, 'fetch').returns(RSVP.resolve({ some: 'other data' }));
         });
 
         it('returns a promise that resolves with the session data', () => {
@@ -51,7 +53,7 @@ describe('ToriiAuthenticator', () => {
 
       describe('when torii does not fetch successfully', () => {
         beforeEach(() => {
-          sinon.stub(torii, 'fetch').returns(Ember.RSVP.reject());
+          sinon.stub(torii, 'fetch').returns(RSVP.reject());
         });
 
         itDoesNotRestore({ some: 'data', provider: 'provider' });
@@ -74,7 +76,7 @@ describe('ToriiAuthenticator', () => {
 
     describe('when torii opens successfully', () => {
       beforeEach(() => {
-        sinon.stub(torii, 'open').returns(Ember.RSVP.resolve({ some: 'data' }));
+        sinon.stub(torii, 'open').returns(RSVP.resolve({ some: 'data' }));
       });
 
       it('returns a promise that resolves with the session data', () => {
@@ -86,7 +88,7 @@ describe('ToriiAuthenticator', () => {
 
     describe('when torii does not open successfully', () => {
       beforeEach(() => {
-        sinon.stub(torii, 'open').returns(Ember.RSVP.reject());
+        sinon.stub(torii, 'open').returns(RSVP.reject());
       });
 
       it('returns a rejecting promise', () => {
@@ -100,7 +102,7 @@ describe('ToriiAuthenticator', () => {
   describe('#invalidate', () => {
     describe('when torii closes successfully', () => {
       beforeEach(() => {
-        sinon.stub(torii, 'close').returns(Ember.RSVP.resolve());
+        sinon.stub(torii, 'close').returns(RSVP.resolve());
       });
 
       it('returns a resolving promise', () => {
@@ -112,7 +114,7 @@ describe('ToriiAuthenticator', () => {
 
     describe('when torii does not close successfully', () => {
       beforeEach(() => {
-        sinon.stub(torii, 'close').returns(Ember.RSVP.reject());
+        sinon.stub(torii, 'close').returns(RSVP.reject());
       });
 
       it('returns a rejecting promise', () => {

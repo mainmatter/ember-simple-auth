@@ -1,7 +1,7 @@
 ---
 language: node_js
 node_js:
-  - "0.12"
+  - "4"
 
 sudo: false
 
@@ -10,8 +10,8 @@ cache:
     - node_modules
 
 env:
-  - EMBER_TRY_SCENARIO=ember-release
   - EMBER_TRY_SCENARIO=ember-earliest
+  - EMBER_TRY_SCENARIO=ember-release
   - EMBER_TRY_SCENARIO=ember-beta
   - EMBER_TRY_SCENARIO=ember-canary
 
@@ -21,21 +21,19 @@ matrix:
     - env: EMBER_TRY_SCENARIO=ember-canary
 
 before_install:
-  - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
-  - "npm config set spin false"
-  - "npm install -g npm@^2"
+  - npm config set spin false
+  - npm install -g bower
+  - npm install phantomjs-prebuilt
 
 install:
-  - npm install -g bower
   - npm install
   - bower install
 
 script:
-  - ember try $EMBER_TRY_SCENARIO test && npm run nodetest
+  - ember try $EMBER_TRY_SCENARIO test --skip-cleanup
 
 notifications:
   email: false
   slack:
     rooms:
       secure: OOKD4ZksqzEBW/A3WRuOToODIxnDITqx+Esu7tdmmYPuQlMYgx4SUHv8j9OM9/ScFJiseeVGSkl45vJrHLLIITX9XSjO1RgiGZgw2heVujmGpF6CZNqvT6GsQuKIvMzmwF7IxuHdfV45Csr9Ou/Fg74TszR/4S2h4SOI4zhLg7A=
-    on_success: never

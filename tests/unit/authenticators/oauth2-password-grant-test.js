@@ -5,24 +5,24 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
+import Pretender from 'pretender';
 import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
+
+const { $: jQuery, run: { next }, tryInvoke } = Ember;
 
 describe('OAuth2PasswordGrantAuthenticator', () => {
   let authenticator;
-  let xhr;
   let server;
 
   beforeEach(() => {
-    authenticator      = OAuth2PasswordGrant.create();
-    xhr                = sinon.useFakeXMLHttpRequest();
-    server             = sinon.fakeServer.create();
-    server.autoRespond = true;
-    sinon.spy(Ember.$, 'ajax');
+    authenticator = OAuth2PasswordGrant.create();
+    server        = new Pretender();
+    sinon.spy(jQuery, 'ajax');
   });
 
   afterEach(() => {
-    xhr.restore();
-    Ember.$.ajax.restore();
+    tryInvoke(server, 'shutdown');
+    jQuery.ajax.restore();
   });
 
   describe('#restore', () => {
@@ -38,11 +38,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         describe('when automatic token refreshing is enabled', () => {
           describe('when the refresh request is successful', () => {
             beforeEach(() => {
-              server.respondWith('POST', '/token', [
-                200,
-                { 'Content-Type': 'application/json' },
-                '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }'
-              ]);
+              server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }']);
             });
 
             it('resolves with the correct data', (done) => {
@@ -105,8 +101,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     it('sends an AJAX request to the token endpoint', (done) => {
       authenticator.authenticate('username', 'password');
 
-      Ember.run.next(() => {
-        expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
+      next(() => {
+        expect(jQuery.ajax.getCall(0).args[0]).to.eql({
           url:         '/token',
           type:        'POST',
           data:        { 'grant_type': 'password', username: 'username', password: 'password' },
@@ -121,8 +117,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       authenticator.set('clientId', 'test-client');
       authenticator.authenticate('username', 'password');
 
-      Ember.run.next(() => {
-        expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
+      next(() => {
+        expect(jQuery.ajax.getCall(0).args[0]).to.eql({
           url:         '/token',
           type:        'POST',
           data:        { 'grant_type': 'password', username: 'username', password: 'password' },
@@ -137,8 +133,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     it('sends a single OAuth scope to the token endpoint', function(done) {
       authenticator.authenticate('username', 'password', 'public');
 
-      Ember.run.next(() => {
-        expect(Ember.$.ajax.getCall(0).args[0].data.scope).to.eql('public');
+      next(() => {
+        expect(jQuery.ajax.getCall(0).args[0].data.scope).to.eql('public');
         done();
       });
     });
@@ -146,19 +142,15 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     it('sends multiple OAuth scopes to the token endpoint', (done) => {
       authenticator.authenticate('username', 'password', ['public', 'private']);
 
-      Ember.run.next(() => {
-        expect(Ember.$.ajax.getCall(0).args[0].data.scope).to.eql('public private');
+      next(() => {
+        expect(jQuery.ajax.getCall(0).args[0].data.scope).to.eql('public private');
         done();
       });
     });
 
     describe('when the authentication request is successful', () => {
       beforeEach(() => {
-        server.respondWith('POST', '/token', [
-          200,
-          { 'Content-Type': 'application/json' },
-          '{ "access_token": "secret token!" }'
-        ]);
+        server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }']);
       });
 
       it('resolves with the correct data', (done) => {
@@ -172,11 +164,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
       describe('when the server response includes expiration data', () => {
         beforeEach(() => {
-          server.respondWith('POST', '/token', [
-            200,
-            { 'Content-Type': 'application/json' },
-            '{ "access_token": "secret token!", "expires_in": 12345, "refresh_token": "refresh token!" }'
-          ]);
+          server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!", "expires_in": 12345, "refresh_token": "refresh token!" }']);
         });
 
         it('resolves with the correct data', (done) => {
@@ -191,11 +179,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
       describe('when the server returns incomplete data', () => {
         it('fails when no access_token is present', () => {
-          server.respondWith('POST', '/token', [
-              200,
-              { 'Content-Type': 'application/json' },
-              '{}'
-          ]);
+          server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{}']);
 
           return authenticator.authenticate('username', 'password').catch((error) => {
             expect(error).to.eql('access_token is missing in server response');
@@ -206,11 +190,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
     describe('when the authentication request fails', () => {
       beforeEach(() => {
-        server.respondWith('POST', '/token', [
-          400,
-          { 'Content-Type': 'application/json' },
-          '{ "error": "invalid_grant" }'
-        ]);
+        server.post('/token', () => [400, { 'Content-Type': 'application/json' }, '{ "error": "invalid_grant" }']);
       });
 
       it('rejects with the correct error', (done) => {
@@ -240,8 +220,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       it('sends an AJAX request to the revokation endpoint', (done) => {
         authenticator.invalidate({ 'access_token': 'access token!' });
 
-        Ember.run.next(() => {
-          expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
+        next(() => {
+          expect(jQuery.ajax.getCall(0).args[0]).to.eql({
             url:         '/revoke',
             type:        'POST',
             data:        { 'token_type_hint': 'access_token', token: 'access token!' },
@@ -254,7 +234,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
       describe('when the revokation request is successful', () => {
         beforeEach(() => {
-          server.respondWith('POST', '/revoke', [200, { 'Content-Type': 'application/json' }, '']);
+          server.post('/revoke', () => [200, {}, '']);
         });
 
         itSuccessfullyInvalidatesTheSession();
@@ -262,8 +242,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
       describe('when the revokation request fails', () => {
         beforeEach(() => {
-          server.respondWith('POST', '/revoke', [400, { 'Content-Type': 'application/json' },
-          '{ "error": "unsupported_grant_type" }']);
+          server.post('/token', () => [400, { 'Content-Type': 'application/json' }, '{ "error": "unsupported_grant_type" }']);
         });
 
         itSuccessfullyInvalidatesTheSession();
@@ -273,8 +252,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         it('sends an AJAX request to invalidate the refresh token', (done) => {
           authenticator.invalidate({ 'access_token': 'access token!', 'refresh_token': 'refresh token!' });
 
-          Ember.run.next(() => {
-            expect(Ember.$.ajax.getCall(1).args[0]).to.eql({
+          next(() => {
+            expect(jQuery.ajax.getCall(1).args[0]).to.eql({
               url:         '/revoke',
               type:        'POST',
               data:        { 'token_type_hint': 'refresh_token', token: 'refresh token!' },
@@ -305,8 +284,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     it('sends an AJAX request to the token endpoint', (done) => {
       authenticator._refreshAccessToken(12345, 'refresh token!');
 
-      Ember.run.next(() => {
-        expect(Ember.$.ajax.getCall(0).args[0]).to.eql({
+      next(() => {
+        expect(jQuery.ajax.getCall(0).args[0]).to.eql({
           url:         '/token',
           type:        'POST',
           data:        { 'grant_type': 'refresh_token', 'refresh_token': 'refresh token!' },
@@ -319,11 +298,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
     describe('when the refresh request is successful', () => {
       beforeEach(() => {
-        server.respondWith('POST', '/token', [
-          200,
-          { 'Content-Type': 'application/json' },
-          '{ "access_token": "secret token 2!" }'
-        ]);
+        server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }']);
       });
 
       it('triggers the "sessionDataUpdated" event', (done) => {
@@ -339,11 +314,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
       describe('when the server reponse includes updated expiration data', () => {
         beforeEach(() => {
-          server.respondWith('POST', '/token', [
-            200,
-            { 'Content-Type': 'application/json' },
-            '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }'
-          ]);
+          server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }']);
         });
 
         it('triggers the "sessionDataUpdated" event with the correct data', (done) => {
