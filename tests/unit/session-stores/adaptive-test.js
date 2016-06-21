@@ -53,14 +53,10 @@ describe('AdaptiveStore', () => {
         _isLocalStorageAvailable: false
       });
       store.setProperties({
-        cookieDomain: 'example.com',
         cookieName: 'test:session',
-        cookieExpirationTime: 604800
+        cookieExpirationTime: 60
       });
-      expect(document.cookie).to.contain('domain=example.com;');
-      expect(document.cookie).to.contain('test:session-expiration_time=604800');
-      let expiryDate = new Date(new Date().getTime() + 604800 * 1000).toUTCString();
-      expect(document.cookie).to.contain(`expires=${expiryDate}`);
+      expect(document.cookie).to.contain('test:session-expiration_time=60');
     });
   });
 });
