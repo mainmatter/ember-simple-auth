@@ -28,7 +28,6 @@ export default function(options) {
       store = createStore({ cookieName: 'test-session' });
       store.persist({ key: 'value' });
 
-      // FIXME: determine why cookie.js#210 returns undefined when this._cookieName has a value
       expect(document.cookie).to.contain('test-session=%7B%22key%22%3A%22value%22%7D');
     });
 
