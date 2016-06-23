@@ -138,20 +138,6 @@ export default BaseStore.extend({
   */
   persist(data) {
     this._lastData = data;
-    if (data.hasOwnProperty('cookieDomain')) {
-      this.set('cookieDomain', data.cookieDomain);
-      delete data.cookieDomain;
-    }
-
-    if (data.hasOwnProperty('cookieName')) {
-      this.set('cookieName', data.cookieName);
-      delete data.cookieName;
-    }
-
-    if (data.hasOwnProperty('cookieExpirationTime')) {
-      this.set('cookieExpirationTime', data.cookieExpirationTime);
-      delete data.cookieExpirationTime;
-    }
 
     data           = JSON.stringify(data || {});
     let expiration = this._calculateExpirationTime();
