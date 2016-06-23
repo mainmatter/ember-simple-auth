@@ -52,7 +52,6 @@ export default function(options) {
     });
 
     it('stores the expiration time in a cookie named "test-session-expiration_time"', () => {
-      let cookieName = store.get('cookieName');
       expect(document.cookie).to.contain('test-session-expiration_time=60');
     });
   });
