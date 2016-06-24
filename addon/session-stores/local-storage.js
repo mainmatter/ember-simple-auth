@@ -83,7 +83,7 @@ export default BaseStore.extend({
 
   _bindToStorageEvents() {
     jQuery(window).bind('storage', (e) => {
-      if (e.originalEvent.key === this.key) {
+      if (e.originalEvent.key === this.key && (document.visibilityState typeof undefined || document.visibilityState === 'hidden')) {
         this.restore().then((data) => {
           if (!objectsAreEqual(data, this._lastData)) {
             this._lastData = data;
