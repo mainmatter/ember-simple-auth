@@ -33,7 +33,7 @@ Here's a few steps to follow to make sure your pull request gets accepted:
 3. Adhere to Ember Simple Auth's coding style; while there's no official style
   guide it should be clear by looking at the existing code what the agreed upon
   rules are.
-4. Stash all your commits into one before submitting the pull request so it's
+4. Squash all of your commits into one before submitting the pull request so it's
   easier to review them.
 5. Provide a good description for your pull request - what does it add, why is
   that needed etc.?
