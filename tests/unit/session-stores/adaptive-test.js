@@ -4,6 +4,9 @@ import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import { it } from 'ember-mocha';
 import { expect } from 'chai';
+import Ember from 'ember';
+
+const { run } = Ember;
 
 describe('AdaptiveStore', () => {
   let store;
@@ -49,12 +52,15 @@ describe('AdaptiveStore', () => {
     });
 
     it('persists to cookie when cookie attributes change', () => {
-      store = Adaptive.create({
-        _isLocalStorageAvailable: false
-      });
-      store.setProperties({
-        cookieName: 'test:session',
-        cookieExpirationTime: 60
+      let store;
+      run(() => {
+        store = Adaptive.create({
+          _isLocalStorageAvailable: false
+        });
+        store.setProperties({
+          cookieName: 'test:session',
+          cookieExpirationTime: 60
+        });
       });
       expect(document.cookie).to.contain('test:session-expiration_time=60');
     });

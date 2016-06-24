@@ -2,7 +2,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, computed, run: { next, cancel, later }, isEmpty, typeOf, testing } = Ember;
+const { RSVP, computed, run, run: { next, cancel, later }, isEmpty, typeOf, testing } = Ember;
 
 /**
   Session store that persists data in a cookie.
@@ -60,7 +60,7 @@ export default BaseStore.extend({
     /* jshint unused: true */
     set(key, value) {
       this.set('_cookieDomain', value);
-      this.rewriteCookie();
+      run.scheduleOnce('actions', this, this.rewriteCookie);
       return value;
     }
   }),
@@ -82,7 +82,7 @@ export default BaseStore.extend({
     set(key, value) {
       this._oldCookieName = this._cookieName;
       this.set('_cookieName', value);
-      this.rewriteCookie();
+      run.scheduleOnce('actions', this, this.rewriteCookie);
       return value;
     }
   }),
@@ -105,7 +105,7 @@ export default BaseStore.extend({
     /* jshint unused: true */
     set(key, value) {
       this.set('_cookieExpirationTime', value);
-      this.rewriteCookie();
+      run.scheduleOnce('actions', this, this.rewriteCookie);
       return value;
     }
   }),
@@ -242,8 +242,10 @@ export default BaseStore.extend({
   },
 
   rewriteCookie() {
-    const data = this._read(this._oldCookieName);
-    const expiration = this._calculateExpirationTime();
-    this._write(data, expiration);
+    run.scheduleOnce('actions', this, function() {
+      const data = this._read(this._oldCookieName);
+      const expiration = this._calculateExpirationTime();
+      this._write(data, expiration);
+    });
   }
 });
