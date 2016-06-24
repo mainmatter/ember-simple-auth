@@ -2,7 +2,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, computed, run: { next, cancel, later }, isEmpty, isBlank, typeOf, testing } = Ember;
+const { RSVP, computed, run: { next, cancel, later }, isEmpty, typeOf, testing } = Ember;
 
 /**
   Session store that persists data in a cookie.
@@ -54,9 +54,10 @@ export default BaseStore.extend({
   */
   _cookieDomain: null,
   cookieDomain: computed('_cookieDomain', {
-    get(key) {
+    get() {
       return this.get('_cookieDomain');
     },
+    /* jshint unused: true */
     set(key, value) {
       this.set('_cookieDomain', value);
       this.rewriteCookie();
@@ -74,9 +75,10 @@ export default BaseStore.extend({
   */
   _cookieName: 'ember_simple_auth-session',
   cookieName: computed('_cookieName', {
-    get(key) {
+    get() {
       return this.get('_cookieName');
     },
+    /* jshint unused: true */
     set(key, value) {
       this._oldCookieName = this._cookieName;
       this.set('_cookieName', value);
@@ -100,6 +102,7 @@ export default BaseStore.extend({
     get() {
       return this.get('_cookieExpirationTime');
     },
+    /* jshint unused: true */
     set(key, value) {
       this.set('_cookieExpirationTime', value);
       this.rewriteCookie();
@@ -138,6 +141,20 @@ export default BaseStore.extend({
   */
   persist(data) {
     this._lastData = data;
+    if (data.hasOwnProperty('cookieDomain')) {
+      this.set('cookieDomain', data.cookieDomain);
+      delete data.cookieDomain;
+    }
+
+    if (data.hasOwnProperty('cookieName')) {
+      this.set('cookieName', data.cookieName);
+      delete data.cookieName;
+    }
+
+    if (data.hasOwnProperty('cookieExpirationTime')) {
+      this.set('cookieExpirationTime', data.cookieExpirationTime);
+      delete data.cookieExpirationTime;
+    }
 
     data           = JSON.stringify(data || {});
     let expiration = this._calculateExpirationTime();
@@ -169,9 +186,9 @@ export default BaseStore.extend({
     @public
   */
   clear() {
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c.replace(/^ +/, "")
-        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    document.cookie.split(';').forEach((c) => {
+      document.cookie = c.replace(/^ +/, '')
+        .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
     });
     this._lastData = {};
     return RSVP.resolve();
@@ -239,10 +256,7 @@ export default BaseStore.extend({
     }
   },
 
-  // FIXME: maybe be causing getter bugs with rewriteCookie called before
-  // setter can return value
   rewriteCookie() {
-    const cookieName = this._cookieName;
     const data = this._read(this._oldCookieName);
     const expiration = this._calculateExpirationTime();
     this._write(data, expiration);
