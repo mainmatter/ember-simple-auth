@@ -126,6 +126,20 @@ export default BaseAuthenticator.extend({
   }),
 
   /**
+    When authentication fails, the rejection callback is provided with the whole
+    XHR object instead of it's response JSON or text.
+
+    This is useful for cases when the backend provides additional context not
+    available in the response body.
+
+    @property rejectWithXhr
+    @type Boolean
+    @default false
+    @public
+  */
+  rejectWithXhr: false,
+
+  /**
     Restores the session from a session data object; __will return a resolving
     promise when there is a non-empty `access_token` in the session data__ and
     a rejecting promise otherwise.
@@ -192,6 +206,7 @@ export default BaseAuthenticator.extend({
     return new RSVP.Promise((resolve, reject) => {
       const data                = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
+      const useXhr = this.get('rejectWithXhr');
       const scopesString = makeArray(scope).join(' ');
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
@@ -211,7 +226,7 @@ export default BaseAuthenticator.extend({
           resolve(response);
         });
       }, (xhr) => {
-        run(null, reject, xhr.responseJSON || xhr.responseText);
+        run(null, reject, useXhr ? xhr : (xhr.responseJSON || xhr.responseText));
       });
     });
   },

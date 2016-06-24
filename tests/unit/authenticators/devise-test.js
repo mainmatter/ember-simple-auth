@@ -104,13 +104,31 @@ describe('DeviseAuthenticator', () => {
 
     describe('when the authentication request fails', () => {
       beforeEach(() => {
-        server.post('/users/sign_in', () => [400, { 'Content-Type': 'application/json' }, '{ "error": "invalid_grant" }']);
+        server.post('/users/sign_in', () => [400, { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' }, '{ "error": "invalid_grant" }']);
       });
 
       it('rejects with the correct error', (done) => {
         authenticator.authenticate('email@address.com', 'password').catch((error) => {
           expect(error).to.eql({ error: 'invalid_grant' });
           done();
+        });
+      });
+
+      describe('when reject with XHR is enabled', () => {
+        beforeEach(() => {
+          authenticator.set('rejectWithXhr', true);
+        });
+
+        it('rejects with xhr object', () => {
+          return authenticator.authenticate('username', 'password').catch((error) => {
+            expect(error.responseJSON).to.eql({ error: 'invalid_grant' });
+          });
+        });
+
+        it('provides access to custom headers', () => {
+          return authenticator.authenticate('username', 'password').catch((error) => {
+            expect(error.getResponseHeader('X-Custom-Context')).to.eql('foobar');
+          });
         });
       });
     });
