@@ -4,7 +4,7 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 
-const { run: { next } } = Ember;
+const { run, run: { next } } = Ember;
 
 export default function(options) {
   let store;
@@ -25,14 +25,20 @@ export default function(options) {
 
   describe('#persist', () => {
     it('respects the configured cookieName', () => {
-      store = createStore({ cookieName: 'test-session' });
+      let store;
+      run(() => {
+        store = createStore({ cookieName: 'test-session' });
+      });
       store.persist({ key: 'value' });
 
       expect(document.cookie).to.contain('test-session=%7B%22key%22%3A%22value%22%7D');
     });
 
     it('respects the configured cookieDomain', () => {
-      store = createStore({ cookieDomain: 'example.com' });
+      let store;
+      run(() => {
+        store = createStore({ cookieDomain: 'example.com' });
+      });
       store.persist({ key: 'value' });
 
       expect(document.cookie).to.not.contain('test-session=%7B%22key%22%3A%22value%22%7D');
