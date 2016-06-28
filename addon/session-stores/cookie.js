@@ -242,10 +242,8 @@ export default BaseStore.extend({
   },
 
   rewriteCookie() {
-    run.scheduleOnce('actions', this, function() {
-      const data = this._read(this._oldCookieName);
-      const expiration = this._calculateExpirationTime();
-      this._write(data, expiration);
-    });
+    const data = this._read(this._oldCookieName);
+    const expiration = this._calculateExpirationTime();
+    this._write(data, expiration);
   }
 });
