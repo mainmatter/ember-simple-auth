@@ -4,6 +4,7 @@
 /tests
 /node-tests
 /tmp
+/fastboot-dist
 **/.gitkeep
 .bowerrc
 .editorconfig
