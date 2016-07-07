@@ -62,7 +62,7 @@ export default Ember.ObjectProxy.extend(Ember.Evented, {
         return authenticator.restore(restoredContent.authenticated).then((content) => {
           this.set('content', restoredContent);
           this._busy = false;
-          return this._setup(authenticatorFactory, content);
+          return this._setup(authenticatorFactory, content || restoredContent.authenticated);
         }, (err) => {
           Ember.Logger.debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
           if (err) {
