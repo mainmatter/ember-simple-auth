@@ -13,7 +13,8 @@ const {
   A,
   $: jQuery,
   testing,
-  warn
+  warn,
+  keys
 } = Ember;
 const assign = emberAssign || merge;
 
@@ -199,10 +200,11 @@ export default BaseAuthenticator.extend({
     @param {String} identification The resource owner username
     @param {String} password The resource owner password
     @param {String|Array} scope The scope of the access request (see [RFC 6749, section 3.3](http://tools.ietf.org/html/rfc6749#section-3.3))
+    @param {Object} headers Optional headers that particular backends may require (for example sending 2FA challenge responses)
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
     @public
   */
-  authenticate(identification, password, scope = []) {
+  authenticate(identification, password, scope = [], headers = {}) {
     return new RSVP.Promise((resolve, reject) => {
       const data                = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
@@ -211,7 +213,7 @@ export default BaseAuthenticator.extend({
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
       }
-      this.makeRequest(serverTokenEndpoint, data).then((response) => {
+      this.makeRequest(serverTokenEndpoint, data, headers).then((response) => {
         run(() => {
           if (!this._validate(response)) {
             reject('access_token is missing in server response');
@@ -279,21 +281,27 @@ export default BaseAuthenticator.extend({
     @method makeRequest
     @param {String} url The request URL
     @param {Object} data The request data
+    @param {Object} headers Additional headers to send in request
     @return {jQuery.Deferred} A promise like jQuery.Deferred as returned by `$.ajax`
     @protected
   */
-  makeRequest(url, data) {
+  makeRequest(url, data, headers = {}) {
     const options = {
       url,
       data,
       type:        'POST',
       dataType:    'json',
-      contentType: 'application/x-www-form-urlencoded'
+      contentType: 'application/x-www-form-urlencoded',
+      headers
     };
 
     const clientIdHeader = this.get('_clientIdHeader');
     if (!isEmpty(clientIdHeader)) {
-      options.headers = clientIdHeader;
+      merge(options.headers, clientIdHeader);
+    }
+
+    if (isEmpty(keys(options.headers))) {
+      delete options.headers;
     }
 
     return jQuery.ajax(options);
