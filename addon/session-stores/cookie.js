@@ -191,8 +191,8 @@ export default BaseStore.extend({
     let path        = '; path=/';
     let expires     = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
     let secure      = !!this._secureCookies ? ';secure' : '';
-    let cookieName = this.get('_cookieName');
-    let cookieDomain = this.get('_cookieDomain');
+    let cookieName = this._cookieName;
+    let cookieDomain = this._cookieDomain;
     let domain      = isEmpty(cookieDomain) ? '' : `domain=${cookieDomain}`;
     let cookieExpirationTime = this.get('_cookieExpirationTime');
     document.cookie = `${cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
