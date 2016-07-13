@@ -57,7 +57,6 @@ export default BaseStore.extend({
     get() {
       return this.get('_cookieDomain');
     },
-    /* jshint unused: true */
     set(key, value) {
       this.set('_cookieDomain', value);
       run.scheduleOnce('actions', this, this.rewriteCookie);
@@ -78,7 +77,6 @@ export default BaseStore.extend({
     get() {
       return this.get('_cookieName');
     },
-    /* jshint unused: true */
     set(key, value) {
       this._oldCookieName = this._cookieName;
       this.set('_cookieName', value);
@@ -102,7 +100,6 @@ export default BaseStore.extend({
     get() {
       return this.get('_cookieExpirationTime');
     },
-    /* jshint unused: true */
     set(key, value) {
       this.set('_cookieExpirationTime', value);
       run.scheduleOnce('actions', this, this.rewriteCookie);
