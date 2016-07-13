@@ -51,7 +51,6 @@ export default Base.extend({
     get() {
       return this.get('_cookieDomain');
     },
-    /*jshint unused: true */
     set(key, value) {
       this.set('_cookieDomain', value);
       let _store = this.get('_store');
@@ -75,7 +74,6 @@ export default Base.extend({
     get() {
       return this.get('_cookieName');
     },
-    /*jshint unused: true */
     set(key, value) {
       this.set('_cookieName', value);
       let _store = this.get('_store');
@@ -101,7 +99,6 @@ export default Base.extend({
     get() {
       return this.get('_cookieExpirationTime');
     },
-    /* jshint unused: true */
     set(key, value) {
       this.set('_cookieExpirationTime', value);
       let _store = this.get('_store');
