@@ -52,9 +52,8 @@ describe('AdaptiveStore', () => {
     });
 
     it('persists to cookie when cookie attributes change', () => {
-      let store;
       run(() => {
-        store = Adaptive.create({
+        let store = Adaptive.create({
           _isLocalStorageAvailable: false
         });
         store.setProperties({
