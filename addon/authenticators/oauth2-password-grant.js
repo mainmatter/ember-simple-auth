@@ -204,7 +204,11 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password, scope = []) {
     return new RSVP.Promise((resolve, reject) => {
+      const client_id = this.get('clientId');
       const data                = { 'grant_type': 'password', username: identification, password };
+      if (!Ember.isEmpty(client_id)) {
+        data.client_id = client_id;
+      }
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
       const useXhr = this.get('rejectWithXhr');
       const scopesString = makeArray(scope).join(' ');
@@ -291,10 +295,10 @@ export default BaseAuthenticator.extend({
       contentType: 'application/x-www-form-urlencoded'
     };
 
-    const clientIdHeader = this.get('_clientIdHeader');
-    if (!isEmpty(clientIdHeader)) {
-      options.headers = clientIdHeader;
-    }
+    // const clientIdHeader = this.get('_clientIdHeader');
+    // if (!isEmpty(clientIdHeader)) {
+    //   options.headers = clientIdHeader;
+    // }
 
     return jQuery.ajax(options);
   },
