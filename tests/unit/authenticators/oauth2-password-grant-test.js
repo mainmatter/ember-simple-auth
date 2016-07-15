@@ -130,6 +130,22 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
     });
 
+    it('sends an AJAX request to the token endpoint with customized headers', function(done) {
+      authenticator.authenticate('username', 'password', [], { 'X-Custom-Context': 'foobar' });
+
+      next(() => {
+        expect(jQuery.ajax.getCall(0).args[0]).to.eql({
+          url:         '/token',
+          type:        'POST',
+          data:        { 'grant_type': 'password', username: 'username', password: 'password' },
+          dataType:    'json',
+          contentType: 'application/x-www-form-urlencoded',
+          headers:     { 'X-Custom-Context': 'foobar' }
+        });
+        done();
+      });
+    });
+
     it('sends a single OAuth scope to the token endpoint', function(done) {
       authenticator.authenticate('username', 'password', 'public');
 
