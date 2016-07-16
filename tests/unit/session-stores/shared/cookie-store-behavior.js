@@ -39,9 +39,8 @@ export default function(options) {
       run(() => {
         store = createStore({ cookieDomain: 'example.com' });
       });
-      store.persist({ key: 'value' });
 
-      expect(document.cookie).to.not.contain('test-session=%7B%22key%22%3A%22value%22%7D');
+      expect(document.cookie).to.contain('domain=example.com');
     });
   });
 

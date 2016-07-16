@@ -168,10 +168,7 @@ export default BaseStore.extend({
     @public
   */
   clear() {
-    document.cookie.split(';').forEach((c) => {
-      document.cookie = c.replace(/^ +/, '')
-        .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
-    });
+    this._write(null, 0);
     this._lastData = {};
     return RSVP.resolve();
   },
