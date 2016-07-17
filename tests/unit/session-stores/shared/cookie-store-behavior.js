@@ -3,6 +3,7 @@ import Ember from 'ember';
 import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
+import sinon from 'sinon';
 
 const { run, run: { next } } = Ember;
 
@@ -99,6 +100,42 @@ export default function(options) {
 
       next(() => {
         expect(triggered).to.be.false;
+        done();
+      });
+    });
+  });
+
+  describe('rewrite behavior', () => {
+    it('deletes the old cookie and writes a new one when name property changes', (done) => {
+      let store;
+      run(() => {
+        store = createStore({
+          cookieName: 'session-foo'
+        });
+        store.persist({ key: 'value' });
+        store.set('cookieName', 'session-bar');
+      });
+
+      next(() => {
+        expect(document.cookie).to.contain('session-foo=;');
+        expect(document.cookie).to.contain('session-bar=%7B%22key%22%3A%22value%22%7D');
+        done();
+      });
+    });
+
+    it('only rewrites the cookie once per loop when multiple properties are changed', (done) => {
+      let store;
+      run(() => {
+        store = createStore({
+          cookieName: 'session-foo'
+        });
+        sinon.spy(store, 'rewriteCookie');
+        store.set('cookieName', 'session-bar');
+        store.set('cookieDomain', 'example.com');
+      });
+
+      next(() => {
+        expect(store.rewriteCookie).to.have.been.called.once;
         done();
       });
     });
