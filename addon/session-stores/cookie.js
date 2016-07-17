@@ -185,6 +185,9 @@ export default BaseStore.extend({
   },
 
   _write(value, expiration) {
+    if (!!this._oldCookieName) {
+      document.cookie = `${this._oldCookieName}=`;
+    }
     let path        = '; path=/';
     let expires     = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
     let secure      = !!this._secureCookies ? ';secure' : '';
@@ -238,6 +241,7 @@ export default BaseStore.extend({
   rewriteCookie() {
     const data = this._read(this._oldCookieName);
     const expiration = this._calculateExpirationTime();
+    this.clear();
     this._write(data, expiration);
   }
 });
