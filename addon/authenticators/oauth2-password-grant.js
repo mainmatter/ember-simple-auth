@@ -14,9 +14,10 @@ const {
   $: jQuery,
   testing,
   warn,
-  keys
+  keys: emberKeys
 } = Ember;
 const assign = emberAssign || merge;
+const keys = Object.keys || emberKeys; // Ember.keys deprecated in 1.13
 
 /**
   Authenticator that conforms to OAuth 2
