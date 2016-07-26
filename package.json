@@ -51,7 +51,6 @@
     "ember-welcome-page": "^1.0.1",
     "ember-sinon": "~0.5.0",
     "ember-suave": "~3.0.1",
-    "ember-try": "^0.2.2",
     "express": "^4.14.0",
     "git-repo-version": "^0.3.0",
     "glob": "^7.0.4",
