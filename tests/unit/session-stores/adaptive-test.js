@@ -2,6 +2,7 @@ import { describe, beforeEach, afterEach } from 'mocha';
 import Adaptive from 'ember-simple-auth/session-stores/adaptive';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
+import FakeCookieService from '../../helpers/fake-cookie-service';
 
 describe('AdaptiveStore', () => {
   let store;
@@ -25,6 +26,8 @@ describe('AdaptiveStore', () => {
   describe('when localStorage is not available', () => {
     beforeEach(() => {
       store = Adaptive.create({ _isLocalStorageAvailable: false });
+      store.set('_store._cookies', FakeCookieService.create());
+      store.set('_store._fastboot', { isFastBoot: false });
     });
 
     itBehavesLikeAStore({
@@ -34,9 +37,12 @@ describe('AdaptiveStore', () => {
     });
 
     itBehavesLikeACookieStore({
-      createStore(options = {}) {
+      createStore(cookiesService, options = {}) {
         options._isLocalStorageAvailable = false;
-        return Adaptive.create(options);
+        const store = Adaptive.create(options);
+        store.set('_store._cookies', cookiesService);
+        store.set('_store._fastboot', { isFastBoot: false });
+        return store;
       },
       renew(store, data) {
         store.get('_store')._renew(data);
