@@ -26,7 +26,8 @@ describe('UnauthenticatedRouteMixin', () => {
 
       session    = InternalSession.create({ store: EphemeralStore.create() });
       transition = {
-        send() {}
+        send() {},
+        abort() {}
       };
 
       route = Route.extend(MixinImplementingBeforeModel, UnauthenticatedRouteMixin, {
