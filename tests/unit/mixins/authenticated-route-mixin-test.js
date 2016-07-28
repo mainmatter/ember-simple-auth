@@ -9,7 +9,11 @@ import InternalSession from 'ember-simple-auth/internal-session';
 import Configuration from 'ember-simple-auth/configuration';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
+<<<<<<< HEAD
 const { Mixin, RSVP, Route: EmberRoute } = Ember;
+=======
+const { Mixin, RSVP, Route } = Ember;
+>>>>>>> 1acbecf... Fastboot Feature Branch (#1032)
 
 describe('AuthenticatedRouteMixin', () => {
   let route;
@@ -23,12 +27,15 @@ describe('AuthenticatedRouteMixin', () => {
           return RSVP.resolve('upstreamReturnValue');
         }
       });
+<<<<<<< HEAD
       const Route = EmberRoute.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {
         // pretend this is never FastBoot
         _isFastBoot: false,
         // replace actual transitionTo as the router isn't set up etc.
         transitionTo() {}
       });
+=======
+>>>>>>> 1acbecf... Fastboot Feature Branch (#1032)
 
       session = InternalSession.create({ store: EphemeralStore.create() });
       transition = {
@@ -36,6 +43,11 @@ describe('AuthenticatedRouteMixin', () => {
       };
 
       route = Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {
+<<<<<<< HEAD
+=======
+        // pretend this is never FastBoot
+        _isFastBoot: false,
+>>>>>>> 1acbecf... Fastboot Feature Branch (#1032)
         // replace actual transitionTo as the router isn't set up etc.
         transitionTo() {}
       }).create({ session });

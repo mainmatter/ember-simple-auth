@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 import Configuration from './../configuration';
 
 const { inject: { service }, Mixin, assert, computed } = Ember;
@@ -67,6 +66,7 @@ export default Mixin.create({
         transition.abort();
         this.set('session.attemptedTransition', transition);
       }
+
       return this.transitionTo(Configuration.authenticationRoute);
     } else {
       return this._super(...arguments);
