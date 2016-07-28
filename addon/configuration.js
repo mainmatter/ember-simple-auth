@@ -47,6 +47,7 @@ export default {
     route is not authenticated.
 
     @property authenticationRoute
+    @deprecated
     @readOnly
     @static
     @type String
@@ -59,6 +60,7 @@ export default {
     The route to transition to after successful authentication.
 
     @property routeAfterAuthentication
+    @deprecated
     @readOnly
     @static
     @type String
@@ -73,6 +75,7 @@ export default {
     the session is authenticated.
 
     @property routeIfAlreadyAuthenticated
+    @deprecated
     @readOnly
     @static
     @type String
@@ -84,6 +87,14 @@ export default {
   load(config) {
     for (let property in this) {
       if (this.hasOwnProperty(property) && Ember.typeOf(this[property]) !== 'function') {
+        if(["authenticationRoute", "routeAfterAuthentication", "routeIfAlreadyAuthenticated"].includes(property)
+          && config.getProperty(property) !== this.getProperty(property)) {
+            Ember.deprecate(`Ember Simple Auth: ${property} should no longer be overrided in the config. You should instead override ${property}() in your route.`, false, {
+              id: `ember-simple-auth.configuration.routes`,
+              until: '2.0.0'
+            });
+        }
+
         this[property] = getWithDefault(config, property, DEFAULTS[property]);
       }
     }
