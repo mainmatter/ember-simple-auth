@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import Configuration from './../configuration';
 
 const { inject: { service }, Mixin, assert, computed } = Ember;
@@ -67,7 +68,7 @@ export default Mixin.create({
     @param {Transition} transition The transition that lead to this route
     @public
   */
-  beforeModel() {
+  beforeModel(transition) {
     if (this.get('session').get('isAuthenticated')) {
       let routeIfAlreadyAuthenticated = this.get('routeIfAlreadyAuthenticated');
       assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
