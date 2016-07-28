@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { RSVP } = Ember;
+const { RSVP, Evented, Object: EmberObject } = Ember;
 
 /**
   The base class for all authenticators. __This serves as a starting point for
@@ -57,7 +57,7 @@ const { RSVP } = Ember;
   @uses Ember.Evented
   @public
 */
-export default Ember.Object.extend(Ember.Evented, {
+export default EmberObject.extend(Evented, {
   /**
     __Triggered when the authentication data is updated by the authenticator
     due to an external or scheduled event__. This might happen e.g. if the

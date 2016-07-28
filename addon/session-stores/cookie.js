@@ -3,7 +3,7 @@ import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import getOwner from 'ember-getowner-polyfill';
 
-const { RSVP, computed, run: { next } } = Ember;
+const { RSVP, computed, inject: { service }, run: { next, cancel, later }, isEmpty, typeOf, testing } = Ember;
 
 /**
   Session store that persists data in a cookie.
@@ -60,10 +60,10 @@ export default BaseStore.extend({
 
     @property cookieName
     @type String
-    @default ember_simple_auth:session
+    @default ember_simple_auth-session
     @public
   */
-  cookieName: 'ember_simple_auth:session',
+  cookieName: 'ember_simple_auth-session',
 
   /**
     The expiration time for the cookie in seconds. A value of `null` will make
@@ -77,23 +77,19 @@ export default BaseStore.extend({
   */
   cookieExpirationTime: null,
 
-  _cookies: computed(function() {
-    let owner = getOwner(this);
-
-    return owner.lookup('service:cookies');
-  }),
+  _cookies: service('cookies'),
 
   _fastboot: computed(function() {
     let owner = getOwner(this);
 
-    return owner.lookup('service:fastboot');
+    return owner && owner.lookup('service:fastboot');
   }),
 
   _secureCookies: computed(function() {
     if (this.get('_fastboot.isFastBoot')) {
-      return this.get('_fastboot._fastbootInfo.request.hostname').indexOf('https:') === 0;
+      return this.get('_fastboot.request.host').indexOf('https:') === 0;
     } else {
-      return window.location.protocol === 'https:'
+      return window.location.protocol === 'https:';
     }
   }).volatile(),
 
@@ -105,14 +101,14 @@ export default BaseStore.extend({
     if (this.get('_fastboot.isFastBoot')) {
       return false;
     } else {
-      const visibilityState = document.visibilityState || 'visible';
+      const visibilityState = typeof document !== 'undefined' ? document.visibilityState || 'visible' : false;
       return visibilityState === 'visible';
     }
   }).volatile(),
 
   init() {
     this._super(...arguments);
-/*
+
     if (!this.get('_fastboot.isFastBoot')) {
       next(() => {
         this._syncData().then(() => {
@@ -121,7 +117,7 @@ export default BaseStore.extend({
       });
     } else {
       this._renew();
-    }*/
+    }
   },
 
   /**
@@ -149,7 +145,7 @@ export default BaseStore.extend({
   */
   restore() {
     let data = this._read(this.cookieName);
-    if (Ember.isEmpty(data)) {
+    if (isEmpty(data)) {
       return RSVP.resolve({});
     } else {
       return RSVP.resolve(JSON.parse(data));
@@ -194,17 +190,17 @@ export default BaseStore.extend({
         this._lastData = data;
         this.trigger('sessionDataUpdated', data);
       }
-      if (!Ember.testing) {
-        Ember.run.cancel(this._syncDataTimeout);
-        this._syncDataTimeout = Ember.run.later(this, this._syncData, 500);
+      if (!testing) {
+        cancel(this._syncDataTimeout);
+        this._syncDataTimeout = later(this, this._syncData, 500);
       }
     });
   },
 
   _renew() {
     return this.restore().then((data) => {
-      if (!Ember.isEmpty(data) && data !== {}) {
-        data           = Ember.typeOf(data) === 'string' ? data : JSON.stringify(data || {});
+      if (!isEmpty(data) && data !== {}) {
+        data           = typeOf(data) === 'string' ? data : JSON.stringify(data || {});
         let expiration = this._calculateExpirationTime();
         this._write(data, expiration);
       }
@@ -212,9 +208,9 @@ export default BaseStore.extend({
   },
 
   _renewExpiration() {
-    if (!Ember.testing) {
-      Ember.run.cancel(this._renewExpirationTimeout);
-      this._renewExpirationTimeout = Ember.run.later(this, this._renewExpiration, 60000);
+    if (!testing) {
+      cancel(this._renewExpirationTimeout);
+      this._renewExpirationTimeout = later(this, this._renewExpiration, 60000);
     }
     if (this.get('_isPageVisible')) {
       return this._renew();

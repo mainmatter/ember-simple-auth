@@ -9,6 +9,8 @@ import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import Configuration from 'ember-simple-auth/configuration';
 
+const { Route, run: { next } } = Ember;
+
 describe('ApplicationRouteMixin', () => {
   let session;
   let route;
@@ -16,7 +18,7 @@ describe('ApplicationRouteMixin', () => {
   beforeEach(() => {
     session = InternalSession.create({ store: EphemeralStore.create() });
 
-    route = Ember.Route.extend(ApplicationRouteMixin, {
+    route = Route.extend(ApplicationRouteMixin, {
       transitionTo() {}
     }).create({
       session
@@ -32,7 +34,7 @@ describe('ApplicationRouteMixin', () => {
     it("maps the services's 'authenticationSucceeded' event into a method call", (done) => {
       session.trigger('authenticationSucceeded');
 
-      Ember.run.next(() => {
+      next(() => {
         expect(route.sessionAuthenticated).to.have.been.calledOnce;
         done();
       });
@@ -41,7 +43,7 @@ describe('ApplicationRouteMixin', () => {
     it("maps the services's 'invalidationSucceeded' event into a method call", (done) => {
       session.trigger('invalidationSucceeded');
 
-      Ember.run.next(() => {
+      next(() => {
         expect(route.sessionInvalidated).to.have.been.calledOnce;
         done();
       });
@@ -51,7 +53,7 @@ describe('ApplicationRouteMixin', () => {
       route.beforeModel();
       session.trigger('authenticationSucceeded');
 
-      Ember.run.next(() => {
+      next(() => {
         expect(route.sessionAuthenticated).to.have.been.calledOnce;
         done();
       });

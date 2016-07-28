@@ -2,12 +2,12 @@
   "name": "ember-simple-auth",
   "dependencies": {
     "bootstrap": "~3.3.6",
-    "ember": "~2.4.1",
-    "ember-cli-shims": "0.1.0",
+    "ember": "~2.6.0",
+    "ember-cli-shims": "0.1.1",
     "ember-cli-test-loader": "0.2.2",
-    "ember-mocha": "~0.8.7",
+    "ember-mocha": "~0.8.11",
     "sinonjs": "~1.17.1",
-    "base64": "~0.3.0",
-    "pretender": "^0.12.0"
+    "base64": "~1.0.0",
+    "pretender": "~1.1.0"
   }
 }

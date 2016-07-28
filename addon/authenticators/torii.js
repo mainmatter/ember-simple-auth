@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 
-const { RSVP, isEmpty } = Ember;
+const { RSVP, isEmpty, assert, isPresent } = Ember;
 
 /**
   Authenticator that wraps the
@@ -112,6 +112,6 @@ export default BaseAuthenticator.extend({
 
   _assertToriiIsPresent() {
     const torii = this.get('torii');
-    Ember.assert('You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with "torii: Ember.inject.service()".', Ember.isPresent(torii));
+    assert('You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with "torii: Ember.inject.service()".', isPresent(torii));
   }
 });

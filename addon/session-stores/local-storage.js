@@ -3,7 +3,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP } = Ember;
+const { RSVP, $: jQuery } = Ember;
 
 /**
   Session store that persists data in the browser's `localStorage`.
@@ -25,10 +25,10 @@ export default BaseStore.extend({
 
     @property key
     @type String
-    @default 'ember_simple_auth:session'
+    @default 'ember_simple_auth-session'
     @public
   */
-  key: 'ember_simple_auth:session',
+  key: 'ember_simple_auth-session',
 
   init() {
     this._super(...arguments);
@@ -82,7 +82,7 @@ export default BaseStore.extend({
   },
 
   _bindToStorageEvents() {
-    Ember.$(window).bind('storage', (e) => {
+    jQuery(window).bind('storage', (e) => {
       if (e.originalEvent.key === this.key) {
         this.restore().then((data) => {
           if (!objectsAreEqual(data, this._lastData)) {

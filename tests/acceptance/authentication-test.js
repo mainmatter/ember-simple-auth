@@ -8,6 +8,8 @@ import { invalidateSession, authenticateSession, currentSession } from '../helpe
 import destroyApp from '../helpers/destroy-app';
 import config from '../../config/environment';
 
+const { tryInvoke } = Ember;
+
 describe('Acceptance: Authentication', function() {
   let application;
   let server;
@@ -17,7 +19,7 @@ describe('Acceptance: Authentication', function() {
   });
 
   afterEach(function() {
-    Ember.tryInvoke(server, 'shutdown');
+    tryInvoke(server, 'shutdown');
     destroyApp(application);
   });
 

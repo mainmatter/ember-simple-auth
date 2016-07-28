@@ -6,6 +6,8 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';
 
+const { run: { next } } = Ember;
+
 export default function(options) {
   let store;
   let createStore;
@@ -34,14 +36,22 @@ export default function(options) {
       store = createStore(cookieService, { cookieName: 'test:session' });
       store.persist({ key: 'value' });
 
-      expect(cookieService.write).to.have.been.calledWith('test:session', JSON.stringify({ key: 'value' }), { domain: null, expires: null, path: '/', secure: false });
+      expect(cookieService.write).to.have.been.calledWith(
+        'test:session',
+        JSON.stringify({ key: 'value' }),
+        { domain: null, expires: null, path: '/', secure: false }
+      );
     });
 
     it('respects the configured cookieDomain', () => {
       store = createStore(cookieService, { cookieDomain: 'example.com' });
       store.persist({ key: 'value' });
 
-      expect(cookieService.write).to.have.been.calledWith('ember_simple_auth:session', JSON.stringify({ key: 'value' }), { domain: 'example.com', expires: null, path: '/', secure: false });
+      expect(cookieService.write).to.have.been.calledWith(
+        'ember_simple_auth-session',
+        JSON.stringify({ key: 'value' }),
+        { domain: 'example.com', expires: null, path: '/', secure: false }
+      );
     });
   });
 
@@ -72,10 +82,10 @@ export default function(options) {
     });
 
     it('is not triggered when the cookie has not actually changed', (done) => {
-      document.cookie = 'ember_simple_auth:session=%7B%22key%22%3A%22value%22%7D;path=/;';
+      document.cookie = 'ember_simple_auth-session=%7B%22key%22%3A%22value%22%7D;path=/;';
       sync(store);
 
-      Ember.run.next(() => {
+      next(() => {
         expect(triggered).to.be.false;
         done();
       });
@@ -83,11 +93,11 @@ export default function(options) {
 
     it('is triggered when the cookie changed', (done) => {
       const cookiesService = store.get('_cookies') || store.get('_store._cookies');
-      cookiesService._content['ember_simple_auth:session'] = '%7B%22key%22%3A%22other%20value%22%7D';
+      cookiesService._content['ember_simple_auth-session'] = '%7B%22key%22%3A%22other%20value%22%7D';
       sync(store);
 
-      Ember.run.next(() => {
-        Ember.run.next(() => {
+      next(() => {
+        next(() => {
           expect(triggered).to.be.true;
           done();
         });
@@ -98,7 +108,7 @@ export default function(options) {
       renew(store, { key: 'value' });
       sync(store);
 
-      Ember.run.next(() => {
+      next(() => {
         expect(triggered).to.be.false;
         done();
       });

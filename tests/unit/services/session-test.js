@@ -6,13 +6,15 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import Session from 'ember-simple-auth/services/session';
 
+const { ObjectProxy, Evented, run: { next }, set } = Ember;
+
 describe('SessionService', () => {
   let sessionService;
   let session;
   let authorizer;
 
   beforeEach(() => {
-    session = Ember.ObjectProxy.extend(Ember.Evented, {
+    session = ObjectProxy.extend(Evented, {
       content: {}
     }).create();
     authorizer = {
@@ -28,7 +30,7 @@ describe('SessionService', () => {
     sessionService.one('authenticationSucceeded', () => triggered = true);
     session.trigger('authenticationSucceeded');
 
-    Ember.run.next(() => {
+    next(() => {
       expect(triggered).to.be.true;
       done();
     });
@@ -39,7 +41,7 @@ describe('SessionService', () => {
     sessionService.one('invalidationSucceeded', () => triggered = true);
     session.trigger('invalidationSucceeded');
 
-    Ember.run.next(() => {
+    next(() => {
       expect(triggered).to.be.true;
       done();
     });
@@ -98,6 +100,12 @@ describe('SessionService', () => {
       sessionService.set('data.some', { other: 'data' });
 
       expect(session.content).to.eql({ some: { other: 'data' } });
+    });
+
+    it('can be set with Ember.set', () => {
+      set(sessionService, 'data.emberSet', 'ember-set-data');
+
+      expect(session.content).to.eql({ emberSet: 'ember-set-data' });
     });
 
     it('is read-only', () => {
