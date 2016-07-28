@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import Configuration from './../configuration';
 
 const { inject: { service }, Mixin, assert, computed } = Ember;
@@ -53,7 +54,7 @@ export default Mixin.create({
     @param {Transition} transition The transition that lead to this route
     @public
   */
-  beforeModel() {
+  beforeModel(transition) {
     if (this.get('session').get('isAuthenticated')) {
       if (!this.get('_isFastBoot')) {
         transition.abort();

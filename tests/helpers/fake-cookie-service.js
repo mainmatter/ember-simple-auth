@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
-const { isNone } = Ember;
+const { Object: EmberObject, isNone } = Ember;
 
-export default Ember.Object.extend({
+export default EmberObject.extend({
   init() {
     this._super(...arguments);
 
