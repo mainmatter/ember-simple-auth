@@ -24,6 +24,11 @@ describe('DataAdapterMixin', () => {
       ajaxOptions() {
         return hash;
       },
+      headersForRequest() {
+        return {
+          'X-Base-Header': 'is-still-respected'
+        };
+      },
       handleResponse() {
         return '_super return value';
       }
@@ -98,6 +103,68 @@ describe('DataAdapterMixin', () => {
         it('does not add a request header', () => {
           expect(xhr.setRequestHeader).to.not.have.been.called;
         });
+      });
+    });
+  });
+
+  describe('#headersForRequest', () => {
+    it('preserves existing headers by parent adapter', () => {
+      const headers = adapter.headersForRequest();
+
+      expect(headers).to.have.ownProperty('X-Base-Header');
+      expect(headers['X-Base-Header']).to.equal('is-still-respected');
+    });
+
+    it('asserts the presence of authorizer', () => {
+      adapter.set('authorizer', null);
+      expect(function() {
+        adapter.headersForRequest();
+      }).to.throw(/Assertion Failed/);
+    });
+
+    it('authorizes with the given authorizer', () => {
+      sinon.spy(sessionService, 'authorize');
+      adapter.headersForRequest();
+
+      expect(sessionService.authorize).to.have.been.calledWith('authorizer:some');
+    });
+
+    describe('when the authorizer calls the block', () => {
+      beforeEach(() => {
+        sinon.stub(sessionService, 'authorize', (authorizer, block) => {
+          block('X-Authorization-Header', 'an-auth-value');
+        });
+      });
+
+      it('adds a request header as given by the authorizer', () => {
+        const headers = adapter.headersForRequest();
+        expect(headers).to.have.ownProperty('X-Authorization-Header');
+        expect(headers['X-Authorization-Header']).to.equal('an-auth-value');
+      });
+
+      it('still returns the base headers', () => {
+        const headers = adapter.headersForRequest();
+        expect(headers).to.have.ownProperty('X-Base-Header');
+        expect(headers['X-Base-Header']).to.equal('is-still-respected');
+      });
+    });
+
+    describe('when the authorizer does not call the block', () => {
+      beforeEach(() => {
+        sinon.stub(sessionService, 'authorize');
+      });
+
+      it('does not add a request header', () => {
+        const headers = adapter.headersForRequest();
+        expect(headers).to.have.ownProperty('X-Base-Header');
+        expect(headers).to.not.have.ownProperty('X-Authorization-Header');
+        expect(headers['X-Authorization-Header']).to.not.equal('an-auth-value');
+      });
+
+      it('still returns the base headers', () => {
+        const headers = adapter.headersForRequest();
+        expect(headers).to.have.ownProperty('X-Base-Header');
+        expect(headers['X-Base-Header']).to.equal('is-still-respected');
       });
     });
   });
