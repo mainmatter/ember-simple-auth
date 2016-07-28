@@ -3,7 +3,11 @@ import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import getOwner from 'ember-getowner-polyfill';
 
+<<<<<<< HEAD
 const { RSVP, computed, run: { next, cancel, later }, isEmpty, typeOf, testing } = Ember;
+=======
+const { RSVP, computed, inject: { service }, run: { next, cancel, later }, isEmpty, typeOf, testing } = Ember;
+>>>>>>> 1acbecf... Fastboot Feature Branch (#1032)
 
 /**
   Session store that persists data in a cookie.
@@ -77,23 +81,19 @@ export default BaseStore.extend({
   */
   cookieExpirationTime: null,
 
-  _cookies: computed(function() {
-    let owner = getOwner(this);
-
-    return owner.lookup('service:cookies');
-  }),
+  _cookies: service('cookies'),
 
   _fastboot: computed(function() {
     let owner = getOwner(this);
 
-    return owner.lookup('service:fastboot');
+    return owner && owner.lookup('service:fastboot');
   }),
 
   _secureCookies: computed(function() {
     if (this.get('_fastboot.isFastBoot')) {
-      return this.get('_fastboot._fastbootInfo.request.hostname').indexOf('https:') === 0;
+      return this.get('_fastboot.request.host').indexOf('https:') === 0;
     } else {
-      return window.location.protocol === 'https:'
+      return window.location.protocol === 'https:';
     }
   }).volatile(),
 
@@ -105,14 +105,14 @@ export default BaseStore.extend({
     if (this.get('_fastboot.isFastBoot')) {
       return false;
     } else {
-      const visibilityState = document.visibilityState || 'visible';
+      const visibilityState = typeof document !== 'undefined' ? document.visibilityState || 'visible' : false;
       return visibilityState === 'visible';
     }
   }).volatile(),
 
   init() {
     this._super(...arguments);
-/*
+
     if (!this.get('_fastboot.isFastBoot')) {
       next(() => {
         this._syncData().then(() => {
@@ -121,7 +121,7 @@ export default BaseStore.extend({
       });
     } else {
       this._renew();
-    }*/
+    }
   },
 
   /**

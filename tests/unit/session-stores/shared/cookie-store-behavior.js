@@ -36,14 +36,22 @@ export default function(options) {
       store = createStore(cookieService, { cookieName: 'test-session' });
       store.persist({ key: 'value' });
 
-      expect(cookieService.write).to.have.been.calledWith('test-session', JSON.stringify({ key: 'value' }), { domain: null, expires: null, path: '/', secure: false });
+      expect(cookieService.write).to.have.been.calledWith(
+        'test-session',
+        JSON.stringify({ key: 'value' }),
+        { domain: null, expires: null, path: '/', secure: false }
+      );
     });
 
     it('respects the configured cookieDomain', () => {
       store = createStore(cookieService, { cookieDomain: 'example.com' });
       store.persist({ key: 'value' });
 
-      expect(cookieService.write).to.have.been.calledWith('ember_simple_auth-session', JSON.stringify({ key: 'value' }), { domain: 'example.com', expires: null, path: '/', secure: false });
+      expect(cookieService.write).to.have.been.calledWith(
+        'ember_simple_auth-session',
+        JSON.stringify({ key: 'value' }),
+        { domain: 'example.com', expires: null, path: '/', secure: false }
+      );
     });
   });
 
