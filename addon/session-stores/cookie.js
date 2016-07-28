@@ -3,11 +3,7 @@ import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import getOwner from 'ember-getowner-polyfill';
 
-<<<<<<< HEAD
-const { RSVP, computed, run: { next, cancel, later }, isEmpty, typeOf, testing } = Ember;
-=======
 const { RSVP, computed, inject: { service }, run: { next, cancel, later }, isEmpty, typeOf, testing } = Ember;
->>>>>>> 1acbecf... Fastboot Feature Branch (#1032)
 
 /**
   Session store that persists data in a cookie.
