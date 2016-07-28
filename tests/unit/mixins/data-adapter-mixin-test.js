@@ -115,6 +115,26 @@ describe('DataAdapterMixin', () => {
       expect(headers['X-Base-Header']).to.equal('is-still-respected');
     });
 
+    describe('when the base adapter doesn\'t implement headersForRequest', () => {
+      beforeEach(() => {
+        hash = {};
+        sessionService = EmberObject.create({
+          authorize() {},
+          invalidate() {}
+        });
+
+        const Adapter = EmberObject.extend(DataAdapterMixin, {
+          authorizer: 'authorizer:some'
+        });
+        adapter = Adapter.create({ session: sessionService });
+      });
+
+      it('gracefully defaults to empty hash', () => {
+        const headers = adapter.headersForRequest();
+        expect(headers).to.deep.equal({});
+      });
+    });
+
     it('asserts the presence of authorizer', () => {
       adapter.set('authorizer', null);
       expect(function() {
