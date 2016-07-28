@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 
-const { RSVP: { Promise }, isEmpty, run, get, $ } = Ember;
+const { RSVP: { Promise }, isEmpty, run, $: jQuery, assign: emberAssign, merge } = Ember;
+const assign = emberAssign || merge;
 
 /**
   Authenticator that works with the Ruby gem
@@ -61,6 +62,20 @@ export default BaseAuthenticator.extend({
   identificationAttributeName: 'email',
 
   /**
+    When authentication fails, the rejection callback is provided with the whole
+    XHR object instead of it's response JSON or text.
+
+    This is useful for cases when the backend provides additional context not
+    available in the response body.
+
+    @property rejectWithXhr
+    @type Boolean
+    @default false
+    @public
+  */
+  rejectWithXhr: false,
+
+  /**
     Restores the session from a session data object; __returns a resolving
     promise when there are non-empty
     {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
@@ -74,15 +89,7 @@ export default BaseAuthenticator.extend({
     @public
   */
   restore(data) {
-    const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
-    const tokenAttribute = get(data, tokenAttributeName);
-    const identificationAttribute = get(data, identificationAttributeName);
-
-    if (!isEmpty(tokenAttribute) && !isEmpty(identificationAttribute)) {
-      return Promise.resolve(data);
-    } else {
-      return Promise.reject();
-    }
+    return this._validate(data) ? Promise.resolve(data) : Promise.reject();
   },
 
   /**
@@ -105,14 +112,23 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password) {
     return new Promise((resolve, reject) => {
-      const { resourceName, identificationAttributeName } = this.getProperties('resourceName', 'identificationAttributeName');
+      const useXhr = this.get('rejectWithXhr');
+      const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties('resourceName', 'identificationAttributeName', 'tokenAttributeName');
       const data         = {};
       data[resourceName] = { password };
       data[resourceName][identificationAttributeName] = identification;
 
       return this.makeRequest(data).then(
-        (response) => run(null, resolve, response[resourceName] || response),
-        (xhr) => run(null, reject, xhr.responseJSON || xhr.responseText)
+        (response) => {
+          if (this._validate(response)) {
+            const resourceName = this.get('resourceName');
+            const _response = response[resourceName] ? response[resourceName] : response;
+            run(null, resolve, _response);
+          } else {
+            run(null, reject, `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`);
+          }
+        },
+        (xhr) => run(null, reject, useXhr ? xhr : (xhr.responseJSON || xhr.responseText))
       );
     });
   },
@@ -139,7 +155,8 @@ export default BaseAuthenticator.extend({
   */
   makeRequest(data, options) {
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
-    const requestOptions = $.extend({}, {
+    let requestOptions = {};
+    assign(requestOptions, {
       url:      serverTokenEndpoint,
       type:     'POST',
       dataType: 'json',
@@ -147,8 +164,18 @@ export default BaseAuthenticator.extend({
       beforeSend(xhr, settings) {
         xhr.setRequestHeader('Accept', settings.accepts.json);
       }
-    }, options || {});
+    });
+    assign(requestOptions, options || {});
 
-    return $.ajax(requestOptions);
+    return jQuery.ajax(requestOptions);
+  },
+
+  _validate(data) {
+    const tokenAttributeName = this.get('tokenAttributeName');
+    const identificationAttributeName = this.get('identificationAttributeName');
+    const resourceName = this.get('resourceName');
+    const _data = data[resourceName] ? data[resourceName] : data;
+
+    return !isEmpty(_data[tokenAttributeName]) && !isEmpty(_data[identificationAttributeName]);
   }
 });

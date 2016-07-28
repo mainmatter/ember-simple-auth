@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { getWithDefault } = Ember;
+const { getWithDefault, typeOf } = Ember;
 
 const DEFAULTS = {
   baseURL:                     '',
@@ -86,7 +86,7 @@ export default {
 
   load(config) {
     for (let property in this) {
-      if (this.hasOwnProperty(property) && Ember.typeOf(this[property]) !== 'function') {
+      if (this.hasOwnProperty(property) && typeOf(this[property]) !== 'function') {
         if(["authenticationRoute", "routeAfterAuthentication", "routeIfAlreadyAuthenticated"].includes(property)
           && config.getProperty(property) !== this.getProperty(property)) {
             Ember.deprecate(`Ember Simple Auth: ${property} should no longer be overrided in the config. You should instead override ${property}() in your route.`, false, {
