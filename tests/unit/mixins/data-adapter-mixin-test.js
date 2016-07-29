@@ -158,13 +158,11 @@ describe('DataAdapterMixin', () => {
 
       it('adds a request header as given by the authorizer', () => {
         const headers = adapter.headersForRequest();
-        expect(headers).to.have.ownProperty('X-Authorization-Header');
         expect(headers['X-Authorization-Header']).to.equal('an-auth-value');
       });
 
       it('still returns the base headers', () => {
         const headers = adapter.headersForRequest();
-        expect(headers).to.have.ownProperty('X-Base-Header');
         expect(headers['X-Base-Header']).to.equal('is-still-respected');
       });
     });
@@ -176,14 +174,11 @@ describe('DataAdapterMixin', () => {
 
       it('does not add a request header', () => {
         const headers = adapter.headersForRequest();
-        expect(headers).to.have.ownProperty('X-Base-Header');
         expect(headers).to.not.have.ownProperty('X-Authorization-Header');
-        expect(headers['X-Authorization-Header']).to.not.equal('an-auth-value');
       });
 
       it('still returns the base headers', () => {
         const headers = adapter.headersForRequest();
-        expect(headers).to.have.ownProperty('X-Base-Header');
         expect(headers['X-Base-Header']).to.equal('is-still-respected');
       });
     });

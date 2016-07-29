@@ -92,7 +92,7 @@ export default Mixin.create({
     Adds request headers containing the authorization data as constructed
     by the {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}}.
 
-    This method will only called in Ember Data 2.7 or greater, older versions
+    This method will only be called in Ember Data 2.7 or greater. Older versions
     will rely on `ajaxOptions` for request header injection.
 
     @method handleResponse
