@@ -64,6 +64,9 @@ export default Mixin.create({
     specific header name and contents depend on the actual auhorizer that is
     used.
 
+    This method applies for Ember Data 2.6 and older. See `headersForRequest`
+    for newer versions of Ember Data.
+
     @method ajaxOptions
     @protected
   */
@@ -83,6 +86,28 @@ export default Mixin.create({
       }
     };
     return hash;
+  },
+
+  /**
+    Adds request headers containing the authorization data as constructed
+    by the {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}}.
+
+    This method will only be called in Ember Data 2.7 or greater. Older versions
+    will rely on `ajaxOptions` for request header injection.
+
+    @method handleResponse
+    @protected
+   */
+  headersForRequest() {
+    const authorizer = this.get('authorizer');
+    assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", isPresent(authorizer));
+
+    let headers = this._super(...arguments);
+    headers = Object(headers);
+    this.get('session').authorize(authorizer, (headerName, headerValue) => {
+      headers[headerName] = headerValue;
+    });
+    return headers;
   },
 
   /**
