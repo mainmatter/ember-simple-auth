@@ -180,13 +180,13 @@ export default BaseStore.extend({
       domain:  this.cookieDomain,
       expires: isEmpty(expiration) ? null : new Date(expiration),
       path:    '/',
-      secure:  this.get('_secureCookies'),
+      secure:  this.get('_secureCookies')
     };
-    this.get('cookies').write(this.cookieName, value, cookieOptions);
+    this.get('_cookies').write(this.cookieName, value, cookieOptions);
     if (!isEmpty(expiration)) {
       let expirationCookieName = `${this.cookieName}-expiration_time`;
-      let cachedExpirationTime = this.get('cookies').read(expirationCookieName);
-      this.get('cookies').write(expirationCookieName, this.cookieExpirationTime || cachedExpirationTime, cookieOptions);
+      let cachedExpirationTime = this.get('_cookies').read(expirationCookieName);
+      this.get('_cookies').write(expirationCookieName, this.cookieExpirationTime || cachedExpirationTime, cookieOptions);
     }
   },
 
