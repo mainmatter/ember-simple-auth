@@ -34,7 +34,12 @@ module.exports = function(environment) {
       }
     },
 
-    apiHost: 'http://localhost:4200'
+    apiHost: 'http://localhost:4200',
+
+    fastboot: {
+      hostWhitelist:[/^localhost:\d+$/]
+    },
+
   };
 
   if (environment === 'development') {
