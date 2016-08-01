@@ -6,7 +6,6 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
-import Configuration from 'ember-simple-auth/configuration';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
 const { Mixin, RSVP, Route } = Ember;
@@ -42,9 +41,11 @@ describe('UnauthenticatedRouteMixin', () => {
       });
 
       it('transitions to routeIfAlreadyAuthenticated', () => {
-        route.beforeModel(transition);
+        let routeIfAlreadyAuthenticated = 'path/to/route';
+        route.set('routeIfAlreadyAuthenticated', routeIfAlreadyAuthenticated);
 
-        expect(route.transitionTo).to.have.been.calledWith(Configuration.routeIfAlreadyAuthenticated);
+        route.beforeModel(transition);
+        expect(route.transitionTo).to.have.been.calledWith(routeIfAlreadyAuthenticated);
       });
 
       it('does not return the upstream promise', () => {

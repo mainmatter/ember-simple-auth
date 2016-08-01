@@ -61,8 +61,7 @@ describe('AuthenticatedRouteMixin', () => {
       });
 
       it('transitions to the authentication route', () => {
-        let authenticationRoute = 'path/to/authentication/route';
-        route.authenticationRoute = authenticationRoute;
+        let authenticationRoute = 'path/to/route';
         route.set('authenticationRoute', authenticationRoute);
 
         route.beforeModel(transition);
