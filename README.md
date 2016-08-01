@@ -609,6 +609,10 @@ module in the application's namespace:
 import { currentSession, authenticateSession, invalidateSession } from '<app-name>/tests/helpers/ember-simple-auth';
 ```
 
+## Other guides
+
+* [Managing Current User](guides/set-current-user.md)
+
 ## Configuration
 
 Ember Simple Auth is configured via the `'ember-simple-auth'` section in the
