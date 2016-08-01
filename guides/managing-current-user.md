@@ -1,18 +1,56 @@
-[Back to Main README](README.md)
+[Back to Main README](../README.md)
 
 ## Managing a Current User
 
-Although there are various ways to load currentUser data, this is the canonical
-way to do so. Your authentication route will need to identify how it can access
-the data for the current user. There are 2 examples: one loading through a
-userId that is sent through the auth payload and another accessing a specific
-endpoint (i.e. '/users/me').
+Although there are various ways to load data for the current or authenticated
+user, this guide describes the canonical way of doing so. The concepts
+described here might eventually be merged into the core Ember Simple Auth
+library.
 
-### CurrentUser Service
+### `session-account` service
 
-In order for the app to keep the user data, we will store it in its own service:
+In the approach described in this guide, the current user is managed and made
+available to the application via a service. That service will load the current
+user either via an ID provided by the authenticator when authenticating the
+session or via a special endpoint that will always respond with the user
+belonging to the provided authorization token.
 
-#### Example with user/me endpoint
+The service can then be injected into e.g. controllers or components that need
+access to the current user record, e.g.:
+
+```js
+import Ember from 'ember';
+
+const { inject: { service }, Component } = Ember;
+
+export default Component.extend({
+  session:        service('session'),
+  sessionAccount: service('session-account')
+});
+```
+
+```hbs
+<nav>
+  {{#link-to 'index' classNames='navbar-brand'}}
+    Home
+  {{/link-to}}
+
+  {{#if session.isAuthenticated}}
+    <button onclick={{action 'logout'}}>Logout</button>
+    {{#if sessionAccount.account}}
+      <p>Signed in as {{sessionAccount.account.name}}</p>
+    {{/if}}
+  {{else}}
+    <button onclick={{action 'login'}}>Login</button>
+  {{/if}}
+</nav>
+```
+
+#### Using a dedicated endpoint
+
+In this example, the service does not need to know the ID of the current user
+as it can just load it via a dedicated endpoint that will always respond with
+the user belonging to the authorization token in the request:
 
 ```js
 // app/services/session-account.js
@@ -23,24 +61,19 @@ const { inject: { service }, isEmpty, RSVP } = Ember;
 export default Ember.Service.extend({
   store: service(),
 
-  account: null,
-
   loadCurrentUser() {
-    return new RSVP.Promise((resolve, reject) => {
-      return this.get('store').find('user', 'me').then(
-        user => resolve(this.set('user', user)),
-        reject
-      );
+    return this.get('store').find('user', 'me').then((account) => {
+      this.set('account', account);
     });
   }
 });
 ```
 
-This example accesses the users/me endpoint which should return the current
-user.  The service then sets the user as the returned record and is accessible
-in this sessionAccount service.
+#### Loading the user with its id
 
-#### Example with userId
+In this example, the user is loaded by its ID. This assume that the
+authenticator receives the user id when it authenticates the session so that
+the user ID is then stored in the session data and accessible for the service.
 
 ```js
 // app/services/session-account.js
@@ -56,12 +89,11 @@ export default Ember.Service.extend({
 
   loadCurrentUser() {
     return new RSVP.Promise((resolve, reject) => {
-      const userId = this.get('session.data.authenticated.user_id');
+      let userId = this.get('session.data.authenticated.user_id');
       if (!isEmpty(userId)) {
-        return this.get('store').find('user', userId).then(
-          user => resolve(this.set('user', user)),
-          reject
-        );
+        return this.get('store').find('user', userId).then((user) => {
+          this.set('account', user);
+        }, reject);
       } else {
         resolve();
       }
@@ -70,14 +102,17 @@ export default Ember.Service.extend({
 });
 ```
 
-In this example, we grab the user id and then make an ember-data request to the
-API. After a successful request, it sets the user and is easily access anywhere
-by injecting this service.
+### Loading the current user
 
-### Calling the function to set the current user
-
-The best place for us to make the call to load the current user is on the
-application route:
+The Ember Simple Auth session can either be authenticated already when the
+application starts up or become authenticated later when either the user logs
+in via that instance of the application or session state is synced from another
+tab or window. In the first case, the session will already be authenticated
+when the application route's `beforeModel` method is called and in the latter
+case Ember Simple Auth will call the application route's `sessionAuthenticated`
+method. The session account service's `loadCurrentUser` method should be called
+in both cases so that it's `account` property is populated when the session is
+authenticated:
 
 ```js
 // app/routes/application.js
@@ -101,34 +136,5 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
   _loadCurrentUser() {
     return this.get('sessionAccount').loadCurrentUser();
   }
-});
-```
-
-This uses the session-account service you created to set the currentUser when
-the application route loads and there is a session that has successfully been
-restored (using the beforeModel() hook), or when a session is authenticated
-(using the sessionAuthenticated() hook). Notice that in the
-sessionAuthenticated() hook, if we can't load the current user, then it will
-invalidate our session.
-
-NOTE: There are 2 places that `_loadCurrentUser()` is called. It is called in
-the beforeModel function for loading the current user on records that are
-already authenticated, and in the sessionAuthenticated function in order to load
-the current user when a user logs in (without having to reload the application
-route).
-
-### Accessing Current User Data
-
-To access your current user when logged in:
-
-```js
-import Ember from 'ember';
-
-const { computed: { alias }, inject: { service } } = Ember;
-
-export default ....extend({
-  sessionAccount: service(),
-
-  currentUser: alias('sessionAccount.user')
 });
 ```
