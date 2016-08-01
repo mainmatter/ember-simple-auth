@@ -45,7 +45,7 @@ authorization mechanisms__.
 
 **Other Guides**
 
-* [Managing a Current User](guides/set-current-user.md)
+* [Managing a current User](guides/managing-current-user.md)
 
 **Other Resources**
 
@@ -611,7 +611,7 @@ import { currentSession, authenticateSession, invalidateSession } from '<app-nam
 
 ## Other guides
 
-* [Managing Current User](guides/set-current-user.md)
+* [Managing current User](guides/managing-current-user.md)
 
 ## Configuration
 
