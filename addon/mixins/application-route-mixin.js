@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { inject, Mixin, A, run: { bind }, testing } = Ember;
+const { inject, Mixin, A, run: { bind }, testing, computed } = Ember;
 
 /**
   The mixin for the application route; __defines methods that are called when
@@ -60,7 +60,7 @@ export default Mixin.create({
     @type String
     @public
   */
-  routeAfterAuthentication: Ember.computed(function() {
+  routeAfterAuthentication: computed(function() {
     return Configuration.routeAfterAuthentication;
   }),
 

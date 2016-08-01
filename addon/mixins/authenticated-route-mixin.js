@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { inject: { service }, Mixin, assert } = Ember;
+const { inject: { service }, Mixin, assert, computed } = Ember;
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -41,7 +41,7 @@ export default Mixin.create({
     @type String
     @public
   */
-  authenticationRoute: Ember.computed(function() {
+  authenticationRoute: computed(function() {
     return Configuration.authenticationRoute;
   }),
 
