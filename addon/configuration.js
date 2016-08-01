@@ -18,7 +18,7 @@ const DEFAULTS = {
   ```js
   // config/environment.js
   ENV['ember-simple-auth'] = {
-    authenticationRoute: 'sign-in'
+    baseURL: 'path/to/base/url'
   };
   ```
 
