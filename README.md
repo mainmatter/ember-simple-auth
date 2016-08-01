@@ -18,7 +18,7 @@ authorization mechanisms__.
 
 # Table of Contents
 
-**Information**
+**Basic Information**
 
 * [What does it do?](#what-does-it-do)
 * [How does it work?](#how-does-it-work)
@@ -43,7 +43,7 @@ authorization mechanisms__.
   * [Implementing a Custom Store](#implementing-a-custom-store)
 * [Testing](#testing)
 
-**Extended Guides**
+**Other Guides**
 
 * [Managing a Current User](guides/set-current-user.md)
 
@@ -102,7 +102,7 @@ npm install && bower install && ember serve
 
 and go to [http://localhost:4200](http://localhost:4200).
 
-### Installation
+## Installation
 
 Installing the library is as easy as:
 
@@ -113,7 +113,7 @@ ember install ember-simple-auth
 ### Upgrading from ember-cli-simple-auth / pre-1.0 release?
 The 1.0 release of ember-simple-auth introduced a lot of breaking changes, but thankfully [the upgrade path isn't too hard](http://log.simplabs.com/post/131698328145/updating-to-ember-simple-auth-10).
 
-### Walkthrough
+## Walkthrough
 
 Once the library is installed, __the session service can be injected wherever
 needed in the application__. In order to e.g. display login/logout buttons
