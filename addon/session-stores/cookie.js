@@ -58,7 +58,6 @@ export default BaseStore.extend({
       return this.get('_cookieDomain');
     },
     set(key, value) {
-      // debugger;
       this.set('_cookieDomain', value);
       run.scheduleOnce('actions', this, this.rewriteCookie);
       return value;
@@ -79,7 +78,6 @@ export default BaseStore.extend({
       return this.get('_cookieName');
     },
     set(key, value) {
-      // debugger;
       this._oldCookieName = this._cookieName;
       this.set('_cookieName', value);
       run.scheduleOnce('actions', this, this.rewriteCookie);
@@ -246,7 +244,6 @@ export default BaseStore.extend({
   },
 
   rewriteCookie() {
-    debugger;
     const data = this._read(this._oldCookieName);
     if (isPresent(data)) {
       const expiration = this._calculateExpirationTime();
