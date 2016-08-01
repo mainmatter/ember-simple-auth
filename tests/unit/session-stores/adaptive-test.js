@@ -5,6 +5,7 @@ import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import { it } from 'ember-mocha';
 import { expect } from 'chai';
 import Ember from 'ember';
+import sinon from 'sinon';
 
 const { run } = Ember;
 
@@ -48,6 +49,12 @@ describe('AdaptiveStore', () => {
       },
       sync(store) {
         store.get('_store')._syncData();
+      },
+      spyRewriteCookieMethod() {
+        return sinon.spy(store.get('_store'), 'rewriteCookie');
+      },
+      unspyRewriteCookieMethod() {
+        return store.get('_store').rewriteCookie.restore();
       }
     });
 

@@ -12,11 +12,15 @@ export default function(options) {
   let createStore;
   let renew;
   let sync;
+  let spyRewriteCookieMethod;
+  let unspyRewriteCookieMethod;
 
   beforeEach(() => {
     createStore = options.createStore;
     renew = options.renew;
     sync = options.sync;
+    spyRewriteCookieMethod = options.spyRewriteCookieMethod;
+    unspyRewriteCookieMethod = options.unspyRewriteCookieMethod;
     store = createStore();
   });
 
@@ -106,12 +110,24 @@ export default function(options) {
   });
 
   describe('rewrite behavior', () => {
+
+    let store;
+    let cookieSpy;
+    beforeEach(() => {
+
+      store = createStore({
+        cookieName: 'session-foo'
+      });
+      cookieSpy = spyRewriteCookieMethod();
+      // sinon.spy(store, 'rewriteCookie');
+    });
+
+    afterEach(() => {
+      unspyRewriteCookieMethod();
+    });
+
     it('deletes the old cookie and writes a new one when name property changes', (done) => {
-      let store;
       run(() => {
-        store = createStore({
-          cookieName: 'session-foo'
-        });
         store.persist({ key: 'value' });
         store.set('cookieName', 'session-bar');
       });
@@ -124,18 +140,14 @@ export default function(options) {
     });
 
     it('only rewrites the cookie once per loop when multiple properties are changed', (done) => {
-      let store;
       run(() => {
-        store = createStore({
-          cookieName: 'session-foo'
-        });
-        sinon.spy(store, 'rewriteCookie');
         store.set('cookieName', 'session-bar');
         store.set('cookieDomain', 'example.com');
       });
 
       next(() => {
-        expect(store.rewriteCookie).to.have.been.called.once;
+        debugger;
+        expect(cookieSpy).to.have.been.called.once;
         done();
       });
     });
