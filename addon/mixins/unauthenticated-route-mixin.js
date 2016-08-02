@@ -35,11 +35,13 @@ export default Mixin.create({
   session: service('session'),
 
   /**
-    The transition route if already authenticated.
+    The route to transition to if a route that implements the
+    {{#crossLink "UnauthenticatedRouteMixin"}}{{/crossLink}} is accessed when
+    the session is authenticated.
 
     @property routeIfAlreadyAuthenticated
-    @readOnly
     @type String
+    @default 'index'
     @public
   */
   routeIfAlreadyAuthenticated: computed(function() {

@@ -34,11 +34,14 @@ export default Mixin.create({
   session: service('session'),
 
   /**
-    The authentication route.
+    The route to transition to for authentication. The
+    {{#crossLink "AuthenticatedRouteMixin"}}{{/crossLink}} will transition to
+    this route when a route that implements the mixin is accessed when the
+    route is not authenticated.
 
     @property authenticationRoute
-    @readOnly
     @type String
+    @default 'login'
     @public
   */
   authenticationRoute: computed(function() {
