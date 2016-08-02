@@ -49,8 +49,8 @@ export default Component.extend({
 #### Using a dedicated endpoint
 
 In this example, the service does not need to know the ID of the current user
-as it can just load it via a dedicated endpoint that will always respond with
-the user belonging to the authorization token in the request:
+as it uses a dedicated endpoint instead that will always respond with the user
+belonging to the authorization token in the request:
 
 ```js
 // app/services/session-account.js
@@ -71,9 +71,9 @@ export default Ember.Service.extend({
 
 #### Loading the user with its id
 
-In this example, the user is loaded by its ID. This assume that the
+In this example, the user is loaded by its ID. This assumes that the
 authenticator receives the user id when it authenticates the session so that
-the user ID is then stored in the session data and accessible for the service.
+the id is then stored in the session data and can be read from there.
 
 ```js
 // app/services/session-account.js
@@ -106,13 +106,13 @@ export default Ember.Service.extend({
 
 The Ember Simple Auth session can either be authenticated already when the
 application starts up or become authenticated later when either the user logs
-in via that instance of the application or session state is synced from another
-tab or window. In the first case, the session will already be authenticated
-when the application route's `beforeModel` method is called and in the latter
-case Ember Simple Auth will call the application route's `sessionAuthenticated`
-method. The session account service's `loadCurrentUser` method should be called
-in both cases so that it's `account` property is populated when the session is
-authenticated:
+in via that instance of the application or the session state is synced from
+another tab or window. In the first case, the session will already be
+authenticated when the application route's `beforeModel` method is called and
+in the latter case Ember Simple Auth will call the application route's
+`sessionAuthenticated` method. The session account service's `loadCurrentUser`
+method must be called in both cases so that it's `account` property is always
+populated when the session is authenticated:
 
 ```js
 // app/routes/application.js
