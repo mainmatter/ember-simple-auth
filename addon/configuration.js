@@ -88,7 +88,7 @@ export default {
     for (let property in this) {
       if (this.hasOwnProperty(property) && typeOf(this[property]) !== 'function') {
         if (['authenticationRoute', 'routeAfterAuthentication', 'routeIfAlreadyAuthenticated'].indexOf(property) >= 0 && DEFAULTS[property] !== this[property]) {
-          deprecate(`Ember Simple Auth: ${property} should no longer be overridden in the configuration. Instead, override the ${property} property in the routes.`, false, {
+          deprecate(`Ember Simple Auth: ${property} should no longer be overridden in the configuration. Instead, override the ${property} property in the route.`, false, {
             id: `ember-simple-auth.configuration.routes`,
             until: '2.0.0'
           });

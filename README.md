@@ -579,7 +579,7 @@ application's `config/environment.js` file, e.g.:
 
 ```js
 ENV['ember-simple-auth'] = {
-  authenticationRoute: 'signin'
+  baseURL: 'path/to/base/url'
 };
 ```
 
