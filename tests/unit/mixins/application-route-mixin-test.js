@@ -7,7 +7,6 @@ import sinon from 'sinon';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
-import Configuration from 'ember-simple-auth/configuration';
 
 const { Route, run: { next } } = Ember;
 
@@ -90,10 +89,12 @@ describe('ApplicationRouteMixin', () => {
     });
 
     describe('when no attempted transition is stored in the session', () => {
-      it('transitions to "Configuration.routeAfterAuthentication"', () => {
+      it('transitions to "routeAfterAuthentication"', () => {
+        let routeAfterAuthentication = 'path/to/route';
+        route.set('routeAfterAuthentication', routeAfterAuthentication);
         route.sessionAuthenticated();
 
-        expect(route.transitionTo).to.have.been.calledWith(Configuration.routeAfterAuthentication);
+        expect(route.transitionTo).to.have.been.calledWith(routeAfterAuthentication);
       });
     });
   });

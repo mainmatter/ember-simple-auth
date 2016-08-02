@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { getWithDefault, typeOf } = Ember;
+const { getWithDefault, typeOf, deprecate } = Ember;
 
 const DEFAULTS = {
   baseURL:                     '',
@@ -18,7 +18,7 @@ const DEFAULTS = {
   ```js
   // config/environment.js
   ENV['ember-simple-auth'] = {
-    authenticationRoute: 'sign-in'
+    baseURL: 'path/to/base/url'
   };
   ```
 
@@ -47,6 +47,7 @@ export default {
     route is not authenticated.
 
     @property authenticationRoute
+    @deprecated 'deprecated in favor of overriding the authenticationRoute method on the authenticatedRouteMixin'
     @readOnly
     @static
     @type String
@@ -59,6 +60,7 @@ export default {
     The route to transition to after successful authentication.
 
     @property routeAfterAuthentication
+    @deprecated 'deprecated in favor of overriding the routeAfterAuthentication method on the applicationRouteMixin'
     @readOnly
     @static
     @type String
@@ -73,6 +75,7 @@ export default {
     the session is authenticated.
 
     @property routeIfAlreadyAuthenticated
+    @deprecated 'deprecated in favor of overriding the routeIfAlreadyAuthenticated method on the unauthenticatedRouteMixin'
     @readOnly
     @static
     @type String
@@ -84,6 +87,13 @@ export default {
   load(config) {
     for (let property in this) {
       if (this.hasOwnProperty(property) && typeOf(this[property]) !== 'function') {
+        if (['authenticationRoute', 'routeAfterAuthentication', 'routeIfAlreadyAuthenticated'].indexOf(property) >= 0 && DEFAULTS[property] !== this[property]) {
+          deprecate(`Ember Simple Auth: ${property} should no longer be overrided in the config. You should instead override ${property}() in your route.`, false, {
+            id: `ember-simple-auth.configuration.routes`,
+            until: '2.0.0'
+          });
+        }
+
         this[property] = getWithDefault(config, property, DEFAULTS[property]);
       }
     }

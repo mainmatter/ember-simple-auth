@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { inject, Mixin, A, run: { bind }, testing } = Ember;
+const { inject, Mixin, A, run: { bind }, testing, computed } = Ember;
 
 /**
   The mixin for the application route; __defines methods that are called when
@@ -52,6 +52,18 @@ export default Mixin.create({
   */
   session: inject.service('session'),
 
+  /**
+    The transition route after authentication.
+
+    @property routeAfterAuthentication
+    @readOnly
+    @type String
+    @public
+  */
+  routeAfterAuthentication: computed(function() {
+    return Configuration.routeAfterAuthentication;
+  }),
+
   init() {
     this._super(...arguments);
     this._subscribeToSessionEvents();
@@ -87,7 +99,7 @@ export default Mixin.create({
       attemptedTransition.retry();
       this.set('session.attemptedTransition', null);
     } else {
-      this.transitionTo(Configuration.routeAfterAuthentication);
+      this.transitionTo(this.get('routeAfterAuthentication'));
     }
   },
 

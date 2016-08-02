@@ -61,9 +61,11 @@ describe('AuthenticatedRouteMixin', () => {
       });
 
       it('transitions to the authentication route', () => {
-        route.beforeModel(transition);
+        let authenticationRoute = 'path/to/route';
+        route.set('authenticationRoute', authenticationRoute);
 
-        expect(route.transitionTo).to.have.been.calledWith(Configuration.authenticationRoute);
+        route.beforeModel(transition);
+        expect(route.transitionTo).to.have.been.calledWith(authenticationRoute);
       });
     });
   });

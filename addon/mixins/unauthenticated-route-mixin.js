@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { inject: { service }, Mixin, assert } = Ember;
+const { inject: { service }, Mixin, assert, computed } = Ember;
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -35,6 +35,18 @@ export default Mixin.create({
   session: service('session'),
 
   /**
+    The transition route if already authenticated.
+
+    @property routeIfAlreadyAuthenticated
+    @readOnly
+    @type String
+    @public
+  */
+  routeIfAlreadyAuthenticated: computed(function() {
+    return Configuration.routeIfAlreadyAuthenticated;
+  }),
+
+  /**
     Checks whether the session is authenticated and if it is aborts the current
     transition and instead transitions to the
     {{#crossLink "Configuration/routeIfAlreadyAuthenticated:property"}}{{/crossLink}}.
@@ -49,8 +61,8 @@ export default Mixin.create({
   */
   beforeModel() {
     if (this.get('session').get('isAuthenticated')) {
-      assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== Configuration.routeIfAlreadyAuthenticated);
-      return this.transitionTo(Configuration.routeIfAlreadyAuthenticated);
+      assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== this.get('routeIfAlreadyAuthenticated'));
+      this.transitionTo(this.get('routeIfAlreadyAuthenticated'));
     } else {
       return this._super(...arguments);
     }

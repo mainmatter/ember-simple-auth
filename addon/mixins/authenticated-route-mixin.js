@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { inject: { service }, Mixin, assert } = Ember;
+const { inject: { service }, Mixin, assert, computed } = Ember;
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -34,6 +34,18 @@ export default Mixin.create({
   session: service('session'),
 
   /**
+    The authentication route.
+
+    @property authenticationRoute
+    @readOnly
+    @type String
+    @public
+  */
+  authenticationRoute: computed(function() {
+    return Configuration.authenticationRoute;
+  }),
+
+  /**
     Checks whether the session is authenticated and if it is not aborts the
     current transition and instead transitions to the
     {{#crossLink "Configuration/authenticationRoute:property"}}{{/crossLink}}.
@@ -54,10 +66,11 @@ export default Mixin.create({
   */
   beforeModel(transition) {
     if (!this.get('session.isAuthenticated')) {
-      assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== Configuration.authenticationRoute);
+      let authenticationRoute = this.get('authenticationRoute');
+      assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
 
       this.set('session.attemptedTransition', transition);
-      return this.transitionTo(Configuration.authenticationRoute);
+      return this.transitionTo(authenticationRoute);
     } else {
       return this._super(...arguments);
     }
