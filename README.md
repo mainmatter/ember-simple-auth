@@ -16,6 +16,43 @@ minimal requirements with respect to application structure, routes etc. With
 its pluggable strategies it __can support all kinds of authentication and
 authorization mechanisms__.
 
+# Table of Contents
+
+**Information**
+
+* [What does it do?](#what-does-it-do)
+* [How does it work?](#how-does-it-work)
+* [Example App](#example-app)
+
+**Usage**
+
+* [Installation](#installation)
+* [Walkthrough](#walkthrough)
+
+**Core Feature Guides**
+
+* [The Session Service](#the-session-service)
+* [Authenticators](#authenticators)
+  * [Customizing an Authenticator](#customizing-an-authenticator)
+  * [Implementing a custom Authenticator](#implementing-a-custom-authenticator)
+* [Authorizers](#authorizers)
+  * [Customizing an Authorizer](#customizing-an-authorizer)
+  * [Implementing a custom Authorizer](#implementing-a-custom-authorizer)
+* [Session Stores](#session-stores)
+  * [Store Types](#store-types)
+  * [Implementing a Custom Store](#implementing-a-custom-store)
+* [Testing](#testing)
+
+**Extended Guides**
+
+* [Managing a Current User](guides/set-current-user.md)
+
+**Other Resources**
+
+* [Configuration](#configuration)
+* [Upgrading from Pre-1.0 versions](http://log.simplabs.com/post/131698328145/updating-to-ember-simple-auth-10)
+* [API Documentation](http://ember-simple-auth.com/api/)
+
 ## What does it do?
 
 * it __maintains a client side session__ and synchronizes its state across
@@ -48,10 +85,10 @@ __Authorizers__ use the data retrieved by an authenticator and stored in the
 session to __generate authorization data that can be injected into outgoing
 requests such as Ember Data requests__.
 
-## How do I use it?
+## Example App
 
 __Ember Simple Auth comes with a
-[dummy app](https://github.com/simplabs/ember-simple-auth/tree/master/tests/dummy)
+[dummy app](tests/dummy)
 that implementes a complete auth solution__ including authentication against
 the application's own server as well as Facebook, authorization of Ember Data
 requests and error handling. __Check out that dummy app for reference.__ To
@@ -76,7 +113,7 @@ ember install ember-simple-auth
 ### Upgrading from ember-cli-simple-auth / pre-1.0 release?
 The 1.0 release of ember-simple-auth introduced a lot of breaking changes, but thankfully [the upgrade path isn't too hard](http://log.simplabs.com/post/131698328145/updating-to-ember-simple-auth-10).
 
-### Basic Usage
+### Walkthrough
 
 Once the library is installed, __the session service can be injected wherever
 needed in the application__. In order to e.g. display login/logout buttons
@@ -592,7 +629,7 @@ for the available settings.
 Ember Simple Auth is developed by and &copy;
 [simplabs GmbH/Marco Otte-Witte](http://simplabs.com) and contributors. It is
 released under the
-[MIT License](https://github.com/simplabs/ember-simple-auth/blob/master/LICENSE).
+[MIT License](LICENSE).
 
 Ember Simple Auth is not an official part of [Ember.js](http://emberjs.com) and
 is not maintained by the Ember.js Core Team.
