@@ -47,7 +47,7 @@ export default {
     route is not authenticated.
 
     @property authenticationRoute
-    @deprecated
+    @deprecated 'deprecated in favor of overriding the authenticationRoute method on the authenticatedRouteMixin'
     @readOnly
     @static
     @type String
@@ -60,7 +60,7 @@ export default {
     The route to transition to after successful authentication.
 
     @property routeAfterAuthentication
-    @deprecated
+    @deprecated 'deprecated in favor of overriding the routeAfterAuthentication method on the applicationRouteMixin'
     @readOnly
     @static
     @type String
@@ -75,7 +75,7 @@ export default {
     the session is authenticated.
 
     @property routeIfAlreadyAuthenticated
-    @deprecated
+    @deprecated 'deprecated in favor of overriding the routeIfAlreadyAuthenticated method on the unauthenticatedRouteMixin'
     @readOnly
     @static
     @type String
