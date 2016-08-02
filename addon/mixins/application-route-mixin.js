@@ -53,11 +53,11 @@ export default Mixin.create({
   session: inject.service('session'),
 
   /**
-    The transition route after authentication.
+    The route to transition to after successful authentication.
 
     @property routeAfterAuthentication
-    @readOnly
     @type String
+    @default 'index'
     @public
   */
   routeAfterAuthentication: computed(function() {
