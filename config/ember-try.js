@@ -4,7 +4,7 @@ module.exports = {
     {
       name: 'default',
       bower: {
-        dependencies: { }
+        dependencies: {}
       }
     },
     {
@@ -34,7 +34,7 @@ module.exports = {
       },
       npm: {
         devDependencies: {
-          'ember-data': 'release'
+          'ember-data': 'emberjs/data#release'
         }
       }
     },
@@ -50,7 +50,7 @@ module.exports = {
       },
       npm: {
         devDependencies: {
-          'ember-data': 'beta'
+          'ember-data': 'emberjs/data#beta'
         }
       }
     },
@@ -66,7 +66,7 @@ module.exports = {
       },
       npm: {
         devDependencies: {
-          'ember-data': 'canary'
+          'ember-data': 'emberjs/data#master'
         }
       }
     }
