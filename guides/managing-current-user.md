@@ -7,7 +7,7 @@ user, this guide describes the canonical way of doing so. The concepts
 described here might eventually be merged into the core Ember Simple Auth
 library.
 
-### `session-account` service
+### `current-user` service
 
 In the approach described in this guide, the current user is managed and made
 available to the application via a service. That service will load the current
@@ -24,8 +24,8 @@ import Ember from 'ember';
 const { inject: { service }, Component } = Ember;
 
 export default Component.extend({
-  session:        service('session'),
-  sessionAccount: service('session-account')
+  session:     service('session'),
+  currentUser: service('current-user')
 });
 ```
 
@@ -37,8 +37,8 @@ export default Component.extend({
 
   {{#if session.isAuthenticated}}
     <button onclick={{action 'logout'}}>Logout</button>
-    {{#if sessionAccount.account}}
-      <p>Signed in as {{sessionAccount.account.name}}</p>
+    {{#if currentUser.user}}
+      <p>Signed in as {{currentUser.user.name}}</p>
     {{/if}}
   {{else}}
     <button onclick={{action 'login'}}>Login</button>
@@ -53,7 +53,7 @@ as it uses a dedicated endpoint instead that will always respond with the user
 belonging to the authorization token in the request:
 
 ```js
-// app/services/session-account.js
+// app/services/current-user.js
 import Ember from 'ember';
 
 const { inject: { service }, isEmpty, RSVP } = Ember;
@@ -61,9 +61,9 @@ const { inject: { service }, isEmpty, RSVP } = Ember;
 export default Ember.Service.extend({
   store: service(),
 
-  loadCurrentUser() {
-    return this.get('store').find('user', 'me').then((account) => {
-      this.set('account', account);
+  load() {
+    return this.get('store').find('user', 'me').then((user) => {
+      this.set('user', user);
     });
   }
 });
@@ -76,7 +76,7 @@ authenticator receives the user id when it authenticates the session so that
 the id is then stored in the session data and can be read from there.
 
 ```js
-// app/services/session-account.js
+// app/services/current-user.js
 import Ember from 'ember';
 
 const { inject: { service }, isEmpty, RSVP } = Ember;
@@ -85,14 +85,12 @@ export default Ember.Service.extend({
   session: service('session'),
   store: service(),
 
-  account: null,
-
-  loadCurrentUser() {
+  load() {
     return new RSVP.Promise((resolve, reject) => {
       let userId = this.get('session.data.authenticated.user_id');
       if (!isEmpty(userId)) {
         return this.get('store').find('user', userId).then((user) => {
-          this.set('account', user);
+          this.set('user', user);
         }, reject);
       } else {
         resolve();
@@ -110,9 +108,9 @@ in via that instance of the application or the session state is synced from
 another tab or window. In the first case, the session will already be
 authenticated when the application route's `beforeModel` method is called and
 in the latter case Ember Simple Auth will call the application route's
-`sessionAuthenticated` method. The session account service's `loadCurrentUser`
-method must be called in both cases so that it's `account` property is always
-populated when the session is authenticated:
+`sessionAuthenticated` method. The `currentUser` service's `load` method must
+be called in both cases so that it's `user` property is always populated when
+the session is authenticated:
 
 ```js
 // app/routes/application.js
@@ -122,7 +120,7 @@ import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mi
 const { service } = Ember.inject;
 
 export default Ember.Route.extend(ApplicationRouteMixin, {
-  sessionAccount: service(),
+  currentUser: service(),
 
   beforeModel() {
     return this._loadCurrentUser();
@@ -134,7 +132,7 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
   },
 
   _loadCurrentUser() {
-    return this.get('sessionAccount').loadCurrentUser();
+    return this.get('currentUser').load();
   }
 });
 ```
