@@ -2,7 +2,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, computed, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isBlank, isPresent, K } = Ember;
+const { RSVP, computed, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isBlank, isPresent, K, A } = Ember;
 
 const persistingProperty = function(beforeSet = K) {
   return computed({
@@ -156,7 +156,7 @@ export default BaseStore.extend({
     @public
   */
   clear() {
-    this._write(null, 0);
+    this._write('', 0);
     this._lastData = {};
     return RSVP.resolve();
   },
@@ -174,7 +174,9 @@ export default BaseStore.extend({
 
   _write(value, expiration) {
     if (this._oldCookieName) {
-      document.cookie = `${this._oldCookieName}=`;
+      A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach((oldCookie) => {
+        document.cookie = `${oldCookie}=; expires=${new Date(0).toUTCString()}`;
+      });
       delete this._oldCookieName;
     }
 
@@ -190,7 +192,7 @@ export default BaseStore.extend({
 
     let path        = '; path=/';
     let expires     = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
-    let secure      = !!this._secureCookies ? ';secure' : '';
+    let secure      = this._secureCookies ? ';secure' : '';
     let domain      = isEmpty(cookieDomain) ? '' : `;domain=${cookieDomain}`;
     document.cookie = `${cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
 

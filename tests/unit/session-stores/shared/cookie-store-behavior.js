@@ -118,7 +118,8 @@ export default function(options) {
 
     beforeEach(() => {
       store = createStore({
-        cookieName: 'session-foo'
+        cookieName: 'session-foo',
+        cookieExpirationTime: 1000
       });
       cookieSpy = spyRewriteCookieMethod(store);
     });
@@ -134,8 +135,10 @@ export default function(options) {
       });
 
       next(() => {
-        expect(document.cookie).to.contain('session-foo=;');
+        expect(document.cookie).to.not.contain('session-foo=');
+        expect(document.cookie).to.not.contain('session-foo-expiration_time=');
         expect(document.cookie).to.contain('session-bar=%7B%22key%22%3A%22value%22%7D');
+        expect(document.cookie).to.contain('session-bar-expiration_time=');
         done();
       });
     });
