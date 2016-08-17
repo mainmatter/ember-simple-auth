@@ -2,7 +2,20 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, computed, run, run: { next, cancel, later }, isEmpty, typeOf, testing, isBlank, isPresent } = Ember;
+const { RSVP, computed, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isBlank, isPresent } = Ember;
+
+const persistingProperty = function() {
+  return computed({
+    get(key) {
+      return this.get(`_${key}`);
+    },
+    set(key, value) {
+      this.set(`_${key}`, value);
+      scheduleOnce('actions', this, this.rewriteCookie);
+      return value;
+    }
+  });
+};
 
 /**
   Session store that persists data in a cookie.
@@ -53,16 +66,7 @@ export default BaseStore.extend({
     @public
   */
   _cookieDomain: null,
-  cookieDomain: computed('_cookieDomain', {
-    get() {
-      return this.get('_cookieDomain');
-    },
-    set(key, value) {
-      this.set('_cookieDomain', value);
-      run.scheduleOnce('actions', this, this.rewriteCookie);
-      return value;
-    }
-  }),
+  cookieDomain: persistingProperty(),
 
   /**
     The name of the cookie.
@@ -73,17 +77,7 @@ export default BaseStore.extend({
     @public
   */
   _cookieName: 'ember_simple_auth-session',
-  cookieName: computed('_cookieName', {
-    get() {
-      return this.get('_cookieName');
-    },
-    set(key, value) {
-      this._oldCookieName = this._cookieName;
-      this.set('_cookieName', value);
-      run.scheduleOnce('actions', this, this.rewriteCookie);
-      return value;
-    }
-  }),
+  cookieName: persistingProperty(),
 
   /**
     The expiration time for the cookie in seconds. A value of `null` will make
@@ -96,16 +90,7 @@ export default BaseStore.extend({
     @public
   */
   _cookieExpirationTime: null,
-  cookieExpirationTime: computed('_cookieExpirationTime', {
-    get() {
-      return this.get('_cookieExpirationTime');
-    },
-    set(key, value) {
-      this.set('_cookieExpirationTime', value);
-      run.scheduleOnce('actions', this, this.rewriteCookie);
-      return value;
-    }
-  }),
+  cookieExpirationTime: persistingProperty(),
 
   _secureCookies: window.location.protocol === 'https:',
 
