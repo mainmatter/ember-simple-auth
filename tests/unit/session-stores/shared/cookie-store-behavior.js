@@ -41,11 +41,14 @@ export default function(options) {
     it('respects the configured cookieDomain', () => {
       let store;
       run(() => {
-        store = createStore({ cookieDomain: 'example.com' });
+        store = createStore({
+          cookieName: 'session-cookie-domain',
+          cookieDomain: 'example.com'
+        });
         store.persist({ key: 'value' });
       });
 
-      expect(document.cookie).to.not.contain('test-session=%7B%22key%22%3A%22value%22%7D');
+      expect(document.cookie).to.not.contain('session-cookie-domain=%7B%22key%22%3A%22value%22%7D');
     });
   });
 
