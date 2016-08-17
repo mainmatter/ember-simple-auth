@@ -2,14 +2,15 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, computed, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isBlank, isPresent } = Ember;
+const { RSVP, computed, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isBlank, isPresent, K } = Ember;
 
-const persistingProperty = function() {
+const persistingProperty = function(beforeSet = K) {
   return computed({
     get(key) {
       return this.get(`_${key}`);
     },
     set(key, value) {
+      beforeSet.apply(this);
       this.set(`_${key}`, value);
       scheduleOnce('actions', this, this.rewriteCookie);
       return value;
@@ -77,7 +78,9 @@ export default BaseStore.extend({
     @public
   */
   _cookieName: 'ember_simple_auth-session',
-  cookieName: persistingProperty(),
+  cookieName: persistingProperty(function() {
+    this._oldCookieName = this._cookieName;
+  }),
 
   /**
     The expiration time for the cookie in seconds. A value of `null` will make
@@ -170,8 +173,9 @@ export default BaseStore.extend({
   },
 
   _write(value, expiration) {
-    if (!!this._oldCookieName) {
+    if (this._oldCookieName) {
       document.cookie = `${this._oldCookieName}=`;
+      delete this._oldCookieName;
     }
 
     if (isBlank(value) && expiration !== 0) {
