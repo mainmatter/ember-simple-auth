@@ -189,7 +189,7 @@ export default BaseStore.extend({
       document.cookie = `${this._oldCookieName}=`;
     }
 
-    if (isBlank(value)) {
+    if (isBlank(value) && expiration !== 0) {
       return;
     }
 

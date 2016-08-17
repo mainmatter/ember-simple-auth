@@ -61,6 +61,7 @@ describe('AdaptiveStore', () => {
         let store = Adaptive.create({
           _isLocalStorageAvailable: false
         });
+        store.persist({ key: 'value' });
         store.setProperties({
           cookieName: 'test:session',
           cookieExpirationTime: 60
