@@ -178,14 +178,16 @@ export default BaseStore.extend({
       return;
     }
 
-    let path                 = '; path=/';
-    let expires              = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
-    let secure               = !!this._secureCookies ? ';secure' : '';
-    let cookieName           = this.get('cookieName');
-    let cookieDomain         = this.get('cookieDomain');
-    let domain               = isEmpty(cookieDomain) ? '' : `;domain=${cookieDomain}`;
-    let cookieExpirationTime = this.get('_cookieExpirationTime');
+    let {
+      cookieName,
+      cookieDomain,
+      cookieExpirationTime
+    } = this.getProperties('cookieName', 'cookieDomain', 'cookieExpirationTime');
 
+    let path        = '; path=/';
+    let expires     = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
+    let secure      = !!this._secureCookies ? ';secure' : '';
+    let domain      = isEmpty(cookieDomain) ? '' : `;domain=${cookieDomain}`;
     document.cookie = `${cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
 
     if (expiration !== null && cookieExpirationTime !== null) {
