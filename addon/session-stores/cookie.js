@@ -164,9 +164,9 @@ export default BaseStore.extend({
   },
 
   _calculateExpirationTime() {
-    let cachedExpirationTime = this._read(`${this._cookieName}-expiration_time`);
+    let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
     cachedExpirationTime     = !!cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
-    return this._cookieExpirationTime ? new Date().getTime() + this._cookieExpirationTime * 1000 : cachedExpirationTime;
+    return this.get('cookieExpirationTime') ? new Date().getTime() + this.get('cookieExpirationTime') * 1000 : cachedExpirationTime;
   },
 
   _write(value, expiration) {
@@ -178,14 +178,16 @@ export default BaseStore.extend({
       return;
     }
 
-    let path        = '; path=/';
-    let expires     = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
-    let secure      = !!this._secureCookies ? ';secure' : '';
-    let cookieName = this._cookieName;
-    let cookieDomain = this._cookieDomain;
-    let domain      = isEmpty(cookieDomain) ? '' : `;domain=${cookieDomain}`;
+    let path                 = '; path=/';
+    let expires              = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
+    let secure               = !!this._secureCookies ? ';secure' : '';
+    let cookieName           = this.get('cookieName');
+    let cookieDomain         = this.get('cookieDomain');
+    let domain               = isEmpty(cookieDomain) ? '' : `;domain=${cookieDomain}`;
     let cookieExpirationTime = this.get('_cookieExpirationTime');
+
     document.cookie = `${cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
+
     if (expiration !== null && cookieExpirationTime !== null) {
       let cachedExpirationTime = this._read(`${cookieName}-expiration_time`);
       let expiry = encodeURIComponent(cookieExpirationTime) || cachedExpirationTime;

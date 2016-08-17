@@ -63,7 +63,7 @@ describe('AdaptiveStore', () => {
         });
         store.persist({ key: 'value' });
         store.setProperties({
-          cookieName: 'test:session',
+          cookieName:           'test:session',
           cookieExpirationTime: 60
         });
       });
