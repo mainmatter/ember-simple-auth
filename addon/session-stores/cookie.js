@@ -240,7 +240,6 @@ export default BaseStore.extend({
     const data = this._read(this._oldCookieName);
     if (isPresent(data)) {
       const expiration = this._calculateExpirationTime();
-      this.clear();
       this._write(data, expiration);
     }
   }
