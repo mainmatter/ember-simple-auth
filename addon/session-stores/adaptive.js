@@ -4,11 +4,25 @@ import Base from 'ember-simple-auth/session-stores/base';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
 
-const {
-  computed
-} = Ember;
+const { computed } = Ember;
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
+
+const proxyToInternalStore = function() {
+  return computed({
+    get(key) {
+      return this.get(`_${key}`);
+    },
+    set(key, value) {
+      this.set(`_${key}`, value);
+      let _store = this.get('_store');
+      if (_store) {
+        _store.set(key, value);
+      }
+      return value;
+    }
+  });
+};
 
 /**
   Session store that persists data in the browser's `localStorage` (see
@@ -47,19 +61,7 @@ export default Base.extend({
     @public
   */
   _cookieDomain: null,
-  cookieDomain: computed({
-    get() {
-      return this.get('_cookieDomain');
-    },
-    set(key, value) {
-      this.set('_cookieDomain', value);
-      let _store = this.get('_store');
-      if (_store) {
-        _store.set('cookieDomain', value);
-      }
-      return value;
-    }
-  }),
+  cookieDomain: proxyToInternalStore(),
 
   /**
     The name of the cookie to use if `localStorage` is not available.
@@ -70,19 +72,7 @@ export default Base.extend({
     @public
   */
   _cookieName: 'ember_simple_auth-session',
-  cookieName: computed('cookieName', {
-    get() {
-      return this.get('_cookieName');
-    },
-    set(key, value) {
-      this.set('_cookieName', value);
-      let _store = this.get('_store');
-      if (_store) {
-        _store.set('cookieName', value);
-      }
-      return value;
-    }
-  }),
+  cookieName: proxyToInternalStore(),
 
   /**
     The expiration time for the cookie in seconds if `localStorage` is not
@@ -95,19 +85,7 @@ export default Base.extend({
     @public
   */
   _cookieExpirationTime: null,
-  cookieExpirationTime: computed({
-    get() {
-      return this.get('_cookieExpirationTime');
-    },
-    set(key, value) {
-      this.set('_cookieExpirationTime', value);
-      let _store = this.get('_store');
-      if (_store) {
-        _store.set('cookieExpirationTime', value);
-      }
-      return value;
-    }
-  }),
+  cookieExpirationTime: proxyToInternalStore(),
 
   _isLocalStorageAvailable: computed(function() {
     try {
