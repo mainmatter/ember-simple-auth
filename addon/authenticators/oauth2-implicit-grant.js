@@ -81,5 +81,20 @@ export default BaseAuthenticator.extend({
     return !isEmpty(data) &&
       !isEmpty(data.access_token);
     // jscs:enable requireCamelCaseOrUpperCaseIdentifiers
+  },
+
+  _parseResponse(locationHash) {
+    let params = {};
+    const query = locationHash.substring(locationHash.indexOf('?'));
+    const regex = /([^#?&=]+)=([^&]*)/g;
+    let match;
+
+    // decode all parameter pairs
+    while ((match = regex.exec(query)) !== null) {
+      params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
+    }
+
+    return params;
+>>>>>>> added oauth2 implicit grant authenticator
   }
 });
