@@ -1,6 +1,7 @@
 /* jscs:disable requireDotNotation */
 import Ember from 'ember';
 import BaseAuthenticator from './base';
+import fetch from 'ember-network/fetch';
 
 const {
   RSVP,
@@ -11,7 +12,6 @@ const {
   assign: emberAssign,
   merge,
   A,
-  $: jQuery,
   testing,
   warn,
   keys: emberKeys
@@ -283,17 +283,20 @@ export default BaseAuthenticator.extend({
     @param {String} url The request URL
     @param {Object} data The request data
     @param {Object} headers Additional headers to send in request
-    @return {jQuery.Deferred} A promise like jQuery.Deferred as returned by `$.ajax`
+    @return {Promise} A promise that resolves into the response object`
     @protected
   */
   makeRequest(url, data, headers = {}) {
+    headers['Content-Type'] = 'application/x-www-form-urlencoded';
+
+    const body = keys(data).map((key) => {
+      return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`;
+    }).join('&');
+
     const options = {
-      url,
-      data,
-      type:        'POST',
-      dataType:    'json',
-      contentType: 'application/x-www-form-urlencoded',
-      headers
+      body,
+      headers,
+      method: 'POST'
     };
 
     const clientIdHeader = this.get('_clientIdHeader');
@@ -301,11 +304,9 @@ export default BaseAuthenticator.extend({
       merge(options.headers, clientIdHeader);
     }
 
-    if (isEmpty(keys(options.headers))) {
-      delete options.headers;
-    }
-
-    return jQuery.ajax(options);
+    return fetch(url, options).then((response) => {
+      return response.json();
+    });
   },
 
   _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
