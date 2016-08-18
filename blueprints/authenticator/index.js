@@ -15,25 +15,25 @@ module.exports = {
 
     if (baseClass === 'torii') {
       return {
-        imports: 'import Ember from \'ember\';' + EOL + 'import Torii from \'ember-simple-auth/authenticators/torii\';',
+        imports: 'import Torii from \'ember-simple-auth/authenticators/torii\';',
         baseClass: 'Torii',
         body: EOL + '  torii: Ember.inject.service(\'torii\')'
       };
     } else if (baseClass === 'oauth2') {
       return {
-        imports: 'import Ember from \'ember\';' + EOL + 'import OAuth2PasswordGrant from \'ember-simple-auth/authenticators/oauth2-password-grant\';',
+        imports: 'import OAuth2PasswordGrant from \'ember-simple-auth/authenticators/oauth2-password-grant\';',
         baseClass: 'OAuth2PasswordGrant',
         body: ''
       };
     } else if (baseClass === 'devise') {
       return {
-        imports: 'import Ember from \'ember\';' + EOL + 'import Devise from \'ember-simple-auth/authenticators/devise\';',
+        imports: 'import Devise from \'ember-simple-auth/authenticators/devise\';',
         baseClass: 'Devise',
         body: ''
       };
     } else if (baseClass === 'base') {
       return {
-        imports: 'import Ember from \'ember\';' + EOL + 'import Base from \'ember-simple-auth/authenticators/base\';',
+        imports: 'import Base from \'ember-simple-auth/authenticators/base\';',
         baseClass: 'Base',
         body: EOL + '  restore(data) {' + EOL + '  },' + EOL + EOL + '  authenticate(/*args*/) {' + EOL + '  },' + EOL + EOL + '  invalidate(data) {' + EOL + '  }'
       };
