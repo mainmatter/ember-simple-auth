@@ -129,17 +129,17 @@ export default BaseAuthenticator.extend({
 
   /**
     When authentication fails, the rejection callback is provided with the whole
-    XHR object instead of it's response JSON or text.
+    fetch response object instead of it's response JSON or text.
 
     This is useful for cases when the backend provides additional context not
     available in the response body.
 
-    @property rejectWithXhr
+    @property rejectWithRequest
     @type Boolean
     @default false
     @public
   */
-  rejectWithXhr: false,
+  rejectWithRequest: false,
 
   /**
     Restores the session from a session data object; __will return a resolving
@@ -209,7 +209,7 @@ export default BaseAuthenticator.extend({
     return new RSVP.Promise((resolve, reject) => {
       const data                = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      const useXhr = this.get('rejectWithXhr');
+      const useRequest = this.get('rejectWithRequest');
       const scopesString = makeArray(scope).join(' ');
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
@@ -228,8 +228,8 @@ export default BaseAuthenticator.extend({
 
           resolve(response);
         });
-      }, (xhr) => {
-        run(null, reject, useXhr ? xhr : (xhr.responseJSON || xhr.responseText));
+      }, (response) => {
+        run(null, reject, useRequest ? response : response.responseJSON);
       });
     });
   },
@@ -303,9 +303,20 @@ export default BaseAuthenticator.extend({
     if (!isEmpty(clientIdHeader)) {
       merge(options.headers, clientIdHeader);
     }
-
-    return fetch(url, options).then((response) => {
-      return response.json();
+    return new RSVP.Promise((resolve, reject) => {
+      fetch(url, options).then((response) => {
+        response.text().then((text) => {
+          let json = text ? JSON.parse(text) : {};
+          if (!response.ok) {
+            response.responseJSON = json;
+            reject(response);
+          } else {
+            resolve(json);
+          }
+        });
+      }).catch((error) => {
+        reject(error);
+      });
     });
   },
 
@@ -341,8 +352,8 @@ export default BaseAuthenticator.extend({
           this.trigger('sessionDataUpdated', data);
           resolve(data);
         });
-      }, (xhr, status, error) => {
-        warn(`Access token could not be refreshed - server responded with ${error}.`);
+      }, (response) => {
+        warn(`Access token could not be refreshed - server responded with ${response.responseJSON}.`);
         reject();
       });
     });
