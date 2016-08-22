@@ -113,7 +113,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         });
         done();
       });
-      
+
       authenticator.authenticate('username', 'password');
     });
 
@@ -212,7 +212,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
       describe('when reject with XHR is enabled', () => {
         beforeEach(() => {
-          authenticator.set('rejectWithRequest', true);
+          authenticator.set('rejectWithResponse', true);
         });
 
         it('rejects with xhr object', () => {

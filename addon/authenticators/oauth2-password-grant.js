@@ -134,12 +134,12 @@ export default BaseAuthenticator.extend({
     This is useful for cases when the backend provides additional context not
     available in the response body.
 
-    @property rejectWithRequest
+    @property rejectWithResponse
     @type Boolean
     @default false
     @public
   */
-  rejectWithRequest: false,
+  rejectWithResponse: false,
 
   /**
     Restores the session from a session data object; __will return a resolving
@@ -209,7 +209,7 @@ export default BaseAuthenticator.extend({
     return new RSVP.Promise((resolve, reject) => {
       const data                = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      const useRequest = this.get('rejectWithRequest');
+      const useResponse = this.get('rejectWithResponse');
       const scopesString = makeArray(scope).join(' ');
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
@@ -229,7 +229,7 @@ export default BaseAuthenticator.extend({
           resolve(response);
         });
       }, (response) => {
-        run(null, reject, useRequest ? response : response.responseJSON);
+        run(null, reject, useResponse ? response : response.responseJSON);
       });
     });
   },
