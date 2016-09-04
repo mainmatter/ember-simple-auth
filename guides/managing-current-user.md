@@ -91,6 +91,7 @@ export default Ember.Service.extend({
       if (!isEmpty(userId)) {
         return this.get('store').find('user', userId).then((user) => {
           this.set('user', user);
+          resolve();
         }, reject);
       } else {
         resolve();
