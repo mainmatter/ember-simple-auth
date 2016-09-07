@@ -53,13 +53,7 @@
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
     "ember-sinon": "~0.5.0",
-<<<<<<< HEAD
     "ember-suave": "~4.0.0",
-=======
-    "ember-suave": "~3.0.1",
-    "ember-try": "^0.2.2",
-    "ember-welcome-page": "^1.0.1",
->>>>>>> 0aaace9... [Fastboot] Integration testing for fastboot (#1045)
     "express": "^4.14.0",
     "git-repo-version": "^0.3.1",
     "glob": "^7.0.5",
@@ -70,12 +64,6 @@
     "mocha": "^3.0.0",
     "mocha-only-detector": "0.1.0",
     "morgan": "^1.5.2",
-<<<<<<< HEAD
-=======
-    "request": "^2.74.0",
-    "rimraf": "^2.5.2",
-    "rsvp": "^3.2.1",
->>>>>>> 0aaace9... [Fastboot] Integration testing for fastboot (#1045)
     "sinon-chai": "~2.8.0",
     "torii": "~0.8.0"
   },
