@@ -129,6 +129,19 @@ export default BaseAuthenticator.extend({
 
   /**
     When authentication fails, the rejection callback is provided with the whole
+    XHR object instead of it's response JSON or text.
+    This is useful for cases when the backend provides additional context not
+    available in the response body.
+    @property rejectWithXhr
+    @type Boolean
+    @default false
+    @deprecated
+    @public
+  */
+  rejectWithXhr: computed.deprecatingAlias('rejectWithResponse'),
+
+  /**
+    When authentication fails, the rejection callback is provided with the whole
     fetch response object instead of it's response JSON or text.
 
     This is useful for cases when the backend provides additional context not
