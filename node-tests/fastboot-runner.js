@@ -5,7 +5,7 @@ var Mocha = require('mocha');
 var root = 'node-tests/fastboot';
 
 var mocha = new Mocha({
-  timeout: 5000,
+  timeout: 10000,
   reporter: 'spec'
 });
 
