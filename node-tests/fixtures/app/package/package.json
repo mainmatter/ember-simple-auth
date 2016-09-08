@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "ember-cli": "*",
-    "ember-simple-auth": "*"
+    "ember-simple-auth": "*",
+    "ember-cli-import-polyfill": "*"
   }
 }

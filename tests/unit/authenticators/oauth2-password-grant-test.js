@@ -4,25 +4,30 @@ import Ember from 'ember';
 import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
 import Pretender from 'pretender';
 import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
-const { $: jQuery, run: { next }, tryInvoke } = Ember;
+const { tryInvoke } = Ember;
 
 describe('OAuth2PasswordGrantAuthenticator', () => {
   let authenticator;
   let server;
+  let parsePostData = ((query) => {
+    let result = {};
+    query.split('&').forEach((part) => {
+      let item = part.split('=');
+      result[item[0]] = decodeURIComponent(item[1]);
+    });
+    return result;
+  });
 
   beforeEach(() => {
     authenticator = OAuth2PasswordGrant.create();
     server        = new Pretender();
-    sinon.spy(jQuery, 'ajax');
   });
 
   afterEach(() => {
     tryInvoke(server, 'shutdown');
-    jQuery.ajax.restore();
   });
 
   describe('#restore', () => {
@@ -99,69 +104,58 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
   describe('#authenticate', () => {
     it('sends an AJAX request to the token endpoint', (done) => {
-      authenticator.authenticate('username', 'password');
-
-      next(() => {
-        expect(jQuery.ajax.getCall(0).args[0]).to.eql({
-          url:         '/token',
-          type:        'POST',
-          data:        { 'grant_type': 'password', username: 'username', password: 'password' },
-          dataType:    'json',
-          contentType: 'application/x-www-form-urlencoded'
+      server.post('/token', (request) => {
+        let body = parsePostData(request.requestBody);
+        expect(body).to.eql({
+          'grant_type': 'password',
+          'username': 'username',
+          'password': 'password'
         });
         done();
       });
+
+      authenticator.authenticate('username', 'password');
     });
 
     it('sends an AJAX request to the token endpoint with client_id Basic Auth header', function(done) {
-      authenticator.set('clientId', 'test-client');
-      authenticator.authenticate('username', 'password');
-
-      next(() => {
-        expect(jQuery.ajax.getCall(0).args[0]).to.eql({
-          url:         '/token',
-          type:        'POST',
-          data:        { 'grant_type': 'password', username: 'username', password: 'password' },
-          dataType:    'json',
-          contentType: 'application/x-www-form-urlencoded',
-          headers:     { Authorization: 'Basic dGVzdC1jbGllbnQ6' }
-        });
+      server.post('/token', (request) => {
+        expect(request.requestHeaders['authorization']).to.eql('Basic dGVzdC1jbGllbnQ6');
         done();
       });
+
+      authenticator.set('clientId', 'test-client');
+      authenticator.authenticate('username', 'password');
     });
 
     it('sends an AJAX request to the token endpoint with customized headers', function(done) {
-      authenticator.authenticate('username', 'password', [], { 'X-Custom-Context': 'foobar' });
-
-      next(() => {
-        expect(jQuery.ajax.getCall(0).args[0]).to.eql({
-          url:         '/token',
-          type:        'POST',
-          data:        { 'grant_type': 'password', username: 'username', password: 'password' },
-          dataType:    'json',
-          contentType: 'application/x-www-form-urlencoded',
-          headers:     { 'X-Custom-Context': 'foobar' }
-        });
+      server.post('/token', (request) => {
+        expect(request.requestHeaders['x-custom-context']).to.eql('foobar');
         done();
       });
+
+      authenticator.authenticate('username', 'password', [], { 'X-Custom-Context': 'foobar' });
     });
 
     it('sends a single OAuth scope to the token endpoint', function(done) {
-      authenticator.authenticate('username', 'password', 'public');
-
-      next(() => {
-        expect(jQuery.ajax.getCall(0).args[0].data.scope).to.eql('public');
+      server.post('/token', (request) => {
+        let { requestBody } = request;
+        let { scope } = parsePostData(requestBody);
+        expect(scope).to.eql('public');
         done();
       });
+
+      authenticator.authenticate('username', 'password', 'public');
     });
 
     it('sends multiple OAuth scopes to the token endpoint', (done) => {
-      authenticator.authenticate('username', 'password', ['public', 'private']);
-
-      next(() => {
-        expect(jQuery.ajax.getCall(0).args[0].data.scope).to.eql('public private');
+      server.post('/token', (request) => {
+        let { requestBody } = request;
+        let { scope } = parsePostData(requestBody);
+        expect(scope).to.eql('public private');
         done();
       });
+
+      authenticator.authenticate('username', 'password', ['public', 'private']);
     });
 
     describe('when the authentication request is successful', () => {
@@ -218,7 +212,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
       describe('when reject with XHR is enabled', () => {
         beforeEach(() => {
-          authenticator.set('rejectWithXhr', true);
+          authenticator.set('rejectWithResponse', true);
         });
 
         it('rejects with xhr object', () => {
@@ -229,7 +223,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
         it('provides access to custom headers', () => {
           return authenticator.authenticate('username', 'password').catch((error) => {
-            expect(error.getResponseHeader('X-Custom-Context')).to.eql('foobar');
+            expect(error.headers.getAll('x-custom-context')[0]).to.eql('foobar');
           });
         });
       });
@@ -252,18 +246,17 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
 
       it('sends an AJAX request to the revokation endpoint', (done) => {
-        authenticator.invalidate({ 'access_token': 'access token!' });
-
-        next(() => {
-          expect(jQuery.ajax.getCall(0).args[0]).to.eql({
-            url:         '/revoke',
-            type:        'POST',
-            data:        { 'token_type_hint': 'access_token', token: 'access token!' },
-            dataType:    'json',
-            contentType: 'application/x-www-form-urlencoded'
+        server.post('/revoke', (request) => {
+          let { requestBody } = request;
+          let body = parsePostData(requestBody);
+          expect(body).to.eql({
+            'token_type_hint': 'access_token',
+            'token': 'access token!'
           });
           done();
         });
+
+        authenticator.invalidate({ 'access_token': 'access token!' });
       });
 
       describe('when the revokation request is successful', () => {
@@ -284,18 +277,17 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
       describe('when a refresh token is set', () => {
         it('sends an AJAX request to invalidate the refresh token', (done) => {
-          authenticator.invalidate({ 'access_token': 'access token!', 'refresh_token': 'refresh token!' });
-
-          next(() => {
-            expect(jQuery.ajax.getCall(1).args[0]).to.eql({
-              url:         '/revoke',
-              type:        'POST',
-              data:        { 'token_type_hint': 'refresh_token', token: 'refresh token!' },
-              dataType:    'json',
-              contentType: 'application/x-www-form-urlencoded'
+          server.post('/revoke', (request) => {
+            let { requestBody } = request;
+            let body = parsePostData(requestBody);
+            expect(body).to.eql({
+              'token_type_hint': 'refresh_token',
+              'token': 'refresh token!'
             });
             done();
           });
+
+          authenticator.invalidate({ 'access_token': 'access token!', 'refresh_token': 'refresh token!' });
         });
       });
     });
@@ -316,18 +308,17 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
   // testing private API here ;(
   describe('#_refreshAccessToken', () => {
     it('sends an AJAX request to the token endpoint', (done) => {
-      authenticator._refreshAccessToken(12345, 'refresh token!');
-
-      next(() => {
-        expect(jQuery.ajax.getCall(0).args[0]).to.eql({
-          url:         '/token',
-          type:        'POST',
-          data:        { 'grant_type': 'refresh_token', 'refresh_token': 'refresh token!' },
-          dataType:    'json',
-          contentType: 'application/x-www-form-urlencoded'
+      server.post('/token', (request) => {
+        let { requestBody } = request;
+        let body = parsePostData(requestBody);
+        expect(body).to.eql({
+          'grant_type': 'refresh_token',
+          'refresh_token': 'refresh token!'
         });
         done();
       });
+
+      authenticator._refreshAccessToken(12345, 'refresh token!');
     });
 
     describe('when the refresh request is successful', () => {
