@@ -130,12 +130,14 @@ export default BaseAuthenticator.extend({
   /**
     When authentication fails, the rejection callback is provided with the whole
     XHR object instead of it's response JSON or text.
+
     This is useful for cases when the backend provides additional context not
     available in the response body.
+
     @property rejectWithXhr
     @type Boolean
     @default false
-    @deprecated
+    @deprecated OAuth2PasswordGrantAuthenticator/rejectWithResponse:property
     @public
   */
   rejectWithXhr: computed.deprecatingAlias('rejectWithResponse'),
@@ -296,7 +298,7 @@ export default BaseAuthenticator.extend({
     @param {String} url The request URL
     @param {Object} data The request data
     @param {Object} headers Additional headers to send in request
-    @return {Promise} A promise that resolves into the response object`
+    @return {Promise} A promise that resolves with the response object`
     @protected
   */
   makeRequest(url, data, headers = {}) {
