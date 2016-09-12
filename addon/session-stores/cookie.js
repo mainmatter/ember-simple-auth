@@ -175,7 +175,12 @@ export default BaseStore.extend({
   _write(value, expiration) {
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach((oldCookie) => {
-        document.cookie = `${oldCookie}=; expires=${new Date(0).toUTCString()}`;
+        let cookieDomain = this.get('cookieDomain');
+        let path        = '; path=/';
+        let expires     = `; expires=${new Date(0).toUTCString()}`;
+        let secure      = this._secureCookies ? ';secure' : '';
+        let domain      = isEmpty(cookieDomain) ? '' : `;domain=${cookieDomain}`;
+        document.cookie = `${oldCookie}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
       });
       delete this._oldCookieName;
     }
