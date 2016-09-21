@@ -173,14 +173,11 @@ export default BaseStore.extend({
   },
 
   _write(value, expiration) {
+    let _value = encodeURIComponent(value);
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach((oldCookie) => {
-        let cookieDomain = this.get('cookieDomain');
-        let path        = '; path=/';
         let expires     = `; expires=${new Date(0).toUTCString()}`;
-        let secure      = this._secureCookies ? ';secure' : '';
-        let domain      = isEmpty(cookieDomain) ? '' : `;domain=${cookieDomain}`;
-        document.cookie = `${oldCookie}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
+        document.cookie = this._createCookieString(oldCookie, _value, expires);
       });
       delete this._oldCookieName;
     }
@@ -191,20 +188,17 @@ export default BaseStore.extend({
 
     let {
       cookieName,
-      cookieDomain,
       cookieExpirationTime
     } = this.getProperties('cookieName', 'cookieDomain', 'cookieExpirationTime');
 
-    let path        = '; path=/';
     let expires     = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
-    let secure      = this._secureCookies ? ';secure' : '';
-    let domain      = isEmpty(cookieDomain) ? '' : `;domain=${cookieDomain}`;
-    document.cookie = `${cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
+    document.cookie = this._createCookieString(cookieName, _value, expires);
 
     if (expiration !== null && cookieExpirationTime !== null) {
       let cachedExpirationTime = this._read(`${cookieName}-expiration_time`);
       let expiry = encodeURIComponent(cookieExpirationTime) || cachedExpirationTime;
-      document.cookie = `${cookieName}-expiration_time=${expiry}${domain}${path}${expires}${secure}`;
+      let name = `${cookieName}-expiration_time`;
+      document.cookie = this._createCookieString(name, expiry, expires);
     }
   },
 
@@ -241,6 +235,14 @@ export default BaseStore.extend({
     } else {
       return RSVP.resolve();
     }
+  },
+
+  _createCookieString(name, value, expires) {
+    let cookieDomain = this.get('cookieDomain');
+    let domain = isEmpty(cookieDomain) ? '' : `;domain=${cookieDomain}`;
+    let path = '; path=/';
+    let secure = this._secureCookies ? ';secure' : '';
+    return `${name}=${value}${domain}${path}${expires}${secure}`;
   },
 
   rewriteCookie() {
