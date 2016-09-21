@@ -4,18 +4,22 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 
-const { run: { next } } = Ember;
+const { run, run: { next } } = Ember;
 
 export default function(options) {
   let store;
   let createStore;
   let renew;
   let sync;
+  let spyRewriteCookieMethod;
+  let unspyRewriteCookieMethod;
 
   beforeEach(() => {
     createStore = options.createStore;
     renew = options.renew;
     sync = options.sync;
+    spyRewriteCookieMethod = options.spyRewriteCookieMethod;
+    unspyRewriteCookieMethod = options.unspyRewriteCookieMethod;
     store = createStore();
   });
 
@@ -25,17 +29,26 @@ export default function(options) {
 
   describe('#persist', () => {
     it('respects the configured cookieName', () => {
-      store = createStore({ cookieName: 'test-session' });
+      let store;
+      run(() => {
+        store = createStore({ cookieName: 'test-session' });
+      });
       store.persist({ key: 'value' });
 
       expect(document.cookie).to.contain('test-session=%7B%22key%22%3A%22value%22%7D');
     });
 
     it('respects the configured cookieDomain', () => {
-      store = createStore({ cookieDomain: 'example.com' });
-      store.persist({ key: 'value' });
+      let store;
+      run(() => {
+        store = createStore({
+          cookieName: 'session-cookie-domain',
+          cookieDomain: 'example.com'
+        });
+        store.persist({ key: 'value' });
+      });
 
-      expect(document.cookie).to.not.contain('test-session=%7B%22key%22%3A%22value%22%7D');
+      expect(document.cookie).to.not.contain('session-cookie-domain=%7B%22key%22%3A%22value%22%7D');
     });
   });
 
@@ -44,14 +57,14 @@ export default function(options) {
       store = createStore({
         cookieName:           'test-session',
         cookieExpirationTime: 60,
-        expires:              new Date().getTime() + store.cookieExpirationTime * 1000
+        expires:              new Date().getTime() + store.get('cookieExpirationTime') * 1000
       });
       store.persist({ key: 'value' });
       renew(store);
     });
 
     it('stores the expiration time in a cookie named "test-session-expiration_time"', () => {
-      expect(document.cookie).to.contain(`${store.cookieName}-expiration_time=60`);
+      expect(document.cookie).to.contain('test-session-expiration_time=60');
     });
   });
 
@@ -94,6 +107,50 @@ export default function(options) {
 
       next(() => {
         expect(triggered).to.be.false;
+        done();
+      });
+    });
+  });
+
+  describe('rewrite behavior', () => {
+    let store;
+    let cookieSpy;
+
+    beforeEach(() => {
+      store = createStore({
+        cookieName: 'session-foo',
+        cookieExpirationTime: 1000
+      });
+      cookieSpy = spyRewriteCookieMethod(store);
+    });
+
+    afterEach(() => {
+      cookieSpy.restore();
+    });
+
+    it('deletes the old cookie and writes a new one when name property changes', (done) => {
+      run(() => {
+        store.persist({ key: 'value' });
+        store.set('cookieName', 'session-bar');
+      });
+
+      next(() => {
+        expect(document.cookie).to.not.contain('session-foo=');
+        expect(document.cookie).to.not.contain('session-foo-expiration_time=');
+        expect(document.cookie).to.contain('session-bar=%7B%22key%22%3A%22value%22%7D');
+        expect(document.cookie).to.contain('session-bar-expiration_time=');
+        done();
+      });
+    });
+
+    it('only rewrites the cookie once per run loop when multiple properties are changed', (done) => {
+      run(() => {
+        store.set('cookieName', 'session-bar');
+        store.set('cookieExpirationTime', 10000);
+      });
+
+      next(() => {
+        expect(cookieSpy).to.have.been.called.once;
         done();
       });
     });
