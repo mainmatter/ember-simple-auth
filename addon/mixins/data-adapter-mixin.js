@@ -1,6 +1,8 @@
 import Ember from 'ember';
+import RESTAdapter from 'ember-data/adapters/rest';
 
 const { inject: { service }, Mixin, assert, isPresent } = Ember;
+const RESTAdapterPrototype = RESTAdapter.proto();
 
 /**
   __This mixin can be used to make Ember Data adapters authorize all outgoing
@@ -30,7 +32,7 @@ const { inject: { service }, Mixin, assert, isPresent } = Ember;
   @public
 */
 
-export default Mixin.create({
+let config = {
   /**
     The session service.
 
@@ -54,39 +56,6 @@ export default Mixin.create({
     @public
   */
   authorizer: null,
-
-  /**
-    Defines a `beforeSend` hook (see http://api.jquery.com/jQuery.ajax/) that
-    injects a request header containing the authorization data as constructed
-    by the {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}}
-    (see
-    {{#crossLink "SessionService/authorize:method"}}{{/crossLink}}). The
-    specific header name and contents depend on the actual auhorizer that is
-    used.
-
-    This method applies for Ember Data 2.6 and older. See `headersForRequest`
-    for newer versions of Ember Data.
-
-    @method ajaxOptions
-    @protected
-  */
-  ajaxOptions() {
-    const authorizer = this.get('authorizer');
-    assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", isPresent(authorizer));
-
-    let hash = this._super(...arguments);
-    let { beforeSend } = hash;
-
-    hash.beforeSend = (xhr) => {
-      this.get('session').authorize(authorizer, (headerName, headerValue) => {
-        xhr.setRequestHeader(headerName, headerValue);
-      });
-      if (beforeSend) {
-        beforeSend(xhr);
-      }
-    };
-    return hash;
-  },
 
   /**
     Adds request headers containing the authorization data as constructed
@@ -125,4 +94,41 @@ export default Mixin.create({
     }
     return this._super(...arguments);
   }
-});
+};
+
+if (!RESTAdapterPrototype.headersForRequest) {
+  /**
+    Defines a `beforeSend` hook (see http://api.jquery.com/jQuery.ajax/) that
+    injects a request header containing the authorization data as constructed
+    by the {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}}
+    (see
+    {{#crossLink "SessionService/authorize:method"}}{{/crossLink}}). The
+    specific header name and contents depend on the actual auhorizer that is
+    used.
+
+    This method applies for Ember Data 2.6 and older. See `headersForRequest`
+    for newer versions of Ember Data.
+
+    @method ajaxOptions
+    @protected
+  */
+  config.ajaxOptions = function ajaxOptions() {
+    const authorizer = this.get('authorizer');
+    assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", isPresent(authorizer));
+
+    let hash = this._super(...arguments);
+    let { beforeSend } = hash;
+
+    hash.beforeSend = (xhr) => {
+      this.get('session').authorize(authorizer, (headerName, headerValue) => {
+        xhr.setRequestHeader(headerName, headerValue);
+      });
+      if (beforeSend) {
+        beforeSend(xhr);
+      }
+    };
+    return hash;
+  };
+}
+
+export default Mixin.create(config);
