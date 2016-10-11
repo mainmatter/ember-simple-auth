@@ -1,8 +1,11 @@
+import Ember from 'ember';
 import { describe, beforeEach, afterEach } from 'mocha';
 import Adaptive from 'ember-simple-auth/session-stores/adaptive';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
+
+const { assign } = Ember;
 
 describe('AdaptiveStore', () => {
   let store;
@@ -13,7 +16,13 @@ describe('AdaptiveStore', () => {
 
   describe('when localStorage is available', () => {
     beforeEach(() => {
-      store = Adaptive.create({ _isLocalStorageAvailable: true });
+      store = Adaptive.extend({
+        _createStore(storeType, options) {
+          return this._super(storeType, assign({}, options, { _isFastBoot: false }));
+        }
+      }).create({
+        _isLocalStorageAvailable: true
+      });
     });
 
     itBehavesLikeAStore({

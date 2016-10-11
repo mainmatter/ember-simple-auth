@@ -6,7 +6,9 @@ describe('LocalStorageStore', () => {
   let store;
 
   beforeEach(() => {
-    store = LocalStorage.create();
+    store = LocalStorage.create({
+      _isFastBoot: false
+    });
   });
 
   afterEach(() => {

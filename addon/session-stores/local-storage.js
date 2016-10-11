@@ -1,9 +1,10 @@
 /* global localStorage */
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, $: jQuery } = Ember;
+const { RSVP, $: jQuery, computed } = Ember;
 
 /**
   Session store that persists data in the browser's `localStorage`.
@@ -20,6 +21,12 @@ const { RSVP, $: jQuery } = Ember;
   @public
 */
 export default BaseStore.extend({
+  _isFastBoot: computed(function() {
+    const fastboot = getOwner(this).lookup('service:fastboot');
+
+    return fastboot ? fastboot.get('isFastBoot') : false;
+  }),
+
   /**
     The `localStorage` key the store persists data in.
 
@@ -33,7 +40,9 @@ export default BaseStore.extend({
   init() {
     this._super(...arguments);
 
-    this._bindToStorageEvents();
+    if (!this.get('_isFastBoot')) {
+      this._bindToStorageEvents();
+    }
   },
 
   /**
