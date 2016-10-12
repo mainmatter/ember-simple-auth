@@ -5,7 +5,8 @@ import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
 
-const { assign } = Ember;
+const { assign: emberAssign, merge } = Ember;
+const assign = emberAssign || merge;
 
 describe('AdaptiveStore', () => {
   let store;
@@ -18,7 +19,7 @@ describe('AdaptiveStore', () => {
     beforeEach(() => {
       store = Adaptive.extend({
         _createStore(storeType, options) {
-          return this._super(storeType, assign({}, options, { _isFastBoot: false }));
+          return this._super(storeType, assign(options, { _isFastBoot: false }));
         }
       }).create({
         _isLocalStorageAvailable: true
