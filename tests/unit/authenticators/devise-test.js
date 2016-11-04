@@ -3,11 +3,10 @@ import Ember from 'ember';
 import { it } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
 import Pretender from 'pretender';
 import Devise from 'ember-simple-auth/authenticators/devise';
 
-const { $: jQuery, run: { next }, tryInvoke } = Ember;
+const { tryInvoke } = Ember;
 
 describe('DeviseAuthenticator', () => {
   let server;
@@ -47,26 +46,18 @@ describe('DeviseAuthenticator', () => {
 
   describe('#authenticate', () => {
     beforeEach(() => {
-      sinon.spy(jQuery, 'ajax');
+      server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!", "email": "email@address.com" }']);
     });
 
-    afterEach(() => {
-      jQuery.ajax.restore();
-    });
+    it('sends an AJAX request to the sign in endpoint', () => {
+      return authenticator.authenticate('identification', 'password').then(() => {
+        let [request] = server.handledRequests;
 
-    it('sends an AJAX request to the sign in endpoint', (done) => {
-      authenticator.authenticate('identification', 'password');
-
-      next(() => {
-        let [args] = jQuery.ajax.getCall(0).args;
-        delete args.beforeSend;
-        expect(args).to.eql({
-          url:      '/users/sign_in',
-          type:     'POST',
-          data:     { user: { email: 'identification', password: 'password' } },
-          dataType: 'json'
-        });
-        done();
+        expect(request.url).to.eql('/users/sign_in');
+        expect(request.method).to.eql('POST');
+        expect(JSON.parse(request.requestBody)).to.eql({ user: { email: 'identification', password: 'password' } });
+        expect(request.requestHeaders['content-type']).to.eql('application/json');
+        expect(request.requestHeaders.accept).to.eql('application/json');
       });
     });
 
@@ -107,10 +98,9 @@ describe('DeviseAuthenticator', () => {
         server.post('/users/sign_in', () => [400, { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' }, '{ "error": "invalid_grant" }']);
       });
 
-      it('rejects with the correct error', (done) => {
-        authenticator.authenticate('email@address.com', 'password').catch((error) => {
+      it('rejects with the correct error', () => {
+        return authenticator.authenticate('email@address.com', 'password').catch((error) => {
           expect(error).to.eql({ error: 'invalid_grant' });
-          done();
         });
       });
 
@@ -119,32 +109,28 @@ describe('DeviseAuthenticator', () => {
           authenticator.set('rejectWithXhr', true);
         });
 
-        it('rejects with xhr object', () => {
-          return authenticator.authenticate('username', 'password').catch((error) => {
-            expect(error.responseJSON).to.eql({ error: 'invalid_grant' });
-          });
-        });
-
-        it('provides access to custom headers', () => {
-          return authenticator.authenticate('username', 'password').catch((error) => {
-            expect(error.getResponseHeader('X-Custom-Context')).to.eql('foobar');
+        it('rejects with the response', () => {
+          return authenticator.authenticate('username', 'password').catch((response) => {
+            expect(response.ok).to.be.false;
           });
         });
       });
     });
 
-    it('can customize the ajax request', (done) => {
+    it('can customize the ajax request', () => {
+      server.put('/login', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!", "email": "email@address.com" }']);
+
       authenticator = Devise.extend({
         makeRequest(config) {
-          return this._super(config, { contentType: 'application/json' });
+          return this._super(config, { method: 'PUT', url: '/login' });
         }
       }).create();
-      authenticator.authenticate('identification', 'password');
 
-      next(() => {
-        let [args] = jQuery.ajax.getCall(0).args;
-        expect(args.contentType).to.eql('application/json');
-        done();
+      return authenticator.authenticate('identification', 'password').then(() => {
+        let [request] = server.handledRequests;
+
+        expect(request.url).to.eql('/login');
+        expect(request.method).to.eql('PUT');
       });
     });
 

@@ -1,8 +1,11 @@
 import Ember from 'ember';
 import BaseAuthenticator from './base';
+import fetch from 'ember-network/fetch';
 
-const { RSVP: { Promise }, isEmpty, run, $: jQuery, assign: emberAssign, merge } = Ember;
+const { RSVP: { Promise }, isEmpty, run, assign: emberAssign, merge } = Ember;
 const assign = emberAssign || merge;
+
+const JSON_CONTENT_TYPE = 'application/json';
 
 /**
   Authenticator that works with the Ruby gem
@@ -118,18 +121,25 @@ export default BaseAuthenticator.extend({
       data[resourceName] = { password };
       data[resourceName][identificationAttributeName] = identification;
 
-      return this.makeRequest(data).then(
-        (response) => {
-          if (this._validate(response)) {
-            const resourceName = this.get('resourceName');
-            const _response = response[resourceName] ? response[resourceName] : response;
-            run(null, resolve, _response);
+      this.makeRequest(data).then((response) => {
+        if (response.ok) {
+          response.json().then((json) => {
+            if (this._validate(json)) {
+              const resourceName = this.get('resourceName');
+              const _json = json[resourceName] ? json[resourceName] : json;
+              run(null, resolve, _json);
+            } else {
+              run(null, reject, `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`);
+            }
+          });
+        } else {
+          if (useXhr) {
+            run(null, reject, response);
           } else {
-            run(null, reject, `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`);
+            response.json().then((json) => run(null, reject, json));
           }
-        },
-        (xhr) => run(null, reject, useXhr ? xhr : (xhr.responseJSON || xhr.responseText))
-      );
+        }
+      }).catch((error) => run(null, reject, error));
     });
   },
 
@@ -149,25 +159,25 @@ export default BaseAuthenticator.extend({
 
     @method makeRequest
     @param {Object} data The request data
-    @param {Object} options Ajax configuration object merged into argument of `$.ajax`
-    @return {jQuery.Deferred} A promise like jQuery.Deferred as returned by `$.ajax`
+    @param {Object} options request options that are passed to `fetch`
+    @return {Promise} The promise returned by `fetch`
     @protected
   */
-  makeRequest(data, options) {
-    const serverTokenEndpoint = this.get('serverTokenEndpoint');
+  makeRequest(data, options = {}) {
+    let url = options.url || this.get('serverTokenEndpoint');
     let requestOptions = {};
+    let body = JSON.stringify(data);
     assign(requestOptions, {
-      url:      serverTokenEndpoint,
-      type:     'POST',
-      dataType: 'json',
-      data,
-      beforeSend(xhr, settings) {
-        xhr.setRequestHeader('Accept', settings.accepts.json);
+      body,
+      method:   'POST',
+      headers:  {
+        'accept':       JSON_CONTENT_TYPE,
+        'content-type': JSON_CONTENT_TYPE
       }
     });
     assign(requestOptions, options || {});
 
-    return jQuery.ajax(requestOptions);
+    return fetch(url, requestOptions);
   },
 
   _validate(data) {
