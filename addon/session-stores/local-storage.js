@@ -15,6 +15,11 @@ const { RSVP, $: jQuery, computed } = Ember;
   the {{#crossLink "CookieStore"}}{{/crossLink}} when `localStorage` is not
   available.__
 
+  __This session store does not work with FastBoot. In order to use Ember
+  Simple Auth with FastBoot, configure the
+  {{#crossLink "CookieStore"}}{{/crossLink}} as the application's session
+  store.__
+
   @class LocalStorageStore
   @module ember-simple-auth/session-stores/local-storage
   @extends BaseStore

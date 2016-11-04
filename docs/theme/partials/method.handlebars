@@ -19,7 +19,7 @@
   </div>
   <div class="panel-body">
     {{#if deprecationMessage}}
-      <p><span class="label label-warning">Deprecated:</span>Use {{#crossLink deprecationMessage}}{{/crossLink}} instead</p>
+      <p><span class="label label-warning label-deprecated">Deprecated:</span>Use {{#crossLink deprecationMessage}}{{/crossLink}} instead</p>
     {{/if}}
     {{#if overwritten_from}}
       <p><span class="label label-default">Overrides:</span> <a href="{{overwritten_from/class}}.html#method_{{overwritten_from/name}}">`{{name}}` of  `{{overwritten_from/class}}`</a>.</p>

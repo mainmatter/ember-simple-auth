@@ -28,13 +28,15 @@ const { RSVP, computed, inject: { service }, run: { next, cancel, later }, isEmp
   });
   ```
 
-  __In order to keep multiple tabs/windows of an application in sync, this
-  store has to periodically (every 500ms) check the cookie for changes__ as
-  there are no events for cookie changes that the store could subscribe to. If
-  the application does not need to make sure all session data is deleted when
-  the browser is closed, the
-  {{#crossLink "LocalStorageStore"}}`localStorage` session store{{/crossLink}}
-  should be used.
+  __Applications that use FastBoot must use this session store by defining the
+  application session store like this:__
+
+  ```js
+  // app/session-stores/application.js
+  import CookieStore from 'ember-simple-auth/session-stores/cookie';
+
+  export default CookieStore.extend();
+  ```
 
   @class CookieStore
   @module ember-simple-auth/session-stores/cookie
@@ -46,7 +48,7 @@ export default BaseStore.extend({
     The domain to use for the cookie, e.g., "example.com", ".example.com"
     (which includes all subdomains) or "subdomain.example.com". If not
     explicitly set, the cookie domain defaults to the domain the session was
-    authneticated on.
+    authenticated on.
 
     @property cookieDomain
     @type String

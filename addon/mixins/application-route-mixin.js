@@ -23,7 +23,7 @@ const { inject, Mixin, A, run: { bind }, testing, computed } = Ember;
       applicationRoute.transitionTo('index');
     });
     session.on('invalidationSucceeded', function() {
-      window.location.reload();
+      applicationRoute.transitionTo('bye');
     });
   };
 

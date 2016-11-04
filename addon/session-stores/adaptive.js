@@ -16,6 +16,11 @@ const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
   __This is the default store that Ember Simple Auth will use when the
   application doesn't define a custom store.__
 
+  __This session store does not work with FastBoot. In order to use Ember
+  Simple Auth with FastBoot, configure the
+  {{#crossLink "CookieStore"}}{{/crossLink}} as the application's session
+  store.__
+
   @class AdaptiveStore
   @module ember-simple-auth/session-stores/adaptive
   @extends BaseStore
@@ -46,7 +51,7 @@ export default Base.extend({
     The domain to use for the cookie if `localStorage` is not available, e.g.,
     "example.com", ".example.com" (which includes all subdomains) or
     "subdomain.example.com". If not explicitly set, the cookie domain defaults
-    to the domain the session was authneticated on.
+    to the domain the session was authenticated on.
 
     @property cookieDomain
     @type String
