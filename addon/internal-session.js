@@ -51,7 +51,7 @@ export default ObjectProxy.extend(Evented, {
     assert('Session#invalidate requires the session to be authenticated!', this.get('isAuthenticated'));
 
     let authenticator = this._lookupAuthenticator(this.authenticator);
-    return authenticator.invalidate(this.content.authenticated).then(() => {
+    return authenticator.invalidate(this.content.authenticated, ...arguments).then(() => {
       authenticator.off('sessionDataUpdated');
       this._busy = false;
       return this._clear(true);
