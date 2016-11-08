@@ -58,7 +58,7 @@ describe('Basic tests', function() {
   it('invalidate removes session cookies', function() {
     return request({ url: url + '/invalidate', jar: true })
       .then(function(response) {
-        expect(response.req.path).to.equal('/invalidate');
+        expect(response.req.path).to.equal('/');
         expect(response.headers['set-cookie']).to.deep.equal(['ember_simple_auth-session=%7B%22authenticated%22%3A%7B%7D%7D; path=/'])
       });
   });
