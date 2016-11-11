@@ -385,7 +385,17 @@ describe('InternalSession', () => {
       return session.authenticate('authenticator');
     });
 
-    describe('when the authenticator resolves invaldiation', () => {
+    describe('when the authenticator resolves invalidation with params', () => {
+      it('when some data is sent with invalidate', () => {
+        let invalidateSession = sinon.spy(authenticator, 'invalidate');
+        let param = { some: 'random data' };
+        session.invalidate(param);
+        invalidateSession.restore();
+        sinon.assert.calledWith(invalidateSession, session.get('authenticated') , param);
+      });
+    });
+
+    describe('when the authenticator resolves invalidation', () => {
       beforeEach(() => {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.resolve());
       });
