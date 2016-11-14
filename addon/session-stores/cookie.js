@@ -3,7 +3,21 @@ import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import getOwner from 'ember-getowner-polyfill';
 
-const { RSVP, computed, inject: { service }, run: { next, cancel, later }, isEmpty, typeOf, testing } = Ember;
+const { RSVP, computed, inject: { service }, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A, assign } = Ember;
+
+const persistingProperty = function(beforeSet = K) {
+  return computed({
+    get(key) {
+      return this.get(`_${key}`);
+    },
+    set(key, value) {
+      beforeSet.apply(this);
+      this.set(`_${key}`, value);
+      scheduleOnce('actions', this, this.rewriteCookie);
+      return value;
+    }
+  });
+};
 
 /**
   Session store that persists data in a cookie.
@@ -55,7 +69,8 @@ export default BaseStore.extend({
     @default null
     @public
   */
-  cookieDomain: null,
+  _cookieDomain: null,
+  cookieDomain: persistingProperty(),
 
   /**
     The name of the cookie.
@@ -65,7 +80,10 @@ export default BaseStore.extend({
     @default ember_simple_auth-session
     @public
   */
-  cookieName: 'ember_simple_auth-session',
+  _cookieName: 'ember_simple_auth-session',
+  cookieName: persistingProperty(function() {
+    this._oldCookieName = this._cookieName;
+  }),
 
   /**
     The expiration time for the cookie in seconds. A value of `null` will make
@@ -77,7 +95,8 @@ export default BaseStore.extend({
     @type Integer
     @public
   */
-  cookieExpirationTime: null,
+  _cookieExpirationTime: null,
+  cookieExpirationTime: persistingProperty(),
 
   _cookies: service('cookies'),
 
@@ -146,7 +165,7 @@ export default BaseStore.extend({
     @public
   */
   restore() {
-    let data = this._read(this.cookieName);
+    let data = this._read(this.get('cookieName'));
     if (isEmpty(data)) {
       return RSVP.resolve({});
     } else {
@@ -162,7 +181,7 @@ export default BaseStore.extend({
     @public
   */
   clear() {
-    this._write(null, 0);
+    this._write('', 0);
     this._lastData = {};
     return RSVP.resolve();
   },
@@ -172,23 +191,30 @@ export default BaseStore.extend({
   },
 
   _calculateExpirationTime() {
-    let cachedExpirationTime = this._read(`${this.cookieName}-expiration_time`);
+    let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
     cachedExpirationTime     = !!cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
-    return !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : cachedExpirationTime;
+    return this.get('cookieExpirationTime') ? new Date().getTime() + this.get('cookieExpirationTime') * 1000 : cachedExpirationTime;
   },
 
   _write(value, expiration) {
     let cookieOptions = {
-      domain:  this.cookieDomain,
+      domain:  this.get('cookieDomain'),
       expires: isEmpty(expiration) ? null : new Date(expiration),
       path:    '/',
       secure:  this.get('_secureCookies')
     };
-    this.get('_cookies').write(this.cookieName, value, cookieOptions);
+    if (this._oldCookieName) {
+      A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach((oldCookie) => {
+        let expires     = new Date(0);
+        this.get('_cookies').write(oldCookie, null, assign({}, cookieOptions, { expires }));
+      });
+      delete this._oldCookieName;
+    }
+    this.get('_cookies').write(this.get('cookieName'), value, cookieOptions);
     if (!isEmpty(expiration)) {
-      let expirationCookieName = `${this.cookieName}-expiration_time`;
+      let expirationCookieName = `${this.get('cookieName')}-expiration_time`;
       let cachedExpirationTime = this.get('_cookies').read(expirationCookieName);
-      this.get('_cookies').write(expirationCookieName, this.cookieExpirationTime || cachedExpirationTime, cookieOptions);
+      this.get('_cookies').write(expirationCookieName, this.get('cookieExpirationTime') || cachedExpirationTime, cookieOptions);
     }
   },
 
@@ -224,6 +250,14 @@ export default BaseStore.extend({
       return this._renew();
     } else {
       return RSVP.resolve();
+    }
+  },
+
+  rewriteCookie() {
+    const data = this._read(this._oldCookieName);
+    if (isPresent(data)) {
+      const expiration = this._calculateExpirationTime();
+      this._write(data, expiration);
     }
   }
 });

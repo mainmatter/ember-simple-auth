@@ -75,12 +75,12 @@
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.6",
+    "ember-cli-import-polyfill": "^0.2.0",
     "ember-cli-is-package-missing": "^1.0.0",
     "ember-cookies": "0.0.9",
     "ember-getowner-polyfill": "1.0.1",
-    "silent-error": "^1.0.0",
     "ember-network": "^0.3.0",
-    "ember-cli-import-polyfill": "^0.2.0"
+    "silent-error": "^1.0.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

@@ -1,11 +1,13 @@
 import Ember from 'ember';
 import { describe, beforeEach, afterEach } from 'mocha';
+import { it } from 'ember-mocha';
+import { expect } from 'chai';
+import sinon from 'sinon';
 import Adaptive from 'ember-simple-auth/session-stores/adaptive';
 import itBehavesLikeAStore from './shared/store-behavior';
-import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
 
-const { assign: emberAssign, merge } = Ember;
+const { assign: emberAssign, merge, run } = Ember;
 const assign = emberAssign || merge;
 
 describe('AdaptiveStore', () => {
@@ -34,10 +36,18 @@ describe('AdaptiveStore', () => {
   });
 
   describe('when localStorage is not available', () => {
+    let cookieService;
     beforeEach(() => {
-      store = Adaptive.create({ _isLocalStorageAvailable: false });
-      store.set('_store._cookies', FakeCookieService.create());
-      store.set('_store._fastboot', { isFastBoot: false });
+      cookieService = FakeCookieService.create();
+      sinon.spy(cookieService, 'read');
+      sinon.spy(cookieService, 'write');
+      store = Adaptive.extend({
+        _createStore(storeType, options) {
+          return this._super(storeType, assign({}, options, { _isFastBoot: false, _cookies: cookieService }));
+        }
+      }).create({
+        _isLocalStorageAvailable: false
+      });
     });
 
     itBehavesLikeAStore({
@@ -46,20 +56,26 @@ describe('AdaptiveStore', () => {
       }
     });
 
-    itBehavesLikeACookieStore({
-      createStore(cookiesService, options = {}) {
-        options._isLocalStorageAvailable = false;
-        const store = Adaptive.create(options);
-        store.set('_store._cookies', cookiesService);
-        store.set('_store._fastboot', { isFastBoot: false });
-        return store;
-      },
-      renew(store, data) {
-        store.get('_store')._renew(data);
-      },
-      sync(store) {
-        store.get('_store')._syncData();
-      }
+    it('persists to cookie when cookie attributes change', () => {
+      let now = new Date();
+
+      run(() => {
+        store.persist({ key: 'value' });
+        store.setProperties({
+          cookieName:           'test:session',
+          cookieExpirationTime: 60
+        });
+      });
+
+      expect(cookieService.write).to.have.been.calledWith(
+        'test:session-expiration_time',
+        60,
+        sinon.match(function({ domain, expires, path, secure }) {
+          return domain === null &&
+            path === '/' &&
+            secure === false && expires >= new Date(now.getTime() + 60 * 1000);
+        })
+      );
     });
   });
 });
