@@ -1,5 +1,6 @@
 /* global localStorage */
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import Base from 'ember-simple-auth/session-stores/base';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
@@ -98,10 +99,12 @@ export default Base.extend({
     let store;
     if (this.get('_isLocalStorageAvailable')) {
       const options = { key: this.get('localStorageKey') };
+      options._isFastBoot = false;
       store = this._createStore(LocalStorage, options);
     } else {
       const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime');
       options._fastboot = getOwner(this).lookup('service:fastboot');
+      console.log(options);
       store = this._createStore(Cookie, options);
     }
     this.set('_store', store);
