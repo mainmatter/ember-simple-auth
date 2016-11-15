@@ -151,10 +151,12 @@ export default function(options) {
       cookieService = store.get('_cookies') || store.get('_store._cookies');
       cookieSpy = spyRewriteCookieMethod(store);
       sinon.spy(cookieService, 'write');
+      sinon.spy(cookieService, 'clear');
     });
 
     afterEach(() => {
       cookieService.write.restore();
+      cookieService.clear.restore();
       cookieSpy.restore();
     });
 
@@ -164,27 +166,9 @@ export default function(options) {
         store.set('cookieName', 'session-bar');
       });
 
-      expect(cookieService.write).to.have.been.calledWith(
-        'session-foo',
-        null,
-        sinon.match(function({ domain, expires, path, secure }) {
-          return domain === null &&
-            path === '/' &&
-            secure === false &&
-            expires.getTime() === 0;
-        })
-      );
+      expect(cookieService.clear).to.have.been.calledWith('session-foo');
 
-      expect(cookieService.write).to.have.been.calledWith(
-        'session-foo-expiration_time',
-        null,
-        sinon.match(function({ domain, expires, path, secure }) {
-          return domain === null &&
-            path === '/' &&
-            secure === false &&
-            expires.getTime() === 0;
-        })
-      );
+      expect(cookieService.clear).to.have.been.calledWith('session-foo-expiration_time');
 
       expect(cookieService.write).to.have.been.calledWith(
         'session-bar',

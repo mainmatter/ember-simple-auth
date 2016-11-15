@@ -25,5 +25,10 @@ export default EmberObject.extend({
     } else {
       this._content[name] = encodeURIComponent(value);
     }
+  },
+
+  clear(name) {
+    let expires     = new Date(0);
+    this.write(name, null, { expires });
   }
 });

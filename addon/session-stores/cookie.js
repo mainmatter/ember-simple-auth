@@ -3,7 +3,7 @@ import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import getOwner from 'ember-getowner-polyfill';
 
-const { RSVP, computed, inject: { service }, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A, assign } = Ember;
+const { RSVP, computed, inject: { service }, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A } = Ember;
 
 const persistingProperty = function(beforeSet = K) {
   return computed({
@@ -205,8 +205,7 @@ export default BaseStore.extend({
     };
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach((oldCookie) => {
-        let expires     = new Date(0);
-        this.get('_cookies').write(oldCookie, null, assign({}, cookieOptions, { expires }));
+        this.get('_cookies').clear(oldCookie);
       });
       delete this._oldCookieName;
     }
