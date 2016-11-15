@@ -63,7 +63,6 @@ export default function(options) {
         JSON.stringify({ key: 'value' }),
         { domain: 'example.com', expires: null, path: '/', secure: false }
       );
-      expect(cookieService.read('session-cookie-domain')).to.not.contain('session-cookie-domain=%7B%22key%22%3A%22value%22%7D');
     });
   });
 
