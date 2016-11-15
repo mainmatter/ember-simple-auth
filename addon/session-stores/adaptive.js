@@ -101,6 +101,7 @@ export default Base.extend({
       store = this._createStore(LocalStorage, options);
     } else {
       const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime');
+      options._fastboot = getOwner(this).lookup('service:fastboot');
       store = this._createStore(Cookie, options);
     }
     this.set('_store', store);
