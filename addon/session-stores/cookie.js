@@ -82,7 +82,6 @@ export default BaseStore.extend({
   _cookies: service('cookies'),
 
   _fastboot: computed(function() {
-    console.log('looking up store…');
     let owner = getOwner(this);
 
     return owner && owner.lookup('service:fastboot');

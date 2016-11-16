@@ -35,9 +35,17 @@ describe('AdaptiveStore', () => {
 
   describe('when localStorage is not available', () => {
     beforeEach(() => {
-      store = Adaptive.create({ _isLocalStorageAvailable: false });
-      store.set('_store._cookies', FakeCookieService.create());
-      store.set('_store._fastboot', { isFastBoot: false });
+      let cookieService = FakeCookieService.create();
+      store = Adaptive.extend({
+        _cookies: cookieService,
+        _fastboot: { isFastBoot: false },
+
+        _createStore(storeType, options) {
+          return this._super(storeType, assign({}, options, { _isFastBoot: false }));
+        }
+      }).create({
+        _isLocalStorageAvailable: false
+      });
     });
 
     itBehavesLikeAStore({
@@ -47,12 +55,16 @@ describe('AdaptiveStore', () => {
     });
 
     itBehavesLikeACookieStore({
-      createStore(cookiesService, options = {}) {
+      createStore(cookieService, options = {}) {
         options._isLocalStorageAvailable = false;
-        const store = Adaptive.create(options);
-        store.set('_store._cookies', cookiesService);
-        store.set('_store._fastboot', { isFastBoot: false });
-        return store;
+        return Adaptive.extend({
+          _cookies: cookieService,
+          _fastboot: { isFastBoot: false },
+
+          _createStore(storeType, options) {
+            return this._super(storeType, assign({}, options, { _isFastBoot: false }));
+          }
+        }).create(options);
       },
       renew(store, data) {
         store.get('_store')._renew(data);

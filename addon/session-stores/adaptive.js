@@ -5,7 +5,7 @@ import Base from 'ember-simple-auth/session-stores/base';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
 
-const { computed } = Ember;
+const { computed, inject: { service } } = Ember;
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 
@@ -83,6 +83,14 @@ export default Base.extend({
   */
   cookieExpirationTime: null,
 
+  _cookies: service('cookies'),
+
+  _fastboot: computed(function() {
+    let owner = getOwner(this);
+
+    return owner && owner.lookup('service:fastboot');
+  }),
+
   _isLocalStorageAvailable: computed(function() {
     try {
       localStorage.setItem(LOCAL_STORAGE_TEST_KEY, true);
@@ -103,8 +111,8 @@ export default Base.extend({
       store = this._createStore(LocalStorage, options);
     } else {
       const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime');
-      options._fastboot = getOwner(this).lookup('service:fastboot');
-      console.log(options);
+      options._fastboot = this.get('_fastboot');
+      options._cookies = this.get('_cookies');
       store = this._createStore(Cookie, options);
     }
     this.set('_store', store);
