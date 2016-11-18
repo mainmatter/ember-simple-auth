@@ -7,7 +7,7 @@ var AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 var request = require('request');
 var request = RSVP.denodeify(request);
 
-describe('Basic tests', function() {
+describe('Integration tests', function() {
   this.timeout(600000);
 
   var app;
@@ -15,7 +15,7 @@ describe('Basic tests', function() {
 
   before(function() {
     app = new AddonTestApp();
-    return app.create('fastboot-app', { fixturesPath: 'node-tests/fixtures/' })
+    return app.create('fastboot-ready-app', { fixturesPath: 'node-tests/fixtures/' })
       .then(addDependencies)
       .then(function() {
         return app.startServer({

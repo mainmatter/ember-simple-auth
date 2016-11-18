@@ -3,6 +3,4 @@ import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mi
 
 const { Route } = Ember;
 
-export default Route.extend(ApplicationRouteMixin, {
-
-});
+export default Route.extend(ApplicationRouteMixin);
