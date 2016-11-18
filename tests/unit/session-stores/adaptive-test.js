@@ -43,10 +43,12 @@ describe('AdaptiveStore', () => {
       sinon.spy(cookieService, 'write');
       store = Adaptive.extend({
         _createStore(storeType, options) {
-          return this._super(storeType, assign({}, options, { _isFastBoot: false, _cookies: cookieService }));
+          // return this._super(storeType, assign({}, options, { _isFastBoot: false, _cookies: cookieService }));
+          return this._super(storeType, assign({}, options, { _isFastBoot: false }));
         }
       }).create({
-        _isLocalStorageAvailable: false
+        _isLocalStorageAvailable: false,
+        _cookies: cookieService
       });
     });
 

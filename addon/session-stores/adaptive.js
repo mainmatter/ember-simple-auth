@@ -103,6 +103,11 @@ export default Base.extend({
   cookieExpirationTime: proxyToInternalStore(),
 
   _cookies: service('cookies'),
+  // _cookies: computed(function() {
+  // let owner = getOwner(this);
+
+  // return owner.lookup('service:cookies');
+  // }),
 
   _fastboot: computed(function() {
     let owner = getOwner(this);
