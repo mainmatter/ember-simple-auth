@@ -1,14 +1,14 @@
 {
   "name": "ember-simple-auth",
   "dependencies": {
-    "bootstrap": "~3.3.7",
-    "ember": "~2.7.0",
-    "mocha": "~2.2.4",
-    "chai": "~2.3.0",
-    "ember-mocha-adapter": "~0.3.1",
-    "ember-cli-shims": "0.1.1",
-    "sinonjs": "~1.17.1",
     "base64": "~1.0.0",
-    "pretender": "~1.1.0"
+    "bootstrap": "~3.3.7",
+    "chai": "~2.3.0",
+    "ember": "~2.7.0",
+    "ember-cli-shims": "0.1.1",
+    "ember-mocha-adapter": "~0.3.1",
+    "mocha": "~2.2.4",
+    "pretender": "~1.1.0",
+    "sinonjs": "~1.17.1"
   }
 }
