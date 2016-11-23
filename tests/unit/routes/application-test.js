@@ -1,6 +1,7 @@
 /* jshint expr:true */
 import { expect } from 'chai';
-import { describeModule, it } from 'ember-mocha';
+import { it } from 'mocha';
+import { describeModule } from 'ember-mocha';
 
 describeModule('route:application', 'ApplicationRoute', {
   needs: ['service:session', 'router:main']

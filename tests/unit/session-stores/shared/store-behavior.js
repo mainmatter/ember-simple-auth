@@ -1,7 +1,6 @@
 /* jshint expr:true */
 import Ember from 'ember';
-import { it } from 'ember-mocha';
-import { describe, beforeEach } from 'mocha';
+import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 
 const { run: { next }, K } = Ember;
