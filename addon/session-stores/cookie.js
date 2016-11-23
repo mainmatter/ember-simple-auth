@@ -108,10 +108,10 @@ export default BaseStore.extend({
 
   _secureCookies: computed(function() {
     if (this.get('_fastboot.isFastBoot')) {
-      return this.get('_fastboot.request.host').indexOf('https:') === 0;
-    } else {
-      return window.location.protocol === 'https:';
+      return this.get('_fastboot.request.protocol') === 'https';
     }
+
+    return window.location.protocol === 'https:';
   }).volatile(),
 
   _syncDataTimeout: null,
