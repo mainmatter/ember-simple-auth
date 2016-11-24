@@ -1,5 +1,4 @@
-import { describe, beforeEach, afterEach } from 'mocha';
-import { it } from 'ember-mocha';
+import { describe, beforeEach, afterEach, it } from 'mocha';
 import { expect } from 'chai';
 import Ember from 'ember';
 import sinon from 'sinon';
