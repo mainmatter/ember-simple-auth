@@ -113,7 +113,7 @@ export default BaseAuthenticator.extend({
     const min = 5;
     const max = 10;
 
-    return (Math.floor(Math.random() * min) + (max - min)) * 1000;
+    return (Math.floor(Math.random() * (max - min)) + min) * 1000;
   }).volatile(),
 
   _refreshTokenTimeout: null,
