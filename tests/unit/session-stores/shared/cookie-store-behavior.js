@@ -1,7 +1,6 @@
 /* jshint expr:true */
 import Ember from 'ember';
-import { it } from 'ember-mocha';
-import { describe, beforeEach, afterEach } from 'mocha';
+import { describe, beforeEach, afterEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';

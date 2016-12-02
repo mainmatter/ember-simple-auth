@@ -11,9 +11,9 @@
     {{#if access}}
       <span class="label label-access-{{access}} pull-right">{{access}}</span>
     {{/if}}
-    {{#if readOnly}}
+    {{#exists readonly}}
       <span class="label label-warning pull-right">readonly</span>
-    {{/if}}
+    {{/exists}}
     <h3 class="panel-title signature">
       <strong class="name">`{{name}}`</strong>: <code>{{#crossLink type}}{{/crossLink}}</code>
     </h3>

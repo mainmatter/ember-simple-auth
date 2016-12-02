@@ -1,10 +1,13 @@
 /* jshint expr:true */
 import { expect } from 'chai';
-import { describeModule, it } from 'ember-mocha';
+import { it, describe } from 'mocha';
+import { setupTest } from 'ember-mocha';
 
-describeModule('route:login', 'LoginRoute', {
-  needs: ['router:main']
-}, function() {
+describe('LoginRoute', function() {
+  setupTest('route:login', {
+    needs: ['router:main']
+  });
+
   it('is still testable when using the UnauthenticatedRouteMixin', function() {
     const route = this.subject();
 

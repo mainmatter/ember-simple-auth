@@ -1,6 +1,5 @@
 /* jshint expr:true */
-import { it } from 'ember-mocha';
-import { describe, beforeEach } from 'mocha';
+import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import setupSessionService from 'ember-simple-auth/initializers/setup-session-service';
