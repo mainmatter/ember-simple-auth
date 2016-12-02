@@ -96,7 +96,7 @@ export default EmberObject.extend(Evented, {
     `data.authenticated` property (see
     {{#crossLink "SessionService/data:property"}}{{/crossLink}}). A rejecting
     promise indicates that `data` does not constitute a valid session and will
-    result in the session being invalidated or remaining unauthencicated.
+    result in the session being invalidated or remaining unauthenticated.
 
     The `BaseAuthenticator`'s implementation always returns a rejecting
     promise. __This method must be overridden in subclasses.__
