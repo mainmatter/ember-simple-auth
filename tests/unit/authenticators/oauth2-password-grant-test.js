@@ -1,8 +1,7 @@
 /* jshint expr:true */
 /* jscs:disable requireDotNotation */
 import Ember from 'ember';
-import { it } from 'ember-mocha';
-import { describe, beforeEach, afterEach } from 'mocha';
+import { describe, beforeEach, afterEach, it } from 'mocha';
 import { expect } from 'chai';
 import Pretender from 'pretender';
 import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';

@@ -1,6 +1,5 @@
 /* jshint expr:true */
-import { it } from 'ember-mocha';
-import { describe, afterEach } from 'mocha';
+import { describe, afterEach, it } from 'mocha';
 import { expect } from 'chai';
 import Configuration from 'ember-simple-auth/configuration';
 

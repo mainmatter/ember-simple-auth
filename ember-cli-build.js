@@ -39,7 +39,8 @@ module.exports = function(defaults) {
       quiet:       true,
       parseOnly:   false,
       lint:        false,
-      themedir:    'docs/theme'
+      themedir:    'docs/theme',
+      helpers:     ['docs/theme/helpers/helpers.js']
     }
   });
 
