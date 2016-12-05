@@ -36,10 +36,11 @@ export default function(options) {
 
   describe('#persist', function() {
     it('respects the configured cookieName', () => {
+      let store;
       run(() => {
         store = createStore(cookieService, { cookieName: 'test-session' });
-        store.persist({ key: 'value' });
       });
+      store.persist({ key: 'value' });
 
       expect(cookieService.write).to.have.been.calledWith(
         'test-session',
@@ -49,6 +50,7 @@ export default function(options) {
     });
 
     it('respects the configured cookieDomain', () => {
+      let store;
       run(() => {
         store = createStore(cookieService, {
           cookieName: 'session-cookie-domain',

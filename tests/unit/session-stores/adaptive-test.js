@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import { describe, beforeEach, afterEach } from 'mocha';
-import { it } from 'ember-mocha';
+import { describe, beforeEach, afterEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Adaptive from 'ember-simple-auth/session-stores/adaptive';
 import itBehavesLikeAStore from './shared/store-behavior';
+import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
 
 const { assign: emberAssign, merge, run } = Ember;
@@ -54,6 +54,29 @@ describe('AdaptiveStore', () => {
     itBehavesLikeAStore({
       store() {
         return store;
+      }
+    });
+
+    itBehavesLikeACookieStore({
+      createStore(cookieService, options = {}) {
+        options._isLocalStorageAvailable = false;
+        return Adaptive.extend({
+          _cookies: cookieService,
+          _fastboot: { isFastBoot: false },
+          _createStore(storeType, options) {
+            return this._super(storeType, assign({}, options, { _isFastBoot: false }));
+          }
+        }).create(options);
+      },
+      renew(store, data) {
+        return store.get('_store')._renew(data);
+      },
+      sync(store) {
+        store.get('_store')._syncData();
+      },
+      spyRewriteCookieMethod(store) {
+        sinon.spy(store.get('_store'), 'rewriteCookie');
+        return store.get('_store').rewriteCookie;
       }
     });
 
