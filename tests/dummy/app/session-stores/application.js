@@ -1,3 +1,3 @@
-import Adaptive from 'ember-simple-auth/session-stores/adaptive';
+import Cookie from 'ember-simple-auth/session-stores/cookie';
 
-export default Adaptive.extend();
+export default Cookie.extend();
