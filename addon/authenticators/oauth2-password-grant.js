@@ -329,9 +329,7 @@ export default BaseAuthenticator.extend({
             resolve(json);
           }
         });
-      }).catch((error) => {
-        reject(error);
-      });
+      }).catch(reject);
     });
   },
 
