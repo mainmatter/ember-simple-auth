@@ -5,9 +5,8 @@ const { RSVP, assert, getProperties, Array: { isEvery }, isPresent, run } = Embe
 
 /**
   Authenticator that works with the Ruby gem
-  [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth).
-  
-  Read more about the [Token Header format](https://github.com/lynndylanhurley/devise_token_auth#token-header-format).
+  [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth)
+  which does token-based authentication. Read more about the [Token Header format](https://github.com/lynndylanhurley/devise_token_auth#token-header-format).
 
   @class DeviseTokenAuthAuthenticator
   @module ember-simple-auth/authenticators/devise-token-auth
@@ -25,7 +24,7 @@ export default DeviseAuthenticator.extend({
     @public
   */
   tokenAttributeName: 'accessToken',
-  
+
   /**
     The attribute in the session data that represents the authenticating
     user's identity.
@@ -46,7 +45,7 @@ export default DeviseAuthenticator.extend({
     @public
   */
   serverTokenEndpoint: null,
-  
+
   /**
     The devise resource name. __This will be used in the request and also be
     expected in the server's response.__
@@ -108,7 +107,7 @@ export default DeviseAuthenticator.extend({
       }
     );
   },
-  
+
   _validate(data) {
     const { accessToken, uid, client } = getProperties(data, 'accessToken', 'uid', 'client');
     return isEvery([accessToken, uid, client], isPresent);
