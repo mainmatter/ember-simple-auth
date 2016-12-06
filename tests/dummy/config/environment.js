@@ -20,19 +20,26 @@ module.exports = function(environment) {
 
     contentSecurityPolicy: {
       'style-src': "'self' 'unsafe-inline'"
-    }
-  };
+    },
 
-  ENV.browserify = {
-    tests: true
-  };
+    browserify: {
+      tests: true
+    },
 
-  ENV.torii = {
-    providers: {
-      'facebook-oauth2': {
-        apiKey: '631252926924840'
+    torii: {
+      providers: {
+        'facebook-oauth2': {
+          apiKey: '631252926924840'
+        }
       }
-    }
+    },
+
+    apiHost: 'http://localhost:4200',
+
+    fastboot: {
+      hostWhitelist:[/^localhost:\d+$/]
+    },
+
   };
 
   if (environment === 'development') {

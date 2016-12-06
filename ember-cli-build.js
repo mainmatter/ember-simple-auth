@@ -3,13 +3,12 @@ const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 const yuidoc = require('broccoli-yuidoc');
 const version = require('git-repo-version')();
 const Handlebars = require('handlebars');
-const mergeTrees = require('broccoli-merge-trees');
-const merge = require('lodash/merge');
 
 var sourceTrees = [];
 
 module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
+    storeConfigInMeta: true,
     jscsOptions: {
       enabled: true,
       testGenerator: function(relativePath, errors) {
@@ -28,8 +27,6 @@ module.exports = function(defaults) {
   });
 
   app.import('bower_components/bootstrap/dist/css/bootstrap.css');
-
-  sourceTrees.push(app.toTree());
 
   const yuidocTree = new yuidoc(['addon', 'app'], {
     destDir: 'docs',
@@ -51,5 +48,5 @@ module.exports = function(defaults) {
     sourceTrees.push(yuidocTree);
   }
 
-  return mergeTrees(sourceTrees);
+  return app.toTree(sourceTrees);
 };

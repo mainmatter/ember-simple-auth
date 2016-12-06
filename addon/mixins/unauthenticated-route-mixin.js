@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import Configuration from './../configuration';
 
 const { inject: { service }, Mixin, assert, computed } = Ember;
@@ -34,6 +35,12 @@ export default Mixin.create({
   */
   session: service('session'),
 
+  _isFastBoot: computed(function() {
+    const fastboot = getOwner(this).lookup('service:fastboot');
+
+    return fastboot ? fastboot.get('isFastBoot') : false;
+  }),
+
   /**
     The route to transition to if a route that implements the
     {{#crossLink "UnauthenticatedRouteMixin"}}{{/crossLink}} is accessed when
@@ -61,10 +68,16 @@ export default Mixin.create({
     @param {Transition} transition The transition that lead to this route
     @public
   */
-  beforeModel() {
+  beforeModel(transition) {
     if (this.get('session').get('isAuthenticated')) {
-      assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== this.get('routeIfAlreadyAuthenticated'));
-      this.transitionTo(this.get('routeIfAlreadyAuthenticated'));
+      let routeIfAlreadyAuthenticated = this.get('routeIfAlreadyAuthenticated');
+      assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
+
+      if (!this.get('_isFastBoot')) {
+        transition.abort();
+      }
+
+      return this.transitionTo(routeIfAlreadyAuthenticated);
     } else {
       return this._super(...arguments);
     }

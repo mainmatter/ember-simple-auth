@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
+import getOwner from 'ember-getowner-polyfill';
 
-const { RSVP, computed, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isBlank, isPresent, K, A } = Ember;
+const { RSVP, computed, inject: { service }, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A } = Ember;
 
 const persistingProperty = function(beforeSet = K) {
   return computed({
@@ -41,13 +42,15 @@ const persistingProperty = function(beforeSet = K) {
   });
   ```
 
-  __In order to keep multiple tabs/windows of an application in sync, this
-  store has to periodically (every 500ms) check the cookie for changes__ as
-  there are no events for cookie changes that the store could subscribe to. If
-  the application does not need to make sure all session data is deleted when
-  the browser is closed, the
-  {{#crossLink "LocalStorageStore"}}`localStorage` session store{{/crossLink}}
-  should be used.
+  __Applications that use FastBoot must use this session store by defining the
+  application session store like this:__
+
+  ```js
+  // app/session-stores/application.js
+  import CookieStore from 'ember-simple-auth/session-stores/cookie';
+
+  export default CookieStore.extend();
+  ```
 
   @class CookieStore
   @module ember-simple-auth/session-stores/cookie
@@ -59,7 +62,7 @@ export default BaseStore.extend({
     The domain to use for the cookie, e.g., "example.com", ".example.com"
     (which includes all subdomains) or "subdomain.example.com". If not
     explicitly set, the cookie domain defaults to the domain the session was
-    authneticated on.
+    authenticated on.
 
     @property cookieDomain
     @type String
@@ -95,25 +98,47 @@ export default BaseStore.extend({
   _cookieExpirationTime: null,
   cookieExpirationTime: persistingProperty(),
 
-  _secureCookies: window.location.protocol === 'https:',
+  _cookies: service('cookies'),
+
+  _fastboot: computed(function() {
+    let owner = getOwner(this);
+
+    return owner && owner.lookup('service:fastboot');
+  }),
+
+  _secureCookies: computed(function() {
+    if (this.get('_fastboot.isFastBoot')) {
+      return this.get('_fastboot.request.protocol') === 'https';
+    }
+
+    return window.location.protocol === 'https:';
+  }).volatile(),
 
   _syncDataTimeout: null,
 
   _renewExpirationTimeout: null,
 
   _isPageVisible: computed(function() {
-    const visibilityState = document.visibilityState || 'visible';
-    return visibilityState === 'visible';
+    if (this.get('_fastboot.isFastBoot')) {
+      return false;
+    } else {
+      const visibilityState = typeof document !== 'undefined' ? document.visibilityState || 'visible' : false;
+      return visibilityState === 'visible';
+    }
   }).volatile(),
 
   init() {
     this._super(...arguments);
 
-    next(() => {
-      this._syncData().then(() => {
-        this._renewExpiration();
+    if (!this.get('_fastboot.isFastBoot')) {
+      next(() => {
+        this._syncData().then(() => {
+          this._renewExpiration();
+        });
       });
-    });
+    } else {
+      this._renew();
+    }
   },
 
   /**
@@ -162,8 +187,7 @@ export default BaseStore.extend({
   },
 
   _read(name) {
-    let value = document.cookie.match(new RegExp(`${name}=([^;]+)`)) || [];
-    return decodeURIComponent(value[1] || '');
+    return this.get('_cookies').read(name) || '';
   },
 
   _calculateExpirationTime() {
@@ -173,32 +197,23 @@ export default BaseStore.extend({
   },
 
   _write(value, expiration) {
-    let _value = encodeURIComponent(value);
+    let cookieOptions = {
+      domain:  this.get('cookieDomain'),
+      expires: isEmpty(expiration) ? null : new Date(expiration),
+      path:    '/',
+      secure:  this.get('_secureCookies')
+    };
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach((oldCookie) => {
-        let expires     = `; expires=${new Date(0).toUTCString()}`;
-        document.cookie = this._createCookieString(oldCookie, _value, expires);
+        this.get('_cookies').clear(oldCookie);
       });
       delete this._oldCookieName;
     }
-
-    if (isBlank(value) && expiration !== 0) {
-      return;
-    }
-
-    let {
-      cookieName,
-      cookieExpirationTime
-    } = this.getProperties('cookieName', 'cookieDomain', 'cookieExpirationTime');
-
-    let expires     = isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
-    document.cookie = this._createCookieString(cookieName, _value, expires);
-
-    if (expiration !== null && cookieExpirationTime !== null) {
-      let cachedExpirationTime = this._read(`${cookieName}-expiration_time`);
-      let expiry = encodeURIComponent(cookieExpirationTime) || cachedExpirationTime;
-      let name = `${cookieName}-expiration_time`;
-      document.cookie = this._createCookieString(name, expiry, expires);
+    this.get('_cookies').write(this.get('cookieName'), value, cookieOptions);
+    if (!isEmpty(expiration)) {
+      let expirationCookieName = `${this.get('cookieName')}-expiration_time`;
+      let cachedExpirationTime = this.get('_cookies').read(expirationCookieName);
+      this.get('_cookies').write(expirationCookieName, this.get('cookieExpirationTime') || cachedExpirationTime, cookieOptions);
     }
   },
 
@@ -235,14 +250,6 @@ export default BaseStore.extend({
     } else {
       return RSVP.resolve();
     }
-  },
-
-  _createCookieString(name, value, expires) {
-    let cookieDomain = this.get('cookieDomain');
-    let domain = isEmpty(cookieDomain) ? '' : `;domain=${cookieDomain}`;
-    let path = '; path=/';
-    let secure = this._secureCookies ? ';secure' : '';
-    return `${name}=${value}${domain}${path}${expires}${secure}`;
   },
 
   rewriteCookie() {

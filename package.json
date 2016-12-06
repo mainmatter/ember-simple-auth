@@ -8,9 +8,11 @@
   },
   "scripts": {
     "build": "ember build",
+    "fastboot": "echo \"Please also run npm start\"; ember fastboot --serve-assets",
     "start": "ember server",
     "test": "ember try:each",
-    "nodetest": "node node-tests/nodetest-runner.js"
+    "nodetest": "node node-tests/nodetest-runner.js",
+    "fastboot-nodetest": "node node-tests/fastboot-runner.js"
   },
   "repository": "https://github.com/simplabs/ember-simple-auth",
   "engines": {
@@ -23,14 +25,18 @@
     "broccoli-asset-rev": "^2.4.2",
     "broccoli-merge-trees": "^1.1.2",
     "broccoli-yuidoc": "~2.1.0",
+    "chai": "^3.5.0",
+    "cors": "~2.7.1",
     "ember-ajax": "^2.0.1",
     "ember-browserify": "1.1.11",
     "ember-cli": "2.7.0",
+    "ember-cli-addon-tests": "^0.3.0",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-base64": "~0.0.1",
     "ember-cli-blueprint-test-helpers": "~0.13.0",
     "ember-cli-content-security-policy": "~0.5.0",
     "ember-cli-dependency-checker": "^1.2.0",
+    "ember-cli-fastboot": "1.0.0-beta.7",
     "ember-cli-htmlbars": "^1.0.3",
     "ember-cli-htmlbars-inline-precompile": "^0.3.1",
     "ember-cli-inject-live-reload": "^1.4.0",
@@ -58,6 +64,9 @@
     "mocha": "^3.0.0",
     "mocha-only-detector": "0.1.0",
     "morgan": "^1.5.2",
+    "request": "^2.74.0",
+    "rimraf": "^2.5.2",
+    "rsvp": "^3.2.1",
     "sinon-chai": "~2.8.0",
     "torii": "~0.8.0"
   },
@@ -66,8 +75,11 @@
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.6",
+    "ember-cli-import-polyfill": "^0.2.0",
     "ember-cli-is-package-missing": "^1.0.0",
-    "ember-getowner-polyfill": "1.0.1",
+    "ember-cookies": "^0.0.10",
+    "ember-getowner-polyfill": "^1.0.1",
+    "ember-network": "^0.3.0",
     "silent-error": "^1.0.0"
   },
   "ember-addon": {

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import Configuration from './../configuration';
 
 const { inject: { service }, Mixin, assert, computed } = Ember;
@@ -32,6 +33,12 @@ export default Mixin.create({
     @public
   */
   session: service('session'),
+
+  _isFastBoot: computed(function() {
+    const fastboot = getOwner(this).lookup('service:fastboot');
+
+    return fastboot ? fastboot.get('isFastBoot') : false;
+  }),
 
   /**
     The route to transition to for authentication. The
@@ -72,7 +79,11 @@ export default Mixin.create({
       let authenticationRoute = this.get('authenticationRoute');
       assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
 
-      this.set('session.attemptedTransition', transition);
+      if (!this.get('_isFastBoot')) {
+        transition.abort();
+        this.set('session.attemptedTransition', transition);
+      }
+
       return this.transitionTo(authenticationRoute);
     } else {
       return this._super(...arguments);

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import Configuration from './../configuration';
 
 const { inject, Mixin, A, run: { bind }, testing, computed } = Ember;
@@ -22,7 +23,7 @@ const { inject, Mixin, A, run: { bind }, testing, computed } = Ember;
       applicationRoute.transitionTo('index');
     });
     session.on('invalidationSucceeded', function() {
-      window.location.reload();
+      applicationRoute.transitionTo('bye');
     });
   };
 
@@ -51,6 +52,12 @@ export default Mixin.create({
     @public
   */
   session: inject.service('session'),
+
+  _isFastBoot: computed(function() {
+    const fastboot = getOwner(this).lookup('service:fastboot');
+
+    return fastboot ? fastboot.get('isFastBoot') : false;
+  }),
 
   /**
     The route to transition to after successful authentication.
@@ -120,7 +127,11 @@ export default Mixin.create({
   */
   sessionInvalidated() {
     if (!testing) {
-      window.location.replace(Configuration.baseURL);
+      if (this.get('_isFastBoot')) {
+        this.transitionTo(Configuration.baseURL);
+      } else {
+        window.location.replace(Configuration.baseURL);
+      }
     }
   }
 });

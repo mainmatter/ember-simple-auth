@@ -1,6 +1,7 @@
 /* jscs:disable requireDotNotation */
 import Ember from 'ember';
 import BaseAuthenticator from './base';
+import fetch from 'ember-network/fetch';
 
 const {
   RSVP,
@@ -11,7 +12,6 @@ const {
   assign: emberAssign,
   merge,
   A,
-  $: jQuery,
   testing,
   warn,
   keys: emberKeys
@@ -137,9 +137,24 @@ export default BaseAuthenticator.extend({
     @property rejectWithXhr
     @type Boolean
     @default false
+    @deprecated OAuth2PasswordGrantAuthenticator/rejectWithResponse:property
     @public
   */
-  rejectWithXhr: false,
+  rejectWithXhr: computed.deprecatingAlias('rejectWithResponse'),
+
+  /**
+    When authentication fails, the rejection callback is provided with the whole
+    fetch response object instead of it's response JSON or text.
+
+    This is useful for cases when the backend provides additional context not
+    available in the response body.
+
+    @property rejectWithResponse
+    @type Boolean
+    @default false
+    @public
+  */
+  rejectWithResponse: false,
 
   /**
     Restores the session from a session data object; __will return a resolving
@@ -209,7 +224,7 @@ export default BaseAuthenticator.extend({
     return new RSVP.Promise((resolve, reject) => {
       const data                = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      const useXhr = this.get('rejectWithXhr');
+      const useResponse = this.get('rejectWithResponse');
       const scopesString = makeArray(scope).join(' ');
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
@@ -228,8 +243,8 @@ export default BaseAuthenticator.extend({
 
           resolve(response);
         });
-      }, (xhr) => {
-        run(null, reject, useXhr ? xhr : (xhr.responseJSON || xhr.responseText));
+      }, (response) => {
+        run(null, reject, useResponse ? response : response.responseJSON);
       });
     });
   },
@@ -283,29 +298,39 @@ export default BaseAuthenticator.extend({
     @param {String} url The request URL
     @param {Object} data The request data
     @param {Object} headers Additional headers to send in request
-    @return {jQuery.Deferred} A promise like jQuery.Deferred as returned by `$.ajax`
+    @return {Promise} A promise that resolves with the response object`
     @protected
   */
   makeRequest(url, data, headers = {}) {
+    headers['Content-Type'] = 'application/x-www-form-urlencoded';
+
+    const body = keys(data).map((key) => {
+      return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`;
+    }).join('&');
+
     const options = {
-      url,
-      data,
-      type:        'POST',
-      dataType:    'json',
-      contentType: 'application/x-www-form-urlencoded',
-      headers
+      body,
+      headers,
+      method: 'POST'
     };
 
     const clientIdHeader = this.get('_clientIdHeader');
     if (!isEmpty(clientIdHeader)) {
       merge(options.headers, clientIdHeader);
     }
-
-    if (isEmpty(keys(options.headers))) {
-      delete options.headers;
-    }
-
-    return jQuery.ajax(options);
+    return new RSVP.Promise((resolve, reject) => {
+      fetch(url, options).then((response) => {
+        response.text().then((text) => {
+          let json = text ? JSON.parse(text) : {};
+          if (!response.ok) {
+            response.responseJSON = json;
+            reject(response);
+          } else {
+            resolve(json);
+          }
+        });
+      }).catch(reject);
+    });
   },
 
   _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
@@ -340,8 +365,8 @@ export default BaseAuthenticator.extend({
           this.trigger('sessionDataUpdated', data);
           resolve(data);
         });
-      }, (xhr, status, error) => {
-        warn(`Access token could not be refreshed - server responded with ${error}.`);
+      }, (response) => {
+        warn(`Access token could not be refreshed - server responded with ${response.responseJSON}.`);
         reject();
       });
     });

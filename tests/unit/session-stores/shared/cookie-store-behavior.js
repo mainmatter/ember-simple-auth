@@ -2,6 +2,8 @@
 import Ember from 'ember';
 import { describe, beforeEach, afterEach, it } from 'mocha';
 import { expect } from 'chai';
+import sinon from 'sinon';
+import FakeCookieService from '../../../helpers/fake-cookie-service';
 
 const { run, run: { next } } = Ember;
 
@@ -10,6 +12,7 @@ export default function(options) {
   let createStore;
   let renew;
   let sync;
+  let cookieService;
   let spyRewriteCookieMethod;
   let unspyRewriteCookieMethod;
 
@@ -17,53 +20,75 @@ export default function(options) {
     createStore = options.createStore;
     renew = options.renew;
     sync = options.sync;
+    cookieService = FakeCookieService.create();
+    sinon.spy(cookieService, 'read');
+    sinon.spy(cookieService, 'write');
+    store = createStore(cookieService);
     spyRewriteCookieMethod = options.spyRewriteCookieMethod;
     unspyRewriteCookieMethod = options.unspyRewriteCookieMethod;
-    store = createStore();
   });
 
   afterEach(() => {
+    cookieService.read.restore();
+    cookieService.write.restore();
     store.clear();
   });
 
-  describe('#persist', () => {
+  describe('#persist', function() {
     it('respects the configured cookieName', () => {
       let store;
       run(() => {
-        store = createStore({ cookieName: 'test-session' });
+        store = createStore(cookieService, { cookieName: 'test-session' });
       });
       store.persist({ key: 'value' });
 
-      expect(document.cookie).to.contain('test-session=%7B%22key%22%3A%22value%22%7D');
+      expect(cookieService.write).to.have.been.calledWith(
+        'test-session',
+        JSON.stringify({ key: 'value' }),
+        { domain: null, expires: null, path: '/', secure: false }
+      );
     });
 
     it('respects the configured cookieDomain', () => {
       let store;
       run(() => {
-        store = createStore({
+        store = createStore(cookieService, {
           cookieName: 'session-cookie-domain',
           cookieDomain: 'example.com'
         });
         store.persist({ key: 'value' });
       });
 
-      expect(document.cookie).to.not.contain('session-cookie-domain=%7B%22key%22%3A%22value%22%7D');
+      expect(cookieService.write).to.have.been.calledWith(
+        'session-cookie-domain',
+        JSON.stringify({ key: 'value' }),
+        { domain: 'example.com', expires: null, path: '/', secure: false }
+      );
     });
   });
 
   describe('#renew', () => {
-    beforeEach(() => {
-      store = createStore({
+    let now = new Date();
+
+    beforeEach((done) => {
+      store = createStore(cookieService, {
         cookieName:           'test-session',
-        cookieExpirationTime: 60,
-        expires:              new Date().getTime() + store.get('cookieExpirationTime') * 1000
+        cookieExpirationTime: 60
       });
       store.persist({ key: 'value' });
-      renew(store);
+      renew(store).then(done);
     });
 
     it('stores the expiration time in a cookie named "test-session-expiration_time"', () => {
-      expect(document.cookie).to.contain('test-session-expiration_time=60');
+      expect(cookieService.write).to.have.been.calledWith(
+        'test-session-expiration_time',
+        60,
+        sinon.match(function({ domain, expires, path, secure }) {
+          return domain === null &&
+            path === '/' &&
+            secure === false && expires >= new Date(now.getTime() + 60 * 1000);
+        })
+      );
     });
   });
 
@@ -89,7 +114,8 @@ export default function(options) {
     });
 
     it('is triggered when the cookie changed', (done) => {
-      document.cookie = 'ember_simple_auth-session=%7B%22key%22%3A%22other%20value%22%7D;path=/;';
+      const cookiesService = store.get('_cookies') || store.get('_store._cookies');
+      cookiesService._content['ember_simple_auth-session'] = '%7B%22key%22%3A%22other%20value%22%7D';
       sync(store);
 
       next(() => {
@@ -114,32 +140,58 @@ export default function(options) {
   describe('rewrite behavior', () => {
     let store;
     let cookieSpy;
+    let cookieService;
+    let now = new Date();
 
     beforeEach(() => {
-      store = createStore({
+      cookieService = FakeCookieService.create();
+      store = createStore(cookieService, {
         cookieName: 'session-foo',
         cookieExpirationTime: 1000
       });
+      cookieService = store.get('_cookies') || store.get('_store._cookies');
       cookieSpy = spyRewriteCookieMethod(store);
+      sinon.spy(cookieService, 'write');
+      sinon.spy(cookieService, 'clear');
     });
 
     afterEach(() => {
+      cookieService.write.restore();
+      cookieService.clear.restore();
       cookieSpy.restore();
     });
 
-    it('deletes the old cookie and writes a new one when name property changes', (done) => {
+    it('deletes the old cookie and writes a new one when name property changes', () => {
       run(() => {
         store.persist({ key: 'value' });
         store.set('cookieName', 'session-bar');
       });
 
-      next(() => {
-        expect(document.cookie).to.not.contain('session-foo=');
-        expect(document.cookie).to.not.contain('session-foo-expiration_time=');
-        expect(document.cookie).to.contain('session-bar=%7B%22key%22%3A%22value%22%7D');
-        expect(document.cookie).to.contain('session-bar-expiration_time=');
-        done();
-      });
+      expect(cookieService.clear).to.have.been.calledWith('session-foo');
+
+      expect(cookieService.clear).to.have.been.calledWith('session-foo-expiration_time');
+
+      expect(cookieService.write).to.have.been.calledWith(
+        'session-bar',
+        JSON.stringify({ key: 'value' }),
+        sinon.match(function({ domain, expires, path, secure }) {
+          return domain === null &&
+            path === '/' &&
+            secure === false &&
+            expires >= new Date(now.getTime() + 1000 * 1000);
+        })
+      );
+
+      expect(cookieService.write).to.have.been.calledWith(
+        'session-bar-expiration_time',
+        1000,
+        sinon.match(function({ domain, expires, path, secure }) {
+          return domain === null &&
+            path === '/' &&
+            secure === false &&
+            expires >= new Date(now.getTime() + 1000 * 1000);
+        })
+      );
     });
 
     it('only rewrites the cookie once per run loop when multiple properties are changed', (done) => {

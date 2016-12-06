@@ -1,10 +1,11 @@
 /* global localStorage */
 import Ember from 'ember';
+import getOwner from 'ember-getowner-polyfill';
 import Base from 'ember-simple-auth/session-stores/base';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
 
-const { computed } = Ember;
+const { computed, inject: { service } } = Ember;
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 
@@ -32,6 +33,11 @@ const proxyToInternalStore = function() {
   __This is the default store that Ember Simple Auth will use when the
   application doesn't define a custom store.__
 
+  __This session store does not work with FastBoot. In order to use Ember
+  Simple Auth with FastBoot, configure the
+  {{#crossLink "CookieStore"}}{{/crossLink}} as the application's session
+  store.__
+
   @class AdaptiveStore
   @module ember-simple-auth/session-stores/adaptive
   @extends BaseStore
@@ -53,7 +59,7 @@ export default Base.extend({
     The domain to use for the cookie if `localStorage` is not available, e.g.,
     "example.com", ".example.com" (which includes all subdomains) or
     "subdomain.example.com". If not explicitly set, the cookie domain defaults
-    to the domain the session was authneticated on.
+    to the domain the session was authenticated on.
 
     @property cookieDomain
     @type String
@@ -87,6 +93,14 @@ export default Base.extend({
   _cookieExpirationTime: null,
   cookieExpirationTime: proxyToInternalStore(),
 
+  _cookies: service('cookies'),
+
+  _fastboot: computed(function() {
+    let owner = getOwner(this);
+
+    return owner && owner.lookup('service:fastboot');
+  }),
+
   _isLocalStorageAvailable: computed(function() {
     try {
       localStorage.setItem(LOCAL_STORAGE_TEST_KEY, true);
@@ -103,9 +117,12 @@ export default Base.extend({
     let store;
     if (this.get('_isLocalStorageAvailable')) {
       const options = { key: this.get('localStorageKey') };
+      options._isFastBoot = false;
       store = this._createStore(LocalStorage, options);
     } else {
       const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime');
+      options._fastboot = this.get('_fastboot');
+      options._cookies = this.get('_cookies');
       store = this._createStore(Cookie, options);
     }
     this.set('_store', store);
