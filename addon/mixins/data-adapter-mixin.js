@@ -95,7 +95,7 @@ export default Mixin.create({
     This method will only be called in Ember Data 2.7 or greater. Older versions
     will rely on `ajaxOptions` for request header injection.
 
-    @method handleResponse
+    @method headersForRequest
     @protected
    */
   headersForRequest() {
