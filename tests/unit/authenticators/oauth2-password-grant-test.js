@@ -209,7 +209,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         });
       });
 
-      describe('when reject with XHR is enabled', () => {
+      describe('when reject with response is enabled', () => {
         beforeEach(() => {
           authenticator.set('rejectWithResponse', true);
         });
