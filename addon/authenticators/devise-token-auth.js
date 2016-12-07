@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import DeviseAuthenticator from './devise';
 
-const { RSVP, assert, getProperties, Array: { isEvery }, isPresent, run } = Ember;
+const { RSVP: { Promise }, isEmpty, run } = Ember;
 
 /**
   Authenticator that works with the Ruby gem
@@ -15,8 +15,20 @@ const { RSVP, assert, getProperties, Array: { isEvery }, isPresent, run } = Embe
 */
 export default DeviseAuthenticator.extend({
   /**
+   The [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth)-mounted
+   endpoint on the server that the authentication request is sent to.
+
+   @property serverTokenEndpoint
+   @type String
+   @default 'auth/sign_in'
+   @public
+   */
+  serverTokenEndpoint: 'auth/sign_in',
+
+  /**
     The attribute in the session data that represents the authentication
-    token.
+    token. __This will be used in the request and also be expected in the
+    server's response.__
 
     @property tokenAttributeName
     @type String
@@ -24,52 +36,6 @@ export default DeviseAuthenticator.extend({
     @public
   */
   tokenAttributeName: 'accessToken',
-
-  /**
-    The attribute in the session data that represents the authenticating
-    user's identity.
-
-    @property identificationAttributeName
-    @type String
-    @default 'email'
-    @public
-  */
-  identificationAttributeName: 'email',
-
-  /**
-    The endpoint on the server that the authentication request is sent to.
-
-    @property serverTokenEndpoint
-    @type String
-    @default null
-    @public
-  */
-  serverTokenEndpoint: null,
-
-  /**
-    The devise resource name. __This will be used in the request and also be
-    expected in the server's response.__
-
-    @property resourceName
-    @type String
-    @default 'user'
-    @public
-  */
-  resourceName: 'user',
-
-  /**
-    Asserts that required attributes `resourceName` and `serverTokenEndpoint`
-    are set.
-
-    @method init
-    @public
-  */
-  init() {
-    this._super(...arguments);
-    assert('`resourceName` or `serverTokenEndpoint` missing',
-      isEvery([this.get('resourceName'), this.get('serverTokenEndpoint')], isPresent)
-    );
-  },
 
   /**
     Authenticates the session with the specified `identification` and
@@ -90,26 +56,44 @@ export default DeviseAuthenticator.extend({
     @public
   */
   authenticate(identification, password) {
-    return new RSVP.Promise((resolve, reject) => {
-        const data = { password };
-        data[this.get('identificationAttributeName')] = identification;
-        return this.makeRequest(data)
-          .then((response, _, xhr) => {
-            let responseData = response.data;
-            responseData.accessToken = xhr.getResponseHeader('access-token');
-            responseData.client = xhr.getResponseHeader('client');
-            run(null, resolve, responseData);
-          })
-          .fail((xhr) => {
-            console.error(xhr.responseJSON || xhr.responseText);
-            run(null, reject, xhr.responseJSON || xhr.responseText);
+    return new Promise((resolve, reject) => {
+      const useResponse = this.get('rejectWithResponse');
+      const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties('resourceName', 'identificationAttributeName', 'tokenAttributeName');
+      const data         = {};
+      data[resourceName] = { password };
+      data[resourceName][identificationAttributeName] = identification;
+
+      this.makeRequest(data).then((response) => {
+        if (response.ok) {
+          response.json().then((json) => {
+            if (this._validate(json)) {
+              const resourceName = this.get('resourceName');
+              const _json = json[resourceName] ? json[resourceName] : json;
+
+              // DeviseTokenAuth: now add accessToken, client
+              _json.accessToken = response.headers.get('access-token');
+              _json.client = response.headers.get('client');
+
+              run(null, resolve, _json);
+            } else {
+              run(null, reject, `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`);
+            }
           });
-      }
-    );
+        } else {
+          if (useResponse) {
+            run(null, reject, response);
+          } else {
+            response.json().then((json) => run(null, reject, json));
+          }
+        }
+      }).catch((error) => run(null, reject, error));
+    });
   },
 
+  // Validate that 'client' is also in the given data
   _validate(data) {
-    const { accessToken, uid, client } = getProperties(data, 'accessToken', 'uid', 'client');
-    return isEvery([accessToken, uid, client], isPresent);
+    const resourceName = this.get('resourceName');
+    const _data = data[resourceName] ? data[resourceName] : data;
+    !isEmpty(_data.client) && this._super(...arguments);
   }
 });
