@@ -103,9 +103,9 @@ describe('DeviseAuthenticator', () => {
         });
       });
 
-      describe('when reject with XHR is enabled', () => {
+      describe('when reject with response is enabled', () => {
         beforeEach(() => {
-          authenticator.set('rejectWithXhr', true);
+          authenticator.set('rejectWithResponse', true);
         });
 
         it('rejects with the response', () => {

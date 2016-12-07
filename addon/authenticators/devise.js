@@ -2,7 +2,7 @@ import Ember from 'ember';
 import BaseAuthenticator from './base';
 import fetch from 'ember-network/fetch';
 
-const { RSVP: { Promise }, isEmpty, run, assign: emberAssign, merge } = Ember;
+const { RSVP: { Promise }, isEmpty, run, assign: emberAssign, merge, computed } = Ember;
 const assign = emberAssign || merge;
 
 const JSON_CONTENT_TYPE = 'application/json';
@@ -74,9 +74,24 @@ export default BaseAuthenticator.extend({
     @property rejectWithXhr
     @type Boolean
     @default false
+    @deprecated DeviseAuthenticator/rejectWithResponse:property
     @public
   */
-  rejectWithXhr: false,
+  rejectWithXhr: computed.deprecatingAlias('rejectWithResponse'),
+
+  /**
+    When authentication fails, the rejection callback is provided with the whole
+    fetch response object instead of it's response JSON or text.
+
+    This is useful for cases when the backend provides additional context not
+    available in the response body.
+
+    @property rejectWithResponse
+    @type Boolean
+    @default false
+    @public
+  */
+  rejectWithResponse: false,
 
   /**
     Restores the session from a session data object; __returns a resolving
@@ -115,7 +130,7 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password) {
     return new Promise((resolve, reject) => {
-      const useXhr = this.get('rejectWithXhr');
+      const useResponse = this.get('rejectWithResponse');
       const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties('resourceName', 'identificationAttributeName', 'tokenAttributeName');
       const data         = {};
       data[resourceName] = { password };
@@ -133,7 +148,7 @@ export default BaseAuthenticator.extend({
             }
           });
         } else {
-          if (useXhr) {
+          if (useResponse) {
             run(null, reject, response);
           } else {
             response.json().then((json) => run(null, reject, json));
