@@ -66,7 +66,8 @@ export default BaseAuthenticator.extend({
 
   /**
     When authentication fails, the rejection callback is provided with the whole
-    XHR object instead of it's response JSON or text.
+    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
+    instead of its responseJSON or responseText.
 
     This is useful for cases when the backend provides additional context not
     available in the response body.
@@ -81,7 +82,8 @@ export default BaseAuthenticator.extend({
 
   /**
     When authentication fails, the rejection callback is provided with the whole
-    fetch response object instead of it's response JSON or text.
+    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
+    instead of its responseJSON or responseText.
 
     This is useful for cases when the backend provides additional context not
     available in the response body.
@@ -170,7 +172,8 @@ export default BaseAuthenticator.extend({
   },
 
   /**
-    Makes a request to the devise server.
+    Makes a request to the Devise server using
+    [ember-network/fetch](https://github.com/tomdale/ember-network#fetch).
 
     @method makeRequest
     @param {Object} data The request data
