@@ -94,6 +94,6 @@ export default DeviseAuthenticator.extend({
   _validate(data) {
     const resourceName = this.get('resourceName');
     const _data = data[resourceName] ? data[resourceName] : data;
-    !isEmpty(_data.client) && this._super(...arguments);
+    return !isEmpty(_data.client) && this._super(...arguments);
   }
 });
