@@ -1,3 +1,27 @@
+# 1.2.0-beta.1
+
+* Ember Simple Auth now supports FastBoot out-of-the-box (when using the cookie
+  session store), see #1035.
+* Ember CLI's new `rootURL` setting is now used correctly, see #1070.
+* The cookie session store will now rewrite its cookies when any of its
+  configurable properties (like cookie name) change, see #1056.
+* The `DataAdapterMixin` now also overrides the `headersForRequest` method
+  which makes it behave correctly with Ember Data 1.7 and above, see #1033.
+* Configurable routes like the login route etc. are now configured via
+  overriding properties of the respective route mixins instead of settings in
+  `config/environment.js`, see #985.
+* The OAuth 2.0 Passwort Grant authenticator now allows to define custom
+  headers to be sent with authentication requests, see #1018.
+* Authenticators can now reject with the server response when requests fail,
+  see #1012.
+* Server responses are now validated before authenticators resolve
+  authentication, see #957.
+* The offset that the OAuth 2.0 Password Grant authenticator uses when
+  refreshing access tokens is now defined in an (overridable) property, see
+  #840.
+* The default cookie names that the cookie session store uses are now compliant
+  with RFC 2616, see #978.
+
 # 1.1.0
 
 There were no changes since 1.1.0-beta.5.
