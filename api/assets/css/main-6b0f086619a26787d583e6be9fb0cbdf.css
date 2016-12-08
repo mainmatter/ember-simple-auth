@@ -39,6 +39,10 @@ h3.section {
   background-color: #f0ad4e;
 }
 
+.label-deprecated {
+  margin-right: 5px;
+}
+
 .panel-heading span.pull-right {
   margin-left: 5px;
 }

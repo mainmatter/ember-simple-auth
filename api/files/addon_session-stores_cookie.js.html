@@ -3,13 +3,13 @@
   <head>
     <title>addon/session-stores/cookie.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/vendor/css/github.css">
-    <link rel="stylesheet" href="../assets/vendor/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <script src="../assets/vendor/js/jquery.min.js"></script>
-    <script src="../assets/vendor/js/bootstrap.min.js"></script>
-    <script src="../assets/vendor/js/highlight.pack.js"></script>
+    <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
+    <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
+    <link rel="stylesheet" href="../assets/vendor/css/font-awesome.min-0831cba6a670e405168b84aa20798347.css" integrity="sha256-k2/8zcNbxVIh5mnQ52A0r3a6jAgMGxFJFE2707UxGCk= sha512-ZV9KawG2Legkwp3nAlxLIVFudTauWuBpC10uEafMHYL0Sarrz5A7G79kXh5+5+woxQ5HM559XX2UZjMJ36Wplg==" >
+    <link rel="stylesheet" href="../assets/css/main-6b0f086619a26787d583e6be9fb0cbdf.css" integrity="sha256-Glv17HJu+jSE2P6nSBrW1VpRn4oRGD/eTT8UYSRl0B4= sha512-KyLtI8o0BYmN6Kc2b2hTae8JjxH9okYnLcF9BdQnCowsnrbKnJn9N+nmHcQZhNHGPbzlHneHAw2ZptzDzi31kg==" >
+    <script src="../assets/vendor/js/jquery.min-93125018857a47be0398951367335624.js" integrity="sha256-rFMI19evxKqBz+yn2uXoDnSFQRjvxwS91DuhbaIzoHI= sha512-x1io6/zyM93ek9dLqu1FBCZz5LFLaxrP1VrX2sK2chQHVFnnGh2FCLfJcy46eSwxA0ZwDu1MmeZ0YiV7dKRKzg==" ></script>
+    <script src="../assets/vendor/js/bootstrap.min-5dc39afa71d093648da10e5ae472fead.js" integrity="sha256-d23FLQ1EO41NH3jD4cP9Dsf7IfbvNI4Bf9TannBDJJo= sha512-R8lm4MaFCIA+nQCtScart3AItXw3tMZWX/43y+4NtckDs0xMjRN4Sgi4xHcKxxgl5SieaqHlqbSMVoqkNahszw==" ></script>
+    <script src="../assets/vendor/js/highlight.pack-c2f64cd0ea120f9f76d206b522d030c4.js" integrity="sha256-3xodx/nVbRNzpL/5+ZhnQIU5Lb869GzlqXkAT1VohUI= sha512-jOdDT7r3XsuD+o8njiqKogQGnUUx4sqXyp9x34LG8R8GjSwkiwJgBH6vm9GtVJJdu8e1KbRQ47kboGEQQ4sQ0w==" ></script>
   </head>
   <body>
     <header class="navbar navbar-default navbar-fixed-top">
@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.1.0-beta.3"><span class="label label-primary">1.1.0-beta.3</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.1"><span class="label label-primary">1.2.0-beta.1</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -62,8 +62,23 @@
           import Ember from &#x27;ember&#x27;;
           import BaseStore from &#x27;./base&#x27;;
           import objectsAreEqual from &#x27;../utils/objects-are-equal&#x27;;
+          import getOwner from &#x27;ember-getowner-polyfill&#x27;;
           
-          const { RSVP, computed, run: { next } } = Ember;
+          const { RSVP, computed, inject: { service }, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A } = Ember;
+          
+          const persistingProperty = function(beforeSet = K) {
+            return computed({
+              get(key) {
+                return this.get(&#x60;_${key}&#x60;);
+              },
+              set(key, value) {
+                beforeSet.apply(this);
+                this.set(&#x60;_${key}&#x60;, value);
+                scheduleOnce(&#x27;actions&#x27;, this, this.rewriteCookie);
+                return value;
+              }
+            });
+          };
           
           /**
             Session store that persists data in a cookie.
@@ -88,13 +103,15 @@
             });
             &#x60;&#x60;&#x60;
           
-            __In order to keep multiple tabs/windows of an application in sync, this
-            store has to periodically (every 500ms) check the cookie for changes__ as
-            there are no events for cookie changes that the store could subscribe to. If
-            the application does not need to make sure all session data is deleted when
-            the browser is closed, the
-            {{#crossLink &quot;LocalStorageStore&quot;}}&#x60;localStorage&#x60; session store{{/crossLink}}
-            should be used.
+            __Applications that use FastBoot must use this session store by defining the
+            application session store like this:__
+          
+            &#x60;&#x60;&#x60;js
+            // app/session-stores/application.js
+            import CookieStore from &#x27;ember-simple-auth/session-stores/cookie&#x27;;
+          
+            export default CookieStore.extend();
+            &#x60;&#x60;&#x60;
           
             @class CookieStore
             @module ember-simple-auth/session-stores/cookie
@@ -106,24 +123,28 @@
               The domain to use for the cookie, e.g., &quot;example.com&quot;, &quot;.example.com&quot;
               (which includes all subdomains) or &quot;subdomain.example.com&quot;. If not
               explicitly set, the cookie domain defaults to the domain the session was
-              authneticated on.
+              authenticated on.
           
               @property cookieDomain
               @type String
               @default null
               @public
             */
-            cookieDomain: null,
+            _cookieDomain: null,
+            cookieDomain: persistingProperty(),
           
             /**
               The name of the cookie.
           
               @property cookieName
               @type String
-              @default ember_simple_auth:session
+              @default ember_simple_auth-session
               @public
             */
-            cookieName: &#x27;ember_simple_auth:session&#x27;,
+            _cookieName: &#x27;ember_simple_auth-session&#x27;,
+            cookieName: persistingProperty(function() {
+              this._oldCookieName = this._cookieName;
+            }),
           
             /**
               The expiration time for the cookie in seconds. A value of &#x60;null&#x60; will make
@@ -135,27 +156,50 @@
               @type Integer
               @public
             */
-            cookieExpirationTime: null,
+            _cookieExpirationTime: null,
+            cookieExpirationTime: persistingProperty(),
           
-            _secureCookies: window.location.protocol === &#x27;https:&#x27;,
+            _cookies: service(&#x27;cookies&#x27;),
+          
+            _fastboot: computed(function() {
+              let owner = getOwner(this);
+          
+              return owner &amp;&amp; owner.lookup(&#x27;service:fastboot&#x27;);
+            }),
+          
+            _secureCookies: computed(function() {
+              if (this.get(&#x27;_fastboot.isFastBoot&#x27;)) {
+                return this.get(&#x27;_fastboot.request.protocol&#x27;) === &#x27;https&#x27;;
+              }
+          
+              return window.location.protocol === &#x27;https:&#x27;;
+            }).volatile(),
           
             _syncDataTimeout: null,
           
             _renewExpirationTimeout: null,
           
             _isPageVisible: computed(function() {
-              const visibilityState = document.visibilityState || &#x27;visible&#x27;;
-              return visibilityState === &#x27;visible&#x27;;
+              if (this.get(&#x27;_fastboot.isFastBoot&#x27;)) {
+                return false;
+              } else {
+                const visibilityState = typeof document !== &#x27;undefined&#x27; ? document.visibilityState || &#x27;visible&#x27; : false;
+                return visibilityState === &#x27;visible&#x27;;
+              }
             }).volatile(),
           
             init() {
               this._super(...arguments);
           
-              next(() =&gt; {
-                this._syncData().then(() =&gt; {
-                  this._renewExpiration();
+              if (!this.get(&#x27;_fastboot.isFastBoot&#x27;)) {
+                next(() =&gt; {
+                  this._syncData().then(() =&gt; {
+                    this._renewExpiration();
+                  });
                 });
-              });
+              } else {
+                this._renew();
+              }
             },
           
             /**
@@ -182,8 +226,8 @@
               @public
             */
             restore() {
-              let data = this._read(this.cookieName);
-              if (Ember.isEmpty(data)) {
+              let data = this._read(this.get(&#x27;cookieName&#x27;));
+              if (isEmpty(data)) {
                 return RSVP.resolve({});
               } else {
                 return RSVP.resolve(JSON.parse(data));
@@ -198,31 +242,39 @@
               @public
             */
             clear() {
-              this._write(null, 0);
+              this._write(&#x27;&#x27;, 0);
               this._lastData = {};
               return RSVP.resolve();
             },
           
             _read(name) {
-              let value = document.cookie.match(new RegExp(&#x60;${name}=([^;]+)&#x60;)) || [];
-              return decodeURIComponent(value[1] || &#x27;&#x27;);
+              return this.get(&#x27;_cookies&#x27;).read(name) || &#x27;&#x27;;
             },
           
             _calculateExpirationTime() {
-              let cachedExpirationTime = this._read(&#x60;${this.cookieName}:expiration_time&#x60;);
+              let cachedExpirationTime = this._read(&#x60;${this.get(&#x27;cookieName&#x27;)}-expiration_time&#x60;);
               cachedExpirationTime     = !!cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
-              return !!this.cookieExpirationTime ? new Date().getTime() + this.cookieExpirationTime * 1000 : cachedExpirationTime;
+              return this.get(&#x27;cookieExpirationTime&#x27;) ? new Date().getTime() + this.get(&#x27;cookieExpirationTime&#x27;) * 1000 : cachedExpirationTime;
             },
           
             _write(value, expiration) {
-              let path        = &#x27;; path=/&#x27;;
-              let domain      = Ember.isEmpty(this.cookieDomain) ? &#x27;&#x27; : &#x60;; domain=${this.cookieDomain}&#x60;;
-              let expires     = Ember.isEmpty(expiration) ? &#x27;&#x27; : &#x60;; expires=${new Date(expiration).toUTCString()}&#x60;;
-              let secure      = !!this._secureCookies ? &#x27;;secure&#x27; : &#x27;&#x27;;
-              document.cookie = &#x60;${this.cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}&#x60;;
-              if (expiration !== null) {
-                let cachedExpirationTime = this._read(&#x60;${this.cookieName}:expiration_time&#x60;);
-                document.cookie = &#x60;${this.cookieName}:expiration_time=${encodeURIComponent(this.cookieExpirationTime || cachedExpirationTime)}${domain}${path}${expires}${secure}&#x60;;
+              let cookieOptions = {
+                domain:  this.get(&#x27;cookieDomain&#x27;),
+                expires: isEmpty(expiration) ? null : new Date(expiration),
+                path:    &#x27;/&#x27;,
+                secure:  this.get(&#x27;_secureCookies&#x27;)
+              };
+              if (this._oldCookieName) {
+                A([this._oldCookieName, &#x60;${this._oldCookieName}-expiration_time&#x60;]).forEach((oldCookie) =&gt; {
+                  this.get(&#x27;_cookies&#x27;).clear(oldCookie);
+                });
+                delete this._oldCookieName;
+              }
+              this.get(&#x27;_cookies&#x27;).write(this.get(&#x27;cookieName&#x27;), value, cookieOptions);
+              if (!isEmpty(expiration)) {
+                let expirationCookieName = &#x60;${this.get(&#x27;cookieName&#x27;)}-expiration_time&#x60;;
+                let cachedExpirationTime = this.get(&#x27;_cookies&#x27;).read(expirationCookieName);
+                this.get(&#x27;_cookies&#x27;).write(expirationCookieName, this.get(&#x27;cookieExpirationTime&#x27;) || cachedExpirationTime, cookieOptions);
               }
             },
           
@@ -232,17 +284,17 @@
                   this._lastData = data;
                   this.trigger(&#x27;sessionDataUpdated&#x27;, data);
                 }
-                if (!Ember.testing) {
-                  Ember.run.cancel(this._syncDataTimeout);
-                  this._syncDataTimeout = Ember.run.later(this, this._syncData, 500);
+                if (!testing) {
+                  cancel(this._syncDataTimeout);
+                  this._syncDataTimeout = later(this, this._syncData, 500);
                 }
               });
             },
           
             _renew() {
               return this.restore().then((data) =&gt; {
-                if (!Ember.isEmpty(data) &amp;&amp; data !== {}) {
-                  data           = Ember.typeOf(data) === &#x27;string&#x27; ? data : JSON.stringify(data || {});
+                if (!isEmpty(data) &amp;&amp; data !== {}) {
+                  data           = typeOf(data) === &#x27;string&#x27; ? data : JSON.stringify(data || {});
                   let expiration = this._calculateExpirationTime();
                   this._write(data, expiration);
                 }
@@ -250,14 +302,22 @@
             },
           
             _renewExpiration() {
-              if (!Ember.testing) {
-                Ember.run.cancel(this._renewExpirationTimeout);
-                this._renewExpirationTimeout = Ember.run.later(this, this._renewExpiration, 60000);
+              if (!testing) {
+                cancel(this._renewExpirationTimeout);
+                this._renewExpirationTimeout = later(this, this._renewExpiration, 60000);
               }
               if (this.get(&#x27;_isPageVisible&#x27;)) {
                 return this._renew();
               } else {
                 return RSVP.resolve();
+              }
+            },
+          
+            rewriteCookie() {
+              const data = this._read(this._oldCookieName);
+              if (isPresent(data)) {
+                const expiration = this._calculateExpirationTime();
+                this._write(data, expiration);
               }
             }
           });
