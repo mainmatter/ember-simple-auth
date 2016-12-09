@@ -1,9 +1,8 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
-const { computed, A, Service, Evented }  = Ember;
+const { computed, A, Service, Evented, getOwner }  = Ember;
 
 /**
   __The session service provides access to the current session as well as

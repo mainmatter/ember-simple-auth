@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import Session from 'ember-simple-auth/services/session';
 
-const { ObjectProxy, Evented, run: { next }, set } = Ember;
+const { ObjectProxy, Evented, run: { next }, set, setOwner } = Ember;
 
 describe('SessionService', () => {
   let sessionService;
@@ -21,7 +21,8 @@ describe('SessionService', () => {
     };
     let container = { lookup() {} };
     sinon.stub(container, 'lookup').withArgs('authorizer').returns(authorizer);
-    sessionService = Session.create({ container, session });
+    sessionService = Session.create({ session });
+    setOwner(sessionService, container);
   });
 
   it('forwards the "authenticationSucceeded" event from the session', (done) => {

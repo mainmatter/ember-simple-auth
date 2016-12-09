@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 
 const {
   RSVP,
@@ -12,7 +11,8 @@ const {
   assert,
   deprecate,
   set,
-  debug
+  debug,
+  getOwner
 } = Ember;
 const assign = emberAssign || merge;
 

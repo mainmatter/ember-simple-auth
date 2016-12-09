@@ -1,10 +1,9 @@
 /* global localStorage */
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, $: jQuery, computed } = Ember;
+const { RSVP, $: jQuery, computed, getOwner } = Ember;
 
 /**
   Session store that persists data in the browser's `localStorage`.

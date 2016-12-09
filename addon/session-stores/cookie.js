@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
-import getOwner from 'ember-getowner-polyfill';
 
-const { RSVP, computed, inject: { service }, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A } = Ember;
+const { RSVP, computed, inject: { service }, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A, getOwner } = Ember;
 
 const persistingProperty = function(beforeSet = K) {
   return computed({
