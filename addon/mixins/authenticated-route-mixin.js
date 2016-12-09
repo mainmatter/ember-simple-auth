@@ -79,7 +79,6 @@ export default Mixin.create({
       assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
 
       if (!this.get('_isFastBoot')) {
-        transition.abort();
         this.set('session.attemptedTransition', transition);
       }
 

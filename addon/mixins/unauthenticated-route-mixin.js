@@ -67,14 +67,10 @@ export default Mixin.create({
     @param {Transition} transition The transition that lead to this route
     @public
   */
-  beforeModel(transition) {
+  beforeModel() {
     if (this.get('session').get('isAuthenticated')) {
       let routeIfAlreadyAuthenticated = this.get('routeIfAlreadyAuthenticated');
       assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
-
-      if (!this.get('_isFastBoot')) {
-        transition.abort();
-      }
 
       return this.transitionTo(routeIfAlreadyAuthenticated);
     } else {
