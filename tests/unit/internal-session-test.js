@@ -7,7 +7,7 @@ import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import Authenticator from 'ember-simple-auth/authenticators/base';
 
-const { RSVP, K, run: { next } } = Ember;
+const { RSVP, K, run: { next }, setOwner } = Ember;
 
 describe('InternalSession', () => {
   let session;
@@ -19,7 +19,8 @@ describe('InternalSession', () => {
     container     = { lookup() {} };
     store         = EphemeralStore.create();
     authenticator = Authenticator.create();
-    session       = InternalSession.create({ store, container });
+    session       = InternalSession.create({ store });
+    setOwner(session, container);
     sinon.stub(container, 'lookup').withArgs('authenticator').returns(authenticator);
   });
 

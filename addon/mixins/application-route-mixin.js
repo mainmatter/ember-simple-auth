@@ -1,8 +1,7 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 import Configuration from './../configuration';
 
-const { inject, Mixin, A, run: { bind }, testing, computed } = Ember;
+const { inject, Mixin, A, run: { bind }, testing, computed, getOwner } = Ember;
 
 /**
   The mixin for the application route; __defines methods that are called when
