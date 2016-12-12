@@ -7,20 +7,33 @@ import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mi
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
-const { Route, run: { next } } = Ember;
+const { Route, run: { next }, setOwner } = Ember;
 
 describe('ApplicationRouteMixin', () => {
   let session;
   let route;
+  let cookiesMock;
+  let containerMock;
 
   beforeEach(() => {
     session = InternalSession.create({ store: EphemeralStore.create() });
+    cookiesMock = {
+      read: sinon.stub(),
+      clear: sinon.stub()
+    };
+    containerMock = {
+      lookup: sinon.stub()
+    };
+
+    containerMock.lookup.withArgs('service:cookies').returns(cookiesMock);
 
     route = Route.extend(ApplicationRouteMixin, {
       transitionTo() {}
     }).create({
       session
     });
+
+    setOwner(route, containerMock);
   });
 
   describe('mapping of service events to route methods', () => {
@@ -84,6 +97,27 @@ describe('ApplicationRouteMixin', () => {
         route.sessionAuthenticated();
 
         expect(session.get('attemptedTransition')).to.be.null;
+      });
+    });
+
+    describe('when a redirect target is stored in a cookie', () => {
+      let cookieName = 'ember_simple_auth-redirectTarget';
+      let targetUrl = 'transition/target/url';
+
+      beforeEach(() => {
+        cookiesMock.read.withArgs(cookieName).returns(targetUrl);
+      });
+
+      it('transitions to the url', () => {
+        route.sessionAuthenticated();
+
+        expect(route.transitionTo).to.have.been.calledWith(targetUrl);
+      });
+
+      it('clears the cookie', () => {
+        route.sessionAuthenticated();
+
+        expect(cookiesMock.clear).to.have.been.calledWith(cookieName);
       });
     });
 

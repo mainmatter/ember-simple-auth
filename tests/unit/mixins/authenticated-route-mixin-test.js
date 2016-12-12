@@ -8,12 +8,15 @@ import InternalSession from 'ember-simple-auth/internal-session';
 import Configuration from 'ember-simple-auth/configuration';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
-const { Mixin, RSVP, Route } = Ember;
+const { Mixin, RSVP, Route, setOwner } = Ember;
 
 describe('AuthenticatedRouteMixin', () => {
   let route;
   let session;
   let transition;
+  let cookiesMock;
+  let fastbootMock;
+  let containerMock;
 
   describe('#beforeModel', () => {
     beforeEach(() => {
@@ -25,8 +28,23 @@ describe('AuthenticatedRouteMixin', () => {
 
       session = InternalSession.create({ store: EphemeralStore.create() });
       transition = {
+        intent: {
+          url: '/transition/target/url'
+        },
         send() {}
       };
+      cookiesMock = {
+        write: sinon.stub()
+      };
+      fastbootMock = {
+        get: sinon.stub()
+      };
+      containerMock = {
+        lookup: sinon.stub()
+      };
+
+      containerMock.lookup.withArgs('service:cookies').returns(cookiesMock);
+      containerMock.lookup.withArgs('service:fastboot').returns(fastbootMock);
 
       route = Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {
         // pretend this is never FastBoot
@@ -34,6 +52,9 @@ describe('AuthenticatedRouteMixin', () => {
         // replace actual transitionTo as the router isn't set up etc.
         transitionTo() {}
       }).create({ session });
+
+      setOwner(route, containerMock);
+
       sinon.spy(transition, 'send');
       sinon.spy(route, 'transitionTo');
     });
@@ -67,6 +88,22 @@ describe('AuthenticatedRouteMixin', () => {
 
         route.beforeModel(transition);
         expect(route.transitionTo).to.have.been.calledWith(authenticationRoute);
+      });
+
+      it('sets the redirectTarget cookie in fastboot', () => {
+        fastbootMock.get.withArgs('request.protocol').returns('https');
+
+        let cookieName = 'ember_simple_auth-redirectTarget';
+
+        route.reopen({
+          _isFastBoot: true
+        });
+
+        route.beforeModel(transition);
+        expect(cookiesMock.write).to.have.been.calledWith(cookieName, transition.intent.url, {
+          path: '/',
+          secure: true
+        });
       });
     });
   });
