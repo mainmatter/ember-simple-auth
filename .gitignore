@@ -32,3 +32,7 @@ Session.vim
 *~
 # auto-generated tag files
 tags
+
+### JetBrains files ###
+.idea/
+*.iml
