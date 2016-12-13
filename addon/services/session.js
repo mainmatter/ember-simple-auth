@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
-const { computed, A, Service, Evented, getOwner }  = Ember;
+const { computed, A, Service, Evented, getOwner, isNone, assert }  = Ember;
 
 /**
   __The session service provides access to the current session as well as
@@ -226,6 +226,7 @@ export default Service.extend(Evented, {
   authorize(authorizerFactory, block) {
     if (this.get('isAuthenticated')) {
       const authorizer = getOwner(this).lookup(authorizerFactory);
+      assert(`No authorizer for factory ${authorizerFactory} could be found!`, !isNone(authorizer));
       const sessionData = this.get('data.authenticated');
       authorizer.authorize(sessionData, block);
     }
