@@ -2,7 +2,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, computed, inject: { service }, run: { next, cancel, later, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A, getOwner } = Ember;
+const { RSVP, computed, inject: { service }, run: { next, debounce, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A, getOwner } = Ember;
 
 const persistingProperty = function(beforeSet = K) {
   return computed({
@@ -113,10 +113,6 @@ export default BaseStore.extend({
     return window.location.protocol === 'https:';
   }).volatile(),
 
-  _syncDataTimeout: null,
-
-  _renewExpirationTimeout: null,
-
   _isPageVisible: computed(function() {
     if (this.get('_fastboot.isFastBoot')) {
       return false;
@@ -223,8 +219,7 @@ export default BaseStore.extend({
         this.trigger('sessionDataUpdated', data);
       }
       if (!testing) {
-        cancel(this._syncDataTimeout);
-        this._syncDataTimeout = later(this, this._syncData, 500);
+        debounce(this, this._syncData, 500);
       }
     });
   },
@@ -241,8 +236,7 @@ export default BaseStore.extend({
 
   _renewExpiration() {
     if (!testing) {
-      cancel(this._renewExpirationTimeout);
-      this._renewExpirationTimeout = later(this, this._renewExpiration, 60000);
+      debounce(this, this._renewExpiration, 60000);
     }
     if (this.get('_isPageVisible')) {
       return this._renew();
