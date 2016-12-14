@@ -20,7 +20,9 @@ describe('SessionService', () => {
       authorize() {}
     };
     let container = { lookup() {} };
-    sinon.stub(container, 'lookup').withArgs('authorizer').returns(authorizer);
+    let stub = sinon.stub(container, 'lookup');
+    stub.withArgs('authorizer').returns(authorizer);
+    stub.withArgs('bad-authorizer').returns(undefined);
     sessionService = Session.create({ session });
     setOwner(sessionService, container);
   });
@@ -169,6 +171,12 @@ describe('SessionService', () => {
         sessionService.authorize('authorizer', 'block');
 
         expect(authorizer.authorize).to.have.been.calledWith({ some: 'data' }, 'block');
+      });
+
+      it("throws an error when the authorizer doesn't exist", () => {
+        expect(() => {
+          sessionService.authorize('bad-authorizer', 'block');
+        }).to.throw(Error, /No authorizer for factory/);
       });
     });
 
