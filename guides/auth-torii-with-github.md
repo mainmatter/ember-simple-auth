@@ -54,29 +54,51 @@ ember install torii
 
 ### Configuration
 
-The next step is to set up the configuration. Add the following to the ENV object in `config/environment.js`.
+The next step is to set up the configuration. You want your effective configuration in `config/environment.js` to look
+like this.
 
 ```js
-  var ENV = {
-    ...
+// DON'T TYPE THIS. THIS IS THE EFFECTIVE RESULT.
 
-    torii: {
-      sessionServiceName: 'session',
-      providers: {
-        'github-oauth2': {
-          apiKey: 'YOUR_API_KEY',
-          redirectUri: 'http://localhost:4200',
-          scope: 'repo user'
-        }
+var ENV = {
+  ...
+
+  torii: {
+    sessionServiceName: 'session',
+    providers: {
+      'github-oauth2': {
+        apiKey: 'YOUR_API_KEY',
+        redirectUri: 'http://localhost:4200',
+        scope: 'repo user'
       }
     }
-  };
+  }
+};
 ```
 
-Replace `YOUR_API_KEY` with the client ID supplied when you registered your GitHub application. Note also that this API
-key is probably specific to your development environment, as is the value given for `redirectUri` above. This is fine
-while your app is in development, but as your application approaches production, you'll need to break some of it out
-into the stage-specific parts of your `environment.js` like so.
+`YOUR_API_KEY` is the client ID supplied when you registered your GitHub application.
+
+However, this API key is probably specific to your development environment, as is the value given for `redirectUri`
+above. This is fine while your app is in development, but as your application approaches production, you'll need to
+break some of it out.
+
+Additionally, it can be considered bad practice to distribute all of your API keys in your source code. Let's add a
+little complexity and address this concern by using `ember-cli-dotenv` to put our key in an external file that will be
+injected at build time. Install the package
+
+```js
+ember install ember-cli-dotenv
+```
+
+and create a `.env` file in the root of your project like
+
+```
+GITHUB_DEV_CLIENT_ID=<YOUR_API_KEY>
+```
+
+replacing `<YOUR_API_KEY>` with the client ID from your application registration.
+
+Break the configuration into the stage-specific parts of your `environment.js` like so.
 
 ```js
   var ENV = {
@@ -93,7 +115,7 @@ into the stage-specific parts of your `environment.js` like so.
   };
 
   if(environment === 'development') {
-    ENV.torii.providers['github-oauth2'].apiKey = 'YOUR_DEV_API_KEY';
+    ENV.torii.providers['github-oauth2'].apiKey = process.env.GITHUB_DEV_CLIENT_ID;
     ENV.torii.providers['github-oauth2'].redirectUri = 'http://localhost:4200';
   }
 ```
