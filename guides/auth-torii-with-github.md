@@ -22,7 +22,7 @@ files and concepts.
 Go to your GitHub Settings, choose `OAuth Applications`, and press the `Register a new
 application` button. Fill in the fields similar to the following.
 
-![Registering an OAuth Application with GitHub](./github-registering-oauth-application.png)
+![Registering an OAuth Application with GitHub](./assets/github-registering-oauth-application.png)
 
 You will likely want to register different application keys for different deployment stages
 because of the differences in the `Authorization callback URL`.
