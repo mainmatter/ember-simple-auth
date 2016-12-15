@@ -124,6 +124,77 @@ The values in the `development` block are the ones specific to that stage. You m
 stage, but you will need different ones for `production` as at least the API key will change and you will almost
 definitely host the application under a domain name. We will add to the `development` block later.
 
+### The Basic App
+
+Let's give ourselves an app to secure. We'll keep it simple. We'll have a login route for authentication and use the
+application index route to display the authenticated user's data, an operation that gives a 401 if you aren't
+authenticated.
+
+```
+ember g route application
+ember g controller application
+ember g route index
+ember g route login
+```
+
+Also, now is a good time to remove `ember-welcome-page` from your `package.json`.
+
+Let's put some content in our templates. First, our `application.hbs` will give a friendly greeting and some useful
+information so we know things are working as we proceed.
+
+```handlebars
+<!-- app/templates/application.hbs -->
+
+<h1>Welcome to the Demo App!</h1>
+
+API Key: {{config.apiKey}} <br />
+
+{{#if session.isAuthenticated}}
+    Authenticated
+{{else}}
+    Unauthenticated
+{{/if}}
+
+<hr />
+
+{{outlet}}
+```
+
+The `session` service is automatically injected, so there's no code for that. We'll add the `config` entry for now to
+verify that our `dotenv` configuration is working.
+
+```js
+// app/controllers/application.js
+
+import Ember from 'ember';
+import config from '../config/environment';
+
+export default Ember.Controller.extend({
+  config: config.torii.providers['github-oauth2']
+});
+```
+
+For the `index.hbs` let's put a placeholder until we're ready to fill in real data.
+
+```handlebars
+{{!-- app/templates/index.hbs}}
+
+<h1>Me</h1>
+```
+
+Finally, we'll put a placeholder in `login.hbs`. We'll give it behavior shortly.
+
+```handlebars
+{{!-- app/templates/login.hbs}}
+
+<button>Log in to GitHub</button>
+```
+
+We can ignore the rest of the generated files for this step.
+ 
+You can test the app so far by running `ember serve` and pointing your browser to `http://localhost:4200/` and
+`http://localhost:4200/login`.
+
 ## Useful Links
 
 In addition to the documentation and source code for `ember-simple-auth` and `torii`, the
