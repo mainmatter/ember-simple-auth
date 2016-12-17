@@ -195,6 +195,139 @@ We can ignore the rest of the generated files for this step.
 You can test the app so far by running `ember serve` and pointing your browser to `http://localhost:4200/` and
 `http://localhost:4200/login`.
 
+### Adding Authentication
+
+We added the configuration for our authentication, but we didn't yet add the pieces that use it. Let's do that first.
+
+```
+ember g authenticator torii
+```
+
+and we'll modify our application and routes with some useful mixins.
+
+First, we'll add the [ApplicationRouteMixin](http://ember-simple-auth.com/api/classes/ApplicationRouteMixin.html) to
+our application route. This is optional, but adds methods supporting the authentication lifecycle that we would
+otherwise have to implement explicitly.
+
+```js
+import Ember from 'ember';
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+
+export default Ember.Route.extend(ApplicationRouteMixin, {
+});
+```
+
+Next, we'll designate the `index` route as an authenticated route using the
+[AuthenticatedRouteMixin](http://ember-simple-auth.com/api/classes/AuthenticatedRouteMixin.html). This will make the
+route inaccessible until we finish the authentication. It will automatically redirect you to the specified login route,
+by default `login`, if you are not authenticated.
+
+```js
+// app/routes/index.js
+
+import Ember from 'ember';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+
+export default Ember.Route.extend(AuthenticatedRouteMixin, {
+});
+```
+
+If you're still running the app when you save this, you will see it redirect to the `login` route.
+
+We'll also designate the `login` route as available for unauthenticated access by applying the
+[UnauthenticatedRouteMixin](http://ember-simple-auth.com/api/classes/UnauthenticatedRouteMixin.html) to it. This will
+redirect you to the `routeIfAlreadyAuthenticated` which defaults to `index`. As you can see, `ember-simple-auth` has
+sensible and convenient defaults.
+
+Next, we'll set up our torii authenticator to start.
+
+```js
+// app/authenticators/torii.js
+
+import Ember from 'ember';
+import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
+
+export default ToriiAuthenticator.extend({
+  torii: Ember.inject.service()
+});
+```
+
+We also need to define a Torii provider. Because Torii doesn't provide a generator, we need to create the `app/torii-providers`
+directory ourselves and create the following `github.js` inside it.
+
+```js
+// app/torii-providers/github.js
+
+import GitHubOAuth2Provider from 'torii/providers/github-oauth2';
+
+export default GitHubOAuth2Provider.extend({
+  fetch(data) {
+    return data;
+  }
+});
+```
+
+There's only one more piece in this step, connecting our "Log in" button to the authentication mechanism. First, add an
+action to your `login` route.
+
+```js
+  // add to app/routes/login.js
+  
+  actions: {
+    login() {
+      this.get('session').authenticate('authenticator:torii', 'github');
+    }
+  }
+```
+
+Finally, change your `login` template to send the action when the button is pressed.
+
+```handlebars
+{{!-- app/templates/login.hbs --}}
+
+<button {{action "login"}}>Log in to GitHub</button>
+```
+
+We've now established the mechanism to obtain an authorization code from GitHub. This doesn't authorize us fully to use
+the GitHub APIs, although `ember-simple-auth` considers us authenticated at this point, but we can add some information
+to our `application` template that at least verifies things work so far. Add the following line to your `application.hbs`
+after the `API Key` line. When you attempt to login, you should see a popup asking your permission for the app to access
+your account and it will show the authorization code. It will only ask your permission the first time. After that, the
+popup will flash quickly unless you revoke the application's access through GitHub.
+
+```handlebars
+Authorization Code: {{session.data.authenticated.authorizationCode}} <br />
+```
+
+### Logging Out
+
+Before we finish the authentication, let's add the ability to log out. This will help us reset our application so we can
+test it as we go.
+
+First, we'll add a logout button to our `application` template right after the text "Authenticated". This seems a
+reasonable place since it serves as our application's rudimentary menu bar and should only show when the user is
+authenticated.
+
+```handlebars
+{{!-- add to app/templates/application.hbs --}}
+
+    <button {{action "logout"}}>Log Out</button>
+```
+
+Next, add the `logout` action to your `application` controller.
+
+```js
+// add to app/controllers/application.js
+
+  actions: {
+    logout() {
+      this.get('session').invalidate();
+    },
+  }
+```
+
+Clicking the "Log Out" button will take you back to the login state.
+
 ## Useful Links
 
 In addition to the documentation and source code for `ember-simple-auth` and `torii`, the
