@@ -322,11 +322,245 @@ Next, add the `logout` action to your `application` controller.
   actions: {
     logout() {
       this.get('session').invalidate();
-    },
+    }
   }
 ```
 
 Clicking the "Log Out" button will take you back to the login state.
+
+### Obtaining an Access Token
+
+The final step in the process is to exchange your authorization code for an API access token. This can only be done
+securely through a back end service because it needs to know your application password. Right now, our app looks like
+it's authenticated, but it is not _authorized_ to use the GitHub APIs. Let's add `ember-data-github` and make our
+index page show some data about the currently logged in user.
+
+```
+ember install ember-data-github
+```
+
+If you still have your `ember serve` running, you will probably want to stop and restart it to make sure the new models
+are loaded from the addon.
+
+Next, we'll add a `model` hook to our `index` route to load the user data.
+
+```js
+// add to app/routes/index.js
+
+  model() {
+    return this.get('store').findRecord('github-user', '#');
+  }
+```
+
+The `ember-data-github` addon uses "#" as a special ID value to indicate the current user.
+
+While "Me" may have been truthful in the description of the current user, it doesn't require an API call to GitHub and
+isn't very informative. Change the contents of your `index` template to show some model attributes.
+
+```handlebars
+{{!-- app/templates/index.hbs --}}
+
+<img src={{model.avatarUrl}} /> <br />
+Login: {{model.login}} <br />
+Full Name: {{model.name}}
+```
+
+If you log in to GitHub through the app now with the console open, you will see that you are not fully authorized. The
+page will be blank (we didn't do any realy error handling) and the console will tell you you received a
+`401 (Unauthorized)` for an API call to `https://api.github.com/user`. This particular API uses the identity associated
+with the authorized user to return the profile for that user, which it can't do if you're not authorized. Now that we
+have evidence that we're not truly authorized, let's fix it.
+
+We need to have a token exchange service, a service that takes an authorization code and returns an access token. You
+can implement this in any language and stack you want for writing APIs. I chose to use AWS API Gateway and Lambda. I
+won't go through the whole process of setting up the API here. AWS has good documentation for most of the process and
+leads you through it pretty well. I documented a gotcha to watch for
+[here](https://blog.vance.com/aws-api-gateway-lambdas-and-cors-cfb98517a21a). My lambda looks like
+
+```js
+'use strict';
+
+console.log('Loading function');
+
+const https = require('https');
+
+exports.handler = (event, context, callback) => {
+    console.log('Received event:', JSON.stringify(event, null, 2));
+
+    const done = (err, res) => callback(null, {
+        statusCode: err ? '400' : '200',
+        body: err ? err.message : JSON.stringify(res),
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+    });
+
+    if (event.httpMethod !== 'POST') {
+        done(new Error(`Unsupported method "${event.httpMethod}"`));
+    }
+    
+    const eventBody = JSON.parse(event.body);
+    
+    const payload = {
+        'client_id': process.env.CLIENT_ID,
+        'client_secret': process.env.CLIENT_SECRET,
+        'code': eventBody.authorizationCode
+    };
+    if (eventBody.state) {
+        payload.state = eventBody.state;
+    }
+    
+    const data = JSON.stringify(payload);
+    
+    const options = {
+        hostname: 'github.com',
+        port: 443,
+        path: '/login/oauth/access_token',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(data),
+            'Accept': 'application/json',
+            'User-Agent': process.env.USER_AGENT
+        }
+    };
+
+    const req = https.request(options, (res) => {
+        let body = '';
+        console.log('Status:', res.statusCode);
+        console.log('Headers:', JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        res.on('data', (chunk) => body += chunk);
+        res.on('end', () => {
+            console.log('Successfully processed HTTPS response');
+            // If we know it's JSON, parse it
+            if (res.headers['content-type'] === 'application/json') {
+                body = JSON.parse(body);
+            }
+            console.log(`Successful response: ${body}`);
+            done(null, body);
+        });
+    });
+    req.on('error', callback);
+    req.write(data);
+    req.end();
+};
+```
+
+It creates a payload out of the `authorizationCode` and optionally `state` sent to it as well as the `client_id` and
+`client_secret` injected as Lambda environment variables. It sends them to the `/login/oauth/access_token` end point,
+takes GitHub's response and returns it verbatim. The resulting access token will be in an `access_token` property of
+the JSON. We aren't going to run this through Ember Data, so the result does not need to be JSONAPI.
+
+Our application will need to know the URL of the token exchange API. While this is not an established part of the Torii
+configuration, that is a reasonable place to put it. Add one line to the development section of your `environment.js`
+and have the value injected from our `.env` file. Add `DEV_TOKEN_EXCHANGE_URL=<YOUR TOKEN EXCHANGE URL>` and
+
+```js
+// add to development section of config/environment.js
+
+ENV.torii.providers['github-oauth2'].tokenExchangeUri = process.env.DEV_TOKEN_EXCHANGE_URL;
+```
+
+Now that we've set up a token exchange service, let's use it. Replace your `torii` adapter with
+
+```js
+import Ember from 'ember';
+import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
+import config from '../config/environment';
+
+export default ToriiAuthenticator.extend({
+  torii: Ember.inject.service(),
+  ajax: Ember.inject.service(),
+
+  authenticate() {
+    const ajax = this.get('ajax');
+    const tokenExchangeUri = config.torii.providers['github-oauth2'].tokenExchangeUri;
+
+    return this._super(...arguments).then((data) => {
+      return ajax.request(tokenExchangeUri, {
+        type: 'POST',
+        crossDomain: true,
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          authorizationCode: data.authorizationCode
+        })
+      }).then( (response) => {
+        return {
+          access_token: JSON.parse(response).access_token,
+          provider: data.provider
+        };
+      });
+    });
+  }
+});
+```
+
+This makes a `POST` request to your service and gives the response back to Torii. Notice that it returns the `access_token`
+and the `provider` but omits the `authorizationCode`. The authorization code is a one-time use token and is not valid
+after being exchanged.
+
+We're getting close now. We have an access token. We just need to use it.
+
+### Using The Access Token
+
+The trick now is to get the access token into the `Authorization` header for every HTTP request. For this, ESA has
+authorizers and the `DataAdapterMixin`. You create the authorizer with a generator.
+
+```
+ember g authorizer github
+```
+
+There isn't much to the basic authorizer. Replace the contents of the generate file with the following.
+
+```js
+// app/authorizers/github.js
+
+import Ember from 'ember';
+import Base from 'ember-simple-auth/authorizers/base';
+
+export default Base.extend({
+  session: Ember.inject.service(),
+  authorize(sessionData, block) {
+    if (this.get('session.isAuthenticated') && !Ember.isEmpty(sessionData.access_token)) {
+      block('Authorization', `token ${sessionData.access_token}`);
+    }
+  }
+});
+```
+
+The `block` callback transfers the access token from the session data to the HTTP header.
+
+Now we just need to get Ember Data to use the authorizer. If GitHub is the only data source we need for the application
+or at least the one we want to consider primary, we can create an `application` adapter. If we consider it the secondary
+data source, then we need to create an adapter per model. Because `ember-data-github` has several per-model adapters,
+we'll create the `github-user` adapter to start us off.
+
+```
+ember g adapter application
+```
+
+```js
+// app/adapters/github-user.js
+
+import GitHubUserAdapter from 'ember-data-github/adapters/github-user';
+import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
+
+export default GitHubUserAdapter.extend(DataAdapterMixin, {
+  authorizer: 'authorizer:github'
+});
+```
+
+We are extending the `github-user` adapter with the `DataAdapterMixin`. It looks at the `authorizer` property to lookup
+the correct authorizer factory from Ember.
+
+### Wrapping Up
+
+So that's it! You should be able to log in to GitHub, see your avatar and some data about yourself, and log out.
+
+The app certainly lacks polish. The UI is crude and, as we saw, there are opportunities for better error handling.
 
 ## Useful Links
 
@@ -334,6 +568,8 @@ In addition to the documentation and source code for `ember-simple-auth` and `to
 following posts and projects were helpful in assembling the full story presented in this
 guide.
 
+* [simple-auth-torii-github-demo](https://github.com/srvance/simple-auth-torii-github-demo) is a repo created to follow
+the steps of this guide. All elements of the guide except the token exchange service are contained here.
 * [github-stars](https://github.com/hawkup/github-stars) has multiple implementations of the
 same app to display your starred repos in various web app frameworks. The `emberjs`
 directory contains the implementation for Ember.
