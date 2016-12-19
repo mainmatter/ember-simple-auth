@@ -9,14 +9,13 @@ const { RSVP, Evented, Object: EmberObject } = Ember;
   The authenticator authenticates the session. The actual mechanism used to do
   this might, e.g., post a set of credentials to a server and in exchange
   retrieve an access token, initiating authentication against an external
-  provider like Facebook, etc. The details depend on the specific authenticator. Upon
-  successful authenticateion, any
-  data that the authenticator receives and
+  provider like Facebook, etc. The details depend on the specific authenticator.
+  Upon successful authenticateion, any data that the authenticator receives and
   resolves via the promise returned from the
   {{#crossLink "BaseAuthenticator/authenticate:method"}}{{/crossLink}}
   method is stored in the session and can be accessed via the session service
   to be used by the authorizer (see
-  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}} to e.g.
+  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}} to e.g.,
   authorize outgoing requests).
 
   The authenticator also decides whether a set of data that was restored from
