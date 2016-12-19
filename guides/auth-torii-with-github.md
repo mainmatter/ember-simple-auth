@@ -97,7 +97,8 @@ and create a `.env` file in the root of your project like
 GITHUB_DEV_CLIENT_ID=<YOUR_API_KEY>
 ```
 
-replacing `<YOUR_API_KEY>` with the client ID from your application registration.
+replacing `<YOUR_API_KEY>` with the client ID from your application registration. Add `/.env` to your `.gitignore` file
+so it will not be committed.
 
 Break the configuration into the stage-specific parts of your `environment.js` like so.
 
@@ -383,90 +384,101 @@ with the authorized user to return the profile for that user, which it can't do 
 have evidence that we're not truly authorized, let's fix it.
 
 We need to have a token exchange service, a service that takes an authorization code and returns an access token. You
-can implement this in any language and stack you want for writing APIs. I chose to use AWS API Gateway and Lambda. I
-won't go through the whole process of setting up the API here. AWS has good documentation for most of the process and
-leads you through it pretty well. I documented a gotcha to watch for
-[here](https://blog.vance.com/aws-api-gateway-lambdas-and-cors-cfb98517a21a). My lambda looks like
+can implement this in any language and stack you want for writing APIs. For the demo app in development, let's implement
+this service as an Ember `http-mock`. Because it's a `POST` request, we need to add the `body-parser` package to parse
+the request body.
+
+```
+ember g http-mock token
+npm install --save-dev body-parser
+```
+
+To keep our client secret secret, we'll create a `settings.js` file in the `/server` directory looking like
 
 ```js
-'use strict';
-
-console.log('Loading function');
-
-const https = require('https');
-
-exports.handler = (event, context, callback) => {
-    console.log('Received event:', JSON.stringify(event, null, 2));
-
-    const done = (err, res) => callback(null, {
-        statusCode: err ? '400' : '200',
-        body: err ? err.message : JSON.stringify(res),
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        },
-    });
-
-    if (event.httpMethod !== 'POST') {
-        done(new Error(`Unsupported method "${event.httpMethod}"`));
-    }
-    
-    const eventBody = JSON.parse(event.body);
-    
-    const payload = {
-        'client_id': process.env.CLIENT_ID,
-        'client_secret': process.env.CLIENT_SECRET,
-        'code': eventBody.authorizationCode
-    };
-    if (eventBody.state) {
-        payload.state = eventBody.state;
-    }
-    
-    const data = JSON.stringify(payload);
-    
-    const options = {
-        hostname: 'github.com',
-        port: 443,
-        path: '/login/oauth/access_token',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(data),
-            'Accept': 'application/json',
-            'User-Agent': process.env.USER_AGENT
-        }
-    };
-
-    const req = https.request(options, (res) => {
-        let body = '';
-        console.log('Status:', res.statusCode);
-        console.log('Headers:', JSON.stringify(res.headers));
-        res.setEncoding('utf8');
-        res.on('data', (chunk) => body += chunk);
-        res.on('end', () => {
-            console.log('Successfully processed HTTPS response');
-            // If we know it's JSON, parse it
-            if (res.headers['content-type'] === 'application/json') {
-                body = JSON.parse(body);
-            }
-            console.log(`Successful response: ${body}`);
-            done(null, body);
-        });
-    });
-    req.on('error', callback);
-    req.write(data);
-    req.end();
+module.exports = {
+  CLIENT_ID: '<YOUR CLIENT ID>',
+  CLIENT_SECRET: '<YOUR CLIENT SECRET>',
+  USER_AGENT: '<YOUR APPLICATION NAME>'
 };
 ```
 
+and add `/server/settings.js` to your `.gitignore` so it does not get committed.
+
+We can now implement our back end token exchange service.
+
+```js
+// server/mocks/token.js
+
+/*jshint node:true*/
+module.exports = function(app) {
+  const express = require('express');
+  const tokenRouter = express.Router();
+  const https = require('https');
+  const settings = require('../settings');
+
+  tokenRouter.post('/', function(req, res) {
+    const body = req.body;
+
+    const payload = {
+      'client_id': settings.CLIENT_ID,
+      'client_secret': settings.CLIENT_SECRET,
+      'code': body.authorizationCode
+    };
+    if (body.state) {
+      payload.state = body.state;
+    }
+
+    const data = JSON.stringify(payload);
+
+    const options = {
+      hostname: 'github.com',
+      port: 443,
+      path: '/login/oauth/access_token',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data),
+        'Accept': 'application/json',
+        'User-Agent': settings.USER_AGENT
+      }
+    };
+
+    const ghReq = https.request(options, (ghRes) => {
+      let body = '';
+      ghRes.setEncoding('utf8');
+      ghRes.on('data', (chunk) => body += chunk);
+      ghRes.on('end', () => {
+        res.writeHead(200, {
+          'Content-Type': 'application/json'
+        });
+        res.write(JSON.stringify(body));
+        res.end();
+      });
+    });
+    ghReq.on('error', (error) => {
+      console.error(error);
+      res.status(500).end();
+    });
+    ghReq.write(data);
+    ghReq.end();
+  });
+
+  app.use('/api/token', require('body-parser').json());
+  app.use('/api/token', tokenRouter);
+};
+```
+You may also want to add `"esversion": 6` to your `server/.jshintrc` to avoid warnings on this code.
+
 It creates a payload out of the `authorizationCode` and optionally `state` sent to it as well as the `client_id` and
-`client_secret` injected as Lambda environment variables. It sends them to the `/login/oauth/access_token` end point,
+`client_secret` taken from your `settings.js`. It sends them to the `/login/oauth/access_token` end point,
 takes GitHub's response and returns it verbatim. The resulting access token will be in an `access_token` property of
 the JSON. We aren't going to run this through Ember Data, so the result does not need to be JSONAPI.
 
 Our application will need to know the URL of the token exchange API. While this is not an established part of the Torii
-configuration, that is a reasonable place to put it. Add one line to the development section of your `environment.js`
-and have the value injected from our `.env` file. Add `DEV_TOKEN_EXCHANGE_URL=<YOUR TOKEN EXCHANGE URL>` and
+configuration, that is a reasonable place to put it. Add `DEV_TOKEN_EXCHANGE_URL=http://localhost:4200/api/token` to your
+`.env` and the following to the development section of your `environment.js`. __Note that you should use `https` for the
+token exchange service in production!__
 
 ```js
 // add to development section of config/environment.js
