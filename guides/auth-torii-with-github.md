@@ -4,9 +4,9 @@
 
 This guide walks through the process of authenticating and authorizing an Ember app with
 and for use against GitHub using `ember-simple-auth` and `torii` including a registered
-GitHub application, an unauthenticated login route, an authenticated content route, an
-AWS Lambda-based token exchange service, and use of an authorizer to inject the token
-into requests. We'll use the [ember-data-github](https://github.com/elwayman02/ember-data-github)
+GitHub application, an unauthenticated login route, an authenticated content route, a
+token exchange service, and use of an authorizer to inject the token into
+requests. We'll use the [ember-data-github](https://github.com/elwayman02/ember-data-github)
 addon so we don't need to create our own GitHub models, serializers, and adapters.
 
 While most of the pieces are documented in the `ember-simple-auth` and `torii`
@@ -37,12 +37,13 @@ back end token exchange service.
 
 OAuth is officially an authorization protocol, but is commonly used also for
 authentication when the initial authorization code is obtained over `https`. GitHub uses
-the OAuth authorization code grant type, which requires two steps. The first step uses
-your client ID to get a temporary authorization code. The temporary authorization code
-acts as a single use bridge to authorization. The second step takes that authorization
-code and sends it to your token exchange service which combines it with your client
-secret to obtain an authorization token. That token is effectively your unique password
-to use the GitHub APIs as long as it is valid.
+the OAuth [authorization code grant type](https://tools.ietf.org/html/rfc6749#section-4.1),
+which requires two steps. The first step uses your client ID to get a temporary
+authorization code. The temporary authorization code acts as a single use bridge
+to authorization. The second step takes that authorization code and sends it to
+your token exchange service which combines it with your client secret to obtain
+an authorization token. That token is effectively your unique password to use
+the GitHub APIs as long as it is valid.
 
 ### Installing the addons
 
