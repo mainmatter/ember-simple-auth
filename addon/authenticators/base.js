@@ -14,9 +14,8 @@ const { RSVP, Evented, Object: EmberObject } = Ember;
   resolves via the promise returned from the
   {{#crossLink "BaseAuthenticator/authenticate:method"}}{{/crossLink}}
   method is stored in the session and can be accessed via the session service
-  to be used by the authorizer (see
-  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}} to e.g.,
-  authorize outgoing requests).
+  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) to e.g.,
+  authorize outgoing requests.
 
   The authenticator also decides whether a set of data that was restored from
   the session store (see

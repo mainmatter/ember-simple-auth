@@ -18,6 +18,8 @@ const { computed, A, Service, Evented, getOwner, isNone, assert }  = Ember;
   });
   ```
 
+  and is __automatically injected by Ember Simple Auth's mixins__.
+
   @class SessionService
   @module ember-simple-auth/services/session
   @extends Ember.Service
