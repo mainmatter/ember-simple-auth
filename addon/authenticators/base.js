@@ -10,7 +10,7 @@ const { RSVP, Evented, Object: EmberObject } = Ember;
   this might, e.g., post a set of credentials to a server and in exchange
   retrieve an access token, initiating authentication against an external
   provider like Facebook, etc. The details depend on the specific authenticator.
-  Upon successful authenticateion, any data that the authenticator receives and
+  Upon successful authentication, any data that the authenticator receives and
   resolves via the promise returned from the
   {{#crossLink "BaseAuthenticator/authenticate:method"}}{{/crossLink}}
   method is stored in the session and can be accessed via the session service
