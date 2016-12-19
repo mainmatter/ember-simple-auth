@@ -28,9 +28,10 @@ You will likely want to register different application keys for different deploy
 because of the differences in the `Authorization callback URL`.
 
 Once you register your application, you will have a chance to add an application logo.
-Most importantly, you will be given a client ID and a client secret. _The client secret is
-a password and should be protected as such!_ You will use the client ID in your web
-application and the client secret in your back end token exchange service.
+Most importantly, you will be given a client ID and a client secret. _The client secret must be
+kept secret and should never be included in the Ember application's source!_
+You will use the client ID in your web application and the client secret in your
+back end token exchange service.
 
 ## Authenticating the Ember app
 
@@ -234,7 +235,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
 If you're still running the app when you save this, you will see it redirect to the `login` route.
 
-We'll also designate the `login` route as available for unauthenticated access by applying the
+We'll also designate the `login` route as available for unauthenticated access only by applying the
 [UnauthenticatedRouteMixin](http://ember-simple-auth.com/api/classes/UnauthenticatedRouteMixin.html) to it. This will
 redirect you to the `routeIfAlreadyAuthenticated` which defaults to `index`. As you can see, `ember-simple-auth` has
 sensible and convenient defaults.
@@ -267,17 +268,27 @@ export default GitHubOAuth2Provider.extend({
 });
 ```
 
-There's only one more piece in this step, connecting our "Log in" button to the authentication mechanism. First, add an
-action to your `login` route.
+There's only one more piece in this step, connecting our "Log in" button to the authentication mechanism. First, add a
+`login` controller with an action.
+
+```
+ember g controller login
+```
 
 ```js
-  // add to app/routes/login.js
+// app/controllers/login.js
+  
+import Ember from 'ember';
+
+export default Ember.Controller.extend({
+  session: Ember.inject.service(),
   
   actions: {
     login() {
       this.get('session').authenticate('authenticator:torii', 'github');
     }
   }
+});
 ```
 
 Finally, change your `login` template to send the action when the button is pressed.
@@ -285,7 +296,7 @@ Finally, change your `login` template to send the action when the button is pres
 ```handlebars
 {{!-- app/templates/login.hbs --}}
 
-<button {{action "login"}}>Log in to GitHub</button>
+<button onclick={{action "login"}}>Log in to GitHub</button>
 ```
 
 We've now established the mechanism to obtain an authorization code from GitHub. This doesn't authorize us fully to use
@@ -311,7 +322,7 @@ authenticated.
 ```handlebars
 {{!-- add to app/templates/application.hbs --}}
 
-    <button {{action "logout"}}>Log Out</button>
+    <button onclick={{action "logout"}}>Log Out</button>
 ```
 
 Next, add the `logout` action to your `application` controller.
@@ -331,7 +342,7 @@ Clicking the "Log Out" button will take you back to the login state.
 ### Obtaining an Access Token
 
 The final step in the process is to exchange your authorization code for an API access token. This can only be done
-securely through a back end service because it needs to know your application password. Right now, our app looks like
+securely through a back end service because it needs to know your client secret. Right now, our app looks like
 it's authenticated, but it is not _authorized_ to use the GitHub APIs. Let's add `ember-data-github` and make our
 index page show some data about the currently logged in user.
 
