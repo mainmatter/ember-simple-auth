@@ -5,7 +5,7 @@ const { inject: { service }, Mixin, assert, computed, getOwner } = Ember;
 
 /**
   __This mixin is used to make routes accessible only if the session is
-  not authenticated__ (e.g. login and registration routes). It defines a
+  not authenticated__ (e.g., login and registration routes). It defines a
   `beforeModel` method that aborts the current transition and instead
   transitions to the
   {{#crossLink "Configuration/routeIfAlreadyAuthenticated:property"}}{{/crossLink}}

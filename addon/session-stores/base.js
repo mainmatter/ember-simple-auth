@@ -18,7 +18,7 @@ const { RSVP, Object: EmberObject, Evented } = Ember;
 export default EmberObject.extend(Evented, {
   /**
     Triggered when the session store's data changes due to an external event,
-    e.g. from another tab or window of the same application. The session
+    e.g., from another tab or window of the same application. The session
     handles that event, passes the updated data to its authenticator's
     {{#crossLink "BaseAuthenticator/restore:method"}}{{/crossLink}} method and
     handles the result of that invocation accordingly.

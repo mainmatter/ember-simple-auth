@@ -6,7 +6,7 @@ const { computed, A, Service, Evented, getOwner, isNone, assert }  = Ember;
 
 /**
   __The session service provides access to the current session as well as
-  methods to authenticate and invalidate it__ etc. It is the main interface for
+  methods to authenticate it, invalidate it, etc.__ It is the main interface for
   the application to Ember Simple Auth's functionality. It can be injected via
 
   ```js
@@ -17,6 +17,8 @@ const { computed, A, Service, Evented, getOwner, isNone, assert }  = Ember;
     session: Ember.inject.service('session')
   });
   ```
+
+  and is __automatically injected by Ember Simple Auth's mixins__.
 
   @class SessionService
   @module ember-simple-auth/services/session

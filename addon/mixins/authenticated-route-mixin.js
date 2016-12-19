@@ -61,9 +61,9 @@ export default Mixin.create({
     If the current transition is aborted, this method will save it in the
     session service's
     {{#crossLink "SessionService/attemptedTransition:property"}}{{/crossLink}}
-    property so that  it can be retried after the session was authenticated
+    property so that  it can be retried after the session is authenticated
     (see
-    {{#crossLink "ApplicationRouteMixin/sessionAuthenticated:method"}}{{/crossLink}}.
+    {{#crossLink "ApplicationRouteMixin/sessionAuthenticated:method"}}{{/crossLink}}).
     If the transition is aborted in Fastboot mode, the transition's target
     URL will be saved in a `ember_simple_auth-redirectTarget` cookie for use by
     the browser after authentication is complete.

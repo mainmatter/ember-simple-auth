@@ -69,7 +69,7 @@ export default BaseAuthenticator.extend({
 
   /**
     The endpoint on the server that token revocation requests are sent to. Only
-    set this if the server actually supports token revokation. If this is
+    set this if the server actually supports token revocation. If this is
     `null`, the authenticator will not revoke tokens on session invalidation.
 
     __If token revocation is enabled but fails, session invalidation will be
