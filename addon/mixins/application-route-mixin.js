@@ -92,18 +92,26 @@ export default Mixin.create({
     event. If there is a transition that was previously intercepted by
     {{#crossLink "AuthenticatedRouteMixin/beforeModel:method"}}the
     AuthenticatedRouteMixin's `beforeModel` method{{/crossLink}} it will retry
-    it. If there is no such transition, this action transitions to the
+    it. If there is no such transition, the `ember_simple_auth-redirectTarget`
+    cookie will be checked for a url that represents an attemptedTransition
+    that was aborted in Fastboot mode, otherwise this action transitions to the
     {{#crossLink "Configuration/routeAfterAuthentication:property"}}{{/crossLink}}.
+
 
     @method sessionAuthenticated
     @public
   */
   sessionAuthenticated() {
     const attemptedTransition = this.get('session.attemptedTransition');
+    const cookies = getOwner(this).lookup('service:cookies');
+    const redirectTarget = cookies.read('ember_simple_auth-redirectTarget');
 
     if (attemptedTransition) {
       attemptedTransition.retry();
       this.set('session.attemptedTransition', null);
+    } else if (redirectTarget) {
+      this.transitionTo(redirectTarget);
+      cookies.clear('ember_simple_auth-redirectTarget');
     } else {
       this.transitionTo(this.get('routeAfterAuthentication'));
     }
