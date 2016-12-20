@@ -9,10 +9,9 @@ token exchange service, and use of an authorizer to inject the token into
 requests. We'll use the [ember-data-github](https://github.com/elwayman02/ember-data-github)
 addon so we don't need to create our own GitHub models, serializers, and adapters.
 
-While most of the pieces are documented in the `ember-simple-auth` and `torii`
-documentation, putting them together properly for the particular scenario has not been
-fully documented to date. Additionally, many of the sources on the general internet are
-helpful but dated or incomplete.
+The overall flow, concerns, and approach are the same for all OAuth2 explicit grant flow
+mechanisms like Facebook, Google, etc. The differences could be as small as changing some
+configuration and base classes.
 
 This guide assumes you know how to start an Ember app and are familiar with the various
 files and concepts.
@@ -163,9 +162,6 @@ API Key: {{config.apiKey}} <br />
 {{outlet}}
 ```
 
-The `session` service is automatically injected, so there's no code for that. We'll add the `config` entry for now to
-verify that our `dotenv` configuration is working.
-
 ```js
 // app/controllers/application.js
 
@@ -173,6 +169,7 @@ import Ember from 'ember';
 import config from '../config/environment';
 
 export default Ember.Controller.extend({
+  session: Ember.inject.service(),
   config: config.torii.providers['github-oauth2']
 });
 ```
@@ -487,7 +484,7 @@ token exchange service in production!__
 ENV.torii.providers['github-oauth2'].tokenExchangeUri = process.env.DEV_TOKEN_EXCHANGE_URL;
 ```
 
-Now that we've set up a token exchange service, let's use it. Replace your `torii` adapter with
+Now that we've set up a token exchange service, let's use it. Replace your `torii` authenticator with
 
 ```js
 import Ember from 'ember';
@@ -522,7 +519,7 @@ export default ToriiAuthenticator.extend({
 });
 ```
 
-This makes a `POST` request to your service and gives the response back to Torii. Notice that it returns the `access_token`
+This makes a `POST` request to your service and gives the response back to Ember Simple Auth. Notice that it returns the `access_token`
 and the `provider` but omits the `authorizationCode`. The authorization code is a one-time use token and is not valid
 after being exchanged.
 
