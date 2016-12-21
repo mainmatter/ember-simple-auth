@@ -391,17 +391,15 @@ ember g http-mock token
 npm install --save-dev body-parser
 ```
 
-To keep our client secret secret, we'll create a `settings.js` file in the `/server` directory looking like
+To keep our client secret secret, we'll add the following setting to the `.env` file.
 
-```js
-module.exports = {
-  CLIENT_ID: '<YOUR CLIENT ID>',
-  CLIENT_SECRET: '<YOUR CLIENT SECRET>',
-  USER_AGENT: '<YOUR APPLICATION NAME>'
-};
+```
+GITHUB_DEV_CLIENT_SECRET=<YOUR CLIENT SECRET>
+GITHUB_DEV_USER_AGENT=<YOUR APPLICATION NAME>
 ```
 
-and add `/server/settings.js` to your `.gitignore` so it does not get committed.
+In production, you'll want to have these settings and your client ID deployed with your service. You may want to
+change the key names in the `.env` file and the code depending on how you distinguish development from production.
 
 We can now implement our back end token exchange service.
 
@@ -413,14 +411,13 @@ module.exports = function(app) {
   const express = require('express');
   const tokenRouter = express.Router();
   const https = require('https');
-  const settings = require('../settings');
 
   tokenRouter.post('/', function(req, res) {
     const body = req.body;
 
     const payload = {
-      'client_id': settings.CLIENT_ID,
-      'client_secret': settings.CLIENT_SECRET,
+      'client_id': process.env.GITHUB_DEV_CLIENT_ID,
+      'client_secret': process.env.GITHUB_DEV_CLIENT_SECRET,
       'code': body.authorizationCode
     };
     if (body.state) {
@@ -438,7 +435,7 @@ module.exports = function(app) {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(data),
         'Accept': 'application/json',
-        'User-Agent': settings.USER_AGENT
+        'User-Agent': process.env.GITHUB_DEV_USER_AGENT
       }
     };
 
@@ -469,7 +466,7 @@ module.exports = function(app) {
 You may also want to add `"esversion": 6` to your `server/.jshintrc` to avoid warnings on this code.
 
 It creates a payload out of the `authorizationCode` and optionally `state` sent to it as well as the `client_id` and
-`client_secret` taken from your `settings.js`. It sends them to the `/login/oauth/access_token` end point,
+`client_secret` taken from your `.env`. It sends them to the `/login/oauth/access_token` end point,
 takes GitHub's response and returns it verbatim. The resulting access token will be in an `access_token` property of
 the JSON. We aren't going to run this through Ember Data, so the result does not need to be JSONAPI.
 
