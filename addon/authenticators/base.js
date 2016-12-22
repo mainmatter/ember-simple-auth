@@ -7,15 +7,15 @@ const { RSVP, Evented, Object: EmberObject } = Ember;
   implementing custom authenticators and must not be used directly.__
 
   The authenticator authenticates the session. The actual mechanism used to do
-  this might e.g. be posting a set of credentials to a server and in exchange
-  retrieving an access token, initiating authentication against an external
-  provider like Facebook etc. and depends on the specific authenticator. Any
-  data that the authenticator receives upon successful authentication and
-  resolves with from the
+  this might, e.g., post a set of credentials to a server and in exchange
+  retrieve an access token, initiating authentication against an external
+  provider like Facebook, etc. The details depend on the specific authenticator.
+  Upon successful authentication, any data that the authenticator receives and
+  resolves via the promise returned from the
   {{#crossLink "BaseAuthenticator/authenticate:method"}}{{/crossLink}}
   method is stored in the session and can be accessed via the session service
-  and be used by the authorizer (see
-  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) to e.g.
+  to be used by the authorizer (see
+  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) to e.g.,
   authorize outgoing requests.
 
   The authenticator also decides whether a set of data that was restored from
@@ -35,8 +35,8 @@ const { RSVP, Evented, Object: EmberObject } = Ember;
   });
   ```
 
-  and can then be used with the name Ember CLI automatically registers them
-  with in the Ember container:
+  and can then be used via the name Ember CLI automatically registers for them
+  within the Ember container.
 
   ```js
   // app/components/login-form.js
@@ -60,7 +60,7 @@ const { RSVP, Evented, Object: EmberObject } = Ember;
 export default EmberObject.extend(Evented, {
   /**
     __Triggered when the authentication data is updated by the authenticator
-    due to an external or scheduled event__. This might happen e.g. if the
+    due to an external or scheduled event__. This might happen, e.g., if the
     authenticator refreshes an expired token or an event is triggered from an
     external authentication provider that the authenticator uses. The session
     handles that event, passes the updated data back to the authenticator's
@@ -73,10 +73,10 @@ export default EmberObject.extend(Evented, {
   */
 
   /**
-    __Triggered when the authenciation data is invalidated by the authenticator
-    due to an external or scheduled event__. This might happen e.g. if a token
+    __Triggered when the authentication data is invalidated by the authenticator
+    due to an external or scheduled event__. This might happen, e.g., if a token
     expires or an event is triggered from an external authentication provider
-    that the authenticator uses. The session handles that event and will
+    that the authenticator uses. The session handles the event and will
     invalidate itself when it is triggered.
 
     @event sessionDataInvalidated

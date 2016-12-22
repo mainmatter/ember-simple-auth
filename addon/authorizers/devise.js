@@ -7,7 +7,7 @@ const { isEmpty } = Ember;
   Authorizer that works with the Ruby gem
   [devise](https://github.com/plataformatec/devise); includes the user's token
   and identification from the session data in the `Authorization` HTTP header,
-  e.g.:
+  e.g.,
 
   ```
   Authorization: token="234rtgjneroigne4" email="user@domain.tld"
@@ -52,7 +52,7 @@ export default BaseAuthorizer.extend({
 
     @method authorize
     @param {Object} data The data that the session currently holds
-    @param {Function} block(headerName,headerContent) The callback to call with the authorization data; will receive the header name and header content as arguments
+    @param {Function} block(headerName,headerContent) The callback to call with the authorization data; will receive the header name and header content as arguments.
     @public
   */
   authorize(data, block) {

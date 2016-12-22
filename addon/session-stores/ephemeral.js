@@ -21,7 +21,7 @@ export default BaseStore.extend({
   },
 
   /**
-    Persists the `data`. This replaces all currently stored data.
+    Persists `data`. This replaces all currently stored data.
 
     @method persist
     @param {Object} data The data to persist

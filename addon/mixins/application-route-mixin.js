@@ -4,8 +4,8 @@ import Configuration from './../configuration';
 const { inject, Mixin, A, run: { bind }, testing, computed, getOwner } = Ember;
 
 /**
-  The mixin for the application route; __defines methods that are called when
-  the session was successfully authenticated (see
+  The mixin for the application route, __defining methods that are called when
+  the session is successfully authenticated (see
   {{#crossLink "SessionService/authenticationSucceeded:event"}}{{/crossLink}})
   or invalidated__ (see
   {{#crossLink "SessionService/invalidationSucceeded:event"}}{{/crossLink}}).
@@ -89,8 +89,8 @@ export default Mixin.create({
   /**
     This method handles the session's
     {{#crossLink "SessionService/authenticationSucceeded:event"}}{{/crossLink}}
-    event. If there is a transition that was previously intercepted by
-    {{#crossLink "AuthenticatedRouteMixin/beforeModel:method"}}the
+    event. If there is a transition that was previously intercepted by the
+    {{#crossLink "AuthenticatedRouteMixin/beforeModel:method"}}
     AuthenticatedRouteMixin's `beforeModel` method{{/crossLink}} it will retry
     it. If there is no such transition, the `ember_simple_auth-redirectTarget`
     cookie will be checked for a url that represents an attemptedTransition

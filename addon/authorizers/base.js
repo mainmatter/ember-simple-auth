@@ -6,11 +6,11 @@ const { Object: EmberObject } = Ember;
   The base class for all authorizers. __This serves as a starting point for
   implementing custom authorizers and must not be used directly.__
 
-  Authorizers use the session data aqcuired by an authenticator when
-  authenticating the session to construct authrorization data that can e.g. be
-  injected into outgoing network requests etc. Depending on the authorization
+  Authorizers use the session data acquired by an authenticator when
+  authenticating the session to construct authorization data that can, e.g., be
+  injected into outgoing network requests. Depending on the authorization
   mechanism the authorizer implements, that authorization data might be an HTTP
-  header, query string parameters, a cookie etc.
+  header, query string parameters, a cookie, etc.
 
   __The authorizer has to fit the authenticator__ (see
   {{#crossLink "BaseAuthenticator"}}{{/crossLink}})
