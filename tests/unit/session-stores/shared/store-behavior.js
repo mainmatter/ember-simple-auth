@@ -3,7 +3,9 @@ import Ember from 'ember';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 
-const { run: { next }, K } = Ember;
+const {
+  run: { next }
+} = Ember;
 
 export default function(options) {
   let syncExternalChanges = options.syncExternalChanges || K;
