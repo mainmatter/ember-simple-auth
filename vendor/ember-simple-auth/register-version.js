@@ -1,1 +1,1 @@
-Ember.libraries.register('Ember Simple Auth', '1.1.0');
+Ember.libraries.register('Ember Simple Auth', '1.2.0-beta.1');
