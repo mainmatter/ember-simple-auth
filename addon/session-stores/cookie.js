@@ -2,7 +2,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, computed, inject: { service }, run: { next, debounce, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A, getOwner } = Ember;
+const { RSVP, computed, inject: { service }, run: { next, debounce, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A, getOwner, warn } = Ember;
 
 const persistingProperty = function(beforeSet = K) {
   return computed({
@@ -89,13 +89,25 @@ export default BaseStore.extend({
     the cookie a session cookie that expires and gets deleted when the browser
     is closed.
 
+    The recommended minimum value is 90 seconds. If your value is less than
+    that, the cookie may expire before its expiration time is extended
+    (expiration time is extended every 60 seconds).
+
     @property cookieExpirationTime
     @default null
     @type Integer
     @public
   */
   _cookieExpirationTime: null,
-  cookieExpirationTime: persistingProperty(),
+  cookieExpirationTime: persistingProperty(function(key, value) {
+    if (value < 90) {
+      /* jshint multistr: true */
+      warn('The recommended minimum value for `cookieExpirationTime` is \
+      90 seconds. If your value is less than that, the cookie may expire before \
+      its expiration time is extended (expiration time is extended every 60 \
+      seconds).');
+    }
+  }),
 
   _cookies: service('cookies'),
 
