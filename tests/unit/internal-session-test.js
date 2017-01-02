@@ -7,7 +7,11 @@ import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import Authenticator from 'ember-simple-auth/authenticators/base';
 
-const { RSVP, K, run: { next }, setOwner } = Ember;
+const {
+  RSVP,
+  run: { next },
+  setOwner
+} = Ember;
 
 describe('InternalSession', () => {
   let session;
@@ -471,7 +475,7 @@ describe('InternalSession', () => {
         });
       });
 
-      itHandlesAuthenticatorEvents(K);
+      itHandlesAuthenticatorEvents(function() {});
     });
 
     describe('when the store rejects persistance', () => {

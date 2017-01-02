@@ -2,9 +2,20 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, computed, inject: { service }, run: { next, debounce, scheduleOnce }, isEmpty, typeOf, testing, isPresent, K, A, getOwner } = Ember;
+const {
+  RSVP,
+  computed,
+  inject: { service },
+  run: { next, debounce, scheduleOnce },
+  isEmpty,
+  typeOf,
+  testing,
+  isPresent,
+  A,
+  getOwner
+} = Ember;
 
-const persistingProperty = function(beforeSet = K) {
+const persistingProperty = function(beforeSet = function() {}) {
   return computed({
     get(key) {
       return this.get(`_${key}`);
