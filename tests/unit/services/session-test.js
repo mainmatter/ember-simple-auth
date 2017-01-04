@@ -5,7 +5,9 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import Session from 'ember-simple-auth/services/session';
 
-const { ObjectProxy, Evented, run: { next }, set, setOwner } = Ember;
+import createWithContainer from '../../helpers/create-with-container';
+
+const { ObjectProxy, Evented, run: { next }, set } = Ember;
 
 describe('SessionService', () => {
   let sessionService;
@@ -23,8 +25,7 @@ describe('SessionService', () => {
     let stub = sinon.stub(container, 'lookup');
     stub.withArgs('authorizer').returns(authorizer);
     stub.withArgs('bad-authorizer').returns(undefined);
-    sessionService = Session.create({ session });
-    setOwner(sessionService, container);
+    sessionService = createWithContainer(Session, { session }, container);
   });
 
   it('forwards the "authenticationSucceeded" event from the session', (done) => {

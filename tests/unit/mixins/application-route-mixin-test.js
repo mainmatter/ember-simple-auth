@@ -7,7 +7,9 @@ import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mi
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
-const { Route, run: { next }, setOwner } = Ember;
+import createWithContainer from '../../helpers/create-with-container';
+
+const { Route, run: { next } } = Ember;
 
 describe('ApplicationRouteMixin', () => {
   let session;
@@ -27,13 +29,9 @@ describe('ApplicationRouteMixin', () => {
 
     containerMock.lookup.withArgs('service:cookies').returns(cookiesMock);
 
-    route = Route.extend(ApplicationRouteMixin, {
+    route = createWithContainer(Route.extend(ApplicationRouteMixin, {
       transitionTo() {}
-    }).create({
-      session
-    });
-
-    setOwner(route, containerMock);
+    }), { session }, containerMock);
   });
 
   describe('mapping of service events to route methods', () => {
