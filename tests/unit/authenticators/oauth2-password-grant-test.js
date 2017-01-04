@@ -127,6 +127,34 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       authenticator.authenticate('username', 'password');
     });
 
+    it('sends an AJAX request to the token endpoint without client_id Basic Auth header when enableClientAuth is false', function(done) {
+      server.post('/token', (request) => {
+        expect(request.requestHeaders.hasOwnProperty('authorization')).to.eql(false);
+        done();
+      });
+
+      authenticator.set('clientId', 'test-client');
+      authenticator.set('enableClientAuth', false);
+      authenticator.authenticate('username', 'password');
+    });
+
+    it('sends an AJAX request to the token endpoint with client_id in POST body when enableClientAuth is false', function(done) {
+      server.post('/token', (request) => {
+        let body = parsePostData(request.requestBody);
+        expect(body).to.eql({
+          'grant_type': 'password',
+          'username': 'username',
+          'password': 'password',
+          'client_id': 'test-client'
+        });
+        done();
+      });
+
+      authenticator.set('clientId', 'test-client');
+      authenticator.set('enableClientAuth', false);
+      authenticator.authenticate('username', 'password');
+    });
+
     it('sends an AJAX request to the token endpoint with customized headers', function(done) {
       server.post('/token', (request) => {
         expect(request.requestHeaders['x-custom-context']).to.eql('foobar');

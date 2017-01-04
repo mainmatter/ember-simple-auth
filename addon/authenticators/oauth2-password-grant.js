@@ -55,6 +55,18 @@ export default BaseAuthenticator.extend({
   clientId: null,
 
   /**
+    If `true`, the client_id (if present) will be sent in the `Authorization`
+    header with an empty client_secret. If `false`, the client_id will be sent
+    in the request body.
+
+    @property enableClientAuth
+    @type Boolean
+    @default true
+    @public
+  */
+  enableClientAuth: true,
+
+  /**
     The endpoint on the server that authentication and token refresh requests
     are sent to.
 
@@ -232,6 +244,9 @@ export default BaseAuthenticator.extend({
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
       }
+      if (!this.get('enableClientAuth') && !isEmpty('clientId')) {
+        data['client_id'] = this.get('clientId');
+      }
       this.makeRequest(serverTokenEndpoint, data, headers).then((response) => {
         run(() => {
           if (!this._validate(response)) {
@@ -318,7 +333,7 @@ export default BaseAuthenticator.extend({
     };
 
     const clientIdHeader = this.get('_clientIdHeader');
-    if (!isEmpty(clientIdHeader)) {
+    if (this.get('enableClientAuth') && !isEmpty(clientIdHeader)) {
       merge(options.headers, clientIdHeader);
     }
     return new RSVP.Promise((resolve, reject) => {
