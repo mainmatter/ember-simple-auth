@@ -9,7 +9,10 @@ import Authenticator from 'ember-simple-auth/authenticators/base';
 
 import createWithContainer from '../helpers/create-with-container';
 
-const { RSVP, K, run: { next } } = Ember;
+const {
+  RSVP,
+  run: { next }
+} = Ember;
 
 describe('InternalSession', () => {
   let session;
@@ -472,7 +475,7 @@ describe('InternalSession', () => {
         });
       });
 
-      itHandlesAuthenticatorEvents(K);
+      itHandlesAuthenticatorEvents(function() {});
     });
 
     describe('when the store rejects persistance', () => {
