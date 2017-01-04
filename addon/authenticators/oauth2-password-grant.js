@@ -241,11 +241,12 @@ export default BaseAuthenticator.extend({
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
       const useResponse = this.get('rejectWithResponse');
       const scopesString = makeArray(scope).join(' ');
+      const clientId = this.get('clientId');
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
       }
-      if (!this.get('enableClientAuth') && !isEmpty('clientId')) {
-        data['client_id'] = this.get('clientId');
+      if (!this.get('enableClientAuth') && !isEmpty(clientId)) {
+        data['client_id'] = clientId;
       }
       this.makeRequest(serverTokenEndpoint, data, headers).then((response) => {
         run(() => {
