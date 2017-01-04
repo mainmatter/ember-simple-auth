@@ -1,16 +1,19 @@
 {
   "name": "ember-simple-auth",
+  "description": "A lightweight library for implementing authentication/authorization with Ember.js applications.",
+  "version": "1.1.0",
   "options": {
     "paths": [
       "addon"
     ],
+    "external": [],
+    "themedir": "docs/theme",
+    "helpers": ["docs/theme/helpers/helpers.js"],
     "exclude": "vendor",
     "outdir": "../docs",
-    "yuidoc": {
-      "linkNatives": true,
-      "quiet": true,
-      "parseOnly": true,
-      "lint": false
-    }
+    "linkNatives": false,
+    "quiet": true,
+    "parseOnly": false,
+    "lint": false
   }
 }
