@@ -9,6 +9,7 @@ import {
   merge,
   assign as emberAssign
 } from '@ember/polyfills';
+import { deprecate } from '@ember/application/deprecations';
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
@@ -59,12 +60,12 @@ export default BaseAuthenticator.extend({
     header with an empty client_secret. If `false`, the client_id will be sent
     in the request body.
 
-    @property enableClientAuth
+    @property enableLegacyClientIdentification
     @type Boolean
     @default true
     @public
   */
-  enableClientAuth: true,
+  enableLegacyClientIdentification: true,
 
   /**
     The endpoint on the server that authentication and token refresh requests
@@ -245,7 +246,7 @@ export default BaseAuthenticator.extend({
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
       }
-      if (!this.get('enableClientAuth') && !isEmpty(clientId)) {
+      if (!this.get('enableLegacyClientIdentification') && !isEmpty(clientId)) {
         data['client_id'] = clientId;
       }
       this.makeRequest(serverTokenEndpoint, data, headers).then((response) => {
@@ -334,7 +335,12 @@ export default BaseAuthenticator.extend({
     };
 
     const clientIdHeader = this.get('_clientIdHeader');
-    if (this.get('enableClientAuth') && !isEmpty(clientIdHeader)) {
+    if (this.get('enableLegacyClientIdentification') && !isEmpty(clientIdHeader)) {
+      deprecate('Ember Simple Auth: sending client_id as authoriation header is no longer ' +
+        'supported, please set enableLegacyClientIdentification property to false', {
+          id: `ember-simple-auth.oauth2-password-grant.makeRequest`,
+          until: '2.0.0'
+        });
       merge(options.headers, clientIdHeader);
     }
     return new RSVP.Promise((resolve, reject) => {

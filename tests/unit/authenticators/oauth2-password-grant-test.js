@@ -127,18 +127,18 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       authenticator.authenticate('username', 'password');
     });
 
-    it('sends an AJAX request to the token endpoint without client_id Basic Auth header when enableClientAuth is false', function(done) {
+    it('sends an AJAX request to the token endpoint without client_id Basic Auth header when enableLegacyClientIdentification is false', function(done) {
       server.post('/token', (request) => {
         expect(request.requestHeaders.hasOwnProperty('authorization')).to.eql(false);
         done();
       });
 
       authenticator.set('clientId', 'test-client');
-      authenticator.set('enableClientAuth', false);
+      authenticator.set('enableLegacyClientIdentification', false);
       authenticator.authenticate('username', 'password');
     });
 
-    it('sends an AJAX request to the token endpoint with client_id in POST body when enableClientAuth is false', function(done) {
+    it('sends an AJAX request to the token endpoint with client_id in POST body when enableLegacyClientIdentification is false', function(done) {
       server.post('/token', (request) => {
         let body = parsePostData(request.requestBody);
         expect(body).to.eql({
@@ -151,7 +151,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
 
       authenticator.set('clientId', 'test-client');
-      authenticator.set('enableClientAuth', false);
+      authenticator.set('enableLegacyClientIdentification', false);
       authenticator.authenticate('username', 'password');
     });
 
