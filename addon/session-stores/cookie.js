@@ -10,7 +10,7 @@ const persistingProperty = function(beforeSet = K) {
       return this.get(`_${key}`);
     },
     set(key, value) {
-      beforeSet.apply(this);
+      beforeSet.apply(this, [key, value]);
       this.set(`_${key}`, value);
       scheduleOnce('actions', this, this.rewriteCookie);
       return value;
@@ -101,11 +101,7 @@ export default BaseStore.extend({
   _cookieExpirationTime: null,
   cookieExpirationTime: persistingProperty(function(key, value) {
     if (value < 90) {
-      /* jshint multistr: true */
-      warn('The recommended minimum value for `cookieExpirationTime` is \
-      90 seconds. If your value is less than that, the cookie may expire before \
-      its expiration time is extended (expiration time is extended every 60 \
-      seconds).');
+      warn('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).', false, { id: 'ember-simple-auth.cookieExpirationTime' });
     }
   }),
 
