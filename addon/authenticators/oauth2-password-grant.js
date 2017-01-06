@@ -141,7 +141,10 @@ export default BaseAuthenticator.extend({
     @deprecated OAuth2PasswordGrantAuthenticator/rejectWithResponse:property
     @public
   */
-  rejectWithXhr: computed.deprecatingAlias('rejectWithResponse'),
+  rejectWithXhr: computed.deprecatingAlias('rejectWithResponse', {
+    id: `ember-simple-auth.authenticator.reject-with-xhr`,
+    until: '2.0.0'
+  }),
 
   /**
     When authentication fails, the rejection callback is provided with the whole
