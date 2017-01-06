@@ -338,7 +338,7 @@ export default BaseAuthenticator.extend({
     if (this.get('enableLegacyClientIdentification') && !isEmpty(clientIdHeader)) {
       deprecate('Ember Simple Auth: sending client_id as authoriation header is no longer ' +
         'supported, please set enableLegacyClientIdentification property to false',
-        false, 
+        false,
         { id: `ember-simple-auth.oauth2-password-grant.makeRequest`, until: '2.0.0' });
       merge(options.headers, clientIdHeader);
     }
