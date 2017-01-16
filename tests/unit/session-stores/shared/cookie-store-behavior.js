@@ -65,6 +65,24 @@ export default function(options) {
         { domain: 'example.com', expires: null, path: '/', secure: false }
       );
     });
+
+    it('sends a warning when `cookieExpirationTime` is less than 90 seconds', (done) => {
+      let store;
+      let warnSpy = sinon.spy(Ember, 'warn');
+
+      run(() => {
+        store = createStore(cookieService, {
+          cookieName: 'session-cookie-domain',
+          cookieDomain: 'example.com',
+          cookieExpirationTime: 60
+        });
+        let message = 'The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).';
+        expect(warnSpy).to.have.been.calledWith(message);
+        // jscs:disable disallowDirectPropertyAccess
+        Ember.warn.restore();
+        done();
+      });
+    });
   });
 
   describe('#renew', () => {
