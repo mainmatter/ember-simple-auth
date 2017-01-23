@@ -21,7 +21,7 @@ const persistingProperty = function(beforeSet = function() {}) {
       return this.get(`_${key}`);
     },
     set(key, value) {
-      beforeSet.apply(this);
+      beforeSet.apply(this, [key, value]);
       this.set(`_${key}`, value);
       scheduleOnce('actions', this, this.rewriteCookie);
       return value;
@@ -100,13 +100,23 @@ export default BaseStore.extend({
     the cookie a session cookie that expires and gets deleted when the browser
     is closed.
 
+    The recommended minimum value is 90 seconds. If your value is less than
+    that, the cookie may expire before its expiration time is extended
+    (expiration time is extended every 60 seconds).
+
     @property cookieExpirationTime
     @default null
     @type Integer
     @public
   */
   _cookieExpirationTime: null,
-  cookieExpirationTime: persistingProperty(),
+  cookieExpirationTime: persistingProperty(function(key, value) {
+    if (value < 90) {
+      // jscs:disable disallowDirectPropertyAccess
+      Ember.warn('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).', false, { id: 'ember-simple-auth.cookieExpirationTime' });
+      // jscs:enable disallowDirectPropertyAccess
+    }
+  }),
 
   _cookies: service('cookies'),
 
