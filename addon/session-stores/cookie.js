@@ -6,7 +6,7 @@ const {
   RSVP,
   computed,
   inject: { service },
-  run: { next, debounce, scheduleOnce },
+  run: { next, scheduleOnce, cancel, later },
   isEmpty,
   typeOf,
   testing,
@@ -68,6 +68,9 @@ const persistingProperty = function(beforeSet = function() {}) {
   @public
 */
 export default BaseStore.extend({
+  _syncDataTimeout: null,
+  _renewExpirationTimeout: null,
+
   /**
     The domain to use for the cookie, e.g., "example.com", ".example.com"
     (which includes all subdomains) or "subdomain.example.com". If not
@@ -240,7 +243,8 @@ export default BaseStore.extend({
         this.trigger('sessionDataUpdated', data);
       }
       if (!testing) {
-        debounce(this, this._syncData, 500);
+        cancel(this._syncDataTimeout);
+        this._syncDataTimeout = later(this, this._syncData, 500);
       }
     });
   },
@@ -257,7 +261,8 @@ export default BaseStore.extend({
 
   _renewExpiration() {
     if (!testing) {
-      debounce(this, this._renewExpiration, 60000);
+      cancel(this._renewExpirationTimeout);
+      this._renewExpirationTimeout = later(this, this._renewExpiration, 60000);
     }
     if (this.get('_isPageVisible')) {
       return this._renew();
