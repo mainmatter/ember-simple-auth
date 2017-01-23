@@ -35,6 +35,16 @@ export default function(options) {
   });
 
   describe('#persist', function() {
+    beforeEach(() => {
+      sinon.spy(Ember, 'warn');
+    });
+
+    afterEach(() => {
+      // jscs:disable disallowDirectPropertyAccess
+      Ember.warn.restore();
+      // jscs:enable disallowDirectPropertyAccess
+    });
+
     it('respects the configured cookieName', () => {
       let store;
       run(() => {
@@ -68,7 +78,6 @@ export default function(options) {
 
     it('sends a warning when `cookieExpirationTime` is less than 90 seconds', (done) => {
       let store;
-      let warnSpy = sinon.spy(Ember, 'warn');
 
       run(() => {
         store = createStore(cookieService, {
@@ -76,10 +85,11 @@ export default function(options) {
           cookieDomain: 'example.com',
           cookieExpirationTime: 60
         });
-        let message = 'The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).';
-        expect(warnSpy).to.have.been.calledWith(message);
+
         // jscs:disable disallowDirectPropertyAccess
-        Ember.warn.restore();
+        expect(Ember.warn).to.have.been.calledWith('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).');
+        // jscs:enable disallowDirectPropertyAccess
+
         done();
       });
     });
