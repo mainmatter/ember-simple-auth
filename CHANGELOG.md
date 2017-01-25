@@ -1,3 +1,28 @@
+# 1.2.0-beta.2
+
+* The `getOwner` function is now read from the `Ember` object instead of
+  importing it from `ember-getowner-polyfill` which fixes a deprecation, see
+  #1124.
+* Transitions are no longer aborted in the `AuthenticatedRouteMixin` and
+  `UnauthenticatedRouteMixin` which was simply unnecessary, see #1126.
+* There is now an assertion checking that a valid authorizer has been passed to
+  the session's `authorize` method, see #1132.
+* The attempted transition is now being stored in a cookie when Ember Simple
+  Auth intercepts a transition and redirects to the login route in the
+  `AuthenticatedRouteMixin` so that the transition can be retried in the
+  browser, see #1136.
+* The `ember-cookies` dependency has been updated to 0.0.11 which fixes a
+  deprecation, see #1153.
+* Ember Simple Auth now longer uses `Ember.K`, see #1166.
+* Deprecated ways to use Ember's deprecations which caused a deprecation
+  themselves have been fixed, see #1170.
+* There is now a warning when a `cookieExpirationTime` lower than 90 seconds is
+  set as that will lead to problems with Ember Simple Auth's session time
+  extension mechanism, see #1160.
+* Several parts of the documentation have been fixed and a new guide on
+  implementing authentication with github has been added, see #1143, #1142,
+  #1121, #1139.
+
 # 1.2.0-beta.1
 
 * Ember Simple Auth now supports FastBoot out-of-the-box (when using the cookie
