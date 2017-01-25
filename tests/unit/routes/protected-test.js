@@ -5,7 +5,7 @@ import { setupTest } from 'ember-mocha';
 
 describe('ProtectedRoute', function() {
   setupTest('route:protected', {
-    needs: ['router:main']
+    needs: ['router:main', 'service:session']
   });
 
   it('is still testable when using the AuthenticatedRouteMixin', function() {
