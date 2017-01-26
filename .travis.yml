@@ -18,6 +18,7 @@ env:
   - EMBER_TRY_SCENARIO=ember-release
   - EMBER_TRY_SCENARIO=ember-beta
   - EMBER_TRY_SCENARIO=ember-canary
+  - EMBER_TRY_SCENARIO=ember-default
 
 matrix:
   fast_finish: true
@@ -26,9 +27,8 @@ matrix:
 
 before_install:
   - npm config set spin false
-  - npm install -g bower
+  - npm install -g bower phantomjs-prebuilt
   - bower --version
-  - npm install phantomjs-prebuilt
   - phantomjs --version
 
 install:
@@ -38,7 +38,7 @@ install:
 script:
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
-  - ember try:one $EMBER_TRY_SCENARIO test && npm run nodetest && npm run fastboot-nodetest
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO test && npm run nodetest && npm run fastboot-nodetest
 
 notifications:
   email: false
