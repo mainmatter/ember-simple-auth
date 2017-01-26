@@ -71,7 +71,6 @@
     "glob": "^7.0.5",
     "handlebars": "~4.0.5",
     "loader.js": "^4.0.10",
-    "lodash": "^4.14.1",
     "marked": "^0.3.6",
     "mocha": "^3.0.0",
     "mocha-only-detector": "0.1.0",
