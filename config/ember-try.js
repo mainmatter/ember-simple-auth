@@ -17,6 +17,7 @@ module.exports = {
       },
       npm: {
         devDependencies: {
+          'ember-cli-shims': null,
           'ember-source': null
         }
       }
@@ -42,7 +43,8 @@ module.exports = {
       name: 'ember-lts-2.4',
       bower: {
         dependencies: {
-          'ember': 'components/ember#lts-2-4'
+          'ember': 'components/ember#lts-2-4',
+          'ember-cli-shims': '0.1.3'
         },
         resolutions: {
           'ember': 'lts-2-4'
@@ -50,6 +52,7 @@ module.exports = {
       },
       npm: {
         devDependencies: {
+          'ember-cli-shims': null,
           'ember-data': '~2.4.0',
           'ember-source': null
         }
