@@ -211,7 +211,7 @@ export default BaseStore.extend({
 
   _calculateExpirationTime() {
     let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
-    cachedExpirationTime     = !!cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
+    cachedExpirationTime     = cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
     return this.get('cookieExpirationTime') ? new Date().getTime() + this.get('cookieExpirationTime') * 1000 : cachedExpirationTime;
   },
 
