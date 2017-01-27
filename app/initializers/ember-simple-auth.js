@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import ENV from '../config/environment';
 import Configuration from 'ember-simple-auth/configuration';
 import setupSession from 'ember-simple-auth/initializers/setup-session';
