@@ -105,7 +105,7 @@ export default Base.extend({
       localStorage.setItem(LOCAL_STORAGE_TEST_KEY, true);
       localStorage.removeItem(LOCAL_STORAGE_TEST_KEY);
       return true;
-    } catch(e) {
+    } catch (e) {
       return false;
     }
   }),

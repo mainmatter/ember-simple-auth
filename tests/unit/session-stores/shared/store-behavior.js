@@ -36,7 +36,7 @@ export default function(options) {
 
     it('does not trigger the "sessionDataUpdated" event', (done) => {
       let triggered = false;
-      store.one('sessionDataUpdated', () => triggered = true);
+      store.one('sessionDataUpdated', () => (triggered = true));
       store.persist({ key: 'other value' });
       syncExternalChanges();
 

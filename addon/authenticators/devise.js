@@ -112,6 +112,7 @@ export default BaseAuthenticator.extend({
     @public
   */
   restore(data) {
+    // eslint-disable-next-line prefer-promise-reject-errors
     return this._validate(data) ? Promise.resolve(data) : Promise.reject();
   },
 
@@ -137,7 +138,7 @@ export default BaseAuthenticator.extend({
     return new Promise((resolve, reject) => {
       const useResponse = this.get('rejectWithResponse');
       const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties('resourceName', 'identificationAttributeName', 'tokenAttributeName');
-      const data         = {};
+      const data = {};
       data[resourceName] = { password };
       data[resourceName][identificationAttributeName] = identification;
 

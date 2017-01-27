@@ -30,7 +30,7 @@ describe('SessionService', () => {
 
   it('forwards the "authenticationSucceeded" event from the session', (done) => {
     let triggered = false;
-    sessionService.one('authenticationSucceeded', () => triggered = true);
+    sessionService.one('authenticationSucceeded', () => (triggered = true));
     session.trigger('authenticationSucceeded');
 
     next(() => {
@@ -41,7 +41,7 @@ describe('SessionService', () => {
 
   it('forwards the "invalidationSucceeded" event from the session', (done) => {
     let triggered = false;
-    sessionService.one('invalidationSucceeded', () => triggered = true);
+    sessionService.one('invalidationSucceeded', () => (triggered = true));
     session.trigger('invalidationSucceeded');
 
     next(() => {

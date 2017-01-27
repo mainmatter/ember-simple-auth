@@ -10,7 +10,7 @@ module.exports = {
   ],
 
   locals: function(options) {
-    var name      = options.entity.name;
+    var name = options.entity.name;
     var baseClass = options.baseClass || 'base';
 
     if (baseClass === 'torii') {

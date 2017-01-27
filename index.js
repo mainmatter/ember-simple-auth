@@ -1,10 +1,10 @@
-/* jshint node: true */
+/* eslint-env node */
 'use strict';
 
 module.exports = {
   name: 'ember-simple-auth',
 
-  included: function(app) {
+  included(app) {
     this._super.included.apply(this, arguments);
 
     // see: https://github.com/ember-cli/ember-cli/issues/3718

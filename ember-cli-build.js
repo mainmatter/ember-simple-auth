@@ -1,46 +1,48 @@
-/* global require, module */
-const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
-const yuidoc = require('broccoli-yuidoc');
-const version = require('git-repo-version')();
-const Handlebars = require('handlebars');
+/* eslint-env node */
+'use strict';
 
-var sourceTrees = [];
+const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+const Yuidoc = require('broccoli-yuidoc');
+const version = require('git-repo-version')();
+
+let sourceTrees = [];
 
 module.exports = function(defaults) {
-  var app = new EmberAddon(defaults, {
+  let app = new EmberAddon(defaults, {
     storeConfigInMeta: true,
     jscsOptions: {
       enabled: true,
-      testGenerator: function(relativePath, errors) {
+      testGenerator(relativePath, errors) {
         if (errors) {
-          errors = "\\n" + this.escapeErrorString(errors);
+          errors = `\\n${this.escapeErrorString(errors)}`;
         } else {
-          errors = "";
+          errors = '';
         }
 
-        return "describe('JSCS - " + relativePath + "', function() {\n" +
-          "it('should pass jscs', function() { \n" +
-          "  expect(" + !errors + ", '" + relativePath + " should pass jscs." + errors + "').to.be.ok; \n" +
-          "})});\n";
+        return `describe('JSCS - ${relativePath}', function() {
+  it('should pass jscs', function() {
+    expect(${!errors}, '${relativePath} should pass jscs.${errors}').to.be.ok; 
+  });
+});`;
       }
     }
   });
 
   app.import('bower_components/bootstrap/dist/css/bootstrap.css');
 
-  const yuidocTree = new yuidoc(['addon', 'app'], {
+  const yuidocTree = new Yuidoc(['addon', 'app'], {
     destDir: 'docs',
     yuidoc: {
       project: {
-        name:    'The Ember Simple Auth API',
-        version: version,
+        name: 'The Ember Simple Auth API',
+        version,
       },
       linkNatives: false,
-      quiet:       true,
-      parseOnly:   false,
-      lint:        false,
-      themedir:    'docs/theme',
-      helpers:     ['docs/theme/helpers/helpers.js']
+      quiet: true,
+      parseOnly: false,
+      lint: false,
+      themedir: 'docs/theme',
+      helpers: ['docs/theme/helpers/helpers.js']
     }
   });
 

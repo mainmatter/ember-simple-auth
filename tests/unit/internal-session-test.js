@@ -21,10 +21,10 @@ describe('InternalSession', () => {
   let container;
 
   beforeEach(() => {
-    container     = { lookup() {} };
-    store         = EphemeralStore.create();
+    container = { lookup() {} };
+    store = EphemeralStore.create();
     authenticator = Authenticator.create();
-    session       = createWithContainer(InternalSession, { store }, container);
+    session = createWithContainer(InternalSession, { store }, container);
     sinon.stub(container, 'lookup').withArgs('authenticator').returns(authenticator);
   });
 
@@ -179,7 +179,7 @@ describe('InternalSession', () => {
 
         it('does not trigger the "authenticationSucceeded" event', () => {
           let triggered = false;
-          session.one('authenticationSucceeded', () => triggered = true);
+          session.one('authenticationSucceeded', () => (triggered = true));
 
           return session.restore().then(() => {
             expect(triggered).to.be.false;
@@ -306,7 +306,7 @@ describe('InternalSession', () => {
 
       it('triggers the "authenticationSucceeded" event', () => {
         let triggered = false;
-        session.one('authenticationSucceeded', () => triggered = true);
+        session.one('authenticationSucceeded', () => (triggered = true));
 
         return session.authenticate('authenticator').then(() => {
           expect(triggered).to.be.true;
@@ -358,7 +358,7 @@ describe('InternalSession', () => {
       it('does not trigger the "authenticationSucceeded" event', () => {
         let triggered = false;
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
-        session.one('authenticationSucceeded', () => triggered = true);
+        session.one('authenticationSucceeded', () => (triggered = true));
 
         return session.authenticate('authenticator').catch(() => {
           expect(triggered).to.be.false;
@@ -422,7 +422,7 @@ describe('InternalSession', () => {
 
       it('triggers the "invalidationSucceeded" event', () => {
         let triggered = false;
-        session.one('invalidationSucceeded', () => triggered = true);
+        session.one('invalidationSucceeded', () => (triggered = true));
 
         return session.invalidate().then(() => {
           expect(triggered).to.be.true;
@@ -468,7 +468,7 @@ describe('InternalSession', () => {
       it('does not trigger the "invalidationSucceeded" event', () => {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
         let triggered = false;
-        session.one('invalidationSucceeded', () => triggered = true);
+        session.one('invalidationSucceeded', () => (triggered = true));
 
         return session.invalidate().catch(() => {
           expect(triggered).to.be.false;
@@ -583,7 +583,7 @@ describe('InternalSession', () => {
 
             it('does not trigger the "authenticationSucceeded" event', (done) => {
               let triggered = false;
-              session.one('authenticationSucceeded', () => triggered = true);
+              session.one('authenticationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
 
               next(() => {
@@ -600,7 +600,7 @@ describe('InternalSession', () => {
 
             it('triggers the "authenticationSucceeded" event', (done) => {
               let triggered = false;
-              session.one('authenticationSucceeded', () => triggered = true);
+              session.one('authenticationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
 
               next(() => {
@@ -654,7 +654,7 @@ describe('InternalSession', () => {
 
             it('triggers the "invalidationSucceeded" event', (done) => {
               let triggered = false;
-              session.one('invalidationSucceeded', () => triggered = true);
+              session.one('invalidationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
 
               next(() => {
@@ -671,7 +671,7 @@ describe('InternalSession', () => {
 
             it('does not trigger the "invalidationSucceeded" event', (done) => {
               let triggered = false;
-              session.one('invalidationSucceeded', () => triggered = true);
+              session.one('invalidationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
 
               next(() => {
@@ -722,7 +722,7 @@ describe('InternalSession', () => {
 
           it('triggers the "invalidationSucceeded" event', (done) => {
             let triggered = false;
-            session.one('invalidationSucceeded', () => triggered = true);
+            session.one('invalidationSucceeded', () => (triggered = true));
             store.trigger('sessionDataUpdated', { some: 'other property' });
 
             next(() => {
@@ -739,7 +739,7 @@ describe('InternalSession', () => {
 
           it('does not trigger the "invalidationSucceeded" event', (done) => {
             let triggered = false;
-            session.one('invalidationSucceeded', () => triggered = true);
+            session.one('invalidationSucceeded', () => (triggered = true));
             store.trigger('sessionDataUpdated', { some: 'other property' });
 
             next(() => {

@@ -11,7 +11,7 @@ describe('DeviseAuthorizer', () => {
 
   beforeEach(() => {
     authorizer = Devise.create();
-    block      = sinon.spy();
+    block = sinon.spy();
   });
 
   describe('#authorize', () => {

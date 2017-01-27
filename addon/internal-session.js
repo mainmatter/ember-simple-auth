@@ -109,7 +109,7 @@ export default ObjectProxy.extend(Evented, {
   },
 
   _setup(authenticator, authenticatedContent, trigger) {
-    trigger = !!trigger && !this.get('isAuthenticated');
+    trigger = Boolean(trigger) && !this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated: true,
@@ -134,7 +134,7 @@ export default ObjectProxy.extend(Evented, {
   },
 
   _clear(trigger) {
-    trigger = !!trigger && this.get('isAuthenticated');
+    trigger = Boolean(trigger) && this.get('isAuthenticated');
     this.beginPropertyChanges();
     this.setProperties({
       isAuthenticated: false,

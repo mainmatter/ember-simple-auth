@@ -1,10 +1,10 @@
 module.exports = function(app) {
-  var express     = require('express');
+  var express = require('express');
   var postsRouter = express.Router();
 
   postsRouter.get('/', function(req, res) {
     if (/Bearer .+/.test(req.headers.authorization)) {
-      const response = {
+      var response = {
         data: [
           {
             type: 'posts',

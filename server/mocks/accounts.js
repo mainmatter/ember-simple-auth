@@ -1,11 +1,11 @@
 module.exports = function(app) {
-  var express        = require('express');
+  var express = require('express');
   var accountsRouter = express.Router();
 
   accountsRouter.get('/1', function(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     if (/Bearer .+/.test(req.headers.authorization)) {
-      const response = {
+      var response = {
         data: {
           type: 'accounts',
           id: '1',
