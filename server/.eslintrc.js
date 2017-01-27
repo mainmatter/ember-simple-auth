@@ -1,5 +1,4 @@
 module.exports = {
-  env: {
-    node: true
-  }
+  root: true,
+  extends: 'simplabs/configs/node-0.x',
 };
