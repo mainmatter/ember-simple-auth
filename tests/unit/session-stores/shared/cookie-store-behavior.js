@@ -14,7 +14,6 @@ export default function(options) {
   let sync;
   let cookieService;
   let spyRewriteCookieMethod;
-  let unspyRewriteCookieMethod;
 
   beforeEach(() => {
     createStore = options.createStore;
@@ -25,7 +24,6 @@ export default function(options) {
     sinon.spy(cookieService, 'write');
     store = createStore(cookieService);
     spyRewriteCookieMethod = options.spyRewriteCookieMethod;
-    unspyRewriteCookieMethod = options.unspyRewriteCookieMethod;
   });
 
   afterEach(() => {
@@ -77,10 +75,8 @@ export default function(options) {
     });
 
     it('sends a warning when `cookieExpirationTime` is less than 90 seconds', (done) => {
-      let store;
-
       run(() => {
-        store = createStore(cookieService, {
+        createStore(cookieService, {
           cookieName: 'session-cookie-domain',
           cookieDomain: 'example.com',
           cookieExpirationTime: 60

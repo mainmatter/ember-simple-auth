@@ -68,7 +68,7 @@ export default ObjectProxy.extend(Evented, {
 
     return this._callStoreAsync('restore').then((restoredContent) => {
       let { authenticator: authenticatorFactory } = restoredContent.authenticated || {};
-      if (!!authenticatorFactory) {
+      if (authenticatorFactory) {
         delete restoredContent.authenticated.authenticator;
         const authenticator = this._lookupAuthenticator(authenticatorFactory);
         return authenticator.restore(restoredContent.authenticated).then((content) => {
@@ -187,7 +187,7 @@ export default ObjectProxy.extend(Evented, {
       if (!this._busy) {
         this._busy = true;
         let { authenticator: authenticatorFactory } = (content.authenticated || {});
-        if (!!authenticatorFactory) {
+        if (authenticatorFactory) {
           delete content.authenticated.authenticator;
           const authenticator = this._lookupAuthenticator(authenticatorFactory);
           authenticator.restore(content.authenticated).then((authenticatedContent) => {
