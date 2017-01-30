@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.1"><span class="label label-primary">1.2.0-beta.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.2"><span class="label label-primary">1.2.0-beta.2</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -61,11 +61,10 @@
               <pre class="code prettyprint linenums">
           /* global localStorage */
           import Ember from &#x27;ember&#x27;;
-          import getOwner from &#x27;ember-getowner-polyfill&#x27;;
           import BaseStore from &#x27;./base&#x27;;
           import objectsAreEqual from &#x27;../utils/objects-are-equal&#x27;;
           
-          const { RSVP, $: jQuery, computed } = Ember;
+          const { RSVP, $: jQuery, computed, getOwner } = Ember;
           
           /**
             Session store that persists data in the browser&#x27;s &#x60;localStorage&#x60;.

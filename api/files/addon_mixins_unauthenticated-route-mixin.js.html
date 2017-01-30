@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.1"><span class="label label-primary">1.2.0-beta.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.2"><span class="label label-primary">1.2.0-beta.2</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -60,14 +60,13 @@
           <div class="file">
               <pre class="code prettyprint linenums">
           import Ember from &#x27;ember&#x27;;
-          import getOwner from &#x27;ember-getowner-polyfill&#x27;;
           import Configuration from &#x27;./../configuration&#x27;;
           
-          const { inject: { service }, Mixin, assert, computed } = Ember;
+          const { inject: { service }, Mixin, assert, computed, getOwner } = Ember;
           
           /**
             __This mixin is used to make routes accessible only if the session is
-            not authenticated__ (e.g. login and registration routes). It defines a
+            not authenticated__ (e.g., login and registration routes). It defines a
             &#x60;beforeModel&#x60; method that aborts the current transition and instead
             transitions to the
             {{#crossLink &quot;Configuration/routeIfAlreadyAuthenticated:property&quot;}}{{/crossLink}}
@@ -129,14 +128,10 @@
               @param {Transition} transition The transition that lead to this route
               @public
             */
-            beforeModel(transition) {
+            beforeModel() {
               if (this.get(&#x27;session&#x27;).get(&#x27;isAuthenticated&#x27;)) {
                 let routeIfAlreadyAuthenticated = this.get(&#x27;routeIfAlreadyAuthenticated&#x27;);
                 assert(&#x27;The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!&#x27;, this.get(&#x27;routeName&#x27;) !== routeIfAlreadyAuthenticated);
-          
-                if (!this.get(&#x27;_isFastBoot&#x27;)) {
-                  transition.abort();
-                }
           
                 return this.transitionTo(routeIfAlreadyAuthenticated);
               } else {

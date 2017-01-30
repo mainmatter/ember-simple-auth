@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.1"><span class="label label-primary">1.2.0-beta.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.2"><span class="label label-primary">1.2.0-beta.2</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -60,10 +60,9 @@
           <div class="file">
               <pre class="code prettyprint linenums">
           import Ember from &#x27;ember&#x27;;
-          import getOwner from &#x27;ember-getowner-polyfill&#x27;;
           import Configuration from &#x27;./../configuration&#x27;;
           
-          const { inject: { service }, Mixin, assert, computed } = Ember;
+          const { inject: { service }, Mixin, assert, computed, getOwner } = Ember;
           
           /**
             __This mixin is used to make routes accessible only if the session is
@@ -123,9 +122,12 @@
               If the current transition is aborted, this method will save it in the
               session service&#x27;s
               {{#crossLink &quot;SessionService/attemptedTransition:property&quot;}}{{/crossLink}}
-              property so that  it can be retried after the session was authenticated
+              property so that  it can be retried after the session is authenticated
               (see
-              {{#crossLink &quot;ApplicationRouteMixin/sessionAuthenticated:method&quot;}}{{/crossLink}}.
+              {{#crossLink &quot;ApplicationRouteMixin/sessionAuthenticated:method&quot;}}{{/crossLink}}).
+              If the transition is aborted in Fastboot mode, the transition&#x27;s target
+              URL will be saved in a &#x60;ember_simple_auth-redirectTarget&#x60; cookie for use by
+              the browser after authentication is complete.
           
               __If &#x60;beforeModel&#x60; is overridden in a route that uses this mixin, the route&#x27;s
              implementation must call &#x60;this._super(...arguments)&#x60;__ so that the mixin&#x27;s
@@ -140,8 +142,15 @@
                 let authenticationRoute = this.get(&#x27;authenticationRoute&#x27;);
                 assert(&#x27;The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!&#x27;, this.get(&#x27;routeName&#x27;) !== authenticationRoute);
           
-                if (!this.get(&#x27;_isFastBoot&#x27;)) {
-                  transition.abort();
+                if (this.get(&#x27;_isFastBoot&#x27;)) {
+                  const fastboot = getOwner(this).lookup(&#x27;service:fastboot&#x27;);
+                  const cookies = getOwner(this).lookup(&#x27;service:cookies&#x27;);
+          
+                  cookies.write(&#x27;ember_simple_auth-redirectTarget&#x27;, transition.intent.url, {
+                    path: &#x27;/&#x27;,
+                    secure: fastboot.get(&#x27;request.protocol&#x27;) === &#x27;https&#x27;
+                  });
+                } else {
                   this.set(&#x27;session.attemptedTransition&#x27;, transition);
                 }
           

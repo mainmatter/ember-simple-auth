@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.1"><span class="label label-primary">1.2.0-beta.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.2"><span class="label label-primary">1.2.0-beta.2</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -60,15 +60,15 @@
           <div class="intro"><p>The base class for all authenticators. <strong>This serves as a starting point for
           implementing custom authenticators and must not be used directly.</strong></p>
           <p>The authenticator authenticates the session. The actual mechanism used to do
-          this might e.g. be posting a set of credentials to a server and in exchange
-          retrieving an access token, initiating authentication against an external
-          provider like Facebook etc. and depends on the specific authenticator. Any
-          data that the authenticator receives upon successful authentication and
-          resolves with from the
+          this might, e.g., post a set of credentials to a server and in exchange
+          retrieve an access token, initiating authentication against an external
+          provider like Facebook, etc. The details depend on the specific authenticator.
+          Upon successful authentication, any data that the authenticator receives and
+          resolves via the promise returned from the
           <a href="../classes/BaseAuthenticator.html#method_authenticate" class="crosslink">authenticate</a>
           method is stored in the session and can be accessed via the session service
-          and be used by the authorizer (see
-          <a href="../classes/BaseAuthorizer.html#method_authorize" class="crosslink">authorize</a>) to e.g.
+          to be used by the authorizer (see
+          <a href="../classes/BaseAuthorizer.html#method_authorize" class="crosslink">authorize</a>) to e.g.,
           authorize outgoing requests.</p>
           <p>The authenticator also decides whether a set of data that was restored from
           the session store (see
@@ -83,8 +83,8 @@
             ...
           });
           </code></pre>
-          <p>and can then be used with the name Ember CLI automatically registers them
-          with in the Ember container:</p>
+          <p>and can then be used via the name Ember CLI automatically registers for them
+          within the Ember container.</p>
           <pre class="code prettyprint"><code class="language-js">// app/components/login-form.js
           export default Ember.Controller.extend({
             session: Ember.inject.service(),
@@ -109,7 +109,7 @@
               </div>
           </div>
           <br><br>
-          <span class="foundat">Module description found: <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.2.0-beta.1/addon/authenticators/base.js#L5">
+          <span class="foundat">Module description found: <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.2.0-beta.2/addon/authenticators/base.js#L5">
             <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
           </a>
           </span>

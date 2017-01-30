@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.1"><span class="label label-primary">1.2.0-beta.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.2"><span class="label label-primary">1.2.0-beta.2</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -127,7 +127,8 @@
           
             /**
               When authentication fails, the rejection callback is provided with the whole
-              XHR object instead of it&#x27;s response JSON or text.
+              Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
+              instead of its responseJSON or responseText.
           
               This is useful for cases when the backend provides additional context not
               available in the response body.
@@ -138,11 +139,15 @@
               @deprecated DeviseAuthenticator/rejectWithResponse:property
               @public
             */
-            rejectWithXhr: computed.deprecatingAlias(&#x27;rejectWithResponse&#x27;),
+            rejectWithXhr: computed.deprecatingAlias(&#x27;rejectWithResponse&#x27;, {
+              id: &#x60;ember-simple-auth.authenticator.reject-with-xhr&#x60;,
+              until: &#x27;2.0.0&#x27;
+            }),
           
             /**
               When authentication fails, the rejection callback is provided with the whole
-              fetch response object instead of it&#x27;s response JSON or text.
+              Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
+              instead of its responseJSON or responseText.
           
               This is useful for cases when the backend provides additional context not
               available in the response body.
@@ -231,7 +236,8 @@
             },
           
             /**
-              Makes a request to the devise server.
+              Makes a request to the Devise server using
+              [ember-network/fetch](https://github.com/tomdale/ember-network#fetch).
           
               @method makeRequest
               @param {Object} data The request data

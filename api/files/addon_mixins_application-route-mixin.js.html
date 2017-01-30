@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.1"><span class="label label-primary">1.2.0-beta.1</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.2"><span class="label label-primary">1.2.0-beta.2</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -60,14 +60,13 @@
           <div class="file">
               <pre class="code prettyprint linenums">
           import Ember from &#x27;ember&#x27;;
-          import getOwner from &#x27;ember-getowner-polyfill&#x27;;
           import Configuration from &#x27;./../configuration&#x27;;
           
-          const { inject, Mixin, A, run: { bind }, testing, computed } = Ember;
+          const { inject, Mixin, A, run: { bind }, testing, computed, getOwner } = Ember;
           
           /**
-            The mixin for the application route; __defines methods that are called when
-            the session was successfully authenticated (see
+            The mixin for the application route, __defining methods that are called when
+            the session is successfully authenticated (see
             {{#crossLink &quot;SessionService/authenticationSucceeded:event&quot;}}{{/crossLink}})
             or invalidated__ (see
             {{#crossLink &quot;SessionService/invalidationSucceeded:event&quot;}}{{/crossLink}}).
@@ -151,21 +150,29 @@
             /**
               This method handles the session&#x27;s
               {{#crossLink &quot;SessionService/authenticationSucceeded:event&quot;}}{{/crossLink}}
-              event. If there is a transition that was previously intercepted by
-              {{#crossLink &quot;AuthenticatedRouteMixin/beforeModel:method&quot;}}the
+              event. If there is a transition that was previously intercepted by the
+              {{#crossLink &quot;AuthenticatedRouteMixin/beforeModel:method&quot;}}
               AuthenticatedRouteMixin&#x27;s &#x60;beforeModel&#x60; method{{/crossLink}} it will retry
-              it. If there is no such transition, this action transitions to the
+              it. If there is no such transition, the &#x60;ember_simple_auth-redirectTarget&#x60;
+              cookie will be checked for a url that represents an attemptedTransition
+              that was aborted in Fastboot mode, otherwise this action transitions to the
               {{#crossLink &quot;Configuration/routeAfterAuthentication:property&quot;}}{{/crossLink}}.
+          
           
               @method sessionAuthenticated
               @public
             */
             sessionAuthenticated() {
               const attemptedTransition = this.get(&#x27;session.attemptedTransition&#x27;);
+              const cookies = getOwner(this).lookup(&#x27;service:cookies&#x27;);
+              const redirectTarget = cookies.read(&#x27;ember_simple_auth-redirectTarget&#x27;);
           
               if (attemptedTransition) {
                 attemptedTransition.retry();
                 this.set(&#x27;session.attemptedTransition&#x27;, null);
+              } else if (redirectTarget) {
+                this.transitionTo(redirectTarget);
+                cookies.clear(&#x27;ember_simple_auth-redirectTarget&#x27;);
               } else {
                 this.transitionTo(this.get(&#x27;routeAfterAuthentication&#x27;));
               }
