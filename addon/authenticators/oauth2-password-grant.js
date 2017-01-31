@@ -181,7 +181,7 @@ export default BaseAuthenticator.extend({
   */
   restore(data) {
     return new RSVP.Promise((resolve, reject) => {
-      const now                 = (new Date()).getTime();
+      const now = (new Date()).getTime();
       const refreshAccessTokens = this.get('refreshAccessTokens');
       if (!isEmpty(data['expires_at']) && data['expires_at'] < now) {
         if (refreshAccessTokens) {
@@ -227,7 +227,7 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password, scope = [], headers = {}) {
     return new RSVP.Promise((resolve, reject) => {
-      const data                = { 'grant_type': 'password', username: identification, password };
+      const data = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
       const useResponse = this.get('rejectWithResponse');
       const scopesString = makeArray(scope).join(' ');
@@ -357,15 +357,15 @@ export default BaseAuthenticator.extend({
   },
 
   _refreshAccessToken(expiresIn, refreshToken) {
-    const data                = { 'grant_type': 'refresh_token', 'refresh_token': refreshToken };
+    const data = { 'grant_type': 'refresh_token', 'refresh_token': refreshToken };
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return new RSVP.Promise((resolve, reject) => {
       this.makeRequest(serverTokenEndpoint, data).then((response) => {
         run(() => {
-          expiresIn       = response['expires_in'] || expiresIn;
-          refreshToken    = response['refresh_token'] || refreshToken;
+          expiresIn = response['expires_in'] || expiresIn;
+          refreshToken = response['refresh_token'] || refreshToken;
           const expiresAt = this._absolutizeExpirationTime(expiresIn);
-          const data      = assign(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
+          const data = assign(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
           this._scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
           this.trigger('sessionDataUpdated', data);
           resolve(data);

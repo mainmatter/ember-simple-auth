@@ -28,7 +28,7 @@ export default EmberObject.extend({
   },
 
   clear(name) {
-    let expires     = new Date(0);
+    let expires = new Date(0);
     this.write(name, null, { expires });
   }
 });

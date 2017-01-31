@@ -22,7 +22,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
   beforeEach(() => {
     authenticator = OAuth2PasswordGrant.create();
-    server        = new Pretender();
+    server = new Pretender();
   });
 
   afterEach(() => {

@@ -57,7 +57,7 @@ export default BaseAuthorizer.extend({
   */
   authorize(data, block) {
     const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');
-    const userToken          = data[tokenAttributeName];
+    const userToken = data[tokenAttributeName];
     const userIdentification = data[identificationAttributeName];
 
     if (!isEmpty(userToken) && !isEmpty(userIdentification)) {

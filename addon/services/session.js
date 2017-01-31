@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
-const { computed, A, Service, Evented, getOwner, isNone, assert }  = Ember;
+const { computed, A, Service, Evented, getOwner, isNone, assert } = Ember;
 
 /**
   __The session service provides access to the current session as well as

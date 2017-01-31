@@ -25,7 +25,7 @@ describe('OAuth2BearerAuthorizer', () => {
 
     describe('when the session data contains a non empty access_token', () => {
       beforeEach(() => {
-        data  = {
+        data = {
           'access_token': 'secret token!'
         };
       });

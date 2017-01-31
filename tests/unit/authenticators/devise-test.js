@@ -12,7 +12,7 @@ describe('DeviseAuthenticator', () => {
   let authenticator;
 
   beforeEach(() => {
-    server        = new Pretender();
+    server = new Pretender();
     authenticator = Devise.create();
   });
 

@@ -1,5 +1,5 @@
 module.exports = function(app) {
-  var express     = require('express');
+  var express = require('express');
   var tokenRouter = express.Router();
 
   tokenRouter.post('/token', function(req, res) {

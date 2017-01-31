@@ -22,7 +22,7 @@ describe('UnauthenticatedRouteMixin', () => {
         }
       });
 
-      session    = InternalSession.create({ store: EphemeralStore.create() });
+      session = InternalSession.create({ store: EphemeralStore.create() });
       transition = {
         send() {}
       };

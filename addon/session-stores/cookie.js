@@ -170,7 +170,7 @@ export default BaseStore.extend({
   */
   persist(data) {
     this._lastData = data;
-    data           = JSON.stringify(data || {});
+    data = JSON.stringify(data || {});
     let expiration = this._calculateExpirationTime();
     this._write(data, expiration);
     return RSVP.resolve();
@@ -211,16 +211,16 @@ export default BaseStore.extend({
 
   _calculateExpirationTime() {
     let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
-    cachedExpirationTime     = cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
+    cachedExpirationTime = cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
     return this.get('cookieExpirationTime') ? new Date().getTime() + this.get('cookieExpirationTime') * 1000 : cachedExpirationTime;
   },
 
   _write(value, expiration) {
     let cookieOptions = {
-      domain:  this.get('cookieDomain'),
+      domain: this.get('cookieDomain'),
       expires: isEmpty(expiration) ? null : new Date(expiration),
-      path:    '/',
-      secure:  this.get('_secureCookies')
+      path: '/',
+      secure: this.get('_secureCookies')
     };
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach((oldCookie) => {
@@ -252,7 +252,7 @@ export default BaseStore.extend({
   _renew() {
     return this.restore().then((data) => {
       if (!isEmpty(data) && data !== {}) {
-        data           = typeOf(data) === 'string' ? data : JSON.stringify(data || {});
+        data = typeOf(data) === 'string' ? data : JSON.stringify(data || {});
         let expiration = this._calculateExpirationTime();
         this._write(data, expiration);
       }
