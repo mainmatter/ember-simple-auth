@@ -391,7 +391,7 @@ describe('InternalSession', () => {
         let param = { some: 'random data' };
         session.invalidate(param);
         invalidateSession.restore();
-        sinon.assert.calledWith(invalidateSession, session.get('authenticated') , param);
+        sinon.assert.calledWith(invalidateSession, session.get('authenticated'), param);
       });
     });
 
