@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "The Ember Simple Auth API",
-        "version": "1.2.0-beta.2"
+        "version": "1.2.0"
     },
     "files": {
         "addon/authenticators/base.js": {
@@ -976,7 +976,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 118,
+            "line": 119,
             "description": "Authenticates the session with the specified `identification` and\n`password`; the credentials are `POST`ed to the\n{{#crossLink \"DeviseAuthenticator/serverTokenEndpoint:property\"}}server{{/crossLink}}.\nIf the credentials are valid the server will responds with a\n{{#crossLink \"DeviseAuthenticator/tokenAttributeName:property\"}}token{{/crossLink}}\nand\n{{#crossLink \"DeviseAuthenticator/identificationAttributeName:property\"}}identification{{/crossLink}}.\n__If the credentials are valid and authentication succeeds, a promise that\nresolves with the server's response is returned__, otherwise a promise that\nrejects with the server error is returned.",
             "itemtype": "method",
             "name": "authenticate",
@@ -1003,7 +1003,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 166,
+            "line": 167,
             "description": "Does nothing",
             "itemtype": "method",
             "name": "invalidate",
@@ -1018,7 +1018,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 177,
+            "line": 178,
             "description": "Makes a request to the Devise server using\n[ember-network/fetch](https://github.com/tomdale/ember-network#fetch).",
             "itemtype": "method",
             "name": "makeRequest",

@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.2"><span class="label label-primary">1.2.0-beta.2</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0"><span class="label label-primary">1.2.0</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -231,7 +231,7 @@
             */
             persist(data) {
               this._lastData = data;
-              data           = JSON.stringify(data || {});
+              data = JSON.stringify(data || {});
               let expiration = this._calculateExpirationTime();
               this._write(data, expiration);
               return RSVP.resolve();
@@ -272,16 +272,16 @@
           
             _calculateExpirationTime() {
               let cachedExpirationTime = this._read(&#x60;${this.get(&#x27;cookieName&#x27;)}-expiration_time&#x60;);
-              cachedExpirationTime     = !!cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
+              cachedExpirationTime = cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
               return this.get(&#x27;cookieExpirationTime&#x27;) ? new Date().getTime() + this.get(&#x27;cookieExpirationTime&#x27;) * 1000 : cachedExpirationTime;
             },
           
             _write(value, expiration) {
               let cookieOptions = {
-                domain:  this.get(&#x27;cookieDomain&#x27;),
+                domain: this.get(&#x27;cookieDomain&#x27;),
                 expires: isEmpty(expiration) ? null : new Date(expiration),
-                path:    &#x27;/&#x27;,
-                secure:  this.get(&#x27;_secureCookies&#x27;)
+                path: &#x27;/&#x27;,
+                secure: this.get(&#x27;_secureCookies&#x27;)
               };
               if (this._oldCookieName) {
                 A([this._oldCookieName, &#x60;${this._oldCookieName}-expiration_time&#x60;]).forEach((oldCookie) =&gt; {
@@ -313,7 +313,7 @@
             _renew() {
               return this.restore().then((data) =&gt; {
                 if (!isEmpty(data) &amp;&amp; data !== {}) {
-                  data           = typeOf(data) === &#x27;string&#x27; ? data : JSON.stringify(data || {});
+                  data = typeOf(data) === &#x27;string&#x27; ? data : JSON.stringify(data || {});
                   let expiration = this._calculateExpirationTime();
                   this._write(data, expiration);
                 }

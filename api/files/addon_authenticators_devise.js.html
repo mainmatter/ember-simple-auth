@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0-beta.2"><span class="label label-primary">1.2.0-beta.2</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.2.0"><span class="label label-primary">1.2.0</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -173,6 +173,7 @@
               @public
             */
             restore(data) {
+              // eslint-disable-next-line prefer-promise-reject-errors
               return this._validate(data) ? Promise.resolve(data) : Promise.reject();
             },
           
@@ -198,7 +199,7 @@
               return new Promise((resolve, reject) =&gt; {
                 const useResponse = this.get(&#x27;rejectWithResponse&#x27;);
                 const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties(&#x27;resourceName&#x27;, &#x27;identificationAttributeName&#x27;, &#x27;tokenAttributeName&#x27;);
-                const data         = {};
+                const data = {};
                 data[resourceName] = { password };
                 data[resourceName][identificationAttributeName] = identification;
           
