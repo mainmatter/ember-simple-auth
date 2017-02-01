@@ -1,3 +1,11 @@
+# 1.2.0
+
+* The [deprecated `bind` method from jQuery](http://api.jquery.com/bind/) has
+  been replaced with `on`, see #1184.
+* The development dependencies have been updated and unused dependencies have
+  been removed, see #1182, #1161, #1183.
+* JSHint has been replaced with ESLint, see #1185, #1186.
+
 # 1.2.0-beta.2
 
 * The `getOwner` function is now read from the `Ember` object instead of
