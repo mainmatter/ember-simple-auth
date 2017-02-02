@@ -386,7 +386,7 @@ describe('InternalSession', () => {
     });
 
     describe('when the authenticator resolves invalidation with params', () => {
-      var spy;
+      let spy;
 
       beforeEach(() => {
         spy = sinon.spy(authenticator, 'invalidate');
