@@ -1,5 +1,3 @@
-/* eslint-disable mocha/no-top-level-hooks */
-
 import Ember from 'ember';
 import { describe, beforeEach, afterEach, it } from 'mocha';
 import { expect } from 'chai';
@@ -17,6 +15,7 @@ export default function(options) {
   let cookieService;
   let spyRewriteCookieMethod;
 
+  // eslint-disable-next-line mocha/no-top-level-hooks
   beforeEach(function() {
     createStore = options.createStore;
     renew = options.renew;
@@ -28,6 +27,7 @@ export default function(options) {
     spyRewriteCookieMethod = options.spyRewriteCookieMethod;
   });
 
+  // eslint-disable-next-line mocha/no-top-level-hooks
   afterEach(function() {
     cookieService.read.restore();
     cookieService.write.restore();

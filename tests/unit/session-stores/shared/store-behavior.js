@@ -1,5 +1,3 @@
-/* eslint-disable mocha/no-top-level-hooks */
-
 import Ember from 'ember';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
@@ -12,6 +10,7 @@ export default function(options) {
   let syncExternalChanges = options.syncExternalChanges || function() {};
   let store;
 
+  // eslint-disable-next-line mocha/no-top-level-hooks
   beforeEach(function() {
     store = options.store();
   });
