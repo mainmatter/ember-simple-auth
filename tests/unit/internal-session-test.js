@@ -385,7 +385,7 @@ describe('InternalSession', () => {
       return session.authenticate('authenticator');
     });
 
-    describe('when the authenticator resolves invalidation with params', () => {
+    describe('when invalidate gets called with additional params', () => {
       let spy;
 
       beforeEach(() => {
