@@ -13,6 +13,7 @@ const {
   isPresent,
   A,
   getOwner,
+  warn,
 } = Ember;
 
 const persistingProperty = function(beforeSet = function() {}) {
@@ -115,8 +116,7 @@ export default BaseStore.extend({
   _cookieExpirationTime: null,
   cookieExpirationTime: persistingProperty(function(key, value) {
     if (value < 90) {
-      // eslint-disable-next-line ember/local-modules
-      Ember.warn('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).', false, { id: 'ember-simple-auth.cookieExpirationTime' });
+      this._warn('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).', false, { id: 'ember-simple-auth.cookieExpirationTime' });
     }
   }),
 
@@ -276,5 +276,9 @@ export default BaseStore.extend({
       const expiration = this._calculateExpirationTime();
       this._write(data, expiration);
     }
+  },
+
+  _warn() {
+    warn(...arguments);
   }
 });
