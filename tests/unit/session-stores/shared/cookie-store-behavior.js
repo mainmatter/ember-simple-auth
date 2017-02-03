@@ -39,9 +39,7 @@ export default function(options) {
     });
 
     afterEach(function() {
-      // jscs:disable disallowDirectPropertyAccess
       warn.restore();
-      // jscs:enable disallowDirectPropertyAccess
     });
 
     it('respects the configured cookieName', function() {
@@ -83,9 +81,7 @@ export default function(options) {
           cookieExpirationTime: 60
         });
 
-        // jscs:disable disallowDirectPropertyAccess
         expect(Ember.warn).to.have.been.calledWith('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).');
-        // jscs:enable disallowDirectPropertyAccess
 
         done();
       });

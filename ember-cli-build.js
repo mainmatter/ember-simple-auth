@@ -10,22 +10,6 @@ let sourceTrees = [];
 module.exports = function(defaults) {
   let app = new EmberAddon(defaults, {
     storeConfigInMeta: true,
-    jscsOptions: {
-      enabled: true,
-      testGenerator(relativePath, errors) {
-        if (errors) {
-          errors = `\\n${this.escapeErrorString(errors)}`;
-        } else {
-          errors = '';
-        }
-
-        return `describe('JSCS - ${relativePath}', function() {
-  it('should pass jscs', function() {
-    expect(${!errors}, '${relativePath} should pass jscs.${errors}').to.be.ok; 
-  });
-});`;
-      }
-    }
   });
 
   app.import('bower_components/bootstrap/dist/css/bootstrap.css');
