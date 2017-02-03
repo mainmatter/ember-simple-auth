@@ -6,40 +6,40 @@ import Test from 'ember-simple-auth/authenticators/test';
 describe('TestAuthenticator', () => {
   let authenticator;
 
-  beforeEach(() => {
+  beforeEach(function() {
     authenticator = Test.create();
   });
 
-  describe('#restore', () => {
-    it('returns a resolving promise', () => {
+  describe('#restore', function() {
+    it('returns a resolving promise', function() {
       return authenticator.restore().then(() => {
         expect(true).to.be.true;
       });
     });
 
-    it('resolves with session data', () => {
+    it('resolves with session data', function() {
       return authenticator.restore({ userId: 1, otherData: 'some-data' }).then((data) => {
         expect(data).to.eql({ userId: 1, otherData: 'some-data' });
       });
     });
   });
 
-  describe('#authenticate', () => {
-    it('returns a resolving promise', () => {
+  describe('#authenticate', function() {
+    it('returns a resolving promise', function() {
       return authenticator.authenticate().then(() => {
         expect(true).to.be.true;
       });
     });
 
-    it('resolves with session data', () => {
+    it('resolves with session data', function() {
       return authenticator.authenticate({ userId: 1, otherData: 'some-data' }).then((data) => {
         expect(data).to.eql({ userId: 1, otherData: 'some-data' });
       });
     });
   });
 
-  describe('#invalidate', () => {
-    it('returns a resolving promise', () => {
+  describe('#invalidate', function() {
+    it('returns a resolving promise', function() {
       return authenticator.invalidate().then(() => {
         expect(true).to.be.true;
       });

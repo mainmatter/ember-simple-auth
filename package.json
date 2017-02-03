@@ -18,7 +18,8 @@
     "start": "ember server",
     "test": "ember try:each",
     "nodetest": "node node-tests/nodetest-runner.js",
-    "fastboot-nodetest": "node node-tests/fastboot-runner.js"
+    "fastboot-nodetest": "node node-tests/fastboot-runner.js",
+    "lint": "eslint app addon blueprints config server test-support tests *.js"
   },
   "dependencies": {
     "ember-cli-babel": "^5.1.7",
@@ -67,6 +68,8 @@
     "ember-source": "^2.11.0",
     "ember-suave": "~4.0.0",
     "eslint-config-simplabs": "^0.3.0",
+    "eslint-plugin-ember": "^2.0.1",
+    "eslint-plugin-mocha": "^4.8.0",
     "express": "^4.14.0",
     "git-repo-version": "^0.4.1",
     "glob": "^7.0.5",

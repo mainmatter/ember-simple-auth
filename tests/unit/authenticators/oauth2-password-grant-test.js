@@ -20,32 +20,32 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     return result;
   });
 
-  beforeEach(() => {
+  beforeEach(function() {
     authenticator = OAuth2PasswordGrant.create();
     server = new Pretender();
   });
 
-  afterEach(() => {
+  afterEach(function() {
     tryInvoke(server, 'shutdown');
   });
 
-  describe('#restore', () => {
-    describe('when the data includes expiration data', () => {
-      it('resolves with the correct data', (done) => {
+  describe('#restore', function() {
+    describe('when the data includes expiration data', function() {
+      it('resolves with the correct data', function(done) {
         authenticator.restore({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' }).then((data) => {
           expect(data).to.eql({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
           done();
         });
       });
 
-      describe('when the data includes an expiration time in the past', () => {
-        describe('when automatic token refreshing is enabled', () => {
-          describe('when the refresh request is successful', () => {
-            beforeEach(() => {
+      describe('when the data includes an expiration time in the past', function() {
+        describe('when automatic token refreshing is enabled', function() {
+          describe('when the refresh request is successful', function() {
+            beforeEach(function() {
               server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }']);
             });
 
-            it('resolves with the correct data', (done) => {
+            it('resolves with the correct data', function(done) {
               authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then((data) => {
                 expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
                 delete data['expires_at'];
@@ -55,8 +55,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
             });
           });
 
-          describe('when the access token is not refreshed successfully', () => {
-            it('returns a rejecting promise', (done) => {
+          describe('when the access token is not refreshed successfully', function() {
+            it('returns a rejecting promise', function(done) {
               authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).catch(() => {
                 expect(true).to.be.true;
                 done();
@@ -65,12 +65,12 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           });
         });
 
-        describe('when automatic token refreshing is disabled', () => {
-          beforeEach(() => {
+        describe('when automatic token refreshing is disabled', function() {
+          beforeEach(function() {
             authenticator.set('refreshAccessTokens', false);
           });
 
-          it('returns a rejecting promise', (done) => {
+          it('returns a rejecting promise', function(done) {
             authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).catch(() => {
               expect(true).to.be.true;
               done();
@@ -80,9 +80,9 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
     });
 
-    describe('when the data does not include expiration data', () => {
-      describe('when the data contains an access_token', () => {
-        it('resolves with the correct data', (done) => {
+    describe('when the data does not include expiration data', function() {
+      describe('when the data contains an access_token', function() {
+        it('resolves with the correct data', function(done) {
           authenticator.restore({ 'access_token': 'secret token!' }).then((data) => {
             expect(data).to.eql({ 'access_token': 'secret token!' });
             done();
@@ -90,8 +90,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         });
       });
 
-      describe('when the data does not contain an access_token', () => {
-        it('returns a rejecting promise', (done) => {
+      describe('when the data does not contain an access_token', function() {
+        it('returns a rejecting promise', function(done) {
           authenticator.restore().catch(() => {
             expect(true).to.be.true;
             done();
@@ -101,8 +101,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     });
   });
 
-  describe('#authenticate', () => {
-    it('sends an AJAX request to the token endpoint', (done) => {
+  describe('#authenticate', function() {
+    it('sends an AJAX request to the token endpoint', function(done) {
       server.post('/token', (request) => {
         let body = parsePostData(request.requestBody);
         expect(body).to.eql({
@@ -146,7 +146,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       authenticator.authenticate('username', 'password', 'public');
     });
 
-    it('sends multiple OAuth scopes to the token endpoint', (done) => {
+    it('sends multiple OAuth scopes to the token endpoint', function(done) {
       server.post('/token', (request) => {
         let { requestBody } = request;
         let { scope } = parsePostData(requestBody);
@@ -157,12 +157,12 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       authenticator.authenticate('username', 'password', ['public', 'private']);
     });
 
-    describe('when the authentication request is successful', () => {
-      beforeEach(() => {
+    describe('when the authentication request is successful', function() {
+      beforeEach(function() {
         server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }']);
       });
 
-      it('resolves with the correct data', (done) => {
+      it('resolves with the correct data', function(done) {
         authenticator.set('refreshAccessTokens', false);
         authenticator.authenticate('username', 'password').then((data) => {
           expect(true).to.be.true;
@@ -171,12 +171,12 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         });
       });
 
-      describe('when the server response includes expiration data', () => {
-        beforeEach(() => {
+      describe('when the server response includes expiration data', function() {
+        beforeEach(function() {
           server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!", "expires_in": 12345, "refresh_token": "refresh token!" }']);
         });
 
-        it('resolves with the correct data', (done) => {
+        it('resolves with the correct data', function(done) {
           authenticator.authenticate('username', 'password').then((data) => {
             expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
             delete data['expires_at'];
@@ -186,8 +186,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         });
       });
 
-      describe('when the server returns incomplete data', () => {
-        it('fails when no access_token is present', () => {
+      describe('when the server returns incomplete data', function() {
+        it('fails when no access_token is present', function() {
           server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{}']);
 
           return authenticator.authenticate('username', 'password').catch((error) => {
@@ -197,30 +197,30 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
     });
 
-    describe('when the authentication request fails', () => {
-      beforeEach(() => {
+    describe('when the authentication request fails', function() {
+      beforeEach(function() {
         server.post('/token', () => [400, { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' }, '{ "error": "invalid_grant" }']);
       });
 
-      it('rejects with the correct error', (done) => {
+      it('rejects with the correct error', function(done) {
         authenticator.authenticate('username', 'password').catch((error) => {
           expect(error).to.eql({ error: 'invalid_grant' });
           done();
         });
       });
 
-      describe('when reject with response is enabled', () => {
-        beforeEach(() => {
+      describe('when reject with response is enabled', function() {
+        beforeEach(function() {
           authenticator.set('rejectWithResponse', true);
         });
 
-        it('rejects with xhr object', () => {
+        it('rejects with xhr object', function() {
           return authenticator.authenticate('username', 'password').catch((error) => {
             expect(error.responseJSON).to.eql({ error: 'invalid_grant' });
           });
         });
 
-        it('provides access to custom headers', () => {
+        it('provides access to custom headers', function() {
           return authenticator.authenticate('username', 'password').catch((error) => {
             expect(error.headers.getAll('x-custom-context')[0]).to.eql('foobar');
           });
@@ -229,9 +229,9 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     });
   });
 
-  describe('#invalidate', () => {
+  describe('#invalidate', function() {
     function itSuccessfullyInvalidatesTheSession() {
-      it('returns a resolving promise', (done) => {
+      it('returns a resolving promise', function(done) {
         authenticator.invalidate({ 'access_token': 'access token!' }).then(() => {
           expect(true).to.be.true;
           done();
@@ -239,12 +239,12 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
     }
 
-    describe('when token revokation is enabled', () => {
-      beforeEach(() => {
+    describe('when token revokation is enabled', function() {
+      beforeEach(function() {
         authenticator.serverTokenRevocationEndpoint = '/revoke';
       });
 
-      it('sends an AJAX request to the revokation endpoint', (done) => {
+      it('sends an AJAX request to the revokation endpoint', function(done) {
         server.post('/revoke', (request) => {
           let { requestBody } = request;
           let body = parsePostData(requestBody);
@@ -258,24 +258,24 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         authenticator.invalidate({ 'access_token': 'access token!' });
       });
 
-      describe('when the revokation request is successful', () => {
-        beforeEach(() => {
+      describe('when the revokation request is successful', function() {
+        beforeEach(function() {
           server.post('/revoke', () => [200, {}, '']);
         });
 
         itSuccessfullyInvalidatesTheSession();
       });
 
-      describe('when the revokation request fails', () => {
-        beforeEach(() => {
+      describe('when the revokation request fails', function() {
+        beforeEach(function() {
           server.post('/token', () => [400, { 'Content-Type': 'application/json' }, '{ "error": "unsupported_grant_type" }']);
         });
 
         itSuccessfullyInvalidatesTheSession();
       });
 
-      describe('when a refresh token is set', () => {
-        it('sends an AJAX request to invalidate the refresh token', (done) => {
+      describe('when a refresh token is set', function() {
+        it('sends an AJAX request to invalidate the refresh token', function(done) {
           server.post('/revoke', (request) => {
             let { requestBody } = request;
             let body = parsePostData(requestBody);
@@ -291,13 +291,13 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
     });
 
-    describe('when token revokation is not enabled', () => {
+    describe('when token revokation is not enabled', function() {
       itSuccessfullyInvalidatesTheSession();
     });
   });
 
-  describe('#tokenRefreshOffset', () => {
-    it('returns a number between 5000 and 10000', (done) => {
+  describe('#tokenRefreshOffset', function() {
+    it('returns a number between 5000 and 10000', function(done) {
       expect(authenticator.get('tokenRefreshOffset')).to.be.at.least(5000);
       expect(authenticator.get('tokenRefreshOffset')).to.be.below(10000);
       done();
@@ -305,8 +305,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
   });
 
   // testing private API here ;(
-  describe('#_refreshAccessToken', () => {
-    it('sends an AJAX request to the token endpoint', (done) => {
+  describe('#_refreshAccessToken', function() {
+    it('sends an AJAX request to the token endpoint', function(done) {
       server.post('/token', (request) => {
         let { requestBody } = request;
         let body = parsePostData(requestBody);
@@ -320,12 +320,12 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       authenticator._refreshAccessToken(12345, 'refresh token!');
     });
 
-    describe('when the refresh request is successful', () => {
-      beforeEach(() => {
+    describe('when the refresh request is successful', function() {
+      beforeEach(function() {
         server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }']);
       });
 
-      it('triggers the "sessionDataUpdated" event', (done) => {
+      it('triggers the "sessionDataUpdated" event', function(done) {
         authenticator.one('sessionDataUpdated', (data) => {
           expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
           delete data['expires_at'];
@@ -336,12 +336,12 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         authenticator._refreshAccessToken(12345, 'refresh token!');
       });
 
-      describe('when the server reponse includes updated expiration data', () => {
-        beforeEach(() => {
+      describe('when the server reponse includes updated expiration data', function() {
+        beforeEach(function() {
           server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }']);
         });
 
-        it('triggers the "sessionDataUpdated" event with the correct data', (done) => {
+        it('triggers the "sessionDataUpdated" event with the correct data', function(done) {
           authenticator.one('sessionDataUpdated', (data) => {
             expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
             delete data['expires_at'];
