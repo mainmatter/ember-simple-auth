@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';
 
-const { run, run: { next }, warn } = Ember;
+const { run, run: { next } } = Ember;
 
 export default function(options) {
   let store;
@@ -39,7 +39,8 @@ export default function(options) {
     });
 
     afterEach(function() {
-      warn.restore();
+      // eslint-disable-next-line ember/local-modules
+      Ember.warn.restore();
     });
 
     it('respects the configured cookieName', function() {
