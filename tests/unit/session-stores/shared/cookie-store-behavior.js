@@ -74,6 +74,24 @@ export default function(options) {
       );
     });
 
+    it('respects the configured cookiePath', () => {
+      let store;
+      run(() => {
+        store = createStore(cookieService, {
+          cookieName: 'session-cookie-domain',
+          cookieDomain: 'example.com',
+          cookiePath: '/hello-world'
+        });
+        store.persist({ key: 'value' });
+      });
+
+      expect(cookieService.write).to.have.been.calledWith(
+        'session-cookie-domain',
+        JSON.stringify({ key: 'value' }),
+        { domain: 'example.com', expires: null, path: '/hello-world', secure: false }
+      );
+    });
+
     it('sends a warning when `cookieExpirationTime` is less than 90 seconds', (done) => {
       run(() => {
         createStore(cookieService, {
