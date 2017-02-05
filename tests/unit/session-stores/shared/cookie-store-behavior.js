@@ -74,7 +74,7 @@ export default function(options) {
       );
     });
 
-    it('respects the configured cookiePath', () => {
+    it('respects the configured cookiePath', function() {
       let store;
       run(() => {
         store = createStore(cookieService, {
