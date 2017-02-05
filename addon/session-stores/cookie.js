@@ -100,6 +100,18 @@ export default BaseStore.extend({
   }),
 
   /**
+    The path to use for the cookie, e.g., "/", "/something". If not
+    explicitly set, the cookie domain defaults to "/".
+
+    @property cookiePath
+    @type String
+    @default '/'
+    @public
+  */
+  _cookiePath: '/',
+  cookiePath: persistingProperty(),
+
+  /**
     The expiration time for the cookie in seconds. A value of `null` will make
     the cookie a session cookie that expires and gets deleted when the browser
     is closed.
@@ -218,7 +230,7 @@ export default BaseStore.extend({
     let cookieOptions = {
       domain: this.get('cookieDomain'),
       expires: isEmpty(expiration) ? null : new Date(expiration),
-      path: '/',
+      path: this.get('cookiePath'),
       secure: this.get('_secureCookies')
     };
     if (this._oldCookieName) {
