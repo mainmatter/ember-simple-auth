@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
+import Configuration from '../configuration';
 
 const {
   RSVP,
@@ -101,11 +102,11 @@ export default BaseStore.extend({
 
   /**
     The path to use for the cookie, e.g., "/", "/something". If not
-    explicitly set, the cookie domain defaults to "/".
+    explicitly set, the cookie path defaults to ESA's baseURL.
 
     @property cookiePath
     @type String
-    @default '/'
+    @default ESA's baseURL value
     @public
   */
   _cookiePath: '/',
@@ -159,6 +160,8 @@ export default BaseStore.extend({
 
   init() {
     this._super(...arguments);
+
+    this.set('_cookiePath', Configuration.baseURL);
 
     if (!this.get('_fastboot.isFastBoot')) {
       next(() => {

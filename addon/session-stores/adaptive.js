@@ -3,6 +3,7 @@ import Ember from 'ember';
 import Base from 'ember-simple-auth/session-stores/base';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
+import Configuration from '../configuration';
 
 const { computed, inject: { service }, getOwner } = Ember;
 
@@ -81,14 +82,14 @@ export default Base.extend({
 
   /**
     The path to use for the cookie, e.g., "/", "/something". If not
-    explicitly set, the cookie domain defaults to "/".
+    explicitly set, the cookie path defaults to ESA's baseURL.
 
     @property cookiePath
     @type String
-    @default '/'
+    @default ESA's baseURL value
     @public
   */
-  _cookiePath: '/',
+  _cookiePath: null,
   cookiePath: proxyToInternalStore(),
 
   /**
@@ -124,6 +125,8 @@ export default Base.extend({
 
   init() {
     this._super(...arguments);
+
+    this.set('_cookiePath', Configuration.baseURL);
 
     let store;
     if (this.get('_isLocalStorageAvailable')) {
