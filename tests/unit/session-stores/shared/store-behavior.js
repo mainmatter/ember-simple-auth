@@ -1,4 +1,3 @@
-/* jshint expr:true */
 import Ember from 'ember';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
@@ -11,12 +10,13 @@ export default function(options) {
   let syncExternalChanges = options.syncExternalChanges || function() {};
   let store;
 
-  beforeEach(() => {
+  // eslint-disable-next-line mocha/no-top-level-hooks
+  beforeEach(function() {
     store = options.store();
   });
 
-  describe('#persist', () => {
-    it('persists an object', () => {
+  describe('#persist', function() {
+    it('persists an object', function() {
       return store.persist({ key: 'value' }).then(() => {
         return store.restore().then((restoredContent) => {
           expect(restoredContent).to.eql({ key: 'value' });
@@ -24,7 +24,7 @@ export default function(options) {
       });
     });
 
-    it('overrides existing data', () => {
+    it('overrides existing data', function() {
       return store.persist({ key1: 'value1' }).then(() => {
         return store.persist({ key2: 'value2' }).then(() => {
           return store.restore().then((restoredContent) => {
@@ -34,7 +34,7 @@ export default function(options) {
       });
     });
 
-    it('does not trigger the "sessionDataUpdated" event', (done) => {
+    it('does not trigger the "sessionDataUpdated" event', function(done) {
       let triggered = false;
       store.one('sessionDataUpdated', () => (triggered = true));
       store.persist({ key: 'other value' });
@@ -47,9 +47,9 @@ export default function(options) {
     });
   });
 
-  describe('#restore', () => {
-    describe('when the store is empty', () => {
-      it('returns an empty object', () => {
+  describe('#restore', function() {
+    describe('when the store is empty', function() {
+      it('returns an empty object', function() {
         return store.clear().then(() => {
           return store.restore().then((restoredContent) => {
             expect(restoredContent).to.eql({});
@@ -58,18 +58,18 @@ export default function(options) {
       });
     });
 
-    describe('when the store has data', () => {
-      beforeEach(() => {
+    describe('when the store has data', function() {
+      beforeEach(function() {
         return store.persist({ key1: 'value1', key2: 'value2' });
       });
 
-      it('returns all data in the store', () => {
+      it('returns all data in the store', function() {
         return store.restore().then((restoredContent) => {
           expect(restoredContent).to.eql({ key1: 'value1', key2: 'value2' });
         });
       });
 
-      it('returns a copy of the stored data', () => {
+      it('returns a copy of the stored data', function() {
         return store.restore().then((data) => {
           data.key1 = 'another value!';
 
@@ -81,8 +81,8 @@ export default function(options) {
     });
   });
 
-  describe('#clear', () => {
-    it('empties the store', () => {
+  describe('#clear', function() {
+    it('empties the store', function() {
       return store.persist({ key1: 'value1', key2: 'value2' }).then(() => {
         return store.clear().then(() => {
           return store.restore().then((restoredContent) => {

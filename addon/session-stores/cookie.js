@@ -12,7 +12,8 @@ const {
   testing,
   isPresent,
   A,
-  getOwner
+  getOwner,
+  warn,
 } = Ember;
 
 const persistingProperty = function(beforeSet = function() {}) {
@@ -115,9 +116,7 @@ export default BaseStore.extend({
   _cookieExpirationTime: null,
   cookieExpirationTime: persistingProperty(function(key, value) {
     if (value < 90) {
-      // jscs:disable disallowDirectPropertyAccess
-      Ember.warn('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).', false, { id: 'ember-simple-auth.cookieExpirationTime' });
-      // jscs:enable disallowDirectPropertyAccess
+      this._warn('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).', false, { id: 'ember-simple-auth.cookieExpirationTime' });
     }
   }),
 
@@ -277,5 +276,9 @@ export default BaseStore.extend({
       const expiration = this._calculateExpirationTime();
       this._write(data, expiration);
     }
+  },
+
+  _warn() {
+    warn(...arguments);
   }
 });

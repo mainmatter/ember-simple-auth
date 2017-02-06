@@ -14,8 +14,8 @@ describe('UnauthenticatedRouteMixin', () => {
   let session;
   let transition;
 
-  describe('#beforeModel', () => {
-    beforeEach(() => {
+  describe('#beforeModel', function() {
+    beforeEach(function() {
       const MixinImplementingBeforeModel = Mixin.create({
         beforeModel() {
           return RSVP.resolve('upstreamReturnValue');
@@ -36,12 +36,12 @@ describe('UnauthenticatedRouteMixin', () => {
       sinon.spy(route, 'transitionTo');
     });
 
-    describe('if the session is authenticated', () => {
-      beforeEach(() => {
+    describe('if the session is authenticated', function() {
+      beforeEach(function() {
         session.set('isAuthenticated', true);
       });
 
-      it('transitions to routeIfAlreadyAuthenticated', () => {
+      it('transitions to routeIfAlreadyAuthenticated', function() {
         let routeIfAlreadyAuthenticated = 'path/to/route';
         route.set('routeIfAlreadyAuthenticated', routeIfAlreadyAuthenticated);
 
@@ -49,19 +49,19 @@ describe('UnauthenticatedRouteMixin', () => {
         expect(route.transitionTo).to.have.been.calledWith(routeIfAlreadyAuthenticated);
       });
 
-      it('does not return the upstream promise', () => {
+      it('does not return the upstream promise', function() {
         expect(route.beforeModel(transition)).to.be.undefined;
       });
     });
 
-    describe('if the session is not authenticated', () => {
-      it('does not call route transitionTo', () => {
+    describe('if the session is not authenticated', function() {
+      it('does not call route transitionTo', function() {
         route.beforeModel(transition);
 
         expect(route.transitionTo).to.not.have.been.called;
       });
 
-      it('returns the upstream promise', () => {
+      it('returns the upstream promise', function() {
         return route.beforeModel(transition).then((result) => {
           expect(result).to.equal('upstreamReturnValue');
         });

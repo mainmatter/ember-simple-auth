@@ -14,7 +14,7 @@ describe('SessionService', () => {
   let session;
   let authorizer;
 
-  beforeEach(() => {
+  beforeEach(function() {
     session = ObjectProxy.extend(Evented, {
       content: {}
     }).create();
@@ -28,7 +28,7 @@ describe('SessionService', () => {
     sessionService = createWithContainer(Session, { session }, container);
   });
 
-  it('forwards the "authenticationSucceeded" event from the session', (done) => {
+  it('forwards the "authenticationSucceeded" event from the session', function(done) {
     let triggered = false;
     sessionService.one('authenticationSucceeded', () => (triggered = true));
     session.trigger('authenticationSucceeded');
@@ -39,7 +39,7 @@ describe('SessionService', () => {
     });
   });
 
-  it('forwards the "invalidationSucceeded" event from the session', (done) => {
+  it('forwards the "invalidationSucceeded" event from the session', function(done) {
     let triggered = false;
     sessionService.one('invalidationSucceeded', () => (triggered = true));
     session.trigger('invalidationSucceeded');
@@ -50,76 +50,76 @@ describe('SessionService', () => {
     });
   });
 
-  describe('isAuthenticated', () => {
-    it('is read from the session', () => {
+  describe('isAuthenticated', function() {
+    it('is read from the session', function() {
       session.set('isAuthenticated', true);
 
       expect(sessionService.get('isAuthenticated')).to.be.true;
     });
 
-    it('is read-only', () => {
+    it('is read-only', function() {
       expect(() => {
         sessionService.set('isAuthenticated', false);
       }).to.throw;
     });
   });
 
-  describe('store', () => {
-    it('is read from the session', () => {
+  describe('store', function() {
+    it('is read from the session', function() {
       session.set('store', 'some store');
 
       expect(sessionService.get('store')).to.eq('some store');
     });
 
-    it('is read-only', () => {
+    it('is read-only', function() {
       expect(() => {
         sessionService.set('store', 'some other store');
       }).to.throw;
     });
   });
 
-  describe('attemptedTransition', () => {
-    it('is read from the session', () => {
+  describe('attemptedTransition', function() {
+    it('is read from the session', function() {
       session.set('attemptedTransition', 'some transition');
 
       expect(sessionService.get('attemptedTransition')).to.eq('some transition');
     });
 
-    it('is written back to the session', () => {
+    it('is written back to the session', function() {
       sessionService.set('attemptedTransition', 'some other transition');
 
       expect(session.get('attemptedTransition')).to.eq('some other transition');
     });
   });
 
-  describe('data', () => {
-    it("is read from the session's content", () => {
+  describe('data', function() {
+    it("is read from the session's content", function() {
       session.set('some', 'data');
 
       expect(sessionService.get('data')).to.eql({ some: 'data' });
     });
 
-    it("is written back to the session's content", () => {
+    it("is written back to the session's content", function() {
       sessionService.set('data.some', { other: 'data' });
 
       expect(session.content).to.eql({ some: { other: 'data' } });
     });
 
-    it('can be set with Ember.set', () => {
+    it('can be set with Ember.set', function() {
       set(sessionService, 'data.emberSet', 'ember-set-data');
 
       expect(session.content).to.eql({ emberSet: 'ember-set-data' });
     });
 
-    it('is read-only', () => {
+    it('is read-only', function() {
       expect(() => {
         sessionService.set('data', false);
       }).to.throw;
     });
   });
 
-  describe('authenticate', () => {
-    beforeEach(() => {
+  describe('authenticate', function() {
+    beforeEach(function() {
       session.reopen({
         authenticate() {
           return 'value';
@@ -127,20 +127,20 @@ describe('SessionService', () => {
       });
     });
 
-    it('authenticates the session', () => {
+    it('authenticates the session', function() {
       sinon.spy(session, 'authenticate');
       sessionService.authenticate({ some: 'argument' });
 
       expect(session.authenticate).to.have.been.calledWith({ some: 'argument' });
     });
 
-    it("returns the session's authentication return value", () => {
+    it("returns the session's authentication return value", function() {
       expect(sessionService.authenticate()).to.eq('value');
     });
   });
 
-  describe('invalidate', () => {
-    beforeEach(() => {
+  describe('invalidate', function() {
+    beforeEach(function() {
       session.reopen({
         invalidate() {
           return 'value';
@@ -148,45 +148,45 @@ describe('SessionService', () => {
       });
     });
 
-    it('invalidates the session', () => {
+    it('invalidates the session', function() {
       sinon.spy(session, 'invalidate');
       sessionService.invalidate({ some: 'argument' });
 
       expect(session.invalidate).to.have.been.calledWith({ some: 'argument' });
     });
 
-    it("returns the session's invalidation return value", () => {
+    it("returns the session's invalidation return value", function() {
       expect(sessionService.invalidate()).to.eq('value');
     });
   });
 
-  describe('authorize', () => {
-    describe('when the session is authenticated', () => {
-      beforeEach(() => {
+  describe('authorize', function() {
+    describe('when the session is authenticated', function() {
+      beforeEach(function() {
         sessionService.set('isAuthenticated', true);
         sessionService.set('data', { authenticated: { some: 'data' } });
       });
 
-      it('authorizes with the authorizer', () => {
+      it('authorizes with the authorizer', function() {
         sinon.spy(authorizer, 'authorize');
         sessionService.authorize('authorizer', 'block');
 
         expect(authorizer.authorize).to.have.been.calledWith({ some: 'data' }, 'block');
       });
 
-      it("throws an error when the authorizer doesn't exist", () => {
+      it("throws an error when the authorizer doesn't exist", function() {
         expect(() => {
           sessionService.authorize('bad-authorizer', 'block');
         }).to.throw(Error, /No authorizer for factory/);
       });
     });
 
-    describe('when the session is not authenticated', () => {
-      beforeEach(() => {
+    describe('when the session is not authenticated', function() {
+      beforeEach(function() {
         sessionService.set('isAuthenticated', false);
       });
 
-      it('does not authorize', () => {
+      it('does not authorize', function() {
         sinon.spy(authorizer, 'authorize');
         sessionService.authorize('authorizer', 'block');
 

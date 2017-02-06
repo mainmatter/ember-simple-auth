@@ -7,13 +7,13 @@ import setupSessionService from 'ember-simple-auth/initializers/setup-session-se
 describe('setupSessionService', () => {
   let registry;
 
-  beforeEach(() => {
+  beforeEach(function() {
     registry = {
       injection() {}
     };
   });
 
-  it('injects the session into the session service', () => {
+  it('injects the session into the session service', function() {
     sinon.spy(registry, 'injection');
     setupSessionService(registry);
 
