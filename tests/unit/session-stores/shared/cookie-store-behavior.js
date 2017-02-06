@@ -92,7 +92,6 @@ export default function(options) {
       );
     });
 
-
     it('sends a warning when `cookieExpirationTime` is less than 90 seconds', function(done) {
       run(() => {
         createStore(cookieService, {
