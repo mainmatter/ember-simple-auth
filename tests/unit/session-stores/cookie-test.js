@@ -5,6 +5,7 @@ import Cookie from 'ember-simple-auth/session-stores/cookie';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
+import Configuration from 'ember-simple-auth/configuration';
 
 function createCookieStore(cookiesService, options = {}) {
   options._cookies = cookiesService;
@@ -17,6 +18,7 @@ describe('CookieStore', () => {
 
   beforeEach(function() {
     store = createCookieStore(FakeCookieService.create());
+    Configuration.load({ baseURL: '/' });
   });
 
   afterEach(function() {
