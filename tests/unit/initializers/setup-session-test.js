@@ -10,29 +10,29 @@ import InternalSession from 'ember-simple-auth/internal-session';
 describe('setupSession', () => {
   let registry;
 
-  beforeEach(() => {
+  beforeEach(function() {
     registry = {
       register() {},
       injection() {}
     };
   });
 
-  it('registers the session', () => {
+  it('registers the session', function() {
     sinon.spy(registry, 'register');
     setupSession(registry);
 
     expect(registry.register).to.have.been.calledWith('session:main', InternalSession);
   });
 
-  describe('when Ember.testing is true', () => {
-    it('registers the test session store', () => {
+  describe('when Ember.testing is true', function() {
+    it('registers the test session store', function() {
       sinon.spy(registry, 'register');
       setupSession(registry);
 
       expect(registry.register).to.have.been.calledWith('session-store:test', Ephemeral);
     });
 
-    it('injects the test session store into the session', () => {
+    it('injects the test session store into the session', function() {
       sinon.spy(registry, 'injection');
       setupSession(registry);
 
@@ -40,16 +40,16 @@ describe('setupSession', () => {
     });
   });
 
-  describe('when Ember.testing is false', () => {
-    beforeEach(() => {
+  describe('when Ember.testing is false', function() {
+    beforeEach(function() {
       Ember.testing = false;
     });
 
-    afterEach(() => {
+    afterEach(function() {
       Ember.testing = true;
     });
 
-    it('injects the application session store into the session', () => {
+    it('injects the application session store into the session', function() {
       sinon.spy(registry, 'injection');
       setupSession(registry);
 

@@ -15,11 +15,11 @@ function createCookieStore(cookiesService, options = {}) {
 describe('CookieStore', () => {
   let store;
 
-  beforeEach(() => {
+  beforeEach(function() {
     store = createCookieStore(FakeCookieService.create());
   });
 
-  afterEach(() => {
+  afterEach(function() {
     store.clear();
   });
 

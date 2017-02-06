@@ -12,7 +12,7 @@ describe('setupSessionRestoration', () => {
   let containerStub;
   let route;
 
-  beforeEach(() => {
+  beforeEach(function() {
     container = {
       lookup() {}
     };
@@ -22,17 +22,17 @@ describe('setupSessionRestoration', () => {
     containerStub = sinon.stub(container, 'lookup');
   });
 
-  it('adds a beforeModel method', () => {
+  it('adds a beforeModel method', function() {
     containerStub.withArgs('route:application').returns(route);
     setupSessionRestoration({ container });
 
     expect(route).to.respondTo('beforeModel');
   });
 
-  describe('the beforeModel method', () => {
+  describe('the beforeModel method', function() {
     let session;
 
-    beforeEach(() => {
+    beforeEach(function() {
       session = {
         restore() {}
       };
@@ -48,24 +48,24 @@ describe('setupSessionRestoration', () => {
       setupSessionRestoration({ container });
     });
 
-    describe('when session restoration resolves', () => {
-      beforeEach(() => {
+    describe('when session restoration resolves', function() {
+      beforeEach(function() {
         sinon.stub(session, 'restore').returns(RSVP.resolve());
       });
 
-      it('returns the return value of the original "beforeModel" method', () => {
+      it('returns the return value of the original "beforeModel" method', function() {
         return route.beforeModel().then((value) => {
           expect(value).to.eq('test');
         });
       });
     });
 
-    describe('when session restoration rejects', () => {
-      beforeEach(() => {
+    describe('when session restoration rejects', function() {
+      beforeEach(function() {
         sinon.stub(session, 'restore').returns(RSVP.reject());
       });
 
-      it('returns the return value of the original "beforeModel" method', () => {
+      it('returns the return value of the original "beforeModel" method', function() {
         return route.beforeModel().then((value) => {
           expect(value).to.eq('test');
         });

@@ -1,9 +1,9 @@
-/* jshint expr:true */
 import Ember from 'ember';
 import { describe, beforeEach, afterEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';
+import CookieSessionStore from 'ember-simple-auth/session-stores/cookie';
 
 const { run, run: { next } } = Ember;
 
@@ -15,7 +15,8 @@ export default function(options) {
   let cookieService;
   let spyRewriteCookieMethod;
 
-  beforeEach(() => {
+  // eslint-disable-next-line mocha/no-top-level-hooks
+  beforeEach(function() {
     createStore = options.createStore;
     renew = options.renew;
     sync = options.sync;
@@ -26,24 +27,23 @@ export default function(options) {
     spyRewriteCookieMethod = options.spyRewriteCookieMethod;
   });
 
-  afterEach(() => {
+  // eslint-disable-next-line mocha/no-top-level-hooks
+  afterEach(function() {
     cookieService.read.restore();
     cookieService.write.restore();
     store.clear();
   });
 
   describe('#persist', function() {
-    beforeEach(() => {
-      sinon.spy(Ember, 'warn');
+    beforeEach(function() {
+      sinon.spy(CookieSessionStore.prototype, '_warn');
     });
 
-    afterEach(() => {
-      // jscs:disable disallowDirectPropertyAccess
-      Ember.warn.restore();
-      // jscs:enable disallowDirectPropertyAccess
+    afterEach(function() {
+      CookieSessionStore.prototype._warn.restore();
     });
 
-    it('respects the configured cookieName', () => {
+    it('respects the configured cookieName', function() {
       let store;
       run(() => {
         store = createStore(cookieService, { cookieName: 'test-session' });
@@ -57,7 +57,7 @@ export default function(options) {
       );
     });
 
-    it('respects the configured cookieDomain', () => {
+    it('respects the configured cookieDomain', function() {
       let store;
       run(() => {
         store = createStore(cookieService, {
@@ -92,7 +92,7 @@ export default function(options) {
       );
     });
 
-    it('sends a warning when `cookieExpirationTime` is less than 90 seconds', (done) => {
+    it('sends a warning when `cookieExpirationTime` is less than 90 seconds', function(done) {
       run(() => {
         createStore(cookieService, {
           cookieName: 'session-cookie-domain',
@@ -100,19 +100,17 @@ export default function(options) {
           cookieExpirationTime: 60
         });
 
-        // jscs:disable disallowDirectPropertyAccess
-        expect(Ember.warn).to.have.been.calledWith('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).');
-        // jscs:enable disallowDirectPropertyAccess
+        expect(CookieSessionStore.prototype._warn).to.have.been.calledWith('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).');
 
         done();
       });
     });
   });
 
-  describe('#renew', () => {
+  describe('#renew', function() {
     let now = new Date();
 
-    beforeEach((done) => {
+    beforeEach(function(done) {
       store = createStore(cookieService, {
         cookieName:           'test-session',
         cookieExpirationTime: 60
@@ -121,7 +119,7 @@ export default function(options) {
       renew(store).then(done);
     });
 
-    it('stores the expiration time in a cookie named "test-session-expiration_time"', () => {
+    it('stores the expiration time in a cookie named "test-session-expiration_time"', function() {
       expect(cookieService.write).to.have.been.calledWith(
         'test-session-expiration_time',
         60,
@@ -134,10 +132,10 @@ export default function(options) {
     });
   });
 
-  describe('the "sessionDataUpdated" event', () => {
+  describe('the "sessionDataUpdated" event', function() {
     let triggered;
 
-    beforeEach(() => {
+    beforeEach(function() {
       triggered = false;
       store.persist({ key: 'value' });
       store.one('sessionDataUpdated', () => {
@@ -145,7 +143,7 @@ export default function(options) {
       });
     });
 
-    it('is not triggered when the cookie has not actually changed', (done) => {
+    it('is not triggered when the cookie has not actually changed', function(done) {
       document.cookie = 'ember_simple_auth-session=%7B%22key%22%3A%22value%22%7D;path=/;';
       sync(store);
 
@@ -155,7 +153,7 @@ export default function(options) {
       });
     });
 
-    it('is triggered when the cookie changed', (done) => {
+    it('is triggered when the cookie changed', function(done) {
       const cookiesService = store.get('_cookies') || store.get('_store._cookies');
       cookiesService._content['ember_simple_auth-session'] = '%7B%22key%22%3A%22other%20value%22%7D';
       sync(store);
@@ -168,7 +166,7 @@ export default function(options) {
       });
     });
 
-    it('is not triggered when the cookie expiration was renewed', (done) => {
+    it('is not triggered when the cookie expiration was renewed', function(done) {
       renew(store, { key: 'value' });
       sync(store);
 
@@ -179,13 +177,13 @@ export default function(options) {
     });
   });
 
-  describe('rewrite behavior', () => {
+  describe('rewrite behavior', function() {
     let store;
     let cookieSpy;
     let cookieService;
     let now = new Date();
 
-    beforeEach(() => {
+    beforeEach(function() {
       cookieService = FakeCookieService.create();
       store = createStore(cookieService, {
         cookieName: 'session-foo',
@@ -197,13 +195,13 @@ export default function(options) {
       sinon.spy(cookieService, 'clear');
     });
 
-    afterEach(() => {
+    afterEach(function() {
       cookieService.write.restore();
       cookieService.clear.restore();
       cookieSpy.restore();
     });
 
-    it('deletes the old cookie and writes a new one when name property changes', () => {
+    it('deletes the old cookie and writes a new one when name property changes', function() {
       run(() => {
         store.persist({ key: 'value' });
         store.set('cookieName', 'session-bar');
@@ -236,7 +234,7 @@ export default function(options) {
       );
     });
 
-    it('only rewrites the cookie once per run loop when multiple properties are changed', (done) => {
+    it('only rewrites the cookie once per run loop when multiple properties are changed', function(done) {
       run(() => {
         store.set('cookieName', 'session-bar');
         store.set('cookieExpirationTime', 10000);

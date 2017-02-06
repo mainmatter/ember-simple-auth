@@ -13,12 +13,12 @@ const assign = emberAssign || merge;
 describe('AdaptiveStore', () => {
   let store;
 
-  afterEach(() => {
+  afterEach(function() {
     store.clear();
   });
 
-  describe('when localStorage is available', () => {
-    beforeEach(() => {
+  describe('when localStorage is available', function() {
+    beforeEach(function() {
       store = Adaptive.extend({
         _createStore(storeType, options) {
           return this._super(storeType, assign(options, { _isFastBoot: false }));
@@ -35,9 +35,9 @@ describe('AdaptiveStore', () => {
     });
   });
 
-  describe('when localStorage is not available', () => {
+  describe('when localStorage is not available', function() {
     let cookieService;
-    beforeEach(() => {
+    beforeEach(function() {
       cookieService = FakeCookieService.create();
       sinon.spy(cookieService, 'read');
       sinon.spy(cookieService, 'write');
@@ -80,7 +80,7 @@ describe('AdaptiveStore', () => {
       }
     });
 
-    it('persists to cookie when cookie attributes change', () => {
+    it('persists to cookie when cookie attributes change', function() {
       let now = new Date();
 
       run(() => {

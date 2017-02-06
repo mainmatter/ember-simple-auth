@@ -20,8 +20,8 @@ describe('AuthenticatedRouteMixin', () => {
   let fastbootMock;
   let containerMock;
 
-  describe('#beforeModel', () => {
-    beforeEach(() => {
+  describe('#beforeModel', function() {
+    beforeEach(function() {
       const MixinImplementingBeforeModel = Mixin.create({
         beforeModel() {
           return RSVP.resolve('upstreamReturnValue');
@@ -59,30 +59,30 @@ describe('AuthenticatedRouteMixin', () => {
       sinon.spy(route, 'transitionTo');
     });
 
-    describe('if the session is authenticated', () => {
-      beforeEach(() => {
+    describe('if the session is authenticated', function() {
+      beforeEach(function() {
         session.set('isAuthenticated', true);
       });
 
-      it('returns the upstream promise', () => {
+      it('returns the upstream promise', function() {
         return route.beforeModel(transition).then((result) => {
           expect(result).to.equal('upstreamReturnValue');
         });
       });
 
-      it('does not transition to the authentication route', () => {
+      it('does not transition to the authentication route', function() {
         route.beforeModel(transition);
 
         expect(route.transitionTo).to.not.have.been.calledWith(Configuration.authenticationRoute);
       });
     });
 
-    describe('if the session is not authenticated', () => {
-      it('does not return the upstream promise', () => {
+    describe('if the session is not authenticated', function() {
+      it('does not return the upstream promise', function() {
         expect(route.beforeModel(transition)).to.be.undefined;
       });
 
-      it('transitions to the authentication route', () => {
+      it('transitions to the authentication route', function() {
         let authenticationRoute = 'path/to/route';
         route.set('authenticationRoute', authenticationRoute);
 
@@ -90,7 +90,7 @@ describe('AuthenticatedRouteMixin', () => {
         expect(route.transitionTo).to.have.been.calledWith(authenticationRoute);
       });
 
-      it('sets the redirectTarget cookie in fastboot', () => {
+      it('sets the redirectTarget cookie in fastboot', function() {
         fastbootMock.get.withArgs('request.protocol').returns('https');
 
         let cookieName = 'ember_simple_auth-redirectTarget';
