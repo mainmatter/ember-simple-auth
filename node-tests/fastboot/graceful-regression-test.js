@@ -18,6 +18,9 @@ describe('Graceful regression tests', function() {
     return app.create('not-fastboot-ready-app', { fixturesPath: 'node-tests/fixtures/' })
       .then(addDependencies)
       .then(function() {
+        return app.runEmberCommand('build');
+      })
+      .then(function() {
         return app.startServer({
           command: 'fastboot',
           additionalArguments: ['--host 0.0.0.0']
