@@ -40,6 +40,15 @@ script:
   #  to the addon's original dependency state, skipping "cleanup".
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO test && npm run nodetest && npm run fastboot-nodetest
 
+deploy:
+  provider: npm
+  email: info@simplabs.com
+  api_key:
+    secure: dKp+BvoSv8vUN90m9fH2oOK/sQ12K5B5BrWjfn1m2evpc9TFZGHLlqSsAw4Cq9JmK7SgRKsuh4O2k1CO8QAXW6mMjD/NSGJfBz+grdXE20kqOlIPvj9sQ9PVpqgmTA5bZvhbhXn8ybKqgTabZZrED9eMkrSqMN5xU1oW414DNwQ=
+  on:
+    tags: true
+    repo: simplabs/ember-simple-auth
+
 notifications:
   email: false
   slack:
