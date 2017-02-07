@@ -31,7 +31,7 @@
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
-    "body-parser": "1.15.2",
+    "body-parser": "^1.16.0",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-merge-trees": "^1.1.2",
     "broccoli-yuidoc": "~2.1.0",
@@ -43,7 +43,7 @@
     "ember-cli-addon-tests": "^0.6.0",
     "ember-cli-app-version": "^2.0.0",
     "ember-cli-base64": "~0.0.1",
-    "ember-cli-blueprint-test-helpers": "~0.14.0",
+    "ember-cli-blueprint-test-helpers": "^0.14.0",
     "ember-cli-chai": "^0.3.2",
     "ember-cli-content-security-policy": "~0.6.0",
     "ember-cli-dependency-checker": "^1.3.0",
@@ -53,7 +53,7 @@
     "ember-cli-htmlbars-inline-precompile": "^0.3.3",
     "ember-cli-inject-live-reload": "^1.4.1",
     "ember-cli-mocha": "^0.13.1",
-    "ember-cli-pretender": "~0.7.0",
+    "ember-cli-pretender": "^1.0.0",
     "ember-cli-release": "^0.2.9",
     "ember-cli-shims": "^1.0.2",
     "ember-cli-sri": "^2.1.0",
