@@ -1,10 +1,12 @@
-/* eslint-env node */
 'use strict';
 
+/* eslint-env node */
+/* eslint-disable no-var, object-shorthand */
+
 module.exports = function(environment) {
-  let ENV = {
+  var ENV = {
     modulePrefix: 'dummy',
-    environment,
+    environment: environment,
     rootURL: '/',
     locationType: 'auto',
     EmberENV: {
