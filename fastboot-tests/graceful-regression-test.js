@@ -15,7 +15,7 @@ describe('Graceful regression tests', function() {
 
   before(function() {
     app = new AddonTestApp();
-    return app.create('not-fastboot-ready-app', { fixturesPath: 'node-tests/fixtures/' })
+    return app.create('not-fastboot-ready-app', { fixturesPath: 'fastboot-tests/fixtures/' })
       .then(addDependencies)
       .then(function() {
         return app.runEmberCommand('build');
