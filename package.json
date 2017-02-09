@@ -17,8 +17,8 @@
     "fastboot": "echo \"Please also run npm start\"; ember fastboot --serve-assets",
     "start": "ember server",
     "test": "ember try:each",
-    "nodetest": "mocha node-tests node-tests/blueprints",
-    "fastboot-nodetest": "mocha fastboot-tests",
+    "test:node": "mocha node-tests node-tests/blueprints",
+    "test:fastboot": "mocha fastboot-tests",
     "lint": "eslint app addon blueprints config server test-support tests *.js"
   },
   "dependencies": {
