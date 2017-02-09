@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "ember-cli-babel": "^5.1.7",
-    "ember-cli-import-polyfill": "^0.2.0",
     "ember-cli-is-package-missing": "^1.0.0",
     "ember-cookies": "^0.0.11",
     "ember-getowner-polyfill": "^1.1.0",
