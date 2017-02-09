@@ -22,6 +22,7 @@
     "lint": "eslint app addon blueprints config server test-support tests *.js"
   },
   "dependencies": {
+    "broccoli-file-creator": "^1.1.1",
     "ember-cli-babel": "^5.1.7",
     "ember-cli-is-package-missing": "^1.0.0",
     "ember-cookies": "^0.0.11",
