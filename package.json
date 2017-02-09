@@ -18,7 +18,7 @@
     "start": "ember server",
     "test": "ember try:each",
     "nodetest": "node node-tests/nodetest-runner.js",
-    "fastboot-nodetest": "node node-tests/fastboot-runner.js",
+    "fastboot-nodetest": "mocha node-tests/fastboot",
     "lint": "eslint app addon blueprints config server test-support tests *.js"
   },
   "dependencies": {
