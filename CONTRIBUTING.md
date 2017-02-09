@@ -45,4 +45,4 @@ Also install [PhantomJS](http://phantomjs.org/) to run the tests.
 
 To run tests against the currently installed Ember version, run `ember test`. To
 simulate a CI run -- testing multiple versions of Ember, Ember Data and the
-included addon generators -- run `npm test && npm run nodetest`.
+included addon generators -- run `npm test && npm run test:node`.
