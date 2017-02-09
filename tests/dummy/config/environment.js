@@ -47,6 +47,7 @@ module.exports = function(environment) {
       hostWhitelist: [/^localhost:\d+$/]
     },
 
+    esaVersion: require('../../../package.json').version,
   };
 
   if (environment === 'development') {
