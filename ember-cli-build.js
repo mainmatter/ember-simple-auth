@@ -1,25 +1,27 @@
-/* eslint-env node */
 'use strict';
 
-const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
-const Yuidoc = require('broccoli-yuidoc');
-const version = require('git-repo-version')();
+/* eslint-env node */
+/* eslint-disable no-var, object-shorthand */
 
-let sourceTrees = [];
+var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+var Yuidoc = require('broccoli-yuidoc');
+var version = require('git-repo-version')();
+
+var sourceTrees = [];
 
 module.exports = function(defaults) {
-  let app = new EmberAddon(defaults, {
+  var app = new EmberAddon(defaults, {
     storeConfigInMeta: true,
   });
 
   app.import('bower_components/bootstrap/dist/css/bootstrap.css');
 
-  const yuidocTree = new Yuidoc(['addon', 'app'], {
+  var yuidocTree = new Yuidoc(['addon', 'app'], {
     destDir: 'docs',
     yuidoc: {
       project: {
         name: 'The Ember Simple Auth API',
-        version,
+        version: version,
       },
       linkNatives: false,
       quiet: true,
