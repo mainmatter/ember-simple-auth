@@ -1,7 +1,10 @@
 'use strict';
 
 /* eslint-env node */
-/* eslint-disable no-var, object-shorthand */
+/* eslint-disable no-var, object-shorthand, prefer-template */
+
+var writeFile = require('broccoli-file-creator');
+var version = require('./package.json').version;
 
 module.exports = {
   name: 'ember-simple-auth',
@@ -11,6 +14,11 @@ module.exports = {
     this._ensureThisImport();
 
     this.import('vendor/ember-simple-auth/register-version.js');
+  },
+
+  treeForVendor: function() {
+    var content = 'Ember.libraries.register(\'Ember Simple Auth\', \'' + version + '\');';
+    return writeFile('ember-simple-auth/register-version.js', content);
   },
 
   _ensureThisImport: function() {
