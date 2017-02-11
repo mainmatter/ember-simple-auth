@@ -14,7 +14,8 @@ describe('Acceptance: ember generate and destroy authenticator', function() {
   it('generates a torii authenticator', function() {
     return emberNew().then(() => generateAndDestroy(['authenticator', 'application', '--base-class=torii'], (file) => {
       expect(file('app/authenticators/application.js')).to.contain('\
-import Torii from \'ember-simple-auth/authenticators/torii\';' + EOL + '\
+import Ember from \'ember\';' + EOL +
+'import Torii from \'ember-simple-auth/authenticators/torii\';' + EOL + '\
 ' + EOL + '\
 export default Torii.extend({' + EOL + '\
   torii: Ember.inject.service(\'torii\')' + EOL + '\
