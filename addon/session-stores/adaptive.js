@@ -3,6 +3,7 @@ import Ember from 'ember';
 import Base from 'ember-simple-auth/session-stores/base';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
+import Configuration from '../configuration';
 
 const { computed, inject: { service }, getOwner } = Ember;
 
@@ -80,6 +81,18 @@ export default Base.extend({
   cookieName: proxyToInternalStore(),
 
   /**
+    The path to use for the cookie, e.g., "/", "/something". If not
+    explicitly set, the cookie path defaults to ESA's baseURL.
+
+    @property cookiePath
+    @type String
+    @default ESA's baseURL value
+    @public
+  */
+  _cookiePath: null,
+  cookiePath: proxyToInternalStore(),
+
+  /**
     The expiration time for the cookie in seconds if `localStorage` is not
     available. A value of `null` will make the cookie a session cookie that
     expires and gets deleted when the browser is closed.
@@ -113,13 +126,15 @@ export default Base.extend({
   init() {
     this._super(...arguments);
 
+    this.set('_cookiePath', Configuration.baseURL);
+
     let store;
     if (this.get('_isLocalStorageAvailable')) {
       const options = { key: this.get('localStorageKey') };
       options._isFastBoot = false;
       store = this._createStore(LocalStorage, options);
     } else {
-      const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime');
+      const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath');
       options._fastboot = this.get('_fastboot');
       options._cookies = this.get('_cookies');
       store = this._createStore(Cookie, options);

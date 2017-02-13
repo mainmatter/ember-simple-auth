@@ -6,12 +6,17 @@ import Adaptive from 'ember-simple-auth/session-stores/adaptive';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
+import Configuration from 'ember-simple-auth/configuration';
 
 const { assign: emberAssign, merge, run } = Ember;
 const assign = emberAssign || merge;
 
 describe('AdaptiveStore', () => {
   let store;
+
+  beforeEach(function() {
+    Configuration.load({ baseURL: '/' });
+  });
 
   afterEach(function() {
     store.clear();

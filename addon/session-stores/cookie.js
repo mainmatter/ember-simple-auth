@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
+import Configuration from '../configuration';
 
 const {
   RSVP,
@@ -100,6 +101,18 @@ export default BaseStore.extend({
   }),
 
   /**
+    The path to use for the cookie, e.g., "/", "/something". If not
+    explicitly set, the cookie path defaults to ESA's baseURL.
+
+    @property cookiePath
+    @type String
+    @default ESA's baseURL value
+    @public
+  */
+  _cookiePath: '/',
+  cookiePath: persistingProperty(),
+
+  /**
     The expiration time for the cookie in seconds. A value of `null` will make
     the cookie a session cookie that expires and gets deleted when the browser
     is closed.
@@ -147,6 +160,8 @@ export default BaseStore.extend({
 
   init() {
     this._super(...arguments);
+
+    this.set('_cookiePath', Configuration.baseURL);
 
     if (!this.get('_fastboot.isFastBoot')) {
       next(() => {
@@ -218,7 +233,7 @@ export default BaseStore.extend({
     let cookieOptions = {
       domain: this.get('cookieDomain'),
       expires: isEmpty(expiration) ? null : new Date(expiration),
-      path: '/',
+      path: this.get('cookiePath'),
       secure: this.get('_secureCookies')
     };
     if (this._oldCookieName) {
