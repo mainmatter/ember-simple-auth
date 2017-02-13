@@ -116,7 +116,7 @@ The 1.0 release of ember-simple-auth introduced a lot of breaking changes, but t
 ## Walkthrough
 
 Once the library is installed, __the session service can be injected wherever
-needed in the application__. In order to e.g. display login/logout buttons
+needed in the application__. In order to display login/logout buttons
 depending on the current session state, inject the service into the respective
 controller or component and __query its
 [`isAuthenticated` property](http://ember-simple-auth.com/api/classes/SessionService.html#property_isAuthenticated)
