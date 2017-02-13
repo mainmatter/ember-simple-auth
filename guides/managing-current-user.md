@@ -74,6 +74,8 @@ export default Ember.Service.extend({
       return this.get('store').queryRecord('user', { me: true }).then((user) => {
         this.set('user', user);
       });
+    } else {
+      return Ember.RSVP.resolve();
     }
   }
 });
@@ -150,11 +152,11 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
 
   sessionAuthenticated() {
     this._super(...arguments);
-    this._loadCurrentUser().catch(() => this.get('session').invalidate());
+    this._loadCurrentUser();
   },
 
   _loadCurrentUser() {
-    return this.get('currentUser').load();
+    return this.get('currentUser').load().catch(() => this.get('session').invalidate());
   }
 });
 ```
