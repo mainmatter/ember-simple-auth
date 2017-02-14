@@ -15,7 +15,7 @@ module.exports = {
 
     if (baseClass === 'torii') {
       return {
-        imports: 'import Torii from \'ember-simple-auth/authenticators/torii\';',
+        imports: 'import Ember from \'ember\';' + EOL + 'import Torii from \'ember-simple-auth/authenticators/torii\';',
         baseClass: 'Torii',
         body: EOL + '  torii: Ember.inject.service(\'torii\')'
       };
