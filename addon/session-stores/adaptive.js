@@ -80,6 +80,17 @@ export default Base.extend({
   cookieName: proxyToInternalStore(),
 
   /**
+    The path to use for the cookie, e.g., "/", "/something".
+
+    @property cookiePath
+    @type String
+    @default '/'
+    @public
+  */
+  _cookiePath: '/',
+  cookiePath: proxyToInternalStore(),
+
+  /**
     The expiration time for the cookie in seconds if `localStorage` is not
     available. A value of `null` will make the cookie a session cookie that
     expires and gets deleted when the browser is closed.
@@ -119,7 +130,7 @@ export default Base.extend({
       options._isFastBoot = false;
       store = this._createStore(LocalStorage, options);
     } else {
-      const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime');
+      const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath');
       options._fastboot = this.get('_fastboot');
       options._cookies = this.get('_cookies');
       store = this._createStore(Cookie, options);
