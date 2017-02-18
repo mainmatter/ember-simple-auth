@@ -73,6 +73,29 @@ export default BaseStore.extend({
   _renewExpirationTimeout: null,
 
   /**
+    The inverval for syncing data in milliseconds. A value of `null` will make
+    the data sync only once and not in a loop with the syncDataInverval
+
+    @property syncDataInterval
+    @type number
+    @default 500
+    @public
+  */
+  _syncDataInterval: 500,
+  syncDataInterval: persistingProperty(),
+
+  /**
+    The inverval for renewing cookie expirationt time in seconds.
+
+    @property renewExpirationTime
+    @type number
+    @default 60
+    @public
+  */
+  _renewExpirationTime: 60,
+  renewExpirationTime: persistingProperty(),
+
+  /**
     The domain to use for the cookie, e.g., "example.com", ".example.com"
     (which includes all subdomains) or "subdomain.example.com". If not
     explicitly set, the cookie domain defaults to the domain the session was
@@ -252,9 +275,9 @@ export default BaseStore.extend({
         this._lastData = data;
         this.trigger('sessionDataUpdated', data);
       }
-      if (!testing) {
+      if (!testing && this.syncDataInterval) {
         cancel(this._syncDataTimeout);
-        this._syncDataTimeout = later(this, this._syncData, 500);
+        this._syncDataTimeout = later(this, this._syncData, this.syncDataInterval);
       }
     });
   },
@@ -270,9 +293,9 @@ export default BaseStore.extend({
   },
 
   _renewExpiration() {
-    if (!testing) {
+    if (!testing && this.renewExpirationTime) {
       cancel(this._renewExpirationTimeout);
-      this._renewExpirationTimeout = later(this, this._renewExpiration, 60000);
+      this._renewExpirationTimeout = later(this, this._renewExpiration, this.renewExpirationTime * 1000);
     }
     if (this.get('_isPageVisible')) {
       return this._renew();
