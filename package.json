@@ -79,7 +79,7 @@
     "mocha-only-detector": "0.1.0",
     "morgan": "^1.5.2",
     "request": "^2.74.0",
-    "rimraf": "^2.5.2",
+    "rimraf": "^2.6.1",
     "rsvp": "^3.2.1",
     "sinon-chai": "~2.8.0",
     "torii": "~0.8.0"
