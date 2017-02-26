@@ -282,7 +282,9 @@ export default BaseStore.extend({
   },
 
   rewriteCookie() {
-    const data = this._read(this._oldCookieName);
+    // if `cookieName` has not been renamed, `oldCookieName` will be nil
+    const cookieName = this._oldCookieName || this._cookieName;
+    const data = this._read(cookieName);
     if (isPresent(data)) {
       const expiration = this._calculateExpirationTime();
       this._write(data, expiration);
