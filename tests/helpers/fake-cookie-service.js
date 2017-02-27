@@ -10,7 +10,7 @@ export default EmberObject.extend({
   },
 
   read(name) {
-    const value = this._content[name];
+    const value = name ? this._content[name] : this._content;
 
     if (isNone(value)) {
       return value;

@@ -234,6 +234,53 @@ export default function(options) {
       );
     });
 
+    it('deletes the old cookie and writes a new one when domain property changes', function() {
+      let defaultName = 'ember_simple_auth-session';
+      run(() => {
+        store.persist({ key: 'value' });
+        store.set('cookieDomain', 'example.com');
+      });
+
+      expect(cookieService.clear).to.have.been.calledWith(defaultName);
+
+      expect(cookieService.clear).to.have.been.calledWith(`${defaultName}-expiration_time`);
+
+      expect(cookieService.write).to.have.been.calledWith(
+        'session-foo',
+        JSON.stringify({ key: 'value' }),
+        sinon.match(function({ domain, expires, path, secure }) {
+          return domain === 'example.com' &&
+            path === '/' &&
+            secure === false &&
+            expires >= new Date(now.getTime() + 1000 * 1000);
+        })
+      );
+    });
+
+    it('deletes the old cookie and writes a new one when expiration property changes', function() {
+      let defaultName = 'ember_simple_auth-session';
+      let expirationTime = 180;
+      run(() => {
+        store.persist({ key: 'value' });
+        store.set('cookieExpirationTime', expirationTime);
+      });
+
+      expect(cookieService.clear).to.have.been.calledWith(defaultName);
+
+      expect(cookieService.clear).to.have.been.calledWith(`${defaultName}-expiration_time`);
+
+      expect(cookieService.write).to.have.been.calledWith(
+        'session-foo',
+        JSON.stringify({ key: 'value' }),
+        sinon.match(function({ domain, expires, path, secure }) {
+          return domain === null &&
+            path === '/' &&
+            secure === false &&
+            expires >= new Date(now.getTime() + (expirationTime - 10) * 1000);
+        })
+      );
+    });
+
     it('only rewrites the cookie once per run loop when multiple properties are changed', function(done) {
       run(() => {
         store.set('cookieName', 'session-bar');
