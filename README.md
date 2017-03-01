@@ -605,6 +605,21 @@ import CookieStore from 'ember-simple-auth/session-stores/cookie';
 export default CookieStore.extend();
 ```
 
+If you are using the
+[`OAuth2PasswordGrantAuthenticator`](http://ember-simple-auth.com/api/classes/OAuth2PasswordGrantAuthenticator.html),
+or
+[`DeviseAuthenticator`](http://ember-simple-auth.com/api/classes/DeviseAuthenticator.html),
+you must add `node-fetch` to your list of FastBoot whitelisted dependencies
+in `package.json`:
+
+```json
+{
+  "fastbootDependencies": [
+    "node-fetch"
+  ]
+}
+```
+
 ## Testing
 
 Ember Simple Auth comes with a __set of test helpers that can be used in
