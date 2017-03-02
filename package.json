@@ -89,5 +89,11 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "eslint-plugin-ember",
+      "eslint-plugin-mocha"
+    ]
   }
 }
