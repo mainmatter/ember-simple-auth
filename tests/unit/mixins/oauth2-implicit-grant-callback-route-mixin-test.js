@@ -4,17 +4,17 @@ import { it } from 'ember-mocha';
 import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import CallbackRouteMixin from 'ember-simple-auth/mixins/callback-route-mixin';
+import OAuth2ImplicitGrantCallbackRouteMixin from 'ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin';
 
 const { Object: EmberObject, RSVP, Route } = Ember;
 
-describe('CallbackRouteMixin', () => {
+describe('OAuth2ImplicitGrantCallbackRouteMixin', function() {
   let route;
   let session;
   let ok;
 
-  describe('#activate', () => {
-    beforeEach(() => {
+  describe('#activate', function() {
+    beforeEach(function() {
       session = EmberObject.extend({
         authenticate() {
           if (ok) {
@@ -27,14 +27,14 @@ describe('CallbackRouteMixin', () => {
 
       sinon.spy(session, 'authenticate');
 
-      route = Route.extend(CallbackRouteMixin, {
+      route = Route.extend(OAuth2ImplicitGrantCallbackRouteMixin, {
         authenticator: 'authenticator:oauth2'
       }).create({ session });
 
       sinon.spy(route, 'transitionTo');
     });
 
-    it('should save the error and transition if authentication fails', (done) => {
+    it('should save the error and transition if authentication fails', function(done) {
       ok = false;
 
       route.activate();

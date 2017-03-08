@@ -30,7 +30,7 @@ export default BaseAuthenticator.extend({
   restore(data) {
     return new RSVP.Promise((resolve, reject) => {
       if (!this._validateData(data)) {
-        return reject();
+        return reject('the token could not be restored, invalid token: missing access_token, state, or token_type');
       }
 
       return resolve(data);
@@ -58,7 +58,7 @@ export default BaseAuthenticator.extend({
       if (response.error) {
         reject(response.error);
       } else if (!this._validateData(response)) {
-        reject('invalid_token');
+        reject('invalid token: missing access_token, state, or token_type');
       } else {
         resolve(response);
       }

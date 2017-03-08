@@ -21,48 +21,48 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
     'token_type': 'bearer'
   };
 
-  beforeEach(() => {
+  beforeEach(function() {
     authenticator = OAuth2ImplicitGrant.create();
-    server        = new Pretender();
+    server = new Pretender();
   });
 
-  afterEach(() => {
+  afterEach(function() {
     tryInvoke(server, 'shutdown');
   });
 
-  describe('#restore', () => {
-    describe('when the data contains an access_token', () => {
-      it('resolves with the correct data', () => {
+  describe('#restore', function() {
+    describe('when the data contains an access_token', function() {
+      it('resolves with the correct data', function() {
         return authenticator.restore(accessToken).then((_data) => {
           expect(_data).to.eql(accessToken);
         });
       });
 
-      describe('when the data does not contain an access_token', () => {
-        it('returns a rejecting promise', (done) => {
-          authenticator.restore().catch(() => {
-            done();
+      describe('when the data does not contain an access_token', function() {
+        it('returns a rejecting promise', function() {
+          return authenticator.restore().catch((_err) => {
+            expect(_err).to.eql('the token could not be restored, invalid token: missing access_token, state, or token_type');
           });
         });
       });
     });
   });
 
-  describe('#authenticate', () => {
-    describe('with hash provided', () => {
-      it('authentication should succeed on a proper access token', () => {
+  describe('#authenticate', function() {
+    describe('with hash provided', function() {
+      it('authentication should succeed on a proper access token', function() {
         return authenticator.authenticate(accessTokenHash).then((_accessToken) => {
           expect(_accessToken).to.eql(accessToken);
         });
       });
 
-      it('authentication should fail on an invalid access token', () => {
+      it('authentication should fail on an invalid access token', function() {
         return authenticator.authenticate('#foo=bar').catch((_err) => {
-          expect(_err).to.eql('invalid_token');
+          expect(_err).to.eql('invalid token: missing access_token, state, or token_type');
         });
       });
 
-      it('authentication should fail on a proper error object', () => {
+      it('authentication should fail on a proper error object', function() {
         return authenticator.authenticate('#error=access_denied').catch((_err) => {
           expect(_err).to.eql('access_denied');
         });
@@ -70,8 +70,8 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
     });
   });
 
-  describe('#invalidate', () => {
-    it('returns a resolving promise', (done) => {
+  describe('#invalidate', function() {
+    it('returns a resolving promise', function(done) {
       authenticator.invalidate().then(() => {
         done();
       });
