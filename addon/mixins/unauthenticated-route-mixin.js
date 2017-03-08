@@ -72,7 +72,7 @@ export default Mixin.create({
       let routeIfAlreadyAuthenticated = this.get('routeIfAlreadyAuthenticated');
       assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
 
-      return this.transitionTo(routeIfAlreadyAuthenticated);
+      this.transitionTo(routeIfAlreadyAuthenticated);
     } else {
       return this._super(...arguments);
     }
