@@ -31,7 +31,7 @@
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
-    "body-parser": "^1.16.0",
+    "body-parser": "^1.17.1",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-merge-trees": "^2.0.0",
     "broccoli-yuidoc": "~2.1.0",
