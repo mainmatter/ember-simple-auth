@@ -46,6 +46,7 @@ authorization mechanisms__.
 **Other Guides**
 
 * [Managing a current User](guides/managing-current-user.md)
+* [GitHub authorization with torii](guides/auth-torii-with-github.md)
 
 **Other Resources**
 
