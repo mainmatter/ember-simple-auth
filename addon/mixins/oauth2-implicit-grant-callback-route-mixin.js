@@ -2,6 +2,21 @@ import Ember from 'ember';
 
 const { inject: { service }, Mixin, testing, computed, getOwner } = Ember;
 
+/**
+  __This mixin is used in the callback route when using OAuth2 Implicit Grant
+  authentication.__ It defines an
+  {{#chrossLink "OAuth2ImplicitGrantCallbackRouteMixin/activate:method"}}{{/crossLink}}
+  method that retrieves and processes authentication parameters, such as
+  `access_token`, from the hash parameters provided in the callback URL by
+  the authenticating server. The parameters are then passed to the
+  {{#crossLink "OAuth2ImplicitGrantAuthenticator"}}{{/crossLink}}
+
+  @class OAuth2ImplicitGrantCallbackMixin
+  @module ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin
+  @extends Ember.Mixin
+  @public
+*/
+
 export default Mixin.create({
   /**
    The session service.
