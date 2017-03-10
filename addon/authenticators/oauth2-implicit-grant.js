@@ -51,7 +51,7 @@ export default BaseAuthenticator.extend({
    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
    @public
    */
-  authenticate(hash) {
+  authenticate(response) {
     return new RSVP.Promise((resolve, reject) => {
       if (hash.error) {
         reject(hash.error);
@@ -81,20 +81,5 @@ export default BaseAuthenticator.extend({
     return !isEmpty(data) &&
       !isEmpty(data.access_token);
     // jscs:enable requireCamelCaseOrUpperCaseIdentifiers
-  },
-
-  _parseResponse(locationHash) {
-    let params = {};
-    const query = locationHash.substring(locationHash.indexOf('?'));
-    const regex = /([^#?&=]+)=([^&]*)/g;
-    let match;
-
-    // decode all parameter pairs
-    while ((match = regex.exec(query)) !== null) {
-      params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
-    }
-
-    return params;
->>>>>>> added oauth2 implicit grant authenticator
   }
 });
