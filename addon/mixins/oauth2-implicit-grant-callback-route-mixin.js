@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { inject: { service }, Mixin } = Ember;
+const { inject: { service }, Mixin, testing, computed, getOwner } = Ember;
 
 export default Mixin.create({
   /**
@@ -41,20 +41,24 @@ export default Mixin.create({
    @public
    */
   activate() {
+    if (!testing && this.get('_isFastBoot')) {
+      return;
+    }
+
     let authenticator = this.get('authenticator');
 
-    let hash = '';
-
-    // test if fastboot is available without requiring the fastboot service to be present
-    if (typeof FastBoot === 'undefined') {
-      hash = this._parseResponse(window.location.hash);
-    }
+    let hash = this._parseResponse(window.location.hash);
 
     return this.get('session').authenticate(authenticator, hash).catch((err) => {
       this.set('error', err);
     });
   },
 
+  _isFastBoot: computed(function() {
+    const fastboot = getOwner(this).lookup('service:fastboot');
+
+    return fastboot ? fastboot.get('isFastBoot') : false;
+  }),
 
   _parseResponse(locationHash) {
     let params = {};
