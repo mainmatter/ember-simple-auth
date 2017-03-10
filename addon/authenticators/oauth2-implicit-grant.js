@@ -30,7 +30,7 @@ export default BaseAuthenticator.extend({
   restore(data) {
     return new RSVP.Promise((resolve, reject) => {
       if (!this._validateData(data)) {
-        return reject('the token could not be restored, invalid token: missing access_token, state, or token_type');
+        return reject('Could not restore session - "access_token" missing.');
       }
 
       return resolve(data);
@@ -51,14 +51,12 @@ export default BaseAuthenticator.extend({
    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
    @public
    */
-  authenticate(hash) {
+  authenticate(response) {
     return new RSVP.Promise((resolve, reject) => {
-      let response = this._parseResponse(hash);
-
       if (response.error) {
         reject(response.error);
       } else if (!this._validateData(response)) {
-        reject('invalid token: missing access_token, state, or token_type');
+        reject('Invalid auth params - "access_token" missing.');
       } else {
         resolve(response);
       }
@@ -81,23 +79,7 @@ export default BaseAuthenticator.extend({
 
     // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
     return !isEmpty(data) &&
-      !isEmpty(data.access_token) &&
-      !isEmpty(data.state) &&
-      !isEmpty(data.token_type);
+      !isEmpty(data.access_token);
     // jscs:enable requireCamelCaseOrUpperCaseIdentifiers
-  },
-
-  _parseResponse(locationHash) {
-    let params = {};
-    const query = locationHash.substring(locationHash.indexOf('?'));
-    const regex = /([^#?&=]+)=([^&]*)/g;
-    let match;
-
-    // decode all parameter pairs
-    while ((match = regex.exec(query)) !== null) {
-      params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
-    }
-
-    return params;
   }
 });

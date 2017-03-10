@@ -13,8 +13,6 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
   let authenticator;
   let server;
 
-  let accessTokenHash = '#access_token=secret-token&state=abcd&token_type=bearer';
-
   const accessToken = {
     'access_token': 'secret-token',
     'state': 'abcd',
@@ -41,7 +39,7 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
       describe('when the data does not contain an access_token', function() {
         it('returns a rejecting promise', function() {
           return authenticator.restore().catch((_err) => {
-            expect(_err).to.eql('the token could not be restored, invalid token: missing access_token, state, or token_type');
+            expect(_err).to.eql('Could not restore session - "access_token" missing.');
           });
         });
       });
@@ -51,19 +49,19 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
   describe('#authenticate', function() {
     describe('with hash provided', function() {
       it('authentication should succeed on a proper access token', function() {
-        return authenticator.authenticate(accessTokenHash).then((_accessToken) => {
+        return authenticator.authenticate(accessToken).then((_accessToken) => {
           expect(_accessToken).to.eql(accessToken);
         });
       });
 
       it('authentication should fail on an invalid access token', function() {
-        return authenticator.authenticate('#foo=bar').catch((_err) => {
-          expect(_err).to.eql('invalid token: missing access_token, state, or token_type');
+        return authenticator.authenticate({ foo: 'bar' }).catch((_err) => {
+          expect(_err).to.eql('Invalid auth params - "access_token" missing.');
         });
       });
 
       it('authentication should fail on a proper error object', function() {
-        return authenticator.authenticate('#error=access_denied').catch((_err) => {
+        return authenticator.authenticate({ error: 'access_denied' }).catch((_err) => {
           expect(_err).to.eql('access_denied');
         });
       });
