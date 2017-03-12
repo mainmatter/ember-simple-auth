@@ -542,7 +542,7 @@ data source, then we need to create an adapter per model. Because `ember-data-gi
 we'll create the `github-user` adapter to start us off.
 
 ```
-ember g adapter application
+ember g adapter github-user
 ```
 
 ```js
