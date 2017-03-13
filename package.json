@@ -19,7 +19,8 @@
     "test": "ember try:each",
     "test:node": "mocha node-tests node-tests/blueprints",
     "test:fastboot": "mocha fastboot-tests",
-    "lint": "eslint app addon blueprints config server test-support tests *.js"
+    "lint": "eslint app addon blueprints config server test-support tests *.js",
+    "diagrams": "node node_modules/mermaid/bin/mermaid.js --svg --png -o guides/assets guides/assets/esa-initial-flow.txt"
   },
   "dependencies": {
     "broccoli-file-creator": "^1.1.1",
@@ -75,6 +76,7 @@
     "handlebars": "~4.0.5",
     "loader.js": "^4.0.10",
     "marked": "^0.3.6",
+    "mermaid": "^7.0.0",
     "mocha": "^3.0.0",
     "mocha-only-detector": "0.1.0",
     "morgan": "^1.5.2",

@@ -1,0 +1,40 @@
+sequenceDiagram
+    participant User
+    participant App
+    participant Application Route
+    participant Authenticated Route
+    participant Unauthenticated Route
+    participant Session Service
+    participant Torii Provider
+    participant GitHub
+    participant Token Exchanger
+    User->>App: Use https://git-tool.com
+    App->>Application Route: transitionTo(application)
+    Application Route->>Application Route: subscribeToSessionEvents()
+    App->>Authenticated Route: transitionTo(index)
+    Authenticated Route->>Authenticated Route: beforeModel()
+    Authenticated Route->>Session Service: isAuthenticated?
+    Session Service-->>Authenticated Route: false
+    Authenticated Route->>Unauthenticated Route: transitionTo(authenticationRoute)
+    Unauthenticated Route->>Unauthenticated Route: beforeModel()
+    Unauthenticated Route->>Session Service: isAuthenticated?
+    Session Service-->>Unauthenticated Route: false
+    Unauthenticated Route->>Unauthenticated Route: render(loginTemplate)
+    User->>App: Login
+    App->>Unauthenticated Route: login
+    Unauthenticated Route->>Unauthenticated Route: controller.login()
+    Unauthenticated Route->>Session Service: authenticate('authenticator:torii', 'github')
+    Session Service->>Torii Provider: authenticate()
+    Torii Provider->>GitHub: Ask permission
+    GitHub->>User: Is this okay?
+    User-->>GitHub: Sure is!
+    GitHub-->>Torii Provider: authorizationCode
+    Torii Provider->>Token Exchanger: authorize(authorizationCode)
+    Token Exchanger->>GitHub: access_token(authorizationCode, secret)
+    GitHub-->>Token Exchanger: access_token
+    Token Exchanger-->>Torii Provider: access_token
+    Torii Provider-->>Session Service: access_token
+    Session Service-->>Unauthenticated Route: isAuthenticated=true
+    Unauthenticated Route-->>Authenticated Route: transitionTo(routeIfAlreadyAuthenticated)
+    Authenticated Route-->>App: You're In!
+    App-->>User: Let's Go!
