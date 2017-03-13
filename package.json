@@ -31,9 +31,9 @@
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
-    "body-parser": "^1.16.0",
+    "body-parser": "^1.17.1",
     "broccoli-asset-rev": "^2.4.5",
-    "broccoli-merge-trees": "^1.1.2",
+    "broccoli-merge-trees": "^2.0.0",
     "broccoli-yuidoc": "~2.1.0",
     "chai": "^3.5.0",
     "cors": "~2.8.1",
@@ -66,8 +66,8 @@
     "ember-resolver": "^2.0.3",
     "ember-sinon": "~0.6.0",
     "ember-source": "^2.11.0",
-    "eslint-config-simplabs": "^0.3.0",
-    "eslint-plugin-ember": "^2.0.1",
+    "eslint-config-simplabs": "^0.4.0",
+    "eslint-plugin-ember": "^3.0.1",
     "eslint-plugin-mocha": "^4.8.0",
     "express": "^4.14.0",
     "git-repo-version": "^0.4.1",
@@ -79,7 +79,7 @@
     "mocha-only-detector": "0.1.0",
     "morgan": "^1.5.2",
     "request": "^2.74.0",
-    "rimraf": "^2.5.2",
+    "rimraf": "^2.6.1",
     "rsvp": "^3.2.1",
     "sinon-chai": "~2.8.0",
     "torii": "~0.8.0"
@@ -89,5 +89,11 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "eslint-plugin-ember",
+      "eslint-plugin-mocha"
+    ]
   }
 }

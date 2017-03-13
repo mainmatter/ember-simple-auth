@@ -46,6 +46,7 @@ authorization mechanisms__.
 **Other Guides**
 
 * [Managing a current User](guides/managing-current-user.md)
+* [GitHub authorization with torii](guides/auth-torii-with-github.md)
 
 **Other Resources**
 
@@ -603,6 +604,21 @@ the application store:
 import CookieStore from 'ember-simple-auth/session-stores/cookie';
 
 export default CookieStore.extend();
+```
+
+If you are using the
+[`OAuth2PasswordGrantAuthenticator`](http://ember-simple-auth.com/api/classes/OAuth2PasswordGrantAuthenticator.html),
+or
+[`DeviseAuthenticator`](http://ember-simple-auth.com/api/classes/DeviseAuthenticator.html),
+you must add `node-fetch` to your list of FastBoot whitelisted dependencies
+in `package.json`:
+
+```json
+{
+  "fastbootDependencies": [
+    "node-fetch"
+  ]
+}
 ```
 
 ## Testing

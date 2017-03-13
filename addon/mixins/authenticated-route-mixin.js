@@ -93,7 +93,7 @@ export default Mixin.create({
         this.set('session.attemptedTransition', transition);
       }
 
-      return this.transitionTo(authenticationRoute);
+      this.transitionTo(authenticationRoute);
     } else {
       return this._super(...arguments);
     }
