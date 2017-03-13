@@ -141,6 +141,12 @@ export default Base.extend({
   _createStore(storeType, options) {
     const store = storeType.create(options);
 
+    if (!this.get('_isLocalStorageAvailable')) {
+      let expirationCookieName = `${this.get('cookieName')}-expiration_time`;
+      let expirationTime = parseInt(options._cookies.read(expirationCookieName), 10);
+      this.set('cookieExpirationTime', expirationTime);
+    }
+
     store.on('sessionDataUpdated', (data) => {
       this.trigger('sessionDataUpdated', data);
     });

@@ -293,4 +293,21 @@ export default function(options) {
       });
     });
   });
+
+  describe('#init', function() {
+    let cookieName = 'ember_simple_auth-session-expiration_time';
+    let expirationTime = 60 * 60 * 24;
+    beforeEach(function() {
+      cookieService.write(cookieName, expirationTime);
+      store = createStore(cookieService);
+    });
+
+    afterEach(function() {
+      cookieService.clear(cookieName);
+    });
+
+    it('restores expiration time from cookie', function() {
+      expect(store.get('cookieExpirationTime')).to.equal(expirationTime);
+    });
+  });
 }
