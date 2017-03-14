@@ -3,12 +3,12 @@ import Ember from 'ember';
 const { inject: { service }, Mixin, testing, computed, getOwner } = Ember;
 
 /**
-  __This mixin is used in the callback route when using OAuth2 Implicit Grant
-  authentication.__ It defines an
+  __This mixin is used in the callback route when using OAuth 2.0 Implicit
+  Grant authentication.__ It implements the
   {{#chrossLink "OAuth2ImplicitGrantCallbackRouteMixin/activate:method"}}{{/crossLink}}
   method that retrieves and processes authentication parameters, such as
   `access_token`, from the hash parameters provided in the callback URL by
-  the authenticating server. The parameters are then passed to the
+  the authentication server. The parameters are then passed to the
   {{#crossLink "OAuth2ImplicitGrantAuthenticator"}}{{/crossLink}}
 
   @class OAuth2ImplicitGrantCallbackMixin
@@ -29,32 +29,38 @@ export default Mixin.create({
   session: service('session'),
 
   /**
-   The authenticator that should be used to authenticate the callback.
+    The authenticator that should be used to authenticate the callback. This
+    must be a subclass of the
+    {{#crossLink "OAuth2ImplicitGrantAuthenticator"}}{{/crossLink}}
+    authenticator.
 
-   @property authenticator
-   @type String
-   @default null
-   @public
-   */
+    @property authenticator
+    @type String
+    @default null
+    @public
+  */
   authenticator: null,
 
   /**
-   The error that ocurred during the authentication attempt.
+    Any error that potentially occurs during authentication will be stored in
+    this property.
 
-   @property error
-   @type String
-   @default null
-   @public
-   */
+    @property error
+    @type String
+    @default null
+    @public
+  */
   error: null,
 
   /**
-   Authenticates the passed authentication server response and sets the error
-   property if the authentication failed.
+    Passes the hash received with the redirection from the authentication
+    server to the
+    {{#crossLink "OAuth2ImplicitGrantAuthenticator"}}{{/crossLink}} and
+    authenticates the session with the authenticator.
 
-   @method activate
-   @public
-   */
+    @method activate
+    @public
+  */
   activate() {
     if (!testing && this.get('_isFastBoot')) {
       return;
