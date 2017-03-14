@@ -68,9 +68,9 @@ export default Mixin.create({
 
     let authenticator = this.get('authenticator');
 
-    let hash = this._parseResponse(window.location.hash);
+    let hash = this._parseResponse(this._windowLocationHash());
 
-    return this.get('session').authenticate(authenticator, hash).catch((err) => {
+    this.get('session').authenticate(authenticator, hash).catch((err) => {
       this.set('error', err);
     });
   },
@@ -80,6 +80,11 @@ export default Mixin.create({
 
     return fastboot ? fastboot.get('isFastBoot') : false;
   }),
+
+  _windowLocationHash() {
+    // we wrap this so we can stub it with sinon
+    return window.location.hash;
+  },
 
   _parseResponse(locationHash) {
     let params = {};
