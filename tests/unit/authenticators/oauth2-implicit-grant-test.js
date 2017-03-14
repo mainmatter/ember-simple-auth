@@ -13,10 +13,8 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
   let authenticator;
   let server;
 
-  const accessToken = {
-    'access_token': 'secret-token',
-    'state': 'abcd',
-    'token_type': 'bearer'
+  let data = {
+    'access_token': 'secret-token'
   };
 
   beforeEach(function() {
@@ -31,8 +29,8 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
   describe('#restore', function() {
     describe('when the data contains an access_token', function() {
       it('resolves with the correct data', function() {
-        return authenticator.restore(accessToken).then((_data) => {
-          expect(_data).to.eql(accessToken);
+        return authenticator.restore(data).then((_data) => {
+          expect(_data).to.eql(data);
         });
       });
 
@@ -47,20 +45,24 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
   });
 
   describe('#authenticate', function() {
-    describe('with hash provided', function() {
-      it('authentication should succeed on a proper access token', function() {
-        return authenticator.authenticate(accessToken).then((_accessToken) => {
-          expect(_accessToken).to.eql(accessToken);
+    describe('when the data contains an access_token', function() {
+      it('resolves with the correct data', function() {
+        return authenticator.authenticate(data).then((_data) => {
+          expect(_data).to.eql(data);
         });
       });
+    });
 
-      it('authentication should fail on an invalid access token', function() {
+    describe('when the data does not contain an access_token', function() {
+      it('rejects with an error', function() {
         return authenticator.authenticate({ foo: 'bar' }).catch((_err) => {
           expect(_err).to.eql('Invalid auth params - "access_token" missing.');
         });
       });
+    });
 
-      it('authentication should fail on a proper error object', function() {
+    describe('when the data contains an error', function() {
+      it('rejects with that error', function() {
         return authenticator.authenticate({ error: 'access_denied' }).catch((_err) => {
           expect(_err).to.eql('access_denied');
         });
@@ -69,9 +71,9 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
   });
 
   describe('#invalidate', function() {
-    it('returns a resolving promise', function(done) {
-      authenticator.invalidate().then(() => {
-        done();
+    it('returns a resolving promise', function() {
+      return authenticator.invalidate().then(() => {
+        expect(true).to.be.true;
       });
     });
   });

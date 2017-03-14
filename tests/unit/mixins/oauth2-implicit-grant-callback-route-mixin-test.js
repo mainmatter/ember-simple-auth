@@ -34,7 +34,7 @@ describe('OAuth2ImplicitGrantCallbackRouteMixin', function() {
       sinon.spy(route, 'transitionTo');
     });
 
-    it('should save the error and transition if authentication fails', function(done) {
+    it('saves the error and transition if authentication fails', function(done) {
       ok = false;
 
       route.activate();
