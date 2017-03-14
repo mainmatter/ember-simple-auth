@@ -65,6 +65,13 @@ describe('Integration tests', function() {
         expect(response.headers['set-cookie']).to.deep.equal(['ember_simple_auth-session=%7B%22authenticated%22%3A%7B%7D%7D; path=/'])
       });
   });
+
+  it('implicit grant callback route works with FastBoot', function() {
+    return request({ url: url + '/callback', jar: true })
+      .then(function(response) {
+        expect(response.statusCode).to.equal(200);
+      });
+  });
 });
 
 function addDependencies(app) {

@@ -12,6 +12,7 @@ Router.map(function() {
   this.route('protected');
   this.route('authenticate');
   this.route('invalidate');
+  this.route('callback');
 });
 
 export default Router;
