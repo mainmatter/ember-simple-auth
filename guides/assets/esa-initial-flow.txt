@@ -19,8 +19,9 @@ sequenceDiagram
     Unauthenticated Route->>Unauthenticated Route: beforeModel()
     Unauthenticated Route->>Session Service: isAuthenticated?
     Session Service-->>Unauthenticated Route: false
-    Unauthenticated Route->>Unauthenticated Route: render(loginTemplate)
-    User->>App: Login
+    Unauthenticated Route-->>App: render(loginTemplate)
+    App-->>User: Login screen
+    User->>App: Click "Login"
     App->>Unauthenticated Route: login
     Unauthenticated Route->>Unauthenticated Route: controller.login()
     Unauthenticated Route->>Session Service: authenticate('authenticator:torii', 'github')
