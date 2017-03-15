@@ -367,9 +367,9 @@ authenticator
 
 ```js
 // app/authenticators/oauth2.js
-import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
+import OAuth2PasswordGrantAuthenticator from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
-export default OAuth2PasswordGrant.extend();
+export default OAuth2PasswordGrantAuthenticator.extend();
 ```
 
 and invoke the session service's `authenticate` method with the respective
@@ -386,9 +386,9 @@ e.g.:
 
 ```js
 // app/authenticators/oauth2.js
-import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
+import OAuth2PasswordGrantAuthenticator from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
-export default OAuth2PasswordGrant.extend({
+export default OAuth2PasswordGrantAuthenticator.extend({
   serverTokenEndpoint: '/custom/endpoint'
 });
 ```
