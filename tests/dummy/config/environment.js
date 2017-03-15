@@ -43,7 +43,7 @@ module.exports = function(environment) {
 
     apiHost: 'http://localhost:4200',
 
-    googleClientID: '271351926386-jdh86lc996s5r6kia2dk2r7edrsmke85.apps.googleusercontent.com',
+    googleClientID: '694766332436-1g5bakjoo5flkfpv3t2mfsch9ghg7ggd.apps.googleusercontent.com',
 
     fastboot: {
       hostWhitelist: [/^localhost:\d+$/]

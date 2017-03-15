@@ -1,17 +1,12 @@
 /* jshint expr:true */
 /* jscs:disable requireDotNotation */
-import Ember from 'ember';
 import { it } from 'ember-mocha';
-import { describe, beforeEach, afterEach } from 'mocha';
+import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
-import Pretender from 'pretender';
 import OAuth2ImplicitGrant from 'ember-simple-auth/authenticators/oauth2-implicit-grant';
-
-const { tryInvoke } = Ember;
 
 describe('OAuth2ImplicitGrantAuthenticator', () => {
   let authenticator;
-  let server;
 
   let data = {
     'access_token': 'secret-token'
@@ -19,11 +14,6 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
 
   beforeEach(function() {
     authenticator = OAuth2ImplicitGrant.create();
-    server = new Pretender();
-  });
-
-  afterEach(function() {
-    tryInvoke(server, 'shutdown');
   });
 
   describe('#restore', function() {
