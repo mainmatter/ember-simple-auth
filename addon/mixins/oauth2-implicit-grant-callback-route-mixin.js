@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { inject: { service }, Mixin, testing, computed, getOwner } = Ember;
+const { inject: { service }, Mixin, computed, getOwner } = Ember;
 
 /**
   __This mixin is used in the callback route when using OAuth 2.0 Implicit
@@ -62,7 +62,7 @@ export default Mixin.create({
     @public
   */
   activate() {
-    if (!testing && this.get('_isFastBoot')) {
+    if (this.get('_isFastBoot')) {
       return;
     }
 

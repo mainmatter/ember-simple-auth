@@ -27,7 +27,8 @@ describe('OAuth2ImplicitGrantCallbackRouteMixin', function() {
       sinon.spy(session, 'authenticate');
 
       route = Route.extend(OAuth2ImplicitGrantCallbackRouteMixin, {
-        authenticator: 'authenticator:oauth2'
+        authenticator: 'authenticator:oauth2',
+        _isFastBoot: false
       }).create({ session });
 
       sinon.spy(route, 'transitionTo');
