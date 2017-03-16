@@ -134,11 +134,8 @@ export default Base.extend({
       options._fastboot = this.get('_fastboot');
       options._cookies = this.get('_cookies');
 
-      let expirationCookieName = `${this.get('cookieName')}-expiration_time`;
-      let expirationTime = parseInt(options._cookies.read(expirationCookieName), 10);
-      this.set('cookieExpirationTime', expirationTime);
-
       store = this._createStore(Cookie, options);
+      this.set('cookieExpirationTime', store.get('cookieExpirationTime'));
     }
     this.set('_store', store);
   },
