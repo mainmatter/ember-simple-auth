@@ -1,30 +1,29 @@
 sequenceDiagram
     participant User
     participant App
-    participant Application Route
-    participant Authenticated Route
-    participant Unauthenticated Route
+    participant Application Route (ApplicationRouteMixin)
+    participant Index Route (AuthenticatedRouteMixin)
+    participant Login Route (UnauthenticatedRouteMixin)
     participant Session Service
     participant Torii Provider
     participant GitHub
     participant Token Exchanger
     User->>App: Use https://git-tool.com
-    App->>Application Route: transitionTo(application)
-    Application Route->>Application Route: subscribeToSessionEvents()
-    App->>Authenticated Route: transitionTo(index)
-    Authenticated Route->>Authenticated Route: beforeModel()
-    Authenticated Route->>Session Service: isAuthenticated?
-    Session Service-->>Authenticated Route: false
-    Authenticated Route->>Unauthenticated Route: transitionTo(authenticationRoute)
-    Unauthenticated Route->>Unauthenticated Route: beforeModel()
-    Unauthenticated Route->>Session Service: isAuthenticated?
-    Session Service-->>Unauthenticated Route: false
-    Unauthenticated Route-->>App: render(loginTemplate)
+    App->>Application Route (ApplicationRouteMixin): beforeModel()
+    Application Route (ApplicationRouteMixin)->>Application Route (ApplicationRouteMixin): subscribeToSessionEvents()
+    App->>Index Route (AuthenticatedRouteMixin): beoreModel()
+    Index Route (AuthenticatedRouteMixin)->>Session Service: isAuthenticated?
+    Session Service-->>Index Route (AuthenticatedRouteMixin): false
+    Index Route (AuthenticatedRouteMixin)->>Login Route (UnauthenticatedRouteMixin): transitionTo(authenticationRoute)
+    Login Route (UnauthenticatedRouteMixin)->>Login Route (UnauthenticatedRouteMixin): beforeModel()
+    Login Route (UnauthenticatedRouteMixin)->>Session Service: isAuthenticated?
+    Session Service-->>Login Route (UnauthenticatedRouteMixin): false
+    Login Route (UnauthenticatedRouteMixin)-->>App: render(loginTemplate)
     App-->>User: Login screen
     User->>App: Click "Login"
-    App->>Unauthenticated Route: login
-    Unauthenticated Route->>Unauthenticated Route: controller.login()
-    Unauthenticated Route->>Session Service: authenticate('authenticator:torii', 'github')
+    App->>Login Route (UnauthenticatedRouteMixin): login
+    Login Route (UnauthenticatedRouteMixin)->>Login Route (UnauthenticatedRouteMixin): controller.login()
+    Login Route (UnauthenticatedRouteMixin)->>Session Service: authenticate('authenticator:torii', 'github')
     Session Service->>Torii Provider: authenticate()
     Torii Provider->>GitHub: Ask permission
     GitHub->>User: Is this okay?
@@ -35,7 +34,7 @@ sequenceDiagram
     GitHub-->>Token Exchanger: access_token
     Token Exchanger-->>Torii Provider: access_token
     Torii Provider-->>Session Service: access_token
-    Session Service-->>Unauthenticated Route: isAuthenticated=true
-    Unauthenticated Route-->>Authenticated Route: transitionTo(routeIfAlreadyAuthenticated)
-    Authenticated Route-->>App: You're In!
+    Session Service-->>Login Route (UnauthenticatedRouteMixin): isAuthenticated=true
+    Login Route (UnauthenticatedRouteMixin)-->>Index Route (AuthenticatedRouteMixin): transitionTo(routeIfAlreadyAuthenticated)
+    Index Route (AuthenticatedRouteMixin)-->>App: You're In!
     App-->>User: Let's Go!
