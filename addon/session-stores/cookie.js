@@ -159,9 +159,9 @@ export default BaseStore.extend({
   init() {
     this._super(...arguments);
 
-    if (!this.get('cookieExpirationTime')) {
-      let cachedExpirationTime = parseInt(this._read(`${this.get('cookieName')}-expiration_time`), 10);
-      this.set('cookieExpirationTime', cachedExpirationTime);
+    let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
+    if (cachedExpirationTime) {
+      this.set('cookieExpirationTime', parseInt(cachedExpirationTime, 10));
     }
 
     if (!this.get('_fastboot.isFastBoot')) {
