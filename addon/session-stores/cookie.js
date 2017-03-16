@@ -159,6 +159,11 @@ export default BaseStore.extend({
   init() {
     this._super(...arguments);
 
+    let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
+    if (cachedExpirationTime) {
+      this.set('cookieExpirationTime', parseInt(cachedExpirationTime, 10));
+    }
+
     if (!this.get('_fastboot.isFastBoot')) {
       next(() => {
         this._syncData().then(() => {

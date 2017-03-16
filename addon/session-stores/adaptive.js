@@ -133,7 +133,9 @@ export default Base.extend({
       const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath');
       options._fastboot = this.get('_fastboot');
       options._cookies = this.get('_cookies');
+
       store = this._createStore(Cookie, options);
+      this.set('cookieExpirationTime', store.get('cookieExpirationTime'));
     }
     this.set('_store', store);
   },
