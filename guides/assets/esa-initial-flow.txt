@@ -23,8 +23,7 @@ sequenceDiagram
     Login Route (UnauthenticatedRouteMixin)-->>App: Render login screen
     App-->>User: Login screen
     User->>App: Click "Login"
-    App->>Login Route (UnauthenticatedRouteMixin): login
-    Login Route (UnauthenticatedRouteMixin)->>Login Controller: login action
+    App->>Login Controller: login action
     Login Controller->>Session Service: authenticate('authenticator:torii', 'github')
     Session Service->>ToriiAuthenticator: authenticate('github')
     ToriiAuthenticator->>Torii Provider: open('github')
