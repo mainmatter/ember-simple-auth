@@ -13,7 +13,7 @@ sequenceDiagram
     User->>App: Use https://git-tool.com
     App->>Application Route (ApplicationRouteMixin): beforeModel()
     Application Route (ApplicationRouteMixin)->>Application Route (ApplicationRouteMixin): subscribeToSessionEvents()
-    App->>Index Route (AuthenticatedRouteMixin): beoreModel()
+    App->>Index Route (AuthenticatedRouteMixin): beforeModel()
     Index Route (AuthenticatedRouteMixin)->>Session Service: isAuthenticated?
     Session Service-->>Index Route (AuthenticatedRouteMixin): false
     Index Route (AuthenticatedRouteMixin)->>App: transitionTo(authenticationRoute)
