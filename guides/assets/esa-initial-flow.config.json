@@ -1,0 +1,15 @@
+{
+  "diagramMarginX": 50,
+  "diagramMarginY": 30,
+  "actorMargin": 50,
+  "width": 275,
+  "height": 65,
+  "boxMargin": 10,
+  "boxTextMargin": 5,
+  "noteMargin": 10,
+  "messageMargin": 35,
+  "mirrorActors": true,
+  "bottomMarginAdj": 1,
+  "activationWidth": 10,
+  "textPlacement": "tspan"
+}

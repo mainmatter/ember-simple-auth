@@ -13,7 +13,7 @@ The overall flow, concerns, and approach are the same for all OAuth2 explicit gr
 mechanisms like Facebook, Google, etc. The differences could be as small as changing some
 configuration and base classes.
 
-You can find a sequence diagram for the flow [here](./assets/esa-initial-flow.txt.svg).
+You can find a sequence diagram for the flow [here](./assets/esa-initial-flow.txt.png).
 
 This guide assumes you know how to start an Ember app and are familiar with the various
 files and concepts.
