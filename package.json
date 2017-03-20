@@ -20,7 +20,7 @@
     "test:node": "mocha node-tests node-tests/blueprints",
     "test:fastboot": "mocha fastboot-tests",
     "lint": "eslint app addon blueprints config server test-support tests *.js",
-    "diagrams": "mermaid --sequenceConfig guides/assets/esa-initial-flow.config.json --css guides/assets/esa-initial-flow.css --width 1800 -o guides/assets guides/assets/esa-initial-flow.txt"
+    "diagrams": "mermaid --sequenceConfig guides/assets/esa-initial-flow.config.json --width 2400 -o guides/assets guides/assets/esa-initial-flow.txt"
   },
   "dependencies": {
     "broccoli-file-creator": "^1.1.1",
