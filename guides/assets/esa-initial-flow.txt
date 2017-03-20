@@ -1,0 +1,44 @@
+sequenceDiagram
+    participant User
+    participant App
+    participant Application Route (ApplicationRouteMixin)
+    participant Index Route (AuthenticatedRouteMixin)
+    participant Login Route (UnauthenticatedRouteMixin)
+    participant Login Controller
+    participant Session Service
+    participant ToriiAuthenticator
+    participant Torii Provider
+    participant Token Exchanger
+    participant GitHub
+    User->>App: Use https://git-tool.com
+    App->>Application Route (ApplicationRouteMixin): beforeModel()
+    Application Route (ApplicationRouteMixin)->>Application Route (ApplicationRouteMixin): subscribeToSessionEvents()
+    App->>Index Route (AuthenticatedRouteMixin): beforeModel()
+    Index Route (AuthenticatedRouteMixin)->>Session Service: isAuthenticated?
+    Session Service-->>Index Route (AuthenticatedRouteMixin): false
+    Index Route (AuthenticatedRouteMixin)->>App: transitionTo(authenticationRoute)
+    App->>Login Route (UnauthenticatedRouteMixin): beforeModel()
+    Login Route (UnauthenticatedRouteMixin)->>Session Service: isAuthenticated?
+    Session Service-->>Login Route (UnauthenticatedRouteMixin): false
+    Login Route (UnauthenticatedRouteMixin)-->>App: Render login screen
+    App-->>User: Login screen
+    User->>App: Click "Login"
+    App->>Login Controller: login action
+    Login Controller->>Session Service: authenticate('authenticator:torii', 'github')
+    Session Service->>ToriiAuthenticator: authenticate('github')
+    ToriiAuthenticator->>Torii Provider: open('github')
+    Torii Provider->>GitHub: Ask permission
+    GitHub->>User: Is this okay?
+    User-->>GitHub: Sure is!
+    GitHub-->>Torii Provider: authorizationCode
+    Torii Provider-->>ToriiAuthenticator: authorizationCode
+    ToriiAuthenticator->>Token Exchanger: authorize(authorizationCode)
+    Token Exchanger->>GitHub: access_token(authorizationCode, secret)
+    GitHub-->>Token Exchanger: access_token
+    Token Exchanger-->>ToriiAuthenticator: access_token
+    ToriiAuthenticator-->>Session Service: access_token
+    Session Service-->>Login Controller: isAuthenticated=true
+    Login Controller->>Application Route (ApplicationRouteMixin): authenticationSucceeded event
+    Application Route (ApplicationRouteMixin)-->>Index Route (AuthenticatedRouteMixin): transitionTo(routeIfAlreadyAuthenticated)
+    Index Route (AuthenticatedRouteMixin)-->>App: You're In!
+    App-->>User: Let's Go!
