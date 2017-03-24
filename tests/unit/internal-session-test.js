@@ -511,15 +511,31 @@ describe('InternalSession', () => {
 
   describe("when the session's content changes", function() {
     describe('when a single property is set', function() {
-      beforeEach(function() {
-        session.set('some', 'property');
+      describe('when the property is private (starts with an "_")', function() {
+        beforeEach(function() {
+          session.set('_some', 'property');
+        });
+
+        it('does not persist its content in the store', function() {
+          return store.restore().then((properties) => {
+            delete properties.authenticator;
+
+            expect(properties).to.eql({});
+          });
+        });
       });
 
-      it('persists its content in the store', function() {
-        return store.restore().then((properties) => {
-          delete properties.authenticator;
+      describe('when the property is not private (does not start with an "_")', function() {
+        beforeEach(function() {
+          session.set('some', 'property');
+        });
 
-          expect(properties).to.eql({ some: 'property', authenticated: {} });
+        it('persists its content in the store', function() {
+          return store.restore().then((properties) => {
+            delete properties.authenticator;
+
+            expect(properties).to.eql({ some: 'property', authenticated: {} });
+          });
         });
       });
     });
@@ -527,14 +543,14 @@ describe('InternalSession', () => {
     describe('when multiple properties are set at once', function() {
       beforeEach(function() {
         session.set('some', 'property');
-        session.setProperties({ multiple: 'properties' });
+        session.setProperties({ another: 'property', multiple: 'properties' });
       });
 
       it('persists its content in the store', function() {
         return store.restore().then((properties) => {
           delete properties.authenticator;
 
-          expect(properties).to.eql({ some: 'property', multiple: 'properties', authenticated: {} });
+          expect(properties).to.eql({ some: 'property', another: 'property', multiple: 'properties', authenticated: {} });
         });
       });
     });
