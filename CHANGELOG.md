@@ -1,3 +1,23 @@
+# 1.2.1
+
+* Arguments passed to the session service's `invalidate` method will now be
+  passed on to the authenticator's `invalidate` method along with the session
+  data, see #1093.
+* The generators for the torii authenticator will now generate a valid file,
+  including an `Ember` import, see #1216.
+* The cookie session store now allows defining the cookie path, see #1201.
+* The cookie session store will now correctly rewrite the cookie when the
+  cookie domain or expiration time change but the cookie name remains
+  unchanged, see #1234.
+* The `AuthenticatedRouteMixin` and `UnauthenticatedRouteMixin` will no longer
+  return the return value of `transitionTo` from their `beforeModel` methods,
+  see #1247.
+* A deprecation caused by a call to `Ember.warn` without a warning id has been
+  fixed, see #1250.
+* The cookie session store will now correctly restore its expiration time from
+  the expiration time cookie if present, see #1257.
+* Some parts of the documentation have been improved, see #1253, #1259, #1254.
+
 # 1.2.0
 
 * The [deprecated `bind` method from jQuery](http://api.jquery.com/bind/) has
