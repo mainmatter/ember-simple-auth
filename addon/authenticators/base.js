@@ -154,6 +154,7 @@ export default EmberObject.extend(Evented, {
 
     @method invalidate
     @param {Object} data The current authenticated session data
+    @param {Array} ...args additional arguments as required by the authenticator
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
     @public
   */

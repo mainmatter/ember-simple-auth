@@ -197,6 +197,7 @@ export default Service.extend(Evented, {
     event.
 
     @method invalidate
+    @param {Array} ...args arguments that will be passed to the authenticator
     @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully and rejects otherwise
     @public
   */
