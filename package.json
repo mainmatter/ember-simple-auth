@@ -42,7 +42,7 @@
     "ember-browserify": "1.1.13",
     "ember-cli": "2.11.0",
     "ember-cli-addon-tests": "^0.6.0",
-    "ember-cli-app-version": "^2.0.0",
+    "ember-cli-app-version": "^3.0.0",
     "ember-cli-base64": "~0.0.1",
     "ember-cli-blueprint-test-helpers": "^0.17.0",
     "ember-cli-chai": "^0.3.2",
