@@ -158,7 +158,9 @@ export default ObjectProxy.extend(Evented, {
   setUnknownProperty(key, value) {
     assert('"authenticated" is a reserved key used by Ember Simple Auth!', key !== 'authenticated');
     let result = this._super(key, value);
-    this._updateStore();
+    if (!(/^_/).test(key)) {
+      this._updateStore();
+    }
     return result;
   },
 
