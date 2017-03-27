@@ -14,14 +14,14 @@
   "repository": "https://github.com/simplabs/ember-simple-auth",
   "scripts": {
     "build": "ember build",
+    "diagrams": "mermaid --sequenceConfig guides/assets/esa-initial-flow.config.json --width 2400 -o guides/assets guides/assets/esa-initial-flow.txt",
     "fastboot": "echo \"Please also run npm start\"; ember fastboot --serve-assets",
+    "lint": "eslint app addon blueprints config server test-support tests *.js",
     "start": "ember server",
     "test": "ember test",
     "test:all": "ember try:each",
-    "test:node": "mocha node-tests node-tests/blueprints",
     "test:fastboot": "mocha fastboot-tests",
-    "lint": "eslint app addon blueprints config server test-support tests *.js",
-    "diagrams": "mermaid --sequenceConfig guides/assets/esa-initial-flow.config.json --width 2400 -o guides/assets guides/assets/esa-initial-flow.txt"
+    "test:node": "mocha node-tests node-tests/blueprints"
   },
   "dependencies": {
     "broccoli-file-creator": "^1.1.1",
@@ -62,7 +62,7 @@
     "ember-load-initializers": "^0.6.3",
     "ember-resolver": "^4.1.0",
     "ember-sinon": "~0.7.0",
-    "ember-source": "^2.11.0",
+    "ember-source": "^2.12.0",
     "eslint-config-simplabs": "^0.4.0",
     "eslint-plugin-ember": "^3.1.2",
     "eslint-plugin-mocha": "^4.9.0",
@@ -80,7 +80,7 @@
     "rimraf": "^2.6.1",
     "rsvp": "^3.5.0",
     "sinon-chai": "~2.9.0",
-    "torii": "~0.8.1"
+    "torii": "~0.8.2"
   },
   "engines": {
     "node": ">= 4"
