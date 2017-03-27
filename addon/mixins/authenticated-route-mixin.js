@@ -103,8 +103,7 @@ export default Mixin.create({
     This can be overridden to add custom data to the transition, or to override the transition entirely.
 
     @method triggerAuthentication
-    @param {}
-    @public
+    @protected
   */
   triggerAuthentication() {
     let authenticationRoute = this.get('authenticationRoute');
