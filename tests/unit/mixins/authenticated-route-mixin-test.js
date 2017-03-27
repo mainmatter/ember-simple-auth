@@ -57,6 +57,7 @@ describe('AuthenticatedRouteMixin', () => {
 
       sinon.spy(transition, 'send');
       sinon.spy(route, 'transitionTo');
+      sinon.spy(route, 'triggerAuthentication');
     });
 
     describe('if the session is authenticated', function() {
@@ -88,6 +89,14 @@ describe('AuthenticatedRouteMixin', () => {
 
         route.beforeModel(transition);
         expect(route.transitionTo).to.have.been.calledWith(authenticationRoute);
+      });
+
+      it('internally calls `triggerAuthentication` to accomplish the transition to the authentication route', function() {
+        let authenticationRoute = 'path/to/route';
+        route.set('authenticationRoute', authenticationRoute);
+
+        route.beforeModel(transition);
+        expect(route.triggerAuthentication).to.have.been.called;
       });
 
       it('sets the redirectTarget cookie in fastboot', function() {

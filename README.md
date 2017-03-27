@@ -276,6 +276,9 @@ Router.map(function() {
 The route to transition to if the session is not authenticated can also be
 [configured](#configuration) to be another one than `login`.
 
+This mixin defines a method called `triggerAuthentication` that handles the routing to the configured authentication route.
+This method can be overridden if there is some custom behavior you desire.
+
 To prevent a route from being accessed when the session is authenticated (which
 makes sense for login and registration routes for example), mix the
 [`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/UnauthenticatedRouteMixin.html)
