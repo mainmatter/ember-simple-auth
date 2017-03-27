@@ -57,7 +57,6 @@ describe('AuthenticatedRouteMixin', () => {
 
       sinon.spy(transition, 'send');
       sinon.spy(route, 'transitionTo');
-      sinon.spy(route, 'triggerAuthentication');
     });
 
     describe('if the session is authenticated', function() {

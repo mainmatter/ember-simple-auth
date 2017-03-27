@@ -97,10 +97,10 @@ export default Mixin.create({
   },
 
   /**
-    Handles the transition to the authentication route when this mixin's beforeModel hook
-    determines that you are not authenticated.
-
-    This can be overridden to add custom data to the transition, or to override the transition entirely.
+    Triggers authentication; by default this method transitions to the
+    `authenticationRoute`. In case the application uses an authentication
+    mechanism that does not use an authentication route, this method can be
+    overridden.
 
     @method triggerAuthentication
     @protected
