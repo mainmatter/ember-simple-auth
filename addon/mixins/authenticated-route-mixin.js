@@ -78,9 +78,6 @@ export default Mixin.create({
   */
   beforeModel(transition) {
     if (!this.get('session.isAuthenticated')) {
-      let authenticationRoute = this.get('authenticationRoute');
-      assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
-
       if (this.get('_isFastBoot')) {
         const fastboot = getOwner(this).lookup('service:fastboot');
         const cookies = getOwner(this).lookup('service:cookies');
@@ -93,9 +90,25 @@ export default Mixin.create({
         this.set('session.attemptedTransition', transition);
       }
 
-      this.transitionTo(authenticationRoute);
+      this.triggerAuthentication();
     } else {
       return this._super(...arguments);
     }
-  }
+  },
+
+  /**
+    Triggers authentication; by default this method transitions to the
+    `authenticationRoute`. In case the application uses an authentication
+    mechanism that does not use an authentication route, this method can be
+    overridden.
+
+    @method triggerAuthentication
+    @protected
+  */
+  triggerAuthentication() {
+    let authenticationRoute = this.get('authenticationRoute');
+    assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
+
+    this.transitionTo(authenticationRoute);
+  },
 });
