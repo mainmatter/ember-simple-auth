@@ -16,7 +16,8 @@
     "build": "ember build",
     "fastboot": "echo \"Please also run npm start\"; ember fastboot --serve-assets",
     "start": "ember server",
-    "test": "ember try:each",
+    "test": "ember test",
+    "test:all": "ember try:each",
     "test:node": "mocha node-tests node-tests/blueprints",
     "test:fastboot": "mocha fastboot-tests",
     "lint": "eslint app addon blueprints config server test-support tests *.js",
@@ -90,7 +91,10 @@
     "node": ">= 0.12.0"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "versionCompatibility": {
+      "ember": ">=1.12"
+    }
   },
   "greenkeeper": {
     "ignore": [
