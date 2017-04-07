@@ -1,3 +1,11 @@
+# 1.2.2
+
+* The session is now correctly restored when running Ember 2.13, see #1267.
+* The mechanism that triggers authentication in the `AuthenticatedRouteMixin`
+  is now encapsulated in the (overridable) `triggerAuthentication` method, see
+  #1278.
+* The ember-cookies dependency has been upgraded to 0.0.13, see #1281.
+
 # 1.2.1
 
 * Arguments passed to the session service's `invalidate` method will now be
