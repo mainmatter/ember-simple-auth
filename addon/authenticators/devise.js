@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import BaseAuthenticator from './base';
-import fetch from 'ember-network/fetch';
+import fetch from 'fetch';
 
 const { RSVP: { Promise }, isEmpty, run, assign: emberAssign, merge, computed } = Ember;
 const assign = emberAssign || merge;
@@ -177,7 +177,7 @@ export default BaseAuthenticator.extend({
 
   /**
     Makes a request to the Devise server using
-    [ember-network/fetch](https://github.com/tomdale/ember-network#fetch).
+    [ember-fetch](https://github.com/stefanpenner/ember-fetch).
 
     @method makeRequest
     @param {Object} data The request data

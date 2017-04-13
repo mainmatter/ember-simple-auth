@@ -220,7 +220,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
         it('provides access to custom headers', function() {
           return authenticator.authenticate('username', 'password').catch((error) => {
-            expect(error.headers.getAll('x-custom-context')[0]).to.eql('foobar');
+            expect(error.headers.get('x-custom-context')).to.eql('foobar');
           });
         });
       });

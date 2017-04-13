@@ -28,8 +28,8 @@
     "ember-cli-babel": "^5.1.7",
     "ember-cli-is-package-missing": "^1.0.0",
     "ember-cookies": "^0.0.13",
+    "ember-fetch": "^1.4.2",
     "ember-getowner-polyfill": "^1.1.0",
-    "ember-network": "^0.3.0",
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
