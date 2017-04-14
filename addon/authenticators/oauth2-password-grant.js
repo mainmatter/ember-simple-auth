@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import BaseAuthenticator from './base';
-import fetch from 'ember-network/fetch';
+import fetch from 'fetch';
 
 const {
   RSVP,
