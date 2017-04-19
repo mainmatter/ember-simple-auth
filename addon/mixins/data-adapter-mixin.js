@@ -124,5 +124,16 @@ export default Mixin.create({
       this.get('session').invalidate();
     }
     return this._super(...arguments);
+  },
+
+  headersForRequest() {
+    let headers = this._super(...arguments);
+    const authorizer = this.get('authorizer');
+    headers = Object(headers);
+    this.get('session').authorize(authorizer, (headerName, headerValue) => {
+
+      headers[headerName] = headerValue;
+    });
+    return headers;
   }
 });
