@@ -11,6 +11,7 @@ describe('DataAdapterMixin', () => {
   let adapter;
   let sessionService;
   let hash;
+  let Adapter;
 
   beforeEach(function() {
     hash = {};
@@ -32,7 +33,7 @@ describe('DataAdapterMixin', () => {
         return '_super return value';
       }
     });
-    const Adapter = BaseAdapter.extend(DataAdapterMixin, {
+    Adapter = BaseAdapter.extend(DataAdapterMixin, {
       authorizer: 'authorizer:some'
     });
     adapter = Adapter.create({ session: sessionService });
@@ -219,6 +220,30 @@ describe('DataAdapterMixin', () => {
         adapter.handleResponse(200);
 
         expect(sessionService.invalidate).to.not.have.been.called;
+      });
+    });
+
+    describe('when called via _super, and ensureResponseAuthorized is overridden', function() {
+      let returnValue;
+      beforeEach(function() {
+        const DoesntInvalidateOn401 = Adapter.extend({
+          ensureResponseAuthorized() {
+            // no op, doesn't call this.get('session').invalidate();
+          },
+          handleResponse() {
+            return this._super();
+          }
+        });
+        adapter = DoesntInvalidateOn401.create();
+        returnValue = adapter.handleResponse(401);
+      });
+
+      it("doesn't invalidate the session (ensureResponseAuthorized can be overridden)", function() {
+        expect(sessionService.invalidate).to.not.have.been.called;
+      });
+
+      it("returns _super's return value", function() {
+        expect(returnValue).to.eq('_super return value');
       });
     });
 
