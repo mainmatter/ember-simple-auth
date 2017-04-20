@@ -117,12 +117,31 @@ export default Mixin.create({
 
     @method handleResponse
     @param {Number} status The response status as received from the API
+    @param  {Object} headers HTTP headers as received from the API
+    @param {Any} payload The response body as received from the API
+    @param {Object} requestData the original request information
     @protected
   */
-  handleResponse(status) {
+  handleResponse(status, headers, payload, requestData) {
+    this.ensureResponseAuthorized(status, headers, payload, requestData);
+    return this._super(...arguments);
+  },
+
+  /**
+   The default implementation for handleResponse.
+   If the response has a 401 status code it invalidates the session (see
+    {{#crossLink "SessionService/invalidate:method"}}{{/crossLink}}).
+
+   Override this method if you want custom invalidation logic for incoming responses.
+   @method ensureResponseAuthorized
+   @param {Number} status The response status as received from the API
+   @param  {Object} headers HTTP headers as received from the API
+   @param {Any} payload The response body as received from the API
+   @param {Object} requestData the original request information
+  */
+  ensureResponseAuthorized(status/* ,headers, payload, requestData */) {
     if (status === 401 && this.get('session.isAuthenticated')) {
       this.get('session').invalidate();
     }
-    return this._super(...arguments);
   }
 });
