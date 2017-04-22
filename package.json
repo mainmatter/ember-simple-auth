@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "broccoli-file-creator": "^1.1.1",
-    "ember-cli-babel": "^5.1.7",
+    "ember-cli-babel": "^6.0.0",
     "ember-cli-is-package-missing": "^1.0.0",
     "ember-cookies": "^0.0.13",
     "ember-fetch": "^1.4.2",
