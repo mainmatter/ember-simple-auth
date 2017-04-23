@@ -1,5 +1,5 @@
 /* eslint-env node */
 module.exports = {
-  command: 'npm test',
-  useVersionCompatibility: true,
+  command: 'yarn test',
+  useVersionCompatibility: true
 };
