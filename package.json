@@ -96,6 +96,5 @@
       "eslint-plugin-ember",
       "eslint-plugin-mocha"
     ]
-  },
-  "main": "index.js"
+  }
 }
