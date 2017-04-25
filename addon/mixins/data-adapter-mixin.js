@@ -64,8 +64,9 @@ export default Mixin.create({
     specific header name and contents depend on the actual authorizer that is
     used.
 
-    This method applies for Ember Data 2.6 and older. See `headersForRequest`
-    for newer versions of Ember Data.
+    Until [emberjs/rfcs#171](https://github.com/emberjs/rfcs/pull/171)
+    gets resolved, this method will be called for **every** ember-data version.
+    `headersForRequest` *should* replace it after the resolution of the RFC.
 
     @method ajaxOptions
     @protected
@@ -92,8 +93,9 @@ export default Mixin.create({
     Adds request headers containing the authorization data as constructed
     by the {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}}.
 
-    This method will only be called in Ember Data 2.7 or greater. Older versions
-    will rely on `ajaxOptions` for request header injection.
+    Until [emberjs/rfcs#171](https://github.com/emberjs/rfcs/pull/171)
+    gets resolved, this method will **not** be used.
+    See `ajaxOptions` instead.
 
     @method headersForRequest
     @protected
