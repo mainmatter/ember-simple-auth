@@ -787,7 +787,7 @@ describe('InternalSession', () => {
   });
 
   it('does not share the content object between multiple instances', function() {
-    let session2 = InternalSession.create({ store, container });
+    let session2 = createWithContainer(InternalSession, { store }, container);
 
     expect(session2.get('content')).to.not.equal(session.get('content'));
   });
