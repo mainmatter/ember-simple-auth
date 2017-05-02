@@ -1,6 +1,7 @@
 import RSVP from 'rsvp';
 import { assert } from '@ember/debug';
 import { isPresent, isEmpty } from '@ember/utils';
+import { assign as emberAssign } from '@ember/polyfills';
 import BaseAuthenticator from './base';
 
 /**
@@ -58,9 +59,9 @@ export default BaseAuthenticator.extend({
     if (!isEmpty(data.provider)) {
       const { provider } = data;
 
-      return this.get('torii').fetch(data.provider, data).then((data) => {
-        this._authenticateWithProvider(provider, data);
-        return data;
+      return this.get('torii').fetch(data.provider, data).then((fetchedData) => {
+        this._authenticateWithProvider(provider, fetchedData);
+        return emberAssign(data, fetchedData);
       }, () => delete this._provider);
     } else {
       delete this._provider;
