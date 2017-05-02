@@ -51,7 +51,7 @@ export default BaseAuthenticator.extend({
    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
    @public
    */
-  authenticate(response) {
+  authenticate(hash) {
     return new RSVP.Promise((resolve, reject) => {
       if (hash.error) {
         reject(hash.error);
