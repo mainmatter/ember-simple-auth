@@ -47,18 +47,18 @@ export default BaseAuthenticator.extend({
    (see https://tools.ietf.org/html/rfc6749#section-4.2.2.1).
 
    @method authenticate
-   @param {Object} hash The optional location hash
+   @param {Object} hash The location hash
    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
    @public
    */
-  authenticate(response) {
+  authenticate(hash) {
     return new RSVP.Promise((resolve, reject) => {
-      if (response.error) {
-        reject(response.error);
-      } else if (!this._validateData(response)) {
+      if (hash.error) {
+        reject(hash.error);
+      } else if (!this._validateData(hash)) {
         reject('Invalid auth params - "access_token" missing.');
       } else {
-        resolve(response);
+        resolve(hash);
       }
     });
   },
