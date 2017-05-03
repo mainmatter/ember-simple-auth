@@ -1,6 +1,8 @@
 {{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
 <a {{action 'authenticateWithFacebook'}} class="btn btn-default" style="cursor: pointer;">Login with Facebook</a>
 <hr/>
+<a {{action 'authenticateWithGoogleImplicitGrant'}} class="btn btn-default" style="cursor: pointer;">Login with Google (Implicit Grant)</a>
+<hr/>
 <p>or login with OAuth 2.0 <em>Resource Owner Password Credentials</em>:</p>
 <form {{action 'authenticateWithOAuth2' on='submit'}}>
   <div class="form-group">

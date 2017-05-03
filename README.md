@@ -358,6 +358,7 @@ this.get('session').authenticate('authenticator:some');
 Ember Simple Auth comes with 3 authenticators:
 
 * [`OAuth2PasswordGrantAuthenticator`](http://ember-simple-auth.com/api/classes/OAuth2PasswordGrantAuthenticator.html): an OAuth 2.0 authenticator that implements the _"Resource Owner Password Credentials Grant Type"_
+* [`OAuth2ImplicitGrantAuthenticator`](http://ember-simple-auth.com/api/classes/OAuth2ImplicitGrantAuthenticator.html): an OAuth 2.0 authenticator that implements the _"Implicit Grant Type"_
 * [`DeviseAuthenticator`](http://ember-simple-auth.com/api/classes/DeviseAuthenticator.html): an authenticator compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
 * [`ToriiAuthenticator`](http://ember-simple-auth.com/api/classes/ToriiAuthenticator.html): an authenticator that wraps the [torii library](https://github.com/Vestorly/torii)
 
