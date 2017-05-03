@@ -1,3 +1,19 @@
+# 1.3.0
+
+* ESA now uses ember-fetch instead of ember-network. ember-fetch is better
+  maintained than ember-network and seems to emerge as the
+  community-agreed-upon standard for a FastBoot compliant `fetch` polyfill;
+  see #1288.
+* A new OAuth 2.0 authenticator that implements the OAuth 2.0
+  _"Implicit Grant"_ has been added, along with a route mixin that makes it
+  easy to use it; see #1252.
+* ESA now depends on ember-cli-babel `^6.0.0`, allowing host applications to
+  take advantage of Ember CLI's new `targets` feature, see #1295.
+* The `DataAdapterMixin` now allows overriding the `handleResponse` method in a
+  way that bypasses ESA's built in logic to invalidate the session on 401
+  responses while still being able to call `_super` to invoke the base
+  authenticator's logic; see #1290.
+
 # 1.2.2
 
 * The session is now correctly restored when running Ember 2.13, see #1267.
