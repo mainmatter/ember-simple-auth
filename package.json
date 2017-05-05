@@ -40,7 +40,7 @@
     "cors": "^2.8.1",
     "ember-ajax": "^2.4.1",
     "ember-cli": "2.12.1",
-    "ember-cli-addon-tests": "^0.6.3",
+    "ember-cli-addon-tests": "^0.7.0",
     "ember-cli-base64": "~0.0.1",
     "ember-cli-blueprint-test-helpers": "^0.17.1",
     "ember-cli-chai": "^0.3.2",
