@@ -63,7 +63,7 @@ invoked with a query param where the `me` param is present.
 // app/services/current-user.js
 import Ember from 'ember';
 
-const { inject: { service }, isEmpty, RSVP } = Ember;
+const { inject: { service } } = Ember;
 
 export default Ember.Service.extend({
   session: service('session'),
