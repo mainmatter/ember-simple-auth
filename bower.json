@@ -3,7 +3,5 @@
   "dependencies": {
     "base64": "~1.0.0",
     "bootstrap": "~3.3.7",
-    "pretender": "~1.1.0",
-    "sinonjs": "~1.17.1"
   }
 }
