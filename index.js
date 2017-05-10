@@ -20,7 +20,7 @@ module.exports = {
     this.import('vendor/base64.js');
   },
 
-  treeForVendor(vendorTree) {
+  treeForVendor() {
     var content =
       "Ember.libraries.register('Ember Simple Auth', '" + version + "');";
     var registerVersionTree = writeFile(
@@ -31,7 +31,7 @@ module.exports = {
       files: ['base64.js']
     });
 
-    return MergeTrees([vendorTree, registerVersionTree, base64Tree]);
+    return MergeTrees([registerVersionTree, base64Tree]);
   },
 
   _ensureThisImport: function() {
