@@ -325,7 +325,13 @@ export default BaseAuthenticator.extend({
     return new RSVP.Promise((resolve, reject) => {
       fetch(url, options).then((response) => {
         response.text().then((text) => {
-          let json = text ? JSON.parse(text) : {};
+          var json;
+          try {
+            json = JSON.parse(text);
+          } catch (e) {
+            json = {};
+          }
+
           if (!response.ok) {
             response.responseJSON = json;
             reject(response);
