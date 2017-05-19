@@ -21,8 +21,7 @@ module.exports = {
   },
 
   treeForVendor() {
-    var content =
-      "Ember.libraries.register('Ember Simple Auth', '" + version + "');";
+    var content = "Ember.libraries.register('Ember Simple Auth', '" + version + "');";
     var registerVersionTree = writeFile(
       'ember-simple-auth/register-version.js',
       content
