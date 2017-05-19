@@ -121,7 +121,7 @@ export default BaseAuthenticator.extend({
     const clientId = this.get('clientId');
 
     if (!isEmpty(clientId)) {
-      const base64ClientId = window.btoa(clientId.concat(':'));
+      const base64ClientId = window.base64.encode(clientId.concat(':'));
       return { Authorization: `Basic ${base64ClientId}` };
     }
   }),

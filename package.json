@@ -24,7 +24,10 @@
     "test:node": "mocha node-tests node-tests/blueprints"
   },
   "dependencies": {
+    "base-64": "^0.1.0",
     "broccoli-file-creator": "^1.1.1",
+    "broccoli-funnel": "^1.2.0",
+    "broccoli-merge-trees": "^2.0.0",
     "ember-cli-babel": "^6.0.0",
     "ember-cli-is-package-missing": "^1.0.0",
     "ember-cookies": "^0.0.13",
@@ -34,13 +37,14 @@
   },
   "devDependencies": {
     "body-parser": "^1.17.1",
+    "bootstrap": "^3.3.7",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-yuidoc": "^3.0.0",
     "chai": "^3.5.0",
     "cors": "^2.8.1",
     "ember-cli": "~2.12.1",
     "ember-cli-addon-tests": "^0.7.0",
-    "ember-cli-base64": "~0.0.1",
+    "ember-bootstrap": "^1.0.0-alpha.12",
     "ember-cli-blueprint-test-helpers": "^0.17.1",
     "ember-cli-chai": "^0.4.0",
     "ember-cli-content-security-policy": "~0.6.0",
