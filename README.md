@@ -90,7 +90,7 @@ requests such as Ember Data requests__.
 
 __Ember Simple Auth comes with a
 [dummy app](tests/dummy)
-that implementes a complete auth solution__ including authentication against
+that implements a complete auth solution__ including authentication against
 the application's own server as well as Facebook, authorization of Ember Data
 requests and error handling. __Check out that dummy app for reference.__ To
 start it, run

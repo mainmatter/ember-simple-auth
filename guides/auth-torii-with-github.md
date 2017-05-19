@@ -378,7 +378,7 @@ Full Name: {{model.name}}
 ```
 
 If you log in to GitHub through the app now with the console open, you will see that you are not fully authorized. The
-page will be blank (we didn't do any realy error handling) and the console will tell you you received a
+page will be blank (we didn't do any real error handling) and the console will tell you you received a
 `401 (Unauthorized)` for an API call to `https://api.github.com/user`. This particular API uses the identity associated
 with the authorized user to return the profile for that user, which it can't do if you're not authorized. Now that we
 have evidence that we're not truly authorized, let's fix it.
