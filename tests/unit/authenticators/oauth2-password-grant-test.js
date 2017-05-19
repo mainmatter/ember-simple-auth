@@ -334,7 +334,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         authenticator._refreshAccessToken(12345, 'refresh token!');
       });
 
-      describe('when the server reponse includes updated expiration data', function() {
+      describe('when the server response includes updated expiration data', function() {
         beforeEach(function() {
           server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }']);
         });
