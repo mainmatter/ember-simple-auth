@@ -36,7 +36,7 @@
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
-    "body-parser": "^1.17.1",
+    "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-yuidoc": "^3.0.0",
@@ -52,20 +52,20 @@
     "ember-cli-eslint": "^3.0.0",
     "ember-cli-fastboot": "^1.0.0-beta.16",
     "ember-cli-htmlbars": "^2.0.0",
-    "ember-cli-htmlbars-inline-precompile": "^0.4.0",
+    "ember-cli-htmlbars-inline-precompile": "^0.4.3",
     "ember-cli-inject-live-reload": "^1.4.1",
     "ember-cli-mocha": "^0.14.1",
     "ember-cli-pretender": "^1.0.1",
     "ember-cli-shims": "^1.1.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^1.2.0",
-    "ember-data": "^2.12.0",
+    "ember-data": "^2.13.1",
     "ember-disable-prototype-extensions": "^1.1.0",
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",
     "ember-resolver": "^4.1.0",
     "ember-sinon": "~0.7.0",
-    "ember-source": "^2.13.0",
+    "ember-source": "^2.13.1",
     "eslint-config-simplabs": "^0.4.0",
     "eslint-plugin-ember": "^3.1.2",
     "eslint-plugin-mocha": "^4.9.0",
@@ -83,7 +83,7 @@
     "rimraf": "^2.6.1",
     "rsvp": "^3.5.0",
     "sinon-chai": "~2.10.0",
-    "torii": "~0.8.2"
+    "torii": "~0.8.3"
   },
   "engines": {
     "node": ">= 4"
