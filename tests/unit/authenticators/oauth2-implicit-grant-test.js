@@ -12,6 +12,8 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
     'access_token': 'secret-token'
   };
 
+  let dataString = 'access_token=secret-token';
+
   beforeEach(function() {
     authenticator = OAuth2ImplicitGrant.create();
   });
@@ -55,6 +57,20 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
       it('rejects with that error', function() {
         return authenticator.authenticate({ error: 'access_denied' }).catch((_err) => {
           expect(_err).to.eql('access_denied');
+        });
+      });
+    });
+
+    describe('when the data is passed in as a string', function() {
+      it('parses the data into object', function() {
+        return authenticator.authenticate(dataString).then((_data) => {
+          expect(_data).to.eql(data);
+        });
+      });
+
+      it('ignores the # character', function() {
+        return authenticator.authenticate(`#${dataString}`).then((_data) => {
+          expect(_data).to.eql(data);
         });
       });
     });
