@@ -147,7 +147,7 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
   currentUser: service(),
 
   beforeModel() {
-    return this._loadCurrentUser();
+    this._loadCurrentUser();
   },
 
   sessionAuthenticated() {
