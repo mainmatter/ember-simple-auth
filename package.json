@@ -83,7 +83,7 @@
     "rimraf": "^2.6.1",
     "rsvp": "^3.5.0",
     "sinon-chai": "~2.10.0",
-    "torii": "~0.8.3"
+    "torii": "~0.9.5"
   },
   "engines": {
     "node": ">= 4"
