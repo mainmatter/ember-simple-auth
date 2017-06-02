@@ -74,7 +74,7 @@ export default ObjectProxy.extend(Evented, {
         return authenticator.restore(restoredContent.authenticated).then((content) => {
           this.set('content', restoredContent);
           this._busy = false;
-          return this._setup(authenticatorFactory, content);
+          return this._setup(authenticatorFactory, content || restoredContent.authenticated);
         }, (err) => {
           debug(`The authenticator "${authenticatorFactory}" rejected to restore the session - invalidating…`);
           if (err) {
