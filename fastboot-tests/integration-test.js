@@ -76,7 +76,7 @@ describe('Integration tests', function() {
 
 function addDependencies(app) {
   app.editPackageJSON(function(pkg) {
-    pkg['devDependencies']['ember-cli-fastboot'] = "^1.0.0-beta.8";
+    pkg['devDependencies']['ember-cli-fastboot'] = "1.0.0-beta.19";
   });
   return app.run('npm', 'install');
 }
