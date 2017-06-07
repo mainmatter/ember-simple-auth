@@ -65,7 +65,9 @@ export default Mixin.create({
     used.
 
     Until [emberjs/rfcs#171](https://github.com/emberjs/rfcs/pull/171)
-    gets resolved, this method will be called for **every** ember-data version.
+    gets resolved and [ds-improved-ajax](https://github.com/emberjs/data/pull/3099)
+    [feature flag](https://github.com/emberjs/data/blob/master/FEATURES.md#feature-flags)
+    is enabled, this method will be called for **every** ember-data version.
     `headersForRequest` *should* replace it after the resolution of the RFC.
 
     @method ajaxOptions
@@ -94,7 +96,9 @@ export default Mixin.create({
     by the {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}}.
 
     Until [emberjs/rfcs#171](https://github.com/emberjs/rfcs/pull/171)
-    gets resolved, this method will **not** be used.
+    gets resolved and [ds-improved-ajax](https://github.com/emberjs/data/pull/3099)
+    [feature flag](https://github.com/emberjs/data/blob/master/FEATURES.md#feature-flags)
+    is enabled, this method will **not** be used.
     See `ajaxOptions` instead.
 
     @method headersForRequest
