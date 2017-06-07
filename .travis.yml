@@ -5,6 +5,12 @@ node_js:
 
 sudo: false
 
+env:
+  matrix:
+    - SCRIPT=test:all
+    - SCRIPT=test:fastboot
+    - SCRIPT=test:node
+
 cache:
   yarn: true
   directories:
@@ -22,11 +28,7 @@ install:
   - bower install
 
 script:
-  # Usually, it's ok to finish the test scenario without reverting
-  #  to the addon's original dependency state, skipping "cleanup".
-  - npm run test:all -- --skip-cleanup
-  - npm run test:node
-  - npm run test:fastboot
+  - npm run $SCRIPT
 
 deploy:
   provider: npm
