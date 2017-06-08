@@ -371,7 +371,7 @@ export default BaseAuthenticator.extend({
         });
       }, (response) => {
         warn(`Access token could not be refreshed - server responded with ${response.responseJSON}.`, false, { id: 'ember-simple-auth.failedOAuth2TokenRefresh' });
-        reject();
+        reject(response);
       });
     });
   },
