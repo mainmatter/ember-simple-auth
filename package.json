@@ -40,7 +40,7 @@
     "bootstrap": "^3.3.7",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-yuidoc": "^3.0.0",
-    "chai": "^3.5.0",
+    "chai": "^4.0.2",
     "cors": "^2.8.1",
     "ember-cli": "~2.12.1",
     "ember-cli-addon-tests": "^0.7.0",
