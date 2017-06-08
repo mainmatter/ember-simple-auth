@@ -47,11 +47,13 @@ export default BaseAuthenticator.extend({
    (see https://tools.ietf.org/html/rfc6749#section-4.2.2.1).
 
    @method authenticate
-   @param {Object} hash The location hash
+   @param {Object} hash The location hash: object or a string
    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
    @public
    */
   authenticate(hash) {
+    hash = typeof hash === 'string' ? this._parseLocationHash(hash) : hash;
+
     return new RSVP.Promise((resolve, reject) => {
       if (hash.error) {
         reject(hash.error);
@@ -81,5 +83,18 @@ export default BaseAuthenticator.extend({
     return !isEmpty(data) &&
       !isEmpty(data.access_token);
     // jscs:enable requireCamelCaseOrUpperCaseIdentifiers
+  },
+
+  _parseLocationHash(hash) {
+    if (hash.length < 1) {
+      return {};
+    }
+
+    const hashString = hash.charAt(0) === '#' ? hash.substr(1) : hash;
+
+    return hashString
+      .split('&')
+      .map(el => el.split('='))
+      .reduce((pre, cur) => { pre[cur[0]] = cur[1]; return pre; }, {});
   }
 });
