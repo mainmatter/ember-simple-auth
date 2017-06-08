@@ -645,21 +645,6 @@ import { currentSession, authenticateSession, invalidateSession } from '<app-nam
 
 * [Managing current User](guides/managing-current-user.md)
 
-## Configuration
-
-Ember Simple Auth is configured via the `'ember-simple-auth'` section in the
-application's `config/environment.js` file, e.g.:
-
-```js
-ENV['ember-simple-auth'] = {
-  baseURL: 'path/to/base/url'
-};
-```
-
-See the
-[API docs](http://ember-simple-auth.com/api/classes/Configuration.html)
-for the available settings.
-
 ## License
 
 Ember Simple Auth is developed by and &copy;
