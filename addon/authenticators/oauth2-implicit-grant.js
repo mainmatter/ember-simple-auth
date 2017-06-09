@@ -11,6 +11,10 @@ const {
  ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Implicit
  Grant Type"_.
 
+ Use {{#crossLink "OAuth2ImplicitGrantCallbackMixin"}}{{/crossLink}} in your
+ OAuth 2.0 redirect route to parse authentication parameters from location
+ hash string into an object.
+
  @class OAuth2ImplicitGrantAuthenticator
  @module ember-simple-auth/authenticators/oauth2-implicit-grant
  @extends BaseAuthenticator
