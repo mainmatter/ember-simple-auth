@@ -50,7 +50,7 @@ authorization mechanisms__.
 
 **Other Resources**
 
-* [Upgrading from Pre-1.0 versions](http://log.simplabs.com/post/131698328145/updating-to-ember-simple-auth-10)
+* [Upgrading from Pre-1.0 versions](https://simplabs.com/blog/2015/11/27/updating-to-ember-simple-auth-1.0.html)
 * [API Documentation](http://ember-simple-auth.com/api/)
 
 ## What does it do?
