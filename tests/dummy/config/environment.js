@@ -73,6 +73,10 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     // put production settings here
+    ENV.fastboot = {
+      hostWhitelist: [/.+\.now\.sh/]
+    };
+    ENV.apiHost = 'https://simple-auth-server-wnheuzupat.now.sh';
   }
 
   return ENV;

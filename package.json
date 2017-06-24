@@ -17,6 +17,8 @@
     "diagrams": "mermaid --sequenceConfig guides/assets/esa-initial-flow.config.json --width 2400 -o guides/assets guides/assets/esa-initial-flow.txt",
     "fastboot": "echo \"Please also run npm start\"; ember fastboot --serve-assets",
     "lint": "eslint app addon blueprints config server test-support tests *.js",
+    "now-build": "ember build --environment=production",
+    "now-start": "NODE_ENV=production PORT=8000 node fastboot-server.js",
     "start": "ember server",
     "test": "ember test",
     "test:all": "ember try:each",
@@ -33,6 +35,8 @@
     "ember-cookies": "^0.0.13",
     "ember-fetch": "^1.4.2",
     "ember-getowner-polyfill": "^1.1.0",
+    "fastboot-app-server": "^1.0.0-rc.5",
+    "node-fetch": "^1.7.1",
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
@@ -42,15 +46,15 @@
     "broccoli-yuidoc": "^3.0.0",
     "chai": "^3.5.0",
     "cors": "^2.8.1",
+    "ember-bootstrap": "^1.0.0-alpha.12",
     "ember-cli": "~2.12.1",
     "ember-cli-addon-tests": "^0.7.0",
-    "ember-bootstrap": "^1.0.0-alpha.12",
     "ember-cli-blueprint-test-helpers": "^0.17.1",
     "ember-cli-chai": "^0.4.0",
     "ember-cli-content-security-policy": "~0.6.0",
     "ember-cli-dependency-checker": "^2.0.0",
     "ember-cli-eslint": "^3.0.0",
-    "ember-cli-fastboot": "^1.0.0-beta.16",
+    "ember-cli-fastboot": "^1.0.0-rc.2",
     "ember-cli-htmlbars": "^2.0.0",
     "ember-cli-htmlbars-inline-precompile": "^0.4.3",
     "ember-cli-inject-live-reload": "^1.4.1",
@@ -86,7 +90,7 @@
     "torii": "~0.9.5"
   },
   "engines": {
-    "node": ">= 4"
+    "node": "7.x.x"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
@@ -94,6 +98,9 @@
       "ember": ">=1.12"
     }
   },
+  "fastbootDependencies": [
+    "node-fetch"
+  ],
   "greenkeeper": {
     "ignore": [
       "eslint-plugin-ember",

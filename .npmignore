@@ -1,7 +1,7 @@
 /bower_components
 /config/ember-try.js
 /dist
-/tests
+/* /tests */
 /node-tests
 /tmp
 /fastboot-dist
@@ -14,6 +14,6 @@
 .watchmanconfig
 .travis.yml
 bower.json
-ember-cli-build.js
+/* ember-cli-build.js */
 testem.json
 testem.js
