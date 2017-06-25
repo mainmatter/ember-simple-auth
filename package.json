@@ -43,7 +43,7 @@
     "chai": "^4.0.2",
     "cors": "^2.8.1",
     "ember-bootstrap": "^1.0.0-alpha.12",
-    "ember-cli": "~2.12.1",
+    "ember-cli": "^2.13.3",
     "ember-cli-blueprint-test-helpers": "^0.17.1",
     "ember-cli-chai": "^0.4.0",
     "ember-cli-content-security-policy": "~0.6.0",

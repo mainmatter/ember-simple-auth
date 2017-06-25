@@ -40,8 +40,8 @@ Here's a few steps to follow to make sure your pull request gets accepted:
 
 ## Run Tests
 
-After you have forked the repository, run `yarn install` and `bower install`.
-Also install [PhantomJS](http://phantomjs.org/) to run the tests.
+After you have forked the repository, run `yarn install`. Also install
+[PhantomJS](http://phantomjs.org/) to run the tests.
 
 To run tests against the currently installed Ember version, run `ember test`. To
 simulate a CI run -- testing multiple versions of Ember, Ember Data and the
