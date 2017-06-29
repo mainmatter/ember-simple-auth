@@ -73,7 +73,7 @@
     "git-repo-version": "^0.4.1",
     "glob": "^7.1.1",
     "handlebars": "~4.0.6",
-    "loader.js": "^4.2.3",
+    "loader.js": "^4.5.1",
     "marked": "^0.3.6",
     "mermaid": "^7.0.0",
     "mocha": "^3.4.1",
