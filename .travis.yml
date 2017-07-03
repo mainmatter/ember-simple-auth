@@ -27,6 +27,9 @@ script:
   - npm run test:all -- --skip-cleanup
   - npm run test:node
   - npm run test:fastboot
+  - npm i -g now-pipeline
+  - now-pipeline --alias demo.ember-simple-auth.com
+  - now-pipeline-prune
 
 deploy:
   provider: npm
