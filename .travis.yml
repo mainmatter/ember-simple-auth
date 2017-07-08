@@ -27,9 +27,6 @@ script:
   - npm run test:all -- --skip-cleanup
   - npm run test:node
   - npm run test:fastboot
-  - npm i -g now-pipeline
-  - now-pipeline --alias simple-auth-demo.now.sh
-  - now-pipeline-prune
 
 deploy:
   provider: npm
@@ -39,6 +36,11 @@ deploy:
   on:
     tags: true
     repo: simplabs/ember-simple-auth
+
+after_deploy:
+  - npm i -g now-pipeline
+  - now-pipeline-prune && now-pipeline --alias ember-simple-auth.now.sh
+  - cd server && now-pipeline-prune && now-pipeline --alias ember-simple-auth-server.now.sh
 
 notifications:
   email: false
