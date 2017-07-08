@@ -28,7 +28,7 @@ script:
   - npm run test:node
   - npm run test:fastboot
   - npm i -g now-pipeline
-  - now-pipeline --alias demo.ember-simple-auth.com
+  - now-pipeline --alias simple-auth-demo.now.sh
   - now-pipeline-prune
 
 deploy:
