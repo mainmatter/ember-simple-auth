@@ -50,8 +50,7 @@ authorization mechanisms__.
 
 **Other Resources**
 
-* [Configuration](#configuration)
-* [Upgrading from Pre-1.0 versions](http://log.simplabs.com/post/131698328145/updating-to-ember-simple-auth-10)
+* [Upgrading from Pre-1.0 versions](https://simplabs.com/blog/2015/11/27/updating-to-ember-simple-auth-1.0.html)
 * [API Documentation](http://ember-simple-auth.com/api/)
 
 ## What does it do?
@@ -546,6 +545,14 @@ stores its data in a cookie. This is used by the adaptive store if
 application uses
 [FastBoot](https://github.com/ember-fastboot/ember-cli-fastboot).__
 
+#### `sessionStorage` Store
+
+[The `sessionStorage` store](http://ember-simple-auth.com/api/classes/SessionStorageStore.html)
+stores its data in the browser's `sessionStorage`. See [the Web Storage docs](
+https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) for details on
+`sessionStorage` and `localStorage`. [caniuse](http://caniuse.com/#feat=namevalue-storage)
+has up-to-date information on browser support of `sessionStorage` and `localStorage`.
+
 #### Ephemeral Store
 
 [The ephemeral store](http://ember-simple-auth.com/api/classes/EphemeralStore.html)
@@ -644,21 +651,6 @@ import { currentSession, authenticateSession, invalidateSession } from '<app-nam
 ## Other guides
 
 * [Managing current User](guides/managing-current-user.md)
-
-## Configuration
-
-Ember Simple Auth is configured via the `'ember-simple-auth'` section in the
-application's `config/environment.js` file, e.g.:
-
-```js
-ENV['ember-simple-auth'] = {
-  baseURL: 'path/to/base/url'
-};
-```
-
-See the
-[API docs](http://ember-simple-auth.com/api/classes/Configuration.html)
-for the available settings.
 
 ## License
 

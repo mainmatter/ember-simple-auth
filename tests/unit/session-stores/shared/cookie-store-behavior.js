@@ -86,10 +86,10 @@ export default function(options) {
       });
 
       expect(cookieService.write).to.have.been.calledWith(
-         'session-cookie-domain',
-         JSON.stringify({ key: 'value' }),
-         { domain: 'example.com', expires: null, path: '/hello-world', secure: false }
-       );
+        'session-cookie-domain',
+        JSON.stringify({ key: 'value' }),
+        { domain: 'example.com', expires: null, path: '/hello-world', secure: false }
+      );
     });
 
     it('sends a warning when `cookieExpirationTime` is less than 90 seconds', function(done) {
