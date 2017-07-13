@@ -18,3 +18,8 @@
 /libpeerconnection.log
 npm-debug.log*
 testem.log
+yarn-error.log
+
+# ember-try
+.node_modules.ember-try/
+package.json.ember-try
