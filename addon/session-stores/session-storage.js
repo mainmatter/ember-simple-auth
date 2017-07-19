@@ -3,7 +3,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const { RSVP, $: jQuery, computed, getOwner } = Ember;
+const { RSVP, computed, getOwner, run: { bind } } = Ember;
 
 /**
   Session store that persists data in the browser's `sessionStorage`.
@@ -41,7 +41,13 @@ export default BaseStore.extend({
     this._super(...arguments);
 
     if (!this.get('_isFastBoot')) {
-      this._bindToStorageEvents();
+      window.addEventListener('storage', bind(this, this._handleStorageEvent));
+    }
+  },
+
+  willDestroy() {
+    if (!this.get('_isFastBoot')) {
+      window.removeEventListener('storage', bind(this, this._handleStorageEvent));
     }
   },
 
@@ -90,16 +96,14 @@ export default BaseStore.extend({
     return RSVP.resolve();
   },
 
-  _bindToStorageEvents() {
-    jQuery(window).on('storage', (e) => {
-      if (e.originalEvent.key === this.key) {
-        this.restore().then((data) => {
-          if (!objectsAreEqual(data, this._lastData)) {
-            this._lastData = data;
-            this.trigger('sessionDataUpdated', data);
-          }
-        });
-      }
-    });
+  _handleStorageEvent(e) {
+    if (e.key === this.get('key')) {
+      this.restore().then((data) => {
+        if (!objectsAreEqual(data, this._lastData)) {
+          this._lastData = data;
+          this.trigger('sessionDataUpdated', data);
+        }
+      });
+    }
   }
 });
