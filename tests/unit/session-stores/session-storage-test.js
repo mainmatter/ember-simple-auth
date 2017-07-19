@@ -1,23 +1,13 @@
-import { describe, beforeEach, afterEach } from 'mocha';
+import { describe } from 'mocha';
 import SessionStorage from 'ember-simple-auth/session-stores/session-storage';
 import itBehavesLikeAStore from './shared/store-behavior';
 
-describe('SessionStorageStore', () => {
-  let store;
-
-  beforeEach(function() {
-    store = SessionStorage.create({
-      _isFastBoot: false
-    });
-  });
-
-  afterEach(function() {
-    store.clear();
-  });
-
+describe('SessionStorageStore', function() {
   itBehavesLikeAStore({
     store() {
-      return store;
+      return SessionStorage.create({
+        _isFastBoot: false
+      });
     }
   });
 });
