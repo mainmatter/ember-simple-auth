@@ -19,6 +19,10 @@ module.exports = function(defaults) {
     },
     fingerprint: {
       generateAssetMap: EmberAddon.env() === 'production'
+    },
+    sourcemaps: {
+      enabled: true,
+      extensions: ['js']
     }
   });
 
