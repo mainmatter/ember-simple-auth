@@ -15,6 +15,11 @@ export default function(options) {
     store = options.store();
   });
 
+  // eslint-disable-next-line mocha/no-top-level-hooks
+  afterEach(function() {
+    store.clear();
+  });
+
   describe('#persist', function() {
     it('persists an object', function() {
       return store.persist({ key: 'value' }).then(() => {

@@ -81,9 +81,6 @@ export default BaseAuthenticator.extend({
   _validateData(data) {
     // see https://tools.ietf.org/html/rfc6749#section-4.2.2
 
-    // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
-    return !isEmpty(data) &&
-      !isEmpty(data.access_token);
-    // jscs:enable requireCamelCaseOrUpperCaseIdentifiers
+    return !isEmpty(data) && !isEmpty(data.access_token);
   }
 });
