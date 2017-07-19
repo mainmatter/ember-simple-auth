@@ -408,7 +408,6 @@ We can now implement our back end token exchange service.
 ```js
 // server/mocks/token.js
 
-/*jshint node:true*/
 module.exports = function(app) {
   const express = require('express');
   const tokenRouter = express.Router();
@@ -465,7 +464,6 @@ module.exports = function(app) {
   app.use('/api/token', tokenRouter);
 };
 ```
-You may also want to add `"esversion": 6` to your `server/.jshintrc` to avoid warnings on this code.
 
 It creates a payload out of the `authorizationCode` and optionally `state` sent to it as well as the `client_id` and
 `client_secret` taken from your `.env`. It sends them to the `/login/oauth/access_token` end point,

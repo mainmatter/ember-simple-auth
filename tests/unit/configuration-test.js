@@ -1,4 +1,3 @@
-/* jshint expr:true */
 import { describe, afterEach, it } from 'mocha';
 import { expect } from 'chai';
 import Configuration from 'ember-simple-auth/configuration';

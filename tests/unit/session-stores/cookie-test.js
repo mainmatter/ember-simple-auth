@@ -1,4 +1,3 @@
-/* jshint expr:true */
 import { describe, beforeEach, afterEach } from 'mocha';
 import sinon from 'sinon';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
