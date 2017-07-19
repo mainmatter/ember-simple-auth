@@ -1,5 +1,3 @@
-/* jshint expr:true */
-/* jscs:disable requireDotNotation */
 import { it } from 'ember-mocha';
 import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
