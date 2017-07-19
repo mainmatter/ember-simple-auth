@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>OAuth2ImplicitGrantCallbackMixin - The Ember Simple Auth API</title>
+    <title>SessionStorageStore - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -64,7 +64,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="page-header">
-                    <h1 class="class">OAuth2ImplicitGrantCallbackMixin</h1>
+                    <h1 class="class">SessionStorageStore</h1>
                   </div>
                 </div>
               </div>
@@ -72,14 +72,13 @@
                 <div class="col-sm-9">
                   <div class="row">
                     <div class="col-sm-12">
-                        <pre><code>import OAuth2ImplicitGrantCallbackMixin from 'ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin';</code></pre>
-                      <p><strong>This mixin is used in the callback route when using OAuth 2.0 Implicit
-          Grant authentication.</strong> It implements the
-          <a href="../classes/OAuth2ImplicitGrantCallbackMixin.html#method_activate" class="crosslink">activate</a>
-          method that retrieves and processes authentication parameters, such as
-          <code>access_token</code>, from the hash parameters provided in the callback URL by
-          the authentication server. The parameters are then passed to the
-          <a href="../classes/OAuth2ImplicitGrantAuthenticator.html" class="crosslink">OAuth2ImplicitGrantAuthenticator</a></p>
+                        <pre><code>import SessionStorageStore from 'ember-simple-auth/session-stores/session-storage';</code></pre>
+                      <p>Session store that persists data in the browser's <code>sessionStorage</code>.</p>
+          <p><strong><code>sessionStorage</code> is not available in Safari when running in private mode.</strong></p>
+          <p><strong>This session store does not work with FastBoot. In order to use Ember
+          Simple Auth with FastBoot, configure the
+          <a href="../classes/CookieStore.html" class="crosslink">CookieStore</a> as the application's session
+          store.</strong></p>
           
                     </div>
                   </div>
@@ -90,22 +89,95 @@
                     </div>
                       <div class="row">
                         <div class="col-sm-12">
-                          <a name="method_activate" class="symbol-anchor"></a>
+                          <a name="method_clear" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0//Users/marcoow/Documents/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-WPLtIIHm.tmp/0/mixins/oauth2-implicit-grant-callback-route-mixin.js#L55">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0//Users/marcoow/Documents/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-WPLtIIHm.tmp/0/session-stores/session-storage.js#L83">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
                               <h3 class="panel-title signature">
-                                <strong class="name"><code>activate</code></strong>(<code> </code>)
+                                <strong class="name"><code>clear</code></strong>(<code> </code>)
+                                    <span class="type">&rarr; <code>Ember.RSVP.Promise</code></span>
                               </h3>
                             </div>
                             <div class="panel-body">
-                              <p>Passes the hash received with the redirection from the authentication
-                          server to the
-                          <a href="../classes/OAuth2ImplicitGrantAuthenticator.html" class="crosslink">OAuth2ImplicitGrantAuthenticator</a> and
-                          authenticates the session with the authenticator.</p>
+                                <p><span class="label label-default">Overrides:</span> <a href="BaseStore.html#method_clear"><code>clear</code> of  <code>BaseStore</code></a>.</p>
+                              <p>Clears the store by deleting the
+                          <a href="../classes/SessionStorageStore.html#property_key" class="crosslink">key</a> from
+                          <code>sessionStorage</code>.</p>
+                          
+                                  <h4 class="subsection">Returns</h4>
+                                  <p>
+                                      <span class="type return">&rarr; <code>Ember.RSVP.Promise</code></span>
+                                  </p>
+                                  <p>A promise that resolves when the store has been cleared successfully and rejects otherwise.</p>
+                          
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <a name="method_persist" class="symbol-anchor"></a>
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0//Users/marcoow/Documents/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-WPLtIIHm.tmp/0/session-stores/session-storage.js#L54">
+                                <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
+                              </a>
+                                <span class="label label-access-public pull-right">public</span>
+                              <h3 class="panel-title signature">
+                                <strong class="name"><code>persist</code></strong>(<code>data</code>)
+                                    <span class="type">&rarr; <code>Ember.RSVP.Promise</code></span>
+                              </h3>
+                            </div>
+                            <div class="panel-body">
+                                <p><span class="label label-default">Overrides:</span> <a href="BaseStore.html#method_persist"><code>persist</code> of  <code>BaseStore</code></a>.</p>
+                              <p>Persists the <code>data</code> in the <code>sessionStorage</code>.</p>
+                          
+                                <h4 class="subsection">Arguments</h4>
+                                <dl class="params">
+                                    <dt>
+                                        <code>data</code>: <span class="type"><code>Object</code></span>
+                                    </dt>
+                                    <dd>
+                                      <p>The data to persist</p>
+                          
+                                    </dd>
+                                </dl>
+                                  <h4 class="subsection">Returns</h4>
+                                  <p>
+                                      <span class="type return">&rarr; <code>Ember.RSVP.Promise</code></span>
+                                  </p>
+                                  <p>A promise that resolves when the data has successfully been persisted and rejects otherwise.</p>
+                          
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <a name="method_restore" class="symbol-anchor"></a>
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0//Users/marcoow/Documents/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-WPLtIIHm.tmp/0/session-stores/session-storage.js#L70">
+                                <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
+                              </a>
+                                <span class="label label-access-public pull-right">public</span>
+                              <h3 class="panel-title signature">
+                                <strong class="name"><code>restore</code></strong>(<code> </code>)
+                                    <span class="type">&rarr; <code>Ember.RSVP.Promise</code></span>
+                              </h3>
+                            </div>
+                            <div class="panel-body">
+                                <p><span class="label label-default">Overrides:</span> <a href="BaseStore.html#method_restore"><code>restore</code> of  <code>BaseStore</code></a>.</p>
+                              <p>Returns all data currently stored in the <code>sessionStorage</code> as a plain object.</p>
+                          
+                                  <h4 class="subsection">Returns</h4>
+                                  <p>
+                                      <span class="type return">&rarr; <code>Ember.RSVP.Promise</code></span>
+                                  </p>
+                                  <p>A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.</p>
                           
                             </div>
                           </div>
@@ -118,84 +190,78 @@
                     </div>
                       <div class="row">
                         <div class="col-sm-12">
-                          <a name="property_authenticator" class="symbol-anchor"></a>
+                          <a name="property_key" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0//Users/marcoow/Documents/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-WPLtIIHm.tmp/0/mixins/oauth2-implicit-grant-callback-route-mixin.js#L31">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0//Users/marcoow/Documents/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-WPLtIIHm.tmp/0/session-stores/session-storage.js#L30">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
                               <h3 class="panel-title signature">
-                                <strong class="name"><code>authenticator</code></strong>: <code>String</code>
+                                <strong class="name"><code>key</code></strong>: <code>String</code>
                               </h3>
                             </div>
                             <div class="panel-body">
-                                <p><span class="label label-default">Default:</span> <code>null</code></p>
-                              <p>The authenticator that should be used to authenticate the callback. This
-                          must be a subclass of the
-                          <a href="../classes/OAuth2ImplicitGrantAuthenticator.html" class="crosslink">OAuth2ImplicitGrantAuthenticator</a>
-                          authenticator.</p>
+                                <p><span class="label label-default">Default:</span> <code>&#x27;ember_simple_auth-session&#x27;</code></p>
+                              <p>The <code>sessionStorage</code> key the store persists data in.</p>
                           
                             </div>
                           </div>
                                             </div>
                       </div>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <a name="property_error" class="symbol-anchor"></a>
-                          <div class="panel panel-default">
-                            <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0//Users/marcoow/Documents/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-WPLtIIHm.tmp/0/mixins/oauth2-implicit-grant-callback-route-mixin.js#L44">
-                                <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
-                              </a>
-                                <span class="label label-access-public pull-right">public</span>
-                              <h3 class="panel-title signature">
-                                <strong class="name"><code>error</code></strong>: <code>String</code>
-                              </h3>
-                            </div>
-                            <div class="panel-body">
-                                <p><span class="label label-default">Default:</span> <code>null</code></p>
-                              <p>Any error that potentially occurs during authentication will be stored in
-                          this property.</p>
-                          
-                            </div>
-                          </div>
-                                            </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <h3 class="section">Events</h3>
                       </div>
+                    </div>
                       <div class="row">
                         <div class="col-sm-12">
-                          <a name="property_session" class="symbol-anchor"></a>
+                          <a name="event_sessionDataUpdated" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0//Users/marcoow/Documents/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-WPLtIIHm.tmp/0/mixins/oauth2-implicit-grant-callback-route-mixin.js#L21">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0//Users/marcoow/Documents/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-WPLtIIHm.tmp/0/session-stores/base.js#L19">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
-                                <span class="label label-access-public pull-right">public</span>
-                                <span class="label label-warning pull-right">readonly</span>
                               <h3 class="panel-title signature">
-                                <strong class="name"><code>session</code></strong>: <code><a href="../classes/SessionService.html" class="crosslink">SessionService</a></code>
+                                <strong class="name"><code>sessionDataUpdated</code></strong>
                               </h3>
                             </div>
                             <div class="panel-body">
-                              <p>The session service.</p>
+                                <p><span class="label label-default">Inherited from:</span> <a href="BaseStore.html#event_sessionDataUpdated"><code>sessionDataUpdated</code> of <code>BaseStore</code></a>.</p>
+                              <p>Triggered when the session store's data changes due to an external event,
+                          e.g., from another tab or window of the same application. The session
+                          handles that event, passes the updated data to its authenticator's
+                          <a href="../classes/BaseAuthenticator.html#method_restore" class="crosslink">restore</a> method and
+                          handles the result of that invocation accordingly.</p>
                           
+                                <h4 class="subsection">Arguments</h4>
+                                <dl class="params">
+                                    <dt>
+                                        <code>data</code>: <span class="type"><code>Object</code></span>
+                                    </dt>
+                                    <dd>
+                                      <p>The updated session data</p>
+                          
+                                    </dd>
+                                </dl>
                             </div>
-                          </div>
-                                            </div>
+                          </div>              </div>
                       </div>
                 </div>
                 <div class="quick-menu col-sm-3">
                     <div class="row">
                       <div class="col-sm-12">
                         <h4>Extends</h4>
-                        <code>Ember.Mixin</code>
+                        <code><a href="../classes/BaseStore.html" class="crosslink">BaseStore</a></code>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-sm-12">
                         <h4>Methods</h4>
                         <ul class="list-unstyled">
-                            <li><a href="#method_activate">activate</a></li>
+                            <li><a href="#method_clear">clear</a></li>
+                            <li><a href="#method_persist">persist</a></li>
+                            <li><a href="#method_restore">restore</a></li>
                         </ul>
                       </div>
                     </div>
@@ -203,9 +269,15 @@
                       <div class="col-sm-12">
                         <h4>Properties</h4>
                         <ul class="list-unstyled">
-                            <li><a href="#property_authenticator">authenticator</a></li>
-                            <li><a href="#property_error">error</a></li>
-                            <li><a href="#property_session">session</a></li>
+                            <li><a href="#property_key">key</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <h4>Events</h4>
+                        <ul class="list-unstyled">
+                            <li><a href="#event_sessionDataUpdated">sessionDataUpdated</a></li>
                         </ul>
                       </div>
                     </div>
