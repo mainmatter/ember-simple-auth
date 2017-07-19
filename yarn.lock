@@ -2430,9 +2430,9 @@ ember-cli-eslint@^4.1.0:
     rsvp "^3.2.1"
     walk-sync "^0.3.0"
 
-ember-cli-fastboot@^1.0.0-rc.5:
-  version "1.0.0-rc3"
-  resolved "https://registry.yarnpkg.com/ember-cli-fastboot/-/ember-cli-fastboot-1.0.0-rc3.tgz#971179bdb8f53215025dd23b2f18765b63008584"
+ember-cli-fastboot@^1.0.0-rc6:
+  version "1.0.0-rc6"
+  resolved "https://registry.yarnpkg.com/ember-cli-fastboot/-/ember-cli-fastboot-1.0.0-rc6.tgz#44cc83c8cf7a4c849d95f206e66dcd4ad7be31de"
   dependencies:
     broccoli-concat "^3.2.2"
     broccoli-funnel "^1.2.0"
@@ -5923,9 +5923,9 @@ simple-is@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/simple-is/-/simple-is-0.2.0.tgz#2abb75aade39deb5cc815ce10e6191164850baf0"
 
-sinon-chai@~2.11.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/sinon-chai/-/sinon-chai-2.11.0.tgz#93d90f989fff67ce45767077ffe575dde1faea6d"
+sinon-chai@~2.12.0:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/sinon-chai/-/sinon-chai-2.12.0.tgz#da71e9642ef7b893ba3cf2af806396a00aa45927"
 
 sinon@^2.1.0:
   version "2.3.8"
