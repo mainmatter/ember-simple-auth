@@ -1,4 +1,4 @@
-import { describe, beforeEach, afterEach } from 'mocha';
+import { describe, beforeEach } from 'mocha';
 import sinon from 'sinon';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
 import itBehavesLikeAStore from './shared/store-behavior';
@@ -16,10 +16,6 @@ describe('CookieStore', () => {
 
   beforeEach(function() {
     store = createCookieStore(FakeCookieService.create());
-  });
-
-  afterEach(function() {
-    store.clear();
   });
 
   itBehavesLikeAStore({
