@@ -1,3 +1,10 @@
+# 1.4.0
+
+* A new session store has been added that is based on `sessionStorage`, see
+  #1392.
+* Several documentation errors and typos have been fixed, see #1393, #1372,
+  #1374, #1366, #1346.
+
 # 1.3.0
 
 * ESA now uses ember-fetch instead of ember-network. ember-fetch is better
