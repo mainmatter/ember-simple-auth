@@ -36,7 +36,6 @@
     "ember-fetch": "^2.1.0 || ^3.0.0",
     "ember-getowner-polyfill": "^1.1.0",
     "fastboot-app-server": "^1.0.0-rc.5",
-    "node-fetch": "^1.7.1",
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
