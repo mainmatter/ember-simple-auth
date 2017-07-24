@@ -16,7 +16,7 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false,
+        Date: false
       },
     },
 
@@ -26,28 +26,27 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'style-src': "'self' 'unsafe-inline'",
+      'style-src': "'self' 'unsafe-inline'"
     },
 
     browserify: {
-      tests: true,
+      tests: true
     },
 
     torii: {
       providers: {
         'facebook-oauth2': {
-          apiKey: '631252926924840',
-        },
-      },
+          apiKey: '631252926924840'
+        }
+      }
     },
 
     apiHost: 'http://localhost:4200',
 
-    googleClientID:
-      '694766332436-1g5bakjoo5flkfpv3t2mfsch9ghg7ggd.apps.googleusercontent.com',
+    googleClientID: '694766332436-1g5bakjoo5flkfpv3t2mfsch9ghg7ggd.apps.googleusercontent.com',
 
     fastboot: {
-      hostWhitelist: [/^localhost:\d+$/],
+      hostWhitelist: [/^localhost:\d+$/]
     },
 
     esaVersion: require('../../../package.json').version,
@@ -75,7 +74,7 @@ module.exports = function(environment) {
   if (environment === 'production') {
     // put production settings here
     ENV.fastboot = {
-      hostWhitelist: ['ember-simple-auth.now.sh'],
+      hostWhitelist: ['ember-simple-auth.now.sh']
     };
     ENV.apiHost = 'https://ember-simple-auth-server.now.sh';
   }
