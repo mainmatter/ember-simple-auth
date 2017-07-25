@@ -97,7 +97,7 @@ start it, run
 ```
 git clone https://github.com/simplabs/ember-simple-auth.git
 cd ember-simple-auth
-yarn install && bower install && ember serve
+yarn install && ember serve
 ```
 
 and go to [http://localhost:4200](http://localhost:4200).
