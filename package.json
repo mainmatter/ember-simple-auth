@@ -35,7 +35,7 @@
     "ember-cookies": "^0.0.13",
     "ember-fetch": "^2.1.0 || ^3.0.0",
     "ember-getowner-polyfill": "^1.1.0",
-    "fastboot-app-server": "^1.0.0-rc.5",
+    "fastboot-app-server": "1.0.0",
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
@@ -52,7 +52,7 @@
     "ember-cli-content-security-policy": "~0.6.1",
     "ember-cli-dependency-checker": "^2.0.1",
     "ember-cli-eslint": "^4.1.0",
-    "ember-cli-fastboot": "^1.0.0-rc6",
+    "ember-cli-fastboot": "1.0.1",
     "ember-cli-htmlbars": "^2.0.2",
     "ember-cli-htmlbars-inline-precompile": "^0.4.3",
     "ember-cli-inject-live-reload": "^1.6.1",
