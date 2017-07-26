@@ -17,6 +17,8 @@
     "diagrams": "mermaid --sequenceConfig guides/assets/esa-initial-flow.config.json --width 2400 -o guides/assets guides/assets/esa-initial-flow.txt",
     "fastboot": "echo \"Please also run npm start\"; ember fastboot --serve-assets",
     "lint": "eslint app addon blueprints config server test-support tests *.js",
+    "now-build": "ember build --environment=production",
+    "now-start": "NODE_ENV=production PORT=8000 node fastboot-server.js",
     "start": "ember server",
     "test": "ember test",
     "test:all": "ember try:each",
@@ -33,6 +35,7 @@
     "ember-cookies": "^0.0.13",
     "ember-fetch": "^2.1.0 || ^3.0.0",
     "ember-getowner-polyfill": "^1.1.0",
+    "fastboot-app-server": "^1.0.0-rc.5",
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
@@ -92,6 +95,9 @@
       "ember": ">=1.12"
     }
   },
+  "fastbootDependencies": [
+    "node-fetch"
+  ],
   "greenkeeper": {
     "ignore": [
       "eslint-plugin-ember",

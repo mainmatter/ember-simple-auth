@@ -73,6 +73,10 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     // put production settings here
+    ENV.fastboot = {
+      hostWhitelist: ['ember-simple-auth.now.sh']
+    };
+    ENV.apiHost = 'https://ember-simple-auth-server.now.sh';
   }
 
   return ENV;
