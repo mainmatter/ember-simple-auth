@@ -1,9 +1,11 @@
 /* global sessionStorage */
-import Ember from 'ember';
+import RSVP from 'rsvp';
+
+import { computed } from '@ember/object';
+import { getOwner } from '@ember/application';
+import { bind } from '@ember/runloop';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
-
-const { RSVP, computed, getOwner, run: { bind } } = Ember;
 
 /**
   Session store that persists data in the browser's `sessionStorage`.

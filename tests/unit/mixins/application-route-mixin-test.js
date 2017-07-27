@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
+import { next } from '@ember/runloop';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
@@ -7,8 +8,6 @@ import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
 import createWithContainer from '../../helpers/create-with-container';
-
-const { Route, run: { next } } = Ember;
 
 describe('ApplicationRouteMixin', () => {
   let session;

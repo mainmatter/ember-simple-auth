@@ -1,10 +1,13 @@
-import Ember from 'ember';
-import { describe, beforeEach, afterEach, it } from 'mocha';
+import { tryInvoke } from '@ember/utils';
+import {
+  describe,
+  beforeEach,
+  afterEach,
+  it
+} from 'mocha';
 import { expect } from 'chai';
 import Pretender from 'pretender';
 import Devise from 'ember-simple-auth/authenticators/devise';
-
-const { tryInvoke } = Ember;
 
 describe('DeviseAuthenticator', () => {
   let server;

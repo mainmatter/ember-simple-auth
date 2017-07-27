@@ -1,19 +1,12 @@
-import Ember from 'ember';
-
-const {
-  RSVP,
-  isNone,
-  isEmpty,
-  ObjectProxy,
-  Evented,
-  assign: emberAssign,
-  merge,
-  assert,
-  deprecate,
-  set,
-  debug,
-  getOwner
-} = Ember;
+import RSVP from 'rsvp';
+import { isEmpty, isNone } from '@ember/utils';
+import ObjectProxy from '@ember/object/proxy';
+import Evented from '@ember/object/evented';
+import { merge, assign as emberAssign } from '@ember/polyfills';
+import { deprecate } from '@ember/application/deprecations';
+import { set } from '@ember/object';
+import { debug, assert } from '@ember/debug';
+import { getOwner } from '@ember/application';
 const assign = emberAssign || merge;
 
 export default ObjectProxy.extend(Evented, {

@@ -1,10 +1,11 @@
 /* global localStorage */
-import Ember from 'ember';
+import { computed } from '@ember/object';
+
+import { inject as service } from '@ember/service';
+import { getOwner } from '@ember/application';
 import Base from 'ember-simple-auth/session-stores/base';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
-
-const { computed, inject: { service }, getOwner } = Ember;
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 

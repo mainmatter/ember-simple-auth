@@ -1,7 +1,5 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
 import BaseAuthorizer from './base';
-
-const { isEmpty } = Ember;
 
 /**
   Authorizer that works with the Ruby gem

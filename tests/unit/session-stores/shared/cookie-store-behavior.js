@@ -1,11 +1,14 @@
-import Ember from 'ember';
-import { describe, beforeEach, afterEach, it } from 'mocha';
+import { next, run } from '@ember/runloop';
+import {
+  describe,
+  beforeEach,
+  afterEach,
+  it
+} from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';
 import CookieSessionStore from 'ember-simple-auth/session-stores/cookie';
-
-const { run, run: { next } } = Ember;
 
 export default function(options) {
   let store;

@@ -1,6 +1,7 @@
-import Ember from 'ember';
-
-const { inject: { service }, Mixin, assert, isPresent } = Ember;
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
+import { assert } from '@ember/debug';
+import { isPresent } from '@ember/utils';
 
 /**
   __This mixin can be used to make Ember Data adapters authorize all outgoing

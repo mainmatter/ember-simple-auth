@@ -1,6 +1,6 @@
-import Ember from 'ember';
-
-const { getWithDefault, typeOf, deprecate } = Ember;
+import { getWithDefault } from '@ember/object';
+import { typeOf } from '@ember/utils';
+import { deprecate } from '@ember/application/deprecations';
 
 const DEFAULTS = {
   baseURL:                     '',

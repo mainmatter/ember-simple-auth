@@ -1,10 +1,6 @@
-import Ember from 'ember';
+import RSVP from 'rsvp';
+import { isEmpty } from '@ember/utils';
 import BaseAuthenticator from './base';
-
-const {
-  RSVP,
-  isEmpty
-} = Ember;
 
 /**
  Authenticator that conforms to OAuth 2

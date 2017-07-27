@@ -1,7 +1,5 @@
-import Ember from 'ember';
+import RSVP from 'rsvp';
 import BaseAuthenticator from './base';
-
-const { RSVP } = Ember;
 
 export default BaseAuthenticator.extend({
   restore(data) {

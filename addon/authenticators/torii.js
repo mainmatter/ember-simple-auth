@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import RSVP from 'rsvp';
+import { assert } from '@ember/debug';
+import { isPresent, isEmpty } from '@ember/utils';
 import BaseAuthenticator from './base';
-
-const { RSVP, isEmpty, assert, isPresent } = Ember;
 
 /**
   Authenticator that wraps the

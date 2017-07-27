@@ -1,11 +1,12 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import RSVP from 'rsvp';
+import Route from '@ember/routing/route';
+import { isEmpty } from '@ember/utils';
 import { it } from 'ember-mocha';
 import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import OAuth2ImplicitGrantCallbackRouteMixin from 'ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin';
-
-const { Object: EmberObject, RSVP, Route, isEmpty } = Ember;
 
 describe('OAuth2ImplicitGrantCallbackRouteMixin', function() {
   let route;

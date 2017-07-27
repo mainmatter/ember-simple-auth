@@ -1,6 +1,4 @@
-import Ember from 'ember';
-
-const { Object: EmberObject } = Ember;
+import EmberObject from '@ember/object';
 
 /**
   The base class for all authorizers. __This serves as a starting point for

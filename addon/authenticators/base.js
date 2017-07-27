@@ -1,6 +1,6 @@
-import Ember from 'ember';
-
-const { RSVP, Evented, Object: EmberObject } = Ember;
+import RSVP from 'rsvp';
+import Evented from '@ember/object/evented';
+import EmberObject from '@ember/object';
 
 /**
   The base class for all authenticators. __This serves as a starting point for

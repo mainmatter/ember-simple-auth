@@ -1,12 +1,13 @@
-import Ember from 'ember';
+import ObjectProxy from '@ember/object/proxy';
+import Evented from '@ember/object/evented';
+import { next } from '@ember/runloop';
+import { set } from '@ember/object';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Session from 'ember-simple-auth/services/session';
 
 import createWithContainer from '../../helpers/create-with-container';
-
-const { ObjectProxy, Evented, run: { next }, set } = Ember;
 
 describe('SessionService', () => {
   let sessionService;

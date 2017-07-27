@@ -1,7 +1,9 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
+import { assert } from '@ember/debug';
+import { computed } from '@ember/object';
+import { getOwner } from '@ember/application';
 import Configuration from './../configuration';
-
-const { inject: { service }, Mixin, assert, computed, getOwner } = Ember;
 
 /**
   __This mixin is used to make routes accessible only if the session is
