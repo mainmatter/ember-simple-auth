@@ -1,10 +1,13 @@
-import Ember from 'ember';
-import { describe, beforeEach, afterEach, it } from 'mocha';
+import { tryInvoke } from '@ember/utils';
+import {
+  describe,
+  beforeEach,
+  afterEach,
+  it
+} from 'mocha';
 import { expect } from 'chai';
 import Pretender from 'pretender';
 import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
-
-const { tryInvoke } = Ember;
 
 describe('OAuth2PasswordGrantAuthenticator', () => {
   let authenticator;

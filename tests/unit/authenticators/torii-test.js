@@ -1,10 +1,8 @@
-import Ember from 'ember';
+import RSVP from 'rsvp';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Torii from 'ember-simple-auth/authenticators/torii';
-
-const { RSVP } = Ember;
 
 describe('ToriiAuthenticator', () => {
   let authenticator;

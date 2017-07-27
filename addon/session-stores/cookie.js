@@ -1,20 +1,16 @@
+import RSVP from 'rsvp';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { later, cancel, scheduleOnce, next } from '@ember/runloop';
+import { isPresent, typeOf, isEmpty } from '@ember/utils';
+import { A } from '@ember/array';
+import { getOwner } from '@ember/application';
+import { warn } from '@ember/debug';
 import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const {
-  RSVP,
-  computed,
-  inject: { service },
-  run: { next, scheduleOnce, cancel, later },
-  isEmpty,
-  typeOf,
-  testing,
-  isPresent,
-  A,
-  getOwner,
-  warn,
-} = Ember;
+const { testing } = Ember;
 
 const persistingProperty = function(beforeSet = function() {}) {
   return computed({

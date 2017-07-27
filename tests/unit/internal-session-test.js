@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import RSVP from 'rsvp';
+import { next } from '@ember/runloop';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
@@ -7,11 +8,6 @@ import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import Authenticator from 'ember-simple-auth/authenticators/base';
 
 import createWithContainer from '../helpers/create-with-container';
-
-const {
-  RSVP,
-  run: { next }
-} = Ember;
 
 describe('InternalSession', () => {
   let session;

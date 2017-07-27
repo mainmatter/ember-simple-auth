@@ -1,10 +1,8 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
-
-const { Object: EmberObject } = Ember;
 
 describe('DataAdapterMixin', () => {
   let adapter;

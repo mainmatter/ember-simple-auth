@@ -1,7 +1,5 @@
-import Ember from 'ember';
+import RSVP from 'rsvp';
 import BaseStore from './base';
-
-const { RSVP } = Ember;
 
 /**
   Session store that __persists data in memory and thus is not actually

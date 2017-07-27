@@ -1,8 +1,12 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { A } from '@ember/array';
+import Service from '@ember/service';
+import Evented from '@ember/object/evented';
+import { getOwner } from '@ember/application';
+import { isNone } from '@ember/utils';
+import { assert } from '@ember/debug';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
-
-const { computed, A, Service, Evented, getOwner, isNone, assert } = Ember;
 
 /**
   __The session service provides access to the current session as well as

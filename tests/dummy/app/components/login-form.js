@@ -1,7 +1,6 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import config from '../config/environment';
-
-const { inject: { service }, Component } = Ember;
 
 export default Component.extend({
   session: service('session'),

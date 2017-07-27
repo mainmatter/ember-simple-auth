@@ -1,9 +1,7 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-
-const { run } = Ember;
 
 export default function(options) {
   let store;
