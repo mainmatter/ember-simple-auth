@@ -53,7 +53,7 @@
     "ember-cli-eslint": "^4.1.0",
     "ember-cli-fastboot": "1.0.1",
     "ember-cli-htmlbars": "^2.0.2",
-    "ember-cli-htmlbars-inline-precompile": "^0.4.3",
+    "ember-cli-htmlbars-inline-precompile": "^1.0.0",
     "ember-cli-inject-live-reload": "^1.6.1",
     "ember-cli-mocha": "^0.14.4",
     "ember-cli-pretender": "^1.0.1",
