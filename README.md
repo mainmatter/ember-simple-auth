@@ -248,6 +248,15 @@ methods it implements. The `sessionAuthenticated` method will transition to a
 configurable route while the `sessionInvalidated` method will reload the page
 to clear all potentially sensitive data from memory.
 
+To configure the transition route after `sessionAuthenticated` while using the `ApplicationRouteMixin` simply override the `routeAfterAuthentication` property where you are using the `ApplicationRouteMixin`.
+
+```js
+// app/routes/application.js
+export default Route.extend(ApplicationRouteMixin, {
+  routeAfterAuthentication: 'my-route'
+});
+```
+
 __To make a route in the application accessible only when the session is
 authenticated__, mix the
 [`AuthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/AuthenticatedRouteMixin.html)
