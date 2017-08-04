@@ -18,7 +18,7 @@ import { getOwner } from '@ember/application';
   @public
 */
 
-export default Mixin.create({
+const mixin = Mixin.create({
   /**
    The session service.
 
@@ -101,3 +101,7 @@ export default Mixin.create({
     return params;
   }
 });
+
+mixin[Ember.NAME_KEY] = 'EmberSimpleAuth.Oauth2ImplicitGrantCallbackRouteMixin';
+
+export default mixin;

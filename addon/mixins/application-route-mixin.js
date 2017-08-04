@@ -47,7 +47,7 @@ const { testing } = Ember;
   @extends Ember.Mixin
   @public
 */
-export default Mixin.create({
+const mixin = Mixin.create({
   /**
     The session service.
 
@@ -148,3 +148,7 @@ export default Mixin.create({
     }
   }
 });
+
+mixin[Ember.NAME_KEY] = 'EmberSimpleAuth.ApplicationRouteMixin';
+
+export default mixin;

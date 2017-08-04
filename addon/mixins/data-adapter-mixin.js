@@ -31,7 +31,7 @@ import { isPresent } from '@ember/utils';
   @public
 */
 
-export default Mixin.create({
+const mixin = Mixin.create({
   /**
     The session service.
 
@@ -152,3 +152,7 @@ export default Mixin.create({
     }
   }
 });
+
+mixin[Ember.NAME_KEY] = 'EmberSimpleAuth.DataAdapterMixin';
+
+export default mixin;
