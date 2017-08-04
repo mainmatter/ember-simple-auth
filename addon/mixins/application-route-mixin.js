@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import Mixin from '@ember/object/mixin';
 import { A } from '@ember/array';
 import { bind } from '@ember/runloop';

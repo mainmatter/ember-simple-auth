@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
