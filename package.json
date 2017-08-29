@@ -66,7 +66,7 @@
     "ember-fastboot-addon-tests": "^0.4.0",
     "ember-load-initializers": "^1.0.0",
     "ember-resolver": "^4.3.0",
-    "ember-sinon": "~0.7.0",
+    "ember-sinon": "~1.0.0",
     "ember-source": "^2.14.0",
     "eslint-config-simplabs": "^0.4.0",
     "eslint-plugin-ember": "^3.6.2",
