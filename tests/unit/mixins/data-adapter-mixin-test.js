@@ -80,7 +80,7 @@ describe('DataAdapterMixin', () => {
 
       describe('when the authorizer calls the block', function() {
         beforeEach(function() {
-          sinon.stub(sessionService, 'authorize', (authorizer, block) => {
+          sinon.stub(sessionService, 'authorize').callsFake((authorizer, block) => {
             block('header', 'value');
           });
           hash.beforeSend(xhr);
@@ -148,7 +148,7 @@ describe('DataAdapterMixin', () => {
 
     describe('when the authorizer calls the block', function() {
       beforeEach(function() {
-        sinon.stub(sessionService, 'authorize', (authorizer, block) => {
+        sinon.stub(sessionService, 'authorize').callsFake((authorizer, block) => {
           block('X-Authorization-Header', 'an-auth-value');
         });
       });
