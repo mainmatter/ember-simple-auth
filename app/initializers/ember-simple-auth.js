@@ -8,7 +8,11 @@ export default {
 
   initialize(registry) {
     const config = ENV['ember-simple-auth'] || {};
-    config.baseURL = ENV.rootURL || ENV.baseURL;
+
+    if(config.baseURL === undefined) {
+    	config.baseURL = (ENV.rootURL !== undefined ? ENV.rootURL : ENV.baseURL)
+    }
+
     Configuration.load(config);
 
     setupSession(registry);
