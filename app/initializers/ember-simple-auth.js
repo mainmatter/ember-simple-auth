@@ -10,7 +10,7 @@ export default {
     const config = ENV['ember-simple-auth'] || {};
 
     if(config.baseURL === undefined) {
-    	config.baseURL = (ENV.rootURL !== undefined ? ENV.rootURL : ENV.baseURL)
+    	config.baseURL = (ENV.rootURL !== undefined ? ENV.rootURL : ENV.baseURL);
     }
 
     Configuration.load(config);
