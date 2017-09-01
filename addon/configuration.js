@@ -12,9 +12,6 @@ const DEFAULTS = {
 /**
   Ember Simple Auth's configuration object.
 
-  These Ember Simple Auth properties should no longer be overridden in the application's environment object, that's why they are marked readonly.
-  To change any of these values, set them in the respective routes.
-
   @class Configuration
   @extends Object
   @module ember-simple-auth/configuration
