@@ -12,15 +12,8 @@ const DEFAULTS = {
 /**
   Ember Simple Auth's configuration object.
 
-  To change any of these values, set them on the application's environment
-  object, e.g.:
-
-  ```js
-  // config/environment.js
-  ENV['ember-simple-auth'] = {
-    baseURL: 'path/to/base/url'
-  };
-  ```
+  These Ember Simple Auth properties should no longer be overridden in the application's environment object, that's why they are marked readonly.
+  To change any of these values, set them in the respective routes.
 
   @class Configuration
   @extends Object
