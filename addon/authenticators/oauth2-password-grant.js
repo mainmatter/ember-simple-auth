@@ -102,7 +102,7 @@ export default BaseAuthenticator.extend({
     as volatile so it will actually have a different value each time it is
     accessed.__
 
-    @property refreshAccessTokens
+    @property tokenRefreshOffset
     @type Integer
     @default a random number between 5 and 10
     @public
