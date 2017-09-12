@@ -322,17 +322,24 @@ export default BaseAuthenticator.extend({
       merge(options.headers, clientIdHeader);
     }
     return new RSVP.Promise((resolve, reject) => {
-      fetch(url, options).then((response) => {
-        response.text().then((text) => {
-          let json = text ? JSON.parse(text) : {};
-          if (!response.ok) {
-            response.responseJSON = json;
-            reject(response);
-          } else {
-            resolve(json);
-          }
-        });
-      }).catch(reject);
+      fetch(url, options)
+        .then((response) => {
+          response.text().then((text) => {
+            let json;
+            try {
+              json = JSON.parse(text);
+            } catch (e) {
+              json = {};
+            }
+            if (response.status === 200) {
+              resolve(json);
+            } else {
+              response.responseJSON = json;
+              reject(response);
+            }
+          });
+        })
+        .catch(reject);
     });
   },
 
