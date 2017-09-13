@@ -331,7 +331,7 @@ export default BaseAuthenticator.extend({
             } catch (e) {
               json = {};
             }
-            if (response.status === 200) {
+            if (response.ok) {
               resolve(json);
             } else {
               response.responseJSON = json;
