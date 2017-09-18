@@ -200,21 +200,53 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         server.post('/token', () => [400, { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' }, '{ "error": "invalid_grant" }']);
       });
 
-      it('rejects with the correct error', function(done) {
+      it('rejects with the parsed JSON response', function(done) {
         authenticator.authenticate('username', 'password').catch((error) => {
           expect(error).to.eql({ error: 'invalid_grant' });
           done();
         });
       });
 
-      describe('when reject with response is enabled', function() {
+      describe('when rejectWithResponse is enabled', function() {
         beforeEach(function() {
           authenticator.set('rejectWithResponse', true);
         });
 
-        it('rejects with xhr object', function() {
+        it('rejects with xhr object containing responseJSON', function() {
           return authenticator.authenticate('username', 'password').catch((error) => {
             expect(error.responseJSON).to.eql({ error: 'invalid_grant' });
+          });
+        });
+
+        it('provides access to custom headers', function() {
+          return authenticator.authenticate('username', 'password').catch((error) => {
+            expect(error.headers.get('x-custom-context')).to.eql('foobar');
+          });
+        });
+      });
+    });
+
+    describe('when the authentication request fails without a valid response', function() {
+      beforeEach(function() {
+        server.post('/token', () => [500, { 'Content-Type': 'text/plain', 'X-Custom-Context': 'foobar' }, 'The server has failed completely.']);
+      });
+
+      it('rejects with the response body', function(done) {
+        authenticator.authenticate('username', 'password').catch((error) => {
+          expect(error).to.eql('The server has failed completely.');
+          done();
+        });
+      });
+
+      describe('when rejectWithResponse is enabled', function() {
+        beforeEach(function() {
+          authenticator.set('rejectWithResponse', true);
+        });
+
+        it('rejects with xhr object containing responseText', function() {
+          return authenticator.authenticate('username', 'password').catch((error) => {
+            expect(error.responseJSON).to.not.exist;
+            expect(error.responseText).to.eql('The server has failed completely.');
           });
         });
 
