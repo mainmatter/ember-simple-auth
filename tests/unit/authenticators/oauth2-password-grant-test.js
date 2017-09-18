@@ -184,12 +184,22 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         });
       });
 
-      describe('when the server returns incomplete data', function() {
-        it('fails when no access_token is present', function() {
+      describe('when the server response is missing access_token', function() {
+        it('fails with a string describing the issue', function() {
           server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{}']);
 
           return authenticator.authenticate('username', 'password').catch((error) => {
             expect(error).to.eql('access_token is missing in server response');
+          });
+        });
+      });
+
+      describe('but the response is not valid JSON', function() {
+        it('fails with the string of the response', function() {
+          server.post('/token', () => [200, { 'Content-Type': 'text/plain' }, 'Something went wrong']);
+
+          return authenticator.authenticate('username', 'password').catch((error) => {
+            expect(error).to.eql('Something went wrong');
           });
         });
       });
