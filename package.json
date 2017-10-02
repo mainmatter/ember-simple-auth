@@ -34,7 +34,6 @@
     "ember-cookies": "^0.0.13",
     "ember-fetch": "^2.1.0 || ^3.0.0",
     "ember-getowner-polyfill": "^1.1.0 || ^2.0.0",
-    "fastboot-app-server": "1.0.0",
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
@@ -72,6 +71,7 @@
     "eslint-plugin-ember": "^3.6.2",
     "eslint-plugin-mocha": "^4.11.0",
     "express": "^4.15.3",
+    "fastboot-app-server": "^1.0.2",
     "git-repo-version": "^0.4.1",
     "glob": "^7.1.2",
     "handlebars": "~4.0.10",
