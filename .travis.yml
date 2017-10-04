@@ -40,7 +40,7 @@ deploy:
     tags: true
     repo: simplabs/ember-simple-auth
 
-after_deploy:
+after_success:
   - npm i -g now-pipeline
   - now-pipeline-prune && now-pipeline --alias ember-simple-auth.now.sh
   - cd server && now-pipeline-prune && now-pipeline --alias ember-simple-auth-server.now.sh
