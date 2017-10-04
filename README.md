@@ -648,6 +648,26 @@ module in the application's namespace:
 import { currentSession, authenticateSession, invalidateSession } from '<app-name>/tests/helpers/ember-simple-auth';
 ```
 
+Test modules that use the session must declare a need for the session.  For example:
+
+```js
+import { moduleFor, test } from 'ember-qunit';
+
+moduleFor('route:users', 'Unit | Route | users', {
+  needs: ['service:session']
+});
+
+test('it exists', function(assert) {
+  let route = this.subject();
+  assert.ok(route);
+});
+```
+
+Failure to add `needs: ['service:session']` will result in the following error:
+```
+Assertion Failed: Attempting to inject an unknown injection: 'service:session'
+```
+
 ## Other guides
 
 * [Managing current User](guides/managing-current-user.md)
