@@ -116,6 +116,18 @@
         text-align: center;
       }
 
+      .header {
+        text-align: right;
+        padding: 10px 0;
+      }
+
+      .header a {
+        color: #656565;
+        font-weight: normal;
+        font-size: 12px;
+        letter-spacing: 1px;
+      }
+
       #header {
         background-color: #e53613;
       }
@@ -173,16 +185,16 @@
         text-align: left;
       }
       
-      #footer a i.simplabs {
+      .reference-project {
+        padding: 20px 0;
+        text-align: center;
+      }
+
+      i.simplabs {
         display: inline-block;
         width: 69px;
         height: 12px;
         background-image: url("images/simplabs.png");
-      }
-      
-      .reference-project {
-        padding: 20px 0;
-        text-align: center;
       }
       
       i.main-logo {
@@ -242,7 +254,7 @@
       }
       
       @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6 / 2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-        #footer a i.simplabs {
+        i.simplabs {
           background-image: url("images/simplabs@2x.png");
           background-size: 69px 12px;
         }
@@ -309,7 +321,15 @@
     </style>
   </head>
 	<body>
-    <nav id="header" class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="row header">
+      <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <a href="https://simplabs.com" target="_blank">
+          <span>Brought to you by </span>
+          <i class="simplabs"></i>
+        </a>
+      </div>
+    </div>
+    <nav id="header" class="navbar navbar-default" role="navigation">
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
