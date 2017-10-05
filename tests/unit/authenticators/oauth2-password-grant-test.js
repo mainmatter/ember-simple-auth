@@ -129,7 +129,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
     it('sends an AJAX request to the token endpoint without client_id Basic Auth header when enableLegacyClientIdentification is false', function(done) {
       server.post('/token', (request) => {
-        expect(request.requestHeaders.hasOwnProperty('authorization')).to.eql(false);
+        expect(request.requestHeaders.hasOwnProperty('authorization')).to.be.false;
         done();
       });
 
