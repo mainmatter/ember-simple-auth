@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ember-simple-auth/authenticators/torii - The Ember Simple Auth API</title>
+    <title>addon/session-stores/local-storage.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -58,38 +58,126 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
+          <h1 class="file-heading">File: addon/session-stores/local-storage.js</h1>
           
-          <h2>ember-simple-auth/authenticators/torii</h2>
-          <div class="intro"><p>Authenticator that wraps the
-          <a href="https://github.com/Vestorly/torii">Torii library</a> and thus allows to connect
-          any external authentication provider that torii defines a provider for.</p>
-          <p>In order to use this authenticator, <strong>the application needs to have the
-          <a href="https://github.com/Vestorly/torii">torii addon</a> installed and must inject
-          the torii service into the authenticator</strong>:</p>
-          <pre class="code prettyprint"><code class="language-js">// app/authenticators/torii.js
-          import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
+          <div class="file">
+              <pre class="code prettyprint linenums">
+          /* global localStorage */
+          import Ember from &#x27;ember&#x27;;
+          import BaseStore from &#x27;./base&#x27;;
+          import objectsAreEqual from &#x27;../utils/objects-are-equal&#x27;;
           
-          export default ToriiAuthenticator.extend({
-            torii: Ember.inject.service()
+          const { RSVP, computed, getOwner, run: { bind } } = Ember;
+          
+          /**
+            Session store that persists data in the browser&#x27;s &#x60;localStorage&#x60;.
+          
+            __&#x60;localStorage&#x60; is not available in Safari when running in private mode. In
+            general it is better to use the
+            {{#crossLink &quot;AdaptiveStore&quot;}}{{/crossLink}} that automatically falls back to
+            the {{#crossLink &quot;CookieStore&quot;}}{{/crossLink}} when &#x60;localStorage&#x60; is not
+            available.__
+          
+            __This session store does not work with FastBoot. In order to use Ember
+            Simple Auth with FastBoot, configure the
+            {{#crossLink &quot;CookieStore&quot;}}{{/crossLink}} as the application&#x27;s session
+            store.__
+          
+            @class LocalStorageStore
+            @module ember-simple-auth/session-stores/local-storage
+            @extends BaseStore
+            @public
+          */
+          export default BaseStore.extend({
+            _isFastBoot: computed(function() {
+              const fastboot = getOwner(this).lookup(&#x27;service:fastboot&#x27;);
+          
+              return fastboot ? fastboot.get(&#x27;isFastBoot&#x27;) : false;
+            }),
+          
+            /**
+              The &#x60;localStorage&#x60; key the store persists data in.
+          
+              @property key
+              @type String
+              @default &#x27;ember_simple_auth-session&#x27;
+              @public
+            */
+            key: &#x27;ember_simple_auth-session&#x27;,
+          
+            init() {
+              this._super(...arguments);
+          
+              if (!this.get(&#x27;_isFastBoot&#x27;)) {
+                window.addEventListener(&#x27;storage&#x27;, bind(this, this._handleStorageEvent));
+              }
+            },
+          
+            willDestroy() {
+              if (!this.get(&#x27;_isFastBoot&#x27;)) {
+                window.removeEventListener(&#x27;storage&#x27;, bind(this, this._handleStorageEvent));
+              }
+            },
+          
+            /**
+              Persists the &#x60;data&#x60; in the &#x60;localStorage&#x60;.
+          
+              @method persist
+              @param {Object} data The data to persist
+              @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
+              @public
+            */
+            persist(data) {
+              this._lastData = data;
+              data = JSON.stringify(data || {});
+              localStorage.setItem(this.key, data);
+          
+              return RSVP.resolve();
+            },
+          
+            /**
+              Returns all data currently stored in the &#x60;localStorage&#x60; as a plain object.
+          
+              @method restore
+              @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
+              @public
+            */
+            restore() {
+              let data = localStorage.getItem(this.key);
+          
+              return RSVP.resolve(JSON.parse(data) || {});
+            },
+          
+            /**
+              Clears the store by deleting the
+              {{#crossLink &quot;LocalStorageStore/key:property&quot;}}{{/crossLink}} from
+              &#x60;localStorage&#x60;.
+          
+              @method clear
+              @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
+              @public
+            */
+            clear() {
+              localStorage.removeItem(this.key);
+              this._lastData = {};
+          
+              return RSVP.resolve();
+            },
+          
+            _handleStorageEvent(e) {
+              if (e.key === this.get(&#x27;key&#x27;)) {
+                this.restore().then((data) =&gt; {
+                  if (!objectsAreEqual(data, this._lastData)) {
+                    this._lastData = data;
+                    this.trigger(&#x27;sessionDataUpdated&#x27;, data);
+                  }
+                });
+              }
+            }
           });
-          </code></pre>
-          </div>
           
-          <div class="yui3-g">
-              <div class="yui3-u-1-2">
-                  <p>This module has the following classes:</p>
-                  <ul>
-                      <li><a href="../classes/ToriiAuthenticator.html">ToriiAuthenticator</a></li>
-                  </ul>
-              </div>
-              <div class="yui3-u-1-2">
-              </div>
+              </pre>
           </div>
-          <br><br>
-          <span class="foundat">Module description found: <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0/addon/authenticators/torii.js#L6">
-            <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
-          </a>
-          </span>
         </div>
       </div>
     </div>

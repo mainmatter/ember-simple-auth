@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ember-simple-auth/authenticators/torii - The Ember Simple Auth API</title>
+    <title>addon/authorizers/devise.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -58,38 +58,81 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
+          <h1 class="file-heading">File: addon/authorizers/devise.js</h1>
           
-          <h2>ember-simple-auth/authenticators/torii</h2>
-          <div class="intro"><p>Authenticator that wraps the
-          <a href="https://github.com/Vestorly/torii">Torii library</a> and thus allows to connect
-          any external authentication provider that torii defines a provider for.</p>
-          <p>In order to use this authenticator, <strong>the application needs to have the
-          <a href="https://github.com/Vestorly/torii">torii addon</a> installed and must inject
-          the torii service into the authenticator</strong>:</p>
-          <pre class="code prettyprint"><code class="language-js">// app/authenticators/torii.js
-          import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
+          <div class="file">
+              <pre class="code prettyprint linenums">
+          import Ember from &#x27;ember&#x27;;
+          import BaseAuthorizer from &#x27;./base&#x27;;
           
-          export default ToriiAuthenticator.extend({
-            torii: Ember.inject.service()
+          const { isEmpty } = Ember;
+          
+          /**
+            Authorizer that works with the Ruby gem
+            [devise](https://github.com/plataformatec/devise); includes the user&#x27;s token
+            and identification from the session data in the &#x60;Authorization&#x60; HTTP header,
+            e.g.,
+          
+            &#x60;&#x60;&#x60;
+            Authorization: token=&quot;234rtgjneroigne4&quot; email=&quot;user@domain.tld&quot;
+            &#x60;&#x60;&#x60;
+          
+            __As token authentication is not actually part of devise anymore, the server
+            needs to implement some customizations__ to work with this authenticator -
+            see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
+          
+            @class DeviseAuthorizer
+            @module ember-simple-auth/authorizers/devise
+            @extends BaseAuthorizer
+            @public
+          */
+          export default BaseAuthorizer.extend({
+            /**
+              The token attribute name.
+          
+              @property tokenAttributeName
+              @type String
+              @default &#x27;token&#x27;
+              @public
+            */
+            tokenAttributeName: &#x27;token&#x27;,
+          
+            /**
+              The identification attribute name.
+          
+              @property identificationAttributeName
+              @type String
+              @default &#x27;email&#x27;
+              @public
+            */
+            identificationAttributeName: &#x27;email&#x27;,
+          
+            /**
+              Includes the user&#x27;s token (see
+              {{#crossLink &quot;DeviseAuthenticator/tokenAttributeName:property&quot;}}{{/crossLink}})
+              and identification (see
+              {{#crossLink &quot;DeviseAuthenticator/identificationAttributeName:property&quot;}}{{/crossLink}})
+              in the &#x60;Authorization&#x60; header.
+          
+              @method authorize
+              @param {Object} data The data that the session currently holds
+              @param {Function} block(headerName,headerContent) The callback to call with the authorization data; will receive the header name and header content as arguments.
+              @public
+            */
+            authorize(data, block) {
+              const { tokenAttributeName, identificationAttributeName } = this.getProperties(&#x27;tokenAttributeName&#x27;, &#x27;identificationAttributeName&#x27;);
+              const userToken = data[tokenAttributeName];
+              const userIdentification = data[identificationAttributeName];
+          
+              if (!isEmpty(userToken) &amp;&amp; !isEmpty(userIdentification)) {
+                const authData = &#x60;${tokenAttributeName}=&quot;${userToken}&quot;, ${identificationAttributeName}=&quot;${userIdentification}&quot;&#x60;;
+                block(&#x27;Authorization&#x27;, &#x60;Token ${authData}&#x60;);
+              }
+            }
           });
-          </code></pre>
-          </div>
           
-          <div class="yui3-g">
-              <div class="yui3-u-1-2">
-                  <p>This module has the following classes:</p>
-                  <ul>
-                      <li><a href="../classes/ToriiAuthenticator.html">ToriiAuthenticator</a></li>
-                  </ul>
-              </div>
-              <div class="yui3-u-1-2">
-              </div>
+              </pre>
           </div>
-          <br><br>
-          <span class="foundat">Module description found: <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0/addon/authenticators/torii.js#L6">
-            <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
-          </a>
-          </span>
         </div>
       </div>
     </div>

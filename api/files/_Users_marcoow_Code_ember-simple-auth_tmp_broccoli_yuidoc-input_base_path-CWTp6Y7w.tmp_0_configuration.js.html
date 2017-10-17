@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ember-simple-auth/authenticators/torii - The Ember Simple Auth API</title>
+    <title>addon/configuration.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -58,38 +58,114 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
+          <h1 class="file-heading">File: addon/configuration.js</h1>
           
-          <h2>ember-simple-auth/authenticators/torii</h2>
-          <div class="intro"><p>Authenticator that wraps the
-          <a href="https://github.com/Vestorly/torii">Torii library</a> and thus allows to connect
-          any external authentication provider that torii defines a provider for.</p>
-          <p>In order to use this authenticator, <strong>the application needs to have the
-          <a href="https://github.com/Vestorly/torii">torii addon</a> installed and must inject
-          the torii service into the authenticator</strong>:</p>
-          <pre class="code prettyprint"><code class="language-js">// app/authenticators/torii.js
-          import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
+          <div class="file">
+              <pre class="code prettyprint linenums">
+          import Ember from &#x27;ember&#x27;;
           
-          export default ToriiAuthenticator.extend({
-            torii: Ember.inject.service()
-          });
-          </code></pre>
+          const { getWithDefault, typeOf, deprecate } = Ember;
+          
+          const DEFAULTS = {
+            baseURL:                     &#x27;&#x27;,
+            authenticationRoute:         &#x27;login&#x27;,
+            routeAfterAuthentication:    &#x27;index&#x27;,
+            routeIfAlreadyAuthenticated: &#x27;index&#x27;
+          };
+          
+          /**
+            Ember Simple Auth&#x27;s configuration object.
+          
+            To change any of these values, set them on the application&#x27;s environment
+            object, e.g.:
+          
+            &#x60;&#x60;&#x60;js
+            // config/environment.js
+            ENV[&#x27;ember-simple-auth&#x27;] = {
+              baseURL: &#x27;path/to/base/url&#x27;
+            };
+            &#x60;&#x60;&#x60;
+          
+            @class Configuration
+            @extends Object
+            @module ember-simple-auth/configuration
+            @public
+          */
+          export default {
+            /**
+              The base URL of the application as configured in &#x60;config/environment.js&#x60;.
+          
+              @property baseURL
+              @readOnly
+              @static
+              @type String
+              @default &#x27;&#x27;
+              @public
+            */
+            baseURL: DEFAULTS.baseURL,
+          
+            /**
+              The route to transition to for authentication. The
+              {{#crossLink &quot;AuthenticatedRouteMixin&quot;}}{{/crossLink}} will transition to
+              this route when a route that implements the mixin is accessed when the
+              route is not authenticated.
+          
+              @property authenticationRoute
+              @deprecated AuthenticatedRouteMixin/authenticationRoute:property
+              @readOnly
+              @static
+              @type String
+              @default &#x27;login&#x27;
+              @public
+            */
+            authenticationRoute: DEFAULTS.authenticationRoute,
+          
+            /**
+              The route to transition to after successful authentication.
+          
+              @property routeAfterAuthentication
+              @deprecated ApplicationRouteMixin/routeAfterAuthentication:property
+              @readOnly
+              @static
+              @type String
+              @default &#x27;index&#x27;
+              @public
+            */
+            routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
+          
+            /**
+              The route to transition to if a route that implements the
+              {{#crossLink &quot;UnauthenticatedRouteMixin&quot;}}{{/crossLink}} is accessed when
+              the session is authenticated.
+          
+              @property routeIfAlreadyAuthenticated
+              @deprecated UnauthenticatedRouteMixin/routeIfAlreadyAuthenticated:property
+              @readOnly
+              @static
+              @type String
+              @default &#x27;index&#x27;
+              @public
+            */
+            routeIfAlreadyAuthenticated: DEFAULTS.routeIfAlreadyAuthenticated,
+          
+            load(config) {
+              for (let property in this) {
+                if (this.hasOwnProperty(property) &amp;&amp; typeOf(this[property]) !== &#x27;function&#x27;) {
+                  if ([&#x27;authenticationRoute&#x27;, &#x27;routeAfterAuthentication&#x27;, &#x27;routeIfAlreadyAuthenticated&#x27;].indexOf(property) &gt;= 0 &amp;&amp; DEFAULTS[property] !== this[property]) {
+                    deprecate(&#x60;Ember Simple Auth: ${property} should no longer be overridden in the configuration. Instead, override the ${property} property in the route.&#x60;, false, {
+                      id: &#x60;ember-simple-auth.configuration.routes&#x60;,
+                      until: &#x27;2.0.0&#x27;
+                    });
+                  }
+          
+                  this[property] = getWithDefault(config, property, DEFAULTS[property]);
+                }
+              }
+            }
+          };
+          
+              </pre>
           </div>
-          
-          <div class="yui3-g">
-              <div class="yui3-u-1-2">
-                  <p>This module has the following classes:</p>
-                  <ul>
-                      <li><a href="../classes/ToriiAuthenticator.html">ToriiAuthenticator</a></li>
-                  </ul>
-              </div>
-              <div class="yui3-u-1-2">
-              </div>
-          </div>
-          <br><br>
-          <span class="foundat">Module description found: <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.4.0/addon/authenticators/torii.js#L6">
-            <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
-          </a>
-          </span>
         </div>
       </div>
     </div>
