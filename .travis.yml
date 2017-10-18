@@ -9,6 +9,10 @@ dist: trusty
 addons:
   chrome: stable
 
+stages:
+  - test
+  - after_success
+
 env:
   secure: IVCX1o8nMAKAKxj2cXE6a2A8xmnt3Gj72ocyjT1vhZutEJ1z7wu3Xl/r6Q0fhlaux3+ZNz/KV6Lax6NW8KgC/Wo1+B5SF2RWMLGX+exglf5zUXT3wzaOq8LcEyQ7SGfsuovHa8ij3dMM4UWjl5lE3cM1M1KjxlekniUF9nFxZd4=
   matrix:
@@ -19,33 +23,30 @@ env:
 cache:
   yarn: true
 
-jobs:
-  include:
-  - stage: Before Install
-    before_install:
-      - curl -o- -L https://yarnpkg.com/install.sh | bash
-      - export PATH=$HOME/.yarn/bin:$PATH
-      - yarn global add phantomjs-prebuilt
-      - phantomjs --version
-  - stage: Install
-    install:
-      - yarn install --no-lockfile
-  - stage: Test
-    script: npm run $SCRIPT
-  - stage: Deploy
-    deploy:
-      provider: npm
-      email: info@simplabs.com
-      api_key:
-        secure: dKp+BvoSv8vUN90m9fH2oOK/sQ12K5B5BrWjfn1m2evpc9TFZGHLlqSsAw4Cq9JmK7SgRKsuh4O2k1CO8QAXW6mMjD/NSGJfBz+grdXE20kqOlIPvj9sQ9PVpqgmTA5bZvhbhXn8ybKqgTabZZrED9eMkrSqMN5xU1oW414DNwQ=
-      on:
-        tags: true
-        repo: simplabs/ember-simple-auth
-  - stage: After Success
-    after_success:
-      - npm i -g now-pipeline
-      - now-pipeline-prune && now-pipeline --alias ember-simple-auth.now.sh
-      - cd server && now-pipeline-prune && now-pipeline --alias ember-simple-auth-server.now.sh
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH=$HOME/.yarn/bin:$PATH
+  - yarn global add phantomjs-prebuilt
+  - phantomjs --version
+
+install:
+  - yarn install --no-lockfile
+
+script: npm run $SCRIPT
+
+deploy:
+  provider: npm
+  email: info@simplabs.com
+  api_key:
+    secure: dKp+BvoSv8vUN90m9fH2oOK/sQ12K5B5BrWjfn1m2evpc9TFZGHLlqSsAw4Cq9JmK7SgRKsuh4O2k1CO8QAXW6mMjD/NSGJfBz+grdXE20kqOlIPvj9sQ9PVpqgmTA5bZvhbhXn8ybKqgTabZZrED9eMkrSqMN5xU1oW414DNwQ=
+  on:
+    tags: true
+    repo: simplabs/ember-simple-auth
+
+after_success:
+  - npm i -g now-pipeline
+  - now-pipeline-prune && now-pipeline --alias ember-simple-auth.now.sh
+  - cd server && now-pipeline-prune && now-pipeline --alias ember-simple-auth-server.now.sh
 
 notifications:
   email: false
