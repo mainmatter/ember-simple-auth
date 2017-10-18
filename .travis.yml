@@ -11,7 +11,7 @@ addons:
 
 stages:
   - test
-  - after_success
+  - deploy_demo
 
 env:
   secure: IVCX1o8nMAKAKxj2cXE6a2A8xmnt3Gj72ocyjT1vhZutEJ1z7wu3Xl/r6Q0fhlaux3+ZNz/KV6Lax6NW8KgC/Wo1+B5SF2RWMLGX+exglf5zUXT3wzaOq8LcEyQ7SGfsuovHa8ij3dMM4UWjl5lE3cM1M1KjxlekniUF9nFxZd4=
@@ -43,10 +43,10 @@ deploy:
     tags: true
     repo: simplabs/ember-simple-auth
 
-after_success:
-  - npm i -g now-pipeline
-  - now-pipeline-prune && now-pipeline --alias ember-simple-auth.now.sh
-  - cd server && now-pipeline-prune && now-pipeline --alias ember-simple-auth-server.now.sh
+jobs:
+  include:
+    - stage: deploy_demo
+      script: npm i -g now-pipeline; cd server && now-pipeline-prune && now-pipeline --alias ember-simple-auth-server.now.sh; now-pipeline-prune && now-pipeline --alias ember-simple-auth.now.sh
 
 notifications:
   email: false
