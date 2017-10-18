@@ -14,7 +14,8 @@ stages:
   - deploy_demo
 
 env:
-  secure: IVCX1o8nMAKAKxj2cXE6a2A8xmnt3Gj72ocyjT1vhZutEJ1z7wu3Xl/r6Q0fhlaux3+ZNz/KV6Lax6NW8KgC/Wo1+B5SF2RWMLGX+exglf5zUXT3wzaOq8LcEyQ7SGfsuovHa8ij3dMM4UWjl5lE3cM1M1KjxlekniUF9nFxZd4=
+  global:
+    secure: ljbB8yGsFDxC6J8z1jLe9ipSGubUkvcsFiqLaY/utfb6fr8PPFG8wGtztXATb8i8T1nCHbrgezsRaAIXBaUaUIYxmgEZRtSkBUgGKiEQ2ZvNlNIYZ4JS604BIROuGIHg3JOF1RMYBAqoc+xwy5PYP47KSTSPeWIfC+OhzJeur1NYUcxiCNHHMBboqrJKoj8ExVkI9kKjZUWVXhzVZ0PU5z263wD6M4FSXJxNZJsArGr83OZHllApt8QiSg+GRbAPICP59vxlQR/yRMp8PCh3CLId7NHPIbikoFoLQ6e7BQ1+5V3osGZ9oXhLJDFO+x2Gd4BrC5Vx1cvypBqg/pzbcBDAN42tjMG0lHoi2r0/FmIXPGis5kxLF/6GqTQ8xX0x2zpS7e+AVa/tMqEtAR1qk83aGGKW7aj70BbgOr+u3H1UfJ/l8CT7kcxssFSqWBVg/92crpaupqBwuk6xp+HonZYqlivelwtG+PSDTzFbAU1qza/lu+DKMHDm5sEVCjNUfrOuCubhOt4+vqvtR17mZIca/pBSVEi9WbMcRrBWgpiHx8/b5w4GAC3AguGTOKaOTEtilbsi37BM+nf7FhKtUXK8/zg9b6i5zTjFAQ9e/foGBJeCW0LV1JbL2zwdesok+UCFekX19HIfJ7i6OHySBG9KtVtuyJB/aDzoIY0aggg=
   matrix:
     - SCRIPT=test:all
     - SCRIPT=test:fastboot
