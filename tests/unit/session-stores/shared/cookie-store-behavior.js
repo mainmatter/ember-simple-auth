@@ -285,12 +285,11 @@ export default function(options) {
     });
 
     it('clears cached expiration times when setting expiration to null', function() {
-      let defaultName = 'ember_simple_auth-session';
       run(() => {
         store.set('cookieExpirationTime', null);
       });
 
-      expect(cookieService.clear).to.have.been.calledWith(`${defaultName}-expiration_time`);
+      expect(cookieService.clear).to.have.been.calledWith(`session-foo-expiration_time`);
     });
 
     it('only rewrites the cookie once per run loop when multiple properties are changed', function(done) {

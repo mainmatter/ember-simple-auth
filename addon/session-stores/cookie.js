@@ -122,11 +122,9 @@ export default BaseStore.extend({
   cookieExpirationTime: persistingProperty(function(key, value) {
     // When nulling expiry time on purpose, we need to clear the cached value.
     // Otherwise, `_calculateExpirationTime` will reuse it.
-    if (this.get('_cookies') && value === null) {
+    if (value === null) {
       this.get('_cookies').clear(`${this.get('cookieName')}-expiration_time`);
-    }
-
-    if (value < 90 && value !== null) {
+    } else if (value < 90) {
       this._warn('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).', false, { id: 'ember-simple-auth.cookieExpirationTime' });
     }
   }),
