@@ -1,6 +1,4 @@
 /* eslint-env node */
-/* eslint-disable no-var, object-shorthand */
-
 module.exports = {
   framework: 'mocha',
   test_page: 'tests/index.html?hidepassed',
@@ -15,11 +13,11 @@ module.exports = {
     Chrome: {
       mode: 'ci',
       args: [
-        '--headless',
-        '--window-size=1440,900',
         '--disable-gpu',
-        '--remote-debugging-port=9222'
+        '--headless',
+        '--remote-debugging-port=9222',
+        '--window-size=1440,900'
       ]
-    }
+    },
   }
 };
