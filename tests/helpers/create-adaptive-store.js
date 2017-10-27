@@ -5,6 +5,7 @@ export default function createAdaptiveStore(cookiesService, options = {}) {
   options._cookies = cookiesService;
   options._fastboot = { isFastBoot: false };
   options._isLocalStorageAvailable = false;
+  options._isFastboot = false;
 
   let cookieStore = createCookieStore(cookiesService, options);
 
