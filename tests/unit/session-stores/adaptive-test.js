@@ -12,6 +12,7 @@ import Adaptive from 'ember-simple-auth/session-stores/adaptive';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
+import createAdaptiveStore from '../../helpers/create-adaptive-store';
 
 const assign = emberAssign || merge;
 
@@ -46,14 +47,7 @@ describe('AdaptiveStore', () => {
       cookieService = FakeCookieService.create();
       sinon.spy(cookieService, 'read');
       sinon.spy(cookieService, 'write');
-      store = Adaptive.extend({
-        _createStore(storeType, options) {
-          return this._super(storeType, assign({}, options, { _isFastBoot: false }));
-        }
-      }).create({
-        _isLocalStorageAvailable: false,
-        _cookies: cookieService
-      });
+      store = createAdaptiveStore(cookieService);
     });
 
     itBehavesLikeAStore({
@@ -63,15 +57,8 @@ describe('AdaptiveStore', () => {
     });
 
     itBehavesLikeACookieStore({
-      createStore(cookieService, options = {}) {
-        options._isLocalStorageAvailable = false;
-        return Adaptive.extend({
-          _cookies: cookieService,
-          _fastboot: { isFastBoot: false },
-          _createStore(storeType, options) {
-            return this._super(storeType, assign({}, options, { _isFastBoot: false }));
-          }
-        }).create(options);
+      createStore(cookieService, options) {
+        return createAdaptiveStore(cookieService, options);
       },
       renew(store, data) {
         return store.get('_store')._renew(data);
