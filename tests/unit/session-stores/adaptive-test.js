@@ -47,7 +47,10 @@ describe('AdaptiveStore', () => {
       cookieService = FakeCookieService.create();
       sinon.spy(cookieService, 'read');
       sinon.spy(cookieService, 'write');
-      store = createAdaptiveStore(cookieService);
+      store = createAdaptiveStore(cookieService, {
+        _isLocal: false,
+        _cookies: cookieService,
+      });
     });
 
     itBehavesLikeAStore({
@@ -57,8 +60,12 @@ describe('AdaptiveStore', () => {
     });
 
     itBehavesLikeACookieStore({
-      createStore(cookieService, options) {
-        return createAdaptiveStore(cookieService, options);
+      createStore(cookieService, options = {}) {
+        options._isLocalStorageAvailable = false;
+        return createAdaptiveStore(cookieService, options, {
+          _cookies: cookieService,
+          _fastboot: { isFastBoot: false },
+        });
       },
       renew(store, data) {
         return store.get('_store')._renew(data);
