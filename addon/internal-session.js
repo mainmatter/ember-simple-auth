@@ -4,7 +4,7 @@ import ObjectProxy from '@ember/object/proxy';
 import Evented from '@ember/object/evented';
 import { merge, assign as emberAssign } from '@ember/polyfills';
 import { deprecate } from '@ember/application/deprecations';
-import { set } from '@ember/object';
+import { get, set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 const assign = emberAssign || merge;
@@ -108,9 +108,18 @@ export default ObjectProxy.extend(Evented, {
       isAuthenticated: true,
       authenticator
     });
-    set(this.content, 'authenticated', authenticatedContent);
+    const storedData = get(this.content, 'authenticated');
+    if (!storedData || trigger) {
+      // overwriting store with authenticatedContent
+      set(this.content, 'authenticated', authenticatedContent);
+    } else {
+      // merging store with authenticatedContent
+      // to preserve custom data from earlier authenticate
+      for (let key of Object.keys(authenticatedContent)) {
+        storedData[key] = authenticatedContent[key];
+      }
+    }
     this._bindToAuthenticatorEvents();
-
     return this._updateStore().then(() => {
       this.endPropertyChanges();
       if (trigger) {

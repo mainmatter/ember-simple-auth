@@ -152,6 +152,18 @@ describe('InternalSession', () => {
           });
         });
 
+        it('preserves the data from an earlier authenticate in its authenticated section', function() {
+          return store.persist({ authenticated: { authenticator: 'authenticator', fromAuthenticate: 17 } }).then(() => {
+            return session.restore().then(() => {
+              return store.restore().then((properties) => {
+                delete properties.authenticator;
+
+                expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator', fromAuthenticate: 17 });
+              });
+            });
+          });
+        });
+
         it('persists its content in the store', function() {
           return store.persist({ authenticated: { authenticator: 'authenticator' }, someOther: 'property' }).then(() => {
             return session.restore().then(() => {
