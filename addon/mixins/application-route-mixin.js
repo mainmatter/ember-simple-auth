@@ -7,8 +7,6 @@ import { inject } from '@ember/service';
 import Ember from 'ember';
 import Configuration from './../configuration';
 
-const { testing } = Ember;
-
 /**
   The mixin for the application route, __defining methods that are called when
   the session is successfully authenticated (see
@@ -139,7 +137,7 @@ export default Mixin.create({
     @public
   */
   sessionInvalidated() {
-    if (!testing) {
+    if (!Ember.testing) {
       if (this.get('_isFastBoot')) {
         this.transitionTo(Configuration.baseURL);
       } else {
