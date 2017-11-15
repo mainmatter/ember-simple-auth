@@ -13,7 +13,6 @@ import Ember from 'ember';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
 
-const { testing } = Ember;
 const assign = emberAssign || merge;
 const keys = Object.keys || emberKeys; // Ember.keys deprecated in 1.13
 
@@ -347,7 +346,7 @@ export default BaseAuthenticator.extend({
       if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now - offset) {
         run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
-        if (!testing) {
+        if (!Ember.testing) {
           this._refreshTokenTimeout = run.later(this, this._refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
         }
       }
