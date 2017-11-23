@@ -344,7 +344,7 @@ export default BaseAuthenticator.extend({
         expiresAt = new Date(now + expiresIn * 1000).getTime();
       }
       const offset = this.get('tokenRefreshOffset');
-      if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now - offset) {
+      if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now + offset) {
         run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
         if (!testing) {
