@@ -3,6 +3,7 @@ import { isEmpty, isNone } from '@ember/utils';
 import ObjectProxy from '@ember/object/proxy';
 import Evented from '@ember/object/evented';
 import { merge, assign as emberAssign } from '@ember/polyfills';
+import { run } from '@ember/runloop';
 import { deprecate } from '@ember/application/deprecations';
 import { set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
@@ -104,14 +105,21 @@ export default ObjectProxy.extend(Evented, {
   _setup(authenticator, authenticatedContent, trigger) {
     trigger = Boolean(trigger) && !this.get('isAuthenticated');
     this.beginPropertyChanges();
-    this.setProperties({
-      isAuthenticated: true,
-      authenticator
-    });
-    set(this.content, 'authenticated', authenticatedContent);
-    this._bindToAuthenticatorEvents();
-
-    return this._updateStore().then(() => {
+    const session = this;
+    return new Promise((resolve, reject) => {
+      run.schedule('sync', () => {
+        // avoid setting isAuthenticated multiple times in one render loop
+        this.setProperties({
+          isAuthenticated: true,
+          authenticator
+        });
+        set(this.content, 'authenticated', authenticatedContent);
+        this._bindToAuthenticatorEvents();
+        resolve();
+      });
+    })
+    .then(() => this._updateStore())
+    .then(() => {
       this.endPropertyChanges();
       if (trigger) {
         this.trigger('authenticationSucceeded');
