@@ -24,6 +24,10 @@
     "test:fastboot": "ember fastboot:test",
     "test:node": "mocha node-tests --recursive"
   },
+  "now": {
+    "name": "ember-simple-auth",
+    "alias": "ember-simple-auth"
+  },
   "dependencies": {
     "base-64": "^0.1.0",
     "broccoli-file-creator": "^1.1.1",
