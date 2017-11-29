@@ -67,7 +67,7 @@
     "ember-load-initializers": "^1.0.0",
     "ember-resolver": "^4.3.0",
     "ember-sinon": "~1.0.0",
-    "ember-source": "~2.16.0",
+    "ember-source": "~2.17.0",
     "eslint-config-simplabs": "^0.4.0",
     "eslint-plugin-ember": "^3.6.2",
     "eslint-plugin-mocha": "^4.11.0",
