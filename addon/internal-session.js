@@ -111,8 +111,8 @@ export default ObjectProxy.extend(Evented, {
     set(this.content, 'authenticated', authenticatedContent);
     this._bindToAuthenticatorEvents();
 
-    return this._updateStore().then(() => {
-      this.endPropertyChanges();
+    return this._updateStore()
+    .then(() => {
       if (trigger) {
         this.trigger('authenticationSucceeded');
       }
