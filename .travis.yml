@@ -41,9 +41,9 @@ deploy:
     repo: simplabs/ember-simple-auth
 
 after_deploy:
-  - npm i -g now-pipeline
-  - now-pipeline-prune && now-pipeline --alias ember-simple-auth.now.sh
-  - cd server && now-pipeline-prune && now-pipeline --alias ember-simple-auth-server.now.sh
+  - npm i -g now
+  - now deploy --token=$NOW_TOKEN --team=e-simple-auth && now alias --token=$NOW_TOKEN --team=e-simple-auth
+  - cd server && now deploy --token=$NOW_TOKEN --team=e-simple-auth && now alias --token=$NOW_TOKEN --team=e-simple-auth
 
 notifications:
   email: false
