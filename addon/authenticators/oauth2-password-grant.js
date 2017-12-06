@@ -321,7 +321,6 @@ export default BaseAuthenticator.extend({
       merge(options.headers, clientIdHeader);
     }
 
-    // let rejectWithResponse = this.get('rejectWithResponse');
     return new RSVP.Promise((resolve, reject) => {
       fetch(url, options).then((response) => {
         response.text().then((text) => {
