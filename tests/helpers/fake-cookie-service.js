@@ -1,6 +1,5 @@
-import Ember from 'ember';
-
-const { Object: EmberObject, isNone } = Ember;
+import EmberObject from '@ember/object';
+import { isNone } from '@ember/utils';
 
 export default EmberObject.extend({
   init() {

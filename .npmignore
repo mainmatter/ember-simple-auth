@@ -1,10 +1,12 @@
 /bower_components
 /config/ember-try.js
 /dist
-/tests
+/* /tests */
 /node-tests
 /tmp
 /fastboot-dist
+/fastboot-tests
+/guides
 **/.gitkeep
 .bowerrc
 .editorconfig
@@ -14,5 +16,5 @@
 .watchmanconfig
 .travis.yml
 bower.json
-ember-cli-build.js
+/* ember-cli-build.js */
 testem.js

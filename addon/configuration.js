@@ -1,6 +1,6 @@
-import Ember from 'ember';
-
-const { getWithDefault, typeOf, deprecate } = Ember;
+import { getWithDefault } from '@ember/object';
+import { typeOf } from '@ember/utils';
+import { deprecate } from '@ember/application/deprecations';
 
 const DEFAULTS = {
   baseURL:                     '',
@@ -11,16 +11,6 @@ const DEFAULTS = {
 
 /**
   Ember Simple Auth's configuration object.
-
-  To change any of these values, set them on the application's environment
-  object, e.g.:
-
-  ```js
-  // config/environment.js
-  ENV['ember-simple-auth'] = {
-    baseURL: 'path/to/base/url'
-  };
-  ```
 
   @class Configuration
   @extends Object

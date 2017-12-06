@@ -1,6 +1,7 @@
-import Ember from 'ember';
-
-const { inject: { service }, Mixin, computed, getOwner } = Ember;
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
+import { computed } from '@ember/object';
+import { getOwner } from '@ember/application';
 
 /**
   __This mixin is used in the callback route when using OAuth 2.0 Implicit

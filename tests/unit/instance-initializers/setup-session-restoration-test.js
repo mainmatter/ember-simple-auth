@@ -1,10 +1,9 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
+import RSVP from 'rsvp';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import setupSessionRestoration from 'ember-simple-auth/instance-initializers/setup-session-restoration';
-
-const { Route, RSVP } = Ember;
 
 describe('setupSessionRestoration', () => {
   let container;

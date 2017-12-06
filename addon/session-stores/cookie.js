@@ -1,20 +1,14 @@
+import RSVP from 'rsvp';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { later, cancel, scheduleOnce, next } from '@ember/runloop';
+import { isPresent, typeOf, isEmpty } from '@ember/utils';
+import { A } from '@ember/array';
+import { getOwner } from '@ember/application';
+import { warn } from '@ember/debug';
 import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
-
-const {
-  RSVP,
-  computed,
-  inject: { service },
-  run: { next, scheduleOnce, cancel, later },
-  isEmpty,
-  typeOf,
-  testing,
-  isPresent,
-  A,
-  getOwner,
-  warn,
-} = Ember;
 
 const persistingProperty = function(beforeSet = function() {}) {
   return computed({
@@ -257,7 +251,7 @@ export default BaseStore.extend({
         this._lastData = data;
         this.trigger('sessionDataUpdated', data);
       }
-      if (!testing) {
+      if (!Ember.testing) {
         cancel(this._syncDataTimeout);
         this._syncDataTimeout = later(this, this._syncData, 500);
       }
@@ -275,7 +269,7 @@ export default BaseStore.extend({
   },
 
   _renewExpiration() {
-    if (!testing) {
+    if (!Ember.testing) {
       cancel(this._renewExpirationTimeout);
       this._renewExpirationTimeout = later(this, this._renewExpiration, 60000);
     }

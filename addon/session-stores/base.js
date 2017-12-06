@@ -1,6 +1,6 @@
-import Ember from 'ember';
-
-const { RSVP, Object: EmberObject, Evented } = Ember;
+import RSVP from 'rsvp';
+import EmberObject from '@ember/object';
+import Evented from '@ember/object/evented';
 
 /**
   The base class for all session stores. __This serves as a starting point for

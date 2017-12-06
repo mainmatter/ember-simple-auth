@@ -1,10 +1,6 @@
-import Ember from 'ember';
+import { next } from '@ember/runloop';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-
-const {
-  run: { next }
-} = Ember;
 
 export default function(options) {
   let syncExternalChanges = options.syncExternalChanges || function() {};

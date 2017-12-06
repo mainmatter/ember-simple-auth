@@ -1,10 +1,8 @@
-import Ember from 'ember';
+import RSVP from 'rsvp';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Torii from 'ember-simple-auth/authenticators/torii';
-
-const { RSVP } = Ember;
 
 describe('ToriiAuthenticator', () => {
   let authenticator;
@@ -42,9 +40,9 @@ describe('ToriiAuthenticator', () => {
           sinon.stub(torii, 'fetch').returns(RSVP.resolve({ some: 'other data' }));
         });
 
-        it('returns a promise that resolves with the session data', function() {
-          return authenticator.restore({ some: 'data', provider: 'provider' }).then((data) => {
-            expect(data).to.eql({ some: 'other data', provider: 'provider' });
+        it('returns a promise that resolves with the session data merged with the data fetched from torri', function() {
+          return authenticator.restore({ some: 'data', provider: 'provider', another: 'prop' }).then((data) => {
+            expect(data).to.eql({ some: 'other data', provider: 'provider', another: 'prop' });
           });
         });
       });

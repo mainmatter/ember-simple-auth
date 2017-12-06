@@ -1,10 +1,8 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
-
-const { Object: EmberObject } = Ember;
 
 describe('DataAdapterMixin', () => {
   let adapter;
@@ -82,7 +80,7 @@ describe('DataAdapterMixin', () => {
 
       describe('when the authorizer calls the block', function() {
         beforeEach(function() {
-          sinon.stub(sessionService, 'authorize', (authorizer, block) => {
+          sinon.stub(sessionService, 'authorize').callsFake((authorizer, block) => {
             block('header', 'value');
           });
           hash.beforeSend(xhr);
@@ -150,7 +148,7 @@ describe('DataAdapterMixin', () => {
 
     describe('when the authorizer calls the block', function() {
       beforeEach(function() {
-        sinon.stub(sessionService, 'authorize', (authorizer, block) => {
+        sinon.stub(sessionService, 'authorize').callsFake((authorizer, block) => {
           block('X-Authorization-Header', 'an-auth-value');
         });
       });

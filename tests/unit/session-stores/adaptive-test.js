@@ -1,5 +1,11 @@
-import Ember from 'ember';
-import { describe, beforeEach, afterEach, it } from 'mocha';
+import { merge, assign as emberAssign } from '@ember/polyfills';
+import { run } from '@ember/runloop';
+import {
+  describe,
+  beforeEach,
+  afterEach,
+  it
+} from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Adaptive from 'ember-simple-auth/session-stores/adaptive';
@@ -7,7 +13,6 @@ import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
 
-const { assign: emberAssign, merge, run } = Ember;
 const assign = emberAssign || merge;
 
 describe('AdaptiveStore', () => {
