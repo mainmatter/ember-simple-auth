@@ -222,7 +222,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           authenticator.set('rejectWithResponse', true);
         });
 
-        it('rejects with xhr object containing responseJSON', function() {
+        it('rejects with response object containing responseJSON', function() {
           return authenticator.authenticate('username', 'password').catch((error) => {
             expect(error.responseJSON).to.eql({ error: 'invalid_grant' });
           });
@@ -253,7 +253,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           authenticator.set('rejectWithResponse', true);
         });
 
-        it('rejects with xhr object containing responseText', function() {
+        it('rejects with response object containing responseText', function() {
           return authenticator.authenticate('username', 'password').catch((error) => {
             expect(error.responseJSON).to.not.exist;
             expect(error.responseText).to.eql('The server has failed completely.');
