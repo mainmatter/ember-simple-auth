@@ -321,32 +321,21 @@ export default BaseAuthenticator.extend({
       merge(options.headers, clientIdHeader);
     }
 
-    let rejectWithResponse = this.get('rejectWithResponse');
+    // let rejectWithResponse = this.get('rejectWithResponse');
     return new RSVP.Promise((resolve, reject) => {
       fetch(url, options).then((response) => {
         response.text().then((text) => {
-          let json;
-          if (rejectWithResponse && !response.ok) {
-            try {
-              json = JSON.parse(text);
+          try {
+            let json = JSON.parse(text);
+            if (!response.ok) {
               response.responseJSON = json;
-            } catch (SyntaxError) {
-              response.responseText = text;
-            }
-            reject(response);
-          } else {
-            try {
-              json = JSON.parse(text);
-              if (!response.ok) {
-                response.responseJSON = json;
-                reject(response);
-              } else {
-                resolve(json);
-              }
-            } catch (SyntaxError) {
-              response.responseText = text;
               reject(response);
+            } else {
+              resolve(json);
             }
+          } catch (SyntaxError) {
+            response.responseText = text;
+            reject(response);
           }
         });
       }).catch(reject);
