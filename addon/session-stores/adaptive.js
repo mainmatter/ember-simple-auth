@@ -1,6 +1,5 @@
 /* global localStorage */
 import { computed } from '@ember/object';
-
 import { inject as service } from '@ember/service';
 import { getOwner } from '@ember/application';
 import Base from 'ember-simple-auth/session-stores/base';
@@ -142,7 +141,8 @@ export default Base.extend({
   },
 
   _createStore(storeType, options) {
-    const store = storeType.create(options);
+    let owner = getOwner(this);
+    const store = storeType.create(owner.ownerInjection(), options);
 
     store.on('sessionDataUpdated', (data) => {
       this.trigger('sessionDataUpdated', data);
