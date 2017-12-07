@@ -246,7 +246,7 @@ export default BaseAuthenticator.extend({
           resolve(response);
         });
       }, (response) => {
-        run(null, reject, useResponse ? response : response.responseJSON);
+        run(null, reject, useResponse ? response : (response.responseJSON || response.responseText));
       });
     });
   },
@@ -320,15 +320,21 @@ export default BaseAuthenticator.extend({
     if (!isEmpty(clientIdHeader)) {
       merge(options.headers, clientIdHeader);
     }
+
     return new RSVP.Promise((resolve, reject) => {
       fetch(url, options).then((response) => {
         response.text().then((text) => {
-          let json = text ? JSON.parse(text) : {};
-          if (!response.ok) {
-            response.responseJSON = json;
+          try {
+            let json = JSON.parse(text);
+            if (!response.ok) {
+              response.responseJSON = json;
+              reject(response);
+            } else {
+              resolve(json);
+            }
+          } catch (SyntaxError) {
+            response.responseText = text;
             reject(response);
-          } else {
-            resolve(json);
           }
         });
       }).catch(reject);
