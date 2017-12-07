@@ -2,88 +2,15 @@
 # yarn lockfile v1
 
 
-"@glimmer/compiler@^0.25.3":
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/@glimmer/compiler/-/compiler-0.25.3.tgz#25eb06394f3ba1c1fae5af25c9cf7deb2c11ef4e"
-  dependencies:
-    "@glimmer/interfaces" "^0.25.3"
-    "@glimmer/syntax" "^0.25.3"
-    "@glimmer/util" "^0.25.3"
-    "@glimmer/wire-format" "^0.25.3"
-    simple-html-tokenizer "^0.3.0"
-
 "@glimmer/di@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@glimmer/di/-/di-0.2.0.tgz#73bfd4a6ee4148a80bf092e8a5d29bcac9d4ce7e"
-
-"@glimmer/interfaces@^0.25.3":
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/@glimmer/interfaces/-/interfaces-0.25.3.tgz#8c460b28ad5a17eaa1712e6aa7b8ebb49738c38f"
-  dependencies:
-    "@glimmer/wire-format" "^0.25.3"
-
-"@glimmer/node@^0.25.3":
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/@glimmer/node/-/node-0.25.3.tgz#301828e8455be141d5384b01980ed9be02984059"
-  dependencies:
-    "@glimmer/runtime" "^0.25.3"
-    simple-dom "^0.3.0"
-
-"@glimmer/object-reference@^0.25.3":
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/@glimmer/object-reference/-/object-reference-0.25.3.tgz#e0d1fa874f912e7d1232d487fcd2096e6b31b620"
-  dependencies:
-    "@glimmer/reference" "^0.25.3"
-    "@glimmer/util" "^0.25.3"
-
-"@glimmer/object@^0.25.3":
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/@glimmer/object/-/object-0.25.3.tgz#451eb208dadba1ede9c0c038a90dfe32637493fe"
-  dependencies:
-    "@glimmer/object-reference" "^0.25.3"
-    "@glimmer/util" "^0.25.3"
-
-"@glimmer/reference@^0.25.3":
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/@glimmer/reference/-/reference-0.25.3.tgz#a09ddc397bee0223de73ea5044a304a30935104f"
-  dependencies:
-    "@glimmer/util" "^0.25.3"
 
 "@glimmer/resolver@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@glimmer/resolver/-/resolver-0.4.1.tgz#cd9644572c556e7e799de1cf8eff2b999cf5b878"
   dependencies:
     "@glimmer/di" "^0.2.0"
-
-"@glimmer/runtime@^0.25.3":
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/@glimmer/runtime/-/runtime-0.25.3.tgz#ae2101a1e4de3330d08f20806c18327dbfa86d78"
-  dependencies:
-    "@glimmer/interfaces" "^0.25.3"
-    "@glimmer/object" "^0.25.3"
-    "@glimmer/object-reference" "^0.25.3"
-    "@glimmer/reference" "^0.25.3"
-    "@glimmer/util" "^0.25.3"
-    "@glimmer/wire-format" "^0.25.3"
-
-"@glimmer/syntax@^0.25.3":
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/@glimmer/syntax/-/syntax-0.25.3.tgz#b3f8a59bee616fd600301d778de3b649bf77036e"
-  dependencies:
-    "@glimmer/interfaces" "^0.25.3"
-    "@glimmer/util" "^0.25.3"
-    handlebars "^4.0.6"
-    simple-html-tokenizer "^0.3.0"
-
-"@glimmer/util@^0.25.3":
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/@glimmer/util/-/util-0.25.3.tgz#7cedf72947137b519658c8be34d0d5965cebe3a1"
-
-"@glimmer/wire-format@^0.25.3":
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/@glimmer/wire-format/-/wire-format-0.25.3.tgz#046692b3a26a30a498712266cd0bdb47d7710f37"
-  dependencies:
-    "@glimmer/util" "^0.25.3"
 
 abab@^1.0.3:
   version "1.0.3"
@@ -2808,7 +2735,7 @@ ember-cli-valid-component-name@^1.0.0:
   dependencies:
     silent-error "^1.0.0"
 
-ember-cli-version-checker@1.3.1, ember-cli-version-checker@^1.0.2, ember-cli-version-checker@^1.1.4, ember-cli-version-checker@^1.1.6, ember-cli-version-checker@^1.1.7, ember-cli-version-checker@^1.2.0, ember-cli-version-checker@^1.3.1:
+ember-cli-version-checker@1.3.1, ember-cli-version-checker@^1.0.2, ember-cli-version-checker@^1.1.4, ember-cli-version-checker@^1.1.6, ember-cli-version-checker@^1.1.7, ember-cli-version-checker@^1.2.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/ember-cli-version-checker/-/ember-cli-version-checker-1.3.1.tgz#0bc2d134c830142da64bf9627a0eded10b61ae72"
   dependencies:
@@ -2821,9 +2748,16 @@ ember-cli-version-checker@^2.0.0:
     resolve "^1.3.3"
     semver "^5.3.0"
 
-ember-cli@2.16.2:
-  version "2.16.2"
-  resolved "https://registry.yarnpkg.com/ember-cli/-/ember-cli-2.16.2.tgz#53b922073a8e6f34255a6e0dcb1794a91ba3e1b7"
+ember-cli-version-checker@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-version-checker/-/ember-cli-version-checker-2.1.0.tgz#fc79a56032f3717cf844ada7cbdec1a06fedb604"
+  dependencies:
+    resolve "^1.3.3"
+    semver "^5.3.0"
+
+ember-cli@2.17.0:
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/ember-cli/-/ember-cli-2.17.0.tgz#4f8b1890724e54e780242ff4d05b498e367e3461"
   dependencies:
     amd-name-resolver "1.0.0"
     babel-plugin-transform-es2015-modules-amd "^6.24.0"
@@ -2895,7 +2829,7 @@ ember-cli@2.16.2:
     promise-map-series "^0.2.1"
     quick-temp "^0.1.8"
     resolve "^1.3.0"
-    rsvp "^3.6.0"
+    rsvp "^4.7.0"
     sane "^1.6.0"
     semver "^5.1.1"
     silent-error "^1.0.0"
@@ -3063,14 +2997,10 @@ ember-sinon@~1.0.0:
     ember-cli-babel "^6.3.0"
     sinon "^3.2.1"
 
-ember-source@~2.16.0:
-  version "2.16.0"
-  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-2.16.0.tgz#2becd7966278fe453046b91178ede665c2cf241a"
+ember-source@~2.17.0:
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-2.17.0.tgz#b78871dd49bd8d642b80176df4faf7fd7d059dac"
   dependencies:
-    "@glimmer/compiler" "^0.25.3"
-    "@glimmer/node" "^0.25.3"
-    "@glimmer/reference" "^0.25.3"
-    "@glimmer/runtime" "^0.25.3"
     broccoli-funnel "^1.2.0"
     broccoli-merge-trees "^2.0.0"
     ember-cli-get-component-path-option "^1.0.0"
@@ -3080,14 +3010,12 @@ ember-source@~2.16.0:
     ember-cli-string-utils "^1.1.0"
     ember-cli-test-info "^1.0.0"
     ember-cli-valid-component-name "^1.0.0"
-    ember-cli-version-checker "^1.3.1"
+    ember-cli-version-checker "^2.1.0"
     ember-router-generator "^1.2.3"
+    fs-extra "^4.0.1"
     inflection "^1.12.0"
     jquery "^3.2.1"
     resolve "^1.3.3"
-    rsvp "^3.6.1"
-    simple-dom "^0.3.0"
-    simple-html-tokenizer "^0.4.1"
 
 ember-test-helpers@^0.6.3:
   version "0.6.3"
@@ -3862,6 +3790,14 @@ fs-extra@^4.0.0:
     jsonfile "^4.0.0"
     universalify "^0.1.0"
 
+fs-extra@^4.0.1:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-4.0.3.tgz#0d852122e5bc5beb453fb028e9c0c9bf36340c94"
+  dependencies:
+    graceful-fs "^4.1.2"
+    jsonfile "^4.0.0"
+    universalify "^0.1.0"
+
 fs-promise@^2.0.0, fs-promise@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/fs-promise/-/fs-promise-2.0.3.tgz#f64e4f854bcf689aa8bddcba268916db3db46854"
@@ -4071,7 +4007,7 @@ growly@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
 
-handlebars@^4.0.4, handlebars@^4.0.6, handlebars@~4.0.10:
+handlebars@^4.0.4, handlebars@~4.0.10:
   version "4.0.10"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.0.10.tgz#3d30c718b09a3d96f23ea4cc1f403c4d3ba9ff4f"
   dependencies:
@@ -6151,9 +6087,9 @@ rsvp@^3.0.6, rsvp@~3.0.6:
   version "3.0.21"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-3.0.21.tgz#49c588fe18ef293bcd0ab9f4e6756e6ac433359f"
 
-rsvp@^3.6.0, rsvp@^3.6.1:
-  version "3.6.2"
-  resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-3.6.2.tgz#2e96491599a96cde1b515d5674a8f7a91452926a"
+rsvp@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.7.0.tgz#dc1b0b1a536f7dec9d2be45e0a12ad4197c9fd96"
 
 rsvp@~3.2.1:
   version "3.2.1"
@@ -6301,10 +6237,6 @@ silent-error@^1.0.0, silent-error@^1.0.1, silent-error@^1.1.0:
   dependencies:
     debug "^2.2.0"
 
-simple-dom@^0.3.0:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/simple-dom/-/simple-dom-0.3.2.tgz#0663d10f1556f1500551d518f56e3aba0871371d"
-
 simple-dom@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/simple-dom/-/simple-dom-1.0.0.tgz#6349e429d7eeb665a4f67ab1c93a95a66e3d53c9"
@@ -6312,14 +6244,6 @@ simple-dom@^1.0.0:
 simple-fmt@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/simple-fmt/-/simple-fmt-0.1.0.tgz#191bf566a59e6530482cb25ab53b4a8dc85c3a6b"
-
-simple-html-tokenizer@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/simple-html-tokenizer/-/simple-html-tokenizer-0.3.0.tgz#9b8b5559d80e331a544dd13dd59382e5d0d94411"
-
-simple-html-tokenizer@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/simple-html-tokenizer/-/simple-html-tokenizer-0.4.1.tgz#028988bb7fe8b2e6645676d82052587d440b02d3"
 
 simple-is@~0.2.0:
   version "0.2.0"
@@ -6823,11 +6747,11 @@ to-iso-string@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/to-iso-string/-/to-iso-string-0.0.2.tgz#4dc19e664dfccbe25bd8db508b00c6da158255d1"
 
-torii@~0.9.5:
-  version "0.9.5"
-  resolved "https://registry.yarnpkg.com/torii/-/torii-0.9.5.tgz#1445a4448204780c12e713d1d2bb706187a6d1a6"
+torii@^0.9.6:
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/torii/-/torii-0.9.6.tgz#311e79c5e80979e337754dfda7fd80e35a6347e0"
   dependencies:
-    ember-cli-babel "^6.0.0"
+    ember-cli-babel "^6.3.0"
 
 tough-cookie@>=0.12.0, tough-cookie@^2.3.2, tough-cookie@~2.3.0:
   version "2.3.2"
