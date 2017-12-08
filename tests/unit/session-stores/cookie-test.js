@@ -1,15 +1,9 @@
 import { describe, beforeEach } from 'mocha';
 import sinon from 'sinon';
-import Cookie from 'ember-simple-auth/session-stores/cookie';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
-
-function createCookieStore(cookiesService, options = {}) {
-  options._cookies = cookiesService;
-  options._fastboot = { isFastBoot: false };
-  return Cookie.create(options);
-}
+import createCookieStore from '../../helpers/create-cookie-store';
 
 describe('CookieStore', () => {
   let store;

@@ -1,4 +1,3 @@
-import { merge, assign as emberAssign } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 import {
   describe,
@@ -9,11 +8,11 @@ import {
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Adaptive from 'ember-simple-auth/session-stores/adaptive';
+import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
-
-const assign = emberAssign || merge;
+import createAdaptiveStore from '../../helpers/create-adaptive-store';
 
 describe('AdaptiveStore', () => {
   let store;
@@ -26,7 +25,7 @@ describe('AdaptiveStore', () => {
     beforeEach(function() {
       store = Adaptive.extend({
         _createStore(storeType, options) {
-          return this._super(storeType, assign(options, { _isFastBoot: false }));
+          return LocalStorage.create({ _isFastBoot: false }, options);
         }
       }).create({
         _isLocalStorageAvailable: true
@@ -46,13 +45,9 @@ describe('AdaptiveStore', () => {
       cookieService = FakeCookieService.create();
       sinon.spy(cookieService, 'read');
       sinon.spy(cookieService, 'write');
-      store = Adaptive.extend({
-        _createStore(storeType, options) {
-          return this._super(storeType, assign({}, options, { _isFastBoot: false }));
-        }
-      }).create({
-        _isLocalStorageAvailable: false,
-        _cookies: cookieService
+      store = createAdaptiveStore(cookieService, {
+        _isLocal: false,
+        _cookies: cookieService,
       });
     });
 
@@ -65,13 +60,10 @@ describe('AdaptiveStore', () => {
     itBehavesLikeACookieStore({
       createStore(cookieService, options = {}) {
         options._isLocalStorageAvailable = false;
-        return Adaptive.extend({
+        return createAdaptiveStore(cookieService, options, {
           _cookies: cookieService,
           _fastboot: { isFastBoot: false },
-          _createStore(storeType, options) {
-            return this._super(storeType, assign({}, options, { _isFastBoot: false }));
-          }
-        }).create(options);
+        });
       },
       renew(store, data) {
         return store.get('_store')._renew(data);

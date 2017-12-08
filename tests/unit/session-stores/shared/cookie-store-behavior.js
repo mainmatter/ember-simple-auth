@@ -284,6 +284,14 @@ export default function(options) {
       );
     });
 
+    it('clears cached expiration times when setting expiration to null', function() {
+      run(() => {
+        store.set('cookieExpirationTime', null);
+      });
+
+      expect(cookieService.clear).to.have.been.calledWith(`session-foo-expiration_time`);
+    });
+
     it('only rewrites the cookie once per run loop when multiple properties are changed', function(done) {
       run(() => {
         store.set('cookieName', 'session-bar');

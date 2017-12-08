@@ -2,7 +2,7 @@ import RSVP from 'rsvp';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { later, cancel, scheduleOnce, next } from '@ember/runloop';
-import { isPresent, typeOf, isEmpty } from '@ember/utils';
+import { isPresent, typeOf, isEmpty, isNone } from '@ember/utils';
 import { A } from '@ember/array';
 import { getOwner } from '@ember/application';
 import { warn } from '@ember/debug';
@@ -120,7 +120,11 @@ export default BaseStore.extend({
   */
   _cookieExpirationTime: null,
   cookieExpirationTime: persistingProperty(function(key, value) {
-    if (value < 90) {
+    // When nulling expiry time on purpose, we need to clear the cached value.
+    // Otherwise, `_calculateExpirationTime` will reuse it.
+    if (isNone(value)) {
+      this.get('_cookies').clear(`${this.get('cookieName')}-expiration_time`);
+    } else if (value < 90) {
       this._warn('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).', false, { id: 'ember-simple-auth.cookieExpirationTime' });
     }
   }),
