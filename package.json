@@ -49,7 +49,7 @@
     "cors": "^2.8.4",
     "ember-ajax": "^3.0.0",
     "ember-bootstrap": "^1.0.0-beta.2",
-    "ember-cli": "2.17.0",
+    "ember-cli": "2.17.1",
     "ember-cli-blueprint-test-helpers": "^0.18.0",
     "ember-cli-chai": "^0.4.2",
     "ember-cli-content-security-policy": "~1.0.0",
