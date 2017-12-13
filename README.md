@@ -272,8 +272,16 @@ Router.map(function() {
 }
 ```
 
-The route to transition to if the session is not authenticated can also be
-[configured](#configuration) to be another one than `login`.
+The route to transition to if the session is not authenticated should be set in the 
+route like: 
+
+```
+// app/route/fun-place.js
+export default Route.extend(AuthenticatedRouteMixin, {
+  authenticationRoute: 'some-route-other-then-login'
+});
+```
+if you want it to be other then the default => `login`.
 
 To prevent a route from being accessed when the session is authenticated (which
 makes sense for login and registration routes for example), mix the
