@@ -283,6 +283,20 @@ export default Route.extend(AuthenticatedRouteMixin, {
 ```
 if you want it to be other than the default `login`.
 
+You could also make your own mixin extending `AuthenticatedRouteMixin` and use that instead like:
+```js
+// app/mixin/routes/my-authenicated-route-mixin.js
+export default Mixin.create(AuthenticatedRouteMixin, {
+  authenticationRoute: 'sign-in'
+});
+
+// app/route/fun-place.js
+import MyAuthenticatedRouteMixin from '../mixins/routes/my-authenticated-route-mixin';
+export default Route.extend(MyAuthenticatedRouteMixin, {
+  authenticationRoute: 'some-route-other-than-login'
+});
+```
+
 To prevent a route from being accessed when the session is authenticated (which
 makes sense for login and registration routes for example), mix the
 [`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/UnauthenticatedRouteMixin.html)
