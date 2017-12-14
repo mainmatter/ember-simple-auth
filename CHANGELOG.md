@@ -1,3 +1,18 @@
+# 1.4.1
+
+* The `fastboot-app-server` dependency has been removed, see #1446.
+* The `torii` authenticator will no longer override the session data with the
+  data returned from the torii provider when restoring the session, see #1310.
+* `Ember.testing` is no longer destructured which could cause problems with
+  recent `ember-qunit`/`ember-cli-qunit`/`ember-test-helpers` versions, see
+  #1477.
+* The `fastboot-tests` and `guides` directories are no longer distributed with
+  the npm package, see #1470.
+* The OAuth 2.0 authenticator will now reject correctly for responses with an
+  invalid (non-JSON) response body, see #1487, #1442.
+* The cookie that stores the session cookie's expiration time is now cleared
+  when that time is set to `null`, see #1463.
+
 # 1.4.0
 
 * A new session store has been added that is based on `sessionStorage`, see
