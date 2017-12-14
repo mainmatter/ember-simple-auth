@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "The Ember Simple Auth API",
-        "version": "1.4.0"
+        "version": "1.4.1"
     },
     "files": {
         "addon/authenticators/base.js": {
@@ -262,7 +262,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/authenticators/devise.js",
-            "line": 10,
+            "line": 13,
             "description": "Authenticator that works with the Ruby gem\n[devise](https://github.com/plataformatec/devise).\n\n__As token authentication is not actually part of devise anymore, the server\nneeds to implement some customizations__ to work with this authenticator -\nsee [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6)."
         },
         "ember-simple-auth/authenticators/oauth2-implicit-grant": {
@@ -276,7 +276,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/authenticators/oauth2-implicit-grant.js",
-            "line": 9,
+            "line": 5,
             "description": "Authenticator that conforms to OAuth 2\n([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _\"Implicit\nGrant Type\"_.\n\nUse {{#crossLink \"OAuth2ImplicitGrantCallbackMixin\"}}{{/crossLink}} in your\nOAuth 2.0 redirect route to parse authentication parameters from location\nhash string into an object."
         },
         "ember-simple-auth/authenticators/oauth2-password-grant": {
@@ -290,7 +290,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 21,
+            "line": 19,
             "description": "Authenticator that conforms to OAuth 2\n([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _\"Resource\nOwner Password Credentials Grant Type\"_.\n\nThis authenticator also automatically refreshes access tokens (see\n[RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)) if the\nserver supports it."
         },
         "ember-simple-auth/authenticators/torii": {
@@ -304,7 +304,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/authenticators/torii.js",
-            "line": 6,
+            "line": 7,
             "description": "Authenticator that wraps the\n[Torii library](https://github.com/Vestorly/torii) and thus allows to connect\nany external authentication provider that torii defines a provider for.\n\nIn order to use this authenticator, __the application needs to have the\n[torii addon](https://github.com/Vestorly/torii) installed and must inject\nthe torii service into the authenticator__:\n\n```js\n// app/authenticators/torii.js\nimport ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';\n\nexport default ToriiAuthenticator.extend({\n  torii: Ember.inject.service()\n});\n```"
         },
         "ember-simple-auth/authorizers/base": {
@@ -318,7 +318,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/authorizers/base.js",
-            "line": 5,
+            "line": 3,
             "description": "The base class for all authorizers. __This serves as a starting point for\nimplementing custom authorizers and must not be used directly.__\n\nAuthorizers use the session data acquired by an authenticator when\nauthenticating the session to construct authorization data that can, e.g., be\ninjected into outgoing network requests. Depending on the authorization\nmechanism the authorizer implements, that authorization data might be an HTTP\nheader, query string parameters, a cookie, etc.\n\n__The authorizer has to fit the authenticator__ (see\n{{#crossLink \"BaseAuthenticator\"}}{{/crossLink}})\nas it can only use data that the authenticator acquires when authenticating\nthe session."
         },
         "ember-simple-auth/authorizers/devise": {
@@ -332,7 +332,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/authorizers/devise.js",
-            "line": 6,
+            "line": 4,
             "description": "Authorizer that works with the Ruby gem\n[devise](https://github.com/plataformatec/devise); includes the user's token\nand identification from the session data in the `Authorization` HTTP header,\ne.g.,\n\n```\nAuthorization: token=\"234rtgjneroigne4\" email=\"user@domain.tld\"\n```\n\n__As token authentication is not actually part of devise anymore, the server\nneeds to implement some customizations__ to work with this authenticator -\nsee [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6)."
         },
         "ember-simple-auth/authorizers/oauth2-bearer": {
@@ -346,7 +346,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/authorizers/oauth2-bearer.js",
-            "line": 6,
+            "line": 4,
             "description": "Authorizer that conforms to OAuth 2\n([RFC 6749](http://tools.ietf.org/html/rfc6749)); includes the access token\nfrom the session data as a bearer token\n([RFC 6750](http://tools.ietf.org/html/rfc6750)) in the `Authorization`\nheader, e.g.:\n\n```\nAuthorization: Bearer 234rtgjneroigne4\n```"
         },
         "ember-simple-auth/mixins/application-route-mixin": {
@@ -360,7 +360,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/mixins/application-route-mixin.js",
-            "line": 6,
+            "line": 10,
             "description": "The mixin for the application route, __defining methods that are called when\nthe session is successfully authenticated (see\n{{#crossLink \"SessionService/authenticationSucceeded:event\"}}{{/crossLink}})\nor invalidated__ (see\n{{#crossLink \"SessionService/invalidationSucceeded:event\"}}{{/crossLink}}).\n\n__Using this mixin is optional.__ The session events can also be handled\nmanually, e.g. in an instance initializer:\n\n```js\n// app/instance-initializers/session-events.js\nexport function initialize(instance) {\n  const applicationRoute = instance.container.lookup('route:application');\n  const session          = instance.container.lookup('service:session');\n  session.on('authenticationSucceeded', function() {\n    applicationRoute.transitionTo('index');\n  });\n  session.on('invalidationSucceeded', function() {\n    applicationRoute.transitionTo('bye');\n  });\n};\n\nexport default {\n  initialize,\n  name:  'session-events',\n  after: 'ember-simple-auth'\n};\n```\n\n__When using the `ApplicationRouteMixin` you need to specify\n`needs: ['service:session']` in the application route's unit test.__"
         },
         "ember-simple-auth/mixins/authenticated-route-mixin": {
@@ -374,7 +374,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/mixins/authenticated-route-mixin.js",
-            "line": 6,
+            "line": 8,
             "description": "__This mixin is used to make routes accessible only if the session is\nauthenticated.__ It defines a `beforeModel` method that aborts the current\ntransition and instead transitions to the\n{{#crossLink \"Configuration/authenticationRoute:property\"}}{{/crossLink}} if\nthe session is not authenticated.\n\n```js\n// app/routes/protected.js\nimport AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';\n\nexport default Ember.Route.extend(AuthenticatedRouteMixin);\n```"
         },
         "ember-simple-auth/mixins/data-adapter-mixin": {
@@ -388,7 +388,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/mixins/data-adapter-mixin.js",
-            "line": 5,
+            "line": 6,
             "description": "__This mixin can be used to make Ember Data adapters authorize all outgoing\nAPI requests by injecting a header.__ It works with all authorizers that call\nthe authorization callback (see\n{{#crossLink \"BaseAuthorizer/authorize:method\"}}{{/crossLink}}) with header\nname and header content arguments.\n\n__The `DataAdapterMixin` will also invalidate the session whenever it\nreceives a 401 response for an API request.__\n\n```js\n// app/adapters/application.js\nimport DS from 'ember-data';\nimport DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';\n\nexport default DS.JSONAPIAdapter.extend(DataAdapterMixin, {\n  authorizer: 'authorizer:application'\n});\n```\n\n__The `DataAdapterMixin` requires Ember Data 1.13 or later.__"
         },
         "ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin": {
@@ -402,7 +402,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 5,
+            "line": 6,
             "description": "__This mixin is used in the callback route when using OAuth 2.0 Implicit\nGrant authentication.__ It implements the\n{{#crossLink \"OAuth2ImplicitGrantCallbackMixin/activate:method\"}}{{/crossLink}}\nmethod that retrieves and processes authentication parameters, such as\n`access_token`, from the hash parameters provided in the callback URL by\nthe authentication server. The parameters are then passed to the\n{{#crossLink \"OAuth2ImplicitGrantAuthenticator\"}}{{/crossLink}}"
         },
         "ember-simple-auth/mixins/unauthenticated-route-mixin": {
@@ -416,7 +416,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/mixins/unauthenticated-route-mixin.js",
-            "line": 6,
+            "line": 8,
             "description": "__This mixin is used to make routes accessible only if the session is\nnot authenticated__ (e.g., login and registration routes). It defines a\n`beforeModel` method that aborts the current transition and instead\ntransitions to the\n{{#crossLink \"Configuration/routeIfAlreadyAuthenticated:property\"}}{{/crossLink}}\nif the session is authenticated.\n\n```js\n// app/routes/login.js\nimport UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';\n\nexport default Ember.Route.extend(UnauthenticatedRouteMixin);\n```"
         },
         "ember-simple-auth/services/session": {
@@ -430,7 +430,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/services/session.js",
-            "line": 7,
+            "line": 11,
             "description": "__The session service provides access to the current session as well as\nmethods to authenticate it, invalidate it, etc.__ It is the main interface for\nthe application to Ember Simple Auth's functionality. It can be injected via\n\n```js\n// app/components/login-form.js\nimport Ember from 'ember';\n\nexport default Ember.Component.extend({\n  session: Ember.inject.service('session')\n});\n```"
         },
         "ember-simple-auth/session-stores/adaptive": {
@@ -472,7 +472,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/session-stores/cookie.js",
-            "line": 33,
+            "line": 27,
             "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: false,\n\n  _rememberMeChanged: Ember.observer('rememberMe', function() {\n    const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;\n    this.set('session.store.cookieExpirationTime', expirationTime);\n  }\n});\n```\n\n__Applications that use FastBoot must use this session store by defining the\napplication session store like this:__\n\n```js\n// app/session-stores/application.js\nimport CookieStore from 'ember-simple-auth/session-stores/cookie';\n\nexport default CookieStore.extend();\n```"
         },
         "ember-simple-auth/session-stores/ephemeral": {
@@ -486,7 +486,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/session-stores/ephemeral.js",
-            "line": 6,
+            "line": 4,
             "description": "Session store that __persists data in memory and thus is not actually\npersistent__. It does also not synchronize the session's state across\nmultiple tabs or windows as those cannot share memory. __This store is mainly\nuseful for testing and will automatically be used when running tests.__"
         },
         "ember-simple-auth/session-stores/local-storage": {
@@ -500,7 +500,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/session-stores/local-storage.js",
-            "line": 8,
+            "line": 10,
             "description": "Session store that persists data in the browser's `localStorage`.\n\n__`localStorage` is not available in Safari when running in private mode. In\ngeneral it is better to use the\n{{#crossLink \"AdaptiveStore\"}}{{/crossLink}} that automatically falls back to\nthe {{#crossLink \"CookieStore\"}}{{/crossLink}} when `localStorage` is not\navailable.__\n\n__This session store does not work with FastBoot. In order to use Ember\nSimple Auth with FastBoot, configure the\n{{#crossLink \"CookieStore\"}}{{/crossLink}} as the application's session\nstore.__"
         },
         "ember-simple-auth/session-stores/session-storage": {
@@ -514,7 +514,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/session-stores/session-storage.js",
-            "line": 8,
+            "line": 10,
             "description": "Session store that persists data in the browser's `sessionStorage`.\n\n__`sessionStorage` is not available in Safari when running in private mode.__\n\n__This session store does not work with FastBoot. In order to use Ember\nSimple Auth with FastBoot, configure the\n{{#crossLink \"CookieStore\"}}{{/crossLink}} as the application's session\nstore.__"
         },
         "ember-simple-auth/configuration": {
@@ -529,7 +529,7 @@
             "tag": "module",
             "file": "addon/configuration.js",
             "line": 12,
-            "description": "Ember Simple Auth's configuration object.\n\nTo change any of these values, set them on the application's environment\nobject, e.g.:\n\n```js\n// config/environment.js\nENV['ember-simple-auth'] = {\n  baseURL: 'path/to/base/url'\n};\n```"
+            "description": "Ember Simple Auth's configuration object."
         }
     },
     "classes": {
@@ -563,7 +563,7 @@
             "module": "ember-simple-auth/authenticators/devise",
             "namespace": "",
             "file": "addon/authenticators/devise.js",
-            "line": 10,
+            "line": 13,
             "description": "Authenticator that works with the Ruby gem\n[devise](https://github.com/plataformatec/devise).\n\n__As token authentication is not actually part of devise anymore, the server\nneeds to implement some customizations__ to work with this authenticator -\nsee [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).",
             "extends": "BaseAuthenticator",
             "access": "public",
@@ -580,7 +580,7 @@
             "module": "ember-simple-auth/authenticators/oauth2-implicit-grant",
             "namespace": "",
             "file": "addon/authenticators/oauth2-implicit-grant.js",
-            "line": 9,
+            "line": 5,
             "description": "Authenticator that conforms to OAuth 2\n([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _\"Implicit\nGrant Type\"_.\n\nUse {{#crossLink \"OAuth2ImplicitGrantCallbackMixin\"}}{{/crossLink}} in your\nOAuth 2.0 redirect route to parse authentication parameters from location\nhash string into an object.",
             "extends": "BaseAuthenticator",
             "access": "public",
@@ -597,7 +597,7 @@
             "module": "ember-simple-auth/authenticators/oauth2-password-grant",
             "namespace": "",
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 21,
+            "line": 19,
             "description": "Authenticator that conforms to OAuth 2\n([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _\"Resource\nOwner Password Credentials Grant Type\"_.\n\nThis authenticator also automatically refreshes access tokens (see\n[RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)) if the\nserver supports it.",
             "extends": "BaseAuthenticator",
             "access": "public",
@@ -614,7 +614,7 @@
             "module": "ember-simple-auth/authenticators/torii",
             "namespace": "",
             "file": "addon/authenticators/torii.js",
-            "line": 6,
+            "line": 7,
             "description": "Authenticator that wraps the\n[Torii library](https://github.com/Vestorly/torii) and thus allows to connect\nany external authentication provider that torii defines a provider for.\n\nIn order to use this authenticator, __the application needs to have the\n[torii addon](https://github.com/Vestorly/torii) installed and must inject\nthe torii service into the authenticator__:\n\n```js\n// app/authenticators/torii.js\nimport ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';\n\nexport default ToriiAuthenticator.extend({\n  torii: Ember.inject.service()\n});\n```",
             "extends": "BaseAuthenticator",
             "access": "public",
@@ -631,7 +631,7 @@
             "module": "ember-simple-auth/authorizers/base",
             "namespace": "",
             "file": "addon/authorizers/base.js",
-            "line": 5,
+            "line": 3,
             "description": "The base class for all authorizers. __This serves as a starting point for\nimplementing custom authorizers and must not be used directly.__\n\nAuthorizers use the session data acquired by an authenticator when\nauthenticating the session to construct authorization data that can, e.g., be\ninjected into outgoing network requests. Depending on the authorization\nmechanism the authorizer implements, that authorization data might be an HTTP\nheader, query string parameters, a cookie, etc.\n\n__The authorizer has to fit the authenticator__ (see\n{{#crossLink \"BaseAuthenticator\"}}{{/crossLink}})\nas it can only use data that the authenticator acquires when authenticating\nthe session.",
             "extends": "Ember.Object",
             "access": "public",
@@ -648,7 +648,7 @@
             "module": "ember-simple-auth/authorizers/devise",
             "namespace": "",
             "file": "addon/authorizers/devise.js",
-            "line": 6,
+            "line": 4,
             "description": "Authorizer that works with the Ruby gem\n[devise](https://github.com/plataformatec/devise); includes the user's token\nand identification from the session data in the `Authorization` HTTP header,\ne.g.,\n\n```\nAuthorization: token=\"234rtgjneroigne4\" email=\"user@domain.tld\"\n```\n\n__As token authentication is not actually part of devise anymore, the server\nneeds to implement some customizations__ to work with this authenticator -\nsee [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).",
             "extends": "BaseAuthorizer",
             "access": "public",
@@ -665,7 +665,7 @@
             "module": "ember-simple-auth/authorizers/oauth2-bearer",
             "namespace": "",
             "file": "addon/authorizers/oauth2-bearer.js",
-            "line": 6,
+            "line": 4,
             "description": "Authorizer that conforms to OAuth 2\n([RFC 6749](http://tools.ietf.org/html/rfc6749)); includes the access token\nfrom the session data as a bearer token\n([RFC 6750](http://tools.ietf.org/html/rfc6750)) in the `Authorization`\nheader, e.g.:\n\n```\nAuthorization: Bearer 234rtgjneroigne4\n```",
             "extends": "BaseAuthorizer",
             "access": "public",
@@ -682,7 +682,7 @@
             "module": "ember-simple-auth/mixins/application-route-mixin",
             "namespace": "",
             "file": "addon/mixins/application-route-mixin.js",
-            "line": 6,
+            "line": 10,
             "description": "The mixin for the application route, __defining methods that are called when\nthe session is successfully authenticated (see\n{{#crossLink \"SessionService/authenticationSucceeded:event\"}}{{/crossLink}})\nor invalidated__ (see\n{{#crossLink \"SessionService/invalidationSucceeded:event\"}}{{/crossLink}}).\n\n__Using this mixin is optional.__ The session events can also be handled\nmanually, e.g. in an instance initializer:\n\n```js\n// app/instance-initializers/session-events.js\nexport function initialize(instance) {\n  const applicationRoute = instance.container.lookup('route:application');\n  const session          = instance.container.lookup('service:session');\n  session.on('authenticationSucceeded', function() {\n    applicationRoute.transitionTo('index');\n  });\n  session.on('invalidationSucceeded', function() {\n    applicationRoute.transitionTo('bye');\n  });\n};\n\nexport default {\n  initialize,\n  name:  'session-events',\n  after: 'ember-simple-auth'\n};\n```\n\n__When using the `ApplicationRouteMixin` you need to specify\n`needs: ['service:session']` in the application route's unit test.__",
             "extends": "Ember.Mixin",
             "access": "public",
@@ -699,7 +699,7 @@
             "module": "ember-simple-auth/mixins/authenticated-route-mixin",
             "namespace": "",
             "file": "addon/mixins/authenticated-route-mixin.js",
-            "line": 6,
+            "line": 8,
             "description": "__This mixin is used to make routes accessible only if the session is\nauthenticated.__ It defines a `beforeModel` method that aborts the current\ntransition and instead transitions to the\n{{#crossLink \"Configuration/authenticationRoute:property\"}}{{/crossLink}} if\nthe session is not authenticated.\n\n```js\n// app/routes/protected.js\nimport AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';\n\nexport default Ember.Route.extend(AuthenticatedRouteMixin);\n```",
             "extends": "Ember.Mixin",
             "access": "public",
@@ -716,7 +716,7 @@
             "module": "ember-simple-auth/mixins/data-adapter-mixin",
             "namespace": "",
             "file": "addon/mixins/data-adapter-mixin.js",
-            "line": 5,
+            "line": 6,
             "description": "__This mixin can be used to make Ember Data adapters authorize all outgoing\nAPI requests by injecting a header.__ It works with all authorizers that call\nthe authorization callback (see\n{{#crossLink \"BaseAuthorizer/authorize:method\"}}{{/crossLink}}) with header\nname and header content arguments.\n\n__The `DataAdapterMixin` will also invalidate the session whenever it\nreceives a 401 response for an API request.__\n\n```js\n// app/adapters/application.js\nimport DS from 'ember-data';\nimport DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';\n\nexport default DS.JSONAPIAdapter.extend(DataAdapterMixin, {\n  authorizer: 'authorizer:application'\n});\n```\n\n__The `DataAdapterMixin` requires Ember Data 1.13 or later.__",
             "extends": "Ember.Mixin",
             "access": "public",
@@ -733,7 +733,7 @@
             "module": "ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin",
             "namespace": "",
             "file": "addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 5,
+            "line": 6,
             "description": "__This mixin is used in the callback route when using OAuth 2.0 Implicit\nGrant authentication.__ It implements the\n{{#crossLink \"OAuth2ImplicitGrantCallbackMixin/activate:method\"}}{{/crossLink}}\nmethod that retrieves and processes authentication parameters, such as\n`access_token`, from the hash parameters provided in the callback URL by\nthe authentication server. The parameters are then passed to the\n{{#crossLink \"OAuth2ImplicitGrantAuthenticator\"}}{{/crossLink}}",
             "extends": "Ember.Mixin",
             "access": "public",
@@ -750,7 +750,7 @@
             "module": "ember-simple-auth/mixins/unauthenticated-route-mixin",
             "namespace": "",
             "file": "addon/mixins/unauthenticated-route-mixin.js",
-            "line": 6,
+            "line": 8,
             "description": "__This mixin is used to make routes accessible only if the session is\nnot authenticated__ (e.g., login and registration routes). It defines a\n`beforeModel` method that aborts the current transition and instead\ntransitions to the\n{{#crossLink \"Configuration/routeIfAlreadyAuthenticated:property\"}}{{/crossLink}}\nif the session is authenticated.\n\n```js\n// app/routes/login.js\nimport UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';\n\nexport default Ember.Route.extend(UnauthenticatedRouteMixin);\n```",
             "extends": "Ember.Mixin",
             "access": "public",
@@ -767,7 +767,7 @@
             "module": "ember-simple-auth/services/session",
             "namespace": "",
             "file": "addon/services/session.js",
-            "line": 7,
+            "line": 11,
             "description": "__The session service provides access to the current session as well as\nmethods to authenticate it, invalidate it, etc.__ It is the main interface for\nthe application to Ember Simple Auth's functionality. It can be injected via\n\n```js\n// app/components/login-form.js\nimport Ember from 'ember';\n\nexport default Ember.Component.extend({\n  session: Ember.inject.service('session')\n});\n```",
             "extends": "Ember.Service",
             "uses": [
@@ -824,7 +824,7 @@
             "module": "ember-simple-auth/session-stores/cookie",
             "namespace": "",
             "file": "addon/session-stores/cookie.js",
-            "line": 33,
+            "line": 27,
             "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: false,\n\n  _rememberMeChanged: Ember.observer('rememberMe', function() {\n    const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;\n    this.set('session.store.cookieExpirationTime', expirationTime);\n  }\n});\n```\n\n__Applications that use FastBoot must use this session store by defining the\napplication session store like this:__\n\n```js\n// app/session-stores/application.js\nimport CookieStore from 'ember-simple-auth/session-stores/cookie';\n\nexport default CookieStore.extend();\n```",
             "extends": "BaseStore",
             "access": "public",
@@ -841,7 +841,7 @@
             "module": "ember-simple-auth/session-stores/ephemeral",
             "namespace": "",
             "file": "addon/session-stores/ephemeral.js",
-            "line": 6,
+            "line": 4,
             "description": "Session store that __persists data in memory and thus is not actually\npersistent__. It does also not synchronize the session's state across\nmultiple tabs or windows as those cannot share memory. __This store is mainly\nuseful for testing and will automatically be used when running tests.__",
             "extends": "BaseStore",
             "access": "public",
@@ -858,7 +858,7 @@
             "module": "ember-simple-auth/session-stores/local-storage",
             "namespace": "",
             "file": "addon/session-stores/local-storage.js",
-            "line": 8,
+            "line": 10,
             "description": "Session store that persists data in the browser's `localStorage`.\n\n__`localStorage` is not available in Safari when running in private mode. In\ngeneral it is better to use the\n{{#crossLink \"AdaptiveStore\"}}{{/crossLink}} that automatically falls back to\nthe {{#crossLink \"CookieStore\"}}{{/crossLink}} when `localStorage` is not\navailable.__\n\n__This session store does not work with FastBoot. In order to use Ember\nSimple Auth with FastBoot, configure the\n{{#crossLink \"CookieStore\"}}{{/crossLink}} as the application's session\nstore.__",
             "extends": "BaseStore",
             "access": "public",
@@ -875,7 +875,7 @@
             "module": "ember-simple-auth/session-stores/session-storage",
             "namespace": "",
             "file": "addon/session-stores/session-storage.js",
-            "line": 8,
+            "line": 10,
             "description": "Session store that persists data in the browser's `sessionStorage`.\n\n__`sessionStorage` is not available in Safari when running in private mode.__\n\n__This session store does not work with FastBoot. In order to use Ember\nSimple Auth with FastBoot, configure the\n{{#crossLink \"CookieStore\"}}{{/crossLink}} as the application's session\nstore.__",
             "extends": "BaseStore",
             "access": "public",
@@ -893,7 +893,7 @@
             "namespace": "",
             "file": "addon/configuration.js",
             "line": 12,
-            "description": "Ember Simple Auth's configuration object.\n\nTo change any of these values, set them on the application's environment\nobject, e.g.:\n\n```js\n// config/environment.js\nENV['ember-simple-auth'] = {\n  baseURL: 'path/to/base/url'\n};\n```",
+            "description": "Ember Simple Auth's configuration object.",
             "extends": "Object",
             "access": "public",
             "tagname": ""
@@ -1006,7 +1006,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 24,
+            "line": 27,
             "description": "The endpoint on the server that the authentication request is sent to.",
             "itemtype": "property",
             "name": "serverTokenEndpoint",
@@ -1019,7 +1019,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 34,
+            "line": 37,
             "description": "The devise resource name. __This will be used in the request and also be\nexpected in the server's response.__",
             "itemtype": "property",
             "name": "resourceName",
@@ -1032,7 +1032,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 45,
+            "line": 48,
             "description": "The token attribute name. __This will be used in the request and also be\nexpected in the server's response.__",
             "itemtype": "property",
             "name": "tokenAttributeName",
@@ -1045,7 +1045,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 56,
+            "line": 59,
             "description": "The identification attribute name. __This will be used in the request and\nalso be expected in the server's response.__",
             "itemtype": "property",
             "name": "identificationAttributeName",
@@ -1058,7 +1058,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 67,
+            "line": 70,
             "description": "When authentication fails, the rejection callback is provided with the whole\nFetch API [Response](https://fetch.spec.whatwg.org/#response-class) object\ninstead of its responseJSON or responseText.\n\nThis is useful for cases when the backend provides additional context not\navailable in the response body.",
             "itemtype": "property",
             "name": "rejectWithXhr",
@@ -1073,7 +1073,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 86,
+            "line": 89,
             "description": "When authentication fails, the rejection callback is provided with the whole\nFetch API [Response](https://fetch.spec.whatwg.org/#response-class) object\ninstead of its responseJSON or responseText.\n\nThis is useful for cases when the backend provides additional context not\navailable in the response body.",
             "itemtype": "property",
             "name": "rejectWithResponse",
@@ -1086,7 +1086,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 101,
+            "line": 104,
             "description": "Restores the session from a session data object; __returns a resolving\npromise when there are non-empty\n{{#crossLink \"DeviseAuthenticator/tokenAttributeName:property\"}}token{{/crossLink}}\nand\n{{#crossLink \"DeviseAuthenticator/identificationAttributeName:property\"}}identification{{/crossLink}}\nvalues in `data`__ and a rejecting promise otherwise.",
             "itemtype": "method",
             "name": "restore",
@@ -1108,7 +1108,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 119,
+            "line": 122,
             "description": "Authenticates the session with the specified `identification` and\n`password`; the credentials are `POST`ed to the\n{{#crossLink \"DeviseAuthenticator/serverTokenEndpoint:property\"}}server{{/crossLink}}.\nIf the credentials are valid the server will responds with a\n{{#crossLink \"DeviseAuthenticator/tokenAttributeName:property\"}}token{{/crossLink}}\nand\n{{#crossLink \"DeviseAuthenticator/identificationAttributeName:property\"}}identification{{/crossLink}}.\n__If the credentials are valid and authentication succeeds, a promise that\nresolves with the server's response is returned__, otherwise a promise that\nrejects with the server error is returned.",
             "itemtype": "method",
             "name": "authenticate",
@@ -1135,7 +1135,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 167,
+            "line": 170,
             "description": "Does nothing",
             "itemtype": "method",
             "name": "invalidate",
@@ -1150,7 +1150,7 @@
         },
         {
             "file": "addon/authenticators/devise.js",
-            "line": 178,
+            "line": 181,
             "description": "Makes a request to the Devise server using\n[ember-fetch](https://github.com/stefanpenner/ember-fetch).",
             "itemtype": "method",
             "name": "makeRequest",
@@ -1177,7 +1177,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-implicit-grant.js",
-            "line": 24,
+            "line": 20,
             "description": "Restores the session from a session data object; __will return a resolving\npromise when there is a non-empty `access_token` in the session data__ and\na rejecting promise otherwise.",
             "itemtype": "method",
             "name": "restore",
@@ -1199,7 +1199,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-implicit-grant.js",
-            "line": 44,
+            "line": 40,
             "description": "Authenticates the session using the specified location `hash`\n(see https://tools.ietf.org/html/rfc6749#section-4.2.2).\n\n__If the access token is valid and thus authentication succeeds, a promise that\nresolves with the access token is returned__, otherwise a promise that rejects\nwith the error code as returned by the server is returned\n(see https://tools.ietf.org/html/rfc6749#section-4.2.2.1).",
             "itemtype": "method",
             "name": "authenticate",
@@ -1221,7 +1221,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-implicit-grant.js",
-            "line": 70,
+            "line": 66,
             "description": "This method simply returns a resolving promise.",
             "itemtype": "method",
             "name": "invalidate",
@@ -1236,7 +1236,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 36,
+            "line": 34,
             "description": "Triggered when the authenticator refreshed the access token (see\n[RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).",
             "itemtype": "event",
             "name": "sessionDataUpdated",
@@ -1254,7 +1254,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 45,
+            "line": 43,
             "description": "The client_id to be sent to the authentication server (see\nhttps://tools.ietf.org/html/rfc6749#appendix-A.1). __This should only be\nused for statistics or logging etc. as it cannot actually be trusted since\nit could have been manipulated on the client!__",
             "itemtype": "property",
             "name": "clientId",
@@ -1267,7 +1267,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 58,
+            "line": 56,
             "description": "The endpoint on the server that authentication and token refresh requests\nare sent to.",
             "itemtype": "property",
             "name": "serverTokenEndpoint",
@@ -1280,7 +1280,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 69,
+            "line": 67,
             "description": "The endpoint on the server that token revocation requests are sent to. Only\nset this if the server actually supports token revocation. If this is\n`null`, the authenticator will not revoke tokens on session invalidation.\n\n__If token revocation is enabled but fails, session invalidation will be\nintercepted and the session will remain authenticated (see\n{{#crossLink \"OAuth2PasswordGrantAuthenticator/invalidate:method\"}}{{/crossLink}}).__",
             "itemtype": "property",
             "name": "serverTokenRevocationEndpoint",
@@ -1293,7 +1293,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 85,
+            "line": 83,
             "description": "Sets whether the authenticator automatically refreshes access tokens if the\nserver supports it.",
             "itemtype": "property",
             "name": "refreshAccessTokens",
@@ -1306,10 +1306,10 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 96,
+            "line": 94,
             "description": "The offset time in milliseconds to refresh the access token. This must\nreturn a random number. This randomization is needed because in case of\nmultiple tabs, we need to prevent the tabs from sending refresh token\nrequest at the same exact moment.\n\n__When overriding this property, make sure to mark the overridden property\nas volatile so it will actually have a different value each time it is\naccessed.__",
             "itemtype": "property",
-            "name": "refreshAccessTokens",
+            "name": "tokenRefreshOffset",
             "type": "Integer",
             "default": "a random number between 5 and 10",
             "access": "public",
@@ -1319,7 +1319,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 129,
+            "line": 127,
             "description": "When authentication fails, the rejection callback is provided with the whole\nFetch API [Response](https://fetch.spec.whatwg.org/#response-class) object\ninstead of its responseJSON or responseText.\n\nThis is useful for cases when the backend provides additional context not\navailable in the response body.",
             "itemtype": "property",
             "name": "rejectWithXhr",
@@ -1334,7 +1334,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 148,
+            "line": 146,
             "description": "When authentication fails, the rejection callback is provided with the whole\nFetch API [Response](https://fetch.spec.whatwg.org/#response-class) object\ninstead of its responseJSON or responseText.\n\nThis is useful for cases when the backend provides additional context not\navailable in the response body.",
             "itemtype": "property",
             "name": "rejectWithResponse",
@@ -1347,7 +1347,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 163,
+            "line": 161,
             "description": "Restores the session from a session data object; __will return a resolving\npromise when there is a non-empty `access_token` in the session data__ and\na rejecting promise otherwise.\n\nIf the server issues\n[expiring access tokens](https://tools.ietf.org/html/rfc6749#section-5.1)\nand there is an expired access token in the session data along with a\nrefresh token, the authenticator will try to refresh the access token and\nreturn a promise that resolves with the new access token if the refresh was\nsuccessful. If there is no refresh token or the token refresh is not\nsuccessful, a rejecting promise will be returned.",
             "itemtype": "method",
             "name": "restore",
@@ -1369,7 +1369,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 202,
+            "line": 200,
             "description": "Authenticates the session with the specified `identification`, `password`\nand optional `scope`; issues a `POST` request to the\n{{#crossLink \"OAuth2PasswordGrantAuthenticator/serverTokenEndpoint:property\"}}{{/crossLink}}\nand receives the access token in response (see\nhttp://tools.ietf.org/html/rfc6749#section-4.3).\n\n__If the credentials are valid (and the optionally requested scope is\ngranted) and thus authentication succeeds, a promise that resolves with the\nserver's response is returned__, otherwise a promise that rejects with the\nerror as returned by the server is returned.\n\n__If the\n[server supports it](https://tools.ietf.org/html/rfc6749#section-5.1), this\nmethod also schedules refresh requests for the access token before it\nexpires.__",
             "itemtype": "method",
             "name": "authenticate",
@@ -1406,7 +1406,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 256,
+            "line": 254,
             "description": "If token revocation is enabled, this will revoke the access token (and the\nrefresh token if present). If token revocation succeeds, this method\nreturns a resolving promise, otherwise it will return a rejecting promise,\nthus intercepting session invalidation.\n\nIf token revocation is not enabled this method simply returns a resolving\npromise.",
             "itemtype": "method",
             "name": "invalidate",
@@ -1428,7 +1428,7 @@
         },
         {
             "file": "addon/authenticators/oauth2-password-grant.js",
-            "line": 298,
+            "line": 296,
             "description": "Makes a request to the OAuth 2.0 server.",
             "itemtype": "method",
             "name": "makeRequest",
@@ -1460,7 +1460,7 @@
         },
         {
             "file": "addon/authenticators/torii.js",
-            "line": 32,
+            "line": 33,
             "description": "Restores the session by calling the torii provider's `fetch` method.\n\n__Many torii providers do not implement the `fetch` method__. If the\nprovider in use does not implement the method simply add it as follows:\n\n```js\n// app/torii-providers/facebook.js\nimport FacebookOauth2Provider from 'torii/providers/facebook-oauth2';\n\nexport default FacebookOauth2Provider.extend({\n  fetch(data) {\n    return data;\n  }\n});\n```",
             "itemtype": "method",
             "name": "restore",
@@ -1482,7 +1482,7 @@
         },
         {
             "file": "addon/authenticators/torii.js",
-            "line": 71,
+            "line": 72,
             "description": "Authenticates the session by opening the specified torii provider. For more\ndocumentation on torii and its providers abstraction, see the\n[project's README](https://github.com/Vestorly/torii#readme), specifically\nthe\n[section on providers](https://github.com/Vestorly/torii#configuring-a-torii-provider).",
             "itemtype": "method",
             "name": "authenticate",
@@ -1509,7 +1509,7 @@
         },
         {
             "file": "addon/authenticators/torii.js",
-            "line": 93,
+            "line": 94,
             "description": "Closes the torii provider. If the provider is successfully closed, this\nmethod returns a resolving promise, otherwise it will return a rejecting\npromise, thus intercepting session invalidation.",
             "itemtype": "method",
             "name": "invalidate",
@@ -1524,7 +1524,7 @@
         },
         {
             "file": "addon/authorizers/base.js",
-            "line": 26,
+            "line": 24,
             "description": "Authorizes a block of code. This method will be invoked by the session\nservice's {{#crossLink \"SessionService/authorize:method\"}}{{/crossLink}}\nmethod which will pass the current authenticated session data (see\n{{#crossLink \"SessionService/data:property\"}}{{/crossLink}}) and a block.\nDepending on the mechanism it implements, the authorizer transforms the\nsession data into authorization data and invokes the block with that data.\n\n`BaseAuthorizer`'s implementation does nothing. __This method must be\noverridden in custom authorizers.__",
             "itemtype": "method",
             "name": "authorize",
@@ -1547,7 +1547,7 @@
         },
         {
             "file": "addon/authorizers/devise.js",
-            "line": 26,
+            "line": 24,
             "description": "The token attribute name.",
             "itemtype": "property",
             "name": "tokenAttributeName",
@@ -1560,7 +1560,7 @@
         },
         {
             "file": "addon/authorizers/devise.js",
-            "line": 36,
+            "line": 34,
             "description": "The identification attribute name.",
             "itemtype": "property",
             "name": "identificationAttributeName",
@@ -1573,7 +1573,7 @@
         },
         {
             "file": "addon/authorizers/devise.js",
-            "line": 46,
+            "line": 44,
             "description": "Includes the user's token (see\n{{#crossLink \"DeviseAuthenticator/tokenAttributeName:property\"}}{{/crossLink}})\nand identification (see\n{{#crossLink \"DeviseAuthenticator/identificationAttributeName:property\"}}{{/crossLink}})\nin the `Authorization` header.",
             "itemtype": "method",
             "name": "authorize",
@@ -1596,7 +1596,7 @@
         },
         {
             "file": "addon/authorizers/oauth2-bearer.js",
-            "line": 23,
+            "line": 21,
             "description": "Includes the access token from the session data into the `Authorization`\nheader as a Bearer token, e.g.:\n\n```\nAuthorization: Bearer 234rtgjneroigne4\n```",
             "itemtype": "method",
             "name": "authorize",
@@ -1619,7 +1619,7 @@
         },
         {
             "file": "addon/mixins/application-route-mixin.js",
-            "line": 45,
+            "line": 49,
             "description": "The session service.",
             "itemtype": "property",
             "name": "session",
@@ -1632,7 +1632,7 @@
         },
         {
             "file": "addon/mixins/application-route-mixin.js",
-            "line": 61,
+            "line": 65,
             "description": "The route to transition to after successful authentication.",
             "itemtype": "property",
             "name": "routeAfterAuthentication",
@@ -1645,7 +1645,7 @@
         },
         {
             "file": "addon/mixins/application-route-mixin.js",
-            "line": 89,
+            "line": 93,
             "description": "This method handles the session's\n{{#crossLink \"SessionService/authenticationSucceeded:event\"}}{{/crossLink}}\nevent. If there is a transition that was previously intercepted by the\n{{#crossLink \"AuthenticatedRouteMixin/beforeModel:method\"}}\nAuthenticatedRouteMixin's `beforeModel` method{{/crossLink}} it will retry\nit. If there is no such transition, the `ember_simple_auth-redirectTarget`\ncookie will be checked for a url that represents an attemptedTransition\nthat was aborted in Fastboot mode, otherwise this action transitions to the\n{{#crossLink \"Configuration/routeAfterAuthentication:property\"}}{{/crossLink}}.",
             "itemtype": "method",
             "name": "sessionAuthenticated",
@@ -1656,7 +1656,7 @@
         },
         {
             "file": "addon/mixins/application-route-mixin.js",
-            "line": 120,
+            "line": 124,
             "description": "This method handles the session's\n{{#crossLink \"SessionService/invalidationSucceeded:event\"}}{{/crossLink}}\nevent. __It reloads the Ember.js application__ by redirecting the browser\nto the application's root URL so that all in-memory data (such as Ember\nData stores etc.) gets cleared.\n\nIf the Ember.js application will be used in an environment where the users\ndon't have direct access to any data stored on the client (e.g.\n[cordova](http://cordova.apache.org)) this action can be overridden to e.g.\nsimply transition to the index route.",
             "itemtype": "method",
             "name": "sessionInvalidated",
@@ -1667,7 +1667,7 @@
         },
         {
             "file": "addon/mixins/authenticated-route-mixin.js",
-            "line": 26,
+            "line": 28,
             "description": "The session service.",
             "itemtype": "property",
             "name": "session",
@@ -1680,7 +1680,7 @@
         },
         {
             "file": "addon/mixins/authenticated-route-mixin.js",
-            "line": 42,
+            "line": 44,
             "description": "The route to transition to for authentication. The\n{{#crossLink \"AuthenticatedRouteMixin\"}}{{/crossLink}} will transition to\nthis route when a route that implements the mixin is accessed when the\nroute is not authenticated.",
             "itemtype": "property",
             "name": "authenticationRoute",
@@ -1693,7 +1693,7 @@
         },
         {
             "file": "addon/mixins/authenticated-route-mixin.js",
-            "line": 57,
+            "line": 59,
             "description": "Checks whether the session is authenticated and if it is not aborts the\ncurrent transition and instead transitions to the\n{{#crossLink \"Configuration/authenticationRoute:property\"}}{{/crossLink}}.\nIf the current transition is aborted, this method will save it in the\nsession service's\n{{#crossLink \"SessionService/attemptedTransition:property\"}}{{/crossLink}}\nproperty so that  it can be retried after the session is authenticated\n(see\n{{#crossLink \"ApplicationRouteMixin/sessionAuthenticated:method\"}}{{/crossLink}}).\nIf the transition is aborted in Fastboot mode, the transition's target\nURL will be saved in a `ember_simple_auth-redirectTarget` cookie for use by\nthe browser after authentication is complete.\n\n__If `beforeModel` is overridden in a route that uses this mixin, the route's\n   implementation must call `this._super(...arguments)`__ so that the mixin's\n   `beforeModel` method is actually executed.",
             "itemtype": "method",
             "name": "beforeModel",
@@ -1711,7 +1711,7 @@
         },
         {
             "file": "addon/mixins/authenticated-route-mixin.js",
-            "line": 99,
+            "line": 101,
             "description": "Triggers authentication; by default this method transitions to the\n`authenticationRoute`. In case the application uses an authentication\nmechanism that does not use an authentication route, this method can be\noverridden.",
             "itemtype": "method",
             "name": "triggerAuthentication",
@@ -1722,7 +1722,7 @@
         },
         {
             "file": "addon/mixins/data-adapter-mixin.js",
-            "line": 34,
+            "line": 35,
             "description": "The session service.",
             "itemtype": "property",
             "name": "session",
@@ -1735,7 +1735,7 @@
         },
         {
             "file": "addon/mixins/data-adapter-mixin.js",
-            "line": 44,
+            "line": 45,
             "description": "The authorizer that is used to authorize API requests. The authorizer has\nto call the authorization callback (see\n{{#crossLink \"BaseAuthorizer/authorize:method\"}}{{/crossLink}}) with header\nname and header content arguments. __This property must be overridden in\nadapters using this mixin.__",
             "itemtype": "property",
             "name": "authorizer",
@@ -1748,7 +1748,7 @@
         },
         {
             "file": "addon/mixins/data-adapter-mixin.js",
-            "line": 58,
+            "line": 59,
             "description": "Defines a `beforeSend` hook (see http://api.jquery.com/jQuery.ajax/) that\ninjects a request header containing the authorization data as constructed\nby the {{#crossLink \"DataAdapterMixin/authorizer:property\"}}{{/crossLink}}\n(see\n{{#crossLink \"SessionService/authorize:method\"}}{{/crossLink}}). The\nspecific header name and contents depend on the actual authorizer that is\nused.\n\nUntil [emberjs/rfcs#171](https://github.com/emberjs/rfcs/pull/171)\ngets resolved and [ds-improved-ajax](https://github.com/emberjs/data/pull/3099)\n[feature flag](https://github.com/emberjs/data/blob/master/FEATURES.md#feature-flags)\nis enabled, this method will be called for **every** ember-data version.\n`headersForRequest` *should* replace it after the resolution of the RFC.",
             "itemtype": "method",
             "name": "ajaxOptions",
@@ -1759,7 +1759,7 @@
         },
         {
             "file": "addon/mixins/data-adapter-mixin.js",
-            "line": 94,
+            "line": 95,
             "description": "Adds request headers containing the authorization data as constructed\nby the {{#crossLink \"DataAdapterMixin/authorizer:property\"}}{{/crossLink}}.\n\nUntil [emberjs/rfcs#171](https://github.com/emberjs/rfcs/pull/171)\ngets resolved and [ds-improved-ajax](https://github.com/emberjs/data/pull/3099)\n[feature flag](https://github.com/emberjs/data/blob/master/FEATURES.md#feature-flags)\nis enabled, this method will **not** be used.\nSee `ajaxOptions` instead.",
             "itemtype": "method",
             "name": "headersForRequest",
@@ -1770,7 +1770,7 @@
         },
         {
             "file": "addon/mixins/data-adapter-mixin.js",
-            "line": 119,
+            "line": 120,
             "description": "This method is called for every response that the adapter receives from the\nAPI. If the response has a 401 status code it invalidates the session (see\n{{#crossLink \"SessionService/invalidate:method\"}}{{/crossLink}}).",
             "itemtype": "method",
             "name": "handleResponse",
@@ -1803,7 +1803,7 @@
         },
         {
             "file": "addon/mixins/data-adapter-mixin.js",
-            "line": 136,
+            "line": 137,
             "description": "The default implementation for handleResponse.\nIf the response has a 401 status code it invalidates the session (see\n {{#crossLink \"SessionService/invalidate:method\"}}{{/crossLink}}).\n\nOverride this method if you want custom invalidation logic for incoming responses.",
             "itemtype": "method",
             "name": "ensureResponseAuthorized",
@@ -1834,7 +1834,7 @@
         },
         {
             "file": "addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 21,
+            "line": 22,
             "description": "The session service.",
             "itemtype": "property",
             "name": "session",
@@ -1847,7 +1847,7 @@
         },
         {
             "file": "addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 31,
+            "line": 32,
             "description": "The authenticator that should be used to authenticate the callback. This\nmust be a subclass of the\n{{#crossLink \"OAuth2ImplicitGrantAuthenticator\"}}{{/crossLink}}\nauthenticator.",
             "itemtype": "property",
             "name": "authenticator",
@@ -1860,7 +1860,7 @@
         },
         {
             "file": "addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 44,
+            "line": 45,
             "description": "Any error that potentially occurs during authentication will be stored in\nthis property.",
             "itemtype": "property",
             "name": "error",
@@ -1873,7 +1873,7 @@
         },
         {
             "file": "addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 55,
+            "line": 56,
             "description": "Passes the hash received with the redirection from the authentication\nserver to the\n{{#crossLink \"OAuth2ImplicitGrantAuthenticator\"}}{{/crossLink}} and\nauthenticates the session with the authenticator.",
             "itemtype": "method",
             "name": "activate",
@@ -1884,7 +1884,7 @@
         },
         {
             "file": "addon/mixins/unauthenticated-route-mixin.js",
-            "line": 27,
+            "line": 29,
             "description": "The session service.",
             "itemtype": "property",
             "name": "session",
@@ -1897,7 +1897,7 @@
         },
         {
             "file": "addon/mixins/unauthenticated-route-mixin.js",
-            "line": 43,
+            "line": 45,
             "description": "The route to transition to if a route that implements the\n{{#crossLink \"UnauthenticatedRouteMixin\"}}{{/crossLink}} is accessed when\nthe session is authenticated.",
             "itemtype": "property",
             "name": "routeIfAlreadyAuthenticated",
@@ -1910,7 +1910,7 @@
         },
         {
             "file": "addon/mixins/unauthenticated-route-mixin.js",
-            "line": 57,
+            "line": 59,
             "description": "Checks whether the session is authenticated and if it is aborts the current\ntransition and instead transitions to the\n{{#crossLink \"Configuration/routeIfAlreadyAuthenticated:property\"}}{{/crossLink}}.\n\n__If `beforeModel` is overridden in a route that uses this mixin, the route's\n   implementation must call `this._super(...arguments)`__ so that the mixin's\n   `beforeModel` method is actually executed.",
             "itemtype": "method",
             "name": "beforeModel",
@@ -1928,7 +1928,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 28,
+            "line": 32,
             "description": "Triggered whenever the session is successfully authenticated. This happens\nwhen the session gets authenticated via\n{{#crossLink \"SessionService/authenticate:method\"}}{{/crossLink}} but also\nwhen the session is authenticated in another tab or window of the same\napplication and the session state gets synchronized across tabs or windows\nvia the store (see\n{{#crossLink \"BaseStore/sessionDataUpdated:event\"}}{{/crossLink}}).\n\nWhen using the {{#crossLink \"ApplicationRouteMixin\"}}{{/crossLink}} this\nevent will automatically get handled (see\n{{#crossLink \"ApplicationRouteMixin/sessionAuthenticated:method\"}}{{/crossLink}}).",
             "itemtype": "event",
             "name": "authenticationSucceeded",
@@ -1939,7 +1939,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 45,
+            "line": 49,
             "description": "Triggered whenever the session is successfully invalidated. This happens\nwhen the session gets invalidated via\n{{#crossLink \"SessionService/invalidate:method\"}}{{/crossLink}} but also\nwhen the session is invalidated in another tab or window of the same\napplication and the session state gets synchronized across tabs or windows\nvia the store (see\n{{#crossLink \"BaseStore/sessionDataUpdated:event\"}}{{/crossLink}}).\n\nWhen using the {{#crossLink \"ApplicationRouteMixin\"}}{{/crossLink}} this\nevent will automatically get handled (see\n{{#crossLink \"ApplicationRouteMixin/sessionInvalidated:method\"}}{{/crossLink}}).",
             "itemtype": "event",
             "name": "invalidationSucceeded",
@@ -1950,7 +1950,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 62,
+            "line": 66,
             "description": "Returns whether the session is currently authenticated.",
             "itemtype": "property",
             "name": "isAuthenticated",
@@ -1964,7 +1964,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 73,
+            "line": 77,
             "description": "The current session data as a plain object. The\n`authenticated` key holds the session data that the authenticator resolved\nwith when the session was authenticated (see\n{{#crossLink \"BaseAuthenticator/authenticate:method\"}}{{/crossLink}}) and\nthat will be cleared when the session is invalidated. This data cannot be\nwritten. All other session data is writable and will not be cleared when\nthe session is invalidated.",
             "itemtype": "property",
             "name": "data",
@@ -1978,7 +1978,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 90,
+            "line": 94,
             "description": "The session store.",
             "itemtype": "property",
             "name": "store",
@@ -1992,7 +1992,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 101,
+            "line": 105,
             "description": "A previously attempted but intercepted transition (e.g. by the\n{{#crossLink \"AuthenticatedRouteMixin\"}}{{/crossLink}}). If an attempted\ntransition is present, the\n{{#crossLink \"ApplicationRouteMixin\"}}{{/crossLink}} will retry it when the\nsession becomes authenticated (see\n{{#crossLink \"ApplicationRouteMixin/sessionAuthenticated:method\"}}{{/crossLink}}).",
             "itemtype": "property",
             "name": "attemptedTransition",
@@ -2005,7 +2005,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 146,
+            "line": 150,
             "description": "__Authenticates the session with an `authenticator`__ and appropriate\narguments. The authenticator implements the actual steps necessary to\nauthenticate the session (see\n{{#crossLink \"BaseAuthenticator/authenticate:method\"}}{{/crossLink}}) and\nreturns a promise after doing so. The session handles the returned promise\nand when it resolves becomes authenticated, otherwise remains\nunauthenticated. All data the authenticator resolves with will be\naccessible via the\n{{#crossLink \"SessionService/data:property\"}}session data's{{/crossLink}}\n`authenticated` property.\n\n__This method returns a promise. A resolving promise indicates that the\nsession was successfully authenticated__ while a rejecting promise\nindicates that authentication failed and the session remains\nunauthenticated. The promise does not resolve with a value; instead, the\ndata returned from the authenticator is available via the\n{{#crossLink \"SessionService/data:property\"}}{{/crossLink}} property.\n\nWhen authentication succeeds this will trigger the\n{{#crossLink \"SessionService/authenticationSucceeded:event\"}}{{/crossLink}}\nevent.",
             "itemtype": "method",
             "name": "authenticate",
@@ -2034,7 +2034,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 181,
+            "line": 185,
             "description": "__Invalidates the session with the authenticator it is currently\nauthenticated with__ (see\n{{#crossLink \"SessionService/authenticate:method\"}}{{/crossLink}}). This\ninvokes the authenticator's\n{{#crossLink \"BaseAuthenticator/invalidate:method\"}}{{/crossLink}} method\nand handles the returned promise accordingly.\n\nThis method returns a promise. A resolving promise indicates that the\nsession was successfully invalidated while a rejecting promise indicates\nthat invalidation failed and the session remains authenticated. Once the\nsession is successfully invalidated it clears all of its authenticated data\n(see {{#crossLink \"SessionService/data:property\"}}{{/crossLink}}).\n\nWhen invalidation succeeds this will trigger the\n{{#crossLink \"SessionService/invalidationSucceeded:event\"}}{{/crossLink}}\nevent.",
             "itemtype": "method",
             "name": "invalidate",
@@ -2057,7 +2057,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 210,
+            "line": 214,
             "description": "Authorizes a block of code with an authorizer (see\n{{#crossLink \"BaseAuthorizer/authorize:method\"}}{{/crossLink}}) if the\nsession is authenticated. If the session is not currently authenticated\nthis method does nothing.\n\n```js\nthis.get('session').authorize('authorizer:oauth2-bearer', (headerName, headerValue) => {\n  xhr.setRequestHeader(headerName, headerValue);\n});\n```",
             "itemtype": "method",
             "name": "authorize",
@@ -2145,7 +2145,7 @@
         },
         {
             "file": "addon/session-stores/adaptive.js",
-            "line": 152,
+            "line": 153,
             "description": "Persists the `data` in the `localStorage` if it is available or in a cookie\nif it is not.",
             "itemtype": "method",
             "name": "persist",
@@ -2167,7 +2167,7 @@
         },
         {
             "file": "addon/session-stores/adaptive.js",
-            "line": 165,
+            "line": 166,
             "description": "Returns all data currently stored in the `localStorage` if that is\navailable - or if it is not, in the cookie - as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -2182,7 +2182,7 @@
         },
         {
             "file": "addon/session-stores/adaptive.js",
-            "line": 177,
+            "line": 178,
             "description": "Clears the store by deleting the\n{{#crossLink \"LocalStorageStore/key:property\"}}{{/crossLink}} from\n`localStorage` if that is available or by deleting the cookie if it is not.",
             "itemtype": "method",
             "name": "clear",
@@ -2267,7 +2267,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 75,
+            "line": 69,
             "description": "The domain to use for the cookie, e.g., \"example.com\", \".example.com\"\n(which includes all subdomains) or \"subdomain.example.com\". If not\nexplicitly set, the cookie domain defaults to the domain the session was\nauthenticated on.",
             "itemtype": "property",
             "name": "cookieDomain",
@@ -2280,7 +2280,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 89,
+            "line": 83,
             "description": "The name of the cookie.",
             "itemtype": "property",
             "name": "cookieName",
@@ -2293,7 +2293,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 102,
+            "line": 96,
             "description": "The path to use for the cookie, e.g., \"/\", \"/something\".",
             "itemtype": "property",
             "name": "cookiePath",
@@ -2306,7 +2306,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 113,
+            "line": 107,
             "description": "The expiration time for the cookie in seconds. A value of `null` will make\nthe cookie a session cookie that expires and gets deleted when the browser\nis closed.\n\nThe recommended minimum value is 90 seconds. If your value is less than\nthat, the cookie may expire before its expiration time is extended\n(expiration time is extended every 60 seconds).",
             "itemtype": "property",
             "name": "cookieExpirationTime",
@@ -2319,7 +2319,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 178,
+            "line": 176,
             "description": "Persists the `data` in the cookie.",
             "itemtype": "method",
             "name": "persist",
@@ -2341,7 +2341,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 194,
+            "line": 192,
             "description": "Returns all data currently stored in the cookie as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -2356,7 +2356,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 210,
+            "line": 208,
             "description": "Clears the store by deleting the cookie.",
             "itemtype": "method",
             "name": "clear",
@@ -2371,7 +2371,7 @@
         },
         {
             "file": "addon/session-stores/ephemeral.js",
-            "line": 23,
+            "line": 21,
             "description": "Persists `data`. This replaces all currently stored data.",
             "itemtype": "method",
             "name": "persist",
@@ -2393,7 +2393,7 @@
         },
         {
             "file": "addon/session-stores/ephemeral.js",
-            "line": 37,
+            "line": 35,
             "description": "Returns all data currently stored as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -2408,7 +2408,7 @@
         },
         {
             "file": "addon/session-stores/ephemeral.js",
-            "line": 50,
+            "line": 48,
             "description": "Clears the store.",
             "itemtype": "method",
             "name": "clear",
@@ -2423,7 +2423,7 @@
         },
         {
             "file": "addon/session-stores/local-storage.js",
-            "line": 34,
+            "line": 36,
             "description": "The `localStorage` key the store persists data in.",
             "itemtype": "property",
             "name": "key",
@@ -2436,7 +2436,7 @@
         },
         {
             "file": "addon/session-stores/local-storage.js",
-            "line": 58,
+            "line": 60,
             "description": "Persists the `data` in the `localStorage`.",
             "itemtype": "method",
             "name": "persist",
@@ -2458,7 +2458,7 @@
         },
         {
             "file": "addon/session-stores/local-storage.js",
-            "line": 74,
+            "line": 76,
             "description": "Returns all data currently stored in the `localStorage` as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -2473,7 +2473,7 @@
         },
         {
             "file": "addon/session-stores/local-storage.js",
-            "line": 87,
+            "line": 89,
             "description": "Clears the store by deleting the\n{{#crossLink \"LocalStorageStore/key:property\"}}{{/crossLink}} from\n`localStorage`.",
             "itemtype": "method",
             "name": "clear",
@@ -2488,7 +2488,7 @@
         },
         {
             "file": "addon/session-stores/session-storage.js",
-            "line": 30,
+            "line": 32,
             "description": "The `sessionStorage` key the store persists data in.",
             "itemtype": "property",
             "name": "key",
@@ -2501,7 +2501,7 @@
         },
         {
             "file": "addon/session-stores/session-storage.js",
-            "line": 54,
+            "line": 56,
             "description": "Persists the `data` in the `sessionStorage`.",
             "itemtype": "method",
             "name": "persist",
@@ -2523,7 +2523,7 @@
         },
         {
             "file": "addon/session-stores/session-storage.js",
-            "line": 70,
+            "line": 72,
             "description": "Returns all data currently stored in the `sessionStorage` as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -2538,7 +2538,7 @@
         },
         {
             "file": "addon/session-stores/session-storage.js",
-            "line": 83,
+            "line": 85,
             "description": "Clears the store by deleting the\n{{#crossLink \"sessionStorageStore/key:property\"}}{{/crossLink}} from\n`sessionStorage`.",
             "itemtype": "method",
             "name": "clear",
@@ -2553,7 +2553,7 @@
         },
         {
             "file": "addon/configuration.js",
-            "line": 31,
+            "line": 21,
             "description": "The base URL of the application as configured in `config/environment.js`.",
             "itemtype": "property",
             "name": "baseURL",
@@ -2568,7 +2568,7 @@
         },
         {
             "file": "addon/configuration.js",
-            "line": 43,
+            "line": 33,
             "description": "The route to transition to for authentication. The\n{{#crossLink \"AuthenticatedRouteMixin\"}}{{/crossLink}} will transition to\nthis route when a route that implements the mixin is accessed when the\nroute is not authenticated.",
             "itemtype": "property",
             "name": "authenticationRoute",
@@ -2585,7 +2585,7 @@
         },
         {
             "file": "addon/configuration.js",
-            "line": 59,
+            "line": 49,
             "description": "The route to transition to after successful authentication.",
             "itemtype": "property",
             "name": "routeAfterAuthentication",
@@ -2602,7 +2602,7 @@
         },
         {
             "file": "addon/configuration.js",
-            "line": 72,
+            "line": 62,
             "description": "The route to transition to if a route that implements the\n{{#crossLink \"UnauthenticatedRouteMixin\"}}{{/crossLink}} is accessed when\nthe session is authenticated.",
             "itemtype": "property",
             "name": "routeIfAlreadyAuthenticated",
