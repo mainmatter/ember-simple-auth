@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
@@ -18,7 +19,7 @@ import { getOwner } from '@ember/application';
   @public
 */
 
-export default Mixin.create({
+const mixin = Mixin.create({
   /**
    The session service.
 
@@ -101,3 +102,7 @@ export default Mixin.create({
     return params;
   }
 });
+
+mixin[Ember.NAME_KEY] = 'EmberSimpleAuth.Oauth2ImplicitGrantCallbackRouteMixin';
+
+export default mixin;

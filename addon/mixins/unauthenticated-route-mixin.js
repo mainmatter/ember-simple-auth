@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
@@ -25,7 +26,7 @@ import Configuration from './../configuration';
   @extends Ember.Mixin
   @public
 */
-export default Mixin.create({
+const mixin = Mixin.create({
   /**
     The session service.
 
@@ -80,3 +81,7 @@ export default Mixin.create({
     }
   }
 });
+
+mixin[Ember.NAME_KEY] = 'EmberSimpleAuth.UnauthenticatedRouteMixin';
+
+export default mixin;

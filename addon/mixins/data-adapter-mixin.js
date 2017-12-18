@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
@@ -31,7 +32,7 @@ import { isPresent } from '@ember/utils';
   @public
 */
 
-export default Mixin.create({
+const mixin = Mixin.create({
   /**
     The session service.
 
@@ -152,3 +153,7 @@ export default Mixin.create({
     }
   }
 });
+
+mixin[Ember.NAME_KEY] = 'EmberSimpleAuth.DataAdapterMixin';
+
+export default mixin;
