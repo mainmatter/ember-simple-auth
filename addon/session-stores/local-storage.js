@@ -46,14 +46,15 @@ export default BaseStore.extend({
   init() {
     this._super(...arguments);
 
+    this._boundHandler = bind(this, this._handleStorageEvent);
     if (!this.get('_isFastBoot')) {
-      window.addEventListener('storage', bind(this, this._handleStorageEvent));
+      window.addEventListener('storage', this._boundHandler);
     }
   },
 
   willDestroy() {
     if (!this.get('_isFastBoot')) {
-      window.removeEventListener('storage', bind(this, this._handleStorageEvent));
+      window.removeEventListener('storage', this._boundHandler);
     }
   },
 
