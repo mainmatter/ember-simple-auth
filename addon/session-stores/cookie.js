@@ -125,7 +125,7 @@ export default BaseStore.extend({
     if (isNone(value)) {
       this.get('_cookies').clear(`${this.get('cookieName')}-expiration_time`);
     } else if (value < 90) {
-      this._warn('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).', false, { id: 'ember-simple-auth.cookieExpirationTime' });
+      warn('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).', false, { id: 'ember-simple-auth.cookieExpirationTime' });
     }
   }),
 
@@ -293,8 +293,4 @@ export default BaseStore.extend({
       this._write(data, expiration);
     }
   },
-
-  _warn() {
-    warn(...arguments);
-  }
 });
