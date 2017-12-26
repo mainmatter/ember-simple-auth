@@ -1,5 +1,5 @@
-import Ember from 'ember';
 import { next, run } from '@ember/runloop';
+import { registerWarnHandler } from '@ember/debug';
 import {
   describe,
   beforeEach,
@@ -9,6 +9,17 @@ import {
 import { expect } from 'chai';
 import sinon from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';
+
+let warnings;
+registerWarnHandler((message, options, next) => {
+  // in case a deprecation is issued before a test is started
+  if (!warnings) {
+    warnings = [];
+  }
+
+  warnings.push(message);
+  next(message, options);
+});
 
 export default function(options) {
   let store;
@@ -39,12 +50,7 @@ export default function(options) {
 
   describe('#persist', function() {
     beforeEach(function() {
-      sinon.spy(Ember, 'warn');
-    });
-
-    afterEach(function() {
-      // eslint-disable-next-line ember/local-modules
-      Ember.warn.restore();
+      warnings = [];
     });
 
     it('respects the configured cookieName', function() {
@@ -104,7 +110,8 @@ export default function(options) {
           cookieExpirationTime: 60
         });
 
-        expect(Ember.warn).to.have.been.calledWith('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).');
+        expect(warnings).to.have.length(1);
+        expect(warnings[0]).to.equal('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).');
 
         done();
       });
