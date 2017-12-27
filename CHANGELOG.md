@@ -1,3 +1,10 @@
+# 1.4.2
+
+* The broken `warn()` method on the `cookie` session store has been fixed,
+  see #1502.
+* The event listener on the `local-storage` session store is correctly removed,
+  see #1498.
+
 # 1.4.1
 
 * The `fastboot-app-server` dependency has been removed, see #1446.
