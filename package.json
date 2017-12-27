@@ -65,6 +65,7 @@
     "ember-cli-sri": "^2.1.1",
     "ember-cli-uglify": "^2.0.0",
     "ember-data": "^2.14.4",
+    "ember-debug-handlers-polyfill": "^1.1.0",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-fastboot-addon-tests": "^0.4.0",

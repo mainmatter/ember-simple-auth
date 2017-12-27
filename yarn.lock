@@ -2883,6 +2883,10 @@ ember-data@^2.14.4:
     silent-error "^1.0.0"
     testem "1.15.0"
 
+ember-debug-handlers-polyfill@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ember-debug-handlers-polyfill/-/ember-debug-handlers-polyfill-1.1.0.tgz#c293cf10e3a3872d9ee97799a7be4cfe599d359e"
+
 ember-disable-prototype-extensions@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/ember-disable-prototype-extensions/-/ember-disable-prototype-extensions-1.1.2.tgz#261cccaf6bf8fbb1836be7bdfe4278f9ab92b873"
