@@ -655,7 +655,7 @@ import { currentSession, authenticateSession, invalidateSession } from '<app-nam
 ## License
 
 Ember Simple Auth is developed by and &copy;
-[simplabs GmbH/Marco Otte-Witte](http://simplabs.com) and contributors. It is
+[simplabs GmbH](http://simplabs.com) and contributors. It is
 released under the
 [MIT License](LICENSE).
 
