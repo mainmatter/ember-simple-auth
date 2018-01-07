@@ -241,6 +241,9 @@ export default BaseStore.extend({
       });
       delete this._oldCookieName;
     }
+    if (value === JSON.stringify({ authenticated: {} })) {
+      return this.get('_cookies').clear(this.get('cookieName'), cookieOptions);
+    }
     this.get('_cookies').write(this.get('cookieName'), value, cookieOptions);
     if (!isEmpty(expiration)) {
       let expirationCookieName = `${this.get('cookieName')}-expiration_time`;
