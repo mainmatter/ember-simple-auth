@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "The Ember Simple Auth API",
-        "version": "1.4.1"
+        "version": "1.4.2"
     },
     "files": {
         "addon/authenticators/base.js": {
@@ -2436,7 +2436,7 @@
         },
         {
             "file": "addon/session-stores/local-storage.js",
-            "line": 60,
+            "line": 61,
             "description": "Persists the `data` in the `localStorage`.",
             "itemtype": "method",
             "name": "persist",
@@ -2458,7 +2458,7 @@
         },
         {
             "file": "addon/session-stores/local-storage.js",
-            "line": 76,
+            "line": 77,
             "description": "Returns all data currently stored in the `localStorage` as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -2473,7 +2473,7 @@
         },
         {
             "file": "addon/session-stores/local-storage.js",
-            "line": 89,
+            "line": 90,
             "description": "Clears the store by deleting the\n{{#crossLink \"LocalStorageStore/key:property\"}}{{/crossLink}} from\n`localStorage`.",
             "itemtype": "method",
             "name": "clear",
