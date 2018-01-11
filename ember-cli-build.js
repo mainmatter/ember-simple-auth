@@ -1,6 +1,5 @@
 'use strict';
 
-/* eslint-env node */
 /* eslint-disable no-var, object-shorthand */
 
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
