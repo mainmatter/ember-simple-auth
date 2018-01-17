@@ -3,7 +3,7 @@ language: node_js
 node_js:
   - "6"
 
-sudo: false
+sudo: required
 dist: trusty
 
 addons:
