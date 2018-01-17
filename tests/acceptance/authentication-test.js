@@ -44,7 +44,6 @@ describe('Acceptance: Authentication', function() {
         this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
       authenticateSession(application, { userId: 1, otherData: 'some-data' });
-
       visit('/protected');
 
       return andThen(() => {
