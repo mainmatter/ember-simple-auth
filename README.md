@@ -273,7 +273,21 @@ Router.map(function() {
 ```
 
 The route to transition to if the session is not authenticated can also be
-[configured](#configuration) to be another one than `login`.
+[overridden](https://ember-simple-auth.com/api/classes/AuthenticatedRouteMixin.html#property_authenticationRoute)
+to be another one than `login`.
+
+It is recommended to nest all of an application's routes that require the
+session to be authenticated under a common parent route:
+
+```js
+// app/router.js
+Router.map(function() {
+  this.route('login');
+  this.route('authenticated', { path: '' }, function() {
+    // all routes that require the session to be authenticated
+  });
+}
+```
 
 To prevent a route from being accessed when the session is authenticated (which
 makes sense for login and registration routes for example), mix the
