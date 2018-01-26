@@ -81,6 +81,14 @@
     ember-cli-babel "^6.6.0"
     ember-compatibility-helpers "^0.1.2"
 
+"@ember/test-helpers@^0.7.10":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@ember/test-helpers/-/test-helpers-0.7.14.tgz#e53b0a66f144a0a85579c4432e56960971a3f739"
+  dependencies:
+    broccoli-funnel "^2.0.1"
+    ember-cli-babel "^6.10.0"
+    ember-cli-htmlbars-inline-precompile "^1.0.0"
+
 "@glimmer/di@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@glimmer/di/-/di-0.2.0.tgz#73bfd4a6ee4148a80bf092e8a5d29bcac9d4ce7e"
@@ -2114,6 +2122,12 @@ commander@2.9.0, commander@^2.5.0, commander@^2.6.0:
   dependencies:
     graceful-readlink ">= 1.0.0"
 
+common-tags@^1.5.1:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/common-tags/-/common-tags-1.7.2.tgz#24d9768c63d253a56ecff93845b44b4df1d52771"
+  dependencies:
+    babel-runtime "^6.26.0"
+
 commoner@~0.10.3:
   version "0.10.8"
   resolved "https://registry.yarnpkg.com/commoner/-/commoner-0.10.8.tgz#34fc3672cd24393e8bb47e70caa0293811f4f2c5"
@@ -2689,7 +2703,7 @@ ember-cli-babel@^6.0.0, ember-cli-babel@^6.0.0-beta.7, ember-cli-babel@^6.1.0, e
     clone "^2.0.0"
     ember-cli-version-checker "^2.0.0"
 
-ember-cli-babel@^6.10.0, ember-cli-babel@^6.6.0:
+ember-cli-babel@^6.10.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.8.1:
   version "6.11.0"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.11.0.tgz#79cb184bac3c05bfe181ddc306bac100ab1f9493"
   dependencies:
@@ -2896,17 +2910,11 @@ ember-cli-lodash-subset@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/ember-cli-lodash-subset/-/ember-cli-lodash-subset-2.0.1.tgz#20cb68a790fe0fde2488ddfd8efbb7df6fe766f2"
 
-ember-cli-mocha@^0.14.4:
-  version "0.14.4"
-  resolved "https://registry.yarnpkg.com/ember-cli-mocha/-/ember-cli-mocha-0.14.4.tgz#5f63907f952ec6d6609d551ce321dc83823ba63f"
+ember-cli-mocha@^0.15.0-beta.1:
+  version "0.15.0-beta.1"
+  resolved "https://registry.yarnpkg.com/ember-cli-mocha/-/ember-cli-mocha-0.15.0-beta.1.tgz#f3a61bf82138396841933da29d1ef1bcaa2c6dfe"
   dependencies:
-    broccoli-funnel "^1.0.1"
-    broccoli-merge-trees "^2.0.0"
-    ember-cli-babel "^6.0.0"
-    ember-cli-test-loader "^2.0.0"
-    ember-mocha "^0.12.0"
-    mocha "^2.5.3"
-    resolve "^1.1.7"
+    ember-mocha "^0.13.0-beta.3"
 
 ember-cli-node-assets@^0.2.2:
   version "0.2.2"
@@ -2977,11 +2985,11 @@ ember-cli-test-info@^1.0.0:
   dependencies:
     ember-cli-string-utils "^1.0.0"
 
-ember-cli-test-loader@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-test-loader/-/ember-cli-test-loader-2.1.0.tgz#16163bae0ac32cad1af13c4ed94c6c698b54d431"
+ember-cli-test-loader@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-test-loader/-/ember-cli-test-loader-2.2.0.tgz#3fb8d5d1357e4460d3f0a092f5375e71b6f7c243"
   dependencies:
-    ember-cli-babel "^6.0.0-beta.7"
+    ember-cli-babel "^6.8.1"
 
 ember-cli-uglify@^2.0.0:
   version "2.0.0"
@@ -3258,11 +3266,17 @@ ember-macro-helpers@^0.17.0:
     ember-cli-test-info "^1.0.0"
     ember-weakmap "^3.0.0"
 
-ember-mocha@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/ember-mocha/-/ember-mocha-0.12.0.tgz#ea27ae9838c8c6e28ea72c48084586ef5fa00a7a"
+ember-mocha@^0.13.0-beta.3:
+  version "0.13.0-beta.3"
+  resolved "https://registry.yarnpkg.com/ember-mocha/-/ember-mocha-0.13.0-beta.3.tgz#116c917cfd2d1a663e92d3f5d040e439495d232c"
   dependencies:
-    ember-test-helpers "^0.6.3"
+    "@ember/test-helpers" "^0.7.10"
+    broccoli-funnel "^2.0.1"
+    broccoli-merge-trees "^2.0.0"
+    common-tags "^1.5.1"
+    ember-cli-babel "^6.6.0"
+    ember-cli-test-loader "^2.2.0"
+    mocha "^2.5.3"
 
 ember-popper@^0.8.2:
   version "0.8.2"
@@ -3353,10 +3367,6 @@ ember-source@~2.18.0:
     inflection "^1.12.0"
     jquery "^3.2.1"
     resolve "^1.3.3"
-
-ember-test-helpers@^0.6.3:
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/ember-test-helpers/-/ember-test-helpers-0.6.3.tgz#f864cdf6f4e75f3f8768d6537785b5ab6e82d907"
 
 ember-try-config@^2.0.1:
   version "2.1.0"
