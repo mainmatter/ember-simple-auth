@@ -20,6 +20,7 @@ authorization mechanisms__.
 
 **Basic Information**
 
+
 * [What does it do?](#what-does-it-do)
 * [How does it work?](#how-does-it-work)
 * [Example App](#example-app)
