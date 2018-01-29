@@ -15,10 +15,10 @@
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-114.png">
     <link rel="apple-touch-icon" sizes="144x144" href="images/apple-144.png">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
-    <link rel="stylesheet" href="//yandex.st/highlightjs/7.4/styles/github.min.css">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:300,400">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
+    <link rel="stylesheet" href="https://yandex.st/highlightjs/7.4/styles/github.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,400">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -485,30 +485,25 @@
           <p>This website uses cookies. <a href="https://simplabs.com/privacy/">Learn more</a></p>
         </div>
         <div class="col-md-3 col-sm-4 col-xs-12">
-          <a class="cookie-button pull-right" id="cookie-button" onclick="accept()">Ok</a>
+          <a class="cookie-button pull-right" id="cookie-button">Ok</a>
           <script>
-            var banner = $('#cookie-banner');
-            var button = $('#cookie-button');
-
-            function accept() {
-              document.cookie = "cookiesAccepted=true;path=/;expires=Mon, 24 Mar 2319 09:52:10 GMT";
-              banner.remove();
-            }
-
-            function cookiesAccepted() {
+            $(function() {
+              var banner = $('#cookie-banner');
               if (document.cookie.includes('cookiesAccepted=true')) {
                 banner.remove();
               }
-            }
 
-            window.onload = cookiesAccepted;
+              var button = $('#cookie-button');
+              button.on('click', function() {
+                document.cookie = "cookiesAccepted=true;path=/;expires=Mon, 24 Mar 2319 09:52:10 GMT";
+                banner.remove();
+              });
+            });
           </script>
         </div>
       </div>
     </div>
-
-
-    <script src="//yandex.st/highlightjs/7.4/highlight.min.js"></script>
+    <script src="https://yandex.st/highlightjs/7.4/highlight.min.js"></script>
     <script type="text/javascript">
       hljs.initHighlightingOnLoad();
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
