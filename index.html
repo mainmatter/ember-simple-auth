@@ -346,6 +346,15 @@
         i.main-logo {
           margin-top: 160px;
         }
+        .cookie-banner {
+          text-align: center;
+        }
+        .cookie-banner p {
+          text-align: center;
+        }
+        .cookie-button {
+          float: none!important;
+        }
       }
 
       @media (max-width: 992px) {
@@ -478,22 +487,26 @@
         <div class="col-md-3 col-sm-4 col-xs-12">
           <a class="cookie-button pull-right" id="cookie-button" onclick="accept()">Ok</a>
           <script>
+            var banner = $('#cookie-banner');
+            var button = $('#cookie-button');
+
             function accept() {
-              var banner = $('#cookie-banner');
+              document.cookie = "cookiesAccepted=true;path=/;expires=Mon, 24 Mar 2319 09:52:10 GMT";
+              banner.remove();
+            }
+
+            function cookiesAccepted() {
               if (document.cookie.includes('cookiesAccepted=true')) {
                 banner.remove();
               }
-
-              var button = $('#cookie-button');
-              button.on('click', function() {
-                document.cookie = "cookiesAccepted=true;path=/;expires=Mon, 24 Mar 2319 09:52:10 GMT";
-                banner.remove();
-              });
             }
+
+            window.onload = cookiesAccepted;
           </script>
         </div>
       </div>
     </div>
+
 
     <script src="//yandex.st/highlightjs/7.4/highlight.min.js"></script>
     <script type="text/javascript">
