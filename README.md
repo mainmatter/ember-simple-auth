@@ -502,6 +502,22 @@ export default Base.extend({
 });
 ```
 
+### Upgrading to 2.0
+
+Some examples of injecting authorization data into outgoing requests without authorizers:
+
+### OAuth 2
+
+```js
+// oauth example
+```
+
+#### Devise
+
+```js
+// devise example
+```
+
 ## Session Stores
 
 Ember Simple Auth __persists the session state via a session store so it
