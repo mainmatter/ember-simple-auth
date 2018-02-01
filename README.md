@@ -648,7 +648,7 @@ in `package.json`:
 Ember Simple Auth comes with a __set of test helpers that can be used in
 acceptance tests__.
 
-### ember-cli-qunit 4.2.0 or greater
+### ember-cli-qunit 4.2.0 and greater
 
 If your app is using `ember-cli-qunit` [4.2.0 or
 greater](https://github.com/ember-cli/ember-cli-qunit/blob/master/CHANGELOG.md#v420-2017-12-17),
@@ -690,7 +690,7 @@ module('Acceptance | super secret url', function(hooks) {
 });
 ```
 
-### ember-cli-qunit 4.2.0 or earlier
+### ember-cli-qunit 4.1.0 and earlier
 
 For existing apps, the test helpers are merged into your applications namespace,
 and can be imported from the `helpers/ember-simple-auth` module:
