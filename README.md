@@ -646,21 +646,68 @@ in `package.json`:
 ## Testing
 
 Ember Simple Auth comes with a __set of test helpers that can be used in
-acceptance tests__:
+acceptance tests__.
 
-* `currentSession(app)`: returns the current session.
-* `authenticateSession(app, sessionData)`: authenticates the session; the
-  optional `sessionData` argument can be used to mock an authenticator
-  response - e.g. a token.
-* `invalidateSession(app)`: invalidates the session.
+### ember-cli-qunit 4.2.0 and greater
 
-The test helpers can be imported from the `helpers/ember-simple-auth`
-module in the application's namespace:
+If your app is using `ember-cli-qunit` [4.2.0 or
+greater](https://github.com/ember-cli/ember-cli-qunit/blob/master/CHANGELOG.md#v420-2017-12-17),
+you may want to migrate to the [more modern testing
+syntax](https://dockyard.com/blog/2018/01/11/modern-ember-testing). In that
+case, helpers can be imported from the `ember-simple-auth` addon namespace.
+
+```js
+// tests/acceptance/…
+import { currentSession, authenticateSession, invalidateSession} from 'ember-simple-auth/test-support';
+```
+
+The new-style helpers have the following function signatures:
+* `currentSession()` returns the current session.
+* `authenticateSession(sessionData)` authenticates the session asynchronously;
+  the optional `sessionData` argument can be used to mock an authenticator
+  response (e.g. a token or user).
+* `invalidateSession()` invalidates the session asynchronously.
+
+New tests using the async `authenticateSession` helper will look like this:
+
+```js
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
+import { currentURL, visit } from '@ember/test-helpers';
+import { authenticateSession } from 'ember-simple-auth/test-support';
+
+module('Acceptance | super secret url', function(hooks) {
+  setupApplicationTest(hooks);
+
+  test('authenticated users can visit /super-secret-url', async function(assert) {
+    await authenticateSession({
+      userId: 1,
+      otherData: 'some-data'
+    });
+    await visit('/super-secret-url');
+    assert.equal(currentURL(), '/super-secret-url', 'user is on super-secret-url');
+  });
+});
+```
+
+### ember-cli-qunit 4.1.0 and earlier
+
+For existing apps, the test helpers are merged into your applications namespace,
+and can be imported from the `helpers/ember-simple-auth` module:
 
 ```js
 // tests/acceptance/…
 import { currentSession, authenticateSession, invalidateSession } from '<app-name>/tests/helpers/ember-simple-auth';
 ```
+
+**Note** These helpers require the `app` argument.
+
+These helpers have the following function signatures:
+* `currentSession(app)`: returns the current session.
+* `authenticateSession(app, sessionData)`: authenticates the session; the
+  optional `sessionData` argument can be used to mock an authenticator
+  response - e.g. a token.
+* `invalidateSession(app)`: invalidates the session.
 
 ## Other guides
 
