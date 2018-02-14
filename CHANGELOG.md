@@ -1,3 +1,13 @@
+# 1.5.0
+
+* The acceptance test helpers no longer rely on the global `wait` test helper,
+  see #1516.
+* A new set of acceptance test helpers was introduced that is imported from the
+  `ember-simple-auth` module namespaces and supports Ember's new testing model,
+  see #1536.
+* The `ember-cookies` dependency now allows `^0.1.0` as well as `^0.2.0`, see
+  #1538.
+
 # 1.4.2
 
 * The broken `warn()` method on the `cookie` session store has been fixed,
