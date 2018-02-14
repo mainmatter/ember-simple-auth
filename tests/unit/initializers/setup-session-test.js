@@ -19,6 +19,7 @@ describe('setupSession', () => {
       register() {},
       injection() {}
     };
+    Ember.testing = true;
   });
 
   it('registers the session', function() {
