@@ -2,6 +2,18 @@ import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import OAuth2BearerAuthorizer from 'ember-simple-auth/authorizers/oauth2-bearer';
+import { registerDeprecationHandler } from '@ember/debug';
+
+let warnings;
+registerDeprecationHandler((message, options, next) => {
+  // in case a deprecation is issued before a test is started
+  if (!warnings) {
+    warnings = [];
+  }
+
+  warnings.push(message);
+  next(message, options);
+});
 
 describe('OAuth2BearerAuthorizer', () => {
   let authorizer;
@@ -9,8 +21,13 @@ describe('OAuth2BearerAuthorizer', () => {
   let block;
 
   beforeEach(function() {
+    warnings = [];
     authorizer = OAuth2BearerAuthorizer.create();
     block = sinon.spy();
+  });
+
+  it('shows deprecation warning from BaseAuthorizer', function() {
+    expect(warnings[0]).to.eq('Ember Simple Auth: Authorizers are deprecated in favour of setting headers directly.');
   });
 
   describe('#authorize', function() {

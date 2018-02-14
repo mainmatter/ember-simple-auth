@@ -24,13 +24,15 @@ import { deprecate } from '@ember/application/deprecations';
 */
 export default EmberObject.extend({
   init() {
-    deprecate(`Ember Simple Auth: Authorizers are deprecated in favour of
-    setting headers directly.`, {
-      id: 'ember-simple-auth.baseAuthorizer',
-      until: '2.0.0',
-      url: 'https://github.com/simplabs/ember-simple-auth#authorizers'
-    });
-  }
+    deprecate(`Ember Simple Auth: Authorizers are deprecated in favour of setting headers directly.`,
+      false,
+      {
+        id: 'ember-simple-auth.baseAuthorizer',
+        until: '2.0.0',
+        url: 'https://github.com/simplabs/ember-simple-auth#authorizers'
+      }
+    );
+  },
   /**
     Authorizes a block of code. This method will be invoked by the session
     service's {{#crossLink "SessionService/authorize:method"}}{{/crossLink}}
