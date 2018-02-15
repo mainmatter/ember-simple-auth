@@ -2,6 +2,8 @@ import { get } from '@ember/object';
 import { getContext, settled } from '@ember/test-helpers';
 import Promise from 'rsvp';
 import Test from 'ember-simple-auth/authenticators/test';
+import setupSession from 'ember-simple-auth/initializers/setup-session';
+import setupSessionService from 'ember-simple-auth/initializers/setup-session-service';
 
 const SESSION_SERVICE_KEY = 'service:session';
 const TEST_CONTAINER_KEY = 'authenticator:test';
@@ -24,7 +26,10 @@ function ensureAuthenticator(owner) {
 export function authenticateSession(sessionData) {
   const { owner } = getContext();
   const session = owner.lookup(SESSION_SERVICE_KEY);
-  owner.setupRouter(); // router must initialize fully before authentication
+  // router must initialize fully before authentication in application tests cases
+  if (owner.setupRouter) {
+    owner.setupRouter();
+  }
   ensureAuthenticator(owner);
   return session.authenticate(TEST_CONTAINER_KEY, sessionData).then(() => {
     return settled();
@@ -58,4 +63,17 @@ export function invalidateSession() {
     }
   })
     .then(() => settled());
+}
+
+/**
+ * Runs the session initializers to setup a session test.
+ * This is useful for using sessions in non ApplicationTest contexts.
+ *
+ * @public
+ */
+export function setupSessionTest(hooks) {
+  hooks.beforeEach(function() {
+    setupSession(this.owner);
+    setupSessionService(this.owner);
+  });
 }

@@ -658,7 +658,7 @@ case, helpers can be imported from the `ember-simple-auth` addon namespace.
 
 ```js
 // tests/acceptance/…
-import { currentSession, authenticateSession, invalidateSession} from 'ember-simple-auth/test-support';
+import { currentSession, authenticateSession, invalidateSession, setupSessionTest} from 'ember-simple-auth/test-support';
 ```
 
 The new-style helpers have the following function signatures:
@@ -667,6 +667,7 @@ The new-style helpers have the following function signatures:
   the optional `sessionData` argument can be used to mock an authenticator
   response (e.g. a token or user).
 * `invalidateSession()` invalidates the session asynchronously.
+* `setupSessionTest(hooks)` prepares the test context to use sessions.
 
 New tests using the async `authenticateSession` helper will look like this:
 
@@ -686,6 +687,28 @@ module('Acceptance | super secret url', function(hooks) {
     });
     await visit('/super-secret-url');
     assert.equal(currentURL(), '/super-secret-url', 'user is on super-secret-url');
+  });
+});
+```
+
+If you want to leverage the test helpers outside of ApplicationTests, use the provided `setupSessionTest` function.
+```js
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from 'ember-test-helpers';
+import { authenticateSession , setupSessionTest} from 'ember-simple-auth/test-support';
+
+module('my-component test', function(hooks) {
+  setupRenderingTest(hooks); // could also be `setupTest`
+  setupSessionTest(hooks);
+
+  test('my-component shows logged in text', async function(assert) {
+    await authenticateSession({
+      userId: 1,
+      otherData: 'some-data'
+    });
+    await render('{{my-component}}');
+    assert.equal(this.element.innerHTML, 'User 1 is logged in', 'user is logged in');
   });
 });
 ```

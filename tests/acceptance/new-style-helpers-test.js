@@ -1,6 +1,7 @@
 import { tryInvoke } from '@ember/utils';
 import {
   currentURL,
+  setApplication,
   setupContext,
   setupApplicationContext,
   teardownApplicationContext,
@@ -21,6 +22,9 @@ import {
   authenticateSession,
   currentSession
 } from 'ember-simple-auth/test-support';
+import setupSession from 'ember-simple-auth/initializers/setup-session';
+import setupSessionService from 'ember-simple-auth/initializers/setup-session-service';
+
 import config from '../../config/environment';
 
 describe('Acceptance: New style helpers', function() {
@@ -87,5 +91,60 @@ describe('Acceptance: New style helpers', function() {
           expect(currentURL()).to.eq('/');
         });
     });
+  });
+});
+
+describe('New style helpers outside of ApplicationContext', function() {
+  let context;
+
+  before(function() {
+    // guarantee that application test state isn't leaking into these tests
+    setApplication(undefined);
+  });
+
+  beforeEach(function() {
+    context = {};
+    return setupContext(context).then(() => {
+      // Must run the session initializers
+      setupSession(context.owner);
+      setupSessionService(context.owner);
+    });
+  });
+
+  afterEach(function() {
+    return teardownContext(context);
+  });
+
+  if (!hasEmberVersion(2, 4)) {
+    // guard against running test module on unsupported version (before 2.4)
+    return;
+  }
+
+  it('invalidateSession helper works', function() {
+    return invalidateSession()
+      .then(() => {
+        let { owner } = context;
+        let session = owner.lookup('service:session');
+        expect(session.get('isAuthenticated')).to.be.false;
+      });
+  });
+
+  it('authenticateSession helper works', function() {
+    return authenticateSession({ userId: 1, otherData: 'some-data' })
+      .then(() => {
+        let { owner } = context;
+        let session = owner.lookup('service:session');
+        expect(session.get('isAuthenticated')).to.be.true;
+      });
+  });
+
+  it('currentSession helper works', function() {
+    return authenticateSession({ userId: 1, otherData: 'some-data' })
+      .then(() => {
+        let session = currentSession();
+        let { owner } = context;
+        let lookedUpSession = owner.lookup('service:session');
+        expect(session).to.eq(lookedUpSession);
+      });
   });
 });
