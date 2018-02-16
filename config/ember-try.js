@@ -1,5 +1,6 @@
 /* eslint-env node */
 module.exports = {
+  useYarn: true,
   command: 'yarn test',
   scenarios: [
     {
