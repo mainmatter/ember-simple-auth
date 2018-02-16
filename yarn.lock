@@ -55,8 +55,8 @@
     to-fast-properties "^2.0.0"
 
 "@ember-decorators/argument@^0.8.10":
-  version "0.8.11"
-  resolved "https://registry.yarnpkg.com/@ember-decorators/argument/-/argument-0.8.11.tgz#7f3064c8394138b9e69a7cdc739016d9296961fa"
+  version "0.8.12"
+  resolved "https://registry.yarnpkg.com/@ember-decorators/argument/-/argument-0.8.12.tgz#07dfc40ba84e97369cde207c3c53a069dcb2f86e"
   dependencies:
     babel-plugin-filter-imports "^1.1.1"
     broccoli-funnel "^2.0.1"
