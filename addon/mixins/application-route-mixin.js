@@ -74,7 +74,7 @@ export default Mixin.create({
     return Configuration.routeAfterAuthentication;
   }),
 
-  init() {
+  activate() {
     this._super(...arguments);
     this._subscribeToSessionEvents();
   },
