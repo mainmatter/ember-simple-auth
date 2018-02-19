@@ -24,7 +24,6 @@ function ensureAuthenticator(owner) {
 export function authenticateSession(sessionData) {
   const { owner } = getContext();
   const session = owner.lookup(SESSION_SERVICE_KEY);
-  owner.setupRouter(); // router must initialize fully before authentication
   ensureAuthenticator(owner);
   return session.authenticate(TEST_CONTAINER_KEY, sessionData).then(() => {
     return settled();
