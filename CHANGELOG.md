@@ -1,3 +1,10 @@
+# 1.5.1
+
+* Session restoration is now setup in an initializer (vs. an instance
+  initializer), see #1547.
+* The new acceptance test helpers introduced with 1.5.0 no longer need to
+  manually set up the router (which was using private API), see #1548.
+
 # 1.5.0
 
 * The acceptance test helpers no longer rely on the global `wait` test helper,
