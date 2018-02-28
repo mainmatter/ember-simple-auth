@@ -200,6 +200,10 @@ export default Service.extend(Evented, {
     {{#crossLink "SessionService/invalidationSucceeded:event"}}{{/crossLink}}
     event.
 
+    When calling the {{#crossLink "BaseAuthenticator/invalidate:method"}}{{/crossLink}}
+    on an already unauthenticated session, the method will return a resolved Promise
+    immediately.
+
     @method invalidate
     @param {Array} ...args arguments that will be passed to the authenticator
     @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully and rejects otherwise
