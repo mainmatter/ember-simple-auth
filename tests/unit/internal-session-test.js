@@ -776,6 +776,21 @@ describe('InternalSession', () => {
               done();
             });
           });
+
+          it('it does not trigger the "sessionInvalidationFailed" event', function() {
+            let triggered = false;
+            session.one('sessionInvalidationFailed', () => (triggered = true));
+
+            return session.invalidate().then(() => {
+              expect(triggered).to.be.false;
+            });
+          });
+
+          it('it returns with a resolved Promise', function() {
+            return session.invalidate().then(() => {
+              expect(true).to.be.true;
+            });
+          });
         });
       });
     });
