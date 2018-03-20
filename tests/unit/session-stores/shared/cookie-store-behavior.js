@@ -307,7 +307,7 @@ export default function(options) {
       });
 
       next(() => {
-        expect(cookieSpy).to.have.been.called.once;
+        expect(cookieSpy).to.have.been.calledOnce;
         done();
       });
     });
