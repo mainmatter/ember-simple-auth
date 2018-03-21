@@ -75,21 +75,28 @@ export default Mixin.create({
     @protected
   */
   ajaxOptions() {
-    const authorizer = this.get('authorizer');
-    assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", isPresent(authorizer));
-
     let hash = this._super(...arguments);
     let { beforeSend } = hash;
 
-    hash.beforeSend = (xhr) => {
-      this.get('session').authorize(authorizer, (headerName, headerValue) => {
-        xhr.setRequestHeader(headerName, headerValue);
-      });
+    hash.beforeSend = xhr => {
+      if (this.get('authorizer')) {
+        const authorizer = this.get('authorizer');
+        this.get('session').authorize(authorizer, (headerName, headerValue) => {
+          xhr.setRequestHeader(headerName, headerValue);
+        });
+      } else {
+        this.authorize(xhr);
+      }
+
       if (beforeSend) {
         beforeSend(xhr);
       }
     };
     return hash;
+  },
+
+  authorize() {
+    assert('The `authorize` method should be overridden in your application adapter. It should accept a single argument, the xhr response.');
   },
 
   /**
