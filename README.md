@@ -426,6 +426,8 @@ export default Base.extend({
 
 __Authorizers use the session data acquired by the authenticator to construct
 authorization data__ that can be injected into outgoing network requests. As
+[Deprecation warning: Authorizers are deprecated](https://github.com/simplabs/ember-simple-auth#deprecation-of-authorizers)
+
 the authorizer depends on the data that the authenticator acquires,
 __authorizers and authenticators have to fit together__.
 
@@ -502,22 +504,29 @@ export default Base.extend({
 });
 ```
 
-### Upgrading to 2.0
+### Deprecation of Authorizers
 
-Starting from Ember Simple Auth 2.0, authorizers and the session service's `authorize` will be deprecated. You will need to configure your data adapter to include authorization data in request headers. Refer to the [Ember Guides](https://guides.emberjs.com/v3.0.0/models/customizing-adapters/#toc_headers-customization) for details on header configuration.
+Authorizers and the session service's `authorize` method are deprecated and
+will be removed from Ember Simple Auth 2.0. The concept seemed like a good idea
+in the early days of Ember Simple Auth, but proved to provide limited value for
+the added complexity. To replace authorizers in an application, simply get the
+session data from the session service and inject it where needed.
 
-The idea is to look up authorization data in the session service and include that data in your data adapter headers. Examples:
+In most cases, authorizers are used with Ember Data adapters (refer to the
+[Ember Guides](https://guides.emberjs.com/v3.0.0/models/customizing-adapters/#toc_headers-customization)
+for details on adapters). Replacing authorizers in these scenarios is
+straightforward.
+
+Examples:
 
 ```js
 // OAuth 2
 export default DS.JSONAPIAdapter.extend({
   session: service('session'),
-  headers: computed('session.data.authenticated.access_token', function() {
+  authorize(xhr) {
     let { access_token } = this.get('session.data.authenticated');
-    return {
-      Authorization: `Bearer ${access_token}`,
-    };
-  }),
+    xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
+  }
 });
 ```
 
@@ -528,18 +537,11 @@ export default DS.JSONAPIAdapter.extend({
   // defaults
   // identificationAttributeName: 'email'
   // tokenAttributeName: 'token'
-  headers: computed(
-    'session.data.authenticated.email',
-    'session.data.authenticated.token',
-    function() {
-      let { email, token } = this.get('session.data.authenticated');
-      let authData = `token="${token}", email="${email}"`;
-
-      return {
-        Authorization: `Token ${authData}`,
-      };
-    }
-  ),
+  authorize(xhr) {
+    let { email, token } = this.get('session.data.authenticated');
+    let authData = `Token token="${token}", email="${email}"`;
+    xhr.setRequestHeader('Authorization', authData);
+  }
 });
 ```
 
