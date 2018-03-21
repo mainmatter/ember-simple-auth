@@ -10,17 +10,6 @@ import Session from 'ember-simple-auth/services/session';
 
 import createWithContainer from '../../helpers/create-with-container';
 
-let warnings;
-registerDeprecationHandler((message, options, next) => {
-  // in case a deprecation is issued before a test is started
-  if (!warnings) {
-    warnings = [];
-  }
-
-  warnings.push(message);
-  next(message, options);
-});
-
 describe('SessionService', () => {
   let sessionService;
   let session;
@@ -177,7 +166,6 @@ describe('SessionService', () => {
       beforeEach(function() {
         sessionService.set('isAuthenticated', true);
         sessionService.set('data', { authenticated: { some: 'data' } });
-        warnings = [];
       });
 
       it('authorizes with the authorizer', function() {
@@ -194,6 +182,17 @@ describe('SessionService', () => {
       });
 
       it("shows deprecation warning when 'authorize' is called", function() {
+        let warnings = [];
+        registerDeprecationHandler((message, options, next) => {
+          // in case a deprecation is issued before a test is started
+          if (!warnings) {
+            warnings = [];
+          }
+
+          warnings.push(message);
+          next(message, options);
+        });
+
         sessionService.authorize('authorizer', 'block');
         expect(warnings).to.have.length(1);
         expect(warnings[0]).to.equal("Ember Simple Auth: 'authorize' is deprecated.");

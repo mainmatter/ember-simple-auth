@@ -4,24 +4,22 @@ import sinon from 'sinon';
 import Devise from 'ember-simple-auth/authorizers/devise';
 import { registerDeprecationHandler } from '@ember/debug';
 
-let warnings;
-registerDeprecationHandler((message, options, next) => {
-  // in case a deprecation is issued before a test is started
-  if (!warnings) {
-    warnings = [];
-  }
-
-  warnings.push(message);
-  next(message, options);
-});
-
 describe('DeviseAuthorizer', () => {
   let authorizer;
   let block;
   let data;
+  let warnings;
 
   beforeEach(function() {
-    warnings = [];
+    registerDeprecationHandler((message, options, next) => {
+      // in case a deprecation is issued before a test is started
+      if (!warnings) {
+        warnings = [];
+      }
+
+      warnings.push(message);
+      next(message, options);
+    });
     authorizer = Devise.create();
     block = sinon.spy();
   });
