@@ -41,7 +41,11 @@ export default ObjectProxy.extend(Evented, {
 
   invalidate() {
     this._busy = true;
-    assert('Session#invalidate requires the session to be authenticated!', this.get('isAuthenticated'));
+
+    if (!this.get('isAuthenticated')) {
+      this._busy = false;
+      return RSVP.Promise.resolve();
+    }
 
     let authenticator = this._lookupAuthenticator(this.authenticator);
     return authenticator.invalidate(this.content.authenticated, ...arguments).then(() => {
