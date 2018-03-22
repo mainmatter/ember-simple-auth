@@ -38,12 +38,16 @@ const persistingProperty = function(beforeSet = function() {}) {
   ```js
   // app/controllers/login.js
   export default Ember.Controller.extend({
-    rememberMe: false,
-
-    _rememberMeChanged: Ember.observer('rememberMe', function() {
-      const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;
-      this.set('session.store.cookieExpirationTime', expirationTime);
-    }
+    rememberMe: computed({
+      get(key) {
+        return false;
+      },
+      set(key, value) {
+        let expirationTime = value ? (14 * 24 * 60 * 60) : null;
+        this.set('session.store.cookieExpirationTime', expirationTime);
+        return value;
+      }
+    })
   });
   ```
 
