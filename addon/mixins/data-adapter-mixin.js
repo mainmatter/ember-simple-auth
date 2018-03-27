@@ -96,7 +96,7 @@ export default Mixin.create({
   },
 
   authorize() {
-    assert('The `authorize` method should be overridden in your application adapter. It should accept a single argument, the xhr response.');
+    assert('The `authorize` method should be overridden in your application adapter. It should accept a single argument, the request object.');
   },
 
   /**
