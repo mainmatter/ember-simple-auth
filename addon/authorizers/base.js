@@ -24,6 +24,7 @@ import { deprecate } from '@ember/application/deprecations';
 */
 export default EmberObject.extend({
   init() {
+    this._super(...arguments);
     deprecate(`Ember Simple Auth: Authorizers are deprecated in favour of setting headers directly.`,
       false,
       {
