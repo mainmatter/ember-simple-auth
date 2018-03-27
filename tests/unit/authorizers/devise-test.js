@@ -8,9 +8,14 @@ describe('DeviseAuthorizer', () => {
   let authorizer;
   let block;
   let data;
-  let warnings;
 
   beforeEach(function() {
+    authorizer = Devise.create();
+    block = sinon.spy();
+  });
+
+  it('shows deprecation warning from BaseAuthorizer', function() {
+    let warnings;
     registerDeprecationHandler((message, options, next) => {
       // in case a deprecation is issued before a test is started
       if (!warnings) {
@@ -21,10 +26,7 @@ describe('DeviseAuthorizer', () => {
       next(message, options);
     });
     authorizer = Devise.create();
-    block = sinon.spy();
-  });
 
-  it('shows deprecation warning from BaseAuthorizer', function() {
     expect(warnings[0]).to.eq('Ember Simple Auth: Authorizers are deprecated in favour of setting headers directly.');
   });
 
