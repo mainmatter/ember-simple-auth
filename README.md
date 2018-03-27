@@ -521,18 +521,21 @@ Examples:
 
 ```js
 // OAuth 2
-export default DS.JSONAPIAdapter.extend({
-  session: service('session'),
+export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
+  session: service('session'), 
   authorize(xhr) {
     let { access_token } = this.get('session.data.authenticated');
     xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
   }
 });
+
+// DataAdapterMixin already injects the `session` service. It is
+// included here for clarity.
 ```
 
 ```js
 // Devise
-export default DS.JSONAPIAdapter.extend({
+export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
   session: service('session'),
   // defaults
   // identificationAttributeName: 'email'
