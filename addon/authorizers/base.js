@@ -1,4 +1,5 @@
 import EmberObject from '@ember/object';
+import { deprecate } from '@ember/application/deprecations';
 
 /**
   The base class for all authorizers. __This serves as a starting point for
@@ -18,9 +19,21 @@ import EmberObject from '@ember/object';
   @class BaseAuthorizer
   @module ember-simple-auth/authorizers/base
   @extends Ember.Object
+  @deprecated BaseAuthorizer:class
   @public
 */
 export default EmberObject.extend({
+  init() {
+    this._super(...arguments);
+    deprecate(`Ember Simple Auth: Authorizers are deprecated in favour of setting headers directly.`,
+      false,
+      {
+        id: 'ember-simple-auth.baseAuthorizer',
+        until: '2.0.0',
+        url: 'https://github.com/simplabs/ember-simple-auth#deprecation-of-authorizers',
+      }
+    );
+  },
   /**
     Authorizes a block of code. This method will be invoked by the session
     service's {{#crossLink "SessionService/authorize:method"}}{{/crossLink}}

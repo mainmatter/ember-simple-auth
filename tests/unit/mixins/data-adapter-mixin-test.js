@@ -43,11 +43,23 @@ describe('DataAdapterMixin', () => {
       expect(hash).to.have.ownProperty('beforeSend');
     });
 
-    it('asserts the presence of authorizer', function() {
+    it('asserts `authorize` is overridden', function() {
       adapter.set('authorizer', null);
+
       expect(function() {
         adapter.ajaxOptions();
+        hash.beforeSend();
       }).to.throw(/Assertion Failed/);
+    });
+
+    it('calls `authorize` when request is made', function() {
+      const authorize = sinon.spy();
+      adapter.authorize = authorize;
+      adapter.set('authorizer', null);
+      adapter.ajaxOptions();
+      hash.beforeSend();
+
+      expect(authorize).to.have.been.called;
     });
 
     it('preserves an existing beforeSend hook', function() {

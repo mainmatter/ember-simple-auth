@@ -2,6 +2,7 @@ import ObjectProxy from '@ember/object/proxy';
 import Evented from '@ember/object/evented';
 import { next } from '@ember/runloop';
 import { set } from '@ember/object';
+import { registerDeprecationHandler } from '@ember/debug';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
@@ -178,6 +179,23 @@ describe('SessionService', () => {
         expect(() => {
           sessionService.authorize('bad-authorizer', 'block');
         }).to.throw(Error, /No authorizer for factory/);
+      });
+
+      it("shows deprecation warning when 'authorize' is called", function() {
+        let warnings = [];
+        registerDeprecationHandler((message, options, next) => {
+          // in case a deprecation is issued before a test is started
+          if (!warnings) {
+            warnings = [];
+          }
+
+          warnings.push(message);
+          next(message, options);
+        });
+
+        sessionService.authorize('authorizer', 'block');
+        expect(warnings).to.have.length(1);
+        expect(warnings[0]).to.equal("Ember Simple Auth: 'authorize' is deprecated.");
       });
     });
 
