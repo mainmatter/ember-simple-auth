@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "The Ember Simple Auth API",
-        "version": "1.4.2"
+        "version": "1.6.0"
     },
     "files": {
         "addon/authenticators/base.js": {
@@ -318,7 +318,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/authorizers/base.js",
-            "line": 3,
+            "line": 4,
             "description": "The base class for all authorizers. __This serves as a starting point for\nimplementing custom authorizers and must not be used directly.__\n\nAuthorizers use the session data acquired by an authenticator when\nauthenticating the session to construct authorization data that can, e.g., be\ninjected into outgoing network requests. Depending on the authorization\nmechanism the authorizer implements, that authorization data might be an HTTP\nheader, query string parameters, a cookie, etc.\n\n__The authorizer has to fit the authenticator__ (see\n{{#crossLink \"BaseAuthenticator\"}}{{/crossLink}})\nas it can only use data that the authenticator acquires when authenticating\nthe session."
         },
         "ember-simple-auth/authorizers/devise": {
@@ -430,7 +430,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "addon/services/session.js",
-            "line": 11,
+            "line": 12,
             "description": "__The session service provides access to the current session as well as\nmethods to authenticate it, invalidate it, etc.__ It is the main interface for\nthe application to Ember Simple Auth's functionality. It can be injected via\n\n```js\n// app/components/login-form.js\nimport Ember from 'ember';\n\nexport default Ember.Component.extend({\n  session: Ember.inject.service('session')\n});\n```"
         },
         "ember-simple-auth/session-stores/adaptive": {
@@ -473,7 +473,7 @@
             "tag": "module",
             "file": "addon/session-stores/cookie.js",
             "line": 27,
-            "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: false,\n\n  _rememberMeChanged: Ember.observer('rememberMe', function() {\n    const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;\n    this.set('session.store.cookieExpirationTime', expirationTime);\n  }\n});\n```\n\n__Applications that use FastBoot must use this session store by defining the\napplication session store like this:__\n\n```js\n// app/session-stores/application.js\nimport CookieStore from 'ember-simple-auth/session-stores/cookie';\n\nexport default CookieStore.extend();\n```"
+            "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: computed({\n    get(key) {\n      return false;\n    },\n    set(key, value) {\n      let expirationTime = value ? (14 * 24 * 60 * 60) : null;\n      this.set('session.store.cookieExpirationTime', expirationTime);\n      return value;\n    }\n  })\n});\n```\n\n__Applications that use FastBoot must use this session store by defining the\napplication session store like this:__\n\n```js\n// app/session-stores/application.js\nimport CookieStore from 'ember-simple-auth/session-stores/cookie';\n\nexport default CookieStore.extend();\n```"
         },
         "ember-simple-auth/session-stores/ephemeral": {
             "name": "ember-simple-auth/session-stores/ephemeral",
@@ -631,9 +631,11 @@
             "module": "ember-simple-auth/authorizers/base",
             "namespace": "",
             "file": "addon/authorizers/base.js",
-            "line": 3,
+            "line": 4,
             "description": "The base class for all authorizers. __This serves as a starting point for\nimplementing custom authorizers and must not be used directly.__\n\nAuthorizers use the session data acquired by an authenticator when\nauthenticating the session to construct authorization data that can, e.g., be\ninjected into outgoing network requests. Depending on the authorization\nmechanism the authorizer implements, that authorization data might be an HTTP\nheader, query string parameters, a cookie, etc.\n\n__The authorizer has to fit the authenticator__ (see\n{{#crossLink \"BaseAuthenticator\"}}{{/crossLink}})\nas it can only use data that the authenticator acquires when authenticating\nthe session.",
             "extends": "Ember.Object",
+            "deprecated": true,
+            "deprecationMessage": "BaseAuthorizer:class",
             "access": "public",
             "tagname": ""
         },
@@ -767,7 +769,7 @@
             "module": "ember-simple-auth/services/session",
             "namespace": "",
             "file": "addon/services/session.js",
-            "line": 11,
+            "line": 12,
             "description": "__The session service provides access to the current session as well as\nmethods to authenticate it, invalidate it, etc.__ It is the main interface for\nthe application to Ember Simple Auth's functionality. It can be injected via\n\n```js\n// app/components/login-form.js\nimport Ember from 'ember';\n\nexport default Ember.Component.extend({\n  session: Ember.inject.service('session')\n});\n```",
             "extends": "Ember.Service",
             "uses": [
@@ -825,7 +827,7 @@
             "namespace": "",
             "file": "addon/session-stores/cookie.js",
             "line": 27,
-            "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: false,\n\n  _rememberMeChanged: Ember.observer('rememberMe', function() {\n    const expirationTime = this.get('rememberMe') ? (14 * 24 * 60 * 60) : null;\n    this.set('session.store.cookieExpirationTime', expirationTime);\n  }\n});\n```\n\n__Applications that use FastBoot must use this session store by defining the\napplication session store like this:__\n\n```js\n// app/session-stores/application.js\nimport CookieStore from 'ember-simple-auth/session-stores/cookie';\n\nexport default CookieStore.extend();\n```",
+            "description": "Session store that persists data in a cookie.\n\nBy default the cookie session store uses a session cookie that expires and is\ndeleted when the browser is closed. The cookie expiration period can be\nconfigured by setting the\n{{#crossLink \"CookieStore/cookieExpirationTime:property\"}}{{/crossLink}}\nproperty. This can be used to implement \"remember me\" functionality that will\neither store the session persistently or in a session cookie depending on\nwhether the user opted in or not:\n\n```js\n// app/controllers/login.js\nexport default Ember.Controller.extend({\n  rememberMe: computed({\n    get(key) {\n      return false;\n    },\n    set(key, value) {\n      let expirationTime = value ? (14 * 24 * 60 * 60) : null;\n      this.set('session.store.cookieExpirationTime', expirationTime);\n      return value;\n    }\n  })\n});\n```\n\n__Applications that use FastBoot must use this session store by defining the\napplication session store like this:__\n\n```js\n// app/session-stores/application.js\nimport CookieStore from 'ember-simple-auth/session-stores/cookie';\n\nexport default CookieStore.extend();\n```",
             "extends": "BaseStore",
             "access": "public",
             "tagname": ""
@@ -1524,7 +1526,7 @@
         },
         {
             "file": "addon/authorizers/base.js",
-            "line": 24,
+            "line": 37,
             "description": "Authorizes a block of code. This method will be invoked by the session\nservice's {{#crossLink \"SessionService/authorize:method\"}}{{/crossLink}}\nmethod which will pass the current authenticated session data (see\n{{#crossLink \"SessionService/data:property\"}}{{/crossLink}}) and a block.\nDepending on the mechanism it implements, the authorizer transforms the\nsession data into authorization data and invokes the block with that data.\n\n`BaseAuthorizer`'s implementation does nothing. __This method must be\noverridden in custom authorizers.__",
             "itemtype": "method",
             "name": "authorize",
@@ -1759,7 +1761,7 @@
         },
         {
             "file": "addon/mixins/data-adapter-mixin.js",
-            "line": 95,
+            "line": 102,
             "description": "Adds request headers containing the authorization data as constructed\nby the {{#crossLink \"DataAdapterMixin/authorizer:property\"}}{{/crossLink}}.\n\nUntil [emberjs/rfcs#171](https://github.com/emberjs/rfcs/pull/171)\ngets resolved and [ds-improved-ajax](https://github.com/emberjs/data/pull/3099)\n[feature flag](https://github.com/emberjs/data/blob/master/FEATURES.md#feature-flags)\nis enabled, this method will **not** be used.\nSee `ajaxOptions` instead.",
             "itemtype": "method",
             "name": "headersForRequest",
@@ -1770,7 +1772,7 @@
         },
         {
             "file": "addon/mixins/data-adapter-mixin.js",
-            "line": 120,
+            "line": 127,
             "description": "This method is called for every response that the adapter receives from the\nAPI. If the response has a 401 status code it invalidates the session (see\n{{#crossLink \"SessionService/invalidate:method\"}}{{/crossLink}}).",
             "itemtype": "method",
             "name": "handleResponse",
@@ -1803,7 +1805,7 @@
         },
         {
             "file": "addon/mixins/data-adapter-mixin.js",
-            "line": 137,
+            "line": 144,
             "description": "The default implementation for handleResponse.\nIf the response has a 401 status code it invalidates the session (see\n {{#crossLink \"SessionService/invalidate:method\"}}{{/crossLink}}).\n\nOverride this method if you want custom invalidation logic for incoming responses.",
             "itemtype": "method",
             "name": "ensureResponseAuthorized",
@@ -1928,7 +1930,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 32,
+            "line": 33,
             "description": "Triggered whenever the session is successfully authenticated. This happens\nwhen the session gets authenticated via\n{{#crossLink \"SessionService/authenticate:method\"}}{{/crossLink}} but also\nwhen the session is authenticated in another tab or window of the same\napplication and the session state gets synchronized across tabs or windows\nvia the store (see\n{{#crossLink \"BaseStore/sessionDataUpdated:event\"}}{{/crossLink}}).\n\nWhen using the {{#crossLink \"ApplicationRouteMixin\"}}{{/crossLink}} this\nevent will automatically get handled (see\n{{#crossLink \"ApplicationRouteMixin/sessionAuthenticated:method\"}}{{/crossLink}}).",
             "itemtype": "event",
             "name": "authenticationSucceeded",
@@ -1939,7 +1941,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 49,
+            "line": 50,
             "description": "Triggered whenever the session is successfully invalidated. This happens\nwhen the session gets invalidated via\n{{#crossLink \"SessionService/invalidate:method\"}}{{/crossLink}} but also\nwhen the session is invalidated in another tab or window of the same\napplication and the session state gets synchronized across tabs or windows\nvia the store (see\n{{#crossLink \"BaseStore/sessionDataUpdated:event\"}}{{/crossLink}}).\n\nWhen using the {{#crossLink \"ApplicationRouteMixin\"}}{{/crossLink}} this\nevent will automatically get handled (see\n{{#crossLink \"ApplicationRouteMixin/sessionInvalidated:method\"}}{{/crossLink}}).",
             "itemtype": "event",
             "name": "invalidationSucceeded",
@@ -1950,7 +1952,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 66,
+            "line": 67,
             "description": "Returns whether the session is currently authenticated.",
             "itemtype": "property",
             "name": "isAuthenticated",
@@ -1964,7 +1966,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 77,
+            "line": 78,
             "description": "The current session data as a plain object. The\n`authenticated` key holds the session data that the authenticator resolved\nwith when the session was authenticated (see\n{{#crossLink \"BaseAuthenticator/authenticate:method\"}}{{/crossLink}}) and\nthat will be cleared when the session is invalidated. This data cannot be\nwritten. All other session data is writable and will not be cleared when\nthe session is invalidated.",
             "itemtype": "property",
             "name": "data",
@@ -1978,7 +1980,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 94,
+            "line": 95,
             "description": "The session store.",
             "itemtype": "property",
             "name": "store",
@@ -1992,7 +1994,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 105,
+            "line": 106,
             "description": "A previously attempted but intercepted transition (e.g. by the\n{{#crossLink \"AuthenticatedRouteMixin\"}}{{/crossLink}}). If an attempted\ntransition is present, the\n{{#crossLink \"ApplicationRouteMixin\"}}{{/crossLink}} will retry it when the\nsession becomes authenticated (see\n{{#crossLink \"ApplicationRouteMixin/sessionAuthenticated:method\"}}{{/crossLink}}).",
             "itemtype": "property",
             "name": "attemptedTransition",
@@ -2005,7 +2007,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 150,
+            "line": 151,
             "description": "__Authenticates the session with an `authenticator`__ and appropriate\narguments. The authenticator implements the actual steps necessary to\nauthenticate the session (see\n{{#crossLink \"BaseAuthenticator/authenticate:method\"}}{{/crossLink}}) and\nreturns a promise after doing so. The session handles the returned promise\nand when it resolves becomes authenticated, otherwise remains\nunauthenticated. All data the authenticator resolves with will be\naccessible via the\n{{#crossLink \"SessionService/data:property\"}}session data's{{/crossLink}}\n`authenticated` property.\n\n__This method returns a promise. A resolving promise indicates that the\nsession was successfully authenticated__ while a rejecting promise\nindicates that authentication failed and the session remains\nunauthenticated. The promise does not resolve with a value; instead, the\ndata returned from the authenticator is available via the\n{{#crossLink \"SessionService/data:property\"}}{{/crossLink}} property.\n\nWhen authentication succeeds this will trigger the\n{{#crossLink \"SessionService/authenticationSucceeded:event\"}}{{/crossLink}}\nevent.",
             "itemtype": "method",
             "name": "authenticate",
@@ -2034,8 +2036,8 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 185,
-            "description": "__Invalidates the session with the authenticator it is currently\nauthenticated with__ (see\n{{#crossLink \"SessionService/authenticate:method\"}}{{/crossLink}}). This\ninvokes the authenticator's\n{{#crossLink \"BaseAuthenticator/invalidate:method\"}}{{/crossLink}} method\nand handles the returned promise accordingly.\n\nThis method returns a promise. A resolving promise indicates that the\nsession was successfully invalidated while a rejecting promise indicates\nthat invalidation failed and the session remains authenticated. Once the\nsession is successfully invalidated it clears all of its authenticated data\n(see {{#crossLink \"SessionService/data:property\"}}{{/crossLink}}).\n\nWhen invalidation succeeds this will trigger the\n{{#crossLink \"SessionService/invalidationSucceeded:event\"}}{{/crossLink}}\nevent.",
+            "line": 186,
+            "description": "__Invalidates the session with the authenticator it is currently\nauthenticated with__ (see\n{{#crossLink \"SessionService/authenticate:method\"}}{{/crossLink}}). This\ninvokes the authenticator's\n{{#crossLink \"BaseAuthenticator/invalidate:method\"}}{{/crossLink}} method\nand handles the returned promise accordingly.\n\nThis method returns a promise. A resolving promise indicates that the\nsession was successfully invalidated while a rejecting promise indicates\nthat invalidation failed and the session remains authenticated. Once the\nsession is successfully invalidated it clears all of its authenticated data\n(see {{#crossLink \"SessionService/data:property\"}}{{/crossLink}}).\n\nWhen invalidation succeeds this will trigger the\n{{#crossLink \"SessionService/invalidationSucceeded:event\"}}{{/crossLink}}\nevent.\n\nWhen calling the {{#crossLink \"BaseAuthenticator/invalidate:method\"}}{{/crossLink}}\non an already unauthenticated session, the method will return a resolved Promise\nimmediately.",
             "itemtype": "method",
             "name": "invalidate",
             "params": [
@@ -2057,7 +2059,7 @@
         },
         {
             "file": "addon/services/session.js",
-            "line": 214,
+            "line": 219,
             "description": "Authorizes a block of code with an authorizer (see\n{{#crossLink \"BaseAuthorizer/authorize:method\"}}{{/crossLink}}) if the\nsession is authenticated. If the session is not currently authenticated\nthis method does nothing.\n\n```js\nthis.get('session').authorize('authorizer:oauth2-bearer', (headerName, headerValue) => {\n  xhr.setRequestHeader(headerName, headerValue);\n});\n```",
             "itemtype": "method",
             "name": "authorize",
@@ -2073,6 +2075,8 @@
                     "type": "Function"
                 }
             ],
+            "deprecated": true,
+            "deprecationMessage": "Session/authorize:method",
             "access": "public",
             "tagname": "",
             "class": "SessionService",
@@ -2267,7 +2271,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 69,
+            "line": 73,
             "description": "The domain to use for the cookie, e.g., \"example.com\", \".example.com\"\n(which includes all subdomains) or \"subdomain.example.com\". If not\nexplicitly set, the cookie domain defaults to the domain the session was\nauthenticated on.",
             "itemtype": "property",
             "name": "cookieDomain",
@@ -2280,7 +2284,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 83,
+            "line": 87,
             "description": "The name of the cookie.",
             "itemtype": "property",
             "name": "cookieName",
@@ -2293,7 +2297,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 96,
+            "line": 100,
             "description": "The path to use for the cookie, e.g., \"/\", \"/something\".",
             "itemtype": "property",
             "name": "cookiePath",
@@ -2306,7 +2310,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 107,
+            "line": 111,
             "description": "The expiration time for the cookie in seconds. A value of `null` will make\nthe cookie a session cookie that expires and gets deleted when the browser\nis closed.\n\nThe recommended minimum value is 90 seconds. If your value is less than\nthat, the cookie may expire before its expiration time is extended\n(expiration time is extended every 60 seconds).",
             "itemtype": "property",
             "name": "cookieExpirationTime",
@@ -2319,7 +2323,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 176,
+            "line": 180,
             "description": "Persists the `data` in the cookie.",
             "itemtype": "method",
             "name": "persist",
@@ -2341,7 +2345,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 192,
+            "line": 196,
             "description": "Returns all data currently stored in the cookie as a plain object.",
             "itemtype": "method",
             "name": "restore",
@@ -2356,7 +2360,7 @@
         },
         {
             "file": "addon/session-stores/cookie.js",
-            "line": 208,
+            "line": 212,
             "description": "Clears the store by deleting the cookie.",
             "itemtype": "method",
             "name": "clear",
