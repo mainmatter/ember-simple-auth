@@ -1,3 +1,18 @@
+# 1.6.0
+
+* Authorizers are now deprecated, see #1532. For more information on the
+  deprecation, refer to the
+  [deprecation guide](https://github.com/simplabs/ember-simple-auth#deprecation-of-authorizers).
+* The
+  [session service's `invalidate` method](https://ember-simple-auth.com/api/classes/SessionService.html#method_invalidate)
+  can now be called when the session is already invalidated, and would simply
+  do nothing in that case, see #1555.
+* The previously removed `ember-simple-auth` instance initializer has been
+  added again which fixes a regression in applications that relied on its
+  existence, see #1565.
+* Usage of the private `beginPropertyChanges`/`endPropertyChanges` methods has
+  been removed, see #1554.
+
 # 1.5.1
 
 * Session restoration is now setup in an initializer (vs. an instance
