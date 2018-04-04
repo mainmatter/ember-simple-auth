@@ -113,7 +113,7 @@ export default BaseAuthenticator.extend({
     return (Math.floor(Math.random() * (max - min)) + min) * 1000;
   }).volatile(),
 
-  _refreshTokenTimeout: null,
+  _refreshTokenInterval: null,
 
   _clientIdHeader: computed('clientId', function() {
     const clientId = this.get('clientId');
@@ -268,8 +268,8 @@ export default BaseAuthenticator.extend({
   invalidate(data) {
     const serverTokenRevocationEndpoint = this.get('serverTokenRevocationEndpoint');
     function success(resolve) {
-      run.cancel(this._refreshTokenTimeout);
-      delete this._refreshTokenTimeout;
+      clearInterval(this._refreshTokenInterval);
+      delete this._refreshTokenInterval;
       resolve();
     }
     return new RSVP.Promise((resolve) => {
@@ -350,12 +350,23 @@ export default BaseAuthenticator.extend({
       }
       const offset = this.get('tokenRefreshOffset');
       if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now - offset) {
-        run.cancel(this._refreshTokenTimeout);
-        delete this._refreshTokenTimeout;
+        clearInterval(this._refreshTokenInterval);
+        delete this._refreshTokenInterval;
         if (!Ember.testing) {
-          this._refreshTokenTimeout = run.later(this, this._refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
+          this._refreshTokenInterval = setInterval(run.bind(this, this._verifyAccessToken, expiresIn, expiresAt, refreshToken), 1000);
         }
       }
+    }
+  },
+
+  _verifyAccessToken(expiresIn, expiresAt, refreshToken) {
+    const now = (new Date()).getTime();
+    const offset = this.get('tokenRefreshOffset');
+
+    if (expiresAt <= now - offset) {
+      clearInterval(this._refreshTokenInterval);
+      delete this._refreshTokenInterval;
+      this._refreshAccessToken(expiresIn, refreshToken);
     }
   },
 
