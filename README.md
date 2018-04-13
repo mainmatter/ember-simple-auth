@@ -368,7 +368,7 @@ in the Ember container:
 this.get('session').authenticate('authenticator:some');
 ```
 
-Ember Simple Auth comes with 3 authenticators:
+Ember Simple Auth comes with 4 authenticators:
 
 * [`OAuth2PasswordGrantAuthenticator`](http://ember-simple-auth.com/api/classes/OAuth2PasswordGrantAuthenticator.html): an OAuth 2.0 authenticator that implements the _"Resource Owner Password Credentials Grant Type"_
 * [`OAuth2ImplicitGrantAuthenticator`](http://ember-simple-auth.com/api/classes/OAuth2ImplicitGrantAuthenticator.html): an OAuth 2.0 authenticator that implements the _"Implicit Grant Type"_
