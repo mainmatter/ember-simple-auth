@@ -1,26 +1,33 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      {{#link-to 'index' classNames='navbar-brand'}}
-        Home
-      {{/link-to}}
-    </div>
-    <ul class="nav navbar-nav navbar-left">
-      {{#link-to 'protected' tagName='li'}}
-        <a>Protected Page</a>
-      {{/link-to}}
-      {{#link-to 'auth-error' tagName='li'}}
-        <a>Auth Error Page</a>
-      {{/link-to}}
-    </ul>
-    {{! display logout button when the session is authenticated, login button otherwise }}
-    {{#if session.isAuthenticated}}
-      <a {{action 'logout'}} class="btn btn-danger navbar-btn navbar-right">Logout</a>
-      {{#if sessionAccount.account}}
-        <p class="navbar-text pull-right">Signed in as {{sessionAccount.account.name}}</p>
-      {{/if}}
-    {{else}}
-      <a {{action 'login'}} class="btn btn-success navbar-btn navbar-right">Login</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  {{#link-to "index" classNames="navbar-brand"}}
+    Home
+  {{/link-to}}
+
+  <ul class="navbar-nav mr-auto">
+    {{#link-to "protected" tagName="li" classNames="nav-item"}}
+      <a class="nav-link">Protected Page</a>
+    {{/link-to}}
+    {{#link-to "auth-error" tagName="li" classNames="nav-item"}}
+      <a class="nav-link">Auth Error Page</a>
+    {{/link-to}}
+  </ul>
+  {{! display logout button when the session is authenticated, login button otherwise }}
+  {{#if session.isAuthenticated}}
+    {{#if sessionAccount.account}}
+      <p class="navbar-nav pull-right mr-3">Signed in as {{sessionAccount.account.name}}</p>
     {{/if}}
-  </div>
+    <a
+      {{action "logout"}}
+      class="btn btn-danger navbar-btn navbar-right text-white"
+    >
+      Logout
+    </a>
+  {{else}}
+    <a
+      {{action "login"}}
+      class="btn btn-success navbar-btn navbar-right text-white"
+    >
+      Login
+    </a>
+  {{/if}}
 </nav>
