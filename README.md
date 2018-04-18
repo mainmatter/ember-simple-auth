@@ -738,22 +738,77 @@ module('Acceptance | super secret url', function(hooks) {
 
 ### ember-cli-qunit 4.1.0 and earlier
 
-For existing apps, the test helpers are merged into your applications namespace,
-and can be imported from the `helpers/ember-simple-auth` module:
+For apps using earlier versions of ember-cli-qunit, you can use the
+test helpers with the following signature:
+
+* `currentSession(this.application)`: returns the current session of your test application.
+* `authenticateSession(this.application, sessionData)`: authenticates the session; the
+  optional `sessionData` argument can be used to mock an authenticator
+  response - e.g. a token.
+* `invalidateSession(this.application)`: invalidates the current session in your test application.
+
+For existing apps, the test helpers are merged into your application's namespace,
+and can be imported from the `helpers/ember-simple-auth` module like this:
 
 ```js
 // tests/acceptance/…
 import { currentSession, authenticateSession, invalidateSession } from '<app-name>/tests/helpers/ember-simple-auth';
 ```
 
-**Note** These helpers require the `app` argument.
+The test helpers used in apps using ember-cli-qunit 4.1.0 and earlier all require access to the test application instance.
 
-These helpers have the following function signatures:
-* `currentSession(app)`: returns the current session.
-* `authenticateSession(app, sessionData)`: authenticates the session; the
-  optional `sessionData` argument can be used to mock an authenticator
-  response - e.g. a token.
-* `invalidateSession(app)`: invalidates the session.
+An application instance is automatically created for you once you use the `moduleForAcceptance` test helper
+that is provided in the acceptance test blueprint.
+The app instance created through `moduleForAcceptance` is available as `this.application` in your test cases:
+
+```js
+import moduleForAcceptance from '<your-app-name>/tests/helpers/module-for-acceptance';
+
+// creates and destroys a test application instance before / after each test case
+moduleForAcceptance('Acceptance | authentication');
+
+test('user is authenticating', function(assert) {
+  // returns the instance of your test application
+  let app = this.application;
+});
+```
+
+Pass in your application instance as a first parameter to the test helper functions to
+get a handle on your application's session store in your subsequent test cases.
+Here is a full example of how an acceptance test might look like if your test suite is leveraging `ember-qunit`:
+
+```js
+import Ember from 'ember';
+import { test } from 'qunit';
+import moduleForAcceptance from 'simple-tests/tests/helpers/module-for-acceptance';
+import { currentSession, authenticateSession } from 'simple-tests/tests/helpers/ember-simple-auth';
+
+moduleForAcceptance('Acceptance | authentication');
+
+test('user is authenticating', function(assert) {
+  visit('/login');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/login');
+    assert.notOk(currentSession(this.application).get('isAuthenticated'), 'the user is yet unauthenticated');
+
+    // this will authenticate the current session of the test application
+    authenticateSession(this.application, { token: 'abcdDEF', token_type: 'Bearer' });
+
+    andThen(() => {
+      assert.ok(currentSession(this.application).get('isAuthenticated'), 'the user is authenticated');
+      assert.deepEqual(currentSession(this.application).get('data.authenticated'), {
+        authenticator: 'authenticator:test',
+        token: 'abcdDEF',
+        token_type: 'Bearer'
+      });
+    });
+  });
+});
+```
+
+If you're an `ember-mocha` user, we can recommend to check out this
+[example from the test suite of ember-simple-auth itself](https://github.com/simplabs/ember-simple-auth/blob/master/tests/acceptance/authentication-test.js).
 
 ## Other guides
 
