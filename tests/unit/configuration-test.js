@@ -1,17 +1,42 @@
 import { describe, afterEach, it } from 'mocha';
 import { expect } from 'chai';
 import Configuration from 'ember-simple-auth/configuration';
+import { registerDeprecationHandler } from '@ember/debug';
 
 describe('Configuration', () => {
   afterEach(function() {
     Configuration.load({});
   });
 
-  describe('baseURL', function() {
+  describe('rootURL', function() {
     it('defaults to ""', function() {
       Configuration.load({});
 
-      expect(Configuration.baseURL).to.eql('');
+      expect(Configuration.rootURL).to.eql('');
+    });
+  });
+
+  describe('baseURL', function() {
+    it('is an alias to rootURL', function() {
+      Configuration.load({ rootURL: '/rootURL' });
+
+      expect(Configuration.baseURL).to.eql('/rootURL');
+    });
+
+    it('is deprecated', function() {
+      let warnings;
+      registerDeprecationHandler((message, options, next) => {
+        // in case a deprecation is issued before a test is started
+        if (!warnings) {
+          warnings = [];
+        }
+
+        warnings.push(message);
+        next(message, options);
+      });
+      Configuration.baseURL;
+
+      expect(warnings[0]).to.eq('The baseURL property should no longer be used. Instead, use rootURL.');
     });
   });
 
@@ -34,10 +59,10 @@ describe('Configuration', () => {
   });
 
   describe('.load', function() {
-    it('sets baseURL correctly', function() {
-      Configuration.load({ baseURL: '/baseURL' });
+    it('sets rootURL correctly', function() {
+      Configuration.load({ rootURL: '/rootURL' });
 
-      expect(Configuration.baseURL).to.eql('/baseURL');
+      expect(Configuration.rootURL).to.eql('/rootURL');
     });
 
     it('sets authenticationRoute correctly', function() {

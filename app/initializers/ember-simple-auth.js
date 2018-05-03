@@ -9,7 +9,7 @@ export default {
 
   initialize(registry) {
     const config = ENV['ember-simple-auth'] || {};
-    config.baseURL = ENV.rootURL || ENV.baseURL;
+    config.rootURL = ENV.rootURL || ENV.baseURL;
     Configuration.load(config);
 
     setupSession(registry);
