@@ -139,9 +139,9 @@ export default Mixin.create({
   sessionInvalidated() {
     if (!Ember.testing) {
       if (this.get('_isFastBoot')) {
-        this.transitionTo(Configuration.baseURL);
+        this.transitionTo(Configuration.rootURL);
       } else {
-        window.location.replace(Configuration.baseURL);
+        window.location.replace(Configuration.rootURL);
       }
     }
   }
