@@ -535,11 +535,15 @@ Examples:
 
 ```js
 // OAuth 2
+import { isPresent } from '@ember/utils';
+
 export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
   session: service('session'), 
   authorize(xhr) {
     let { access_token } = this.get('session.data.authenticated');
-    xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
+    if (isPresent(access_token)) {
+      xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
+    }
   }
 });
 
