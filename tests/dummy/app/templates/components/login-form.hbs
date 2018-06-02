@@ -13,6 +13,12 @@
     <label for="password">Password</label>
     {{input value=password placeholder='Enter Password' class='form-control' type='password'}}
   </div>
+  <div class="checkbox">
+    <label for='rememberMe'>
+      {{input checked=rememberMe name='rememberMe' type='checkbox' id='rememberMe'}}
+      Remember me
+    </label>
+  </div>
   <button type="submit" class="btn btn-default">Login</button>
 </form>
 {{#if errorMessage}}
