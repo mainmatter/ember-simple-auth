@@ -4,6 +4,7 @@ import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mi
 
 export default Route.extend(ApplicationRouteMixin, {
   sessionAccount: service('session-account'),
+  routeAfterAuthentication: 'demo.index',
 
   beforeModel() {
     return this._loadCurrentUser();
