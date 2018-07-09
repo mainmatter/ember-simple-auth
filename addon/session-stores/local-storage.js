@@ -1,11 +1,10 @@
 /* global localStorage */
 import RSVP from 'rsvp';
 
-import { computed } from '@ember/object';
-import { getOwner } from '@ember/application';
 import { bind } from '@ember/runloop';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
+import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 
 /**
   Session store that persists data in the browser's `localStorage`.
@@ -27,11 +26,7 @@ import objectsAreEqual from '../utils/objects-are-equal';
   @public
 */
 export default BaseStore.extend({
-  _isFastBoot: computed(function() {
-    const fastboot = getOwner(this).lookup('service:fastboot');
-
-    return fastboot ? fastboot.get('isFastBoot') : false;
-  }),
+  _isFastBoot: isFastBoot(),
 
   /**
     The `localStorage` key the store persists data in.

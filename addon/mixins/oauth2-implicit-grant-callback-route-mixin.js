@@ -1,7 +1,6 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
-import { computed } from '@ember/object';
-import { getOwner } from '@ember/application';
+import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 
 /**
   __This mixin is used in the callback route when using OAuth 2.0 Implicit
@@ -76,11 +75,7 @@ export default Mixin.create({
     });
   },
 
-  _isFastBoot: computed(function() {
-    const fastboot = getOwner(this).lookup('service:fastboot');
-
-    return fastboot ? fastboot.get('isFastBoot') : false;
-  }),
+  _isFastBoot: isFastBoot(),
 
   _windowLocationHash() {
     // we wrap this so we can stub it with sinon
