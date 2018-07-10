@@ -2,6 +2,21 @@ import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
+import location from 'ember-simple-auth/utils/location';
+
+function _parseResponse(locationHash) {
+  let params = {};
+  const query = locationHash.substring(locationHash.indexOf('?'));
+  const regex = /([^#?&=]+)=([^&]*)/g;
+  let match;
+
+  // decode all parameter pairs
+  while ((match = regex.exec(query)) !== null) {
+    params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
+  }
+
+  return params;
+}
 
 /**
   __This mixin is used in the callback route when using OAuth 2.0 Implicit
@@ -69,7 +84,7 @@ export default Mixin.create({
 
     let authenticator = this.get('authenticator');
 
-    let hash = this._parseResponse(this._windowLocationHash());
+    let hash = _parseResponse(location().hash);
 
     this.get('session').authenticate(authenticator, hash).catch((err) => {
       this.set('error', err);
@@ -80,24 +95,5 @@ export default Mixin.create({
     const fastboot = getOwner(this).lookup('service:fastboot');
 
     return fastboot ? fastboot.get('isFastBoot') : false;
-  }),
-
-  _windowLocationHash() {
-    // we wrap this so we can stub it with sinon
-    return window.location.hash;
-  },
-
-  _parseResponse(locationHash) {
-    let params = {};
-    const query = locationHash.substring(locationHash.indexOf('?'));
-    const regex = /([^#?&=]+)=([^&]*)/g;
-    let match;
-
-    // decode all parameter pairs
-    while ((match = regex.exec(query)) !== null) {
-      params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
-    }
-
-    return params;
-  }
+  })
 });
