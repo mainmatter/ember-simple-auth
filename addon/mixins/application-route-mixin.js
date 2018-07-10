@@ -6,6 +6,49 @@ import { getOwner } from '@ember/application';
 import { inject } from '@ember/service';
 import Ember from 'ember';
 import Configuration from './../configuration';
+import { assert } from '@ember/debug';
+import location from 'ember-simple-auth/utils/location';
+/**
+ * Standard after-session-validation logic
+ * @param {Ember.Route | Ember.Router} rou A container-aware ember object with a transitionTo() function
+ * @param {string} routeAfterAuthentication Route to redirect the user to, if no previous transition information is found
+ */
+export function sessionAuthenticatedHandler(rou, routeAfterAuthentication) {
+  assert('sessionAuthenticatedHandler must be passed a router', rou);
+  const container = getOwner(rou);
+  const session = container.lookup('service:session');
+  const attemptedTransition = session.get('attemptedTransition');
+  const cookies = container.lookup('service:cookies');
+  const redirectTarget = cookies.read('ember_simple_auth-redirectTarget');
+
+  if (attemptedTransition) {
+    attemptedTransition.retry();
+    session.set('attemptedTransition', null);
+  } else if (redirectTarget) {
+    rou.transitionTo(redirectTarget);
+    cookies.clear('ember_simple_auth-redirectTarget');
+  } else {
+    rou.transitionTo(routeAfterAuthentication);
+  }
+}
+
+/**
+ * Standard after-session-rejected logic
+ * @param {Ember.Route | Ember.Router} rou A container-aware ember object with a transitionTo() function
+ */
+export function sessionInvalidatedHandler(rou) {
+  assert('sessionInvalidatedHandler must be passed a router', rou);
+  if (!Ember.testing) {
+    // TODO: replace with use of single isFastBoot fn
+    const fastboot = getOwner(this).lookup('service:fastboot');
+    const isFastBoot = fastboot ? fastboot.get('isFastBoot') : false;
+    if (isFastBoot) {
+      rou.transitionTo(Configuration.rootURL);
+    } else {
+      location().replace(Configuration.rootURL);
+    }
+  }
+}
 
 /**
   The mixin for the application route, __defining methods that are called when
@@ -106,19 +149,9 @@ export default Mixin.create({
     @public
   */
   sessionAuthenticated() {
-    const attemptedTransition = this.get('session.attemptedTransition');
-    const cookies = getOwner(this).lookup('service:cookies');
-    const redirectTarget = cookies.read('ember_simple_auth-redirectTarget');
-
-    if (attemptedTransition) {
-      attemptedTransition.retry();
-      this.set('session.attemptedTransition', null);
-    } else if (redirectTarget) {
-      this.transitionTo(redirectTarget);
-      cookies.clear('ember_simple_auth-redirectTarget');
-    } else {
-      this.transitionTo(this.get('routeAfterAuthentication'));
-    }
+    sessionAuthenticatedHandler(
+      this,
+      this.get('routeAfterAuthentication'));
   },
 
   /**
@@ -137,12 +170,6 @@ export default Mixin.create({
     @public
   */
   sessionInvalidated() {
-    if (!Ember.testing) {
-      if (this.get('_isFastBoot')) {
-        this.transitionTo(Configuration.rootURL);
-      } else {
-        window.location.replace(Configuration.rootURL);
-      }
-    }
+    sessionInvalidatedHandler(this);
   }
 });
