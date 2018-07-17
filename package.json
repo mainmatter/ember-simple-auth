@@ -53,7 +53,7 @@
     "ember-cli-blueprint-test-helpers": "^0.18.0",
     "ember-cli-chai": "^0.5.0",
     "ember-cli-content-security-policy": "~1.0.0",
-    "ember-cli-dependency-checker": "^2.0.1",
+    "ember-cli-dependency-checker": "^3.0.0",
     "ember-cli-eslint": "^4.1.0",
     "ember-cli-fastboot": "^1.0.2",
     "ember-cli-htmlbars": "^2.0.2",
