@@ -1,6 +1,5 @@
 import Mixin from '@ember/object/mixin';
 import { A } from '@ember/array';
-import { bind } from '@ember/runloop';
 import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
 import { inject } from '@ember/service';
@@ -84,9 +83,7 @@ export default Mixin.create({
       ['authenticationSucceeded', 'sessionAuthenticated'],
       ['invalidationSucceeded', 'sessionInvalidated']
     ]).forEach(([event, method]) => {
-      this.get('session').on(event, bind(this, () => {
-        this[method](...arguments);
-      }));
+      this.get('session').on(event, (...args) => this[method](...args));
     });
   },
 
