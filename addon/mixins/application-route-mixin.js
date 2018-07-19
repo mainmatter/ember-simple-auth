@@ -84,9 +84,9 @@ export default Mixin.create({
       ['authenticationSucceeded', 'sessionAuthenticated'],
       ['invalidationSucceeded', 'sessionInvalidated']
     ]).forEach(([event, method]) => {
-      this.get('session').on(event, bind(this, () => {
-        this[method](...arguments);
-      }));
+      this.get('session').on(event, (...args) => {
+        this[method](...args);
+      });
     });
   },
 
