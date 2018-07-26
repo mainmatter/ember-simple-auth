@@ -1,3 +1,19 @@
+# 1.7.0
+
+* The `baseURL` configuration property is now deprecated; use the `rootUrl`
+  property instead, see #1597.
+* ESA works with ember-fetch@"^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0" now, see
+  #1608.
+* Session events are now bound to methods on the `application` route
+  correctly, see #1604.
+* The repeated `isFastBoot` properties used in various places in the codebase
+  have been replaced with a computed property macro, see #1623.
+* The `broccoli-file-creator` dependency has been raised to `^2.0.0`, see
+  #1636.
+* The API docs and README habe been improved for greater clarity and better
+  examples, see #1583, #1591, #1631, #1598.
+* The dummy app now implements remember-me functionality, see #1606.
+
 # 1.6.0
 
 * Authorizers are now deprecated, see #1532. For more information on the
