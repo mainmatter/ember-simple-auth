@@ -70,7 +70,7 @@
     "ember-export-application-global": "^2.0.0",
     "ember-fastboot-addon-tests": "^0.4.0",
     "ember-load-initializers": "^1.0.0",
-    "ember-resolver": "^4.3.0",
+    "ember-resolver": "^5.0.0",
     "ember-sinon": "~2.2.0",
     "ember-source": "~3.3.0",
     "ember-try": "^0.2.23",
