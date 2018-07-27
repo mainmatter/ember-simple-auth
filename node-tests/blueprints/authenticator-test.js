@@ -65,7 +65,7 @@ export default Base.extend({' + EOL + '\
     }));
   });
 
-  xit('throws when the authenticator is specified as its own base class', function() {
+  it('throws when the authenticator is specified as its own base class', function() {
     return expect(emberNew().then(() => {
       return generateAndDestroy(['authenticator', 'application', '--base-class=application'])
     })).to.eventually.be.rejectedWith(
@@ -73,7 +73,7 @@ export default Base.extend({' + EOL + '\
     );
   });
 
-  xit('throws when an unknown base class is specified', function() {
+  it('throws when an unknown base class is specified', function() {
     return expect(emberNew().then(() => {
       return generateAndDestroy(['authenticator', 'application', '--base-class=unknown'])
     })).to.eventually.be.rejectedWith(
