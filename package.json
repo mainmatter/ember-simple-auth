@@ -21,6 +21,7 @@
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
+    "test:one": "ember try:one",
     "test:fastboot": "ember fastboot:test",
     "test:node": "mocha node-tests --recursive"
   },
