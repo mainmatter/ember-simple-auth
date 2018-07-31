@@ -12,7 +12,18 @@ addons:
 env:
   secure: IVCX1o8nMAKAKxj2cXE6a2A8xmnt3Gj72ocyjT1vhZutEJ1z7wu3Xl/r6Q0fhlaux3+ZNz/KV6Lax6NW8KgC/Wo1+B5SF2RWMLGX+exglf5zUXT3wzaOq8LcEyQ7SGfsuovHa8ij3dMM4UWjl5lE3cM1M1KjxlekniUF9nFxZd4=
   matrix:
-    - SCRIPT=test:all
+    - SCRIPT="test:one ember-1.12"
+    - SCRIPT="test:one ember-1.13"
+    - SCRIPT="test:one ember-2.0"
+    - SCRIPT="test:one ember-lts-2.4"
+    - SCRIPT="test:one ember-lts-2.8"
+    - SCRIPT="test:one ember-lts-2.12"
+    - SCRIPT="test:one ember-lts-2.16"
+    - SCRIPT="test:one ember-lts-2.18"
+    - SCRIPT="test:one ember-3.0"
+    - SCRIPT="test:one ember-release"
+    - SCRIPT="test:one ember-beta"
+    - SCRIPT="test:one ember-canary"
     - SCRIPT=test:fastboot
     - SCRIPT=test:node
 

@@ -150,6 +150,22 @@ module.exports = function() {
           },
         },
         {
+          name: 'ember-3.0',
+          bower: {
+            dependencies: {
+              ember: null,
+              'ember-cli-shims': null,
+              'ember-data': null,
+            },
+          },
+          npm: {
+            devDependencies: {
+              'ember-data': '~3.0.0',
+              'ember-source': '~3.0.0',
+            },
+          },
+        },
+        {
           name: 'ember-release',
           bower: {
             dependencies: {
