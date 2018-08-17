@@ -1,8 +1,7 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
-import { computed } from '@ember/object';
-import { getOwner } from '@ember/application';
-import location from 'ember-simple-auth/utils/location';
+import location from '../utils/location';
+import isFastBootCPM from '../utils/is-fastboot';
 
 function _parseResponse(locationHash) {
   let params = {};
@@ -91,9 +90,5 @@ export default Mixin.create({
     });
   },
 
-  _isFastBoot: computed(function() {
-    const fastboot = getOwner(this).lookup('service:fastboot');
-
-    return fastboot ? fastboot.get('isFastBoot') : false;
-  })
+  _isFastBoot: isFastBootCPM()
 });

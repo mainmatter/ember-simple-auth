@@ -214,6 +214,36 @@ export default BaseAuthenticator.extend({
     method also schedules refresh requests for the access token before it
     expires.__
 
+    The server responses are expected to look as defined in the spec (see
+    http://tools.ietf.org/html/rfc6749#section-5). The response to a successful
+    authentication request should be:
+
+    ```json
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "access_token":"2YotnFZFEjr1zCsicMWpAA",
+      "token_type":"bearer",
+      "expires_in":3600, // optional
+      "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA" // optional
+    }
+    ```
+
+    The response for a failing authentication request should be:
+
+    ```json
+    HTTP/1.1 400 Bad Request
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "error":"invalid_grant"
+    }
+    ```
+
+    A full list of error codes can be found
+    [here](https://tools.ietf.org/html/rfc6749#section-5.2).
+
     @method authenticate
     @param {String} identification The resource owner username
     @param {String} password The resource owner password

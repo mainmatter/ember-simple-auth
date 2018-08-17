@@ -1,11 +1,11 @@
 import Mixin from '@ember/object/mixin';
 import { A } from '@ember/array';
-import { bind } from '@ember/runloop';
 import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
 import { inject } from '@ember/service';
 import Ember from 'ember';
 import Configuration from './../configuration';
+import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 
 /**
   The mixin for the application route, __defining methods that are called when
@@ -56,11 +56,7 @@ export default Mixin.create({
   */
   session: inject('session'),
 
-  _isFastBoot: computed(function() {
-    const fastboot = getOwner(this).lookup('service:fastboot');
-
-    return fastboot ? fastboot.get('isFastBoot') : false;
-  }),
+  _isFastBoot: isFastBoot(),
 
   /**
     The route to transition to after successful authentication.
@@ -84,9 +80,7 @@ export default Mixin.create({
       ['authenticationSucceeded', 'sessionAuthenticated'],
       ['invalidationSucceeded', 'sessionInvalidated']
     ]).forEach(([event, method]) => {
-      this.get('session').on(event, bind(this, () => {
-        this[method](...arguments);
-      }));
+      this.get('session').on(event, (...args) => this[method](...args));
     });
   },
 

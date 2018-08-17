@@ -11,10 +11,10 @@ const foo = {
 
 describe('Unit | Utility | location', function() {
   let sinon;
-  beforeEach(() => {
+  beforeEach(function() {
     sinon = sinonjs.sandbox.create();
   });
-  afterEach(() => {
+  afterEach(function() {
     sinon.restore();
   });
   it('works', function() {

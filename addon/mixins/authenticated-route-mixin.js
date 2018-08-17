@@ -4,6 +4,7 @@ import { assert } from '@ember/debug';
 import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
 import Configuration from './../configuration';
+import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -35,11 +36,7 @@ export default Mixin.create({
   */
   session: service('session'),
 
-  _isFastBoot: computed(function() {
-    const fastboot = getOwner(this).lookup('service:fastboot');
-
-    return fastboot ? fastboot.get('isFastBoot') : false;
-  }),
+  _isFastBoot: isFastBoot(),
 
   /**
     The route to transition to for authentication. The
