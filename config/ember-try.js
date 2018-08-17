@@ -7,7 +7,7 @@ module.exports = function() {
     getChannelURL('release'),
     getChannelURL('beta'),
     getChannelURL('canary')
-  ]).then((urls) => {
+  ]).then(([releaseUrl, betaUrl, canaryUrl]) => {
     return {
       useYarn: true,
       scenarios: [
@@ -169,12 +169,12 @@ module.exports = function() {
           name: 'ember-release',
           bower: {
             dependencies: {
-              ember: 'components/ember#release',
+              ember: releaseUrl,
               'ember-cli-shims': null,
               'ember-data': null,
             },
             resolutions: {
-              ember: 'release',
+              ember: releaseUrl,
             },
           },
           npm: {
@@ -188,12 +188,12 @@ module.exports = function() {
           name: 'ember-beta',
           bower: {
             dependencies: {
-              ember: 'components/ember#beta',
+              ember: betaUrl,
               'ember-cli-shims': null,
               'ember-data': null,
             },
             resolutions: {
-              ember: 'beta',
+              ember: betaUrl,
             },
           },
           npm: {
@@ -207,12 +207,12 @@ module.exports = function() {
           name: 'ember-canary',
           bower: {
             dependencies: {
-              ember: 'components/ember#canary',
+              ember: canaryUrl,
               'ember-cli-shims': null,
               'ember-data': null,
             },
             resolutions: {
-              ember: 'canary',
+              ember: canaryUrl,
             },
           },
           npm: {
