@@ -169,18 +169,14 @@ module.exports = function() {
           name: 'ember-release',
           bower: {
             dependencies: {
-              ember: releaseUrl,
               'ember-cli-shims': null,
               'ember-data': null,
-            },
-            resolutions: {
-              ember: releaseUrl,
-            },
+            }
           },
           npm: {
             devDependencies: {
               'ember-data': 'emberjs/data#release',
-              'ember-source': null,
+              'ember-source': releaseUrl,
             },
           },
         },
@@ -188,18 +184,14 @@ module.exports = function() {
           name: 'ember-beta',
           bower: {
             dependencies: {
-              ember: betaUrl,
               'ember-cli-shims': null,
               'ember-data': null,
-            },
-            resolutions: {
-              ember: betaUrl,
             },
           },
           npm: {
             devDependencies: {
               'ember-data': 'emberjs/data#beta',
-              'ember-source': null,
+              'ember-source': betaUrl,
             },
           },
         },
@@ -207,18 +199,14 @@ module.exports = function() {
           name: 'ember-canary',
           bower: {
             dependencies: {
-              ember: canaryUrl,
               'ember-cli-shims': null,
               'ember-data': null,
-            },
-            resolutions: {
-              ember: canaryUrl,
             },
           },
           npm: {
             devDependencies: {
               'ember-data': 'emberjs/data#master',
-              'ember-source': null,
+              'ember-source': canaryUrl,
             },
           },
         },
