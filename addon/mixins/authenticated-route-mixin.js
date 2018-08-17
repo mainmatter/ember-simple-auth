@@ -4,7 +4,33 @@ import { assert } from '@ember/debug';
 import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
 import Configuration from './../configuration';
-import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
+import isFastBootCPM, { isFastBoot } from '../utils/is-fastboot';
+
+/**
+ * If the user is unauthenticated, invoke `callback`
+ *
+ * @param {ApplicationInstance} owner The ApplicationInstance that owns the service (and possibly fastboot and cookie) service(s)
+ * @param {Transition} transition Transition for the user's original navigation
+ * @param {(...args: []any) => any} callback Callback that will be invoked if the user is unauthenticated
+ */
+function runIfUnauthenticated(owner, transition, callback) {
+  const isFb = isFastBoot(owner);
+  const sessionSvc = owner.lookup('service:session');
+  if (!sessionSvc.get('isAuthenticated')) {
+    if (isFb) {
+      const fastboot = owner.lookup('service:fastboot');
+      const cookies = owner.lookup('service:cookies');
+      cookies.write('ember_simple_auth-redirectTarget', transition.intent.url, {
+        path: '/',
+        secure: fastboot.get('request.protocol') === 'https'
+      });
+    } else {
+      sessionSvc.set('attemptedTransition', transition);
+    }
+    callback();
+    return true;
+  }
+}
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -36,7 +62,7 @@ export default Mixin.create({
   */
   session: service('session'),
 
-  _isFastBoot: isFastBoot(),
+  _isFastBoot: isFastBootCPM(),
 
   /**
     The route to transition to for authentication. The
@@ -76,21 +102,10 @@ export default Mixin.create({
     @public
   */
   beforeModel(transition) {
-    if (!this.get('session.isAuthenticated')) {
-      if (this.get('_isFastBoot')) {
-        const fastboot = getOwner(this).lookup('service:fastboot');
-        const cookies = getOwner(this).lookup('service:cookies');
-
-        cookies.write('ember_simple_auth-redirectTarget', transition.intent.url, {
-          path: '/',
-          secure: fastboot.get('request.protocol') === 'https'
-        });
-      } else {
-        this.set('session.attemptedTransition', transition);
-      }
-
+    const didRedirect = runIfUnauthenticated(getOwner(this), transition, () => {
       this.triggerAuthentication();
-    } else {
+    });
+    if (!didRedirect) {
       return this._super(...arguments);
     }
   },

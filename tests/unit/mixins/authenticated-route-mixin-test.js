@@ -46,10 +46,10 @@ describe('AuthenticatedRouteMixin', () => {
 
       containerMock.lookup.withArgs('service:cookies').returns(cookiesMock);
       containerMock.lookup.withArgs('service:fastboot').returns(fastbootMock);
+      containerMock.lookup.withArgs('service:session').returns(session);
 
       route = createWithContainer(Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {
         // pretend this is never FastBoot
-        _isFastBoot: false,
         // replace actual transitionTo as the router isn't set up etc.
         transitionTo() {}
       }), { session }, containerMock);
@@ -91,12 +91,9 @@ describe('AuthenticatedRouteMixin', () => {
 
       it('sets the redirectTarget cookie in fastboot', function() {
         fastbootMock.get.withArgs('request.protocol').returns('https');
+        fastbootMock.get.withArgs('isFastBoot').returns(true);
 
         let cookieName = 'ember_simple_auth-redirectTarget';
-
-        route.reopen({
-          _isFastBoot: true
-        });
 
         route.beforeModel(transition);
         expect(cookiesMock.write).to.have.been.calledWith(cookieName, transition.intent.url, {
