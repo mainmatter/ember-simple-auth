@@ -31,7 +31,7 @@ module.exports = function(environment) {
     },
 
     torii: {
-      allowUnsafeRedirects: true,  
+      allowUnsafeRedirects: true,
       providers: {
         'facebook-oauth2': {
           apiKey: '631252926924840'

@@ -26,6 +26,7 @@ env:
     - SCRIPT="test:one ember-canary"
     - SCRIPT=test:fastboot
     - SCRIPT=test:node
+    - SCRIPT=lint
 
 cache:
   yarn: true
