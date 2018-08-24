@@ -5,13 +5,13 @@ import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 /**
   __This mixin is used in the callback route when using OAuth 2.0 Implicit
   Grant authentication.__ It implements the
-  {{#crossLink "OAuth2ImplicitGrantCallbackMixin/activate:method"}}{{/crossLink}}
+  {{#crossLink "OAuth2ImplicitGrantCallbackRouteMixin/activate:method"}}{{/crossLink}}
   method that retrieves and processes authentication parameters, such as
   `access_token`, from the hash parameters provided in the callback URL by
   the authentication server. The parameters are then passed to the
   {{#crossLink "OAuth2ImplicitGrantAuthenticator"}}{{/crossLink}}
 
-  @class OAuth2ImplicitGrantCallbackMixin
+  @class OAuth2ImplicitGrantCallbackRouteMixin
   @module ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin
   @extends Ember.Mixin
   @public
