@@ -12,7 +12,7 @@ import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
   {{#crossLink "OAuth2ImplicitGrantAuthenticator"}}{{/crossLink}}
 
   @class OAuth2ImplicitGrantCallbackMixin
-  @module ember-simple-auth/mixins/oauth2-implicit-grant-callback-mixin
+  @module ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin
   @extends Ember.Mixin
   @public
 */
