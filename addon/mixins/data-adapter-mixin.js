@@ -49,6 +49,22 @@ export default Mixin.create({
     name and header content arguments. __This property must be overridden in
     adapters using this mixin.__
 
+    When using with `ember-fetch` the `authorize` will not be called and the
+    `headers` computed property must be used instead, e.g.:
+
+    ```js
+    export default DS.JSONAPIAdapter.extend(AdapterFetch, DataAdapterMixin, {
+      headers: computed('session.data.authenticated.token', function() {
+        const headers = {};
+        if (this.session.isAuthenticated) {
+          headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
+        }
+
+        return headers;
+      }),
+    });
+    ```
+
     @property authorizer
     @type String
     @default null
