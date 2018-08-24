@@ -7,7 +7,10 @@ module.exports = function() {
     getChannelURL('release'),
     getChannelURL('beta'),
     getChannelURL('canary')
-  ]).then((/* urls */) => {
+  ]).then(urls => {
+    const releaseUrl = urls[0];
+    const betaUrl = urls[0];
+    const canaryUrl = urls[0];
     return {
       useYarn: true,
       scenarios: [
@@ -169,18 +172,14 @@ module.exports = function() {
           name: 'ember-release',
           bower: {
             dependencies: {
-              ember: 'components/ember#release',
               'ember-cli-shims': null,
               'ember-data': null,
-            },
-            resolutions: {
-              ember: 'release',
-            },
+            }
           },
           npm: {
             devDependencies: {
               'ember-data': 'emberjs/data#release',
-              'ember-source': null,
+              'ember-source': releaseUrl,
             },
           },
         },
@@ -188,18 +187,14 @@ module.exports = function() {
           name: 'ember-beta',
           bower: {
             dependencies: {
-              ember: 'components/ember#beta',
               'ember-cli-shims': null,
               'ember-data': null,
-            },
-            resolutions: {
-              ember: 'beta',
             },
           },
           npm: {
             devDependencies: {
               'ember-data': 'emberjs/data#beta',
-              'ember-source': null,
+              'ember-source': betaUrl,
             },
           },
         },
@@ -207,18 +202,14 @@ module.exports = function() {
           name: 'ember-canary',
           bower: {
             dependencies: {
-              ember: 'components/ember#canary',
               'ember-cli-shims': null,
               'ember-data': null,
-            },
-            resolutions: {
-              ember: 'canary',
             },
           },
           npm: {
             devDependencies: {
               'ember-data': 'emberjs/data#master',
-              'ember-source': null,
+              'ember-source': canaryUrl,
             },
           },
         },
