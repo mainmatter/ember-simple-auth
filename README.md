@@ -582,6 +582,21 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
 });
 ```
 
+When using with `ember-fetch` the `authorize` will not be called and the `headers` property must be used instead:
+
+```js
+export default DS.JSONAPIAdapter.extend(AdapterFetch, DataAdapterMixin, {
+  headers: computed('session.data.authenticated.token', function() {
+    const headers = {};
+    if(this.session.isAuthenticated) {
+      headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
+    }
+
+    return headers;
+  }),
+});
+```
+
 ## Session Stores
 
 Ember Simple Auth __persists the session state via a session store so it

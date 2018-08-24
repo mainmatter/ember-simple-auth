@@ -49,6 +49,8 @@ export default Mixin.create({
     name and header content arguments. __This property must be overridden in
     adapters using this mixin.__
 
+    When using `ember-fetch` and the `AdapterFetch` mixin this method __will not be called__.
+
     @property authorizer
     @type String
     @default null
