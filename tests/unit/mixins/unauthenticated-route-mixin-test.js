@@ -11,7 +11,6 @@ import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 describe('UnauthenticatedRouteMixin', () => {
   let route;
   let session;
-  let transition;
 
   describe('#beforeModel', function() {
     beforeEach(function() {
@@ -22,9 +21,6 @@ describe('UnauthenticatedRouteMixin', () => {
       });
 
       session = InternalSession.create({ store: EphemeralStore.create() });
-      transition = {
-        send() {}
-      };
 
       route = Route.extend(MixinImplementingBeforeModel, UnauthenticatedRouteMixin, {
         // pretend this is never FastBoot
@@ -44,24 +40,24 @@ describe('UnauthenticatedRouteMixin', () => {
         let routeIfAlreadyAuthenticated = 'path/to/route';
         route.set('routeIfAlreadyAuthenticated', routeIfAlreadyAuthenticated);
 
-        route.beforeModel(transition);
+        route.beforeModel();
         expect(route.transitionTo).to.have.been.calledWith(routeIfAlreadyAuthenticated);
       });
 
       it('does not return the upstream promise', function() {
-        expect(route.beforeModel(transition)).to.be.undefined;
+        expect(route.beforeModel()).to.be.undefined;
       });
     });
 
     describe('if the session is not authenticated', function() {
       it('does not call route transitionTo', function() {
-        route.beforeModel(transition);
+        route.beforeModel();
 
         expect(route.transitionTo).to.not.have.been.called;
       });
 
       it('returns the upstream promise', function() {
-        return route.beforeModel(transition).then((result) => {
+        return route.beforeModel().then((result) => {
           expect(result).to.equal('upstreamReturnValue');
         });
       });
