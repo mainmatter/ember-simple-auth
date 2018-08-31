@@ -7,6 +7,39 @@ import Ember from 'ember';
 import Configuration from './../configuration';
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 
+
+/**
+  This method handles the session's
+  {{#crossLink "SessionService/authenticationSucceeded:event"}}{{/crossLink}}
+  event. If there is a transition that was previously intercepted by the
+  {{#crossLink "AuthenticatedRouteMixin/beforeModel:method"}}
+  AuthenticatedRouteMixin's `beforeModel` method{{/crossLink}} it will retry
+  it. If there is no such transition, the `ember_simple_auth-redirectTarget`
+  cookie will be checked for a url that represents an attemptedTransition
+  that was aborted in Fastboot mode, otherwise this action transitions to the
+  {{#crossLink "Configuration/routeAfterAuthentication:property"}}{{/crossLink}}.
+
+
+  @method sessionAuthenticated
+  @public
+*/
+function sessionAuthenticated(owner) {
+  const sessionSvc = owner.lookup('service:session');
+  const attemptedTransition = sessionSvc.get('attemptedTransition');
+  const cookiesSvc = owner.lookup('service:cookies');
+  const redirectTarget = cookiesSvc.read('ember_simple_auth-redirectTarget');
+
+  if (attemptedTransition) {
+    attemptedTransition.retry();
+    this.set('session.attemptedTransition', null);
+  } else if (redirectTarget) {
+    this.transitionTo(redirectTarget);
+    cookiesSvc.clear('ember_simple_auth-redirectTarget');
+  } else {
+    this.transitionTo(this.get('routeAfterAuthentication'));
+  }
+}
+
 /**
   The mixin for the application route, __defining methods that are called when
   the session is successfully authenticated (see
@@ -76,43 +109,8 @@ export default Mixin.create({
   },
 
   _subscribeToSessionEvents() {
-    A([
-      ['authenticationSucceeded', 'sessionAuthenticated'],
-      ['invalidationSucceeded', 'sessionInvalidated']
-    ]).forEach(([event, method]) => {
-      this.get('session').on(event, (...args) => this[method](...args));
-    });
-  },
-
-  /**
-    This method handles the session's
-    {{#crossLink "SessionService/authenticationSucceeded:event"}}{{/crossLink}}
-    event. If there is a transition that was previously intercepted by the
-    {{#crossLink "AuthenticatedRouteMixin/beforeModel:method"}}
-    AuthenticatedRouteMixin's `beforeModel` method{{/crossLink}} it will retry
-    it. If there is no such transition, the `ember_simple_auth-redirectTarget`
-    cookie will be checked for a url that represents an attemptedTransition
-    that was aborted in Fastboot mode, otherwise this action transitions to the
-    {{#crossLink "Configuration/routeAfterAuthentication:property"}}{{/crossLink}}.
-
-
-    @method sessionAuthenticated
-    @public
-  */
-  sessionAuthenticated() {
-    const attemptedTransition = this.get('session.attemptedTransition');
-    const cookies = getOwner(this).lookup('service:cookies');
-    const redirectTarget = cookies.read('ember_simple_auth-redirectTarget');
-
-    if (attemptedTransition) {
-      attemptedTransition.retry();
-      this.set('session.attemptedTransition', null);
-    } else if (redirectTarget) {
-      this.transitionTo(redirectTarget);
-      cookies.clear('ember_simple_auth-redirectTarget');
-    } else {
-      this.transitionTo(this.get('routeAfterAuthentication'));
-    }
+    this.get('session').on('authenticationSucceeded', sessionAuthenticated(getOwner(this)));
+    this.get('session').on('invalidationSucceeded', this.sessionInvalidated());
   },
 
   /**

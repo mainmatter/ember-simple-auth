@@ -26,6 +26,7 @@ describe('ApplicationRouteMixin', () => {
     };
 
     containerMock.lookup.withArgs('service:cookies').returns(cookiesMock);
+    containerMock.lookup.withArgs('service:session').returns(session);
 
     route = createWithContainer(Route.extend(ApplicationRouteMixin, {
       transitionTo() {}
