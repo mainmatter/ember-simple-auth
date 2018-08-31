@@ -124,10 +124,11 @@ in the template__:
 
 ```js
 // app/controllers/application.js
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 
-export default Ember.Controller.extend({
-  session: Ember.inject.service('session')
+export default Controller.extend({
+  session: service()
 
   …
 });
@@ -154,10 +155,11 @@ to invalidate the session__ and log the user out:
 
 ```js
 // app/controllers/application.js
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 
-export default Ember.Controller.extend({
-  session: Ember.inject.service('session'),
+export default Controller.extend({
+  session: service(),
 
   …
 
@@ -204,10 +206,11 @@ the __session can be authenticated with the
 
 ```js
 // app/controllers/login.js
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 
-export default Ember.Controller.extend({
-  session: Ember.inject.service('session'),
+export default Controller.extend({
+  session: service(),
 
   actions: {
     authenticate() {
@@ -234,10 +237,10 @@ into the application route__:
 
 ```js
 // app/routes/application.js
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-export default Ember.Route.extend(ApplicationRouteMixin);
+export default Route.extend(ApplicationRouteMixin);
 ```
 
 The `ApplicationRouteMixin` automatically maps the session events to the
@@ -255,10 +258,10 @@ into the respective route:
 
 ```js
 // app/routes/protected.js
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin);
+export default Route.extend(AuthenticatedRouteMixin);
 ```
 
 This will make the route (and all of its subroutes) transition to the `login`
@@ -327,7 +330,9 @@ into the application adapter:
 import DS from 'ember-data';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
-export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
+const { JSONAPIAdapter } = DS;
+
+export default JSONAPIAdapter.extend(DataAdapterMixin, {
   authorizer: 'authorizer:oauth2'
 });
 ```
@@ -480,7 +485,9 @@ adapter to automatically authorize all API requests:
 import DS from 'ember-data';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
-export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
+const { JSONAPIAdapter } = DS;
+
+export default JSONAPIAdapter.extend(DataAdapterMixin, {
   authorizer: 'authorizer:some'
 });
 ```
@@ -535,10 +542,14 @@ Examples:
 
 ```js
 // OAuth 2
+import DS from 'ember-data';
+import { inject as service } from '@ember/service';
 import { isPresent } from '@ember/utils';
 
-export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
-  session: service('session'), 
+const { JSONAPIAdapter } = DS;
+
+export default JSONAPIAdapter.extend(DataAdapterMixin, {
+  session: service(), 
   authorize(xhr) {
     let { access_token } = this.get('session.data.authenticated');
     if (isPresent(access_token)) {
@@ -553,8 +564,13 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 
 ```js
 // Devise
-export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
-  session: service('session'),
+import DS from 'ember-data';
+import { inject as service } from '@ember/service';
+
+const { JSONAPIAdapter } = DS;
+
+export default JSONAPIAdapter.extend(DataAdapterMixin, {
+  session: service(),
   // defaults
   // identificationAttributeName: 'email'
   // tokenAttributeName: 'token'
