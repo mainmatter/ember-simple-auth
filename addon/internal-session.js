@@ -117,7 +117,7 @@ export default ObjectProxy.extend(Evented, {
     return this._updateStore()
       .then(() => {
         if (trigger) {
-          this.trigger('authenticationSucceeded');
+          this.trigger('authenticationSucceeded', getOwner(this));
         }
       }, () => {
         this.setProperties({
