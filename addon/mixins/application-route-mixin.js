@@ -109,8 +109,8 @@ export default Mixin.create({
   },
 
   _subscribeToSessionEvents() {
-    this.get('session').on('authenticationSucceeded', sessionAuthenticated(getOwner(this)));
-    this.get('session').on('invalidationSucceeded', this.sessionInvalidated());
+    this.get('session').on('authenticationSucceeded', sessionAuthenticated);
+    this.get('session').on('invalidationSucceeded', this.sessionInvalidated);
   },
 
   /**

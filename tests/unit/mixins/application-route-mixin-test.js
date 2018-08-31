@@ -35,12 +35,12 @@ describe('ApplicationRouteMixin', () => {
 
   describe('mapping of service events to route methods', function() {
     beforeEach(function() {
-      sinon.spy(route, 'sessionAuthenticated');
-      sinon.spy(route, 'sessionInvalidated');
+      // sinon.spy(route, 'sessionAuthenticated');
+      // sinon.spy(route, 'sessionInvalidated');
     });
 
     it("maps the services's 'authenticationSucceeded' event into a method call", function(done) {
-      session.trigger('authenticationSucceeded');
+      session.trigger('authenticationSucceeded', containerMock);
 
       next(() => {
         expect(route.sessionAuthenticated).to.have.been.calledOnce;
