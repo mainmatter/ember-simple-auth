@@ -4,6 +4,20 @@ import { assert } from '@ember/debug';
 import { computed } from '@ember/object';
 import Configuration from './../configuration';
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
+import { getOwner } from '@ember/application';
+
+/**
+ *
+ * @param {ApplicationInstance} owner The ApplicationInstance that owns the session service
+ * @param {(...args: [any]) => any} callback Callback that will be invoked if the user is authenticated
+ */
+function runIfAuthenticated(owner, callback) {
+  const sessionSvc = owner.lookup('service:session');
+  if (sessionSvc.get('isAuthenticated')) {
+    callback();
+    return true;
+  }
+}
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -62,16 +76,16 @@ export default Mixin.create({
    `beforeModel` method is actually executed.
 
     @method beforeModel
-    @param {Transition} transition The transition that lead to this route
     @public
   */
   beforeModel() {
-    if (this.get('session').get('isAuthenticated')) {
+    const didRedirect = runIfAuthenticated(getOwner(this), () => {
       let routeIfAlreadyAuthenticated = this.get('routeIfAlreadyAuthenticated');
       assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
 
       this.transitionTo(routeIfAlreadyAuthenticated);
-    } else {
+    });
+    if (!didRedirect) {
       return this._super(...arguments);
     }
   }

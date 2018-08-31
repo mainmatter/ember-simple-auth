@@ -7,10 +7,12 @@ import sinon from 'sinon';
 import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
+import createWithContainer from '../../helpers/create-with-container';
 
 describe('UnauthenticatedRouteMixin', () => {
   let route;
   let session;
+  let containerMock;
 
   describe('#beforeModel', function() {
     beforeEach(function() {
@@ -19,15 +21,19 @@ describe('UnauthenticatedRouteMixin', () => {
           return RSVP.resolve('upstreamReturnValue');
         }
       });
-
       session = InternalSession.create({ store: EphemeralStore.create() });
+      containerMock = {
+        lookup: sinon.stub()
+      };
 
-      route = Route.extend(MixinImplementingBeforeModel, UnauthenticatedRouteMixin, {
+      containerMock.lookup.withArgs('service:session').returns(session);
+
+      route = createWithContainer(Route.extend(MixinImplementingBeforeModel, UnauthenticatedRouteMixin, {
         // pretend this is never FastBoot
-        _isFastBoot: false,
         // replace actual transitionTo as the router isn't set up etc.
         transitionTo() {}
-      }).create({ session });
+      }), { session }, containerMock);
+
       sinon.spy(route, 'transitionTo');
     });
 
