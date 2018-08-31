@@ -14,6 +14,7 @@ import createWithContainer from '../../helpers/create-with-container';
 describe('AuthenticatedRouteMixin', () => {
   let route;
   let session;
+  let router;
   let transition;
   let cookiesMock;
   let fastbootMock;
@@ -28,6 +29,7 @@ describe('AuthenticatedRouteMixin', () => {
       });
 
       session = InternalSession.create({ store: EphemeralStore.create() });
+      router = { transitionTo() {} };
       transition = {
         intent: {
           url: '/transition/target/url'
@@ -48,14 +50,13 @@ describe('AuthenticatedRouteMixin', () => {
       containerMock.lookup.withArgs('service:fastboot').returns(fastbootMock);
       containerMock.lookup.withArgs('service:session').returns(session);
 
-      route = createWithContainer(Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {
-        // pretend this is never FastBoot
-        // replace actual transitionTo as the router isn't set up etc.
-        transitionTo() {}
-      }), { session }, containerMock);
+      route = createWithContainer(Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {}), {
+        session,
+        _router: router
+      }, containerMock);
 
       sinon.spy(transition, 'send');
-      sinon.spy(route, 'transitionTo');
+      sinon.spy(router, 'transitionTo');
     });
 
     describe('if the session is authenticated', function() {
@@ -72,7 +73,7 @@ describe('AuthenticatedRouteMixin', () => {
       it('does not transition to the authentication route', function() {
         route.beforeModel(transition);
 
-        expect(route.transitionTo).to.not.have.been.calledWith(Configuration.authenticationRoute);
+        expect(route._router.transitionTo).to.not.have.been.calledWith(Configuration.authenticationRoute);
       });
     });
 
@@ -86,7 +87,7 @@ describe('AuthenticatedRouteMixin', () => {
         route.set('authenticationRoute', authenticationRoute);
 
         route.beforeModel(transition);
-        expect(route.transitionTo).to.have.been.calledWith(authenticationRoute);
+        expect(route._router.transitionTo).to.have.been.calledWith(authenticationRoute);
       });
 
       it('sets the redirectTarget cookie in fastboot', function() {

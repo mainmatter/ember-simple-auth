@@ -62,6 +62,11 @@ export default Mixin.create({
   */
   session: service('session'),
 
+  _router: computed(function() {
+    let owner = getOwner(this);
+    return owner.lookup('service:router') || owner.lookup('router:main');
+  }),
+
   _isFastBoot: isFastBootCPM(),
 
   /**
@@ -123,6 +128,6 @@ export default Mixin.create({
     let authenticationRoute = this.get('authenticationRoute');
     assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
 
-    this.transitionTo(authenticationRoute);
+    this.get('_router').transitionTo(authenticationRoute);
   },
 });
