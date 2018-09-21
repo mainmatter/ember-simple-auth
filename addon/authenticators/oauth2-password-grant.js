@@ -54,6 +54,18 @@ export default BaseAuthenticator.extend({
   clientId: null,
 
   /**
+    The client_secret to be sent to the authentication server. This should be set
+    along with the client_id if the client needs to authenticate itself against
+    the authorization server in addition to the user
+
+    @property clientSecret
+    @type String
+    @default null
+    @public
+  */
+  clientSecret: null,
+
+  /**
     The endpoint on the server that authentication and token refresh requests
     are sent to.
 
@@ -327,7 +339,12 @@ export default BaseAuthenticator.extend({
   makeRequest(url, data, headers = {}) {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
-    data['client_id'] = this.get('_clientId');
+    if (this.get('clientId') !== null) {
+      data['client_id'] = this.get('clientId');
+    }
+    if (this.get('clientSecret') !== null) {
+      data['client_secret'] = this.get('clientSecret')
+    }
 
     const body = keys(data).map((key) => {
       return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`;
