@@ -345,6 +345,9 @@ export default BaseAuthenticator.extend({
     if (this.get('clientSecret') !== null) {
       data['client_secret'] = this.get('clientSecret')
     }
+    if (this.get('refreshAccessTokens')) {
+      data['offline_token'] = true;
+    }
 
     const body = keys(data).map((key) => {
       return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`;
