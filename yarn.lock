@@ -3120,9 +3120,9 @@ ember-cli-babel@^6.0.0, ember-cli-babel@^6.0.0-beta.7, ember-cli-babel@^6.10.0, 
     semver "^5.4.1"
 
 ember-cli-blueprint-test-helpers@^0.19.0:
-  version "0.19.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-blueprint-test-helpers/-/ember-cli-blueprint-test-helpers-0.19.1.tgz#26df9724a6cb48f7acfa391dec7ec772888b0929"
-  integrity sha512-lyfCvR5gxbNn5mJKfVAUj3Q5K1VyJo3miAaQ9zk2dL7ijs281C3j73WYyCK7tWBoBJ04jOzkb+YXV6jFwVpvsA==
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-blueprint-test-helpers/-/ember-cli-blueprint-test-helpers-0.19.0.tgz#500a1396ca99dc0e215e81440a3d0265a2b9bd0a"
+  integrity sha512-2boSyTuoMzcCB7A8IiT4RZmslXqCKftxQElIyIEmoryMVdYO112BjteHO2suTVALdM1//hpOqXxbem5HZpiL7w==
   dependencies:
     chai "^4.1.0"
     chai-as-promised "^7.0.0"
@@ -3789,9 +3789,9 @@ ember-source-channel-url@^1.1.0:
     got "^8.0.1"
 
 ember-source@~3.4.0:
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-3.4.4.tgz#b94800f8f0c1cc9baefc27b4fdcd8c65979a9bad"
-  integrity sha512-nT6BWL8XHP1+Toi2Wtpb7xvzkvvgBFBWotIt40e+P+piXM02QMfGySwO8vK7PR0mO0QkrSNxN8oGDjt0D4agYQ==
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-3.4.1.tgz#75cfc19bd54ad006729c8ec12539901308e8cef0"
+  integrity sha512-mG9qWo+Nl91ElO6SSUITR+GxDk7HdIB91IXPPW8FMn10EgIPDdbhhTATJIUdVxmgbkNED50IO03iQ4pdUO7cgQ==
   dependencies:
     broccoli-funnel "^2.0.1"
     broccoli-merge-trees "^2.0.0"
