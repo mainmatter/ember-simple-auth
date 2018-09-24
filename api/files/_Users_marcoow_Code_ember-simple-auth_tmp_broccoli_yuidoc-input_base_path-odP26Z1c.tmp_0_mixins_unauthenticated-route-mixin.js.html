@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>addon/authorizers/oauth2-bearer.js - The Ember Simple Auth API</title>
+    <title>/Users/marcoow/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-odP26Z1c.tmp/0/mixins/unauthenticated-route-mixin.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.6.0"><span class="label label-primary">1.6.0</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.7.0"><span class="label label-primary">1.7.0</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -58,48 +58,85 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
-          <h1 class="file-heading">File: addon/authorizers/oauth2-bearer.js</h1>
+          <h1 class="file-heading">File: /Users/marcoow/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-odP26Z1c.tmp/0/mixins/unauthenticated-route-mixin.js</h1>
           
           <div class="file">
               <pre class="code prettyprint linenums">
-          import { isEmpty } from &#x27;@ember/utils&#x27;;
-          import Base from &#x27;./base&#x27;;
+          import { inject as service } from &#x27;@ember/service&#x27;;
+          import Mixin from &#x27;@ember/object/mixin&#x27;;
+          import { assert } from &#x27;@ember/debug&#x27;;
+          import { computed } from &#x27;@ember/object&#x27;;
+          import Configuration from &#x27;./../configuration&#x27;;
+          import isFastBoot from &#x27;ember-simple-auth/utils/is-fastboot&#x27;;
           
           /**
-            Authorizer that conforms to OAuth 2
-            ([RFC 6749](http://tools.ietf.org/html/rfc6749)); includes the access token
-            from the session data as a bearer token
-            ([RFC 6750](http://tools.ietf.org/html/rfc6750)) in the &#x60;Authorization&#x60;
-            header, e.g.:
+            __This mixin is used to make routes accessible only if the session is
+            not authenticated__ (e.g., login and registration routes). It defines a
+            &#x60;beforeModel&#x60; method that aborts the current transition and instead
+            transitions to the
+            {{#crossLink &quot;Configuration/routeIfAlreadyAuthenticated:property&quot;}}{{/crossLink}}
+            if the session is authenticated.
           
-            &#x60;&#x60;&#x60;
-            Authorization: Bearer 234rtgjneroigne4
+            &#x60;&#x60;&#x60;js
+            // app/routes/login.js
+            import UnauthenticatedRouteMixin from &#x27;ember-simple-auth/mixins/unauthenticated-route-mixin&#x27;;
+          
+            export default Ember.Route.extend(UnauthenticatedRouteMixin);
             &#x60;&#x60;&#x60;
           
-            @class OAuth2BearerAuthorizer
-            @module ember-simple-auth/authorizers/oauth2-bearer
-            @extends BaseAuthorizer
+            @class UnauthenticatedRouteMixin
+            @module ember-simple-auth/mixins/unauthenticated-route-mixin
+            @extends Ember.Mixin
             @public
           */
-          export default Base.extend({
+          export default Mixin.create({
             /**
-              Includes the access token from the session data into the &#x60;Authorization&#x60;
-              header as a Bearer token, e.g.:
+              The session service.
           
-              &#x60;&#x60;&#x60;
-              Authorization: Bearer 234rtgjneroigne4
-              &#x60;&#x60;&#x60;
-          
-              @method authorize
-              @param {Object} data The data that the session currently holds
-              @param {Function} block(headerName,headerContent) The callback to call with the authorization data; will receive the header name and header content as arguments
+              @property session
+              @readOnly
+              @type SessionService
               @public
             */
-            authorize(data, block) {
-              const accessToken = data[&#x27;access_token&#x27;];
+            session: service(&#x27;session&#x27;),
           
-              if (!isEmpty(accessToken)) {
-                block(&#x27;Authorization&#x27;, &#x60;Bearer ${accessToken}&#x60;);
+            _isFastBoot: isFastBoot(),
+          
+            /**
+              The route to transition to if a route that implements the
+              {{#crossLink &quot;UnauthenticatedRouteMixin&quot;}}{{/crossLink}} is accessed when
+              the session is authenticated.
+          
+              @property routeIfAlreadyAuthenticated
+              @type String
+              @default &#x27;index&#x27;
+              @public
+            */
+            routeIfAlreadyAuthenticated: computed(function() {
+              return Configuration.routeIfAlreadyAuthenticated;
+            }),
+          
+            /**
+              Checks whether the session is authenticated and if it is aborts the current
+              transition and instead transitions to the
+              {{#crossLink &quot;Configuration/routeIfAlreadyAuthenticated:property&quot;}}{{/crossLink}}.
+          
+              __If &#x60;beforeModel&#x60; is overridden in a route that uses this mixin, the route&#x27;s
+             implementation must call &#x60;this._super(...arguments)&#x60;__ so that the mixin&#x27;s
+             &#x60;beforeModel&#x60; method is actually executed.
+          
+              @method beforeModel
+              @param {Transition} transition The transition that lead to this route
+              @public
+            */
+            beforeModel() {
+              if (this.get(&#x27;session&#x27;).get(&#x27;isAuthenticated&#x27;)) {
+                let routeIfAlreadyAuthenticated = this.get(&#x27;routeIfAlreadyAuthenticated&#x27;);
+                assert(&#x27;The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!&#x27;, this.get(&#x27;routeName&#x27;) !== routeIfAlreadyAuthenticated);
+          
+                this.transitionTo(routeIfAlreadyAuthenticated);
+              } else {
+                return this._super(...arguments);
               }
             }
           });
