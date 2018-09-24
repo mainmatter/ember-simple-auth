@@ -1,6 +1,6 @@
 # 1.7.0
 
-* The `baseURL` configuration property is now deprecated; use the `rootUrl`
+* The `baseURL` configuration property is now deprecated; use the `rootURL`
   property instead, see #1597.
 * ESA works with ember-fetch@"^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0" now, see
   #1608.
