@@ -31,6 +31,17 @@ const keys = Object.keys || emberKeys; // Ember.keys deprecated in 1.13
   @public
 */
 export default BaseAuthenticator.extend({
+  init() {
+    this._super(...arguments);
+    deprecate(`Ember Simple Auth: Client ID as Authorization Header is deprecated in favour of Client ID as Query String Parameter.`,
+          false,
+          {
+            id: 'ember-simple-auth.OAuth2PasswordGrantAuthenticator',
+            until: '2.0.0',
+            url: 'https://github.com/simplabs/ember-simple-auth#deprecation-of-authorizers',
+          }
+    );
+  }
   /**
     Triggered when the authenticator refreshed the access token (see
     [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
@@ -351,10 +362,6 @@ export default BaseAuthenticator.extend({
       if (!isEmpty(clientId)) {
         data['client_id'] = this.get('clientId');
       }
-    }
-
-    if (data['grant_type'] === 'password' && this.get('refreshAccessTokens')) {
-      data['offline_token'] = true;
     }
 
     const body = keys(data).map((key) => {
