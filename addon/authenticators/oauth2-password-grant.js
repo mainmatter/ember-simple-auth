@@ -54,16 +54,15 @@ export default BaseAuthenticator.extend({
   clientId: null,
 
   /**
-    The client_secret to be sent to the authentication server. This should be set
-    along with the client_id if the client needs to authenticate itself against
-    the authorization server in addition to the user
+   The OAuth2 standard is to send the client_id as a query parameter. This is a
+   feature flag that turns on the correct behavior for OAuth2 requests.
 
-    @property clientSecret
-    @type String
-    @default null
-    @public
+   @property sendClientIdAsQueryParam
+   @type Boolean
+   @default false
+   @public
   */
-  clientSecret: null,
+  sendClientIdAsQueryParam: false,
 
   /**
     The endpoint on the server that authentication and token refresh requests
@@ -341,9 +340,6 @@ export default BaseAuthenticator.extend({
 
     if (this.get('clientId') !== null) {
       data['client_id'] = this.get('clientId');
-    }
-    if (this.get('clientSecret') !== null) {
-      data['client_secret'] = this.get('clientSecret')
     }
     if (this.get('refreshAccessTokens')) {
       data['offline_token'] = true;
