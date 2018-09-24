@@ -126,6 +126,14 @@ export default BaseAuthenticator.extend({
 
   _refreshTokenTimeout: null,
 
+  _clientIdHeader: computed('clientId', function() {
+    const clientId = this.get('clientId');
+    if (!isEmpty(clientId)) {
+      const base64ClientId = window.base64.encode(clientId.concat(':'));
+      return { Authorization: `Basic ${base64ClientId}` };
+    }
+  }),
+
   /**
     When authentication fails, the rejection callback is provided with the whole
     Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
@@ -338,10 +346,14 @@ export default BaseAuthenticator.extend({
   makeRequest(url, data, headers = {}) {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
-    if (this.get('clientId') !== null) {
-      data['client_id'] = this.get('clientId');
+    if (this.get('sendClientIdAsQueryParam')) {
+      const clientId = this.get('clientId');
+      if (!isEmpty(clientId)) {
+        data['client_id'] = this.get('clientId');
+      }
     }
-    if (this.get('refreshAccessTokens')) {
+
+    if (data['grant_type'] === 'password' && this.get('refreshAccessTokens')) {
       data['offline_token'] = true;
     }
 
@@ -354,6 +366,13 @@ export default BaseAuthenticator.extend({
       headers,
       method: 'POST'
     };
+
+    if (!this.get('sendClientIdAsQueryParam')) {
+      const clientIdHeader = this.get('_clientIdHeader');
+      if (!isEmpty(clientIdHeader)) {
+        merge(options.headers, clientIdHeader);
+      }
+    }
 
     return new RSVP.Promise((resolve, reject) => {
       fetch(url, options).then((response) => {
