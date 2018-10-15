@@ -20,9 +20,14 @@ describe('ToriiAuthenticator', () => {
   describe('#restore', function() {
     function itDoesNotRestore(data) {
       it('returns a rejecting promise', function() {
-        return authenticator.restore(data).catch(() => {
-          expect(true).to.be.true;
-        });
+        return authenticator.restore(data).then(
+          () => {
+            expect(false).to.be.true;
+          },
+          () => {
+            expect(true).to.be.true;
+          }
+        );
       });
     }
 

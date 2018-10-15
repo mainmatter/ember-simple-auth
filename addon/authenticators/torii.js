@@ -59,10 +59,16 @@ export default BaseAuthenticator.extend({
     if (!isEmpty(data.provider)) {
       const { provider } = data;
 
-      return this.get('torii').fetch(data.provider, data).then((fetchedData) => {
-        this._authenticateWithProvider(provider, fetchedData);
-        return emberAssign(data, fetchedData);
-      }, () => delete this._provider);
+      return this.get('torii').fetch(data.provider, data).then(
+        (fetchedData) => {
+          this._authenticateWithProvider(provider, fetchedData);
+          return emberAssign(data, fetchedData);
+        },
+        (err) => {
+          delete this._provider;
+          throw err;
+        }
+      );
     } else {
       delete this._provider;
       return RSVP.reject();
