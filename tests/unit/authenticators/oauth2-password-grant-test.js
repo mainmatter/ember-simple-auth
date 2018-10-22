@@ -127,9 +127,15 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       authenticator.authenticate('username', 'password');
     });
 
-    it('sends an AJAX request to the token endpoint with client_id as query parameter', function(done) {
+    it('sends an AJAX request to the token endpoint with client_id as parameter in the body', function(done) {
       server.post('/token', (request) => {
-        console.log(request.query);
+        let body = parsePostData(request.requestBody);
+        expect(body).to.eql({
+          'client_id': 'test-client',
+          'grant_type': 'password',
+          'username': 'username',
+          'password': 'password'
+        });
         done();
       });
 
