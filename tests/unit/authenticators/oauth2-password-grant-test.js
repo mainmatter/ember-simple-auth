@@ -117,12 +117,23 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       authenticator.authenticate('username', 'password');
     });
 
-    it('sends an AJAX request to the token endpoint with client_id Basic Auth header', function(done) {
+    it('(deprecated) sends an AJAX request to the token endpoint with client_id Basic Auth header', function(done) {
       server.post('/token', (request) => {
         expect(request.requestHeaders['authorization']).to.eql('Basic dGVzdC1jbGllbnQ6');
         done();
       });
 
+      authenticator.set('clientId', 'test-client');
+      authenticator.authenticate('username', 'password');
+    });
+
+    it('sends an AJAX request to the token endpoint with client_id as query parameter', function(done) {
+      server.post('/token', (request) => {
+        console.log(request.query);
+        done();
+      });
+
+      authenticator.set('sendClientIdAsQueryParam', true);
       authenticator.set('clientId', 'test-client');
       authenticator.authenticate('username', 'password');
     });
