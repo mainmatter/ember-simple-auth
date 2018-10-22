@@ -9,6 +9,7 @@ import {
   merge,
   assign as emberAssign
 } from '@ember/polyfills';
+import { deprecate } from '@ember/application/deprecations';
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
@@ -34,14 +35,15 @@ export default BaseAuthenticator.extend({
   init() {
     this._super(...arguments);
     deprecate(`Ember Simple Auth: Client ID as Authorization Header is deprecated in favour of Client ID as Query String Parameter.`,
-          false,
-          {
-            id: 'ember-simple-auth.OAuth2PasswordGrantAuthenticator',
-            until: '2.0.0',
-            url: 'https://github.com/simplabs/ember-simple-auth#deprecation-of-authorizers',
-          }
+      false,
+      {
+        id: 'ember-simple-auth.OAuth2PasswordGrantAuthenticator',
+        until: '2.0.0',
+        url: 'https://github.com/simplabs/ember-simple-auth#deprecation-of-authorizers',
+      }
     );
-  }
+  },
+
   /**
     Triggered when the authenticator refreshed the access token (see
     [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
