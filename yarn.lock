@@ -845,6 +845,11 @@ babel-plugin-htmlbars-inline-precompile@^0.2.3:
   resolved "https://registry.yarnpkg.com/babel-plugin-htmlbars-inline-precompile/-/babel-plugin-htmlbars-inline-precompile-0.2.3.tgz#cd365e278af409bfa6be7704c4354beee742446b"
   integrity sha1-zTZeJ4r0Cb+mvncExDVL7udCRGs=
 
+babel-plugin-htmlbars-inline-precompile@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-htmlbars-inline-precompile/-/babel-plugin-htmlbars-inline-precompile-1.0.0.tgz#a9d2f6eaad8a3f3d361602de593a8cbef8179c22"
+  integrity sha512-4jvKEHR1bAX03hBDZ94IXsYCj3bwk9vYsn6ux6JZNL2U5pvzCWjqyrGahfsGNrhERyxw8IqcirOi9Q6WCo3dkQ==
+
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-async-functions/-/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
@@ -3234,6 +3239,17 @@ ember-cli-htmlbars-inline-precompile@^1.0.0:
     heimdalljs-logger "^0.1.7"
     silent-error "^1.1.0"
 
+ember-cli-htmlbars-inline-precompile@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-htmlbars-inline-precompile/-/ember-cli-htmlbars-inline-precompile-2.0.0.tgz#8cbc941370ac6e728ae3d49c4164b3c7131d6118"
+  integrity sha512-oqqmT31ZG+md5UgCsumFulGXZvC3SbHnhLZ24uc5vKQuzA1c5cZmbOxb+1CnqLIovPCbcJWE3pL9kUMHiBh5oQ==
+  dependencies:
+    babel-plugin-htmlbars-inline-precompile "^1.0.0"
+    ember-cli-version-checker "^2.1.2"
+    hash-for-dep "^1.2.3"
+    heimdalljs-logger "^0.1.9"
+    silent-error "^1.1.0"
+
 ember-cli-htmlbars@^2.0.1, ember-cli-htmlbars@^2.0.2, ember-cli-htmlbars@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-2.0.3.tgz#e116e1500dba12f29c94b05b9ec90f52cb8bb042"
@@ -3428,6 +3444,14 @@ ember-cli-version-checker@^2.0.0, ember-cli-version-checker@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/ember-cli-version-checker/-/ember-cli-version-checker-2.1.0.tgz#fc79a56032f3717cf844ada7cbdec1a06fedb604"
   integrity sha512-ssiNyVTp+PphroFum8guHX9py4xU1PCxkRYgb25NxumgjpKTPjhkgTfpRRKXlIQe+/wVMmhf+Uv6w9vSLZKWKQ==
+  dependencies:
+    resolve "^1.3.3"
+    semver "^5.3.0"
+
+ember-cli-version-checker@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/ember-cli-version-checker/-/ember-cli-version-checker-2.1.2.tgz#305ce102390c66e4e0f1432dea9dc5c7c19fed98"
+  integrity sha512-sjkHGr4IGXnO3EUcY21380Xo9Qf6bC8HWH4D62bVnrQop/8uha5XgMQRoAflMCeH6suMrezQL287JUoYc2smEw==
   dependencies:
     resolve "^1.3.3"
     semver "^5.3.0"
