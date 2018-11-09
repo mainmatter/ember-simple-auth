@@ -584,6 +584,15 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
 });
 ```
 
+### Deprecation of Client ID as Header
+
+Sending the Client ID as Base64 Encoded in the Authorization Header was against the spec and caused
+incorrect behavior with OAuth2 Servers that had implemented the spec properly.
+
+To change this behavior set `sendClientIdAsQueryParam` to `true`, and the client id will be correctly
+sent as a query parameter. Leaving it set to `false` (currently default) will result in a deprecation
+notice until the next major version.
+
 ## Session Stores
 
 Ember Simple Auth __persists the session state via a session store so it
