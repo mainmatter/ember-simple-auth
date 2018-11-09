@@ -8,6 +8,7 @@ import {
 import { expect } from 'chai';
 import Pretender from 'pretender';
 import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
+import { registerDeprecationHandler } from '@ember/debug';
 
 describe('OAuth2PasswordGrantAuthenticator', () => {
   let authenticator;
@@ -118,6 +119,17 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     });
 
     it('(deprecated) sends an AJAX request to the token endpoint with client_id Basic Auth header', function(done) {
+      let warnings;
+      registerDeprecationHandler((message, options, next) => {
+        // in case a deprecation is issued before a test is started
+        if (!warnings) {
+          warnings = [];
+        }
+
+        warnings.push(message);
+        next(message, options);
+      });
+
       server.post('/token', (request) => {
         expect(request.requestHeaders['authorization']).to.eql('Basic dGVzdC1jbGllbnQ6');
         done();
@@ -125,6 +137,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
       authenticator.set('clientId', 'test-client');
       authenticator.authenticate('username', 'password');
+
+      expect(warnings[0]).to.eq('Ember Simple Auth: Client ID as Authorization Header is deprecated in favour of Client ID as Query String Parameter.');
     });
 
     it('sends an AJAX request to the token endpoint with client_id as parameter in the body', function(done) {
