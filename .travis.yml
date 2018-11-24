@@ -9,34 +9,55 @@ dist: trusty
 addons:
   chrome: stable
 
-env:
-  secure: IVCX1o8nMAKAKxj2cXE6a2A8xmnt3Gj72ocyjT1vhZutEJ1z7wu3Xl/r6Q0fhlaux3+ZNz/KV6Lax6NW8KgC/Wo1+B5SF2RWMLGX+exglf5zUXT3wzaOq8LcEyQ7SGfsuovHa8ij3dMM4UWjl5lE3cM1M1KjxlekniUF9nFxZd4=
-  matrix:
-    - SCRIPT="test:one ember-1.12"
-    - SCRIPT="test:one ember-1.13"
-    - SCRIPT="test:one ember-2.0"
-    - SCRIPT="test:one ember-lts-2.4"
-    - SCRIPT="test:one ember-lts-2.8"
-    - SCRIPT="test:one ember-lts-2.12"
-    - SCRIPT="test:one ember-lts-2.16"
-    - SCRIPT="test:one ember-lts-2.18"
-    - SCRIPT="test:one ember-3.0"
-    - SCRIPT="test:one ember-release"
-    - SCRIPT="test:one ember-beta"
-    - SCRIPT="test:one ember-canary"
-    - SCRIPT=test:fastboot
-    - SCRIPT=test:node
-    - SCRIPT=lint
-
 cache:
   yarn: true
+
+env:
+  secure: IVCX1o8nMAKAKxj2cXE6a2A8xmnt3Gj72ocyjT1vhZutEJ1z7wu3Xl/r6Q0fhlaux3+ZNz/KV6Lax6NW8KgC/Wo1+B5SF2RWMLGX+exglf5zUXT3wzaOq8LcEyQ7SGfsuovHa8ij3dMM4UWjl5lE3cM1M1KjxlekniUF9nFxZd4=
+
+jobs:
+  fail_fast: true
+  allow_failures:
+    - env: SCRIPT="test:one ember-canary"
+    - env: SCRIPT=test:fastboot
+
+  include:
+    # runs linting and tests with current locked deps
+    - stage: 'Basic Tests'
+      name: 'Lint'
+      env: SCRIPT=lint
+
+    - name: 'Fixed Dependencies'
+      install:
+      - yarn install --non-interactive
+      env: SCRIPT="test:one ember-release"
+
+    - name: 'Floating Dependencies'
+      env: SCRIPT="test:one ember-release"
+
+    # we recommend new addons test the current and previous LTS
+    # as well as latest stable release (bonus points to beta/canary)
+    - stage: 'Additional Tests'
+      env: SCRIPT="test:one ember-1.12"
+    - env: SCRIPT="test:one ember-1.13"
+    - env: SCRIPT="test:one ember-2.0"
+    - env: SCRIPT="test:one ember-lts-2.4"
+    - env: SCRIPT="test:one ember-lts-2.8"
+    - env: SCRIPT="test:one ember-lts-2.12"
+    - env: SCRIPT="test:one ember-lts-2.16"
+    - env: SCRIPT="test:one ember-lts-2.18"
+    - env: SCRIPT="test:one ember-3.0"
+    - env: SCRIPT="test:one ember-beta"
+    - env: SCRIPT=test:node
+    - env: SCRIPT=test:fastboot
+    - env: SCRIPT="test:one ember-canary"
 
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
 
 install:
-  - yarn install --no-lockfile
+  - yarn install --no-lockfile --non-interactive
 
 script:
   - yarn run $SCRIPT
