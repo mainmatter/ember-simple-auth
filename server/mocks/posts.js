@@ -3,7 +3,7 @@ module.exports = function(app) {
   var postsRouter = express.Router();
 
   postsRouter.get('/', function(req, res) {
-    if (/Bearer .+/.test(req.headers.authorization)) {
+    if ((/Bearer .+/).test(req.headers.authorization)) {
       var response = {
         data: [
           {
