@@ -3954,10 +3954,13 @@ ember-cli-htmlbars@^3.0.0:
     json-stable-stringify "^1.0.0"
     strip-bom "^3.0.0"
 
-ember-cli-inject-live-reload@^1.6.1:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-inject-live-reload/-/ember-cli-inject-live-reload-1.7.0.tgz#af94336e015336127dfb98080ad442bb233e37ed"
-  integrity sha512-+0zOwJlf4iR5NcvyeU7E7xU1qDfniP/+mXfNTfAEhHO2eE9sjQvasKV84O1sIIyLk2LMIjFPbGt7uv5fQcIGwg==
+ember-cli-inject-live-reload@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-inject-live-reload/-/ember-cli-inject-live-reload-2.0.0.tgz#6808b46f17a9625861f66c3b86aff169001cd65d"
+  integrity sha512-AUGORo3Y2eIhEI/TgW3Bmvr6cESmEbfjuv6SuGV9rwXCZ74QM2Kf4SSaVcU4LSY779kDIm47nB8FIg0O7ckgww==
+  dependencies:
+    clean-base-url "^1.0.0"
+    ember-cli-version-checker "^2.1.2"
 
 ember-cli-internal-test-helpers@^0.9.1:
   version "0.9.1"
@@ -4502,9 +4505,9 @@ ember-source-channel-url@^1.1.0:
     got "^8.0.1"
 
 ember-source@~3.4.0:
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-3.4.4.tgz#b94800f8f0c1cc9baefc27b4fdcd8c65979a9bad"
-  integrity sha512-nT6BWL8XHP1+Toi2Wtpb7xvzkvvgBFBWotIt40e+P+piXM02QMfGySwO8vK7PR0mO0QkrSNxN8oGDjt0D4agYQ==
+  version "3.4.5"
+  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-3.4.5.tgz#f4a5975affd393c29a69afaa58c2ca9de8bba6c0"
+  integrity sha512-fm2JyUzIBhYZhMgLerjYMb0sAuv5kTPradWnsdIZbitk+O00ViF7zKb2nTEAb1MtxsUpqRCaxQZsv06LljDvtg==
   dependencies:
     broccoli-funnel "^2.0.1"
     broccoli-merge-trees "^2.0.0"
