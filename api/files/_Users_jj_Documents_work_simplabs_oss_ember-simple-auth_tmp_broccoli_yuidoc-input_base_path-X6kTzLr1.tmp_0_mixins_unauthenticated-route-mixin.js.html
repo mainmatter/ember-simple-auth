@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>/addon/mixins/unauthenticated-route-mixin.js - The Ember Simple Auth API</title>
+    <title>/Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/mixins/unauthenticated-route-mixin.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.7.0"><span class="label label-primary">1.7.0</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.8.0"><span class="label label-primary">1.8.0</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -47,7 +47,7 @@
                   <li><a href="../classes/LocalStorageStore.html">LocalStorageStore</a></li>
                   <li><a href="../classes/OAuth2BearerAuthorizer.html">OAuth2BearerAuthorizer</a></li>
                   <li><a href="../classes/OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li>
-                  <li><a href="../classes/OAuth2ImplicitGrantCallbackMixin.html">OAuth2ImplicitGrantCallbackMixin</a></li>
+                  <li><a href="../classes/OAuth2ImplicitGrantCallbackRouteMixin.html">OAuth2ImplicitGrantCallbackRouteMixin</a></li>
                   <li><a href="../classes/OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li>
                   <li><a href="../classes/SessionService.html">SessionService</a></li>
                   <li><a href="../classes/SessionStorageStore.html">SessionStorageStore</a></li>
@@ -58,7 +58,7 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
-          <h1 class="file-heading">File: /addon/mixins/unauthenticated-route-mixin.js</h1>
+          <h1 class="file-heading">File: /Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/mixins/unauthenticated-route-mixin.js</h1>
           
           <div class="file">
               <pre class="code prettyprint linenums">
@@ -68,6 +68,20 @@
           import { computed } from &#x27;@ember/object&#x27;;
           import Configuration from &#x27;./../configuration&#x27;;
           import isFastBoot from &#x27;ember-simple-auth/utils/is-fastboot&#x27;;
+          import { getOwner } from &#x27;@ember/application&#x27;;
+          
+          /**
+           *
+           * @param {ApplicationInstance} owner The ApplicationInstance that owns the session service
+           * @param {(...args: [any]) =&gt; any} callback Callback that will be invoked if the user is authenticated
+           */
+          function runIfAuthenticated(owner, callback) {
+            const sessionSvc = owner.lookup(&#x27;service:session&#x27;);
+            if (sessionSvc.get(&#x27;isAuthenticated&#x27;)) {
+              callback();
+              return true;
+            }
+          }
           
           /**
             __This mixin is used to make routes accessible only if the session is
@@ -126,16 +140,16 @@
              &#x60;beforeModel&#x60; method is actually executed.
           
               @method beforeModel
-              @param {Transition} transition The transition that lead to this route
               @public
             */
             beforeModel() {
-              if (this.get(&#x27;session&#x27;).get(&#x27;isAuthenticated&#x27;)) {
+              const didRedirect = runIfAuthenticated(getOwner(this), () =&gt; {
                 let routeIfAlreadyAuthenticated = this.get(&#x27;routeIfAlreadyAuthenticated&#x27;);
                 assert(&#x27;The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!&#x27;, this.get(&#x27;routeName&#x27;) !== routeIfAlreadyAuthenticated);
           
                 this.transitionTo(routeIfAlreadyAuthenticated);
-              } else {
+              });
+              if (!didRedirect) {
                 return this._super(...arguments);
               }
             }

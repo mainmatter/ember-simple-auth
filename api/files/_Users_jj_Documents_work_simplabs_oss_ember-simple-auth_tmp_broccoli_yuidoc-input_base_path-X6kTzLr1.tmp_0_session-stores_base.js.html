@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>/addon/configuration.js - The Ember Simple Auth API</title>
+    <title>/Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/session-stores/base.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.7.0"><span class="label label-primary">1.7.0</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.8.0"><span class="label label-primary">1.8.0</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -47,7 +47,7 @@
                   <li><a href="../classes/LocalStorageStore.html">LocalStorageStore</a></li>
                   <li><a href="../classes/OAuth2BearerAuthorizer.html">OAuth2BearerAuthorizer</a></li>
                   <li><a href="../classes/OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li>
-                  <li><a href="../classes/OAuth2ImplicitGrantCallbackMixin.html">OAuth2ImplicitGrantCallbackMixin</a></li>
+                  <li><a href="../classes/OAuth2ImplicitGrantCallbackRouteMixin.html">OAuth2ImplicitGrantCallbackRouteMixin</a></li>
                   <li><a href="../classes/OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li>
                   <li><a href="../classes/SessionService.html">SessionService</a></li>
                   <li><a href="../classes/SessionStorageStore.html">SessionStorageStore</a></li>
@@ -58,117 +58,83 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
-          <h1 class="file-heading">File: /addon/configuration.js</h1>
+          <h1 class="file-heading">File: /Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/session-stores/base.js</h1>
           
           <div class="file">
               <pre class="code prettyprint linenums">
-          import { A } from &#x27;@ember/array&#x27;;
-          import { getWithDefault } from &#x27;@ember/object&#x27;;
-          import { deprecate } from &#x27;@ember/application/deprecations&#x27;;
-          
-          const DEFAULTS = {
-            rootURL:                     &#x27;&#x27;,
-            authenticationRoute:         &#x27;login&#x27;,
-            routeAfterAuthentication:    &#x27;index&#x27;,
-            routeIfAlreadyAuthenticated: &#x27;index&#x27;
-          };
+          import RSVP from &#x27;rsvp&#x27;;
+          import EmberObject from &#x27;@ember/object&#x27;;
+          import Evented from &#x27;@ember/object/evented&#x27;;
           
           /**
-            Ember Simple Auth&#x27;s configuration object.
+            The base class for all session stores. __This serves as a starting point for
+            implementing custom session stores and must not be used directly.__
           
-            @class Configuration
-            @extends Object
-            @module ember-simple-auth/configuration
+            Session Stores persist the session&#x27;s state so that it survives a page reload
+            and is synchronized across multiple tabs or windows of the same application.
+          
+            @class BaseStore
+            @module ember-simple-auth/session-stores/base
+            @extends Ember.Object
+            @uses Ember.Evented
             @public
           */
-          export default {
+          export default EmberObject.extend(Evented, {
             /**
-              The root URL of the application as configured in &#x60;config/environment.js&#x60;.
+              Triggered when the session store&#x27;s data changes due to an external event,
+              e.g., from another tab or window of the same application. The session
+              handles that event, passes the updated data to its authenticator&#x27;s
+              {{#crossLink &quot;BaseAuthenticator/restore:method&quot;}}{{/crossLink}} method and
+              handles the result of that invocation accordingly.
           
-              @property rootURL
-              @readOnly
-              @static
-              @type String
-              @default &#x27;&#x27;
+              @event sessionDataUpdated
+              @param {Object} data The updated session data
               @public
             */
-            rootURL: DEFAULTS.rootURL,
           
             /**
-              The base URL of the application as configured in &#x60;config/environment.js&#x60;.
+              Persists the &#x60;data&#x60;. This replaces all currently stored data.
           
-              @property baseURL
-              @readOnly
-              @static
-              @type String
-              @default &#x27;&#x27;
+              &#x60;BaseStores&#x60;&#x27;s implementation always returns a rejecting promise. __This
+              method must be overridden in subclasses__.
+          
+              @method persist
+              @param {Object} data The data to persist
+              @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
               @public
             */
-            get baseURL() {
-              deprecate(&#x27;The baseURL property should no longer be used. Instead, use rootURL.&#x27;, false, {
-                id: &#x60;ember-simple-auth.configuration.base-url&#x60;,
-                until: &#x27;2.0.0&#x27;
-              });
-              return this.rootURL;
+            persist() {
+              return RSVP.reject();
             },
           
             /**
-              The route to transition to for authentication. The
-              {{#crossLink &quot;AuthenticatedRouteMixin&quot;}}{{/crossLink}} will transition to
-              this route when a route that implements the mixin is accessed when the
-              route is not authenticated.
+              Returns all data currently stored as a plain object.
           
-              @property authenticationRoute
-              @deprecated AuthenticatedRouteMixin/authenticationRoute:property
-              @readOnly
-              @static
-              @type String
-              @default &#x27;login&#x27;
+              &#x60;BaseStores&#x60;&#x27;s implementation always returns a rejecting promise. __This
+              method must be overridden in subclasses__.
+          
+              @method restore
+              @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
               @public
             */
-            authenticationRoute: DEFAULTS.authenticationRoute,
+            restore() {
+              return RSVP.reject();
+            },
           
             /**
-              The route to transition to after successful authentication.
+              Clears the store.
           
-              @property routeAfterAuthentication
-              @deprecated ApplicationRouteMixin/routeAfterAuthentication:property
-              @readOnly
-              @static
-              @type String
-              @default &#x27;index&#x27;
+              &#x60;BaseStores&#x60;&#x27;s implementation always returns a rejecting promise. __This
+              method must be overridden in subclasses__.
+          
+              @method clear
+              @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
               @public
             */
-            routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
-          
-            /**
-              The route to transition to if a route that implements the
-              {{#crossLink &quot;UnauthenticatedRouteMixin&quot;}}{{/crossLink}} is accessed when
-              the session is authenticated.
-          
-              @property routeIfAlreadyAuthenticated
-              @deprecated UnauthenticatedRouteMixin/routeIfAlreadyAuthenticated:property
-              @readOnly
-              @static
-              @type String
-              @default &#x27;index&#x27;
-              @public
-            */
-            routeIfAlreadyAuthenticated: DEFAULTS.routeIfAlreadyAuthenticated,
-          
-            load(config) {
-              A([&#x27;rootURL&#x27;, &#x27;authenticationRoute&#x27;, &#x27;routeAfterAuthentication&#x27;, &#x27;routeIfAlreadyAuthenticated&#x27;]).forEach((property) =&gt; {
-                if ([&#x27;authenticationRoute&#x27;, &#x27;routeAfterAuthentication&#x27;, &#x27;routeIfAlreadyAuthenticated&#x27;].indexOf(property) &gt;= 0 &amp;&amp; DEFAULTS[property] !== this[property]) {
-                  deprecate(&#x60;Ember Simple Auth: ${property} should no longer be overridden in the configuration. Instead, override the ${property} property in the route.&#x60;, false, {
-                    id: &#x60;ember-simple-auth.configuration.routes&#x60;,
-                    until: &#x27;2.0.0&#x27;
-                  });
-                }
-          
-                this[property] = getWithDefault(config, property, DEFAULTS[property]);
-              });
+            clear() {
+              return RSVP.reject();
             }
-          };
+          });
           
               </pre>
           </div>

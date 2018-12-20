@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "The Ember Simple Auth API",
-        "version": "1.7.0"
+        "version": "1.8.0"
     },
     "files": {
         "/addon/authenticators/base.js": {
@@ -128,10 +128,10 @@
         "/addon/mixins/oauth2-implicit-grant-callback-route-mixin.js": {
             "name": "/addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
             "modules": {
-                "ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin": 1
+                "ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin": 1
             },
             "classes": {
-                "OAuth2ImplicitGrantCallbackMixin": 1
+                "OAuth2ImplicitGrantCallbackRouteMixin": 1
             },
             "fors": {},
             "namespaces": {}
@@ -221,6 +221,13 @@
             "classes": {
                 "SessionStorageStore": 1
             },
+            "fors": {},
+            "namespaces": {}
+        },
+        "/addon/utils/is-fastboot.js": {
+            "name": "/addon/utils/is-fastboot.js",
+            "modules": {},
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
@@ -374,7 +381,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "/addon/mixins/authenticated-route-mixin.js",
-            "line": 9,
+            "line": 35,
             "description": "__This mixin is used to make routes accessible only if the session is\nauthenticated.__ It defines a `beforeModel` method that aborts the current\ntransition and instead transitions to the\n{{#crossLink \"Configuration/authenticationRoute:property\"}}{{/crossLink}} if\nthe session is not authenticated.\n\n```js\n// app/routes/protected.js\nimport AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';\n\nexport default Ember.Route.extend(AuthenticatedRouteMixin);\n```"
         },
         "ember-simple-auth/mixins/data-adapter-mixin": {
@@ -391,19 +398,19 @@
             "line": 6,
             "description": "__This mixin can be used to make Ember Data adapters authorize all outgoing\nAPI requests by injecting a header.__ It works with all authorizers that call\nthe authorization callback (see\n{{#crossLink \"BaseAuthorizer/authorize:method\"}}{{/crossLink}}) with header\nname and header content arguments.\n\n__The `DataAdapterMixin` will also invalidate the session whenever it\nreceives a 401 response for an API request.__\n\n```js\n// app/adapters/application.js\nimport DS from 'ember-data';\nimport DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';\n\nexport default DS.JSONAPIAdapter.extend(DataAdapterMixin, {\n  authorizer: 'authorizer:application'\n});\n```\n\n__The `DataAdapterMixin` requires Ember Data 1.13 or later.__"
         },
-        "ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin": {
-            "name": "ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin",
+        "ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin": {
+            "name": "ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin",
             "submodules": {},
             "elements": {},
             "classes": {
-                "OAuth2ImplicitGrantCallbackMixin": 1
+                "OAuth2ImplicitGrantCallbackRouteMixin": 1
             },
             "fors": {},
             "namespaces": {},
             "tag": "module",
             "file": "/addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 5,
-            "description": "__This mixin is used in the callback route when using OAuth 2.0 Implicit\nGrant authentication.__ It implements the\n{{#crossLink \"OAuth2ImplicitGrantCallbackMixin/activate:method\"}}{{/crossLink}}\nmethod that retrieves and processes authentication parameters, such as\n`access_token`, from the hash parameters provided in the callback URL by\nthe authentication server. The parameters are then passed to the\n{{#crossLink \"OAuth2ImplicitGrantAuthenticator\"}}{{/crossLink}}"
+            "line": 20,
+            "description": "__This mixin is used in the callback route when using OAuth 2.0 Implicit\nGrant authentication.__ It implements the\n{{#crossLink \"OAuth2ImplicitGrantCallbackRouteMixin/activate:method\"}}{{/crossLink}}\nmethod that retrieves and processes authentication parameters, such as\n`access_token`, from the hash parameters provided in the callback URL by\nthe authentication server. The parameters are then passed to the\n{{#crossLink \"OAuth2ImplicitGrantAuthenticator\"}}{{/crossLink}}"
         },
         "ember-simple-auth/mixins/unauthenticated-route-mixin": {
             "name": "ember-simple-auth/mixins/unauthenticated-route-mixin",
@@ -416,7 +423,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "/addon/mixins/unauthenticated-route-mixin.js",
-            "line": 8,
+            "line": 22,
             "description": "__This mixin is used to make routes accessible only if the session is\nnot authenticated__ (e.g., login and registration routes). It defines a\n`beforeModel` method that aborts the current transition and instead\ntransitions to the\n{{#crossLink \"Configuration/routeIfAlreadyAuthenticated:property\"}}{{/crossLink}}\nif the session is authenticated.\n\n```js\n// app/routes/login.js\nimport UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';\n\nexport default Ember.Route.extend(UnauthenticatedRouteMixin);\n```"
         },
         "ember-simple-auth/services/session": {
@@ -701,7 +708,7 @@
             "module": "ember-simple-auth/mixins/authenticated-route-mixin",
             "namespace": "",
             "file": "/addon/mixins/authenticated-route-mixin.js",
-            "line": 9,
+            "line": 35,
             "description": "__This mixin is used to make routes accessible only if the session is\nauthenticated.__ It defines a `beforeModel` method that aborts the current\ntransition and instead transitions to the\n{{#crossLink \"Configuration/authenticationRoute:property\"}}{{/crossLink}} if\nthe session is not authenticated.\n\n```js\n// app/routes/protected.js\nimport AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';\n\nexport default Ember.Route.extend(AuthenticatedRouteMixin);\n```",
             "extends": "Ember.Mixin",
             "access": "public",
@@ -724,19 +731,19 @@
             "access": "public",
             "tagname": ""
         },
-        "OAuth2ImplicitGrantCallbackMixin": {
-            "name": "OAuth2ImplicitGrantCallbackMixin",
-            "shortname": "OAuth2ImplicitGrantCallbackMixin",
+        "OAuth2ImplicitGrantCallbackRouteMixin": {
+            "name": "OAuth2ImplicitGrantCallbackRouteMixin",
+            "shortname": "OAuth2ImplicitGrantCallbackRouteMixin",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin",
+            "module": "ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin",
             "namespace": "",
             "file": "/addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 5,
-            "description": "__This mixin is used in the callback route when using OAuth 2.0 Implicit\nGrant authentication.__ It implements the\n{{#crossLink \"OAuth2ImplicitGrantCallbackMixin/activate:method\"}}{{/crossLink}}\nmethod that retrieves and processes authentication parameters, such as\n`access_token`, from the hash parameters provided in the callback URL by\nthe authentication server. The parameters are then passed to the\n{{#crossLink \"OAuth2ImplicitGrantAuthenticator\"}}{{/crossLink}}",
+            "line": 20,
+            "description": "__This mixin is used in the callback route when using OAuth 2.0 Implicit\nGrant authentication.__ It implements the\n{{#crossLink \"OAuth2ImplicitGrantCallbackRouteMixin/activate:method\"}}{{/crossLink}}\nmethod that retrieves and processes authentication parameters, such as\n`access_token`, from the hash parameters provided in the callback URL by\nthe authentication server. The parameters are then passed to the\n{{#crossLink \"OAuth2ImplicitGrantAuthenticator\"}}{{/crossLink}}",
             "extends": "Ember.Mixin",
             "access": "public",
             "tagname": ""
@@ -752,7 +759,7 @@
             "module": "ember-simple-auth/mixins/unauthenticated-route-mixin",
             "namespace": "",
             "file": "/addon/mixins/unauthenticated-route-mixin.js",
-            "line": 8,
+            "line": 22,
             "description": "__This mixin is used to make routes accessible only if the session is\nnot authenticated__ (e.g., login and registration routes). It defines a\n`beforeModel` method that aborts the current transition and instead\ntransitions to the\n{{#crossLink \"Configuration/routeIfAlreadyAuthenticated:property\"}}{{/crossLink}}\nif the session is authenticated.\n\n```js\n// app/routes/login.js\nimport UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';\n\nexport default Ember.Route.extend(UnauthenticatedRouteMixin);\n```",
             "extends": "Ember.Mixin",
             "access": "public",
@@ -1484,7 +1491,7 @@
         },
         {
             "file": "/addon/authenticators/torii.js",
-            "line": 72,
+            "line": 78,
             "description": "Authenticates the session by opening the specified torii provider. For more\ndocumentation on torii and its providers abstraction, see the\n[project's README](https://github.com/Vestorly/torii#readme), specifically\nthe\n[section on providers](https://github.com/Vestorly/torii#configuring-a-torii-provider).",
             "itemtype": "method",
             "name": "authenticate",
@@ -1511,7 +1518,7 @@
         },
         {
             "file": "/addon/authenticators/torii.js",
-            "line": 94,
+            "line": 100,
             "description": "Closes the torii provider. If the provider is successfully closed, this\nmethod returns a resolving promise, otherwise it will return a rejecting\npromise, thus intercepting session invalidation.",
             "itemtype": "method",
             "name": "invalidate",
@@ -1669,7 +1676,31 @@
         },
         {
             "file": "/addon/mixins/authenticated-route-mixin.js",
-            "line": 29,
+            "line": 9,
+            "description": "If the user is unauthenticated, invoke `callback`",
+            "params": [
+                {
+                    "name": "owner",
+                    "description": "The ApplicationInstance that owns the service (and possibly fastboot and cookie) service(s)",
+                    "type": "ApplicationInstance"
+                },
+                {
+                    "name": "transition",
+                    "description": "Transition for the user's original navigation",
+                    "type": "Transition"
+                },
+                {
+                    "name": "callback",
+                    "description": "Callback that will be invoked if the user is unauthenticated",
+                    "type": "(...args: []any) => any"
+                }
+            ],
+            "class": "AuthenticatedRouteMixin",
+            "module": "ember-simple-auth/mixins/application-route-mixin"
+        },
+        {
+            "file": "/addon/mixins/authenticated-route-mixin.js",
+            "line": 55,
             "description": "The session service.",
             "itemtype": "property",
             "name": "session",
@@ -1682,7 +1713,7 @@
         },
         {
             "file": "/addon/mixins/authenticated-route-mixin.js",
-            "line": 41,
+            "line": 67,
             "description": "The route to transition to for authentication. The\n{{#crossLink \"AuthenticatedRouteMixin\"}}{{/crossLink}} will transition to\nthis route when a route that implements the mixin is accessed when the\nroute is not authenticated.",
             "itemtype": "property",
             "name": "authenticationRoute",
@@ -1695,7 +1726,7 @@
         },
         {
             "file": "/addon/mixins/authenticated-route-mixin.js",
-            "line": 56,
+            "line": 82,
             "description": "Checks whether the session is authenticated and if it is not aborts the\ncurrent transition and instead transitions to the\n{{#crossLink \"Configuration/authenticationRoute:property\"}}{{/crossLink}}.\nIf the current transition is aborted, this method will save it in the\nsession service's\n{{#crossLink \"SessionService/attemptedTransition:property\"}}{{/crossLink}}\nproperty so that  it can be retried after the session is authenticated\n(see\n{{#crossLink \"ApplicationRouteMixin/sessionAuthenticated:method\"}}{{/crossLink}}).\nIf the transition is aborted in Fastboot mode, the transition's target\nURL will be saved in a `ember_simple_auth-redirectTarget` cookie for use by\nthe browser after authentication is complete.\n\n__If `beforeModel` is overridden in a route that uses this mixin, the route's\n   implementation must call `this._super(...arguments)`__ so that the mixin's\n   `beforeModel` method is actually executed.",
             "itemtype": "method",
             "name": "beforeModel",
@@ -1713,7 +1744,7 @@
         },
         {
             "file": "/addon/mixins/authenticated-route-mixin.js",
-            "line": 98,
+            "line": 113,
             "description": "Triggers authentication; by default this method transitions to the\n`authenticationRoute`. In case the application uses an authentication\nmechanism that does not use an authentication route, this method can be\noverridden.",
             "itemtype": "method",
             "name": "triggerAuthentication",
@@ -1836,7 +1867,7 @@
         },
         {
             "file": "/addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 21,
+            "line": 36,
             "description": "The session service.",
             "itemtype": "property",
             "name": "session",
@@ -1844,12 +1875,12 @@
             "type": "SessionService",
             "access": "public",
             "tagname": "",
-            "class": "OAuth2ImplicitGrantCallbackMixin",
-            "module": "ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin"
+            "class": "OAuth2ImplicitGrantCallbackRouteMixin",
+            "module": "ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin"
         },
         {
             "file": "/addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 31,
+            "line": 46,
             "description": "The authenticator that should be used to authenticate the callback. This\nmust be a subclass of the\n{{#crossLink \"OAuth2ImplicitGrantAuthenticator\"}}{{/crossLink}}\nauthenticator.",
             "itemtype": "property",
             "name": "authenticator",
@@ -1857,12 +1888,12 @@
             "default": "null",
             "access": "public",
             "tagname": "",
-            "class": "OAuth2ImplicitGrantCallbackMixin",
-            "module": "ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin"
+            "class": "OAuth2ImplicitGrantCallbackRouteMixin",
+            "module": "ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin"
         },
         {
             "file": "/addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 44,
+            "line": 59,
             "description": "Any error that potentially occurs during authentication will be stored in\nthis property.",
             "itemtype": "property",
             "name": "error",
@@ -1870,23 +1901,41 @@
             "default": "null",
             "access": "public",
             "tagname": "",
-            "class": "OAuth2ImplicitGrantCallbackMixin",
-            "module": "ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin"
+            "class": "OAuth2ImplicitGrantCallbackRouteMixin",
+            "module": "ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin"
         },
         {
             "file": "/addon/mixins/oauth2-implicit-grant-callback-route-mixin.js",
-            "line": 55,
+            "line": 70,
             "description": "Passes the hash received with the redirection from the authentication\nserver to the\n{{#crossLink \"OAuth2ImplicitGrantAuthenticator\"}}{{/crossLink}} and\nauthenticates the session with the authenticator.",
             "itemtype": "method",
             "name": "activate",
             "access": "public",
             "tagname": "",
-            "class": "OAuth2ImplicitGrantCallbackMixin",
-            "module": "ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin"
+            "class": "OAuth2ImplicitGrantCallbackRouteMixin",
+            "module": "ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin"
         },
         {
             "file": "/addon/mixins/unauthenticated-route-mixin.js",
-            "line": 29,
+            "line": 9,
+            "params": [
+                {
+                    "name": "owner",
+                    "description": "The ApplicationInstance that owns the session service",
+                    "type": "ApplicationInstance"
+                },
+                {
+                    "name": "callback",
+                    "description": "Callback that will be invoked if the user is authenticated",
+                    "type": "(...args: [any]) => any"
+                }
+            ],
+            "class": "UnauthenticatedRouteMixin",
+            "module": "ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin"
+        },
+        {
+            "file": "/addon/mixins/unauthenticated-route-mixin.js",
+            "line": 43,
             "description": "The session service.",
             "itemtype": "property",
             "name": "session",
@@ -1899,7 +1948,7 @@
         },
         {
             "file": "/addon/mixins/unauthenticated-route-mixin.js",
-            "line": 41,
+            "line": 55,
             "description": "The route to transition to if a route that implements the\n{{#crossLink \"UnauthenticatedRouteMixin\"}}{{/crossLink}} is accessed when\nthe session is authenticated.",
             "itemtype": "property",
             "name": "routeIfAlreadyAuthenticated",
@@ -1912,17 +1961,10 @@
         },
         {
             "file": "/addon/mixins/unauthenticated-route-mixin.js",
-            "line": 55,
+            "line": 69,
             "description": "Checks whether the session is authenticated and if it is aborts the current\ntransition and instead transitions to the\n{{#crossLink \"Configuration/routeIfAlreadyAuthenticated:property\"}}{{/crossLink}}.\n\n__If `beforeModel` is overridden in a route that uses this mixin, the route's\n   implementation must call `this._super(...arguments)`__ so that the mixin's\n   `beforeModel` method is actually executed.",
             "itemtype": "method",
             "name": "beforeModel",
-            "params": [
-                {
-                    "name": "transition",
-                    "description": "The transition that lead to this route",
-                    "type": "Transition"
-                }
-            ],
             "access": "public",
             "tagname": "",
             "class": "UnauthenticatedRouteMixin",
@@ -2556,6 +2598,33 @@
             "module": "ember-simple-auth/session-stores/session-storage"
         },
         {
+            "file": "/addon/utils/is-fastboot.js",
+            "line": 9,
+            "return": {
+                "description": "",
+                "type": "ComputedProperty<boolean>"
+            },
+            "class": "Configuration",
+            "module": "ember-simple-auth/session-stores/session-storage"
+        },
+        {
+            "file": "/addon/utils/is-fastboot.js",
+            "line": 18,
+            "params": [
+                {
+                    "name": "owner",
+                    "description": "",
+                    "type": "ApplicationInstance"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "Configuration",
+            "module": "ember-simple-auth/session-stores/session-storage"
+        },
+        {
             "file": "/addon/configuration.js",
             "line": 21,
             "description": "The root URL of the application as configured in `config/environment.js`.",
@@ -2637,5 +2706,22 @@
             "module": "ember-simple-auth/configuration"
         }
     ],
-    "warnings": []
+    "warnings": [
+        {
+            "message": "Missing item type\nIf the user is unauthenticated, invoke `callback`",
+            "line": " /addon/mixins/authenticated-route-mixin.js:9"
+        },
+        {
+            "message": "Missing item type",
+            "line": " /addon/mixins/unauthenticated-route-mixin.js:9"
+        },
+        {
+            "message": "Missing item type",
+            "line": " /addon/utils/is-fastboot.js:9"
+        },
+        {
+            "message": "Missing item type",
+            "line": " /addon/utils/is-fastboot.js:18"
+        }
+    ]
 }

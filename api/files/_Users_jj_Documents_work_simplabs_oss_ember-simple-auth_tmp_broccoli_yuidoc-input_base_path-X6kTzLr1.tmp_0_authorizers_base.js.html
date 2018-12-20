@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>/addon/session-stores/ephemeral.js - The Ember Simple Auth API</title>
+    <title>/Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/authorizers/base.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.7.0"><span class="label label-primary">1.7.0</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.8.0"><span class="label label-primary">1.8.0</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -47,7 +47,7 @@
                   <li><a href="../classes/LocalStorageStore.html">LocalStorageStore</a></li>
                   <li><a href="../classes/OAuth2BearerAuthorizer.html">OAuth2BearerAuthorizer</a></li>
                   <li><a href="../classes/OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li>
-                  <li><a href="../classes/OAuth2ImplicitGrantCallbackMixin.html">OAuth2ImplicitGrantCallbackMixin</a></li>
+                  <li><a href="../classes/OAuth2ImplicitGrantCallbackRouteMixin.html">OAuth2ImplicitGrantCallbackRouteMixin</a></li>
                   <li><a href="../classes/OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li>
                   <li><a href="../classes/SessionService.html">SessionService</a></li>
                   <li><a href="../classes/SessionStorageStore.html">SessionStorageStore</a></li>
@@ -58,70 +58,63 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
-          <h1 class="file-heading">File: /addon/session-stores/ephemeral.js</h1>
+          <h1 class="file-heading">File: /Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/authorizers/base.js</h1>
           
           <div class="file">
               <pre class="code prettyprint linenums">
-          import RSVP from &#x27;rsvp&#x27;;
-          import BaseStore from &#x27;./base&#x27;;
+          import EmberObject from &#x27;@ember/object&#x27;;
+          import { deprecate } from &#x27;@ember/application/deprecations&#x27;;
           
           /**
-            Session store that __persists data in memory and thus is not actually
-            persistent__. It does also not synchronize the session&#x27;s state across
-            multiple tabs or windows as those cannot share memory. __This store is mainly
-            useful for testing and will automatically be used when running tests.__
+            The base class for all authorizers. __This serves as a starting point for
+            implementing custom authorizers and must not be used directly.__
           
-            @class EphemeralStore
-            @module ember-simple-auth/session-stores/ephemeral
-            @extends BaseStore
+            Authorizers use the session data acquired by an authenticator when
+            authenticating the session to construct authorization data that can, e.g., be
+            injected into outgoing network requests. Depending on the authorization
+            mechanism the authorizer implements, that authorization data might be an HTTP
+            header, query string parameters, a cookie, etc.
+          
+            __The authorizer has to fit the authenticator__ (see
+            {{#crossLink &quot;BaseAuthenticator&quot;}}{{/crossLink}})
+            as it can only use data that the authenticator acquires when authenticating
+            the session.
+          
+            @class BaseAuthorizer
+            @module ember-simple-auth/authorizers/base
+            @extends Ember.Object
+            @deprecated BaseAuthorizer:class
             @public
           */
-          export default BaseStore.extend({
+          export default EmberObject.extend({
             init() {
               this._super(...arguments);
-              this.clear();
+              deprecate(&#x60;Ember Simple Auth: Authorizers are deprecated in favour of setting headers directly.&#x60;,
+                false,
+                {
+                  id: &#x27;ember-simple-auth.baseAuthorizer&#x27;,
+                  until: &#x27;2.0.0&#x27;,
+                  url: &#x27;https://github.com/simplabs/ember-simple-auth#deprecation-of-authorizers&#x27;,
+                }
+              );
             },
-          
             /**
-              Persists &#x60;data&#x60;. This replaces all currently stored data.
+              Authorizes a block of code. This method will be invoked by the session
+              service&#x27;s {{#crossLink &quot;SessionService/authorize:method&quot;}}{{/crossLink}}
+              method which will pass the current authenticated session data (see
+              {{#crossLink &quot;SessionService/data:property&quot;}}{{/crossLink}}) and a block.
+              Depending on the mechanism it implements, the authorizer transforms the
+              session data into authorization data and invokes the block with that data.
           
-              @method persist
-              @param {Object} data The data to persist
-              @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
+              &#x60;BaseAuthorizer&#x60;&#x27;s implementation does nothing. __This method must be
+              overridden in custom authorizers.__
+          
+              @method authorize
+              @param {Object} data The current authenticated session data
+              @param {Function} block The callback to call with the authorization data
               @public
             */
-            persist(data) {
-              this._data = JSON.stringify(data || {});
-          
-              return RSVP.resolve();
-            },
-          
-            /**
-              Returns all data currently stored as a plain object.
-          
-              @method restore
-              @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
-              @public
-            */
-            restore() {
-              const data = JSON.parse(this._data) || {};
-          
-              return RSVP.resolve(data);
-            },
-          
-            /**
-              Clears the store.
-          
-              @method clear
-              @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
-              @public
-            */
-            clear() {
-              delete this._data;
-              this._data = &#x27;{}&#x27;;
-          
-              return RSVP.resolve();
-            }
+            authorize() {}
           });
           
               </pre>

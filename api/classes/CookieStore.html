@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.7.0"><span class="label label-primary">1.7.0</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.8.0"><span class="label label-primary">1.8.0</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -47,7 +47,7 @@
                   <li><a href="../classes/LocalStorageStore.html">LocalStorageStore</a></li>
                   <li><a href="../classes/OAuth2BearerAuthorizer.html">OAuth2BearerAuthorizer</a></li>
                   <li><a href="../classes/OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li>
-                  <li><a href="../classes/OAuth2ImplicitGrantCallbackMixin.html">OAuth2ImplicitGrantCallbackMixin</a></li>
+                  <li><a href="../classes/OAuth2ImplicitGrantCallbackRouteMixin.html">OAuth2ImplicitGrantCallbackRouteMixin</a></li>
                   <li><a href="../classes/OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li>
                   <li><a href="../classes/SessionService.html">SessionService</a></li>
                   <li><a href="../classes/SessionStorageStore.html">SessionStorageStore</a></li>
@@ -58,7 +58,7 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
-          
+
           <div class="row">
             <div class="col-sm-12">
               <div class="row">
@@ -99,10 +99,10 @@
           application session store like this:</strong></p>
           <pre class="code prettyprint"><code class="language-js">// app/session-stores/application.js
           import CookieStore from 'ember-simple-auth/session-stores/cookie';
-          
+
           export default CookieStore.extend();
           </code></pre>
-          
+
                     </div>
                   </div>
                     <div class="row">
@@ -115,7 +115,7 @@
                           <a name="method_clear" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.7.0/addon/session-stores/cookie.js#L212">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.8.0/addon/session-stores/cookie.js#L212">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -127,13 +127,13 @@
                             <div class="panel-body">
                                 <p><span class="label label-default">Overrides:</span> <a href="BaseStore.html#method_clear"><code>clear</code> of  <code>BaseStore</code></a>.</p>
                               <p>Clears the store by deleting the cookie.</p>
-                          
+
                                   <h4 class="subsection">Returns</h4>
                                   <p>
                                       <span class="type return">&rarr; <code>Ember.RSVP.Promise</code></span>
                                   </p>
                                   <p>A promise that resolves when the store has been cleared successfully and rejects otherwise.</p>
-                          
+
                             </div>
                           </div>
                         </div>
@@ -143,7 +143,7 @@
                           <a name="method_persist" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.7.0/addon/session-stores/cookie.js#L180">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.8.0/addon/session-stores/cookie.js#L180">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -155,7 +155,7 @@
                             <div class="panel-body">
                                 <p><span class="label label-default">Overrides:</span> <a href="BaseStore.html#method_persist"><code>persist</code> of  <code>BaseStore</code></a>.</p>
                               <p>Persists the <code>data</code> in the cookie.</p>
-                          
+
                                 <h4 class="subsection">Arguments</h4>
                                 <dl class="params">
                                     <dt>
@@ -163,7 +163,7 @@
                                     </dt>
                                     <dd>
                                       <p>The data to persist</p>
-                          
+
                                     </dd>
                                 </dl>
                                   <h4 class="subsection">Returns</h4>
@@ -171,7 +171,7 @@
                                       <span class="type return">&rarr; <code>Ember.RSVP.Promise</code></span>
                                   </p>
                                   <p>A promise that resolves when the data has successfully been persisted and rejects otherwise.</p>
-                          
+
                             </div>
                           </div>
                         </div>
@@ -181,7 +181,7 @@
                           <a name="method_restore" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.7.0/addon/session-stores/cookie.js#L196">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.8.0/addon/session-stores/cookie.js#L196">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -193,13 +193,13 @@
                             <div class="panel-body">
                                 <p><span class="label label-default">Overrides:</span> <a href="BaseStore.html#method_restore"><code>restore</code> of  <code>BaseStore</code></a>.</p>
                               <p>Returns all data currently stored in the cookie as a plain object.</p>
-                          
+
                                   <h4 class="subsection">Returns</h4>
                                   <p>
                                       <span class="type return">&rarr; <code>Ember.RSVP.Promise</code></span>
                                   </p>
                                   <p>A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.</p>
-                          
+
                             </div>
                           </div>
                         </div>
@@ -214,7 +214,7 @@
                           <a name="property_cookieDomain" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.7.0/addon/session-stores/cookie.js#L73">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.8.0/addon/session-stores/cookie.js#L73">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -228,7 +228,7 @@
                           (which includes all subdomains) or "<a href="http://subdomain.example.com">subdomain.example.com</a>". If not
                           explicitly set, the cookie domain defaults to the domain the session was
                           authenticated on.</p>
-                          
+
                             </div>
                           </div>
                                             </div>
@@ -238,7 +238,7 @@
                           <a name="property_cookieExpirationTime" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.7.0/addon/session-stores/cookie.js#L111">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.8.0/addon/session-stores/cookie.js#L111">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -254,7 +254,7 @@
                           <p>The recommended minimum value is 90 seconds. If your value is less than
                           that, the cookie may expire before its expiration time is extended
                           (expiration time is extended every 60 seconds).</p>
-                          
+
                             </div>
                           </div>
                                             </div>
@@ -264,7 +264,7 @@
                           <a name="property_cookieName" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.7.0/addon/session-stores/cookie.js#L87">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.8.0/addon/session-stores/cookie.js#L87">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -275,7 +275,7 @@
                             <div class="panel-body">
                                 <p><span class="label label-default">Default:</span> <code>ember_simple_auth-session</code></p>
                               <p>The name of the cookie.</p>
-                          
+
                             </div>
                           </div>
                                             </div>
@@ -285,7 +285,7 @@
                           <a name="property_cookiePath" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.7.0/addon/session-stores/cookie.js#L100">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.8.0/addon/session-stores/cookie.js#L100">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-access-public pull-right">public</span>
@@ -296,7 +296,7 @@
                             <div class="panel-body">
                                 <p><span class="label label-default">Default:</span> <code>&#x27;&#x2F;&#x27;</code></p>
                               <p>The path to use for the cookie, e.g., "/", "/something".</p>
-                          
+
                             </div>
                           </div>
                                             </div>
@@ -311,7 +311,7 @@
                           <a name="event_sessionDataUpdated" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.7.0/addon/session-stores/base.js#L19">
+                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.8.0/addon/session-stores/base.js#L19">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                               <h3 class="panel-title signature">
@@ -325,7 +325,7 @@
                           handles that event, passes the updated data to its authenticator's
                           <a href="../classes/BaseAuthenticator.html#method_restore" class="crosslink">restore</a> method and
                           handles the result of that invocation accordingly.</p>
-                          
+
                                 <h4 class="subsection">Arguments</h4>
                                 <dl class="params">
                                     <dt>
@@ -333,7 +333,7 @@
                                     </dt>
                                     <dd>
                                       <p>The updated session data</p>
-                          
+
                                     </dd>
                                 </dl>
                             </div>

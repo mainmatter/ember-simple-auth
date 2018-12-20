@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin - The Ember Simple Auth API</title>
+    <title>/Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/mixins/oauth2-implicit-grant-callback-route-mixin.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.7.0"><span class="label label-primary">1.7.0</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.8.0"><span class="label label-primary">1.8.0</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -47,7 +47,7 @@
                   <li><a href="../classes/LocalStorageStore.html">LocalStorageStore</a></li>
                   <li><a href="../classes/OAuth2BearerAuthorizer.html">OAuth2BearerAuthorizer</a></li>
                   <li><a href="../classes/OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li>
-                  <li><a href="../classes/OAuth2ImplicitGrantCallbackMixin.html">OAuth2ImplicitGrantCallbackMixin</a></li>
+                  <li><a href="../classes/OAuth2ImplicitGrantCallbackRouteMixin.html">OAuth2ImplicitGrantCallbackRouteMixin</a></li>
                   <li><a href="../classes/OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li>
                   <li><a href="../classes/SessionService.html">SessionService</a></li>
                   <li><a href="../classes/SessionStorageStore.html">SessionStorageStore</a></li>
@@ -58,32 +58,107 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
+          <h1 class="file-heading">File: /Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/mixins/oauth2-implicit-grant-callback-route-mixin.js</h1>
           
-          <h2>ember-simple-auth/mixins/ouath2-implicit-grant-callback-mixin</h2>
-          <div class="intro"><p><strong>This mixin is used in the callback route when using OAuth 2.0 Implicit
-          Grant authentication.</strong> It implements the
-          <a href="../classes/OAuth2ImplicitGrantCallbackMixin.html#method_activate" class="crosslink">activate</a>
-          method that retrieves and processes authentication parameters, such as
-          <code>access_token</code>, from the hash parameters provided in the callback URL by
-          the authentication server. The parameters are then passed to the
-          <a href="../classes/OAuth2ImplicitGrantAuthenticator.html" class="crosslink">OAuth2ImplicitGrantAuthenticator</a></p>
-          </div>
+          <div class="file">
+              <pre class="code prettyprint linenums">
+          import { inject as service } from &#x27;@ember/service&#x27;;
+          import Mixin from &#x27;@ember/object/mixin&#x27;;
+          import location from &#x27;../utils/location&#x27;;
+          import isFastBootCPM from &#x27;../utils/is-fastboot&#x27;;
           
-          <div class="yui3-g">
-              <div class="yui3-u-1-2">
-                  <p>This module has the following classes:</p>
-                  <ul>
-                      <li><a href="../classes/OAuth2ImplicitGrantCallbackMixin.html">OAuth2ImplicitGrantCallbackMixin</a></li>
-                  </ul>
-              </div>
-              <div class="yui3-u-1-2">
-              </div>
+          function _parseResponse(locationHash) {
+            let params = {};
+            const query = locationHash.substring(locationHash.indexOf(&#x27;?&#x27;));
+            const regex = /([^#?&amp;=]+)=([^&amp;]*)/g;
+            let match;
+          
+            // decode all parameter pairs
+            while ((match = regex.exec(query)) !== null) {
+              params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
+            }
+          
+            return params;
+          }
+          
+          /**
+            __This mixin is used in the callback route when using OAuth 2.0 Implicit
+            Grant authentication.__ It implements the
+            {{#crossLink &quot;OAuth2ImplicitGrantCallbackRouteMixin/activate:method&quot;}}{{/crossLink}}
+            method that retrieves and processes authentication parameters, such as
+            &#x60;access_token&#x60;, from the hash parameters provided in the callback URL by
+            the authentication server. The parameters are then passed to the
+            {{#crossLink &quot;OAuth2ImplicitGrantAuthenticator&quot;}}{{/crossLink}}
+          
+            @class OAuth2ImplicitGrantCallbackRouteMixin
+            @module ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin
+            @extends Ember.Mixin
+            @public
+          */
+          
+          export default Mixin.create({
+            /**
+             The session service.
+          
+             @property session
+             @readOnly
+             @type SessionService
+             @public
+             */
+            session: service(&#x27;session&#x27;),
+          
+            /**
+              The authenticator that should be used to authenticate the callback. This
+              must be a subclass of the
+              {{#crossLink &quot;OAuth2ImplicitGrantAuthenticator&quot;}}{{/crossLink}}
+              authenticator.
+          
+              @property authenticator
+              @type String
+              @default null
+              @public
+            */
+            authenticator: null,
+          
+            /**
+              Any error that potentially occurs during authentication will be stored in
+              this property.
+          
+              @property error
+              @type String
+              @default null
+              @public
+            */
+            error: null,
+          
+            /**
+              Passes the hash received with the redirection from the authentication
+              server to the
+              {{#crossLink &quot;OAuth2ImplicitGrantAuthenticator&quot;}}{{/crossLink}} and
+              authenticates the session with the authenticator.
+          
+              @method activate
+              @public
+            */
+            activate() {
+              if (this.get(&#x27;_isFastBoot&#x27;)) {
+                return;
+              }
+          
+              let authenticator = this.get(&#x27;authenticator&#x27;);
+          
+              let hash = _parseResponse(location().hash);
+          
+              this.get(&#x27;session&#x27;).authenticate(authenticator, hash).catch((err) =&gt; {
+                this.set(&#x27;error&#x27;, err);
+              });
+            },
+          
+            _isFastBoot: isFastBootCPM()
+          });
+          
+              </pre>
           </div>
-          <br><br>
-          <span class="foundat">Module description found: <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/1.7.0/addon/mixins/oauth2-implicit-grant-callback-route-mixin.js#L5">
-            <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
-          </a>
-          </span>
         </div>
       </div>
     </div>
