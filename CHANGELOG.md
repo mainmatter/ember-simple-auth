@@ -1,3 +1,20 @@
+# 1.8.0
+
+* Fixes deprecation warning for Evented#off method on Ember 3.6+, see #1722
+* Support for [ember-fetch](https://github.com/ember-cli/ember-fetch) 6.0+, see #1713
+* Fixes error handling for the Torii authenticator, making errors throw as expected
+  if a Promise is rejected, see #1696
+* Updates ember-try test scenarios with Ember 3.0, see [this commit](https://github.com/simplabs/ember-simple-auth/commit/285d36ab2f4e0ae02b677549cec731a5cbaa5cf2)
+
+This release would not have been possible without the contributions by
+[@marcoow](https://github.com/marcoow), [@mike-north](https://github.com/mike-north),
+[@jfschaff](https://github.com/jfschaff), [@geekygrappler](https://github.com/geekygrappler),
+[@quaertym](https://github.com/quaertym), [@runspired](https://github.com/runspired),
+[@kevinansfield](https://github.com/kevinansfield), [@drewchandler](https://github.com/drewchandler),
+[@andreyfel](https://github.com/andreyfel), [@Turbo87](https://github.com/Turbo87),
+[@MichalBryxi](https://github.com/MichalBryxi) and [@richard-viney](https://github.com/richard-viney).
+Thanks a lot! ✨
+
 # 1.7.0
 
 * The `baseURL` configuration property is now deprecated; use the `rootURL`
