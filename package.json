@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "body-parser": "^1.17.2",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.2.1",
     "broccoli-asset-rev": "^3.0.0",
     "broccoli-yuidoc": "^3.0.0",
     "chai": "^4.1.0",
