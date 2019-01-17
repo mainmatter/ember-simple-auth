@@ -1,3 +1,12 @@
+# 1.8.1
+
+* Additional patch fix for deprecation warning for Evented#off method on Ember 3.6+, see #1725
+
+This release would not have been possible without the contributions by
+[@MichalBryxi](https://github.com/MichalBryxi) and [@richard-viney](https://github.com/richard-viney).
+Thanks a lot!
+
+
 # 1.8.0
 
 * Fixes deprecation warning for Evented#off method on Ember 3.6+, see #1722
