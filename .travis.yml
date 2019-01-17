@@ -49,6 +49,18 @@ jobs:
     - env: SCRIPT=test:fastboot
     - env: SCRIPT="test:one ember-canary"
 
+    - stage: 'Deploy'
+      script: skip     # usually you do not want to rerun any tests
+      deploy: &npm
+        # ...
+        provider: npm
+        email: info@simplabs.com
+        api_key:
+          secure: YQTd0tNPpbEkYtuYiFZr8B4AEc4onfcwkY6kW9+fjuqGHV+fgaIimSRs9TdozWEWYkLZEegKdsT8q2zn9ucWh6LmqLM74CUVtiDqLdDviFzwkjk81eDamusJSS4kHq/Jwv1M/Kq0InJlkqPbK/Ka8asSSvjFaBzVNMBqxxYfBLlCHfA8oXGIg02t3ATzdfeYRNklc0aF9drtqXMJdls5grn9M94MpchzIg9uD8wwIDOEkulYEv3BGiNvHak4bKZB4CtJLGfpT2lk/+hvEa848/y31oLQZVM8Tu2WPuumeedBHQOUzAXjoZgk27U9RLJnRqqdNoTVPnA5ylFG0r76zsfnpVFdsjt0O892d8s+SDApELligW7bJn/WX4TsDgGOjZKlD+woSSksIesPdAb3TvUDBGa+ZfiX42CSHwlB5w2VWZtf0lGn2OUIQ+Xa/n5OF5W5E+rWDBUiCSOsTr0Fv+3HTOhI/0OYLIF1n6ivHZVTiYaPwiiOXDhuYWxKR4ggEe9c9dlH+Vuebsqn21TsBCjhgIS6iyzQUjEwsckF7aL6fDRbg7kuZ0m1e82TtrLE+TAUZ2Lm/KvXPx80sskEDFlV/avOHMjr8naaopQpOe2zOlwWpTiYFKrCJbfjHzKiK0p/6BPeaYwGGMq0ritMMWWjFaOOVshUO9QapHfut0U=
+        on:
+          tags: true
+          repo: simplabs/ember-simple-auth
+
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
@@ -58,15 +70,6 @@ install:
 
 script:
   - yarn run $SCRIPT
-
-deploy:
-  provider: npm
-  email: info@simplabs.com
-  api_key:
-    secure: YQTd0tNPpbEkYtuYiFZr8B4AEc4onfcwkY6kW9+fjuqGHV+fgaIimSRs9TdozWEWYkLZEegKdsT8q2zn9ucWh6LmqLM74CUVtiDqLdDviFzwkjk81eDamusJSS4kHq/Jwv1M/Kq0InJlkqPbK/Ka8asSSvjFaBzVNMBqxxYfBLlCHfA8oXGIg02t3ATzdfeYRNklc0aF9drtqXMJdls5grn9M94MpchzIg9uD8wwIDOEkulYEv3BGiNvHak4bKZB4CtJLGfpT2lk/+hvEa848/y31oLQZVM8Tu2WPuumeedBHQOUzAXjoZgk27U9RLJnRqqdNoTVPnA5ylFG0r76zsfnpVFdsjt0O892d8s+SDApELligW7bJn/WX4TsDgGOjZKlD+woSSksIesPdAb3TvUDBGa+ZfiX42CSHwlB5w2VWZtf0lGn2OUIQ+Xa/n5OF5W5E+rWDBUiCSOsTr0Fv+3HTOhI/0OYLIF1n6ivHZVTiYaPwiiOXDhuYWxKR4ggEe9c9dlH+Vuebsqn21TsBCjhgIS6iyzQUjEwsckF7aL6fDRbg7kuZ0m1e82TtrLE+TAUZ2Lm/KvXPx80sskEDFlV/avOHMjr8naaopQpOe2zOlwWpTiYFKrCJbfjHzKiK0p/6BPeaYwGGMq0ritMMWWjFaOOVshUO9QapHfut0U=
-  on:
-    tags: true
-    repo: simplabs/ember-simple-auth
 
 after_deploy:
   - npm i -g now
