@@ -9,8 +9,8 @@ module.exports = function() {
     getChannelURL('canary')
   ]).then(urls => {
     const releaseUrl = urls[0];
-    const betaUrl = urls[0];
-    const canaryUrl = urls[0];
+    const betaUrl = urls[1];
+    const canaryUrl = urls[2];
     return {
       useYarn: true,
       scenarios: [
