@@ -51,7 +51,7 @@ jobs:
 
     - stage: 'Deploy'
       script: skip     # usually you do not want to rerun any tests
-      deploy: &npm
+      deploy:
         # ...
         provider: npm
         email: info@simplabs.com
