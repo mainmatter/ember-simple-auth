@@ -3922,10 +3922,10 @@ ember-cli-chai@^0.5.0:
     rollup-plugin-commonjs "^8.0.2"
     rollup-plugin-node-resolve "^3.0.0"
 
-ember-cli-content-security-policy@~1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-content-security-policy/-/ember-cli-content-security-policy-1.0.0.tgz#4f7d72997d4209cd59f10d3b0070fdb39593ed2d"
-  integrity sha512-5JSm22epRFkMH5h+/HgfnspjYPIXNP4RXUUSS8mj1KV3ZJZzcY3835YNnYYi3Tx5SLLHFqadT851zCXfcQei9w==
+ember-cli-content-security-policy@~1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-content-security-policy/-/ember-cli-content-security-policy-1.1.0.tgz#6aed64ee2c7e1c8f69bba73781e010e7033f0c49"
+  integrity sha512-llaJIAUjnQTZ7ydGRY4qcl6ZT9RkrvI9aSIEeBIjO/ekKaHsmUO55ti3V/QGFJOUJYd/cr5FRpRzNQW3hlPBvg==
   dependencies:
     body-parser "^1.17.0"
     chalk "^2.0.0"
@@ -6559,6 +6559,11 @@ invariant@^2.2.2:
   integrity sha512-7Z5PPegwDTyjbaeCnV0efcyS6vdKAU51kpEmS7QFib3P4822l8ICYyMn7qvJnc+WzLoDsuI9gPMKbJ8pCu8XtA==
   dependencies:
     loose-envify "^1.0.0"
+
+ip-regex@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/ip-regex/-/ip-regex-2.1.0.tgz#fa78bf5d2e6913c911ce9f819ee5146bb6d844e9"
+  integrity sha1-+ni/XS5pE8kRzp+BnuUUa7bYROk=
 
 ipaddr.js@1.6.0:
   version "1.6.0"
