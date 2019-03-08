@@ -1,3 +1,14 @@
+# 1.8.2
+
+* Support for [ember-cookies](https://github.com/simplabs/ember-cookies) 0.4.0
+  which clears a deprecation, see #1746.
+
+This release would not have been possible without the contributions by
+[@jessica-jordan](https://github.com/jessica-jordan),
+[@Alonski](https://github.com/Alonski) and
+[@marcoow](https://github.com/marcoow).
+Thanks a lot!
+
 # 1.8.1
 
 * Additional patch fix for deprecation warning for Evented#off method on Ember 3.6+, see #1725
