@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>/Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/mixins/unauthenticated-route-mixin.js - The Ember Simple Auth API</title>
+    <title>/addon/marcoow/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-oph58cSF.tmp/0/configuration.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.8.0"><span class="label label-primary">1.8.0</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.8.2"><span class="label label-primary">1.8.2</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -58,63 +58,88 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
-          <h1 class="file-heading">File: /Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/mixins/unauthenticated-route-mixin.js</h1>
+          <h1 class="file-heading">File: /addon/marcoow/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-oph58cSF.tmp/0/configuration.js</h1>
           
           <div class="file">
               <pre class="code prettyprint linenums">
-          import { inject as service } from &#x27;@ember/service&#x27;;
-          import Mixin from &#x27;@ember/object/mixin&#x27;;
-          import { assert } from &#x27;@ember/debug&#x27;;
-          import { computed } from &#x27;@ember/object&#x27;;
-          import Configuration from &#x27;./../configuration&#x27;;
-          import isFastBoot from &#x27;ember-simple-auth/utils/is-fastboot&#x27;;
-          import { getOwner } from &#x27;@ember/application&#x27;;
+          import { A } from &#x27;@ember/array&#x27;;
+          import { getWithDefault } from &#x27;@ember/object&#x27;;
+          import { deprecate } from &#x27;@ember/application/deprecations&#x27;;
+          
+          const DEFAULTS = {
+            rootURL:                     &#x27;&#x27;,
+            authenticationRoute:         &#x27;login&#x27;,
+            routeAfterAuthentication:    &#x27;index&#x27;,
+            routeIfAlreadyAuthenticated: &#x27;index&#x27;
+          };
           
           /**
-           *
-           * @param {ApplicationInstance} owner The ApplicationInstance that owns the session service
-           * @param {(...args: [any]) =&gt; any} callback Callback that will be invoked if the user is authenticated
-           */
-          function runIfAuthenticated(owner, callback) {
-            const sessionSvc = owner.lookup(&#x27;service:session&#x27;);
-            if (sessionSvc.get(&#x27;isAuthenticated&#x27;)) {
-              callback();
-              return true;
-            }
-          }
+            Ember Simple Auth&#x27;s configuration object.
           
-          /**
-            __This mixin is used to make routes accessible only if the session is
-            not authenticated__ (e.g., login and registration routes). It defines a
-            &#x60;beforeModel&#x60; method that aborts the current transition and instead
-            transitions to the
-            {{#crossLink &quot;Configuration/routeIfAlreadyAuthenticated:property&quot;}}{{/crossLink}}
-            if the session is authenticated.
-          
-            &#x60;&#x60;&#x60;js
-            // app/routes/login.js
-            import UnauthenticatedRouteMixin from &#x27;ember-simple-auth/mixins/unauthenticated-route-mixin&#x27;;
-          
-            export default Ember.Route.extend(UnauthenticatedRouteMixin);
-            &#x60;&#x60;&#x60;
-          
-            @class UnauthenticatedRouteMixin
-            @module ember-simple-auth/mixins/unauthenticated-route-mixin
-            @extends Ember.Mixin
+            @class Configuration
+            @extends Object
+            @module ember-simple-auth/configuration
             @public
           */
-          export default Mixin.create({
+          export default {
             /**
-              The session service.
+              The root URL of the application as configured in &#x60;config/environment.js&#x60;.
           
-              @property session
+              @property rootURL
               @readOnly
-              @type SessionService
+              @static
+              @type String
+              @default &#x27;&#x27;
               @public
             */
-            session: service(&#x27;session&#x27;),
+            rootURL: DEFAULTS.rootURL,
           
-            _isFastBoot: isFastBoot(),
+            /**
+              The base URL of the application as configured in &#x60;config/environment.js&#x60;.
+          
+              @property baseURL
+              @readOnly
+              @static
+              @type String
+              @default &#x27;&#x27;
+              @public
+            */
+            get baseURL() {
+              deprecate(&#x27;The baseURL property should no longer be used. Instead, use rootURL.&#x27;, false, {
+                id: &#x60;ember-simple-auth.configuration.base-url&#x60;,
+                until: &#x27;2.0.0&#x27;
+              });
+              return this.rootURL;
+            },
+          
+            /**
+              The route to transition to for authentication. The
+              {{#crossLink &quot;AuthenticatedRouteMixin&quot;}}{{/crossLink}} will transition to
+              this route when a route that implements the mixin is accessed when the
+              route is not authenticated.
+          
+              @property authenticationRoute
+              @deprecated AuthenticatedRouteMixin/authenticationRoute:property
+              @readOnly
+              @static
+              @type String
+              @default &#x27;login&#x27;
+              @public
+            */
+            authenticationRoute: DEFAULTS.authenticationRoute,
+          
+            /**
+              The route to transition to after successful authentication.
+          
+              @property routeAfterAuthentication
+              @deprecated ApplicationRouteMixin/routeAfterAuthentication:property
+              @readOnly
+              @static
+              @type String
+              @default &#x27;index&#x27;
+              @public
+            */
+            routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
           
             /**
               The route to transition to if a route that implements the
@@ -122,38 +147,28 @@
               the session is authenticated.
           
               @property routeIfAlreadyAuthenticated
+              @deprecated UnauthenticatedRouteMixin/routeIfAlreadyAuthenticated:property
+              @readOnly
+              @static
               @type String
               @default &#x27;index&#x27;
               @public
             */
-            routeIfAlreadyAuthenticated: computed(function() {
-              return Configuration.routeIfAlreadyAuthenticated;
-            }),
+            routeIfAlreadyAuthenticated: DEFAULTS.routeIfAlreadyAuthenticated,
           
-            /**
-              Checks whether the session is authenticated and if it is aborts the current
-              transition and instead transitions to the
-              {{#crossLink &quot;Configuration/routeIfAlreadyAuthenticated:property&quot;}}{{/crossLink}}.
+            load(config) {
+              A([&#x27;rootURL&#x27;, &#x27;authenticationRoute&#x27;, &#x27;routeAfterAuthentication&#x27;, &#x27;routeIfAlreadyAuthenticated&#x27;]).forEach((property) =&gt; {
+                if ([&#x27;authenticationRoute&#x27;, &#x27;routeAfterAuthentication&#x27;, &#x27;routeIfAlreadyAuthenticated&#x27;].indexOf(property) &gt;= 0 &amp;&amp; DEFAULTS[property] !== this[property]) {
+                  deprecate(&#x60;Ember Simple Auth: ${property} should no longer be overridden in the configuration. Instead, override the ${property} property in the route.&#x60;, false, {
+                    id: &#x60;ember-simple-auth.configuration.routes&#x60;,
+                    until: &#x27;2.0.0&#x27;
+                  });
+                }
           
-              __If &#x60;beforeModel&#x60; is overridden in a route that uses this mixin, the route&#x27;s
-             implementation must call &#x60;this._super(...arguments)&#x60;__ so that the mixin&#x27;s
-             &#x60;beforeModel&#x60; method is actually executed.
-          
-              @method beforeModel
-              @public
-            */
-            beforeModel() {
-              const didRedirect = runIfAuthenticated(getOwner(this), () =&gt; {
-                let routeIfAlreadyAuthenticated = this.get(&#x27;routeIfAlreadyAuthenticated&#x27;);
-                assert(&#x27;The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!&#x27;, this.get(&#x27;routeName&#x27;) !== routeIfAlreadyAuthenticated);
-          
-                this.transitionTo(routeIfAlreadyAuthenticated);
+                this[property] = getWithDefault(config, property, DEFAULTS[property]);
               });
-              if (!didRedirect) {
-                return this._super(...arguments);
-              }
             }
-          });
+          };
           
               </pre>
           </div>

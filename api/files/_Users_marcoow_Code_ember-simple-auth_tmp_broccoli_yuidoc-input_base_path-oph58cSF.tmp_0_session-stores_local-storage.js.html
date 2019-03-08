@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>/Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/mixins/application-route-mixin.js - The Ember Simple Auth API</title>
+    <title>/addon/marcoow/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-oph58cSF.tmp/0/session-stores/local-storage.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.8.0"><span class="label label-primary">1.8.0</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.8.2"><span class="label label-primary">1.8.2</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -58,149 +58,118 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
-          <h1 class="file-heading">File: /Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/mixins/application-route-mixin.js</h1>
+          <h1 class="file-heading">File: /addon/marcoow/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-oph58cSF.tmp/0/session-stores/local-storage.js</h1>
           
           <div class="file">
               <pre class="code prettyprint linenums">
-          import Mixin from &#x27;@ember/object/mixin&#x27;;
-          import { A } from &#x27;@ember/array&#x27;;
-          import { computed } from &#x27;@ember/object&#x27;;
-          import { getOwner } from &#x27;@ember/application&#x27;;
-          import { inject } from &#x27;@ember/service&#x27;;
-          import Ember from &#x27;ember&#x27;;
-          import Configuration from &#x27;./../configuration&#x27;;
+          /* global localStorage */
+          import RSVP from &#x27;rsvp&#x27;;
+          
+          import { bind } from &#x27;@ember/runloop&#x27;;
+          import BaseStore from &#x27;./base&#x27;;
+          import objectsAreEqual from &#x27;../utils/objects-are-equal&#x27;;
           import isFastBoot from &#x27;ember-simple-auth/utils/is-fastboot&#x27;;
           
           /**
-            The mixin for the application route, __defining methods that are called when
-            the session is successfully authenticated (see
-            {{#crossLink &quot;SessionService/authenticationSucceeded:event&quot;}}{{/crossLink}})
-            or invalidated__ (see
-            {{#crossLink &quot;SessionService/invalidationSucceeded:event&quot;}}{{/crossLink}}).
+            Session store that persists data in the browser&#x27;s &#x60;localStorage&#x60;.
           
-            __Using this mixin is optional.__ The session events can also be handled
-            manually, e.g. in an instance initializer:
+            __&#x60;localStorage&#x60; is not available in Safari when running in private mode. In
+            general it is better to use the
+            {{#crossLink &quot;AdaptiveStore&quot;}}{{/crossLink}} that automatically falls back to
+            the {{#crossLink &quot;CookieStore&quot;}}{{/crossLink}} when &#x60;localStorage&#x60; is not
+            available.__
           
-            &#x60;&#x60;&#x60;js
-            // app/instance-initializers/session-events.js
-            export function initialize(instance) {
-              const applicationRoute = instance.container.lookup(&#x27;route:application&#x27;);
-              const session          = instance.container.lookup(&#x27;service:session&#x27;);
-              session.on(&#x27;authenticationSucceeded&#x27;, function() {
-                applicationRoute.transitionTo(&#x27;index&#x27;);
-              });
-              session.on(&#x27;invalidationSucceeded&#x27;, function() {
-                applicationRoute.transitionTo(&#x27;bye&#x27;);
-              });
-            };
+            __This session store does not work with FastBoot. In order to use Ember
+            Simple Auth with FastBoot, configure the
+            {{#crossLink &quot;CookieStore&quot;}}{{/crossLink}} as the application&#x27;s session
+            store.__
           
-            export default {
-              initialize,
-              name:  &#x27;session-events&#x27;,
-              after: &#x27;ember-simple-auth&#x27;
-            };
-            &#x60;&#x60;&#x60;
-          
-            __When using the &#x60;ApplicationRouteMixin&#x60; you need to specify
-            &#x60;needs: [&#x27;service:session&#x27;]&#x60; in the application route&#x27;s unit test.__
-          
-            @class ApplicationRouteMixin
-            @module ember-simple-auth/mixins/application-route-mixin
-            @extends Ember.Mixin
+            @class LocalStorageStore
+            @module ember-simple-auth/session-stores/local-storage
+            @extends BaseStore
             @public
           */
-          export default Mixin.create({
-            /**
-              The session service.
-          
-              @property session
-              @readOnly
-              @type SessionService
-              @public
-            */
-            session: inject(&#x27;session&#x27;),
-          
+          export default BaseStore.extend({
             _isFastBoot: isFastBoot(),
           
             /**
-              The route to transition to after successful authentication.
+              The &#x60;localStorage&#x60; key the store persists data in.
           
-              @property routeAfterAuthentication
+              @property key
               @type String
-              @default &#x27;index&#x27;
+              @default &#x27;ember_simple_auth-session&#x27;
               @public
             */
-            routeAfterAuthentication: computed(function() {
-              return Configuration.routeAfterAuthentication;
-            }),
+            key: &#x27;ember_simple_auth-session&#x27;,
           
             init() {
               this._super(...arguments);
-              this._subscribeToSessionEvents();
+          
+              this._boundHandler = bind(this, this._handleStorageEvent);
+              if (!this.get(&#x27;_isFastBoot&#x27;)) {
+                window.addEventListener(&#x27;storage&#x27;, this._boundHandler);
+              }
             },
           
-            _subscribeToSessionEvents() {
-              A([
-                [&#x27;authenticationSucceeded&#x27;, &#x27;sessionAuthenticated&#x27;],
-                [&#x27;invalidationSucceeded&#x27;, &#x27;sessionInvalidated&#x27;]
-              ]).forEach(([event, method]) =&gt; {
-                this.get(&#x27;session&#x27;).on(event, (...args) =&gt; this[method](...args));
-              });
-            },
-          
-            /**
-              This method handles the session&#x27;s
-              {{#crossLink &quot;SessionService/authenticationSucceeded:event&quot;}}{{/crossLink}}
-              event. If there is a transition that was previously intercepted by the
-              {{#crossLink &quot;AuthenticatedRouteMixin/beforeModel:method&quot;}}
-              AuthenticatedRouteMixin&#x27;s &#x60;beforeModel&#x60; method{{/crossLink}} it will retry
-              it. If there is no such transition, the &#x60;ember_simple_auth-redirectTarget&#x60;
-              cookie will be checked for a url that represents an attemptedTransition
-              that was aborted in Fastboot mode, otherwise this action transitions to the
-              {{#crossLink &quot;Configuration/routeAfterAuthentication:property&quot;}}{{/crossLink}}.
-          
-          
-              @method sessionAuthenticated
-              @public
-            */
-            sessionAuthenticated() {
-              const attemptedTransition = this.get(&#x27;session.attemptedTransition&#x27;);
-              const cookies = getOwner(this).lookup(&#x27;service:cookies&#x27;);
-              const redirectTarget = cookies.read(&#x27;ember_simple_auth-redirectTarget&#x27;);
-          
-              if (attemptedTransition) {
-                attemptedTransition.retry();
-                this.set(&#x27;session.attemptedTransition&#x27;, null);
-              } else if (redirectTarget) {
-                this.transitionTo(redirectTarget);
-                cookies.clear(&#x27;ember_simple_auth-redirectTarget&#x27;);
-              } else {
-                this.transitionTo(this.get(&#x27;routeAfterAuthentication&#x27;));
+            willDestroy() {
+              if (!this.get(&#x27;_isFastBoot&#x27;)) {
+                window.removeEventListener(&#x27;storage&#x27;, this._boundHandler);
               }
             },
           
             /**
-              This method handles the session&#x27;s
-              {{#crossLink &quot;SessionService/invalidationSucceeded:event&quot;}}{{/crossLink}}
-              event. __It reloads the Ember.js application__ by redirecting the browser
-              to the application&#x27;s root URL so that all in-memory data (such as Ember
-              Data stores etc.) gets cleared.
+              Persists the &#x60;data&#x60; in the &#x60;localStorage&#x60;.
           
-              If the Ember.js application will be used in an environment where the users
-              don&#x27;t have direct access to any data stored on the client (e.g.
-              [cordova](http://cordova.apache.org)) this action can be overridden to e.g.
-              simply transition to the index route.
-          
-              @method sessionInvalidated
+              @method persist
+              @param {Object} data The data to persist
+              @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
               @public
             */
-            sessionInvalidated() {
-              if (!Ember.testing) {
-                if (this.get(&#x27;_isFastBoot&#x27;)) {
-                  this.transitionTo(Configuration.rootURL);
-                } else {
-                  window.location.replace(Configuration.rootURL);
-                }
+            persist(data) {
+              this._lastData = data;
+              data = JSON.stringify(data || {});
+              localStorage.setItem(this.key, data);
+          
+              return RSVP.resolve();
+            },
+          
+            /**
+              Returns all data currently stored in the &#x60;localStorage&#x60; as a plain object.
+          
+              @method restore
+              @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
+              @public
+            */
+            restore() {
+              let data = localStorage.getItem(this.key);
+          
+              return RSVP.resolve(JSON.parse(data) || {});
+            },
+          
+            /**
+              Clears the store by deleting the
+              {{#crossLink &quot;LocalStorageStore/key:property&quot;}}{{/crossLink}} from
+              &#x60;localStorage&#x60;.
+          
+              @method clear
+              @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
+              @public
+            */
+            clear() {
+              localStorage.removeItem(this.key);
+              this._lastData = {};
+          
+              return RSVP.resolve();
+            },
+          
+            _handleStorageEvent(e) {
+              if (e.key === this.get(&#x27;key&#x27;)) {
+                this.restore().then((data) =&gt; {
+                  if (!objectsAreEqual(data, this._lastData)) {
+                    this._lastData = data;
+                    this.trigger(&#x27;sessionDataUpdated&#x27;, data);
+                  }
+                });
               }
             }
           });

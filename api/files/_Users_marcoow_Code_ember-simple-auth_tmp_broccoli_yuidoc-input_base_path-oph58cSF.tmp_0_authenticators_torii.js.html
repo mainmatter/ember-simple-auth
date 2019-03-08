@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>/Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/authenticators/oauth2-implicit-grant.js - The Ember Simple Auth API</title>
+    <title>/addon/marcoow/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-oph58cSF.tmp/0/authenticators/torii.js - The Ember Simple Auth API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min-5d5357cb3704e1f43a1f5bfed2aebf42.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" >
     <link rel="stylesheet" href="../assets/vendor/css/github-b730cf14adde2e283aec4d36c700e017.css" integrity="sha256-i2x+ILzHsXDRru/zPY3TZ10r/XdFyFTU+NmY4VVMG5Y= sha512-W6L67l0c+IkBOrKGUPHbzE/Zm13i8fD3lSIPMCCPUkElNTpojtVwOcJrl1SCWM46PCNHn6rBleiw4F6vqLFOyA==" >
@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.8.0"><span class="label label-primary">1.8.0</span></a></p></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/1.8.2"><span class="label label-primary">1.8.2</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -58,90 +58,132 @@
           </div>
         </div>
         <div id="main" class="col-sm-9">
-          <h1 class="file-heading">File: /Users/jj/Documents/work/simplabs/oss/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-X6kTzLr1.tmp/0/authenticators/oauth2-implicit-grant.js</h1>
+          <h1 class="file-heading">File: /addon/marcoow/Code/ember-simple-auth/tmp/broccoli_yuidoc-input_base_path-oph58cSF.tmp/0/authenticators/torii.js</h1>
           
           <div class="file">
               <pre class="code prettyprint linenums">
           import RSVP from &#x27;rsvp&#x27;;
-          import { isEmpty } from &#x27;@ember/utils&#x27;;
+          import { assert } from &#x27;@ember/debug&#x27;;
+          import { isPresent, isEmpty } from &#x27;@ember/utils&#x27;;
+          import { assign as emberAssign } from &#x27;@ember/polyfills&#x27;;
           import BaseAuthenticator from &#x27;./base&#x27;;
           
           /**
-           Authenticator that conforms to OAuth 2
-           ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _&quot;Implicit
-           Grant Type&quot;_.
+            Authenticator that wraps the
+            [Torii library](https://github.com/Vestorly/torii) and thus allows to connect
+            any external authentication provider that torii defines a provider for.
           
-           Use {{#crossLink &quot;OAuth2ImplicitGrantCallbackMixin&quot;}}{{/crossLink}} in your
-           OAuth 2.0 redirect route to parse authentication parameters from location
-           hash string into an object.
+            In order to use this authenticator, __the application needs to have the
+            [torii addon](https://github.com/Vestorly/torii) installed and must inject
+            the torii service into the authenticator__:
           
-           @class OAuth2ImplicitGrantAuthenticator
-           @module ember-simple-auth/authenticators/oauth2-implicit-grant
-           @extends BaseAuthenticator
-           @public
-           */
+            &#x60;&#x60;&#x60;js
+            // app/authenticators/torii.js
+            import ToriiAuthenticator from &#x27;ember-simple-auth/authenticators/torii&#x27;;
+          
+            export default ToriiAuthenticator.extend({
+              torii: Ember.inject.service()
+            });
+            &#x60;&#x60;&#x60;
+          
+            @class ToriiAuthenticator
+            @module ember-simple-auth/authenticators/torii
+            @extends BaseAuthenticator
+            @public
+          */
           export default BaseAuthenticator.extend({
-            /**
-             Restores the session from a session data object; __will return a resolving
-             promise when there is a non-empty &#x60;access_token&#x60; in the session data__ and
-             a rejecting promise otherwise.
+            _provider: null,
           
-             @method restore
-             @param {Object} data The data to restore the session from
-             @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
-             @public
-             */
+            /**
+              Restores the session by calling the torii provider&#x27;s &#x60;fetch&#x60; method.
+          
+              __Many torii providers do not implement the &#x60;fetch&#x60; method__. If the
+              provider in use does not implement the method simply add it as follows:
+          
+              &#x60;&#x60;&#x60;js
+              // app/torii-providers/facebook.js
+              import FacebookOauth2Provider from &#x27;torii/providers/facebook-oauth2&#x27;;
+          
+              export default FacebookOauth2Provider.extend({
+                fetch(data) {
+                  return data;
+                }
+              });
+              &#x60;&#x60;&#x60;
+          
+              @method restore
+              @param {Object} data The data to restore the session from
+              @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+              @public
+            */
             restore(data) {
-              return new RSVP.Promise((resolve, reject) =&gt; {
-                if (!this._validateData(data)) {
-                  return reject(&#x27;Could not restore session - &quot;access_token&quot; missing.&#x27;);
-                }
+              this._assertToriiIsPresent();
           
-                return resolve(data);
+              data = data || {};
+              if (!isEmpty(data.provider)) {
+                const { provider } = data;
+          
+                return this.get(&#x27;torii&#x27;).fetch(data.provider, data).then(
+                  (fetchedData) =&gt; {
+                    this._authenticateWithProvider(provider, fetchedData);
+                    return emberAssign(data, fetchedData);
+                  },
+                  (err) =&gt; {
+                    delete this._provider;
+                    throw err;
+                  }
+                );
+              } else {
+                delete this._provider;
+                return RSVP.reject();
+              }
+            },
+          
+            /**
+              Authenticates the session by opening the specified torii provider. For more
+              documentation on torii and its providers abstraction, see the
+              [project&#x27;s README](https://github.com/Vestorly/torii#readme), specifically
+              the
+              [section on providers](https://github.com/Vestorly/torii#configuring-a-torii-provider).
+          
+              @method authenticate
+              @param {String} provider The torii provider to authenticate the session with
+              @param {Object} options The options to pass to the torii provider
+              @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
+              @public
+            */
+            authenticate(provider, options) {
+              this._assertToriiIsPresent();
+          
+              return this.get(&#x27;torii&#x27;).open(provider, options || {}).then((data) =&gt; {
+                this._authenticateWithProvider(provider, data);
+                return data;
               });
             },
           
             /**
-             Authenticates the session using the specified location &#x60;hash&#x60;
-             (see https://tools.ietf.org/html/rfc6749#section-4.2.2).
+              Closes the torii provider. If the provider is successfully closed, this
+              method returns a resolving promise, otherwise it will return a rejecting
+              promise, thus intercepting session invalidation.
           
-             __If the access token is valid and thus authentication succeeds, a promise that
-             resolves with the access token is returned__, otherwise a promise that rejects
-             with the error code as returned by the server is returned
-             (see https://tools.ietf.org/html/rfc6749#section-4.2.2.1).
-          
-             @method authenticate
-             @param {Object} hash The location hash
-             @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
-             @public
-             */
-            authenticate(hash) {
-              return new RSVP.Promise((resolve, reject) =&gt; {
-                if (hash.error) {
-                  reject(hash.error);
-                } else if (!this._validateData(hash)) {
-                  reject(&#x27;Invalid auth params - &quot;access_token&quot; missing.&#x27;);
-                } else {
-                  resolve(hash);
-                }
+              @method invalidate
+              @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
+              @public
+            */
+            invalidate(data) {
+              return this.get(&#x27;torii&#x27;).close(this._provider, data).then(() =&gt; {
+                delete this._provider;
               });
             },
           
-            /**
-             This method simply returns a resolving promise.
-          
-             @method invalidate
-             @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
-             @public
-             */
-            invalidate() {
-              return RSVP.Promise.resolve();
+            _authenticateWithProvider(provider, data) {
+              data.provider = provider;
+              this._provider = data.provider;
             },
           
-            _validateData(data) {
-              // see https://tools.ietf.org/html/rfc6749#section-4.2.2
-          
-              return !isEmpty(data) &amp;&amp; !isEmpty(data.access_token);
+            _assertToriiIsPresent() {
+              const torii = this.get(&#x27;torii&#x27;);
+              assert(&#x27;You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with &quot;torii: Ember.inject.service()&quot;.&#x27;, isPresent(torii));
             }
           });
           
