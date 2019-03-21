@@ -118,7 +118,17 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       authenticator.authenticate('username', 'password');
     });
 
-    it('(deprecated) sends an AJAX request to the token endpoint with client_id Basic Auth header', function(done) {
+    it('sends an AJAX request to the token endpoint with client_id Basic Auth header', function(done) {
+      server.post('/token', (request) => {
+        expect(request.requestHeaders['authorization']).to.eql('Basic dGVzdC1jbGllbnQ6');
+        done();
+      });
+
+      authenticator.set('clientId', 'test-client');
+      authenticator.authenticate('username', 'password');
+    });
+
+    it('shows a deprecation warning when sending the client_id in the Basic Auth header', function(done) {
       let warnings;
       registerDeprecationHandler((message, options, next) => {
         // in case a deprecation is issued before a test is started
@@ -130,11 +140,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         next(message, options);
       });
 
-      server.post('/token', (request) => {
-        expect(request.requestHeaders['authorization']).to.eql('Basic dGVzdC1jbGllbnQ6');
-        done();
-      });
-
+      server.post('/token', () => done());
       authenticator.set('clientId', 'test-client');
       authenticator.authenticate('username', 'password');
 
