@@ -9,6 +9,7 @@ import {
   merge,
   assign as emberAssign
 } from '@ember/polyfills';
+import { deprecate } from '@ember/application/deprecations';
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
@@ -52,6 +53,17 @@ export default BaseAuthenticator.extend({
     @public
   */
   clientId: null,
+
+  /**
+   The OAuth2 standard is to send the client_id as a query parameter. This is a
+   feature flag that turns on the correct behavior for OAuth2 requests.
+
+   @property sendClientIdAsQueryParam
+   @type Boolean
+   @default false
+   @public
+  */
+  sendClientIdAsQueryParam: false,
 
   /**
     The endpoint on the server that authentication and token refresh requests
@@ -117,7 +129,6 @@ export default BaseAuthenticator.extend({
 
   _clientIdHeader: computed('clientId', function() {
     const clientId = this.get('clientId');
-
     if (!isEmpty(clientId)) {
       const base64ClientId = window.base64.encode(clientId.concat(':'));
       return { Authorization: `Basic ${base64ClientId}` };
@@ -253,6 +264,17 @@ export default BaseAuthenticator.extend({
     @public
   */
   authenticate(identification, password, scope = [], headers = {}) {
+    if (!this.get('sendClientIdAsQueryParam')) {
+      deprecate(`Ember Simple Auth: Client ID as Authorization Header is deprecated in favour of Client ID as Query String Parameter.`,
+        false,
+        {
+          id: 'ember-simple-auth.oauth2-password-grant-authenticator.client-id-as-authorization',
+          until: '2.0.0',
+          url: 'https://github.com/simplabs/ember-simple-auth#deprecation-of-client-id-header',
+        }
+      );
+    }
+
     return new RSVP.Promise((resolve, reject) => {
       const data = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
@@ -336,6 +358,13 @@ export default BaseAuthenticator.extend({
   makeRequest(url, data, headers = {}) {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
+    if (this.get('sendClientIdAsQueryParam')) {
+      const clientId = this.get('clientId');
+      if (!isEmpty(clientId)) {
+        data['client_id'] = this.get('clientId');
+      }
+    }
+
     const body = keys(data).map((key) => {
       return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`;
     }).join('&');
@@ -346,9 +375,11 @@ export default BaseAuthenticator.extend({
       method: 'POST'
     };
 
-    const clientIdHeader = this.get('_clientIdHeader');
-    if (!isEmpty(clientIdHeader)) {
-      merge(options.headers, clientIdHeader);
+    if (!this.get('sendClientIdAsQueryParam')) {
+      const clientIdHeader = this.get('_clientIdHeader');
+      if (!isEmpty(clientIdHeader)) {
+        merge(options.headers, clientIdHeader);
+      }
     }
 
     return new RSVP.Promise((resolve, reject) => {
