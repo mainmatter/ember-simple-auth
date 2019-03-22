@@ -3,16 +3,25 @@ import RSVP from 'rsvp';
 import Route from '@ember/routing/route';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import createWithContainer from '../../helpers/create-with-container';
 
 describe('UnauthenticatedRouteMixin', () => {
+  let sinon;
   let route;
   let session;
   let containerMock;
+
+  beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
+  });
+
+  afterEach(function() {
+    sinon.restore();
+  });
 
   describe('#beforeModel', function() {
     beforeEach(function() {

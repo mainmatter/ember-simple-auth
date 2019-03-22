@@ -387,20 +387,14 @@ describe('InternalSession', () => {
     });
 
     describe('when invalidate gets called with additional params', function() {
-      let spy;
-
       beforeEach(function() {
-        spy = sinon.spy(authenticator, 'invalidate');
+        sinon.spy(authenticator, 'invalidate');
       });
 
       it('passes the params on to the authenticators invalidate method', function() {
         let param = { some: 'random data' };
         session.invalidate(param);
         expect(authenticator.invalidate).to.have.been.calledWith(session.get('authenticated'), param);
-      });
-
-      afterEach(function() {
-        spy.restore();
       });
     });
 
