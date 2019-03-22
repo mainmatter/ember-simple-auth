@@ -10,8 +10,17 @@ import OAuth2ImplicitGrantCallbackRouteMixin from 'ember-simple-auth/mixins/oaut
 import * as LocationUtil from 'ember-simple-auth/utils/location';
 
 describe('OAuth2ImplicitGrantCallbackRouteMixin', function() {
+  let sinon;
   let route;
   let session;
+
+  beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
+  });
+
+  afterEach(function() {
+    sinon.restore();
+  });
 
   describe('#activate', function() {
     let sinon;

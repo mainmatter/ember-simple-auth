@@ -5,17 +5,19 @@ import { set } from '@ember/object';
 import { registerDeprecationHandler } from '@ember/debug';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import Session from 'ember-simple-auth/services/session';
 
 import createWithContainer from '../../helpers/create-with-container';
 
 describe('SessionService', () => {
+  let sinon;
   let sessionService;
   let session;
   let authorizer;
 
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     session = ObjectProxy.extend(Evented, {
       content: {}
     }).create();
@@ -27,6 +29,10 @@ describe('SessionService', () => {
     stub.withArgs('authorizer').returns(authorizer);
     stub.withArgs('bad-authorizer').returns(undefined);
     sessionService = createWithContainer(Session, { session }, container);
+  });
+
+  afterEach(function() {
+    sinon.restore();
   });
 
   it('forwards the "authenticationSucceeded" event from the session', function(done) {

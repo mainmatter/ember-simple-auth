@@ -1,15 +1,21 @@
 import { describe, beforeEach } from 'mocha';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
 import createCookieStore from '../../helpers/create-cookie-store';
 
 describe('CookieStore', () => {
+  let sinon;
   let store;
 
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     store = createCookieStore(FakeCookieService.create());
+  });
+
+  afterEach(function() {
+    sinon.restore();
   });
 
   itBehavesLikeAStore({

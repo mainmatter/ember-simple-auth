@@ -6,7 +6,7 @@ import {
   it
 } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import Adaptive from 'ember-simple-auth/session-stores/adaptive';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import itBehavesLikeAStore from './shared/store-behavior';
@@ -15,10 +15,16 @@ import FakeCookieService from '../../helpers/fake-cookie-service';
 import createAdaptiveStore from '../../helpers/create-adaptive-store';
 
 describe('AdaptiveStore', () => {
+  let sinon;
   let store;
+
+  beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
+  });
 
   afterEach(function() {
     store.clear();
+    sinon.restore();
   });
 
   describe('when localStorage is available', function() {

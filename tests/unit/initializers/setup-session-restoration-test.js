@@ -3,15 +3,17 @@ import { getOwner, setOwner } from '@ember/application';
 import RSVP from 'rsvp';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import setupSessionRestoration from 'ember-simple-auth/initializers/setup-session-restoration';
 
 describe('setupSessionRestoration', () => {
+  let sinon;
   let registry;
   let resolveStub;
   let ApplicationRoute;
 
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     registry = {
       resolve() {}
     };
@@ -19,6 +21,10 @@ describe('setupSessionRestoration', () => {
     ApplicationRoute = Route.extend();
 
     resolveStub = sinon.stub(registry, 'resolve');
+  });
+
+  afterEach(function() {
+    sinon.restore();
   });
 
   it('adds a beforeModel method', function() {
