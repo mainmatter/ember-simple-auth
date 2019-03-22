@@ -6,7 +6,20 @@ import config from './config/environment';
 const App = Application.extend({
   modulePrefix: config.modulePrefix,
   podModulePrefix: config.podModulePrefix,
-  Resolver
+  Resolver,
+
+  engines: Object.freeze({
+    myEngine: {
+      dependencies: {
+        externalRoutes: {
+          login: 'login'
+        },
+        services: [
+          'session'
+        ]
+      }
+    }
+  })
 });
 
 loadInitializers(App, config.modulePrefix);
