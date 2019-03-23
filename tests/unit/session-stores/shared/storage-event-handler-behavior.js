@@ -1,14 +1,21 @@
 import { run } from '@ember/runloop';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 
 export default function(options) {
+  let sinon;
   let store;
 
   // eslint-disable-next-line mocha/no-top-level-hooks
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     store = options.store();
+  });
+
+  // eslint-disable-next-line mocha/no-top-level-hooks
+  afterEach(function() {
+    sinon.restore();
   });
 
   describe('storage events', function() {

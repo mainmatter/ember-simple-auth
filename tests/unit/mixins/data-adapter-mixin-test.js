@@ -1,16 +1,18 @@
 import EmberObject from '@ember/object';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
 describe('DataAdapterMixin', () => {
+  let sinon;
   let adapter;
   let sessionService;
   let hash;
   let Adapter;
 
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     hash = {};
     sessionService = EmberObject.create({
       authorize() {},
@@ -34,6 +36,10 @@ describe('DataAdapterMixin', () => {
       authorizer: 'authorizer:some'
     });
     adapter = Adapter.create({ session: sessionService });
+  });
+
+  afterEach(function() {
+    sinon.restore();
   });
 
   describe('#ajaxOptions', function() {

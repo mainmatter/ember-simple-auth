@@ -10,13 +10,20 @@ import OAuth2ImplicitGrantCallbackRouteMixin from 'ember-simple-auth/mixins/oaut
 import * as LocationUtil from 'ember-simple-auth/utils/location';
 
 describe('OAuth2ImplicitGrantCallbackRouteMixin', function() {
+  let sinon;
   let route;
   let session;
 
+  beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
+  });
+
+  afterEach(function() {
+    sinon.restore();
+  });
+
   describe('#activate', function() {
-    let sinon;
     beforeEach(function() {
-      sinon = sinonjs.sandbox.create();
       session = EmberObject.extend({
         authenticate(authenticator, hash) {
           if (!isEmpty(hash.access_token)) {
@@ -35,9 +42,6 @@ describe('OAuth2ImplicitGrantCallbackRouteMixin', function() {
       }).create({ session });
 
       sinon.spy(route, 'transitionTo');
-    });
-    afterEach(function() {
-      sinon.restore();
     });
 
     it('correctly passes the auth parameters if authentication succeeds', function(done) {

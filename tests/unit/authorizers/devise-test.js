@@ -1,17 +1,23 @@
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import Devise from 'ember-simple-auth/authorizers/devise';
 import { registerDeprecationHandler } from '@ember/debug';
 
 describe('DeviseAuthorizer', () => {
+  let sinon;
   let authorizer;
   let block;
   let data;
 
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     authorizer = Devise.create();
     block = sinon.spy();
+  });
+
+  afterEach(function() {
+    sinon.restore();
   });
 
   it('shows deprecation warning from BaseAuthorizer', function() {

@@ -7,7 +7,7 @@ import {
   it
 } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';
 
 let warnings;
@@ -22,6 +22,7 @@ registerWarnHandler((message, options, next) => {
 });
 
 export default function(options) {
+  let sinon;
   let store;
   let createStore;
   let renew;
@@ -31,6 +32,7 @@ export default function(options) {
 
   // eslint-disable-next-line mocha/no-top-level-hooks
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     createStore = options.createStore;
     renew = options.renew;
     sync = options.sync;
@@ -43,8 +45,7 @@ export default function(options) {
 
   // eslint-disable-next-line mocha/no-top-level-hooks
   afterEach(function() {
-    cookieService.read.restore();
-    cookieService.write.restore();
+    sinon.restore();
     store.clear();
   });
 

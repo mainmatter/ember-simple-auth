@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { next } from '@ember/runloop';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
@@ -10,12 +10,14 @@ import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import createWithContainer from '../../helpers/create-with-container';
 
 describe('ApplicationRouteMixin', () => {
+  let sinon;
   let session;
   let route;
   let cookiesMock;
   let containerMock;
 
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     session = InternalSession.create({ store: EphemeralStore.create() });
     cookiesMock = {
       read: sinon.stub(),
@@ -30,6 +32,10 @@ describe('ApplicationRouteMixin', () => {
     route = createWithContainer(Route.extend(ApplicationRouteMixin, {
       transitionTo() {}
     }), { session }, containerMock);
+  });
+
+  afterEach(function() {
+    sinon.restore();
   });
 
   describe('mapping of service events to route methods', function() {

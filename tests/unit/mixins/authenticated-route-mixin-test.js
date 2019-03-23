@@ -3,7 +3,7 @@ import RSVP from 'rsvp';
 import Route from '@ember/routing/route';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
 import Configuration from 'ember-simple-auth/configuration';
@@ -12,6 +12,7 @@ import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import createWithContainer from '../../helpers/create-with-container';
 
 describe('AuthenticatedRouteMixin', () => {
+  let sinon;
   let route;
   let session;
   let router;
@@ -19,6 +20,14 @@ describe('AuthenticatedRouteMixin', () => {
   let cookiesMock;
   let fastbootMock;
   let containerMock;
+
+  beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
+  });
+
+  afterEach(function() {
+    sinon.restore();
+  });
 
   describe('#beforeModel', function() {
     beforeEach(function() {

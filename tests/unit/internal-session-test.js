@@ -2,7 +2,7 @@ import RSVP from 'rsvp';
 import { next } from '@ember/runloop';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import Authenticator from 'ember-simple-auth/authenticators/base';
@@ -10,17 +10,23 @@ import Authenticator from 'ember-simple-auth/authenticators/base';
 import createWithContainer from '../helpers/create-with-container';
 
 describe('InternalSession', () => {
+  let sinon;
   let session;
   let store;
   let authenticator;
   let container;
 
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     container = { lookup() {} };
     store = EphemeralStore.create();
     authenticator = Authenticator.create();
     session = createWithContainer(InternalSession, { store }, container);
     sinon.stub(container, 'lookup').withArgs('authenticator').returns(authenticator);
+  });
+
+  afterEach(function() {
+    sinon.restore();
   });
 
   it('does not allow data to be stored for the key "authenticated"', function() {
@@ -381,20 +387,14 @@ describe('InternalSession', () => {
     });
 
     describe('when invalidate gets called with additional params', function() {
-      let spy;
-
       beforeEach(function() {
-        spy = sinon.spy(authenticator, 'invalidate');
+        sinon.spy(authenticator, 'invalidate');
       });
 
       it('passes the params on to the authenticators invalidate method', function() {
         let param = { some: 'random data' };
         session.invalidate(param);
         expect(authenticator.invalidate).to.have.been.calledWith(session.get('authenticated'), param);
-      });
-
-      afterEach(function() {
-        spy.restore();
       });
     });
 

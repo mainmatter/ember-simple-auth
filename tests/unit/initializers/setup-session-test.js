@@ -6,20 +6,26 @@ import {
   it
 } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import setupSession from 'ember-simple-auth/initializers/setup-session';
 import Ephemeral from 'ember-simple-auth/session-stores/ephemeral';
 import InternalSession from 'ember-simple-auth/internal-session';
 
 describe('setupSession', () => {
+  let sinon;
   let registry;
 
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     registry = {
       register() {},
       injection() {}
     };
     Ember.testing = true;
+  });
+
+  afterEach(function() {
+    sinon.restore();
   });
 
   it('registers the session', function() {

@@ -1,16 +1,22 @@
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import OAuth2BearerAuthorizer from 'ember-simple-auth/authorizers/oauth2-bearer';
 import { registerDeprecationHandler } from '@ember/debug';
 
 describe('OAuth2BearerAuthorizer', () => {
+  let sinon;
   let authorizer;
   let data;
   let block;
 
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     block = sinon.spy();
+  });
+
+  afterEach(function() {
+    sinon.restore();
   });
 
   it('shows deprecation warning from BaseAuthorizer', function() {

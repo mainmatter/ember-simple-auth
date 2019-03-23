@@ -1,15 +1,21 @@
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import setupSessionService from 'ember-simple-auth/initializers/setup-session-service';
 
 describe('setupSessionService', () => {
+  let sinon;
   let registry;
 
   beforeEach(function() {
+    sinon = sinonjs.sandbox.create();
     registry = {
       injection() {}
     };
+  });
+
+  afterEach(function() {
+    sinon.restore();
   });
 
   it('injects the session into the session service', function() {
