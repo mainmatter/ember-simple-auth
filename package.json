@@ -112,8 +112,5 @@
       "eslint-plugin-ember",
       "eslint-plugin-mocha"
     ]
-  },
-  "resolutions": {
-    "ip-regex": "^2.1.0"
   }
 }
