@@ -584,7 +584,7 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
 });
 ```
 
-When using with `ember-fetch` the `authorize` will not be called and the
+When used with `ember-fetch` the `authorize` method will not be called and the
 `headers` computed property must be used instead, e.g.:
 
 ```js
