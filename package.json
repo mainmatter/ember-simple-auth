@@ -112,5 +112,8 @@
       "eslint-plugin-ember",
       "eslint-plugin-mocha"
     ]
+  },
+  "resolutions": {
+    "jsdom": "^11.10.0"
   }
 }
