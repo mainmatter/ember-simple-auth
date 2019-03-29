@@ -75,7 +75,7 @@
     "ember-sinon": "~3.0.0",
     "ember-source": "~3.8.0",
     "ember-source-channel-url": "^1.1.0",
-    "ember-try": "^0.2.23",
+    "ember-try": "^1.1.0",
     "eslint-config-simplabs": "^0.4.0",
     "eslint-plugin-ember": "^3.6.2",
     "eslint-plugin-mocha": "^4.11.0",
