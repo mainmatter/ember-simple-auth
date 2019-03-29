@@ -4945,10 +4945,10 @@ ember-runtime-enumerable-includes-polyfill@^2.0.0:
     ember-cli-babel "^6.9.0"
     ember-cli-version-checker "^2.1.0"
 
-ember-sinon@~3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/ember-sinon/-/ember-sinon-3.0.0.tgz#fe5d6df1a82c2b88212ec3e2fbee9f885b079b37"
-  integrity sha512-DuFyZy1H8F+Qtrz3R8LaZtdrDYNXhXWA8V+EE/WbT9LuLPIb4ctWEu+siFYsCUcNdpEblvpbPRy8oeVdVCxl0Q==
+ember-sinon@~3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/ember-sinon/-/ember-sinon-3.1.0.tgz#76733aae1cc32c9426202bdc0f5b61552753a7df"
+  integrity sha512-/UARfA4UBlhhmtvk6Vcvj3CH2foThqCORbXiUiQUBISNxqtZFdwGpnJMt4vY8etyArmop18B33UTmZzNKbfhmg==
   dependencies:
     broccoli-funnel "^2.0.0"
     broccoli-merge-trees "^3.0.0"
