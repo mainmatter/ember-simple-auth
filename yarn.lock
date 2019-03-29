@@ -7674,9 +7674,9 @@ load-json-file@^1.0.0:
     strip-bom "^2.0.0"
 
 loader.js@^4.5.1:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/loader.js/-/loader.js-4.6.0.tgz#b965663ddbe2d80da482454cb865efe496e93e22"
-  integrity sha512-NjAnzMq/BM2VlXA9er0Nx1Runocgi+hEU53ENhCtTx82GX6/l9NXwfIqg81om6QvmhUlv2zH+4R+N+wOoeXytQ==
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/loader.js/-/loader.js-4.7.0.tgz#a1a52902001c83631efde9688b8ab3799325ef1f"
+  integrity sha512-9M2KvGT6duzGMgkOcTkWb+PR/Q2Oe54df/tLgHGVmFpAmtqJ553xJh6N63iFYI2yjo2PeJXbS5skHi/QpJq4vA==
 
 locate-character@^2.0.5:
   version "2.0.5"
