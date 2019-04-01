@@ -2179,7 +2179,7 @@ bluebird@^3.1.1, bluebird@^3.4.6:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
   integrity sha512-MKiLiV+I1AA596t9w1sQJ8jkiSr5+ZKi0WKrYGUn6d1Fx+Ij4tIj+m2WMQSGczs5jZVxV339chE8iwk6F64wjA==
 
-body-parser@1.18.2, body-parser@^1.17.0, body-parser@^1.17.2:
+body-parser@1.18.2:
   version "1.18.2"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.18.2.tgz#87678a19d84b47d859b83199bd59bce222b10454"
   integrity sha1-h2eKGdhLR9hZuDGZvVm84iKxBFQ=
@@ -2195,7 +2195,7 @@ body-parser@1.18.2, body-parser@^1.17.0, body-parser@^1.17.2:
     raw-body "2.3.2"
     type-is "~1.6.15"
 
-body-parser@1.18.3:
+body-parser@1.18.3, body-parser@^1.17.0, body-parser@^1.17.2:
   version "1.18.3"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.18.3.tgz#5b292198ffdd553b3a0f20ded0592b956955c8b4"
   integrity sha1-WykhmP/dVTs6DyDe0FkrlWlVyLQ=
@@ -4338,10 +4338,10 @@ ember-cli-chai@^0.5.0:
     rollup-plugin-commonjs "^8.0.2"
     rollup-plugin-node-resolve "^3.0.0"
 
-ember-cli-content-security-policy@~1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-content-security-policy/-/ember-cli-content-security-policy-1.0.0.tgz#4f7d72997d4209cd59f10d3b0070fdb39593ed2d"
-  integrity sha512-5JSm22epRFkMH5h+/HgfnspjYPIXNP4RXUUSS8mj1KV3ZJZzcY3835YNnYYi3Tx5SLLHFqadT851zCXfcQei9w==
+ember-cli-content-security-policy@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ember-cli-content-security-policy/-/ember-cli-content-security-policy-1.1.1.tgz#7d91a695319d8f99c317f3a594fba77bbfedf6c7"
+  integrity sha512-QgGAFt1nmsb0qF2YXI5iSM7jJVb09R2hrfX7uR+kkXMb5VyNQXdo2ZlX/DuIbePQVY4q9THpRh8Yf0UHJNbvDQ==
   dependencies:
     body-parser "^1.17.0"
     chalk "^2.0.0"
