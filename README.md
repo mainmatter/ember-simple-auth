@@ -609,6 +609,19 @@ To change this behavior set `sendClientIdAsQueryParam` to `true`, and the client
 sent as a query parameter. Leaving it set to `false` (currently default) will result in a deprecation
 notice until the next major version.
 
+### Deprecation of rejecting with the response body
+
+When the OAuth 2.0 Password Grant authenticator encounters an error during
+authentication (like invalid credentials), it used to return a promise that
+rejected with the response body as opposed to the complete response. This
+behavior is deprecated in favor of rejecting with an error object that exposes
+the complete response object as an attribute.
+
+To change this behavior set `rejectWithResponse` to `true`, and the
+authenticator will return a promise that rejects with a proper error instead.
+Leaving it set to `false` (currently default) will result in a deprecation
+notice until the next major version.
+
 ## Session Stores
 
 Ember Simple Auth __persists the session state via a session store so it

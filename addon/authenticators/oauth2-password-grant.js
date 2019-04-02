@@ -275,6 +275,17 @@ export default BaseAuthenticator.extend({
       );
     }
 
+    if (!this.get('rejectWithResponse')) {
+      deprecate(`Ember Simple Auth: In the OAuth 2.0 Password Grant authenticator, rejecting   with the response body only in case of errors is deprecated in favour of rejecting with the complete response object.`,
+        false,
+        {
+          id: 'ember-simple-auth.oauth2-password-grant-authenticator.reject-with-response-body',
+          until: '2.0.0',
+          url: 'https://github.com/simplabs/ember-simple-auth#deprecation-of-rejecting-with-the-response-body',
+        }
+      );
+    }
+
     return new RSVP.Promise((resolve, reject) => {
       const data = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
