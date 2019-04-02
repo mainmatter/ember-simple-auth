@@ -1,7 +1,8 @@
 import { tryInvoke } from '@ember/utils';
 import {
   currentURL,
-  visit
+  visit,
+  click
 } from '@ember/test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import {
@@ -52,6 +53,40 @@ describe('Acceptance: Authentication', function() {
       expect(currentURL()).to.eq('/protected');
       expect(session.get('data.authenticated.userId')).to.eql(1);
       expect(session.get('data.authenticated.otherData')).to.eql('some-data');
+    });
+  });
+
+  describe('the protected route in the engine', function() {
+    it('cannot be visited when the session is not authenticated', async function() {
+      await invalidateSession();
+      await visit('/engine');
+
+      expect(currentURL()).to.eq('/login');
+    });
+
+    it('can be visited when the session is authenticated', async function() {
+      server = new Pretender(function() {
+        this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
+      });
+      await authenticateSession({ userId: 1, otherData: 'some-data' });
+      await visit('/engine');
+
+      expect(currentURL()).to.eq('/engine');
+      let session = currentSession();
+      expect(session.get('data.authenticated.userId')).to.eql(1);
+      expect(session.get('data.authenticated.otherData')).to.eql('some-data');
+    });
+
+    it('can invalidate the session', async function() {
+      server = new Pretender(function() {
+        this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
+      });
+      await authenticateSession({ userId: 1, otherData: 'some-data' });
+      await visit('/engine');
+      await click('[data-test-logout-button]');
+
+      let session = currentSession();
+      expect(session.get('isAuthenticated')).to.be.false;
     });
   });
 
