@@ -170,6 +170,21 @@ export default BaseAuthenticator.extend({
   rejectWithResponse: false,
 
   /**
+    When authentication succeeds, the callback is provided with the whole
+    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
+    instead of the responseJSON only.
+
+    This is useful for cases when the backend provides additional context not
+    available in the responseJSON.
+
+    @property resolveWithResponse
+    @type Boolean
+    @default false
+    @public
+  */
+  resolveWithResponse: false,
+
+  /**
     Restores the session from a session data object; __will return a resolving
     promise when there is a non-empty `access_token` in the session data__ and
     a rejecting promise otherwise.
@@ -279,13 +294,14 @@ export default BaseAuthenticator.extend({
       const data = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
       const useResponse = this.get('rejectWithResponse');
+      const resolveWithResponse = this.get('resolveWithResponse');
       const scopesString = makeArray(scope).join(' ');
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
       }
       this.makeRequest(serverTokenEndpoint, data, headers).then((response) => {
         run(() => {
-          if (!this._validate(response)) {
+          if (!this._validate(response, resolveWithResponse)) {
             reject('access_token is missing in server response');
           }
 
@@ -375,6 +391,8 @@ export default BaseAuthenticator.extend({
       method: 'POST'
     };
 
+    const resolveWithResponse = this.get('resolveWithResponse');
+
     if (!this.get('sendClientIdAsQueryParam')) {
       const clientIdHeader = this.get('_clientIdHeader');
       if (!isEmpty(clientIdHeader)) {
@@ -391,7 +409,12 @@ export default BaseAuthenticator.extend({
               response.responseJSON = json;
               reject(response);
             } else {
-              resolve(json);
+              if (resolveWithResponse) {
+                response.responseJSON = json;
+                resolve(response);
+              } else {
+                resolve(json);
+              }
             }
           } catch (SyntaxError) {
             response.responseText = text;
@@ -447,7 +470,11 @@ export default BaseAuthenticator.extend({
     }
   },
 
-  _validate(data) {
-    return !isEmpty(data['access_token']);
+  _validate(data, resolveWithResponse = false) {
+    if (resolveWithResponse) {
+      return !isEmpty(data.responseJSON['access_token']);
+    } else {
+      return !isEmpty(data['access_token']);
+    }
   }
 });

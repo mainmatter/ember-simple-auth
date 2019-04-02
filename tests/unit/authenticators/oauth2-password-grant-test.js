@@ -209,6 +209,27 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         });
       });
 
+      describe('when resolveWithResponse is enabled', function() {
+        beforeEach(function() {
+          authenticator.set('resolveWithResponse', true);
+          server.post('/token', () => [200, { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' }, '{ "access_token": "secret token!" }']);
+        });
+
+        it('responds with response object containing responseJSON', function(done) {
+          authenticator.authenticate('username', 'password').then((data) => {
+            expect(data.responseJSON).to.eql({ 'access_token': 'secret token!' });
+            done();
+          });
+        });
+
+        it('provides access to custom headers', function(done) {
+          authenticator.authenticate('username', 'password').then((data) => {
+            expect(data.headers.get('x-custom-context')).to.eql('foobar');
+            done();
+          });
+        });
+      });
+
       describe('when the server response includes expiration data', function() {
         beforeEach(function() {
           server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!", "expires_in": 12345, "refresh_token": "refresh token!" }']);
