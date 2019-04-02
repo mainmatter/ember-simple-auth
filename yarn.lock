@@ -949,10 +949,10 @@ abbrev@1:
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
-abortcontroller-polyfill@^1.1.9:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.1.9.tgz#9fefe359fda2e9e0932dc85e6106453ac393b2da"
-  integrity sha512-omvG7zOHIs3BphdH62Kh3xy8nlftAsTyp7PDa9EmC3Jz9pa6sZFYk7UhNgu9Y4sIBhj6jF0RgeFZYvPnsP5sBw==
+abortcontroller-polyfill@^1.1.9, abortcontroller-polyfill@^1.2.5:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.3.0.tgz#de69af32ae926c210b7efbcc29bf644ee4838b00"
+  integrity sha512-lbWQgf+eRvku3va8poBlDBO12FigTQr9Zb7NIjXrePrhxWVKdCP2wbDl1tLDaYa18PWTom3UEWwdH13S46I+yA==
 
 accepts@~1.3.4:
   version "1.3.4"
@@ -2855,6 +2855,15 @@ browserslist@^3.2.6:
     caniuse-lite "^1.0.30000844"
     electron-to-chromium "^1.3.47"
 
+browserslist@^4.0.0:
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.5.3.tgz#969495c410314bc89f14e748505e58be968080f1"
+  integrity sha512-Tx/Jtrmh6vFg24AelzLwCaCq1IUJiMDM1x/LPzqbmbktF8Zo7F9ONUpOWsFK6TtdON95mSMaQUWqi0ilc8xM6g==
+  dependencies:
+    caniuse-lite "^1.0.30000955"
+    electron-to-chromium "^1.3.122"
+    node-releases "^1.1.12"
+
 browserslist@^4.1.0:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.3.4.tgz#4477b737db6a1b07077275b24791e680d4300425"
@@ -2991,15 +3000,25 @@ can-symlink@^1.0.0:
   dependencies:
     tmp "0.0.28"
 
+caniuse-api@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/caniuse-api/-/caniuse-api-3.0.0.tgz#5e4d90e2274961d46291997df599e3ed008ee4c0"
+  integrity sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==
+  dependencies:
+    browserslist "^4.0.0"
+    caniuse-lite "^1.0.0"
+    lodash.memoize "^4.1.2"
+    lodash.uniq "^4.5.0"
+
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30000955:
+  version "1.0.30000955"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000955.tgz#360fdb9a1e41d6dd996130411334e44a39e4446d"
+  integrity sha512-6AwmIKgqCYfDWWadRkAuZSHMQP4Mmy96xAXEdRBlN/luQhlRYOKgwOlZ9plpCOsVbBuqbTmGqDK3JUM/nlr8CA==
+
 caniuse-lite@^1.0.30000792:
   version "1.0.30000808"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000808.tgz#7d759b5518529ea08b6705a19e70dbf401628ffc"
   integrity sha512-vT0JLmHdvq1UVbYXioxCXHYdNw55tyvi+IUWyX0Zeh1OFQi2IllYtm38IJnSgHWCv/zUnX1hdhy3vMJvuTNSqw==
-
-caniuse-lite@^1.0.30000844:
-  version "1.0.30000955"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000955.tgz#360fdb9a1e41d6dd996130411334e44a39e4446d"
-  integrity sha512-6AwmIKgqCYfDWWadRkAuZSHMQP4Mmy96xAXEdRBlN/luQhlRYOKgwOlZ9plpCOsVbBuqbTmGqDK3JUM/nlr8CA==
 
 caniuse-lite@^1.0.30000899:
   version "1.0.30000907"
@@ -4139,6 +4158,11 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
+electron-to-chromium@^1.3.122:
+  version "1.3.122"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.122.tgz#b32a0805f48557bd3c3b8104eadc7fa511b14a9a"
+  integrity sha512-3RKoIyCN4DhP2dsmleuFvpJAIDOseWH88wFYBzb22CSwoFDSWRc4UAMfrtc9h8nBdJjTNIN3rogChgOy6eFInw==
+
 electron-to-chromium@^1.3.30:
   version "1.3.33"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.33.tgz#bf00703d62a7c65238136578c352d6c5c042a545"
@@ -4795,17 +4819,19 @@ ember-fastboot-addon-tests@^0.5.0:
     rsvp "^4.8.2"
 
 "ember-fetch@^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0":
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/ember-fetch/-/ember-fetch-6.2.0.tgz#88988e1fb94f44722a1cbb9416310711e65f6706"
-  integrity sha512-Rc/QgsfPOldT55WSnlN4z7TqKsE1YqGnjAwB7I8myjgEulIu00t0wx4zLjznEz5ng6VeRupXW6WaGE/B/0BYUA==
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/ember-fetch/-/ember-fetch-6.5.0.tgz#efed80b3dd2259b52efce7498659e9125235bfb7"
+  integrity sha512-B9KSeeO3xDNMQ22JqNwbmgnOprBzc8kNVfQMtzkAmugMb2aCmBZohAlQlwUUX5ODz8fHq2xfuZXDHD81Dzb0vg==
   dependencies:
-    abortcontroller-polyfill "^1.1.9"
+    abortcontroller-polyfill "^1.2.5"
     broccoli-concat "^3.2.2"
     broccoli-debug "^0.6.5"
     broccoli-merge-trees "^3.0.0"
     broccoli-rollup "^2.1.1"
     broccoli-stew "^2.0.0"
     broccoli-templater "^2.0.1"
+    calculate-cache-key-for-tree "^1.1.0"
+    caniuse-api "^3.0.0"
     ember-cli-babel "^6.8.2"
     node-fetch "^2.3.0"
     whatwg-fetch "^3.0.0"
@@ -8012,6 +8038,11 @@ lodash.keys@~2.3.0:
     lodash._shimkeys "~2.3.0"
     lodash.isobject "~2.3.0"
 
+lodash.memoize@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
+  integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+
 lodash.merge@^4.3.1, lodash.merge@^4.6.0:
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
@@ -8080,7 +8111,7 @@ lodash.templatesettings@~2.3.0:
     lodash._reinterpolate "~2.3.0"
     lodash.escape "~2.3.0"
 
-lodash.uniq@^4.2.0:
+lodash.uniq@^4.2.0, lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
@@ -8881,6 +8912,13 @@ node-releases@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.0.3.tgz#3414ed84595096459c251699bfcb47d88324a9e4"
   integrity sha512-ZaZWMsbuDcetpHmYeKWPO6e63pSXLb50M7lJgCbcM2nC/nQC3daNifmtp5a2kp7EWwYfhuvH6zLPWkrF8IiDdw==
+  dependencies:
+    semver "^5.3.0"
+
+node-releases@^1.1.12:
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.12.tgz#1d6baf544316b5422fcd35efe18708370a4e7637"
+  integrity sha512-Y+AQ1xdjcgaEzpL65PBEF3fnl1FNKnDh9Zm+AUQLIlyyqtSc4u93jyMN4zrjMzdwKQ10RTr3tgY1x7qpsfF/xg==
   dependencies:
     semver "^5.3.0"
 
