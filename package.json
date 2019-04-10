@@ -48,7 +48,7 @@
     "broccoli-yuidoc": "^3.0.0",
     "chai": "^4.1.0",
     "cors": "^2.8.4",
-    "ember-ajax": "^3.0.0",
+    "ember-ajax": "^5.0.0",
     "ember-bootstrap": "~1.0.0",
     "ember-cli": "~3.9.0",
     "ember-cli-blueprint-test-helpers": "^0.19.2",
