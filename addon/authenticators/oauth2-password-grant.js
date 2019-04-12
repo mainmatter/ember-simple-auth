@@ -378,7 +378,7 @@ export default BaseAuthenticator.extend({
     if (!this.get('sendClientIdAsQueryParam')) {
       const clientIdHeader = this.get('_clientIdHeader');
       if (!isEmpty(clientIdHeader)) {
-        merge(options.headers, clientIdHeader);
+        assign(options.headers, clientIdHeader);
       }
     }
 
