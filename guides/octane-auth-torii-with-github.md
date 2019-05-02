@@ -2,12 +2,6 @@
 
 # Full GitHub Authorization in Ember Octane with `torii-provider`
 
-This repository provides a minimal [Ember
-Octane](https://emberjs.com/editions/octane/) application for authentication
-and authorization with GitHub. It uses
-[`ember-simple-auth`](http://github.com/simplabs/ember-simple-auth) and
-[`torii`](http://github.com/Vestorly/torii) to provide the authentication and authorization.
-
 This guide is an update and reworking of [the guide provided by
 `ember-simple-auth`](https://github.com/simplabs/ember-simple-auth/blob/master/guides/auth-torii-with-github.md),
 but it uses Octane syntax and eschews jQuery. It also uses a production-ready
