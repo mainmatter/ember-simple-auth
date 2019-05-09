@@ -104,11 +104,6 @@ export default BaseAuthenticator.extend({
   refreshAccessTokens: true,
 
   /**
-    The offset time in milliseconds to refresh the access token. This must
-    return a random number. This randomization is needed because in case of
-    multiple tabs, we need to prevent the tabs from sending refresh token
-    request at the same exact moment.
-
     __When overriding this property, make sure to mark the overridden property
     as volatile so it will actually have a different value each time it is
     accessed.__
@@ -119,11 +114,33 @@ export default BaseAuthenticator.extend({
     @public
   */
   tokenRefreshOffset: computed(function() {
+    deprecate(`Ember Simple Auth: 'tokenRefreshOffset' is deprecated. Use getTokenRefreshOffset()`, false, {
+      id: 'ember-simple-auth.authenticators.oauth2.token-refresh-offset',
+      until: '2.0.0',
+      url: 'https://github.com/simplabs/ember-simple-auth#token-refresh'
+    });
+
+    return this.getTokenRefreshOffset();
+  }).volatile(),
+
+
+  /**
+    The offset time in milliseconds to refresh the access token. This must
+    return a random number. This randomization is needed because in case of
+    multiple tabs, we need to prevent the tabs from sending refresh token
+    request at the same exact moment.
+
+    @method getTokenRefreshOffset
+    @type Integer
+    @return a random number between 5 and 10
+    @public
+  */
+  getTokenRefreshOffset() {
     const min = 5;
     const max = 10;
 
     return (Math.floor(Math.random() * (max - min)) + min) * 1000;
-  }).volatile(),
+  },
 
   _refreshTokenTimeout: null,
 
@@ -409,7 +426,7 @@ export default BaseAuthenticator.extend({
       if (isEmpty(expiresAt) && !isEmpty(expiresIn)) {
         expiresAt = new Date(now + expiresIn * 1000).getTime();
       }
-      const offset = this.get('tokenRefreshOffset');
+      const offset = this.getTokenRefreshOffset();
       if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now - offset) {
         run.cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
