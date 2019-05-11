@@ -62,8 +62,19 @@ export default Mixin.create({
     @default 'index'
     @public
   */
-  routeIfAlreadyAuthenticated: computed(function() {
-    return Configuration.routeIfAlreadyAuthenticated;
+  routeIfAlreadyAuthenticated: computed({
+    get() {
+      if (this.hasOwnProperty('routeIfAlreadyAuthenticatedOverride')) {
+        return this.routeIfAlreadyAuthenticatedOverride;
+      } else {
+        return Configuration.routeIfAlreadyAuthenticated;
+      }
+    },
+
+    set(key, value) {
+      this.routeIfAlreadyAuthenticatedOverride = value;
+      return value;
+    }
   }),
 
   /**

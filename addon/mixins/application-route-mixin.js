@@ -66,8 +66,19 @@ export default Mixin.create({
     @default 'index'
     @public
   */
-  routeAfterAuthentication: computed(function() {
-    return Configuration.routeAfterAuthentication;
+  routeAfterAuthentication: computed({
+    get() {
+      if (this.hasOwnProperty('routeAfterAuthenticationOverride')) {
+        return this.routeAfterAuthenticationOverride;
+      } else {
+        return Configuration.routeAfterAuthentication;
+      }
+    },
+
+    set(key, value) {
+      this.routeAfterAuthenticationOverride = value;
+      return value;
+    }
   }),
 
   init() {

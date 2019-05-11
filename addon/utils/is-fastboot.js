@@ -10,8 +10,19 @@ import ApplicationInstance from '@ember/application/instance';
  * @return {ComputedProperty<boolean>}
  */
 export default function isFastBootCPM() {
-  return computed(function() {
-    return isFastBoot(getOwner(this));
+  return computed({
+    get() {
+      if (this.hasOwnProperty('isFastBootOverride')) {
+        return this.isFastBootOverride;
+      } else {
+        return isFastBoot(getOwner(this));
+      }
+    },
+
+    set(key, value) {
+      this.isFastBootOverride = value;
+      return value;
+    }
   });
 }
 

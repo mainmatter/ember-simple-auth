@@ -135,10 +135,21 @@ export default BaseStore.extend({
 
   _cookies: service('cookies'),
 
-  _fastboot: computed(function() {
-    let owner = getOwner(this);
+  _fastboot: computed({
+    get() {
+      if (this.hasOwnProperty('_fastbootOverride')) {
+        return this._fastbootOverride;
+      } else {
+        let owner = getOwner(this);
 
-    return owner && owner.lookup('service:fastboot');
+        return owner && owner.lookup('service:fastboot');
+      }
+    },
+
+    set(key, value) {
+      this._fastbootOverride = value;
+      return value;
+    }
   }),
 
   _secureCookies() {

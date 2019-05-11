@@ -62,9 +62,20 @@ export default Mixin.create({
   */
   session: service('session'),
 
-  _router: computed(function() {
-    let owner = getOwner(this);
-    return owner.lookup('service:router') || owner.lookup('router:main');
+  _router: computed({
+    get() {
+      if (this.hasOwnProperty('_routerOverride')) {
+        return this._routerOverride;
+      } else {
+        let owner = getOwner(this);
+        return owner.lookup('service:router') || owner.lookup('router:main');
+      }
+    },
+
+    set(key, value) {
+      this._routerOverride = value;
+      return value;
+    }
   }),
 
   _isFastBoot: isFastBootCPM(),
@@ -80,8 +91,19 @@ export default Mixin.create({
     @default 'login'
     @public
   */
-  authenticationRoute: computed(function() {
-    return Configuration.authenticationRoute;
+  authenticationRoute: computed({
+    get() {
+      if (this.hasOwnProperty('authenticationRouteOverride')) {
+        return this.authenticationRouteOverride;
+      } else {
+        return Configuration.authenticationRoute;
+      }
+    },
+
+    set(key, value) {
+      this.authenticationRouteOverride = value;
+      return value;
+    }
   }),
 
   /**

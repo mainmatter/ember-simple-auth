@@ -105,19 +105,41 @@ export default Base.extend({
 
   _cookies: service('cookies'),
 
-  _fastboot: computed(function() {
-    let owner = getOwner(this);
+  _fastboot: computed({
+    get() {
+      if (this.hasOwnProperty('_fastbootOverride')) {
+        return this._fastbootOverride;
+      } else {
+        let owner = getOwner(this);
 
-    return owner && owner.lookup('service:fastboot');
+        return owner && owner.lookup('service:fastboot');
+      }
+    },
+
+    set(key, value) {
+      this._fastbootOverride = value;
+      return value;
+    }
   }),
 
-  _isLocalStorageAvailable: computed(function() {
-    try {
-      localStorage.setItem(LOCAL_STORAGE_TEST_KEY, true);
-      localStorage.removeItem(LOCAL_STORAGE_TEST_KEY);
-      return true;
-    } catch (e) {
-      return false;
+  _isLocalStorageAvailable: computed({
+    get() {
+      if (this.hasOwnProperty('_isLocalStorageAvailableOverride')) {
+        return this._isLocalStorageAvailableOverride;
+      } else {
+        try {
+          localStorage.setItem(LOCAL_STORAGE_TEST_KEY, true);
+          localStorage.removeItem(LOCAL_STORAGE_TEST_KEY);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+    },
+
+    set(key, value) {
+      this._isLocalStorageAvailableOverride = value;
+      return value;
     }
   }),
 
