@@ -73,7 +73,7 @@
     "ember-load-initializers": "^2.0.0",
     "ember-resolver": "^5.0.1",
     "ember-sinon": "~3.1.0",
-    "ember-source": "~3.9.0",
+    "ember-source": "~3.10.0",
     "ember-source-channel-url": "^1.1.0",
     "ember-try": "^1.1.0",
     "eslint-config-simplabs": "^0.4.0",
