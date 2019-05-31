@@ -193,7 +193,7 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
-              'ember-data': 'emberjs/data#beta',
+              'ember-data': 'emberjs/data#1df833396855d956b817540923dd89338463fec2',
               'ember-source': betaUrl,
             },
           },
@@ -208,7 +208,7 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
-              'ember-data': 'emberjs/data#master',
+              'ember-data': 'emberjs/data#1df833396855d956b817540923dd89338463fec2',
               'ember-source': canaryUrl,
             },
           },
