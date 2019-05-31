@@ -2689,22 +2689,22 @@ broccoli-templater@^2.0.1:
     rimraf "^2.6.2"
     walk-sync "^0.3.2"
 
-broccoli-uglify-sourcemap@^2.1.1:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/broccoli-uglify-sourcemap/-/broccoli-uglify-sourcemap-2.2.0.tgz#2ff49389bdf342a550c3596750ba2dde95a8f7d4"
-  integrity sha1-L/STib3zQqVQw1lnULot3pWo99Q=
+broccoli-uglify-sourcemap@^3.1.0:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/broccoli-uglify-sourcemap/-/broccoli-uglify-sourcemap-3.1.1.tgz#c99342fe1da09ff79653b6184ef8efe0b9bac793"
+  integrity sha512-X0GkGz75DFPVwRj7LCUaa1hFOPd6STveaHRCOSXIyq076AZzLVAc08zxhbbMHQOxCer8aRD1pHfuU72fQBCzcA==
   dependencies:
     async-promise-queue "^1.0.4"
     broccoli-plugin "^1.2.1"
-    debug "^3.1.0"
+    debug "^4.1.0"
     lodash.defaultsdeep "^4.6.0"
-    matcher-collection "^1.0.5"
+    matcher-collection "^2.0.0"
     mkdirp "^0.5.0"
     source-map-url "^0.4.0"
     symlink-or-copy "^1.0.1"
-    terser "^3.7.5"
-    walk-sync "^0.3.2"
-    workerpool "^2.3.0"
+    terser "^3.17.0"
+    walk-sync "^1.1.3"
+    workerpool "^3.1.2"
 
 broccoli-writer@~0.1.1:
   version "0.1.1"
@@ -4455,12 +4455,12 @@ ember-cli-typescript@^2.0.0-beta.2:
     stagehand "^1.0.0"
     walk-sync "^1.0.0"
 
-ember-cli-uglify@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-uglify/-/ember-cli-uglify-2.1.0.tgz#4a0641fe4768d7ab7d4807aca9924cc77c544184"
-  integrity sha512-lDzdAUfhGx5AMBsgyR54ibENVp/LRQuHNWNaP2SDjkAXDyuYFgW0iXIAfGbxF6+nYaesJ9Tr9AKOfTPlwxZDSg==
+ember-cli-uglify@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-uglify/-/ember-cli-uglify-3.0.0.tgz#8819665b2cc5fe70e3ba9fe7a94645209bc42fd6"
+  integrity sha512-n3QxdBfAgBdb2Cnso82Kt/nxm3ppIjnYWM8uhOEhF1aYxNXfM7AJrc+yiqTCDUR61Db8aCpHfAMvChz3kyme7g==
   dependencies:
-    broccoli-uglify-sourcemap "^2.1.1"
+    broccoli-uglify-sourcemap "^3.1.0"
     lodash.defaultsdeep "^4.6.0"
 
 ember-cli-version-checker@^1.2.0:
@@ -7847,7 +7847,7 @@ marked@^0.6.0:
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.6.2.tgz#c574be8b545a8b48641456ca1dbe0e37b6dccc1a"
   integrity sha512-LqxwVH3P/rqKX4EKGz7+c2G9r98WeM/SW34ybhgNGhUQNKtf1GmmSkJ6cDGJ/t6tiyae49qRkpyTw2B9HOrgUA==
 
-matcher-collection@^1.0.0, matcher-collection@^1.0.5:
+matcher-collection@^1.0.0:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/matcher-collection/-/matcher-collection-1.0.5.tgz#2ee095438372cb8884f058234138c05c644ec339"
   integrity sha512-nUCmzKipcJEwYsBVAFh5P+d7JBuhJaW1xs85Hara9xuMLqtCVUrW6DSC0JVIkluxEH2W45nPBM/wjHtBXa/tYA==
@@ -7859,6 +7859,14 @@ matcher-collection@^1.1.1:
   resolved "https://registry.yarnpkg.com/matcher-collection/-/matcher-collection-1.1.2.tgz#1076f506f10ca85897b53d14ef54f90a5c426838"
   integrity sha512-YQ/teqaOIIfUHedRam08PB3NK7Mjct6BvzRnJmpGDm8uFXpNr1sbY4yuflI5JcEs6COpYA0FpRQhSDBf1tT95g==
   dependencies:
+    minimatch "^3.0.2"
+
+matcher-collection@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/matcher-collection/-/matcher-collection-2.0.0.tgz#470ae263c793e897b3f1e72c695016b7aea355c4"
+  integrity sha512-wSi4BgQGTFfBN5J+pIaS78rEKk4qIkjrw+NfJYdHsd2cRVIQsbDi3BZtNAXTFA2WHvlbS9kLGtTjv3cPJKuRSw==
+  dependencies:
+    "@types/minimatch" "^3.0.3"
     minimatch "^3.0.2"
 
 md5-hex@^1.3.0:
@@ -10291,7 +10299,7 @@ temp@^0.8.3:
     os-tmpdir "^1.0.0"
     rimraf "~2.2.6"
 
-terser@^3.7.5:
+terser@^3.17.0:
   version "3.17.0"
   resolved "https://registry.yarnpkg.com/terser/-/terser-3.17.0.tgz#f88ffbeda0deb5637f9d24b0da66f4e15ab10cb2"
   integrity sha512-/FQzzPJmCpjAH9Xvk2paiWrFq+5M6aVOf+2KRbwhByISDX/EujxsK+BAvrhb6H+2rtrLCHK9N01wO014vrIwVQ==
@@ -10928,7 +10936,7 @@ workerpool@^2.3.0:
   dependencies:
     object-assign "4.1.1"
 
-workerpool@^3.1.1:
+workerpool@^3.1.1, workerpool@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/workerpool/-/workerpool-3.1.2.tgz#b34e79243647decb174b7481ab5b351dc565c426"
   integrity sha512-WJFA0dGqIK7qj7xPTqciWBH5DlJQzoPjsANvc3Y4hNB0SScT+Emjvt0jPPkDBUjBNngX1q9hHgt1Gfwytu6pug==
