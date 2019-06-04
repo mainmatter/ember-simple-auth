@@ -62,22 +62,6 @@ export default Mixin.create({
   */
   session: service('session'),
 
-  _router: computed({
-    get() {
-      if (this.hasOwnProperty('_routerOverride')) {
-        return this._routerOverride;
-      } else {
-        let owner = getOwner(this);
-        return owner.lookup('service:router') || owner.lookup('router:main');
-      }
-    },
-
-    set(key, value) {
-      this._routerOverride = value;
-      return value;
-    }
-  }),
-
   _isFastBoot: isFastBootCPM(),
 
   /**
@@ -105,6 +89,12 @@ export default Mixin.create({
       return value;
     }
   }),
+
+  init() {
+    this._super(...arguments);
+    let owner = getOwner(this);
+    this._router = owner.lookup('service:router') || owner.lookup('router:main');
+  },
 
   /**
     Checks whether the session is authenticated and if it is not aborts the

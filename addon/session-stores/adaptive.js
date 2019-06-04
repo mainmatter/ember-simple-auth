@@ -105,48 +105,22 @@ export default Base.extend({
 
   _cookies: service('cookies'),
 
-  _fastboot: computed({
-    get() {
-      if (this.hasOwnProperty('_fastbootOverride')) {
-        return this._fastbootOverride;
-      } else {
-        let owner = getOwner(this);
-
-        return owner && owner.lookup('service:fastboot');
-      }
-    },
-
-    set(key, value) {
-      this._fastbootOverride = value;
-      return value;
-    }
-  }),
-
-  _isLocalStorageAvailable: computed({
-    get() {
-      if (this.hasOwnProperty('_isLocalStorageAvailableOverride')) {
-        return this._isLocalStorageAvailableOverride;
-      } else {
-        try {
-          localStorage.setItem(LOCAL_STORAGE_TEST_KEY, true);
-          localStorage.removeItem(LOCAL_STORAGE_TEST_KEY);
-          return true;
-        } catch (e) {
-          return false;
-        }
-      }
-    },
-
-    set(key, value) {
-      this._isLocalStorageAvailableOverride = value;
-      return value;
-    }
-  }),
-
   init() {
     this._super(...arguments);
+    let owner = getOwner(this);
+
+    this._fastboot = owner && owner.lookup('service:fastboot');
+
+    try {
+      localStorage.setItem(LOCAL_STORAGE_TEST_KEY, true);
+      localStorage.removeItem(LOCAL_STORAGE_TEST_KEY);
+      this._isLocalStorageAvailable = true;
+    } catch (e) {
+      this._isLocalStorageAvailable = false;
+    }
 
     let store;
+
     if (this.get('_isLocalStorageAvailable')) {
       const options = { key: this.get('localStorageKey') };
       options._isFastBoot = false;
