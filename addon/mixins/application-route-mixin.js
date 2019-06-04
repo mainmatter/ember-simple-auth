@@ -66,20 +66,7 @@ export default Mixin.create({
     @default 'index'
     @public
   */
-  routeAfterAuthentication: computed({
-    get() {
-      if (this.hasOwnProperty('routeAfterAuthenticationOverride')) {
-        return this.routeAfterAuthenticationOverride;
-      } else {
-        return Configuration.routeAfterAuthentication;
-      }
-    },
-
-    set(key, value) {
-      this.routeAfterAuthenticationOverride = value;
-      return value;
-    }
-  }),
+  routeAfterAuthentication: Configuration.routeAfterAuthentication,
 
   init() {
     this._super(...arguments);
