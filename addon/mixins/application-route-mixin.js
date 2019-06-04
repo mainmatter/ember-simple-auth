@@ -1,6 +1,5 @@
 import Mixin from '@ember/object/mixin';
 import { A } from '@ember/array';
-import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
 import { inject } from '@ember/service';
 import Ember from 'ember';
