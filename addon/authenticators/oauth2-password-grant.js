@@ -109,21 +109,17 @@ export default BaseAuthenticator.extend({
     multiple tabs, we need to prevent the tabs from sending refresh token
     request at the same exact moment.
 
-    __When overriding this property, make sure to mark the overridden property
-    as volatile so it will actually have a different value each time it is
-    accessed.__
-
     @property tokenRefreshOffset
     @type Integer
     @default a random number between 5 and 10
     @public
   */
-  tokenRefreshOffset: computed(function() {
+  get tokenRefreshOffset() {
     const min = 5;
     const max = 10;
 
     return (Math.floor(Math.random() * (max - min)) + min) * 1000;
-  }).volatile(),
+  },
 
   _refreshTokenTimeout: null,
 
