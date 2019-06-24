@@ -272,7 +272,7 @@ like this:
 // app/router.js
 Router.map(function() {
   this.route('login');
-}
+});
 ```
 
 The route to transition to if the session is not authenticated can also be
@@ -289,7 +289,7 @@ Router.map(function() {
   this.route('authenticated', { path: '' }, function() {
     // all routes that require the session to be authenticated
   });
-}
+});
 ```
 
 To prevent a route from being accessed when the session is authenticated (which
