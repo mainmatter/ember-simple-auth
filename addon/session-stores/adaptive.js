@@ -109,9 +109,6 @@ export default Base.extend({
     this._super(...arguments);
     let owner = getOwner(this);
 
-    console.log('this', this); // eslint-disable-line
-    console.log('owner', owner); // eslint-disable-line
-
     this._fastboot = owner && owner.lookup('service:fastboot');
 
     if (!this.hasOwnProperty('_isLocalStorageAvailable')) {
