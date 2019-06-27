@@ -5,7 +5,7 @@ branches:
 
 language: node_js
 node_js:
-  - "6"
+  - "8" # FIXME separate PR?
 
 addons:
   chrome: stable
