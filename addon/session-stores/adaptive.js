@@ -114,12 +114,14 @@ export default Base.extend({
 
     this._fastboot = owner && owner.lookup('service:fastboot');
 
-    try {
-      localStorage.setItem(LOCAL_STORAGE_TEST_KEY, true);
-      localStorage.removeItem(LOCAL_STORAGE_TEST_KEY);
-      this._isLocalStorageAvailable = true;
-    } catch (e) {
-      this._isLocalStorageAvailable = false;
+    if (!this.hasOwnProperty('_isLocalStorageAvailable')) {
+      try {
+        localStorage.setItem(LOCAL_STORAGE_TEST_KEY, true);
+        localStorage.removeItem(LOCAL_STORAGE_TEST_KEY);
+        this._isLocalStorageAvailable = true;
+      } catch (e) {
+        this._isLocalStorageAvailable = false;
+      }
     }
 
     let store;
