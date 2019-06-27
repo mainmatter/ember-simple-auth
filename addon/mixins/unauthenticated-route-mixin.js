@@ -1,7 +1,6 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
-import { computed } from '@ember/object';
 import Configuration from './../configuration';
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 import { getOwner } from '@ember/application';
@@ -62,20 +61,7 @@ export default Mixin.create({
     @default 'index'
     @public
   */
-  routeIfAlreadyAuthenticated: computed({
-    get() {
-      if (this.hasOwnProperty('routeIfAlreadyAuthenticatedOverride')) {
-        return this.routeIfAlreadyAuthenticatedOverride;
-      } else {
-        return Configuration.routeIfAlreadyAuthenticated;
-      }
-    },
-
-    set(key, value) {
-      this.routeIfAlreadyAuthenticatedOverride = value;
-      return value;
-    }
-  }),
+  routeIfAlreadyAuthenticated: Configuration.routeIfAlreadyAuthenticated,
 
   /**
     Checks whether the session is authenticated and if it is aborts the current

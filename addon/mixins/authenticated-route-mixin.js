@@ -1,7 +1,6 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
-import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
 import Configuration from './../configuration';
 import isFastBootCPM, { isFastBoot } from '../utils/is-fastboot';
@@ -75,20 +74,7 @@ export default Mixin.create({
     @default 'login'
     @public
   */
-  authenticationRoute: computed({
-    get() {
-      if (this.hasOwnProperty('authenticationRouteOverride')) {
-        return this.authenticationRouteOverride;
-      } else {
-        return Configuration.authenticationRoute;
-      }
-    },
-
-    set(key, value) {
-      this.authenticationRouteOverride = value;
-      return value;
-    }
-  }),
+  authenticationRoute: Configuration.authenticationRoute,
 
   init() {
     this._super(...arguments);
