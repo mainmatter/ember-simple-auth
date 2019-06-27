@@ -79,7 +79,7 @@ export default Mixin.create({
   init() {
     this._super(...arguments);
     let owner = getOwner(this);
-    this._router = owner.lookup('service:router') || owner.lookup('router:main');
+    this._router = this._router || owner.lookup('service:router') || owner.lookup('router:main');
   },
 
   /**
