@@ -4341,9 +4341,9 @@ ember-fastboot-addon-tests@^0.5.0:
     rsvp "^4.8.2"
 
 "ember-fetch@^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0":
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/ember-fetch/-/ember-fetch-6.5.1.tgz#6512153b9b85042744ed5a7934c8edb4a5b02dd0"
-  integrity sha512-ZA90lbTFZHhQCQKQNA6/3TdtiF1wBoT8nC7EI1pmkUZ49XDBP7i2eddUodR6qWRn8jK/D7IavQy3tx5fJBx7mw==
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/ember-fetch/-/ember-fetch-6.6.0.tgz#c7cba5101e508bc1f38f3863aeb563f5ad2555ef"
+  integrity sha512-yRdvFsEp6bQ1oCVmev737gvNkaRUZu6a+ZDssi27JGqbMbw75gf5ITsflqrHI58x6taIFnDAUewXw84Y7IK8qg==
   dependencies:
     abortcontroller-polyfill "^1.3.0"
     broccoli-concat "^3.2.2"
@@ -4355,7 +4355,7 @@ ember-fastboot-addon-tests@^0.5.0:
     calculate-cache-key-for-tree "^2.0.0"
     caniuse-api "^3.0.0"
     ember-cli-babel "^6.8.2"
-    node-fetch "^2.3.0"
+    node-fetch "^2.6.0"
     whatwg-fetch "^3.0.0"
 
 ember-get-config@^0.2.3:
@@ -7996,10 +7996,10 @@ node-environment-flags@1.0.5:
     object.getownpropertydescriptors "^2.0.3"
     semver "^5.7.0"
 
-node-fetch@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
-  integrity sha512-MOd8pV3fxENbryESLgVIeaGKrdl+uaYhCSSVkjeOb/31/njTpcis5aWfdqgNlHIrKOLRbMnfPINPOML2CIFeXA==
+node-fetch@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
+  integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
 
 node-int64@^0.4.0:
   version "0.4.0"
