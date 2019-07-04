@@ -114,6 +114,7 @@
     ]
   },
   "resolutions": {
+    "cssstyle": "~1.2.2",
     "jsdom": "^11.10.0"
   }
 }
