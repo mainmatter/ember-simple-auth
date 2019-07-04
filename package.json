@@ -65,7 +65,7 @@
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-uglify": "^2.0.0",
-    "ember-data": "^3.0.0",
+    "ember-data": "~3.7.0",
     "ember-debug-handlers-polyfill": "^1.1.0",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
@@ -87,7 +87,7 @@
     "handlebars": "~4.1.1",
     "loader.js": "^4.5.1",
     "marked": "^0.6.0",
-    "mermaid": "^8.0.0",
+    "mermaid": "^7.0.3",
     "mocha": "^6.0.2",
     "mocha-only-detector": "^1.0.0",
     "morgan": "^1.8.2",
@@ -114,6 +114,7 @@
     ]
   },
   "resolutions": {
+    "cssstyle": "~1.2.2",
     "jsdom": "^11.10.0"
   }
 }
