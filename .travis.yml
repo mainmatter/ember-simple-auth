@@ -15,6 +15,7 @@ env:
 jobs:
   fail_fast: true
   allow_failures:
+    - env: SCRIPT="test:one ember-beta"
     - env: SCRIPT="test:one ember-canary"
     - env: SCRIPT=test:fastboot
 
