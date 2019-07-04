@@ -30,12 +30,11 @@ jobs:
       env: SCRIPT=lint
 
     - name: 'Fixed Dependencies'
-      install:
-      - yarn install --non-interactive
       env: SCRIPT="test"
 
     - name: 'Floating Dependencies'
       env: SCRIPT="test"
+      install: yarn install --no-lockfile
 
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
@@ -71,7 +70,7 @@ before_install:
   - export PATH=$HOME/.yarn/bin:$PATH
 
 install:
-  - yarn install --no-lockfile --non-interactive
+  - yarn install
 
 script:
   - yarn run $SCRIPT
