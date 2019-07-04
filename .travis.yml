@@ -27,10 +27,10 @@ jobs:
     - name: 'Fixed Dependencies'
       install:
       - yarn install --non-interactive
-      env: SCRIPT="test:one ember-release"
+      env: SCRIPT="test"
 
     - name: 'Floating Dependencies'
-      env: SCRIPT="test:one ember-release"
+      env: SCRIPT="test"
 
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
