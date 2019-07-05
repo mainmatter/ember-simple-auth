@@ -1,3 +1,4 @@
+import { computed } from '@ember/object';
 import { tryInvoke } from '@ember/utils';
 import {
   describe,
@@ -380,6 +381,14 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
     it('returns a number between 5000 and 10000', function() {
       expect(authenticator.get('tokenRefreshOffset')).to.be.at.least(5000);
       expect(authenticator.get('tokenRefreshOffset')).to.be.below(10000);
+    });
+
+    it('can be overridden in a subclass', function() {
+      let authenticator = OAuth2PasswordGrant.extend({
+        tokenRefreshOffset: computed(() => 42).volatile(),
+      }).create();
+
+      expect(authenticator.get('tokenRefreshOffset')).to.equal(42);
     });
   });
 
