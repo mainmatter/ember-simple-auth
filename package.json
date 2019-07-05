@@ -89,7 +89,6 @@
     "marked": "^0.6.0",
     "mermaid": "^7.0.3",
     "mocha": "^6.0.2",
-    "mocha-only-detector": "^1.0.0",
     "morgan": "^1.8.2",
     "rimraf": "^2.6.1",
     "sinon-chai": "~3.3.0",
