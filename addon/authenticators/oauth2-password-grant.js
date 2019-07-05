@@ -118,12 +118,12 @@ export default BaseAuthenticator.extend({
     @default a random number between 5 and 10
     @public
   */
-  tokenRefreshOffset: computed(function() {
+  get tokenRefreshOffset() {
     const min = 5;
     const max = 10;
 
     return (Math.floor(Math.random() * (max - min)) + min) * 1000;
-  }).volatile(),
+  },
 
   _refreshTokenTimeout: null,
 
