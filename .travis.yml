@@ -55,9 +55,9 @@ jobs:
     - env: SCRIPT="test:one ember-canary"
 
     - stage: 'Deploy'
+      if: tag IS present
       script: skip     # usually you do not want to rerun any tests
       deploy:
-        # ...
         provider: npm
         email: info@simplabs.com
         api_key:
