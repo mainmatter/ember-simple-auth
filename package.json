@@ -86,7 +86,7 @@
     "glob": "^7.1.2",
     "handlebars": "~4.1.1",
     "loader.js": "^4.5.1",
-    "marked": "^0.6.0",
+    "marked": "^0.7.0",
     "mermaid": "^7.0.3",
     "mocha": "^6.0.2",
     "morgan": "^1.8.2",
