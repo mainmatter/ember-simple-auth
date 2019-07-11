@@ -141,22 +141,22 @@ export default BaseStore.extend({
     return owner && owner.lookup('service:fastboot');
   }),
 
-  _secureCookies: computed(function() {
+  _secureCookies() {
     if (this.get('_fastboot.isFastBoot')) {
       return this.get('_fastboot.request.protocol') === 'https';
     }
 
     return window.location.protocol === 'https:';
-  }).volatile(),
+  },
 
-  _isPageVisible: computed(function() {
+  _isPageVisible() {
     if (this.get('_fastboot.isFastBoot')) {
       return false;
     } else {
       const visibilityState = typeof document !== 'undefined' ? document.visibilityState || 'visible' : false;
       return visibilityState === 'visible';
     }
-  }).volatile(),
+  },
 
   init() {
     this._super(...arguments);
@@ -237,7 +237,7 @@ export default BaseStore.extend({
       domain: this.get('cookieDomain'),
       expires: isEmpty(expiration) ? null : new Date(expiration),
       path: this.get('cookiePath'),
-      secure: this.get('_secureCookies')
+      secure: this._secureCookies()
     };
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach((oldCookie) => {
@@ -281,7 +281,7 @@ export default BaseStore.extend({
       cancel(this._renewExpirationTimeout);
       this._renewExpirationTimeout = later(this, this._renewExpiration, 60000);
     }
-    if (this.get('_isPageVisible')) {
+    if (this._isPageVisible()) {
       return this._renew();
     } else {
       return RSVP.resolve();
