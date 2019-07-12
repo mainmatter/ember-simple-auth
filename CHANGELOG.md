@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.9.1 (2019-07-12)
+
+#### :house: Internal
+* [#1895](https://github.com/simplabs/ember-simple-auth/pull/1895) CI: Remove `v` prefix from version tag constraint ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 1
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
+
 ## v1.9.0 (2019-07-12)
 
 #### :rocket: Enhancement
