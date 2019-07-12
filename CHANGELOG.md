@@ -1,5 +1,46 @@
 # Changelog
 
+## Unreleased (2019-07-12)
+
+#### :rocket: Enhancement
+* [#1885](https://github.com/simplabs/ember-simple-auth/pull/1885) oauth2-password-grant: Convert `tokenRefreshOffset` to a native getter  ([@Turbo87](https://github.com/Turbo87))
+* [#1886](https://github.com/simplabs/ember-simple-auth/pull/1886) session-stores/cookie: Convert private volatile properties to methods ([@Turbo87](https://github.com/Turbo87))
+
+#### :bug: Bug Fix
+* [#1817](https://github.com/simplabs/ember-simple-auth/pull/1817) Fix "Use of `merge`" deprecation warning in oauth2-password-grant when... ([@arnebit](https://github.com/arnebit))
+
+#### :memo: Documentation
+* [#1887](https://github.com/simplabs/ember-simple-auth/pull/1887) Use async/await when loading current user ([@nbenz](https://github.com/nbenz))
+* [#1870](https://github.com/simplabs/ember-simple-auth/pull/1870) Fix wrong deprecation URL ([@bartocc](https://github.com/bartocc))
+* [#1861](https://github.com/simplabs/ember-simple-auth/pull/1861) Update broken syntax in readme's routes examples ([@kamilogorek](https://github.com/kamilogorek))
+* [#1698](https://github.com/simplabs/ember-simple-auth/pull/1698) Add documentation how to use it with ember-fetch ([@marcoow](https://github.com/marcoow))
+
+#### :house: Internal
+* [#1893](https://github.com/simplabs/ember-simple-auth/pull/1893) yarn: Deduplicate transitive dependencies ([@Turbo87](https://github.com/Turbo87))
+* [#1884](https://github.com/simplabs/ember-simple-auth/pull/1884) Remove unused `mocha-only-detector` dev dependency ([@Turbo87](https://github.com/Turbo87))
+* [#1883](https://github.com/simplabs/ember-simple-auth/pull/1883) Update `ember-data` to v3.10.0 ([@Turbo87](https://github.com/Turbo87))
+* [#1879](https://github.com/simplabs/ember-simple-auth/pull/1879) CI: Use `--no-lockfile` only in "floating dependencies" job ([@Turbo87](https://github.com/Turbo87))
+* [#1878](https://github.com/simplabs/ember-simple-auth/pull/1878) CI: Run deployment job only when a tag is present ([@Turbo87](https://github.com/Turbo87))
+* [#1877](https://github.com/simplabs/ember-simple-auth/pull/1877) Replace `ember-cli-eslint` with regular ESLint ([@Turbo87](https://github.com/Turbo87))
+* [#1876](https://github.com/simplabs/ember-simple-auth/pull/1876) CI: Only run for `master` branch, version tags and PRs ([@Turbo87](https://github.com/Turbo87))
+* [#1875](https://github.com/simplabs/ember-simple-auth/pull/1875) Fix TravisCI builds ([@Turbo87](https://github.com/Turbo87))
+* [#1850](https://github.com/simplabs/ember-simple-auth/pull/1850) Fix CI ([@marcoow](https://github.com/marcoow))
+* [#1787](https://github.com/simplabs/ember-simple-auth/pull/1787) lock jsdom to ^11.10.0 ([@marcoow](https://github.com/marcoow))
+* [#1751](https://github.com/simplabs/ember-simple-auth/pull/1751) Revert "build(travis): fix failing ember-release build step" ([@marcoow](https://github.com/marcoow))
+* [#1752](https://github.com/simplabs/ember-simple-auth/pull/1752) Use Sinon sandbox ([@marcoow](https://github.com/marcoow))
+
+#### Committers: 9
+- Andy Brown ([@geekygrappler](https://github.com/geekygrappler))
+- Erik Kristensen ([@ekristen](https://github.com/ekristen))
+- Jessica Jordan ([@jessica-jordan](https://github.com/jessica-jordan))
+- Julien Palmas ([@bartocc](https://github.com/bartocc))
+- Kamil Ogórek ([@kamilogorek](https://github.com/kamilogorek))
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- Nate Benz ([@nbenz](https://github.com/nbenz))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+- [@arnebit](https://github.com/arnebit)
+
+
 ## v1.8.2
 
 * Support for [ember-cookies](https://github.com/simplabs/ember-cookies) 0.4.0
