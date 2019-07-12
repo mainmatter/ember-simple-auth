@@ -1,7 +1,7 @@
 branches:
   only:
     - master
-    - /^v\d+\.\d+\.\d+/  # npm version tags
+    - /^\d+\.\d+\.\d+/  # npm version tags
 
 language: node_js
 node_js:
