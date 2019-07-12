@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased (2019-07-12)
+## v1.9.0 (2019-07-12)
 
 #### :rocket: Enhancement
 * [#1885](https://github.com/simplabs/ember-simple-auth/pull/1885) oauth2-password-grant: Convert `tokenRefreshOffset` to a native getter  ([@Turbo87](https://github.com/Turbo87))
@@ -10,6 +10,7 @@
 * [#1817](https://github.com/simplabs/ember-simple-auth/pull/1817) Fix "Use of `merge`" deprecation warning in oauth2-password-grant when... ([@arnebit](https://github.com/arnebit))
 
 #### :memo: Documentation
+* [#1894](https://github.com/simplabs/ember-simple-auth/pull/1894) Update Changelog and introduce lerna-changelog ([@Turbo87](https://github.com/Turbo87))
 * [#1887](https://github.com/simplabs/ember-simple-auth/pull/1887) Use async/await when loading current user ([@nbenz](https://github.com/nbenz))
 * [#1870](https://github.com/simplabs/ember-simple-auth/pull/1870) Fix wrong deprecation URL ([@bartocc](https://github.com/bartocc))
 * [#1861](https://github.com/simplabs/ember-simple-auth/pull/1861) Update broken syntax in readme's routes examples ([@kamilogorek](https://github.com/kamilogorek))
