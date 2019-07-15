@@ -1,20 +1,42 @@
-/bower_components
+# compiled output
+/dist/
+/tmp/
+*.tgz
+
+# dependencies
+/bower_components/
+
+# misc
+/.bowerrc
+/.editorconfig
+/.ember-cli
+/.env*
+/.eslintignore
+/.eslintrc.js
+/.gitignore
+/.template-lintrc.js
+/.travis.yml
+/.watchmanconfig
+/bower.json
 /config/ember-try.js
-/dist
-/* /tests */
-/node-tests
-/tmp
-/fastboot-dist
-/fastboot-tests
-/guides
-**/.gitkeep
-.bowerrc
-.editorconfig
-.ember-cli
-.gitignore
-.eslintrc.js
-.watchmanconfig
-.travis.yml
-bower.json
-/* ember-cli-build.js */
-testem.js
+/CONTRIBUTING.md
+/docs/
+/ember-cli-build.js
+/fastboot-server.js
+/fastboot-tests/
+/guides/
+/node-tests/
+/server/
+/testem.js
+/tests/
+/yarn.lock
+/yuidoc.json
+.gitkeep
+
+# ember-try
+/.node_modules.ember-try/
+/bower.json.ember-try
+/package.json.ember-try
+
+# IntelliJ
+.idea
