@@ -61,7 +61,7 @@ describe('AuthenticatedRouteMixin', () => {
 
       route = createWithContainer(Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {}), {
         session,
-        _router: router
+        _authRouter: router
       }, containerMock);
 
       sinon.spy(transition, 'send');
@@ -82,7 +82,7 @@ describe('AuthenticatedRouteMixin', () => {
       it('does not transition to the authentication route', function() {
         route.beforeModel(transition);
 
-        expect(route._router.transitionTo).to.not.have.been.calledWith(Configuration.authenticationRoute);
+        expect(route._authRouter.transitionTo).to.not.have.been.calledWith(Configuration.authenticationRoute);
       });
     });
 
@@ -96,7 +96,7 @@ describe('AuthenticatedRouteMixin', () => {
         route.set('authenticationRoute', authenticationRoute);
 
         route.beforeModel(transition);
-        expect(route._router.transitionTo).to.have.been.calledWith(authenticationRoute);
+        expect(route._authRouter.transitionTo).to.have.been.calledWith(authenticationRoute);
       });
 
       it('sets the redirectTarget cookie in fastboot', function() {
