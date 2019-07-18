@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.9.2 (2019-07-18)
+
+#### :rocket: Enhancement
+* [#1900](https://github.com/simplabs/ember-simple-auth/pull/1900) Rename `_router` property to `_authRouter` to avoid conflicts ([@backspace](https://github.com/backspace))
+
+#### :house: Internal
+* [#1902](https://github.com/simplabs/ember-simple-auth/pull/1902) CI: Update npm API key ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 2
+- Buck Doyle ([@backspace](https://github.com/backspace))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
+
 ## v1.9.1 (2019-07-12)
 
 #### :house: Internal
