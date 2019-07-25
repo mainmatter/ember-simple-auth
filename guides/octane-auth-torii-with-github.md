@@ -212,10 +212,12 @@ Now let’s create our skeletal templates by editing the three files in
 ```
 
 If you are familiar with Ember but unfamiliar with prefixing properties with
-`this.` in Handlebars templates, this is a new Ember convention reflected in
-Octane, where any property defined on the controller (or in a component) is
-referred to with `this.` in the template. `this.config` and `this.session` are
-properties that will be defined on the route controllers in later steps.
+`this` in Handlebars templates, this is a new Ember convention ([RFC
+308](https://emberjs.github.io/rfcs/0308-deprecate-property-lookup-fallback.html))
+reflected in Octane, where any property defined in a component is referred to
+with `this` in its template. Here, we’re following the same convention, but
+for controllers. Thus, `this.config` and `this.session` are properties that
+will be defined on the route controllers in later steps.
 
 When you spin up the server again with `ember serve`, you should see, at
 `http://localhost:4200`, something like this:
@@ -311,7 +313,8 @@ controller. Then we’ll also add `login()` and `logout()` actions:
 import Controller from '@ember/controller';
 import { inject as service } from "@ember/service";
 import { action } from "@ember/object";
-import config from "../config/environment";
+// Replace “my-ember-auth-octane-app” below with your app’s name
+import config from "my-ember-auth-octane-app/config/environment";
 
 export default class ApplicationController extends Controller {
   @service session;
