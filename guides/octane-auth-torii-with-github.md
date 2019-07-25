@@ -433,11 +433,11 @@ is performing the token exchange to enable getting user data from GitHub.
 
 ## Deploy a Gatekeeper Server for Token Exchange and Connect It to Ember
 
-Here the app has to move out of Emberdom for a bit, because GitHub will not
-permit token exchange to happen on a client-side application. Luckily,
-spinning up a separate gatekeeper server is somewhat straightforward, and
-there even is a Node application, [Gatekeeper](prose/gatekeeper), designed to
-make the process even easier.
+This aspect of the guide takes place outside of the context of your Ember app,
+because GitHub will not permit token exchange to happen on a client-side
+application. Luckily, spinning up a separate gatekeeper server is somewhat
+straightforward, and there even is a Node application,
+[Gatekeeper](prose/gatekeeper), designed to make the process even easier.
 
 In short, the server must receive the authorization code your Ember app receives
 from GitHub and forward it back to GitHub in a `POST` request, wait for a
