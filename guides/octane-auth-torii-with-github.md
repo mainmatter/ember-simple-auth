@@ -142,7 +142,7 @@ ember install torii
 ember install ember-cli-dotenv
 ember install ember-fetch
 ember install ember-data-github
-echo ".env" >> .gitignore`
+echo ".env" >> .gitignore
 ```
 
 Here, `ember-simple-auth` provides the underlying authentication layer, which
