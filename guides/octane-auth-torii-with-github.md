@@ -39,8 +39,9 @@ You can find a sequence diagram for the flow
 
 ## Set up and Configuration
 
-The following guide will teach you about the basics of OAuth, Github and Ember, following these five major steps to implement Github Authorisation in your Ember app:
-experts, the short version is:
+The following guide will teach you about the basics of OAuth, Github and
+Ember, following these five major steps to implement Github Authorization in
+your Ember app:
 
 1. Register your future app with GitHub and get its keys.
 2. Create a new Ember app
