@@ -35,7 +35,7 @@ As with the original `ember-simple-auth` guide, the approach here mirrors any
 OAuth2 explicit grant flow used also by Facebook, Google, etc. 
 
 You can find a sequence diagram for the flow
-[here](http://github.com/simplabs/ember-simple-auth/guides/assets/esa-initial-flow.txt.pn://github.com/simplabs/ember-simple-auth/blob/master/guides/assets/esa-initial-flow.txt.png).
+[here](https://github.com/simplabs/ember-simple-auth/blob/master/guides/assets/esa-initial-flow.txt.png).
 
 ## Set up and Configuration
 
