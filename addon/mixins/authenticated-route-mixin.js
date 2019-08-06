@@ -80,9 +80,7 @@ export default Mixin.create({
     @default 'login'
     @public
   */
-  authenticationRoute: computed(function() {
-    return Configuration.authenticationRoute;
-  }),
+  authenticationRoute: Configuration.authenticationRoute,
 
   /**
     Checks whether the session is authenticated and if it is not aborts the
