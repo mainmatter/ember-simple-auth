@@ -151,8 +151,9 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
   },
 
   async sessionAuthenticated() {
+    let _super = this._super;
     await this._loadCurrentUser();
-    this._super(...arguments);
+    _super.call(this, ...arguments);
   },
 
   _loadCurrentUser() {
