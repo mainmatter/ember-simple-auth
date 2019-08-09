@@ -725,6 +725,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@ember-data/rfc395-data@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@ember-data/rfc395-data/-/rfc395-data-0.0.4.tgz#ecb86efdf5d7733a76ff14ea651a1b0ed1f8a843"
+  integrity sha512-tGRdvgC9/QMQSuSuJV45xoyhI0Pzjm7A9o/MVVA3HakXIImJbbzx/k/6dO9CUEQXIyS2y0fW6C1XaYOG7rY0FQ==
+
 "@ember-decorators/argument@^0.8.10":
   version "0.8.12"
   resolved "https://registry.yarnpkg.com/@ember-decorators/argument/-/argument-0.8.12.tgz#07dfc40ba84e97369cde207c3c53a069dcb2f86e"
@@ -4786,10 +4791,11 @@ eslint-config-simplabs@^0.4.0:
     supports-color "^3.2.3"
 
 eslint-plugin-ember@^6.3.0:
-  version "6.7.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-ember/-/eslint-plugin-ember-6.7.1.tgz#be11e3b9b8f38227b81d90b11792a395322a9b4f"
-  integrity sha512-5qzd/5zjXRVlyWpDcRRaIdl6yAHLrUCUyNE71pnk3Egs/erqQazyQHjKKToIWjTA1a7ba/WEC72tJ8HbLsevhA==
+  version "6.8.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-ember/-/eslint-plugin-ember-6.8.2.tgz#3b512426c3d6cb29913471dedbee2c21f16fc26e"
+  integrity sha512-NXtanzQaX7p88rNK55ZlTU25MSiu8DDrdT83plgx1zQ8C8oVcX3qnnpD4SfaVfuGE1ZKmEGkelPZF8y6kU1qoA==
   dependencies:
+    "@ember-data/rfc395-data" "^0.0.4"
     ember-rfc176-data "^0.3.9"
     snake-case "^2.1.0"
 
