@@ -4462,9 +4462,9 @@ ember-raf-scheduler@^0.1.0:
     ember-cli-babel "^6.6.0"
 
 ember-resolver@^5.0.1:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/ember-resolver/-/ember-resolver-5.2.0.tgz#6a9fd7e9483be694adce77abaf9585529d060bbb"
-  integrity sha512-vL7YnifeHA2g6OM3KF7PSCIcUBvPISfcxByqGmWgjynbZpd3KmBUpHVxAlqXUYqhO4viRcM0sohAgZ41bCv7QQ==
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/ember-resolver/-/ember-resolver-5.2.1.tgz#538d7a29351316d9550864ff06fcbe55bdd92774"
+  integrity sha512-Ciz5qsrtILr7AGXO9mTSFs3/XKXpMYJqISNCfvIY0C8PlMgq+9RYbmUoBpAlvBUc/mUi3ORZKJ4csd9qchvxZw==
   dependencies:
     "@glimmer/resolver" "^0.4.1"
     babel-plugin-debug-macros "^0.1.10"
