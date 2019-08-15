@@ -4474,10 +4474,10 @@ ember-resolver@^5.0.1:
     ember-cli-version-checker "^3.1.3"
     resolve "^1.12.0"
 
-ember-rfc176-data@^0.3.1, ember-rfc176-data@^0.3.9:
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/ember-rfc176-data/-/ember-rfc176-data-0.3.9.tgz#44b6e051ead6c044ea87bd551f402e2cf89a7e3d"
-  integrity sha512-EiTo5YQS0Duy0xp9gCP8ekzv9vxirNi7MnIB4zWs+thtWp/mEKgf5mkiiLU2+oo8C5DuavVHhoPQDmyxh8Io1Q==
+ember-rfc176-data@^0.3.1, ember-rfc176-data@^0.3.10, ember-rfc176-data@^0.3.9:
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/ember-rfc176-data/-/ember-rfc176-data-0.3.10.tgz#84e5133f562c2585ca2c7646a88ef665263db882"
+  integrity sha512-f5a+k+0TmuPaeB8LcmR3Ann3yggBoOp2PLW/rQbUlJoVWCVTNg1w5RnVKYcU02X3+8NagFq8tPJq1yL8QJR5KQ==
 
 ember-router-generator@^1.2.2, ember-router-generator@^1.2.3:
   version "1.2.3"
@@ -4791,12 +4791,12 @@ eslint-config-simplabs@^0.4.0:
     supports-color "^3.2.3"
 
 eslint-plugin-ember@^6.3.0:
-  version "6.8.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-ember/-/eslint-plugin-ember-6.8.2.tgz#3b512426c3d6cb29913471dedbee2c21f16fc26e"
-  integrity sha512-NXtanzQaX7p88rNK55ZlTU25MSiu8DDrdT83plgx1zQ8C8oVcX3qnnpD4SfaVfuGE1ZKmEGkelPZF8y6kU1qoA==
+  version "6.9.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-ember/-/eslint-plugin-ember-6.9.1.tgz#fdf6284cda35d757cec3801366030f6a5e2b6f6e"
+  integrity sha512-bzaH+3+R62ClPNNjQJBl06yXpMil5GZEiymf6XJ5duD3RFDZA8I0q8nmPzupR3/dzWDMiQkehL4YlI0hbX9Fuw==
   dependencies:
     "@ember-data/rfc395-data" "^0.0.4"
-    ember-rfc176-data "^0.3.9"
+    ember-rfc176-data "^0.3.10"
     snake-case "^2.1.0"
 
 eslint-plugin-es@^1.3.1:
