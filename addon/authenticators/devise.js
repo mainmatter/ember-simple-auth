@@ -76,25 +76,6 @@ export default BaseAuthenticator.extend({
     This is useful for cases when the backend provides additional context not
     available in the response body.
 
-    @property rejectWithXhr
-    @type Boolean
-    @default false
-    @deprecated DeviseAuthenticator/rejectWithResponse:property
-    @public
-  */
-  rejectWithXhr: computed.deprecatingAlias('rejectWithResponse', {
-    id: `ember-simple-auth.authenticator.reject-with-xhr`,
-    until: '3.0.0'
-  }),
-
-  /**
-    When authentication fails, the rejection callback is provided with the whole
-    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
-    instead of its responseJSON or responseText.
-
-    This is useful for cases when the backend provides additional context not
-    available in the response body.
-
     @property rejectWithResponse
     @type Boolean
     @default false

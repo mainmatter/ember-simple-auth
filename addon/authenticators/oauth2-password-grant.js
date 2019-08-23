@@ -1,7 +1,6 @@
 import RSVP from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
-import { computed } from '@ember/object';
 import { A, makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
 import {
@@ -134,25 +133,6 @@ export default BaseAuthenticator.extend({
       const base64ClientId = window.base64.encode(clientId.concat(':'));
       return { Authorization: `Basic ${base64ClientId}` };
     }
-  }),
-
-  /**
-    When authentication fails, the rejection callback is provided with the whole
-    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
-    instead of its responseJSON or responseText.
-
-    This is useful for cases when the backend provides additional context not
-    available in the response body.
-
-    @property rejectWithXhr
-    @type Boolean
-    @default false
-    @deprecated OAuth2PasswordGrantAuthenticator/rejectWithResponse:property
-    @public
-  */
-  rejectWithXhr: computed.deprecatingAlias('rejectWithResponse', {
-    id: `ember-simple-auth.authenticator.reject-with-xhr`,
-    until: '3.0.0'
   }),
 
   /**
