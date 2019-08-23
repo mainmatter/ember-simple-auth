@@ -3,7 +3,6 @@ import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
 import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
-import Configuration from './../configuration';
 import isFastBootCPM, { isFastBoot } from '../utils/is-fastboot';
 
 /**
@@ -36,7 +35,7 @@ function runIfUnauthenticated(owner, transition, callback) {
   __This mixin is used to make routes accessible only if the session is
   authenticated.__ It defines a `beforeModel` method that aborts the current
   transition and instead transitions to the
-  {{#crossLink "Configuration/authenticationRoute:property"}}{{/crossLink}} if
+  {{#crossLink "AuthenticatedRouteMixin/authenticationRoute:property"}}{{/crossLink}} if
   the session is not authenticated.
 
   ```js
@@ -80,12 +79,12 @@ export default Mixin.create({
     @default 'login'
     @public
   */
-  authenticationRoute: Configuration.authenticationRoute,
+  authenticationRoute: 'login',
 
   /**
     Checks whether the session is authenticated and if it is not aborts the
     current transition and instead transitions to the
-    {{#crossLink "Configuration/authenticationRoute:property"}}{{/crossLink}}.
+    {{#crossLink "AuthenticatedRouteMixin/authenticationRoute:property"}}{{/crossLink}}.
     If the current transition is aborted, this method will save it in the
     session service's
     {{#crossLink "SessionService/attemptedTransition:property"}}{{/crossLink}}
@@ -124,7 +123,7 @@ export default Mixin.create({
   */
   triggerAuthentication() {
     let authenticationRoute = this.get('authenticationRoute');
-    assert('The route configured as Configuration.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
+    assert('The route configured as AuthenticatedRouteMixin.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
 
     this.get('_authRouter').transitionTo(authenticationRoute);
   },

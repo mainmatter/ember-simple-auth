@@ -1,7 +1,6 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
-import Configuration from './../configuration';
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 import { getOwner } from '@ember/application';
 
@@ -23,7 +22,7 @@ function runIfAuthenticated(owner, callback) {
   not authenticated__ (e.g., login and registration routes). It defines a
   `beforeModel` method that aborts the current transition and instead
   transitions to the
-  {{#crossLink "Configuration/routeIfAlreadyAuthenticated:property"}}{{/crossLink}}
+  {{#crossLink "UnauthenticatedRouteMixin/routeIfAlreadyAuthenticated:property"}}{{/crossLink}}
   if the session is authenticated.
 
   ```js
@@ -61,12 +60,12 @@ export default Mixin.create({
     @default 'index'
     @public
   */
-  routeIfAlreadyAuthenticated: Configuration.routeIfAlreadyAuthenticated,
+  routeIfAlreadyAuthenticated: 'index',
 
   /**
     Checks whether the session is authenticated and if it is aborts the current
     transition and instead transitions to the
-    {{#crossLink "Configuration/routeIfAlreadyAuthenticated:property"}}{{/crossLink}}.
+    {{#crossLink "UnauthenticatedRouteMixin/routeIfAlreadyAuthenticated:property"}}{{/crossLink}}.
 
     __If `beforeModel` is overridden in a route that uses this mixin, the route's
    implementation must call `this._super(...arguments)`__ so that the mixin's
@@ -78,7 +77,7 @@ export default Mixin.create({
   beforeModel() {
     const didRedirect = runIfAuthenticated(getOwner(this), () => {
       let routeIfAlreadyAuthenticated = this.get('routeIfAlreadyAuthenticated');
-      assert('The route configured as Configuration.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
+      assert('The route configured as UnauthenticatedRouteMixin.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
 
       this.transitionTo(routeIfAlreadyAuthenticated);
     });

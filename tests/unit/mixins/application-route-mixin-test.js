@@ -124,6 +124,12 @@ describe('ApplicationRouteMixin', () => {
     });
 
     describe('when no attempted transition is stored in the session', function() {
+      it('transitions to "index" by default', function() {
+        route.sessionAuthenticated();
+
+        expect(route.transitionTo).to.have.been.calledWith('index');
+      });
+
       it('transitions to "routeAfterAuthentication"', function() {
         let routeAfterAuthentication = 'path/to/route';
         route.set('routeAfterAuthentication', routeAfterAuthentication);

@@ -6,7 +6,6 @@ import { expect } from 'chai';
 import sinonjs from 'sinon';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
-import Configuration from 'ember-simple-auth/configuration';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
 import createWithContainer from '../../helpers/create-with-container';
@@ -82,7 +81,7 @@ describe('AuthenticatedRouteMixin', () => {
       it('does not transition to the authentication route', function() {
         route.beforeModel(transition);
 
-        expect(route._authRouter.transitionTo).to.not.have.been.calledWith(Configuration.authenticationRoute);
+        expect(route._authRouter.transitionTo).to.not.have.been.calledWith('login');
       });
     });
 
@@ -91,7 +90,12 @@ describe('AuthenticatedRouteMixin', () => {
         expect(route.beforeModel(transition)).to.be.undefined;
       });
 
-      it('transitions to the authentication route', function() {
+      it('transitions to "login" as the default authentication route', function() {
+        route.beforeModel(transition);
+        expect(route._authRouter.transitionTo).to.have.been.calledWith('login');
+      });
+
+      it('transitions to the set authentication route', function() {
         let authenticationRoute = 'path/to/route';
         route.set('authenticationRoute', authenticationRoute);
 
