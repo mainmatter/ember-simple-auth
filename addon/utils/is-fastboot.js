@@ -5,13 +5,22 @@ import ComputedProperty from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
 import ApplicationInstance from '@ember/application/instance';
+import { isPresent } from '@ember/utils';
 
 /**
  * @return {ComputedProperty<boolean>}
  */
 export default function isFastBootCPM() {
-  return computed(function() {
-    return isFastBoot(getOwner(this));
+  return computed({
+    get() {
+      if (isPresent(this._isFastBootCPM)) {
+        return this._isFastBootCPM;
+      }
+      return isFastBoot(getOwner(this));
+    },
+    set(key, value) {
+      return this._isFastBootCPM = value;
+    }
   });
 }
 
