@@ -228,39 +228,6 @@ describe('InternalSession', () => {
         });
       });
     });
-
-    describe('with older synchronous stores (< v1.1.0)', function() {
-      describe('when restoring the session', function() {
-        beforeEach(function() {
-          sinon.stub(store, 'persist').returns();
-          sinon.stub(store, 'clear').returns();
-        });
-
-        describe('when the store resolves restoration', function() {
-          beforeEach(function() {
-            sinon.stub(store, 'restore').returns({ authenticated: { authenticator: 'authenticator' } });
-          });
-
-          it('is authenticated', function() {
-            return session.restore().then(() => {
-              expect(session.get('isAuthenticated')).to.be.true;
-            });
-          });
-        });
-
-        describe('when the store rejects restoration', function() {
-          beforeEach(function() {
-            sinon.stub(store, 'restore').returns({});
-          });
-
-          it('is not authenticated', function() {
-            return session.restore().then(() => {
-              expect(session.get('isAuthenticated')).to.be.false;
-            });
-          });
-        });
-      });
-    });
   });
 
   describe('authentication', function() {
