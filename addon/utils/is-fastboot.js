@@ -19,7 +19,8 @@ export default function isFastBootCPM() {
       return isFastBoot(getOwner(this));
     },
     set(key, value) {
-      return this._isFastBootCPM = value;
+      this.set('_isFastBootCPM',value);
+      return this._isFastBootCPM;
     }
   });
 }
