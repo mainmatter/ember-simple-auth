@@ -9,7 +9,7 @@ export default function(options) {
 
   // eslint-disable-next-line mocha/no-top-level-hooks
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
     store = options.store();
   });
 

@@ -13,7 +13,7 @@ describe('SessionService', () => {
   let session;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
     session = ObjectProxy.extend(Evented, {
       content: {}
     }).create();

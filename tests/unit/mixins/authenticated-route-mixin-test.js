@@ -21,7 +21,7 @@ describe('AuthenticatedRouteMixin', () => {
   let containerMock;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
   });
 
   afterEach(function() {

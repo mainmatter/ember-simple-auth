@@ -13,7 +13,7 @@ describe('setupSessionRestoration', () => {
   let ApplicationRoute;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
     registry = {
       resolve() {}
     };

@@ -13,7 +13,7 @@ describe('DataAdapterMixin', () => {
   let Adapter;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
     hash = {};
     sessionService = EmberObject.create({
       authorize() {},

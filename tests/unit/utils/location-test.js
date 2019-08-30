@@ -13,7 +13,7 @@ const foo = {
 describe('Unit | Utility | location', function() {
   let sinon;
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
   });
   afterEach(function() {
     sinon.restore();

@@ -17,7 +17,7 @@ describe('ApplicationRouteMixin', () => {
   let containerMock;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
     session = InternalSession.create({ store: EphemeralStore.create() });
     cookiesMock = {
       read: sinon.stub(),

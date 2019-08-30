@@ -15,7 +15,7 @@ describe('OAuth2ImplicitGrantCallbackRouteMixin', function() {
   let session;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
   });
 
   afterEach(function() {

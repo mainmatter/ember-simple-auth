@@ -17,7 +17,7 @@ describe('InternalSession', () => {
   let container;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
     container = { lookup() {} };
     store = EphemeralStore.create();
     authenticator = Authenticator.create();
