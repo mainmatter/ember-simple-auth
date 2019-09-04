@@ -85,7 +85,7 @@
     "fastboot-app-server": "^1.0.2",
     "git-repo-version": "^1.0.0",
     "glob": "^7.1.2",
-    "handlebars": "~4.1.1",
+    "handlebars": "~4.2.0",
     "lerna-changelog": "^0.8.2",
     "loader.js": "^4.5.1",
     "marked": "^0.7.0",
