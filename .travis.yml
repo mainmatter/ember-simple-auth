@@ -51,6 +51,7 @@ jobs:
     - env: SCRIPT="test:one ember-lts-3.4"
     - env: SCRIPT="test:one ember-lts-3.8"
     - env: SCRIPT="test:one ember-lts-3.12"
+    - env: SCRIPT="test:one ember-release"
     - env: SCRIPT="test:one ember-beta"
     - env: SCRIPT=test:node
     - env: SCRIPT=test:fastboot
