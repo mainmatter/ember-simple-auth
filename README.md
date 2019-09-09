@@ -210,11 +210,17 @@ export default Ember.Controller.extend({
   session: Ember.inject.service('session'),
 
   actions: {
-    authenticate() {
+    async authenticate() {
       let { identification, password } = this.getProperties('identification', 'password');
-      this.get('session').authenticate('authenticator:oauth2', identification, password).catch((reason) => {
-        this.set('errorMessage', reason.error || reason);
-      });
+      try {
+        await this.session.authenticate('authenticator:oauth2', identification, password);
+      } catch(error) {
+        this.set('errorMessage', error.error || error);
+      }
+
+      if (this.session.isAuthenticated) {
+        // What to do with all this success?
+      }
     }
   }
 });
