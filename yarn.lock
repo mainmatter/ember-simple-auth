@@ -3904,9 +3904,9 @@ ember-cli-dependency-checker@^3.0.0:
     semver "^5.3.0"
 
 ember-cli-fastboot@^2.0.0:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/ember-cli-fastboot/-/ember-cli-fastboot-2.1.3.tgz#4cdef4e1110d15d925efe1408c0386a2a75688d0"
-  integrity sha512-1HIJz/VyuOvy4Z1k9eSYQ4w/JQev50BS3A/k79cd5V9z3jQNalPVUVJKSBVMrBOIa++aPePl+8aN4suryqAuXQ==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-fastboot/-/ember-cli-fastboot-2.2.0.tgz#202d4c3ebcf6e392d5348e17208dec9f04bab98f"
+  integrity sha512-9nbHJvQAwxN2i9FgUzsjhKclzSxJw6rmli8qwiblUkKVhs7PqKsjMszxA/Ssk3UjqCNkecEsNzaJoycPgrIChQ==
   dependencies:
     broccoli-concat "^3.7.1"
     broccoli-funnel "^2.0.1"
