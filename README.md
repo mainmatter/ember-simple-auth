@@ -4,7 +4,7 @@ __[Ember Simple Auth API docs](http://ember-simple-auth.com/api/)__
 
 __[![Discord](https://img.shields.io/discord/480462759797063690.svg?logo=discord)](https://discord.gg/zT3asNS)__
 
-Ember Simple Auth __supports all Ember.js versions starting with 1.12.__
+Ember Simple Auth __supports all Ember.js versions starting with 3.4.__
 
 #  Ember Simple Auth
 
@@ -35,9 +35,6 @@ authorization mechanisms__.
 * [Authenticators](#authenticators)
   * [Customizing an Authenticator](#customizing-an-authenticator)
   * [Implementing a custom Authenticator](#implementing-a-custom-authenticator)
-* [Authorizers](#authorizers)
-  * [Customizing an Authorizer](#customizing-an-authorizer)
-  * [Implementing a custom Authorizer](#implementing-a-custom-authorizer)
 * [Session Stores](#session-stores)
   * [Store Types](#store-types)
   * [Implementing a Custom Store](#implementing-a-custom-store)
@@ -59,13 +56,12 @@ authorization mechanisms__.
   multiple tabs/windows of the application
 * it __authenticates the session__ against the application's own server,
   external providers like Facebook etc.
-* it __authorizes requests__ to backend servers
 * it is __easily customizable and extensible__
 
 ## How does it work?
 
-Ember Simple Auth consists of __4 main building blocks__ - the session, a
-session store, authenticators and (optionally) authorizers.
+Ember Simple Auth consists of __3 main building blocks__ - the session, a
+session store and authenticators.
 
 The __session service is the main interface to the library__. It provides
 __methods for authenticating and invalidating the session__ as well as for
@@ -80,10 +76,6 @@ __Authenticators authenticate the session__. An application can leverage
 multiple authenticators to support multiple ways of authentication such as
 sending credentials to the application's own backend server, Facebook, github
 etc.
-
-__Authorizers__ use the data retrieved by an authenticator and stored in the
-session to __generate authorization data that can be injected into outgoing
-requests such as Ember Data requests__.
 
 ## Example App
 
@@ -297,45 +289,82 @@ makes sense for login and registration routes for example), mix the
 [`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/UnauthenticatedRouteMixin.html)
 into the respective route.
 
-In order to add authorization information to outgoing API requests the
-application can define an authorizer. To do so, add a new file to
-`app/authorizers`, e.g.:
+To include authorization info in all Ember Data requests if the session is
+authenticated, the application adapter can include the session service and
+define the `headers` computed property:
 
 ```js
-// app/authorizers/oauth2.js
-import OAuth2Bearer from 'ember-simple-auth/authorizers/oauth2-bearer';
+// OAuth 2
+import DS from 'ember-data';
+import { inject as service } from '@ember/service';
 
-export default OAuth2Bearer.extend();
-```
+const { JSONAPIAdapter } = DS;
 
-and use that to authorize a block of code via the
-[session service's `authorize`](http://ember-simple-auth.com/api/classes/SessionService.html#method_authorize)
-method, e.g.:
+export default JSONAPIAdapter.extend({
+  session: service(),
+  headers: computed('session.data.authenticated.token', function() {
+    const headers = {};
+    if (this.session.isAuthenticated) {
+      headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
+    }
 
-```js
-this.get('session').authorize('authorizer:oauth2', (headerName, headerValue) => {
-  const headers = {};
-  headers[headerName] = headerValue;
-  Ember.$.ajax('/secret-data', { headers });
+    return headers;
+  }),
 });
 ```
 
-To include authorization info in all Ember Data requests if the session is
-authenticated, mix the
-[`DataAdapterMixin`](http://ember-simple-auth.com/api/classes/DataAdapterMixin.html)
-into the application adapter:
+In case you're using `Devise`:
 
 ```js
-// app/adapters/application.js
+// Devise
 import DS from 'ember-data';
-import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
+import { inject as service } from '@ember/service';
+
+const { JSONAPIAdapter } = DS;
+
+export default JSONAPIAdapter.extend({
+  session: service(),
+  headers: computed('session.data.authenticated.token', function() {
+    const headers = {};
+    if (this.session.isAuthenticated) {
+      let { email, token } = this.session.data.authenticated;
+      headers['Authorization'] = `Token token="${token}", email="${email}"`;
+    }
+
+    return headers;
+  }),
+});
+```
+
+We also provide the DataAdapterMixin, that aids in injecting the authorization header on
+Ajax requests and also makes sure the session is invalidated if any of the requests returns
+an unauthorized response. It can be use as:
+
+```js
+// OAuth 2
+import DS from 'ember-data';
+import { inject as service } from '@ember/service';
+import { isPresent } from '@ember/utils';
+import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 
 const { JSONAPIAdapter } = DS;
 
 export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  authorizer: 'authorizer:oauth2'
+  authorize(xhr) {
+    let { access_token } = this.get('session.data.authenticated');
+    if (isPresent(access_token)) {
+      xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
+    }
+  }
 });
 ```
+
+The `authorize` method must be implemented in your adapter and set the header as expected by your
+authorization provider.
+
+In case you are using `ember-fetch`, the mixin can still be used for the included service and
+session invalidation feature, but the authorization header needs to be defined with the `headers`
+computed property as explained above.
 
 ## The Session Service
 
@@ -440,174 +469,6 @@ export default Base.extend({
   }
 });
 ```
-
-## Authorizers
-
-__Authorizers use the session data acquired by the authenticator to construct
-authorization data__ that can be injected into outgoing network requests. As
-[Deprecation warning: Authorizers are deprecated](https://github.com/simplabs/ember-simple-auth#deprecation-of-authorizers)
-
-the authorizer depends on the data that the authenticator acquires,
-__authorizers and authenticators have to fit together__.
-
-Ember Simple Auth comes with 2 authorizers:
-
-* [`OAuth2BearerAuthorizer`](http://ember-simple-auth.com/api/classes/OAuth2BearerAuthorizer.html): an OAuth 2.0 authorizer that uses Bearer tokens
-* [`DeviseAuthorizer`](http://ember-simple-auth.com/api/classes/DeviseAuthorizer.html): an authorizer compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
-
-To use any of these authorizers in an application, define a new authorizer in
-`app/authorizers`, extend if from the Ember Simple Auth authorizer
-
-```js
-// app/authorizers/oauth2.js
-import OAuth2Bearer from 'ember-simple-auth/authorizers/oauth2-bearer';
-
-export default OAuth2Bearer.extend();
-```
-
-and invoke the session service's [`authorize`](http://ember-simple-auth.com/api/classes/SessionService.html#method_authorize) method with the respective name:
-
-```js
-this.get('session').authorize('authorizer:some', (/*authorization data*/) => {
-  // Use authorization data
-});
-```
-
-__Unlike in previous versions of Ember Simple Auth, authorization will not
-happen automatically for all requests the application issues anymore__ but has
-to be initiated explicitly via the service.
-
-When using Ember Data you can mix the `DataAdapterMixin` in the application
-adapter to automatically authorize all API requests:
-
-```js
-// app/adapters/application.js
-import DS from 'ember-data';
-import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
-
-const { JSONAPIAdapter } = DS;
-
-export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  authorizer: 'authorizer:some'
-});
-```
-
-### Customizing an Authorizer
-
-Authorizers are easily customized by setting the respective properties, e.g.:
-
-```js
-// app/authorizers/devise.js
-import DeviseAuthorizer from 'ember-simple-auth/authorizers/devise';
-
-export default DeviseAuthorizer.extend({
-  identificationAttributeName: 'login'
-});
-```
-
-### Implementing a custom Authorizer
-
-Besides extending one of the predefined authorizers, an application can also
-implement fully custom authorizers. In order to do that, extend the
-[abstract base authorizer](http://ember-simple-auth.com/api/classes/BaseAuthorizer.html)
-that Ember Simple Auth comes with and override the
-[`authorize`](http://ember-simple-auth.com/api/classes/BaseAuthorizer.html#method_authorize)
-method:
-
-```js
-// app/authorizers/custom.js
-import Base from 'ember-simple-auth/authorizers/base';
-
-export default Base.extend({
-  authorize(sessionData, block) {
-    …
-  }
-});
-```
-
-### Deprecation of Authorizers
-
-Authorizers and the session service's `authorize` method are deprecated and
-will be removed from Ember Simple Auth 2.0. The concept seemed like a good idea
-in the early days of Ember Simple Auth, but proved to provide limited value for
-the added complexity. To replace authorizers in an application, simply get the
-session data from the session service and inject it where needed.
-
-In most cases, authorizers are used with Ember Data adapters (refer to the
-[Ember Guides](https://guides.emberjs.com/v3.0.0/models/customizing-adapters/#toc_headers-customization)
-for details on adapters). Replacing authorizers in these scenarios is
-straightforward.
-
-Examples:
-
-```js
-// OAuth 2
-import DS from 'ember-data';
-import { inject as service } from '@ember/service';
-import { isPresent } from '@ember/utils';
-import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
-
-const { JSONAPIAdapter } = DS;
-
-export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  session: service(), 
-  authorize(xhr) {
-    let { access_token } = this.get('session.data.authenticated');
-    if (isPresent(access_token)) {
-      xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
-    }
-  }
-});
-
-// DataAdapterMixin already injects the `session` service. It is
-// included here for clarity.
-```
-
-```js
-// Devise
-import DS from 'ember-data';
-import { inject as service } from '@ember/service';
-import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
-
-const { JSONAPIAdapter } = DS;
-
-export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  session: service(),
-  // defaults
-  // identificationAttributeName: 'email'
-  // tokenAttributeName: 'token'
-  authorize(xhr) {
-    let { email, token } = this.get('session.data.authenticated');
-    let authData = `Token token="${token}", email="${email}"`;
-    xhr.setRequestHeader('Authorization', authData);
-  }
-});
-```
-
-When used with `ember-fetch` the `authorize` method will not be called and the
-`headers` computed property must be used instead, e.g.:
-
-```js
-export default DS.JSONAPIAdapter.extend(AdapterFetch, DataAdapterMixin, {
-  headers: computed('session.data.authenticated.token', function() {
-    const headers = {};
-    if (this.session.isAuthenticated) {
-      headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
-    }
-
-    return headers;
-  }),
-});
-```
-
-### Deprecation of Client ID as Header
-
-Sending the Client ID as Base64 Encoded in the Authorization Header was against the spec and caused
-incorrect behavior with OAuth2 Servers that had implemented the spec properly.
-
-To change this behavior set `sendClientIdAsQueryParam` to `true`, and the client id will be correctly
-sent as a query parameter. Leaving it set to `false` (currently default) will result in a deprecation
-notice until the next major version.
 
 ## Session Stores
 
