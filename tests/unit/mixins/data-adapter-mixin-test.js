@@ -33,9 +33,7 @@ describe('DataAdapterMixin', () => {
         return '_super return value';
       }
     });
-    Adapter = BaseAdapter.extend(DataAdapterMixin, {
-      authorizer: 'authorizer:some'
-    });
+    Adapter = BaseAdapter.extend(DataAdapterMixin, {});
     adapter = Adapter.create({ session: sessionService });
   });
 
@@ -51,8 +49,6 @@ describe('DataAdapterMixin', () => {
     });
 
     it('asserts `authorize` is overridden', function() {
-      adapter.set('authorizer', null);
-
       expect(function() {
         adapter.ajaxOptions();
         hash.beforeSend();
@@ -62,7 +58,6 @@ describe('DataAdapterMixin', () => {
     it('calls `authorize` when request is made', function() {
       const authorize = sinon.spy();
       adapter.authorize = authorize;
-      adapter.set('authorizer', null);
       adapter.ajaxOptions();
       hash.beforeSend();
 
@@ -86,144 +81,13 @@ describe('DataAdapterMixin', () => {
 
     it('preserves an existing beforeSend hook', function() {
       const existingBeforeSend = sinon.spy();
+      const authorize = sinon.spy();
       hash.beforeSend = existingBeforeSend;
+      adapter.authorize = authorize;
       adapter.ajaxOptions();
       hash.beforeSend();
 
       expect(existingBeforeSend).to.have.been.called;
-    });
-
-    it('authorizes with the given authorizer', function() {
-      sinon.spy(sessionService, 'authorize');
-      adapter.ajaxOptions();
-      hash.beforeSend();
-
-      expect(sessionService.authorize).to.have.been.calledWith('authorizer:some');
-    });
-
-    describe('the beforeSend hook', function() {
-      let xhr;
-
-      beforeEach(function() {
-        adapter.ajaxOptions();
-        xhr = {
-          setRequestHeader() {}
-        };
-        sinon.spy(xhr, 'setRequestHeader');
-      });
-
-      describe('when the authorizer calls the block', function() {
-        beforeEach(function() {
-          sinon.stub(sessionService, 'authorize').callsFake((authorizer, block) => {
-            block('header', 'value');
-          });
-          hash.beforeSend(xhr);
-        });
-
-        it('adds a request header as given by the authorizer', function() {
-          expect(xhr.setRequestHeader).to.have.been.calledWith('header', 'value');
-        });
-      });
-
-      describe('when the authorizer does not call the block', function() {
-        beforeEach(function() {
-          sinon.stub(sessionService, 'authorize');
-          hash.beforeSend(xhr);
-        });
-
-        it('does not add a request header', function() {
-          expect(xhr.setRequestHeader).to.not.have.been.called;
-        });
-      });
-    });
-  });
-
-  describe('#headersForRequest', function() {
-    it('shows a deprecation warning', function() {
-      let warnings = [];
-      registerDeprecationHandler((message, options, next) => {
-        warnings.push(message);
-        next(message, options);
-      });
-
-      adapter.headersForRequest();
-
-      expect(warnings[0]).to.eq('Ember Simple Auth: The headersForRequest method should no longer be used. Instead, set the headers property or implement it as a computed property.');
-    });
-
-    it('preserves existing headers by parent adapter', function() {
-      const headers = adapter.headersForRequest();
-
-      expect(headers).to.have.ownProperty('X-Base-Header');
-      expect(headers['X-Base-Header']).to.equal('is-still-respected');
-    });
-
-    describe('when the base adapter doesn\'t implement headersForRequest', function() {
-      beforeEach(function() {
-        hash = {};
-        sessionService = EmberObject.create({
-          authorize() {},
-          invalidate() {}
-        });
-
-        const Adapter = EmberObject.extend(DataAdapterMixin, {
-          authorizer: 'authorizer:some'
-        });
-        adapter = Adapter.create({ session: sessionService });
-      });
-
-      it('gracefully defaults to empty hash', function() {
-        const headers = adapter.headersForRequest();
-        expect(headers).to.deep.equal({});
-      });
-    });
-
-    it('asserts the presence of authorizer', function() {
-      adapter.set('authorizer', null);
-      expect(function() {
-        adapter.headersForRequest();
-      }).to.throw(/Assertion Failed/);
-    });
-
-    it('authorizes with the given authorizer', function() {
-      sinon.spy(sessionService, 'authorize');
-      adapter.headersForRequest();
-
-      expect(sessionService.authorize).to.have.been.calledWith('authorizer:some');
-    });
-
-    describe('when the authorizer calls the block', function() {
-      beforeEach(function() {
-        sinon.stub(sessionService, 'authorize').callsFake((authorizer, block) => {
-          block('X-Authorization-Header', 'an-auth-value');
-        });
-      });
-
-      it('adds a request header as given by the authorizer', function() {
-        const headers = adapter.headersForRequest();
-        expect(headers['X-Authorization-Header']).to.equal('an-auth-value');
-      });
-
-      it('still returns the base headers', function() {
-        const headers = adapter.headersForRequest();
-        expect(headers['X-Base-Header']).to.equal('is-still-respected');
-      });
-    });
-
-    describe('when the authorizer does not call the block', function() {
-      beforeEach(function() {
-        sinon.stub(sessionService, 'authorize');
-      });
-
-      it('does not add a request header', function() {
-        const headers = adapter.headersForRequest();
-        expect(headers).to.not.have.ownProperty('X-Authorization-Header');
-      });
-
-      it('still returns the base headers', function() {
-        const headers = adapter.headersForRequest();
-        expect(headers['X-Base-Header']).to.equal('is-still-respected');
-      });
     });
   });
 
