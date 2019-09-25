@@ -82,7 +82,7 @@
     "eslint-plugin-mocha": "^5.3.0",
     "eslint-plugin-node": "^8.0.1",
     "express": "^4.15.3",
-    "fastboot-app-server": "^1.0.2",
+    "fastboot-app-server": "^2.0.0",
     "git-repo-version": "^1.0.0",
     "glob": "^7.1.2",
     "handlebars": "~4.2.0",
