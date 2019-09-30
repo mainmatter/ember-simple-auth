@@ -19,13 +19,12 @@ The service can then be injected into e.g. controllers or components that need
 access to the current user record, e.g.:
 
 ```js
-import Ember from 'ember';
-
-const { inject: { service }, Component } = Ember;
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
-  session:     service('session'),
-  currentUser: service('current-user')
+  session:     service(),
+  currentUser: service()
 });
 ```
 
@@ -61,12 +60,12 @@ invoked with a query param where the `me` param is present.
 
 ```js
 // app/services/current-user.js
-import Ember from 'ember';
+import Service from '@ember/service';
+import { resolve } from 'rsvp';
+import { inject as service } from '@ember/service';
 
-const { inject: { service }, RSVP } = Ember;
-
-export default Ember.Service.extend({
-  session: service('session'),
+export default Service.extend({
+  session: service(),
   store: service(),
 
   load() {
@@ -75,7 +74,7 @@ export default Ember.Service.extend({
         this.set('user', user);
       });
     } else {
-      return RSVP.resolve();
+      return resolve();
     }
   }
 });
@@ -103,12 +102,13 @@ the id is then stored in the session data and can be read from there.
 
 ```js
 // app/services/current-user.js
-import Ember from 'ember';
+import Service from '@ember/service';
+import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
+import { resolve } from 'rsvp';
 
-const { inject: { service }, isEmpty, RSVP } = Ember;
-
-export default Ember.Service.extend({
-  session: service('session'),
+export default Service.extend({
+  session: service(),
   store: service(),
 
   load() {
@@ -118,7 +118,7 @@ export default Ember.Service.extend({
         this.set('user', user);
       });
     } else {
-      return Ember.RSVP.resolve();
+      return resolve();
     }
   }
 });
@@ -138,12 +138,12 @@ the session is authenticated:
 
 ```js
 // app/routes/application.js
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-const { service } = Ember.inject;
+import { inject as service } from '@ember/service';
 
-export default Ember.Route.extend(ApplicationRouteMixin, {
+export default Route.extend(ApplicationRouteMixin, {
   currentUser: service(),
 
   beforeModel() {
