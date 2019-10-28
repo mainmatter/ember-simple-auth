@@ -1,4 +1,5 @@
 import { tryInvoke } from '@ember/utils';
+import { registerDeprecationHandler } from '@ember/debug';
 import {
   describe,
   beforeEach,
@@ -59,6 +60,20 @@ describe('DeviseAuthenticator', () => {
         expect(JSON.parse(request.requestBody)).to.eql({ user: { email: 'identification', password: 'password' } });
         expect(request.requestHeaders['content-type']).to.eql('application/json');
         expect(request.requestHeaders.accept).to.eql('application/json');
+      });
+    });
+
+    it('shows a deprecation warning when rejectWithResponse is not enabled', function() {
+      authenticator.set('rejectWithResponse', false);
+
+      let warnings = [];
+      registerDeprecationHandler((message, options, next) => {
+        warnings.push(message);
+        next(message, options);
+      });
+
+      return authenticator.authenticate('identification', 'password').then(() => {
+        expect(warnings[0]).to.eq('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.');
       });
     });
 

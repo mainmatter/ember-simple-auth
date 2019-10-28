@@ -196,6 +196,27 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       authenticator.authenticate('username', 'password', ['public', 'private']);
     });
 
+    it('shows a deprecation warning when rejectWithResponse is not enabled', function(done) {
+      authenticator.set('rejectWithResponse', false);
+      server.post('/token', (request) => {
+        let { requestBody } = request;
+        let { scope } = parsePostData(requestBody);
+        expect(scope).to.eql('public private');
+        done();
+      });
+
+      let warnings = [];
+      registerDeprecationHandler((message, options, next) => {
+        warnings.push(message);
+        next(message, options);
+      });
+
+      server.post('/token', () => done());
+      authenticator.authenticate('username', 'password');
+
+      expect(warnings[1]).to.eq('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.');
+    });
+
     describe('when the authentication request is successful', function() {
       beforeEach(function() {
         server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }']);
