@@ -1,4 +1,5 @@
 import { inject as service } from '@ember/service';
+import { deprecate } from '@ember/application/deprecations';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
 import { isPresent } from '@ember/utils';
@@ -126,9 +127,15 @@ export default Mixin.create({
     See `ajaxOptions` instead.
 
     @method headersForRequest
+    @deprecated DataAdapterMixin/headersForRequest:method
     @protected
    */
   headersForRequest() {
+    deprecate('Ember Simple Auth: The headersForRequest method should no longer be used. Instead, implement the authorize method or the headers property.', false, {
+      id: `ember-simple-auth.data-adapter-mixin.headers-for-request`,
+      until: '2.0.0'
+    });
+
     const authorizer = this.get('authorizer');
     assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", isPresent(authorizer));
 
