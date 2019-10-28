@@ -67,6 +67,7 @@ export default Mixin.create({
     ```
 
     @property authorizer
+    @deprecated DataAdapterMixin/authorizer:property
     @type String
     @default null
     @public
