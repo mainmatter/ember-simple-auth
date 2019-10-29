@@ -280,6 +280,14 @@ export default BaseAuthenticator.extend({
       const data = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
       const useResponse = this.get('rejectWithResponse');
+
+      if (!useResponse) {
+        deprecate('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.', false, {
+          id: `ember-simple-auth.authenticator.no-reject-with-response`,
+          until: '2.0.0'
+        });
+      }
+
       const scopesString = makeArray(scope).join(' ');
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;

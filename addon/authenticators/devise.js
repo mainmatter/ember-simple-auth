@@ -3,6 +3,7 @@ import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
 import { merge, assign as emberAssign } from '@ember/polyfills';
 import { computed } from '@ember/object';
+import { deprecate } from '@ember/application/deprecations';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
 
@@ -140,6 +141,14 @@ export default BaseAuthenticator.extend({
   authenticate(identification, password) {
     return new Promise((resolve, reject) => {
       const useResponse = this.get('rejectWithResponse');
+
+      if (!useResponse) {
+        deprecate('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.', false, {
+          id: `ember-simple-auth.authenticator.no-reject-with-response`,
+          until: '2.0.0'
+        });
+      }
+
       const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties('resourceName', 'identificationAttributeName', 'tokenAttributeName');
       const data = {};
       data[resourceName] = { password };
