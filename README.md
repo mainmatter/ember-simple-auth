@@ -102,9 +102,9 @@ Installing the library is as easy as:
 ember install ember-simple-auth
 ```
 
-### Upgrading from a pre-2.0 release?
-The 2.0 release of ember-simple-auth removes previously deprecated code, introducing some breaking changes,
-but thankfully there in an [upgrade guide](guides/upgrade-to-v2.md).
+### Upgrading from a pre-3.0 release?
+The 3.0 release of ember-simple-auth removes previously deprecated code, introducing some breaking changes,
+but thankfully there in an [upgrade guide](guides/upgrade-to-v3.md).
 
 ## Walkthrough
 

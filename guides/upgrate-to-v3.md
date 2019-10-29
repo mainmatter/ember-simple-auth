@@ -1,9 +1,9 @@
-The 2.0 version of Ember Simple Auth removes all the code that was deprecated in previous versions. To make sure
+The 3.0 version of Ember Simple Auth removes all the code that was deprecated in previous versions. To make sure
 your app continues to work properly, ensure that your app no longer makes use of the following list of deprecated
 features and settings.
 
 Also take into consideration that this new version supports Ember 3.4 and up. Older versions of Ember may still
-work with Ember Simple Auth 2.0 but are not officially supported.
+work with Ember Simple Auth 3.0 but are not officially supported.
 
 ### Move configuration options to routes
 
