@@ -53,11 +53,6 @@ Defined in [`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classe
   });
 ```
 
-### Rename rejectWithXhr to rejectWithResponse
-
-`rejectWithXhr` setting in authenticators was renamed to `rejectWithResponse` in previous versions but was
-still supported, the support is removed in this version so any uses should be updated.
-
 ### Make your custom session store asychronous
 
 Synchronous session stores are no longer supported, custom `persist`, `restore` and `clear` methods should now return promises.
@@ -158,6 +153,13 @@ export default DS.JSONAPIAdapter.extend(AdapterFetch, DataAdapterMixin, {
   }),
 });
 ```
+
+### Expect the whole Fetch API response on rejected authentications
+
+`rejectWithResponse` (previously named `rejectWithXhr`) has been removed and the current behavior
+is the same as when the property was set to `true`: the whole Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) is provided to the
+callback when the authentication fails. If you're still relying on the response being a JSON (as it
+was when `rejectWithResponse=false`, please make the necessary adjustments.
 
 ### Don't rely on Client ID being sent as a Header
 

@@ -113,6 +113,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           'password': 'password'
         });
         done();
+
+        return [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }'];
       });
 
       authenticator.authenticate('username', 'password');
@@ -128,6 +130,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           'password': 'password'
         });
         done();
+
+        return [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }'];
       });
 
       authenticator.set('clientId', 'test-client');
@@ -138,6 +142,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       server.post('/token', (request) => {
         expect(request.requestHeaders['x-custom-context']).to.eql('foobar');
         done();
+
+        return [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }'];
       });
 
       authenticator.authenticate('username', 'password', [], { 'X-Custom-Context': 'foobar' });
@@ -149,6 +155,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         let { scope } = parsePostData(requestBody);
         expect(scope).to.eql('public');
         done();
+
+        return [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }'];
       });
 
       authenticator.authenticate('username', 'password', 'public');
@@ -160,30 +168,11 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         let { scope } = parsePostData(requestBody);
         expect(scope).to.eql('public private');
         done();
+
+        return [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }'];
       });
 
       authenticator.authenticate('username', 'password', ['public', 'private']);
-    });
-
-    it('shows a deprecation warning when rejectWithResponse is not enabled', function(done) {
-      authenticator.set('rejectWithResponse', false);
-      server.post('/token', (request) => {
-        let { requestBody } = request;
-        let { scope } = parsePostData(requestBody);
-        expect(scope).to.eql('public private');
-        done();
-      });
-
-      let warnings = [];
-      registerDeprecationHandler((message, options, next) => {
-        warnings.push(message);
-        next(message, options);
-      });
-
-      server.post('/token', () => done());
-      authenticator.authenticate('username', 'password');
-
-      expect(warnings[1]).to.eq('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.');
     });
 
     describe('when the authentication request is successful', function() {
@@ -230,7 +219,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           server.post('/token', () => [200, { 'Content-Type': 'text/plain' }, 'Something went wrong']);
 
           return authenticator.authenticate('username', 'password').catch((error) => {
-            expect(error).to.eql('Something went wrong');
+            expect(error.responseText).to.eql('Something went wrong');
           });
         });
       });
@@ -241,28 +230,15 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         server.post('/token', () => [400, { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' }, '{ "error": "invalid_grant" }']);
       });
 
-      it('rejects with the parsed JSON response', function(done) {
-        authenticator.authenticate('username', 'password').catch((error) => {
-          expect(error).to.eql({ error: 'invalid_grant' });
-          done();
+      it('rejects with response object containing responseJSON', function() {
+        return authenticator.authenticate('username', 'password').catch((error) => {
+          expect(error.responseJSON).to.eql({ error: 'invalid_grant' });
         });
       });
 
-      describe('when rejectWithResponse is enabled', function() {
-        beforeEach(function() {
-          authenticator.set('rejectWithResponse', true);
-        });
-
-        it('rejects with response object containing responseJSON', function() {
-          return authenticator.authenticate('username', 'password').catch((error) => {
-            expect(error.responseJSON).to.eql({ error: 'invalid_grant' });
-          });
-        });
-
-        it('provides access to custom headers', function() {
-          return authenticator.authenticate('username', 'password').catch((error) => {
-            expect(error.headers.get('x-custom-context')).to.eql('foobar');
-          });
+      it('provides access to custom headers', function() {
+        return authenticator.authenticate('username', 'password').catch((error) => {
+          expect(error.headers.get('x-custom-context')).to.eql('foobar');
         });
       });
     });
@@ -272,29 +248,16 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         server.post('/token', () => [500, { 'Content-Type': 'text/plain', 'X-Custom-Context': 'foobar' }, 'The server has failed completely.']);
       });
 
-      it('rejects with the response body', function(done) {
-        authenticator.authenticate('username', 'password').catch((error) => {
-          expect(error).to.eql('The server has failed completely.');
-          done();
+      it('rejects with response object containing responseText', function() {
+        return authenticator.authenticate('username', 'password').catch((error) => {
+          expect(error.responseJSON).to.not.exist;
+          expect(error.responseText).to.eql('The server has failed completely.');
         });
       });
 
-      describe('when rejectWithResponse is enabled', function() {
-        beforeEach(function() {
-          authenticator.set('rejectWithResponse', true);
-        });
-
-        it('rejects with response object containing responseText', function() {
-          return authenticator.authenticate('username', 'password').catch((error) => {
-            expect(error.responseJSON).to.not.exist;
-            expect(error.responseText).to.eql('The server has failed completely.');
-          });
-        });
-
-        it('provides access to custom headers', function() {
-          return authenticator.authenticate('username', 'password').catch((error) => {
-            expect(error.headers.get('x-custom-context')).to.eql('foobar');
-          });
+      it('provides access to custom headers', function() {
+        return authenticator.authenticate('username', 'password').catch((error) => {
+          expect(error.headers.get('x-custom-context')).to.eql('foobar');
         });
       });
     });

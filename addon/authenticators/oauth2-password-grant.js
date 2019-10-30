@@ -116,21 +116,6 @@ export default BaseAuthenticator.extend({
   _refreshTokenTimeout: null,
 
   /**
-    When authentication fails, the rejection callback is provided with the whole
-    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
-    instead of its responseJSON or responseText.
-
-    This is useful for cases when the backend provides additional context not
-    available in the response body.
-
-    @property rejectWithResponse
-    @type Boolean
-    @default false
-    @public
-  */
-  rejectWithResponse: false,
-
-  /**
     Restores the session from a session data object; __will return a resolving
     promise when there is a non-empty `access_token` in the session data__ and
     a rejecting promise otherwise.
@@ -228,14 +213,6 @@ export default BaseAuthenticator.extend({
     return new RSVP.Promise((resolve, reject) => {
       const data = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      const useResponse = this.get('rejectWithResponse');
-
-      if (!useResponse) {
-        deprecate('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.', false, {
-          id: `ember-simple-auth.authenticator.no-reject-with-response`,
-          until: '3.0.0'
-        });
-      }
 
       const scopesString = makeArray(scope).join(' ');
       if (!isEmpty(scopesString)) {
@@ -256,7 +233,7 @@ export default BaseAuthenticator.extend({
           resolve(response);
         });
       }, (response) => {
-        run(null, reject, useResponse ? response : (response.responseJSON || response.responseText));
+        run(null, reject, response);
       });
     });
   },
