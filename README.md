@@ -290,55 +290,12 @@ makes sense for login and registration routes for example), mix the
 [`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/UnauthenticatedRouteMixin.html)
 into the respective route.
 
-To include authorization info in all Ember Data requests if the session is
-authenticated, the application adapter can include the session service and
-define the `headers` computed property:
+In order to add authorization information to requests, you can use the session service
+to check if the session is authenticated and access authentication/authorization data, e.g. a token.
 
-```js
-// OAuth 2
-import DS from 'ember-data';
-import { inject as service } from '@ember/service';
 
-const { JSONAPIAdapter } = DS;
-
-export default JSONAPIAdapter.extend({
-  session: service(),
-  headers: computed('session.data.authenticated.token', function() {
-    const headers = {};
-    if (this.session.isAuthenticated) {
-      headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
-    }
-
-    return headers;
-  }),
-});
-```
-
-In case you're using `Devise`:
-
-```js
-// Devise
-import DS from 'ember-data';
-import { inject as service } from '@ember/service';
-
-const { JSONAPIAdapter } = DS;
-
-export default JSONAPIAdapter.extend({
-  session: service(),
-  headers: computed('session.data.authenticated.token', function() {
-    const headers = {};
-    if (this.session.isAuthenticated) {
-      let { email, token } = this.session.data.authenticated;
-      headers['Authorization'] = `Token token="${token}", email="${email}"`;
-    }
-
-    return headers;
-  }),
-});
-```
-
-We also provide the DataAdapterMixin, that aids in injecting the authorization header on
-Ajax requests and also makes sure the session is invalidated if any of the requests returns
+We also provide the DataAdapterMixin for Ember Data adapters, that aids in injecting the authorization
+header on Ajax requests and also makes sure the session is invalidated if any of the requests returns
 an unauthorized response. It can be use as:
 
 ```js
@@ -365,7 +322,29 @@ authorization provider.
 
 In case you are using `ember-fetch`, the mixin can still be used for the included service and
 session invalidation feature, but the authorization header needs to be defined with the `headers`
-computed property as explained above.
+computed property.
+
+```js
+// Devise
+import DS from 'ember-data';
+import { inject as service } from '@ember/service';
+import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
+
+const { JSONAPIAdapter } = DS;
+
+export default JSONAPIAdapter.extend(DataAdapterMixin, {
+  headers: computed('session.data.authenticated.token', function() {
+    let headers = {};
+
+    if (this.session.isAuthenticated) {
+      let { email, token } = this.session.data.authenticated;
+      headers['Authorization'] = `Token token="${token}", email="${email}"`;
+    }
+
+    return headers;
+  }),
+});
+```
 
 ## The Session Service
 
