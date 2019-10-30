@@ -6,10 +6,9 @@ import { isPresent } from '@ember/utils';
 
 /**
   __This mixin can be used to make Ember Data adapters authorize all outgoing
-  API requests by injecting a header.__ It works with all authorizers that call
-  the authorization callback (see
-  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) with header
-  name and header content arguments.
+  API requests by injecting a header.__ The adapter's `headers` property can be
+  set using data read from the `session` service that is injected by this
+  mixin.
 
   __The `DataAdapterMixin` will also invalidate the session whenever it
   receives a 401 response for an API request.__
@@ -20,7 +19,15 @@ import { isPresent } from '@ember/utils';
   import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
   export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
-    authorizer: 'authorizer:application'
+      headers: computed('session.data.authenticated.token', function() {
+        let headers = {};
+        if (this.session.isAuthenticated) {
+          headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
+        }
+
+        return headers;
+      }),
+    }
   });
   ```
 
