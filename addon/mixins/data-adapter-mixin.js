@@ -90,6 +90,7 @@ export default Mixin.create({
     `headersForRequest` *should* replace it after the resolution of the RFC.
 
     @method ajaxOptions
+    @deprecated DataAdapterMixin/ajaxOptions:method
     @protected
   */
   ajaxOptions() {
@@ -103,6 +104,10 @@ export default Mixin.create({
           xhr.setRequestHeader(headerName, headerValue);
         });
       } else {
+        deprecate('Ember Simple Auth: The authorize method should no longer be used. Instead, set the headers property or implement it as a computed property.', false, {
+          id: `ember-simple-auth.data-adapter-mixin.authorize`,
+          until: '3.0.0'
+        });
         this.authorize(xhr);
       }
 
