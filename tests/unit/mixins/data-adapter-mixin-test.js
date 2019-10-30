@@ -133,7 +133,7 @@ describe('DataAdapterMixin', () => {
 
       adapter.headersForRequest();
 
-      expect(warnings[0]).to.eq('Ember Simple Auth: The headersForRequest method should no longer be used. Instead, implement the authorize method or the headers property.');
+      expect(warnings[0]).to.eq('Ember Simple Auth: The headersForRequest method should no longer be used. Instead, set the headers property or implement it as a computed property.');
     });
 
     it('preserves existing headers by parent adapter', function() {
