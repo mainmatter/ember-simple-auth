@@ -19,15 +19,14 @@ import { isPresent } from '@ember/utils';
   import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
   export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
-      headers: computed('session.data.authenticated.token', function() {
-        let headers = {};
-        if (this.session.isAuthenticated) {
-          headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
-        }
+    headers: computed('session.data.authenticated.token', function() {
+      let headers = {};
+      if (this.session.isAuthenticated) {
+        headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
+      }
 
-        return headers;
-      }),
-    }
+      return headers;
+    })
   });
   ```
 
