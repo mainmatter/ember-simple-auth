@@ -84,7 +84,7 @@ export default BaseAuthenticator.extend({
   */
   rejectWithXhr: computed.deprecatingAlias('rejectWithResponse', {
     id: `ember-simple-auth.authenticator.reject-with-xhr`,
-    until: '2.0.0'
+    until: '3.0.0'
   }),
 
   /**
