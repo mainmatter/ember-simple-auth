@@ -97,7 +97,7 @@
     "torii": "^0.10.0"
   },
   "engines": {
-    "node": "8.* || 10.* || >= 12.*"
+    "node": "10.* || >= 12.*"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
