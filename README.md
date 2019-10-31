@@ -785,6 +785,9 @@ module('Acceptance | super secret url', function(hooks) {
 
 ### ember-cli-qunit 4.1.0 and earlier
 
+__Deprecation warning:__ Support for ember-cli-qunit 4.1.0 and earlier is
+deprecated and will be removed in the next major version of ember-simple-auth.
+
 For apps using earlier versions of ember-cli-qunit, you can use the
 test helpers with the following signature:
 

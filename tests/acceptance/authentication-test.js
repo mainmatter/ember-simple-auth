@@ -1,77 +1,91 @@
 import { tryInvoke } from '@ember/utils';
 import {
+  currentURL,
+  setupContext,
+  setupApplicationContext,
+  teardownApplicationContext,
+  teardownContext,
+  visit
+} from '@ember/test-helpers';
+import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+import {
   describe,
   it,
   beforeEach,
   afterEach
 } from 'mocha';
 import { expect } from 'chai';
-import startApp from '../helpers/start-app';
 import Pretender from 'pretender';
 import {
   invalidateSession,
   authenticateSession,
   currentSession
-} from '../helpers/ember-simple-auth';
-import destroyApp from '../helpers/destroy-app';
+} from 'ember-simple-auth/test-support';
 import config from '../../config/environment';
 
 describe('Acceptance: Authentication', function() {
-  let application;
+  let context;
   let server;
 
   beforeEach(function() {
-    application = startApp();
+    context = {};
+    return setupContext(context).then(() => setupApplicationContext(context));
   });
 
   afterEach(function() {
     tryInvoke(server, 'shutdown');
-    destroyApp(application);
+    return teardownApplicationContext(context).then(() => teardownContext(context));
   });
 
   describe('the protected route', function() {
-    it('cannot be visited when the session is not authenticated', function() {
-      invalidateSession(application);
-      visit('/protected');
+    if (!hasEmberVersion(2, 4)) {
+      // guard against running test module on unsupported version (before 2.4)
+      return;
+    }
 
-      return andThen(() => {
-        expect(currentPath()).to.eq('login');
-      });
+    it('cannot be visited when the session is not authenticated', function() {
+      return invalidateSession()
+        .then(() => visit('/protected'))
+        .then(() => {
+          expect(currentURL()).to.eq('/login');
+        });
     });
 
     it('can be visited when the session is authenticated', function() {
       server = new Pretender(function() {
         this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
-      authenticateSession(application, { userId: 1, otherData: 'some-data' });
-      visit('/protected');
-
-      return andThen(() => {
-        expect(currentPath()).to.eq('protected');
-        let session = currentSession(application);
-        expect(session.get('data.authenticated.userId')).to.eql(1);
-        expect(session.get('data.authenticated.otherData')).to.eql('some-data');
-      });
+      return authenticateSession({ userId: 1, otherData: 'some-data' })
+        .then(() => visit('/protected'))
+        .then(() => {
+          let session = currentSession();
+          expect(currentURL()).to.eq('/protected');
+          expect(session.get('data.authenticated.userId')).to.eql(1);
+          expect(session.get('data.authenticated.otherData')).to.eql('some-data');
+        });
     });
   });
 
   describe('the login route', function() {
-    it('can be visited when the session is not authenticated', function() {
-      invalidateSession(application);
-      visit('/login');
+    if (!hasEmberVersion(2, 4)) {
+      // guard against running test module on unsupported version (before 2.4)
+      return;
+    }
 
-      return andThen(() => {
-        expect(currentPath()).to.eq('login');
-      });
+    it('can be visited when the session is not authenticated', function() {
+      return invalidateSession()
+        .then(() => visit('/login'))
+        .then(() => {
+          expect(currentURL()).to.eq('/login');
+        });
     });
 
     it('cannot be visited when the session is authenticated', function() {
-      authenticateSession(application);
-      visit('/login');
-
-      return andThen(() => {
-        expect(currentPath()).to.eq('index');
-      });
+      return authenticateSession()
+        .then(() => visit('/login'))
+        .then(() => {
+          expect(currentURL()).to.eq('/');
+        });
     });
   });
 });
