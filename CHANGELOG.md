@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.1 (2019-10-31)
+
+#### :rocket: Enhancement
+* [#1996](https://github.com/simplabs/ember-simple-auth/pull/1996) Deprecate the old testing API ([@marcoow](https://github.com/marcoow))
+* [#1994](https://github.com/simplabs/ember-simple-auth/pull/1994) Deprecate authorize method ([@marcoow](https://github.com/marcoow))
+
+#### :bug: Bug Fix
+* [#1995](https://github.com/simplabs/ember-simple-auth/pull/1995) Fix deprecation until versions ([@marcoow](https://github.com/marcoow))
+
+#### Committers: 2
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v2.0.0 (2019-10-29)
 
 #### :boom: Breaking Change
