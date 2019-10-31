@@ -69,6 +69,21 @@ describe('DataAdapterMixin', () => {
       expect(authorize).to.have.been.called;
     });
 
+    it('shows a deprecation warning when `authorize` is called', function() {
+      let warnings = [];
+      registerDeprecationHandler((message, options, next) => {
+        warnings.push(message);
+        next(message, options);
+      });
+
+      adapter.authorize = () => {};
+      adapter.set('authorizer', null);
+      adapter.ajaxOptions();
+      hash.beforeSend();
+
+      expect(warnings[0]).to.eq('Ember Simple Auth: The authorize method should no longer be used. Instead, set the headers property or implement it as a computed property.');
+    });
+
     it('preserves an existing beforeSend hook', function() {
       const existingBeforeSend = sinon.spy();
       hash.beforeSend = existingBeforeSend;
@@ -133,7 +148,7 @@ describe('DataAdapterMixin', () => {
 
       adapter.headersForRequest();
 
-      expect(warnings[0]).to.eq('Ember Simple Auth: The headersForRequest method should no longer be used. Instead, implement the authorize method or the headers property.');
+      expect(warnings[0]).to.eq('Ember Simple Auth: The headersForRequest method should no longer be used. Instead, set the headers property or implement it as a computed property.');
     });
 
     it('preserves existing headers by parent adapter', function() {

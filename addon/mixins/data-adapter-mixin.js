@@ -6,10 +6,9 @@ import { isPresent } from '@ember/utils';
 
 /**
   __This mixin can be used to make Ember Data adapters authorize all outgoing
-  API requests by injecting a header.__ It works with all authorizers that call
-  the authorization callback (see
-  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) with header
-  name and header content arguments.
+  API requests by injecting a header.__ The adapter's `headers` property can be
+  set using data read from the `session` service that is injected by this
+  mixin.
 
   __The `DataAdapterMixin` will also invalidate the session whenever it
   receives a 401 response for an API request.__
@@ -20,7 +19,14 @@ import { isPresent } from '@ember/utils';
   import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
   export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
-    authorizer: 'authorizer:application'
+    headers: computed('session.data.authenticated.token', function() {
+      let headers = {};
+      if (this.session.isAuthenticated) {
+        headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
+      }
+
+      return headers;
+    })
   });
   ```
 
@@ -90,6 +96,7 @@ export default Mixin.create({
     `headersForRequest` *should* replace it after the resolution of the RFC.
 
     @method ajaxOptions
+    @deprecated DataAdapterMixin/ajaxOptions:method
     @protected
   */
   ajaxOptions() {
@@ -103,6 +110,10 @@ export default Mixin.create({
           xhr.setRequestHeader(headerName, headerValue);
         });
       } else {
+        deprecate('Ember Simple Auth: The authorize method should no longer be used. Instead, set the headers property or implement it as a computed property.', false, {
+          id: `ember-simple-auth.data-adapter-mixin.authorize`,
+          until: '3.0.0'
+        });
         this.authorize(xhr);
       }
 
@@ -132,9 +143,9 @@ export default Mixin.create({
     @protected
    */
   headersForRequest() {
-    deprecate('Ember Simple Auth: The headersForRequest method should no longer be used. Instead, implement the authorize method or the headers property.', false, {
+    deprecate('Ember Simple Auth: The headersForRequest method should no longer be used. Instead, set the headers property or implement it as a computed property.', false, {
       id: `ember-simple-auth.data-adapter-mixin.headers-for-request`,
-      until: '2.0.0'
+      until: '3.0.0'
     });
 
     const authorizer = this.get('authorizer');
