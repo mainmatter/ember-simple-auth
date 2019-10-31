@@ -152,7 +152,7 @@ export default BaseAuthenticator.extend({
   */
   rejectWithXhr: computed.deprecatingAlias('rejectWithResponse', {
     id: `ember-simple-auth.authenticator.reject-with-xhr`,
-    until: '2.0.0'
+    until: '3.0.0'
   }),
 
   /**
@@ -270,7 +270,7 @@ export default BaseAuthenticator.extend({
         false,
         {
           id: 'ember-simple-auth.oauth2-password-grant-authenticator.client-id-as-authorization',
-          until: '2.0.0',
+          until: '3.0.0',
           url: 'https://github.com/simplabs/ember-simple-auth#deprecation-of-client-id-as-header',
         }
       );
@@ -284,7 +284,7 @@ export default BaseAuthenticator.extend({
       if (!useResponse) {
         deprecate('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.', false, {
           id: `ember-simple-auth.authenticator.no-reject-with-response`,
-          until: '2.0.0'
+          until: '3.0.0'
         });
       }
 

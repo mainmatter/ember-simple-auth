@@ -97,7 +97,7 @@ export default ObjectProxy.extend(Evented, {
     if (typeof result === 'undefined' || typeof result.then === 'undefined') {
       deprecate(`Ember Simple Auth: Synchronous stores have been deprecated. Make sure your custom store's ${method} method returns a promise.`, false, {
         id: `ember-simple-auth.session-store.synchronous-${method}`,
-        until: '2.0.0'
+        until: '3.0.0'
       });
       return RSVP.Promise.resolve(result);
     } else {

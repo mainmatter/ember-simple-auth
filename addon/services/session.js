@@ -237,7 +237,7 @@ export default Service.extend(Evented, {
   authorize(authorizerFactory, block) {
     deprecate(`Ember Simple Auth: 'authorize' is deprecated.`, false, {
       id: 'ember-simple-auth.session.authorize',
-      until: '2.0.0',
+      until: '3.0.0',
       url: 'https://github.com/simplabs/ember-simple-auth#authorizers'
     });
     if (this.get('isAuthenticated')) {

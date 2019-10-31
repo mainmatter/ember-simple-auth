@@ -43,7 +43,7 @@ export default {
   get baseURL() {
     deprecate('The baseURL property should no longer be used. Instead, use rootURL.', false, {
       id: `ember-simple-auth.configuration.base-url`,
-      until: '2.0.0'
+      until: '3.0.0'
     });
     return this.rootURL;
   },
@@ -97,7 +97,7 @@ export default {
       if (['authenticationRoute', 'routeAfterAuthentication', 'routeIfAlreadyAuthenticated'].indexOf(property) >= 0 && DEFAULTS[property] !== this[property]) {
         deprecate(`Ember Simple Auth: ${property} should no longer be overridden in the configuration. Instead, override the ${property} property in the route.`, false, {
           id: `ember-simple-auth.configuration.routes`,
-          until: '2.0.0'
+          until: '3.0.0'
         });
       }
 
