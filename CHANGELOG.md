@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.0.1 (2019-10-31)
+## v2.1.0 (2019-10-31)
 
 #### :rocket: Enhancement
 * [#1996](https://github.com/simplabs/ember-simple-auth/pull/1996) Deprecate the old testing API ([@marcoow](https://github.com/marcoow))
