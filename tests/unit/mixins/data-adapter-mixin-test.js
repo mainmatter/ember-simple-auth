@@ -1,5 +1,4 @@
 import EmberObject from '@ember/object';
-import { registerDeprecationHandler } from '@ember/debug';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
@@ -9,26 +8,16 @@ describe('DataAdapterMixin', () => {
   let sinon;
   let adapter;
   let sessionService;
-  let hash;
   let Adapter;
 
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
-    hash = {};
     sessionService = EmberObject.create({
       authorize() {},
       invalidate() {}
     });
 
     const BaseAdapter = EmberObject.extend({
-      ajaxOptions() {
-        return hash;
-      },
-      headersForRequest() {
-        return {
-          'X-Base-Header': 'is-still-respected'
-        };
-      },
       handleResponse() {
         return '_super return value';
       }
@@ -39,56 +28,6 @@ describe('DataAdapterMixin', () => {
 
   afterEach(function() {
     sinon.restore();
-  });
-
-  describe('#ajaxOptions', function() {
-    it('registers a beforeSend hook', function() {
-      adapter.ajaxOptions();
-
-      expect(hash).to.have.ownProperty('beforeSend');
-    });
-
-    it('asserts `authorize` is overridden', function() {
-      expect(function() {
-        adapter.ajaxOptions();
-        hash.beforeSend();
-      }).to.throw(/Assertion Failed/);
-    });
-
-    it('calls `authorize` when request is made', function() {
-      const authorize = sinon.spy();
-      adapter.authorize = authorize;
-      adapter.ajaxOptions();
-      hash.beforeSend();
-
-      expect(authorize).to.have.been.called;
-    });
-
-    it('shows a deprecation warning when `authorize` is called', function() {
-      let warnings = [];
-      registerDeprecationHandler((message, options, next) => {
-        warnings.push(message);
-        next(message, options);
-      });
-
-      adapter.authorize = () => {};
-      adapter.set('authorizer', null);
-      adapter.ajaxOptions();
-      hash.beforeSend();
-
-      expect(warnings[0]).to.eq('Ember Simple Auth: The authorize method should no longer be used. Instead, set the headers property or implement it as a computed property.');
-    });
-
-    it('preserves an existing beforeSend hook', function() {
-      const existingBeforeSend = sinon.spy();
-      const authorize = sinon.spy();
-      hash.beforeSend = existingBeforeSend;
-      adapter.authorize = authorize;
-      adapter.ajaxOptions();
-      hash.beforeSend();
-
-      expect(existingBeforeSend).to.have.been.called;
-    });
   });
 
   describe('#handleResponse', function() {

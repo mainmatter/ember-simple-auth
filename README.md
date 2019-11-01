@@ -293,52 +293,24 @@ into the respective route.
 In order to add authorization information to requests, you can use the session service
 to check if the session is authenticated and access authentication/authorization data, e.g. a token.
 
-
-We also provide the DataAdapterMixin for Ember Data adapters, that aids in injecting the authorization
-header on Ajax requests and also makes sure the session is invalidated if any of the requests returns
-an unauthorized response. It can be use as:
+We provide the DataAdapterMixin for Ember Data adapters, that injects the session service
+and also makes sure the session is invalidated if any of the requests returns an unauthorized response.
+It can be use as:
 
 ```js
-// OAuth 2
+// app/adapters/application.js
 import DS from 'ember-data';
-import { inject as service } from '@ember/service';
-import { isPresent } from '@ember/utils';
-import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
+import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
+import { computed } from '@ember/object';
 
 const { JSONAPIAdapter } = DS;
 
 export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  authorize(xhr) {
-    let { access_token } = this.get('session.data.authenticated');
-    if (isPresent(access_token)) {
-      xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
-    }
-  }
-});
-```
-
-The `authorize` method must be implemented in your adapter and set the header as expected by your
-authorization provider.
-
-In case you are using `ember-fetch`, the mixin can still be used for the included service and
-session invalidation feature, but the authorization header needs to be defined with the `headers`
-computed property.
-
-```js
-// Devise
-import DS from 'ember-data';
-import { inject as service } from '@ember/service';
-import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
-
-const { JSONAPIAdapter } = DS;
-
-export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  headers: computed('session.data.authenticated.token', function() {
+  headers: computed('session.data.authenticated.access_token', function() {
     let headers = {};
-
     if (this.session.isAuthenticated) {
-      let { email, token } = this.session.data.authenticated;
-      headers['Authorization'] = `Token token="${token}", email="${email}"`;
+      // OAuth 2
+      headers['Authorization'] = `Bearer ${this.session.data.authenticated.access_token}`;
     }
 
     return headers;

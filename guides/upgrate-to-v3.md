@@ -99,19 +99,22 @@ Examples:
 // OAuth 2
 import DS from 'ember-data';
 import { inject as service } from '@ember/service';
-import { isPresent } from '@ember/utils';
+import { computed } from '@ember/object';
 import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 
 const { JSONAPIAdapter } = DS;
 
 export default JSONAPIAdapter.extend(DataAdapterMixin, {
   session: service(),
-  authorize(xhr) {
-    let { access_token } = this.get('session.data.authenticated');
-    if (isPresent(access_token)) {
-      xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
+
+  headers: computed('session.data.authenticated.access_token', function() {
+    const headers = {};
+    if (this.session.isAuthenticated) {
+      headers['Authorization'] = `Bearer ${this.session.data.authenticated.access_token}`;
     }
-  }
+
+    return headers;
+  }),
 });
 
 // DataAdapterMixin already injects the `session` service. It is
@@ -127,26 +130,15 @@ import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 const { JSONAPIAdapter } = DS;
 
 export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  session: service(),
   // defaults
   // identificationAttributeName: 'email'
   // tokenAttributeName: 'token'
-  authorize(xhr) {
-    let { email, token } = this.get('session.data.authenticated');
-    let authData = `Token token="${token}", email="${email}"`;
-    xhr.setRequestHeader('Authorization', authData);
-  }
-});
-
-When used with `ember-fetch` the `authorize` method will not be called and the
-`headers` computed property must be used instead, e.g.:
-
-```js
-export default DS.JSONAPIAdapter.extend(AdapterFetch, DataAdapterMixin, {
   headers: computed('session.data.authenticated.token', function() {
-    const headers = {};
+    let headers = {};
+
     if (this.session.isAuthenticated) {
-      headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
+      let { email, token } = this.session.data.authenticated;
+      headers['Authorization'] = `Token token="${token}", email="${email}"`;
     }
 
     return headers;

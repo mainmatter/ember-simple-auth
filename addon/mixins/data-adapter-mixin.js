@@ -1,7 +1,5 @@
 import { inject as service } from '@ember/service';
-import { deprecate } from '@ember/application/deprecations';
 import Mixin from '@ember/object/mixin';
-import { assert } from '@ember/debug';
 
 /**
   __This mixin can be used to make Ember Data adapters authorize all outgoing
@@ -47,43 +45,6 @@ export default Mixin.create({
     @public
   */
   session: service('session'),
-
-  /**
-    Defines a `beforeSend` hook (see http://api.jquery.com/jQuery.ajax/) that
-    injects a request header containing the authorization data as constructed
-    by the {{#crossLink "DataAdapterMixin/authorize:method"}}{{/crossLink}}.
-
-    @method ajaxOptions
-    @deprecated DataAdapterMixin/ajaxOptions:method
-    @protected
-  */
-  ajaxOptions() {
-    let hash = this._super(...arguments);
-    let { beforeSend } = hash;
-
-    hash.beforeSend = xhr => {
-      this.authorize(xhr);
-
-      if (beforeSend) {
-        beforeSend(xhr);
-      }
-    };
-    return hash;
-  },
-
-  /**
-    This method is called by the {{#crossLink "DataAdapterMixin/ajaxOptions:method"}}{{/crossLink}}
-    and is responsible for adding the authorization header to the request.
-
-    It must be overriden on the application adapter that includes the mixin.
-
-    @method authorize
-    @param  {Object} request HTTP request where the header must be injected
-    @protected
-  */
-  authorize() {
-    assert('The `authorize` method should be overridden in your application adapter. It should accept a single argument, the request object.');
-  },
 
   /**
     This method is called for every response that the adapter receives from the
