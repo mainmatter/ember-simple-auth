@@ -160,3 +160,73 @@ incorrect behavior with OAuth2 Servers that had implemented the spec properly.
 
 We are now only sending the client id as a query parameter and have removed the `sendClientIdAsQueryParam`
 setting. If you have it set to `false` take into account that this has no effect.
+
+### Update to new testing syntax
+
+In this version of Ember Simple Auth, we've removed support for ember-cli-qunit 4.1.0 and earlier. In order to
+continue using our test helpers, you need to have ember-cli-qunit 4.2 or greater and migrate to the [more modern testing
+syntax](https://dockyard.com/blog/2018/01/11/modern-ember-testing).
+
+The new style testing helpers don't require the test application as a parameter anymore. The new signatures are:
+
+* `currentSession()` returns the current session.
+* `authenticateSession(sessionData)` authenticates the session asynchronously;
+  the optional `sessionData` argument can be used to mock an authenticator
+  response (e.g. a token or user).
+* `invalidateSession()` invalidates the session asynchronously.
+
+They can now be imported as:
+```js
+// tests/acceptance/…
+import { currentSession, authenticateSession, invalidateSession } from 'ember-simple-auth/test-support';
+```
+
+Here is an example of how a test might look with the old syntax and helpers vs the new one:
+
+```js
+//old syntax
+
+import Ember from 'ember';
+import { test } from 'qunit';
+import moduleForAcceptance from 'simple-tests/tests/helpers/module-for-acceptance';
+import { authenticateSession } from 'simple-tests/tests/helpers/ember-simple-auth';
+
+moduleForAcceptance('Acceptance | authentication');
+
+test('authenticated users can visit /super-secret-url', function(assert) {
+  // this will authenticate the current session of the test application
+  authenticateSession(this.application, {
+    userId: 1,
+    otherData: 'some-data'
+  });
+
+  andThen(() => {
+    visit('/super-secret-url');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/super-secret-url', 'user is on super-secret-url');
+    });
+  });
+});
+```
+
+```js
+//new modern syntax
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
+import { currentURL, visit } from '@ember/test-helpers';
+import { authenticateSession } from 'ember-simple-auth/test-support';
+
+module('Acceptance | super secret url', function(hooks) {
+  setupApplicationTest(hooks);
+
+  test('authenticated users can visit /super-secret-url', async function(assert) {
+    await authenticateSession({
+      userId: 1,
+      otherData: 'some-data'
+    });
+    await visit('/super-secret-url');
+    assert.equal(currentURL(), '/super-secret-url', 'user is on super-secret-url');
+  });
+});
+```
