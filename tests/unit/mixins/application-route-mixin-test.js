@@ -42,6 +42,11 @@ describe('ApplicationRouteMixin', () => {
     beforeEach(function() {
       sinon.spy(route, 'sessionAuthenticated');
       sinon.spy(route, 'sessionInvalidated');
+      sinon.stub(route, '_refresh');
+    });
+
+    afterEach(function() {
+      sinon.restore();
     });
 
     it("maps the services's 'authenticationSucceeded' event into a method call", function(done) {
