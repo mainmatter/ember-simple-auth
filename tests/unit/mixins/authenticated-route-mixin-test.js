@@ -72,10 +72,10 @@ describe('AuthenticatedRouteMixin', () => {
         session.set('isAuthenticated', true);
       });
 
-      it('returns the upstream promise', function() {
-        return route.beforeModel(transition).then((result) => {
-          expect(result).to.equal('upstreamReturnValue');
-        });
+      it('returns the upstream promise', async function() {
+        let result = await route.beforeModel(transition);
+
+        expect(result).to.equal('upstreamReturnValue');
       });
 
       it('does not transition to the authentication route', function() {

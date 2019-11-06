@@ -76,10 +76,10 @@ describe('UnauthenticatedRouteMixin', () => {
         expect(route.transitionTo).to.not.have.been.called;
       });
 
-      it('returns the upstream promise', function() {
-        return route.beforeModel().then((result) => {
-          expect(result).to.equal('upstreamReturnValue');
-        });
+      it('returns the upstream promise', async function() {
+        let result = await route.beforeModel();
+
+        expect(result).to.equal('upstreamReturnValue');
       });
     });
   });

@@ -24,11 +24,10 @@ describe('DeviseAuthenticator', () => {
 
   describe('#restore', function() {
     describe('when the data contains a token and email', function() {
-      it('resolves with the correct data', function(done) {
-        authenticator.restore({ token: 'secret token!', email: 'user@email.com' }).then((content) => {
-          expect(content).to.eql({ token: 'secret token!', email: 'user@email.com' });
-          done();
-        });
+      it('resolves with the correct data', async function() {
+        let content = await authenticator.restore({ token: 'secret token!', email: 'user@email.com' });
+
+        expect(content).to.eql({ token: 'secret token!', email: 'user@email.com' });
       });
     });
 
@@ -37,10 +36,10 @@ describe('DeviseAuthenticator', () => {
         authenticator = Devise.extend({ tokenAttributeName: 'employee.token', identificationAttributeName: 'employee.email' }).create();
       });
 
-      it('resolves with the correct data', function() {
-        return authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } }).then((content) => {
-          expect(content).to.eql({ employee: { token: 'secret token!', email: 'user@email.com' } });
-        });
+      it('resolves with the correct data', async function() {
+        let content = await authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } });
+
+        expect(content).to.eql({ employee: { token: 'secret token!', email: 'user@email.com' } });
       });
     });
   });
@@ -50,16 +49,15 @@ describe('DeviseAuthenticator', () => {
       server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!", "email": "email@address.com" }']);
     });
 
-    it('sends an AJAX request to the sign in endpoint', function() {
-      return authenticator.authenticate('identification', 'password').then(() => {
-        let [request] = server.handledRequests;
+    it('sends an AJAX request to the sign in endpoint', async function() {
+      await authenticator.authenticate('identification', 'password');
+      let [request] = server.handledRequests;
 
-        expect(request.url).to.eql('/users/sign_in');
-        expect(request.method).to.eql('POST');
-        expect(JSON.parse(request.requestBody)).to.eql({ user: { email: 'identification', password: 'password' } });
-        expect(request.requestHeaders['content-type']).to.eql('application/json');
-        expect(request.requestHeaders.accept).to.eql('application/json');
-      });
+      expect(request.url).to.eql('/users/sign_in');
+      expect(request.method).to.eql('POST');
+      expect(JSON.parse(request.requestBody)).to.eql({ user: { email: 'identification', password: 'password' } });
+      expect(request.requestHeaders['content-type']).to.eql('application/json');
+      expect(request.requestHeaders.accept).to.eql('application/json');
     });
 
     describe('when the authentication request is successful', function() {
@@ -67,29 +65,31 @@ describe('DeviseAuthenticator', () => {
         server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!", "email": "email@address.com" }']);
       });
 
-      it('resolves with the correct data', function(done) {
-        authenticator.authenticate('email@address.com', 'password').then((data) => {
-          expect(true).to.be.true;
-          expect(data).to.eql({ token: 'secret token!', email: 'email@address.com' });
-          done();
-        });
+      it('resolves with the correct data', async function() {
+        let data = await authenticator.authenticate('email@address.com', 'password');
+
+        expect(data).to.eql({ token: 'secret token!', email: 'email@address.com' });
       });
 
       describe('when the server returns incomplete data', function() {
-        it('fails when token is missing', function() {
+        it('fails when token is missing', async function() {
           server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "email": "email@address.com" }']);
 
-          return authenticator.authenticate('email@address.com', 'password').catch((error) => {
+          try {
+            await authenticator.authenticate('email@address.com', 'password');
+          } catch (error) {
             expect(error).to.eql('Check that server response includes token and email');
-          });
+          }
         });
 
-        it('fails when identification is missing', function() {
+        it('fails when identification is missing', async function() {
           server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!" }']);
 
-          return authenticator.authenticate('email@address.com', 'password').catch((error) => {
+          try {
+            await authenticator.authenticate('email@address.com', 'password');
+          } catch (error) {
             expect(error).to.eql('Check that server response includes token and email');
-          });
+          }
         });
       });
     });
@@ -99,14 +99,16 @@ describe('DeviseAuthenticator', () => {
         server.post('/users/sign_in', () => [400, { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' }, '{ "error": "invalid_grant" }']);
       });
 
-      it('rejects with the response', function() {
-        return authenticator.authenticate('username', 'password').catch((response) => {
+      it('rejects with the response', async function() {
+        try {
+          await authenticator.authenticate('username', 'password');
+        } catch (response) {
           expect(response.ok).to.be.false;
-        });
+        }
       });
     });
 
-    it('can customize the ajax request', function() {
+    it('can customize the ajax request', async function() {
       server.put('/login', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!", "email": "email@address.com" }']);
 
       authenticator = Devise.extend({
@@ -115,32 +117,33 @@ describe('DeviseAuthenticator', () => {
         }
       }).create();
 
-      return authenticator.authenticate('identification', 'password').then(() => {
-        let [request] = server.handledRequests;
+      await authenticator.authenticate('identification', 'password');
 
-        expect(request.url).to.eql('/login');
-        expect(request.method).to.eql('PUT');
-      });
+      let [request] = server.handledRequests;
+
+      expect(request.url).to.eql('/login');
+      expect(request.method).to.eql('PUT');
     });
 
-    it('can handle a resp with the namespace of the resource name', function(done) {
+    it('can handle a resp with the namespace of the resource name', async function() {
       server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "user": { "token": "secret token!", "email": "email@address.com" } }']);
 
-      authenticator.authenticate('email@address.com', 'password').then((data) => {
-        expect(true).to.be.true;
-        expect(data).to.eql({ token: 'secret token!', email: 'email@address.com' });
-        done();
-      });
+      let data = await authenticator.authenticate('email@address.com', 'password');
+
+      expect(true).to.be.true;
+      expect(data).to.eql({ token: 'secret token!', email: 'email@address.com' });
     });
 
   });
 
   describe('#invalidate', function() {
-    it('returns a resolving promise', function(done) {
-      authenticator.invalidate().then(() => {
+    it('returns a resolving promise', async function() {
+      try {
+        await authenticator.invalidate();
         expect(true).to.be.true;
-        done();
-      });
+      } catch (_error) {
+        expect(false).to.be.true;
+      }
     });
   });
 });

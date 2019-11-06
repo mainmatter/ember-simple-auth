@@ -67,10 +67,10 @@ describe('setupSessionRestoration', () => {
         sinon.stub(session, 'restore').returns(RSVP.resolve());
       });
 
-      it('returns the return value of the original "beforeModel" method', function() {
-        return route.beforeModel().then((value) => {
-          expect(value).to.eq('test');
-        });
+      it('returns the return value of the original "beforeModel" method', async function() {
+        let value = await route.beforeModel();
+
+        expect(value).to.eq('test');
       });
     });
 
@@ -79,10 +79,10 @@ describe('setupSessionRestoration', () => {
         sinon.stub(session, 'restore').returns(RSVP.reject());
       });
 
-      it('returns the return value of the original "beforeModel" method', function() {
-        return route.beforeModel().then((value) => {
-          expect(value).to.eq('test');
-        });
+      it('returns the return value of the original "beforeModel" method', async function() {
+        let value = await route.beforeModel();
+
+        expect(value).to.eq('test');
       });
     });
   });

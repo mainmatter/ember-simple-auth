@@ -7,7 +7,6 @@ import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import {
   describe,
   it,
-  beforeEach,
   afterEach
 } from 'mocha';
 import { setupApplicationTest } from 'ember-mocha';
@@ -34,26 +33,25 @@ describe('Acceptance: Authentication', function() {
       return;
     }
 
-    it('cannot be visited when the session is not authenticated', function() {
-      return invalidateSession()
-        .then(() => visit('/protected'))
-        .then(() => {
-          expect(currentURL()).to.eq('/login');
-        });
+    it('cannot be visited when the session is not authenticated', async function() {
+      await invalidateSession();
+      await visit('/protected');
+
+      expect(currentURL()).to.eq('/login');
     });
 
-    it('can be visited when the session is authenticated', function() {
+    it('can be visited when the session is authenticated', async function() {
       server = new Pretender(function() {
         this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
-      return authenticateSession({ userId: 1, otherData: 'some-data' })
-        .then(() => visit('/protected'))
-        .then(() => {
-          let session = currentSession();
-          expect(currentURL()).to.eq('/protected');
-          expect(session.get('data.authenticated.userId')).to.eql(1);
-          expect(session.get('data.authenticated.otherData')).to.eql('some-data');
-        });
+
+      await authenticateSession({ userId: 1, otherData: 'some-data' });
+      await visit('/protected');
+
+      let session = currentSession();
+      expect(currentURL()).to.eq('/protected');
+      expect(session.get('data.authenticated.userId')).to.eql(1);
+      expect(session.get('data.authenticated.otherData')).to.eql('some-data');
     });
   });
 
@@ -63,20 +61,18 @@ describe('Acceptance: Authentication', function() {
       return;
     }
 
-    it('can be visited when the session is not authenticated', function() {
-      return invalidateSession()
-        .then(() => visit('/login'))
-        .then(() => {
-          expect(currentURL()).to.eq('/login');
-        });
+    it('can be visited when the session is not authenticated', async function() {
+      await invalidateSession();
+      await visit('/login');
+
+      expect(currentURL()).to.eq('/login');
     });
 
-    it('cannot be visited when the session is authenticated', function() {
-      return authenticateSession()
-        .then(() => visit('/login'))
-        .then(() => {
-          expect(currentURL()).to.eq('/');
-        });
+    it('cannot be visited when the session is authenticated', async function() {
+      await authenticateSession();
+      await visit('/login');
+
+      expect(currentURL()).to.eq('/');
     });
   });
 });
