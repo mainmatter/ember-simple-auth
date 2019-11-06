@@ -1,7 +1,6 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
-import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 import { getOwner } from '@ember/application';
 
 /**
@@ -47,8 +46,6 @@ export default Mixin.create({
     @public
   */
   session: service('session'),
-
-  _isFastBoot: isFastBoot(),
 
   /**
     The route to transition to if a route that implements the

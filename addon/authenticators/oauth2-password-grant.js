@@ -3,6 +3,7 @@ import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
 import { A, makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
+import { getOwner } from '@ember/application';
 import {
   keys as emberKeys,
   merge,
@@ -329,7 +330,7 @@ export default BaseAuthenticator.extend({
   },
 
   _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
-    const refreshAccessTokens = this.get('refreshAccessTokens') && !isFastBoot();
+    const refreshAccessTokens = this.get('refreshAccessTokens') && !isFastBoot(getOwner(this));
     if (refreshAccessTokens) {
       const now = (new Date()).getTime();
       if (isEmpty(expiresAt) && !isEmpty(expiresIn)) {

@@ -6,11 +6,15 @@ import {
   afterEach,
   it
 } from 'mocha';
+import { setOwner } from '@ember/application';
+import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import Pretender from 'pretender';
 import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
 describe('OAuth2PasswordGrantAuthenticator', () => {
+  setupTest();
+
   let authenticator;
   let server;
   let parsePostData = ((query) => {
@@ -24,6 +28,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
   beforeEach(function() {
     authenticator = OAuth2PasswordGrant.create();
+    setOwner(authenticator, this.owner);
     server = new Pretender();
   });
 

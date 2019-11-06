@@ -3,7 +3,7 @@ import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
 import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
-import isFastBootCPM, { isFastBoot } from '../utils/is-fastboot';
+import isFastBoot from '../utils/is-fastboot';
 
 /**
  * If the user is unauthenticated, invoke `callback`
@@ -65,8 +65,6 @@ export default Mixin.create({
     let owner = getOwner(this);
     return owner.lookup('service:router') || owner.lookup('router:main');
   }),
-
-  _isFastBoot: isFastBootCPM(),
 
   /**
     The route to transition to for authentication. The
