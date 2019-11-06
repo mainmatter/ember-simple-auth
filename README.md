@@ -104,7 +104,7 @@ ember install ember-simple-auth
 
 ### Upgrading from a pre-3.0 release?
 The 3.0 release of ember-simple-auth removes previously deprecated code, introducing some breaking changes,
-but thankfully there in an [upgrade guide](guides/upgrade-to-v3.md).
+but thankfully there is an [upgrade guide](guides/upgrade-to-v3.md).
 
 ## Walkthrough
 
@@ -293,9 +293,9 @@ into the respective route.
 In order to add authorization information to requests, you can use the session service
 to check if the session is authenticated and access authentication/authorization data, e.g. a token.
 
-We provide the DataAdapterMixin for Ember Data adapters, that injects the session service
+We provide the `DataAdapterMixin` for Ember Data adapters, that injects the session service
 and also makes sure the session is invalidated if any of the requests returns an unauthorized response.
-It can be use as:
+It can be used as:
 
 ```js
 // app/adapters/application.js
