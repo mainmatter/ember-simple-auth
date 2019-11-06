@@ -64,7 +64,7 @@ export default function(options) {
       expect(cookieService.write).to.have.been.calledWith(
         'test-session',
         JSON.stringify({ key: 'value' }),
-        { domain: null, expires: null, path: '/', secure: false }
+        { domain: null, expires: null, path: '/', sameSite: null, secure: false }
       );
     });
 
@@ -81,7 +81,7 @@ export default function(options) {
       expect(cookieService.write).to.have.been.calledWith(
         'session-cookie-domain',
         JSON.stringify({ key: 'value' }),
-        { domain: 'example.com', expires: null, path: '/', secure: false }
+        { domain: 'example.com', expires: null, path: '/', sameSite: null, secure: false }
       );
     });
 
@@ -99,7 +99,25 @@ export default function(options) {
       expect(cookieService.write).to.have.been.calledWith(
         'session-cookie-domain',
         JSON.stringify({ key: 'value' }),
-        { domain: 'example.com', expires: null, path: '/hello-world', secure: false }
+        { domain: 'example.com', expires: null, path: '/hello-world', sameSite: null, secure: false }
+      );
+    });
+
+    it('respects the configured sameSite', function() {
+      let store;
+      run(() => {
+        store = createStore(cookieService, {
+          cookieName: 'session-cookie-domain',
+          cookieDomain: 'example.com',
+          sameSite: 'Strict'
+        });
+        store.persist({ key: 'value' });
+      });
+
+      expect(cookieService.write).to.have.been.calledWith(
+        'session-cookie-domain',
+        JSON.stringify({ key: 'value' }),
+        { domain: 'example.com', expires: null, path: '/', sameSite: 'Strict', secure: false }
       );
     });
 
