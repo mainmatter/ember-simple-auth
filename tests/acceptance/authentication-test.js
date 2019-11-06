@@ -1,10 +1,6 @@
 import { tryInvoke } from '@ember/utils';
 import {
   currentURL,
-  setupContext,
-  setupApplicationContext,
-  teardownApplicationContext,
-  teardownContext,
   visit
 } from '@ember/test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
@@ -14,6 +10,7 @@ import {
   beforeEach,
   afterEach
 } from 'mocha';
+import { setupApplicationTest } from 'ember-mocha';
 import { expect } from 'chai';
 import Pretender from 'pretender';
 import {
@@ -24,17 +21,11 @@ import {
 import config from '../../config/environment';
 
 describe('Acceptance: Authentication', function() {
-  let context;
+  setupApplicationTest();
   let server;
-
-  beforeEach(function() {
-    context = {};
-    return setupContext(context).then(() => setupApplicationContext(context));
-  });
 
   afterEach(function() {
     tryInvoke(server, 'shutdown');
-    return teardownApplicationContext(context).then(() => teardownContext(context));
   });
 
   describe('the protected route', function() {
