@@ -551,47 +551,51 @@ in `package.json`:
 
 ## Testing
 
-Ember Simple Auth comes with a __set of test helpers that can be used in
-acceptance tests__.
+Ember Simple Auth comes with a __set of test helpers that can be used in acceptance tests__.
 
-### ember-cli-qunit 4.2.0 and greater or ember-qunit 3.2.0 and greater
+Our helpers use the [more modern testing syntax](https://dockyard.com/blog/2018/01/11/modern-ember-testing)
+and therefore require `ember-cli-qunit` [4.2.0 or greater](https://github.com/ember-cli/ember-cli-qunit/blob/master/CHANGELOG.md#v420-2017-12-17)
+or `ember-qunit` 3.2.0 or greater.
 
-If your app is using `ember-cli-qunit` [4.2.0 or
-greater](https://github.com/ember-cli/ember-cli-qunit/blob/master/CHANGELOG.md#v420-2017-12-17) or `ember-qunit` 3.2.0 or greater,
-you may want to migrate to the [more modern testing
-syntax](https://dockyard.com/blog/2018/01/11/modern-ember-testing). In that
-case, helpers can be imported from the `ember-simple-auth` addon namespace.
-
-```js
-// tests/acceptance/…
-import { currentSession, authenticateSession, invalidateSession} from 'ember-simple-auth/test-support';
-```
-
-The new-style helpers have the following function signatures:
+We provide the following helpers:
 * `currentSession()` returns the current session.
 * `authenticateSession(sessionData)` authenticates the session asynchronously;
-  the optional `sessionData` argument can be used to mock an authenticator
-  response (e.g. a token or user).
+  the optional `sessionData` argument can be used to mock the response of an
+  authentication request, to provide a specific authorization token or user
+  data.
 * `invalidateSession()` invalidates the session asynchronously.
 
-New tests using the async `authenticateSession` helper will look like this:
+Which can be used as shown in the following example:
 
 ```js
 import { module, test } from 'qunit';
+import { visit, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
-import { currentURL, visit } from '@ember/test-helpers';
-import { authenticateSession } from 'ember-simple-auth/test-support';
+import { currentSession, authenticateSession, invalidateSession } from 'ember-simple-auth/test-support';
 
-module('Acceptance | super secret url', function(hooks) {
+module('Acceptance | app test', function(hooks) {
   setupApplicationTest(hooks);
 
-  test('authenticated users can visit /super-secret-url', async function(assert) {
+  test('/login redirects to index if user is alread logged in', async function(assert) {
     await authenticateSession({
-      userId: 1,
+      authToken: '12345',
       otherData: 'some-data'
     });
-    await visit('/super-secret-url');
-    assert.equal(currentURL(), '/super-secret-url', 'user is on super-secret-url');
+    await visit('/login');
+
+    assert.equal(currentURL(), '/');
+
+    let sessionData = currentSession().get('data.authenticated');
+    assert.equal(sessionData.authToken, '12345');
+    assert.equal(sessionData.otherData, 'some-data');
+  });
+
+  test('/protected redirects to /login if user is not logged in', async function(assert) {
+    await invalidateSession();
+
+    await visit('/protected');
+
+    assert.equal(currentURL(), '/login');
   });
 });
 ```
