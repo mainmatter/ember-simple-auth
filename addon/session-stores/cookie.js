@@ -85,6 +85,20 @@ export default BaseStore.extend({
   cookieDomain: persistingProperty(),
 
   /**
+    Allows servers to assert that a cookie ought not to be sent along with cross-site requests,
+    which provides some protection against cross-site request forgery attacks (CSRF).
+    Available options:
+    - "Strict"
+    - "Lax"
+    @property sameSite
+    @type String
+    @default null
+    @public
+  */
+  _sameSite: null,
+  sameSite: persistingProperty(),
+
+  /**
     The name of the cookie.
 
     @property cookieName
@@ -237,7 +251,8 @@ export default BaseStore.extend({
       domain: this.get('cookieDomain'),
       expires: isEmpty(expiration) ? null : new Date(expiration),
       path: this.get('cookiePath'),
-      secure: this._secureCookies()
+      secure: this._secureCookies(),
+      sameSite: this.get('sameSite')
     };
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach((oldCookie) => {
