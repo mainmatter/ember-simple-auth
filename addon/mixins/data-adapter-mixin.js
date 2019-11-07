@@ -3,6 +3,8 @@ import { deprecate } from '@ember/application/deprecations';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
 import { isPresent } from '@ember/utils';
+import DS from 'ember-data';
+const { VERSION } = DS;
 
 /**
   __This mixin can be used to make Ember Data adapters authorize all outgoing
@@ -125,7 +127,9 @@ export default Mixin.create({
   },
 
   authorize() {
-    assert('The `authorize` method should be overridden in your application adapter. It should accept a single argument, the request object.');
+    let [major_version] = VERSION.split('.');
+
+    assert('The `authorize` method should be overridden in your application adapter. It should accept a single argument, the request object.', major_version >= 2);
   },
 
   /**

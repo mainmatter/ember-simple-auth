@@ -528,7 +528,7 @@ export default Base.extend({
 ### Deprecation of Authorizers
 
 Authorizers and the session service's `authorize` method are deprecated and
-will be removed from Ember Simple Auth 2.0. The concept seemed like a good idea
+will be removed from Ember Simple Auth 3.0. The concept seemed like a good idea
 in the early days of Ember Simple Auth, but proved to provide limited value for
 the added complexity. To replace authorizers in an application, simply get the
 session data from the session service and inject it where needed.
@@ -550,7 +550,7 @@ import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 const { JSONAPIAdapter } = DS;
 
 export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  session: service(), 
+  session: service(),
   authorize(xhr) {
     let { access_token } = this.get('session.data.authenticated');
     if (isPresent(access_token)) {

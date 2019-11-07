@@ -3,7 +3,11 @@ import { registerDeprecationHandler } from '@ember/debug';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
+import DS from 'ember-data';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
+
+const { VERSION } = DS;
+const [ed_major_version] = VERSION.split('.');
 
 describe('DataAdapterMixin', () => {
   let sinon;
@@ -50,14 +54,17 @@ describe('DataAdapterMixin', () => {
       expect(hash).to.have.ownProperty('beforeSend');
     });
 
-    it('asserts `authorize` is overridden', function() {
-      adapter.set('authorizer', null);
+    if (ed_major_version < 2) {
+      it('asserts `authorize` is overridden', function() {
+        adapter.set('authorizer', null);
 
-      expect(function() {
-        adapter.ajaxOptions();
-        hash.beforeSend();
-      }).to.throw(/Assertion Failed/);
-    });
+
+        expect(function() {
+          adapter.ajaxOptions();
+          hash.beforeSend();
+        }).to.throw(/Assertion Failed/);
+      });
+    }
 
     it('calls `authorize` when request is made', function() {
       const authorize = sinon.spy();
