@@ -525,43 +525,47 @@ export default Base.extend({
 });
 ```
 
-### Deprecation of Authorizers
+### Deprecation of Authorizers and DataAdapterMixin authorize method
 
-Authorizers and the session service's `authorize` method are deprecated and
-will be removed from Ember Simple Auth 3.0. The concept seemed like a good idea
-in the early days of Ember Simple Auth, but proved to provide limited value for
-the added complexity. To replace authorizers in an application, simply get the
-session data from the session service and inject it where needed.
+Authorizers and the session service's `authorize` method where deprecated in Ember Simple Auth 1.6
+and will be removed in Ember Simple Auth 3.0. The concept seemed like a good idea in the early days of
+Ember Simple Auth, but proved to provide limited value for the added complexity.
 
-In most cases, authorizers are used with Ember Data adapters (refer to the
-[Ember Guides](https://guides.emberjs.com/v3.0.0/models/customizing-adapters/#toc_headers-customization)
-for details on adapters). Replacing authorizers in these scenarios is
-straightforward.
+Originally, we recommended replacing the use of authorizers by defining an `authorize` method on
+the application adapter that could use our `session` service to inject the authorization information.
 
-Examples:
+As of Ember Simple Auth 2.0, we've decided to also deprecate this `authorize` method, and instead recomend
+the use of Ember Data's `headers` property on the `application` adapter for this use case.
+
+To inject the `Authorization` information on a request, simply define the `headers` computed property on your
+adapter and get the needed session data from the session service. This works for both AJAX and fetch requests.
 
 ```js
 // OAuth 2
 import DS from 'ember-data';
 import { inject as service } from '@ember/service';
-import { isPresent } from '@ember/utils';
+import { computed } from '@ember/object';
 import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 
 const { JSONAPIAdapter } = DS;
 
 export default JSONAPIAdapter.extend(DataAdapterMixin, {
   session: service(),
-  authorize(xhr) {
-    let { access_token } = this.get('session.data.authenticated');
-    if (isPresent(access_token)) {
-      xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
+  headers: computed('session.data.authenticated.access_token', function() {
+    let headers = {};
+
+    if (this.get('session.isAuthenticated')) {
+      headers['Authorization'] = `Bearer ${this.get('session.data.authenticated.token')}`;
     }
-  }
+
+    return headers;
+  }),
 });
 
 // DataAdapterMixin already injects the `session` service. It is
 // included here for clarity.
 ```
+
 
 ```js
 // Devise
@@ -572,33 +576,21 @@ import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 const { JSONAPIAdapter } = DS;
 
 export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  session: service(),
   // defaults
   // identificationAttributeName: 'email'
   // tokenAttributeName: 'token'
-  authorize(xhr) {
+  headers: computed('session.data.authenticated.{email,token}', function() {
+    let headers = {};
     let { email, token } = this.get('session.data.authenticated');
-    let authData = `Token token="${token}", email="${email}"`;
-    xhr.setRequestHeader('Authorization', authData);
-  }
-});
-```
 
-When used with `ember-fetch` the `authorize` method will not be called and the
-`headers` computed property must be used instead, e.g.:
-
-```js
-export default DS.JSONAPIAdapter.extend(AdapterFetch, DataAdapterMixin, {
-  headers: computed('session.data.authenticated.token', function() {
-    const headers = {};
-    if (this.session.isAuthenticated) {
-      headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
-    }
+    headers['Authorization'] = `Token token="${token}", email="${email}"`;
 
     return headers;
   }),
 });
 ```
+
+* The `headers` property is available from Ember Data 2.0, for older versions you can continue to use the `authorize` method.
 
 ### Deprecation of Client ID as Header
 
