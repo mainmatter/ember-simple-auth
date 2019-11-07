@@ -1,5 +1,6 @@
+import EmberObject from '@ember/object';
 import Route from '@ember/routing/route';
-import { getOwner, setOwner } from '@ember/application';
+import { setupTest } from 'ember-mocha';
 import RSVP from 'rsvp';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
@@ -7,20 +8,14 @@ import sinonjs from 'sinon';
 import setupSessionRestoration from 'ember-simple-auth/initializers/setup-session-restoration';
 
 describe('setupSessionRestoration', () => {
+  setupTest();
+
   let sinon;
-  let registry;
-  let resolveStub;
-  let ApplicationRoute;
 
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
-    registry = {
-      resolve() {}
-    };
 
-    ApplicationRoute = Route.extend();
-
-    resolveStub = sinon.stub(registry, 'resolve');
+    this.owner.register('route:application', Route.extend());
   });
 
   afterEach(function() {
@@ -28,38 +23,30 @@ describe('setupSessionRestoration', () => {
   });
 
   it('adds a beforeModel method', function() {
-    resolveStub.withArgs('route:application').returns(ApplicationRoute);
-    setupSessionRestoration(registry);
+    setupSessionRestoration(this.owner);
 
-    const route = ApplicationRoute.create();
+    const route = this.owner.lookup('route:application');
     expect(route).to.respondTo('beforeModel');
   });
 
   describe('the beforeModel method', function() {
-    let session, route;
+    let session;
+    let route;
 
     beforeEach(function() {
-      session = {
+      this.owner.register('session:main', EmberObject.extend({
         restore() {}
-      };
+      }));
+      session = this.owner.lookup('session:main');
 
-      ApplicationRoute = Route.extend({
+      this.owner.register('route:application', Route.extend({
         beforeModel() {
           return RSVP.resolve('test');
         }
-      });
+      }));
+      route = this.owner.lookup('route:application');
 
-      resolveStub.withArgs('route:application').returns(ApplicationRoute);
-      setupSessionRestoration(registry);
-
-      route = ApplicationRoute.create({ container: {} });
-
-      if (setOwner) {
-        setOwner(route, { lookup() {} });
-      }
-
-      const owner = getOwner(route);
-      sinon.stub(owner, 'lookup').withArgs('session:main').returns(session);
+      setupSessionRestoration(this.owner);
     });
 
     describe('when session restoration resolves', function() {

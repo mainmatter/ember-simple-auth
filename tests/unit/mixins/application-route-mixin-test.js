@@ -1,37 +1,34 @@
-import Route from '@ember/routing/route';
 import { next } from '@ember/runloop';
+import Service from '@ember/service';
 import { describe, beforeEach, it } from 'mocha';
+import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
-import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
-import createWithContainer from '../../helpers/create-with-container';
-
 describe('ApplicationRouteMixin', () => {
+  setupTest();
+
   let sinon;
   let session;
+  let sessionService;
   let route;
-  let cookiesMock;
-  let containerMock;
 
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
+
     session = InternalSession.create({ store: EphemeralStore.create() });
-    cookiesMock = {
+    sessionService = this.owner.lookup('service:session');
+    sessionService.set('session', session);
+
+    this.owner.register('service:cookies', Service.extend({
       read: sinon.stub(),
       clear: sinon.stub()
-    };
-    containerMock = {
-      lookup: sinon.stub()
-    };
+    }));
 
-    containerMock.lookup.withArgs('service:cookies').returns(cookiesMock);
-
-    route = createWithContainer(Route.extend(ApplicationRouteMixin, {
-      transitionTo() {}
-    }), { session }, containerMock);
+    route = this.owner.lookup('route:application');
+    sinon.stub(route, 'transitionTo');
   });
 
   afterEach(function() {
@@ -50,7 +47,7 @@ describe('ApplicationRouteMixin', () => {
     });
 
     it("maps the services's 'authenticationSucceeded' event into a method call", function(done) {
-      session.trigger('authenticationSucceeded');
+      sessionService.trigger('authenticationSucceeded');
 
       next(() => {
         expect(route.sessionAuthenticated).to.have.been.calledOnce;
@@ -59,7 +56,7 @@ describe('ApplicationRouteMixin', () => {
     });
 
     it("maps the services's 'invalidationSucceeded' event into a method call", function(done) {
-      session.trigger('invalidationSucceeded');
+      sessionService.trigger('invalidationSucceeded');
 
       next(() => {
         expect(route.sessionInvalidated).to.have.been.calledOnce;
@@ -69,7 +66,7 @@ describe('ApplicationRouteMixin', () => {
 
     it('does not attach the event listeners twice', function(done) {
       route.beforeModel();
-      session.trigger('authenticationSucceeded');
+      sessionService.trigger('authenticationSucceeded');
 
       next(() => {
         expect(route.sessionAuthenticated).to.have.been.calledOnce;
@@ -79,22 +76,17 @@ describe('ApplicationRouteMixin', () => {
   });
 
   describe('sessionAuthenticated', function() {
-    beforeEach(function() {
-      sinon.spy(route, 'transitionTo');
-    });
-
     describe('when an attempted transition is stored in the session', function() {
       let attemptedTransition;
 
       beforeEach(function() {
         attemptedTransition = {
-          retry() {}
+          retry: sinon.stub()
         };
         session.set('attemptedTransition', attemptedTransition);
       });
 
       it('retries that transition', function() {
-        sinon.spy(attemptedTransition, 'retry');
         route.sessionAuthenticated();
 
         expect(attemptedTransition.retry).to.have.been.calledOnce;
@@ -110,9 +102,16 @@ describe('ApplicationRouteMixin', () => {
     describe('when a redirect target is stored in a cookie', function() {
       let cookieName = 'ember_simple_auth-redirectTarget';
       let targetUrl = 'transition/target/url';
+      let clearStub;
 
       beforeEach(function() {
-        cookiesMock.read.withArgs(cookieName).returns(targetUrl);
+        clearStub = sinon.stub();
+        this.owner.register('service:cookies', Service.extend({
+          read() {
+            return targetUrl;
+          },
+          clear: clearStub
+        }));
       });
 
       it('transitions to the url', function() {
@@ -124,7 +123,7 @@ describe('ApplicationRouteMixin', () => {
       it('clears the cookie', function() {
         route.sessionAuthenticated();
 
-        expect(cookiesMock.clear).to.have.been.calledWith(cookieName);
+        expect(clearStub).to.have.been.calledWith(cookieName);
       });
     });
 

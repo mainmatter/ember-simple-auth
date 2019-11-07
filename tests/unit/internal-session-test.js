@@ -1,6 +1,7 @@
 import RSVP from 'rsvp';
 import { next } from '@ember/runloop';
 import { describe, beforeEach, it } from 'mocha';
+import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
 import InternalSession from 'ember-simple-auth/internal-session';
@@ -10,19 +11,21 @@ import Authenticator from 'ember-simple-auth/authenticators/base';
 import createWithContainer from '../helpers/create-with-container';
 
 describe('InternalSession', () => {
+  setupTest();
+
   let sinon;
   let session;
   let store;
   let authenticator;
-  let container;
 
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
-    container = { lookup() {} };
+
     store = EphemeralStore.create();
     authenticator = Authenticator.create();
-    session = createWithContainer(InternalSession, { store }, container);
-    sinon.stub(container, 'lookup').withArgs('authenticator').returns(authenticator);
+    this.owner.register('authenticator:test', authenticator, { instantiate: false });
+
+    session = createWithContainer(InternalSession, { store }, this.owner);
   });
 
   afterEach(function() {
@@ -45,7 +48,7 @@ describe('InternalSession', () => {
         authenticator.trigger('sessionDataUpdated', { some: 'property' });
 
         next(() => {
-          expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator' });
+          expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator:test' });
           done();
         });
       });
@@ -134,7 +137,7 @@ describe('InternalSession', () => {
 
     describe('when the restored data contains an authenticator factory', function() {
       beforeEach(function() {
-        store.persist({ authenticated: { authenticator: 'authenticator' } });
+        store.persist({ authenticated: { authenticator: 'authenticator:test' } });
       });
 
       describe('when the authenticator resolves restoration', function() {
@@ -573,7 +576,7 @@ describe('InternalSession', () => {
           });
 
           it('is authenticated', function(done) {
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
             next(() => {
               expect(session.get('isAuthenticated')).to.be.true;
@@ -582,16 +585,16 @@ describe('InternalSession', () => {
           });
 
           it('stores the data the authenticator resolves with in its authenticated section', function(done) {
-            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator:test' } });
 
             next(() => {
-              expect(session.get('authenticated')).to.eql({ some: 'other property', authenticator: 'authenticator' });
+              expect(session.get('authenticated')).to.eql({ some: 'other property', authenticator: 'authenticator:test' });
               done();
             });
           });
 
           it('persists its content in the store', function(done) {
-            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator:test' } });
 
             next(async() => {
               let properties = await store.restore();
@@ -610,7 +613,7 @@ describe('InternalSession', () => {
             it('does not trigger the "authenticationSucceeded" event', function(done) {
               let triggered = false;
               session.one('authenticationSucceeded', () => (triggered = true));
-              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
               next(() => {
                 expect(triggered).to.be.false;
@@ -627,7 +630,7 @@ describe('InternalSession', () => {
             it('triggers the "authenticationSucceeded" event', function(done) {
               let triggered = false;
               session.one('authenticationSucceeded', () => (triggered = true));
-              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
               next(() => {
                 expect(triggered).to.be.true;
@@ -643,7 +646,7 @@ describe('InternalSession', () => {
           });
 
           it('is not authenticated', function(done) {
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
             next(() => {
               expect(session.get('isAuthenticated')).to.be.false;
@@ -653,7 +656,7 @@ describe('InternalSession', () => {
 
           it('clears its authenticated section', function(done) {
             session.set('content', { some: 'property', authenticated: { some: 'other property' } });
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
             next(() => {
               expect(session.get('content')).to.eql({ some: 'other property', authenticated: {} });
@@ -663,7 +666,7 @@ describe('InternalSession', () => {
 
           it('updates the store', function(done) {
             session.set('content', { some: 'property', authenticated: { some: 'other property' } });
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
             next(async() => {
               let properties = await store.restore();
@@ -682,7 +685,7 @@ describe('InternalSession', () => {
             it('triggers the "invalidationSucceeded" event', function(done) {
               let triggered = false;
               session.one('invalidationSucceeded', () => (triggered = true));
-              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
               next(() => {
                 expect(triggered).to.be.true;
@@ -699,7 +702,7 @@ describe('InternalSession', () => {
             it('does not trigger the "invalidationSucceeded" event', function(done) {
               let triggered = false;
               session.one('invalidationSucceeded', () => (triggered = true));
-              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
               next(() => {
                 expect(triggered).to.be.false;
@@ -799,7 +802,7 @@ describe('InternalSession', () => {
   });
 
   it('does not share the content object between multiple instances', function() {
-    let session2 = createWithContainer(InternalSession, { store }, container);
+    let session2 = createWithContainer(InternalSession, { store }, this.owner);
 
     expect(session2.get('content')).to.not.equal(session.get('content'));
   });
