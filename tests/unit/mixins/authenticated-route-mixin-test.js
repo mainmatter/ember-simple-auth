@@ -1,4 +1,5 @@
 import Mixin from '@ember/object/mixin';
+import { setOwner } from '@ember/application';
 import RSVP from 'rsvp';
 import Route from '@ember/routing/route';
 import Service from '@ember/service';
@@ -7,8 +8,6 @@ import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-
-import createWithContainer from '../../helpers/create-with-container';
 
 describe('AuthenticatedRouteMixin', () => {
   setupTest();
@@ -44,9 +43,10 @@ describe('AuthenticatedRouteMixin', () => {
 
       this.owner.register('service:session', Service.extend());
 
-      route = createWithContainer(Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {}), {
+      route = Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin).create({
         _authRouter: router
-      }, this.owner);
+      });
+      setOwner(route, this.owner);
 
       sinon.spy(transition, 'send');
       sinon.spy(router, 'transitionTo');

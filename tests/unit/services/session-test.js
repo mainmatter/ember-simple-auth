@@ -1,4 +1,5 @@
 import ObjectProxy from '@ember/object/proxy';
+import { setOwner } from '@ember/application';
 import Evented from '@ember/object/evented';
 import { next } from '@ember/runloop';
 import EmberObject, { set } from '@ember/object';
@@ -24,7 +25,8 @@ describe('SessionService', () => {
     this.owner.register('authorizer:custom', EmberObject.extend({
       authorize() {}
     }));
-    sessionService = createWithContainer(Session, { session }, this.owner);
+    sessionService = Session.create({ session });
+    setOwner(sessionService, this.owner);
   });
 
   afterEach(function() {

@@ -1,4 +1,5 @@
 import Mixin from '@ember/object/mixin';
+import { setOwner } from '@ember/application';
 import RSVP from 'rsvp';
 import Route from '@ember/routing/route';
 import Service from '@ember/service';
@@ -7,7 +8,6 @@ import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
 import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
-import createWithContainer from '../../helpers/create-with-container';
 
 describe('UnauthenticatedRouteMixin', () => {
   setupTest();
@@ -33,11 +33,12 @@ describe('UnauthenticatedRouteMixin', () => {
 
       this.owner.register('service:session', Service.extend());
 
-      route = createWithContainer(Route.extend(MixinImplementingBeforeModel, UnauthenticatedRouteMixin, {
+      route = Route.extend(MixinImplementingBeforeModel, UnauthenticatedRouteMixin, {
         // pretend this is never FastBoot
         // replace actual transitionTo as the router isn't set up etc.
         transitionTo() {}
-      }), {}, this.owner);
+      }).create();
+      setOwner(route, this.owner);
 
       sinon.spy(route, 'transitionTo');
     });
