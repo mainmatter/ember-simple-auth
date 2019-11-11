@@ -8,13 +8,13 @@ work with Ember Simple Auth 3.0 but are not officially supported.
 ### Move configuration options to routes
 
 Configuration options `authenticationRoute`, `routeAfterAuthentication` and ` routeIfAlreadyAuthenticated` can
-no longer be set as part of Ember Simple Auth's configuration, they now need to be overriden on the specific
+no longer be set as part of Ember Simple Auth's configuration, they now need to be overridden on the specific
 routes including the mixins that define them.
 
 **authenticationRoute**
 
 Defined in [`AuthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/AuthenticatedRouteMixin.html) with
-`'login'` as the default value, should be overriden as:
+`'login'` as the default value, should be overridden as:
 
 ```js app/routes/protected.js
   import Route from '@ember/routing/route';
@@ -28,7 +28,7 @@ Defined in [`AuthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/
 **routeAfterAuthentication**
 
 Defined in [`ApplicationRouteMixin`](http://ember-simple-auth.com/api/classes/ApplicationRouteMixin.html) with
-`'index'` as the default value, should be overriden as:
+`'index'` as the default value, should be overridden as:
 
 ```js app/routes/application.js
   import Route from '@ember/routing/route';
@@ -42,7 +42,7 @@ Defined in [`ApplicationRouteMixin`](http://ember-simple-auth.com/api/classes/Ap
 **routeIfAlreadyAuthenticated**
 
 Defined in [`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/UnauthenticatedRouteMixin.html) with
-`'index'` as the default value, should be overriden as:
+`'index'` as the default value, should be overridden as:
 
 ```js app/routes/application.js
   import Route from '@ember/routing/route';
@@ -53,7 +53,7 @@ Defined in [`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classe
   });
 ```
 
-### Make your custom session store asychronous
+### Make your custom session store asynchronous
 
 Synchronous session stores are no longer supported, custom `persist`, `restore` and `clear` methods should now return promises.
 The example below shows how to adapt your current stores using `RSVP`.
