@@ -76,7 +76,7 @@ describe('DataAdapterMixin', () => {
       expect(authorize).to.have.been.called;
     });
 
-    it('shows a deprecation warning when `authorize` is called', function() {
+    it('shows a deprecation warning when `authorize` was overriden and is called', function() {
       let warnings = [];
       registerDeprecationHandler((message, options, next) => {
         warnings.push(message);
@@ -89,6 +89,20 @@ describe('DataAdapterMixin', () => {
       hash.beforeSend();
 
       expect(warnings[0]).to.eq('Ember Simple Auth: The authorize method should no longer be used. Instead, set the headers property or implement it as a computed property.');
+    });
+
+    it('does not show a deprecation warning when `authorize` is not overriden', function() {
+      let warnings = [];
+      registerDeprecationHandler((message, options, next) => {
+        warnings.push(message);
+        next(message, options);
+      });
+
+      adapter.set('authorizer', null);
+      adapter.ajaxOptions();
+      hash.beforeSend();
+
+      expect(warnings.length).to.eq(0);
     });
 
     it('preserves an existing beforeSend hook', function() {
