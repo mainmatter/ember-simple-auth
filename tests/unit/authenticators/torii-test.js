@@ -10,7 +10,7 @@ describe('ToriiAuthenticator', () => {
   let torii;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
     torii = {
       fetch() {},
       open() {},

@@ -524,22 +524,11 @@ We're getting close now. We have an access token. We just need to use it.
 
 ### Using The Access Token
 
-The trick now is to get the access token into the `Authorization` header for every HTTP request. For this, ESA has
-authorizers and the `DataAdapterMixin`. You create the authorizer with a generator. Ember Simple Auth even gives you
-a mechanism to specify the base class for your generator.
-
-```
-ember g authorizer github --base-class=oauth2
-```
-
-If you look at GitHub's documentation, they say you need to send your token with the HTTP header `Authentication: token
-OAUTH-TOKEN`, but ESA's `oauth2-bearer` authorizer uses `Bearer` instead of `token`. Experimentation and GitHub Support
-confirm that you can also use `Bearer` which lets us use the stock ESA authorizer.
-
-Now we just need to get Ember Data to use the authorizer. If GitHub is the only data source we need for the application
-or at least the one we want to consider primary, we can create an `application` adapter. If we consider it the secondary
-data source, then we need to create an adapter per model. Because `ember-data-github` has several per-model adapters,
-we'll create the `github-user` adapter to start us off.
+The trick now is to get the access token into the `Authorization` header for every HTTP request. If you look at GitHub's documentation,
+they say you need to send your token with the HTTP header `Authentication: token OAUTH-TOKEN`. This can be done in an Ember Data adapter.
+If GitHub is the only data source we need for the application or at least the one we want to consider primary, we can create an `application`
+adapter. If we consider it the secondary data source, then we need to create an adapter per model. Because `ember-data-github` has several
+per-model adapters, we'll create the `github-user` adapter to start us off.
 
 ```
 ember g adapter github-user
@@ -549,15 +538,24 @@ ember g adapter github-user
 // app/adapters/github-user.js
 
 import GitHubUserAdapter from 'ember-data-github/adapters/github-user';
-import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
+import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 
 export default GitHubUserAdapter.extend(DataAdapterMixin, {
-  authorizer: 'authorizer:github'
+  headers: computed("session.data.authenticated.access_token", function() {
+    const headers = {};
+    if (this.session.isAuthenticated) {
+      headers.Authorization = `token ${
+        this.session.data.authenticated.access_token
+      }`;
+    }
+
+    return headers;
+  })
 });
 ```
 
-We are extending the `github-user` adapter with the `DataAdapterMixin`. It looks at the `authorizer` property to lookup
-the correct authorizer factory from Ember.
+This adapter injects an authorization header into the GitHub request now.  The `DataAdapterMixin` is a mixin provided by
+`ember-simple-auth` that injects the `session` service we use to generate the authentication header.
 
 ### Wrapping Up
 

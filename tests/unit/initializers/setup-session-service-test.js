@@ -8,7 +8,7 @@ describe('setupSessionService', () => {
   let registry;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
     registry = {
       injection() {}
     };

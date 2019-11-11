@@ -16,7 +16,7 @@
     "build": "ember build",
     "changelog": "lerna-changelog",
     "diagrams": "mermaid --sequenceConfig guides/assets/esa-initial-flow.config.json --width 2400 -o guides/assets guides/assets/esa-initial-flow.txt",
-    "lint": "eslint app addon blueprints config server test-support tests *.js",
+    "lint": "eslint app addon blueprints config server tests *.js",
     "now-build": "ember build --environment=production",
     "now-start": "NODE_ENV=production PORT=8000 node fastboot-server.js",
     "start": "ember serve",

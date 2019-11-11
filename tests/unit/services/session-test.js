@@ -2,33 +2,22 @@ import ObjectProxy from '@ember/object/proxy';
 import Evented from '@ember/object/evented';
 import { next } from '@ember/runloop';
 import { set } from '@ember/object';
-import { registerDeprecationHandler } from '@ember/debug';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
 import Session from 'ember-simple-auth/services/session';
 
-import createWithContainer from '../../helpers/create-with-container';
-
 describe('SessionService', () => {
   let sinon;
   let sessionService;
   let session;
-  let authorizer;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
     session = ObjectProxy.extend(Evented, {
       content: {}
     }).create();
-    authorizer = {
-      authorize() {}
-    };
-    let container = { lookup() {} };
-    let stub = sinon.stub(container, 'lookup');
-    stub.withArgs('authorizer').returns(authorizer);
-    stub.withArgs('bad-authorizer').returns(undefined);
-    sessionService = createWithContainer(Session, { session }, container);
+    sessionService = Session.create({ session });
   });
 
   afterEach(function() {
@@ -164,58 +153,6 @@ describe('SessionService', () => {
 
     it("returns the session's invalidation return value", function() {
       expect(sessionService.invalidate()).to.eq('value');
-    });
-  });
-
-  describe('authorize', function() {
-    describe('when the session is authenticated', function() {
-      beforeEach(function() {
-        sessionService.set('isAuthenticated', true);
-        sessionService.set('data', { authenticated: { some: 'data' } });
-      });
-
-      it('authorizes with the authorizer', function() {
-        sinon.spy(authorizer, 'authorize');
-        sessionService.authorize('authorizer', 'block');
-
-        expect(authorizer.authorize).to.have.been.calledWith({ some: 'data' }, 'block');
-      });
-
-      it("throws an error when the authorizer doesn't exist", function() {
-        expect(() => {
-          sessionService.authorize('bad-authorizer', 'block');
-        }).to.throw(Error, /No authorizer for factory/);
-      });
-
-      it("shows deprecation warning when 'authorize' is called", function() {
-        let warnings = [];
-        registerDeprecationHandler((message, options, next) => {
-          // in case a deprecation is issued before a test is started
-          if (!warnings) {
-            warnings = [];
-          }
-
-          warnings.push(message);
-          next(message, options);
-        });
-
-        sessionService.authorize('authorizer', 'block');
-        expect(warnings).to.have.length(1);
-        expect(warnings[0]).to.equal("Ember Simple Auth: 'authorize' is deprecated.");
-      });
-    });
-
-    describe('when the session is not authenticated', function() {
-      beforeEach(function() {
-        sessionService.set('isAuthenticated', false);
-      });
-
-      it('does not authorize', function() {
-        sinon.spy(authorizer, 'authorize');
-        sessionService.authorize('authorizer', 'block');
-
-        expect(authorizer.authorize).to.not.have.been.called;
-      });
     });
   });
 });

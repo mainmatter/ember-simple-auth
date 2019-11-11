@@ -16,7 +16,7 @@ describe('UnauthenticatedRouteMixin', () => {
   let containerMock;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
   });
 
   afterEach(function() {
@@ -51,7 +51,12 @@ describe('UnauthenticatedRouteMixin', () => {
         session.set('isAuthenticated', true);
       });
 
-      it('transitions to routeIfAlreadyAuthenticated', function() {
+      it('transitions to "index" by default', function() {
+        route.beforeModel();
+        expect(route.transitionTo).to.have.been.calledWith('index');
+      });
+
+      it('transitions to set routeIfAlreadyAuthenticated', function() {
         let routeIfAlreadyAuthenticated = 'path/to/route';
         route.set('routeIfAlreadyAuthenticated', routeIfAlreadyAuthenticated);
 

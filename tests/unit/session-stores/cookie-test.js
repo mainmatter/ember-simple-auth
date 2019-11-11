@@ -10,7 +10,7 @@ describe('CookieStore', () => {
   let store;
 
   beforeEach(function() {
-    sinon = sinonjs.sandbox.create();
+    sinon = sinonjs.createSandbox();
     store = createCookieStore(FakeCookieService.create());
   });
 

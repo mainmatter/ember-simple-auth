@@ -1,5 +1,4 @@
 import { tryInvoke } from '@ember/utils';
-import { registerDeprecationHandler } from '@ember/debug';
 import {
   describe,
   beforeEach,
@@ -63,20 +62,6 @@ describe('DeviseAuthenticator', () => {
       });
     });
 
-    it('shows a deprecation warning when rejectWithResponse is not enabled', function() {
-      authenticator.set('rejectWithResponse', false);
-
-      let warnings = [];
-      registerDeprecationHandler((message, options, next) => {
-        warnings.push(message);
-        next(message, options);
-      });
-
-      return authenticator.authenticate('identification', 'password').then(() => {
-        expect(warnings[0]).to.eq('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.');
-      });
-    });
-
     describe('when the authentication request is successful', function() {
       beforeEach(function() {
         server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!", "email": "email@address.com" }']);
@@ -114,21 +99,9 @@ describe('DeviseAuthenticator', () => {
         server.post('/users/sign_in', () => [400, { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' }, '{ "error": "invalid_grant" }']);
       });
 
-      it('rejects with the correct error', function() {
-        return authenticator.authenticate('email@address.com', 'password').catch((error) => {
-          expect(error).to.eql({ error: 'invalid_grant' });
-        });
-      });
-
-      describe('when reject with response is enabled', function() {
-        beforeEach(function() {
-          authenticator.set('rejectWithResponse', true);
-        });
-
-        it('rejects with the response', function() {
-          return authenticator.authenticate('username', 'password').catch((response) => {
-            expect(response.ok).to.be.false;
-          });
+      it('rejects with the response', function() {
+        return authenticator.authenticate('username', 'password').catch((response) => {
+          expect(response.ok).to.be.false;
         });
       });
     });

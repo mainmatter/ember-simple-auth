@@ -1,7 +1,6 @@
 import RSVP from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
-import { computed } from '@ember/object';
 import { A, makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
 import {
@@ -9,7 +8,6 @@ import {
   merge,
   assign as emberAssign
 } from '@ember/polyfills';
-import { deprecate } from '@ember/application/deprecations';
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
@@ -54,17 +52,6 @@ export default BaseAuthenticator.extend({
     @public
   */
   clientId: null,
-
-  /**
-   The OAuth2 standard is to send the client_id as a query parameter. This is a
-   feature flag that turns on the correct behavior for OAuth2 requests.
-
-   @property sendClientIdAsQueryParam
-   @type Boolean
-   @default false
-   @public
-  */
-  sendClientIdAsQueryParam: false,
 
   /**
     The endpoint on the server that authentication and token refresh requests
@@ -127,48 +114,6 @@ export default BaseAuthenticator.extend({
   },
 
   _refreshTokenTimeout: null,
-
-  _clientIdHeader: computed('clientId', function() {
-    const clientId = this.get('clientId');
-    if (!isEmpty(clientId)) {
-      const base64ClientId = window.base64.encode(clientId.concat(':'));
-      return { Authorization: `Basic ${base64ClientId}` };
-    }
-  }),
-
-  /**
-    When authentication fails, the rejection callback is provided with the whole
-    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
-    instead of its responseJSON or responseText.
-
-    This is useful for cases when the backend provides additional context not
-    available in the response body.
-
-    @property rejectWithXhr
-    @type Boolean
-    @default false
-    @deprecated OAuth2PasswordGrantAuthenticator/rejectWithResponse:property
-    @public
-  */
-  rejectWithXhr: computed.deprecatingAlias('rejectWithResponse', {
-    id: `ember-simple-auth.authenticator.reject-with-xhr`,
-    until: '3.0.0'
-  }),
-
-  /**
-    When authentication fails, the rejection callback is provided with the whole
-    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
-    instead of its responseJSON or responseText.
-
-    This is useful for cases when the backend provides additional context not
-    available in the response body.
-
-    @property rejectWithResponse
-    @type Boolean
-    @default false
-    @public
-  */
-  rejectWithResponse: false,
 
   /**
     Restores the session from a session data object; __will return a resolving
@@ -265,28 +210,9 @@ export default BaseAuthenticator.extend({
     @public
   */
   authenticate(identification, password, scope = [], headers = {}) {
-    if (!this.get('sendClientIdAsQueryParam')) {
-      deprecate(`Ember Simple Auth: Client ID as Authorization Header is deprecated in favour of Client ID as Query String Parameter.`,
-        false,
-        {
-          id: 'ember-simple-auth.oauth2-password-grant-authenticator.client-id-as-authorization',
-          until: '3.0.0',
-          url: 'https://github.com/simplabs/ember-simple-auth#deprecation-of-client-id-as-header',
-        }
-      );
-    }
-
     return new RSVP.Promise((resolve, reject) => {
       const data = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      const useResponse = this.get('rejectWithResponse');
-
-      if (!useResponse) {
-        deprecate('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.', false, {
-          id: `ember-simple-auth.authenticator.no-reject-with-response`,
-          until: '3.0.0'
-        });
-      }
 
       const scopesString = makeArray(scope).join(' ');
       if (!isEmpty(scopesString)) {
@@ -307,7 +233,7 @@ export default BaseAuthenticator.extend({
           resolve(response);
         });
       }, (response) => {
-        run(null, reject, useResponse ? response : (response.responseJSON || response.responseText));
+        run(null, reject, response);
       });
     });
   },
@@ -367,11 +293,9 @@ export default BaseAuthenticator.extend({
   makeRequest(url, data, headers = {}) {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
-    if (this.get('sendClientIdAsQueryParam')) {
-      const clientId = this.get('clientId');
-      if (!isEmpty(clientId)) {
-        data['client_id'] = this.get('clientId');
-      }
+    const clientId = this.get('clientId');
+    if (!isEmpty(clientId)) {
+      data['client_id'] = this.get('clientId');
     }
 
     const body = keys(data).map((key) => {
@@ -383,13 +307,6 @@ export default BaseAuthenticator.extend({
       headers,
       method: 'POST'
     };
-
-    if (!this.get('sendClientIdAsQueryParam')) {
-      const clientIdHeader = this.get('_clientIdHeader');
-      if (!isEmpty(clientIdHeader)) {
-        assign(options.headers, clientIdHeader);
-      }
-    }
 
     return new RSVP.Promise((resolve, reject) => {
       fetch(url, options).then((response) => {

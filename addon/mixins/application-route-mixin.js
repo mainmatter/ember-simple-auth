@@ -65,7 +65,7 @@ export default Mixin.create({
     @default 'index'
     @public
   */
-  routeAfterAuthentication: Configuration.routeAfterAuthentication,
+  routeAfterAuthentication: 'index',
 
   init() {
     this._super(...arguments);
@@ -90,7 +90,7 @@ export default Mixin.create({
     it. If there is no such transition, the `ember_simple_auth-redirectTarget`
     cookie will be checked for a url that represents an attemptedTransition
     that was aborted in Fastboot mode, otherwise this action transitions to the
-    {{#crossLink "Configuration/routeAfterAuthentication:property"}}{{/crossLink}}.
+    {{#crossLink "AuthenticatedRouteMixin/routeAfterAuthentication:property"}}{{/crossLink}}.
 
 
     @method sessionAuthenticated
