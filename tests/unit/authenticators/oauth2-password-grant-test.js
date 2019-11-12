@@ -8,6 +8,7 @@ import {
 } from 'mocha';
 import { expect } from 'chai';
 import Pretender from 'pretender';
+import fetch from 'fetch';
 import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
 import { registerDeprecationHandler } from '@ember/debug';
 
@@ -485,6 +486,33 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           });
 
           authenticator._refreshAccessToken(12345, 'refresh token!');
+        });
+      });
+    });
+  });
+
+  describe('#makeRequest', function() {
+    describe('when overridden in a custom authenticator', function() {
+      let authenticator;
+
+      beforeEach(function() {
+        authenticator = OAuth2PasswordGrant.extend({
+          makeRequest() {
+            return fetch('/token', { method: 'POST' }).then((response) => response.json());
+          }
+        }).create();
+        server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }']);
+      });
+
+      it('shows a deprecation warning when not resolcing with a Response object', function() {
+        let warnings = [];
+        registerDeprecationHandler((message, options, next) => {
+          warnings.push(message);
+          next(message, options);
+        });
+
+        return authenticator.authenticate('username', 'password').then(() => {
+          expect(warnings[2]).to.eq('Ember Simple Auth: Returning anything but an instance of the Response class from makeRequest is deprecated.');
         });
       });
     });

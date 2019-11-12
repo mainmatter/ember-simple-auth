@@ -199,7 +199,7 @@ export default BaseAuthenticator.extend({
           reject();
         }
       } else {
-        if (!this._validate(data)) {
+        if (!this._validateResponse(data)) {
           reject();
         } else {
           this._scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
@@ -279,35 +279,34 @@ export default BaseAuthenticator.extend({
     return new RSVP.Promise((resolve, reject) => {
       const data = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      const useResponse = this.get('rejectWithResponse');
 
-      if (!useResponse) {
-        deprecate('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.', false, {
-          id: `ember-simple-auth.authenticator.no-reject-with-response`,
-          until: '3.0.0'
-        });
-      }
+      const rejectWithResponse = this.get('rejectWithResponse');
+      deprecateNotRejectingWithResponse(rejectWithResponse);
 
       const scopesString = makeArray(scope).join(' ');
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
       }
       this.makeRequest(serverTokenEndpoint, data, headers).then((response) => {
-        run(() => {
-          if (!this._validate(response)) {
-            reject('access_token is missing in server response');
-          }
+        deprecatePlainReturnValuesFromMakeRequest(response);
 
-          const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
-          this._scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
-          if (!isEmpty(expiresAt)) {
-            response = assign(response, { 'expires_at': expiresAt });
-          }
+        this._parseResponse(response, rejectWithResponse).then((json) => {
+          run(() => {
+            if (!this._validateResponse(json)) {
+              reject('access_token is missing in server response');
+            }
 
-          resolve(response);
-        });
+            const expiresAt = this._absolutizeExpirationTime(json['expires_in']);
+            this._scheduleAccessTokenRefresh(json['expires_in'], expiresAt, json['refresh_token']);
+            if (!isEmpty(expiresAt)) {
+              json = assign(json, { 'expires_at': expiresAt });
+            }
+
+            resolve(json);
+          }).catch(reject);
+        }).catch(reject);
       }, (response) => {
-        run(null, reject, useResponse ? response : (response.responseJSON || response.responseText));
+        run(null, reject, rejectWithResponse ? response : (response.responseJSON || response.responseText));
       });
     });
   },
@@ -346,10 +345,16 @@ export default BaseAuthenticator.extend({
             }));
           }
         });
+
+        const rejectWithResponse = this.get('rejectWithResponse');
+        deprecateNotRejectingWithResponse(rejectWithResponse);
+
         const succeed = () => {
           success.apply(this, [resolve]);
         };
-        RSVP.all(requests).then(succeed, succeed);
+        RSVP.all(requests).then((responses) => {
+          RSVP.all(responses.map((response) => this._parseResponse(response, rejectWithResponse)));
+        }).then(succeed).catch(succeed);
       }
     });
   },
@@ -392,52 +397,7 @@ export default BaseAuthenticator.extend({
     }
 
     return new RSVP.Promise((resolve, reject) => {
-      fetch(url, options).then((response) => {
-        response.text().then((text) => {
-          try {
-            let json = JSON.parse(text);
-            if (!response.ok) {
-              Object.defineProperty(
-                response,
-                'responseJSON',
-                {
-                  get() {
-                    deprecate(`Ember Simple Auth: The response's responseJSON property is deprecated.`,
-                      false,
-                      {
-                        id: 'ember-simple-auth.oauth2-password-grant-authenticator.response-json',
-                        until: '3.0.0',
-                      }
-                    );
-                    return json;
-                  }
-                }
-              );
-              reject(response);
-            } else {
-              resolve(json);
-            }
-          } catch (SyntaxError) {
-            Object.defineProperty(
-              response,
-              'responseText',
-              {
-                get() {
-                  deprecate(`Ember Simple Auth: The response's responseText property is deprecated.`,
-                    false,
-                    {
-                      id: 'ember-simple-auth.oauth2-password-grant-authenticator.response-text',
-                      until: '3.0.0',
-                    }
-                  );
-                  return text;
-                }
-              }
-            );
-            reject(response);
-          }
-        });
-      }).catch(reject);
+      fetch(url, options).then(resolve).catch(reject);
     });
   },
 
@@ -464,15 +424,22 @@ export default BaseAuthenticator.extend({
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return new RSVP.Promise((resolve, reject) => {
       this.makeRequest(serverTokenEndpoint, data).then((response) => {
-        run(() => {
-          expiresIn = response['expires_in'] || expiresIn;
-          refreshToken = response['refresh_token'] || refreshToken;
-          const expiresAt = this._absolutizeExpirationTime(expiresIn);
-          const data = assign(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
-          this._scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
-          this.trigger('sessionDataUpdated', data);
-          resolve(data);
-        });
+        deprecatePlainReturnValuesFromMakeRequest(response);
+
+        const rejectWithResponse = this.get('rejectWithResponse');
+        deprecateNotRejectingWithResponse(rejectWithResponse);
+
+        this._parseResponse(response, rejectWithResponse).then((json) => {
+          run(() => {
+            expiresIn = json['expires_in'] || expiresIn;
+            refreshToken = json['refresh_token'] || refreshToken;
+            const expiresAt = this._absolutizeExpirationTime(expiresIn);
+            const data = assign(json, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
+            this._scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
+            this.trigger('sessionDataUpdated', data);
+            resolve(data);
+          }).catch(reject);
+        }).catch(reject);
       }, (response) => {
         warn(`Access token could not be refreshed - server responded with ${response.responseJSON}.`, false, { id: 'ember-simple-auth.failedOAuth2TokenRefresh' });
         reject();
@@ -486,7 +453,89 @@ export default BaseAuthenticator.extend({
     }
   },
 
-  _validate(data) {
+  _parseResponse(response, rejectWithResponse) {
+    if (response.constructor.name !== 'Response') {
+      return Promise.resolve(response);
+    }
+
+    return response.text().then((text) => {
+      return new RSVP.Promise((resolve, reject) => {
+        try {
+          let json = JSON.parse(text);
+          if (!response.ok) {
+            Object.defineProperty(
+              response,
+              'responseJSON',
+              {
+                get() {
+                  deprecate(`Ember Simple Auth: The response's responseJSON property is deprecated.`,
+                    false,
+                    {
+                      id: 'ember-simple-auth.oauth2-password-grant-authenticator.response-json',
+                      until: '3.0.0',
+                    }
+                  );
+                  return json;
+                }
+              }
+            );
+            if (rejectWithResponse) {
+              reject(response);
+            } else {
+              reject(json);
+            }
+          } else {
+            resolve(json);
+          }
+        } catch (SyntaxError) {
+          Object.defineProperty(
+            response,
+            'responseText',
+            {
+              get() {
+                deprecate(`Ember Simple Auth: The response's responseText property is deprecated.`,
+                  false,
+                  {
+                    id: 'ember-simple-auth.oauth2-password-grant-authenticator.response-text',
+                    until: '3.0.0',
+                  }
+                );
+                return text;
+              }
+            }
+          );
+          if (rejectWithResponse) {
+            reject(response);
+          } else {
+            reject(text);
+          }
+        }
+      });
+    });
+  },
+
+  _validateResponse(data) {
     return !isEmpty(data['access_token']);
   }
 });
+
+function deprecatePlainReturnValuesFromMakeRequest(value) {
+  if (value.constructor.name !== 'Response') {
+    deprecate(`Ember Simple Auth: Returning anything but an instance of the Response class from makeRequest is deprecated.`,
+      false,
+      {
+        id: 'ember-simple-auth.oauth2-password-grant-authenticator.response-from-make-request',
+        until: '3.0.0',
+      }
+    );
+  }
+}
+
+function deprecateNotRejectingWithResponse(rejectWithResponse) {
+  if (!rejectWithResponse) {
+    deprecate('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.', false, {
+      id: `ember-simple-auth.authenticator.no-reject-with-response`,
+      until: '3.0.0'
+    });
+  }
+}
