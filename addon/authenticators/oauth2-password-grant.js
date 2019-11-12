@@ -397,13 +397,43 @@ export default BaseAuthenticator.extend({
           try {
             let json = JSON.parse(text);
             if (!response.ok) {
-              response.responseJSON = json;
+              Object.defineProperty(
+                response,
+                'responseJSON',
+                {
+                  get() {
+                    deprecate(`Ember Simple Auth: The response's responseJSON property is deprecated.`,
+                      false,
+                      {
+                        id: 'ember-simple-auth.oauth2-password-grant-authenticator.response-json',
+                        until: '3.0.0',
+                      }
+                    );
+                    return json;
+                  }
+                }
+              );
               reject(response);
             } else {
               resolve(json);
             }
           } catch (SyntaxError) {
-            response.responseText = text;
+            Object.defineProperty(
+              response,
+              'responseText',
+              {
+                get() {
+                  deprecate(`Ember Simple Auth: The response's responseText property is deprecated.`,
+                    false,
+                    {
+                      id: 'ember-simple-auth.oauth2-password-grant-authenticator.response-text',
+                      until: '3.0.0',
+                    }
+                  );
+                  return text;
+                }
+              }
+            );
             reject(response);
           }
         });

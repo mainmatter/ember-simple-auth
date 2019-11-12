@@ -290,6 +290,19 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           });
         });
 
+        it('shows a deprecation warning when accessing the responseJSON property', function() {
+          let warnings = [];
+          registerDeprecationHandler((message, options, next) => {
+            warnings.push(message);
+            next(message, options);
+          });
+
+          return authenticator.authenticate('username', 'password').catch((error) => {
+            error.responseJSON; // triggering deprecation
+            expect(warnings[1]).to.eq(`Ember Simple Auth: The response's responseJSON property is deprecated.`);
+          });
+        });
+
         it('provides access to custom headers', function() {
           return authenticator.authenticate('username', 'password').catch((error) => {
             expect(error.headers.get('x-custom-context')).to.eql('foobar');
@@ -319,6 +332,19 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           return authenticator.authenticate('username', 'password').catch((error) => {
             expect(error.responseJSON).to.not.exist;
             expect(error.responseText).to.eql('The server has failed completely.');
+          });
+        });
+
+        it('shows a deprecation warning when accessing the responseText property', function() {
+          let warnings = [];
+          registerDeprecationHandler((message, options, next) => {
+            warnings.push(message);
+            next(message, options);
+          });
+
+          return authenticator.authenticate('username', 'password').catch((error) => {
+            error.responseText; // triggering deprecation
+            expect(warnings[1]).to.eq(`Ember Simple Auth: The response's responseText property is deprecated.`);
           });
         });
 
