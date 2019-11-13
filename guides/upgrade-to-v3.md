@@ -21,7 +21,7 @@ Defined in [`AuthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/
   import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
   export default Route.extend(AuthenticatedRouteMixin, {
-    routeAfterAuthentication: 'signin',
+    authenticationRoute: 'signin',
   });
 ```
 
@@ -49,7 +49,7 @@ Defined in [`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classe
   import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 
   export default Route.extend(UnauthenticatedRouteMixin, {
-    routeAfterAuthentication: 'search',
+    routeIfAlreadyAuthenticated: 'search',
   });
 ```
 
