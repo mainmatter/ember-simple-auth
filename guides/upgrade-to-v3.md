@@ -17,12 +17,12 @@ Defined in [`AuthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/
 `'login'` as the default value, should be overridden as:
 
 ```js app/routes/protected.js
-  import Route from '@ember/routing/route';
-  import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import Route from '@ember/routing/route';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-  export default Route.extend(AuthenticatedRouteMixin, {
-    authenticationRoute: 'signin',
-  });
+export default Route.extend(AuthenticatedRouteMixin, {
+  authenticationRoute: 'signin',
+});
 ```
 
 **routeAfterAuthentication**
@@ -31,12 +31,12 @@ Defined in [`ApplicationRouteMixin`](http://ember-simple-auth.com/api/classes/Ap
 `'index'` as the default value, should be overridden as:
 
 ```js app/routes/application.js
-  import Route from '@ember/routing/route';
-  import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+import Route from '@ember/routing/route';
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-  export default Route.extend(ApplicationRouteMixin, {
-    routeAfterAuthentication: 'profile',
-  });
+export default Route.extend(ApplicationRouteMixin, {
+  routeAfterAuthentication: 'profile',
+});
 ```
 
 **routeIfAlreadyAuthenticated**
@@ -45,12 +45,12 @@ Defined in [`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classe
 `'index'` as the default value, should be overridden as:
 
 ```js app/routes/application.js
-  import Route from '@ember/routing/route';
-  import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
+import Route from '@ember/routing/route';
+import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 
-  export default Route.extend(UnauthenticatedRouteMixin, {
-    routeIfAlreadyAuthenticated: 'search',
-  });
+export default Route.extend(UnauthenticatedRouteMixin, {
+  routeIfAlreadyAuthenticated: 'search',
+});
 ```
 
 ### Make your custom session store asynchronous
