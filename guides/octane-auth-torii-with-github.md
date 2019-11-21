@@ -188,7 +188,7 @@ Now let’s create our skeletal templates by editing the three files in
 <p>
   {{#if this.session.isAuthenticated}}
     Authenticated <br>
-    <button onclick={{this.logout}}>Log Out</button>
+    <button {{on "click" this.logout}}>Log Out</button>
   {{else}}
     Unauthenticated
   {{/if}}
@@ -404,7 +404,7 @@ Change the `login` template to send the `login()` action when the button is pres
 ```handlebars
 {{!-- app/templates/login.hbs --}}
 <h3>Login Route</h3>
-<button onclick={{this.login}}>Log in to GitHub</button>
+<button {{on "click" this.login}}>Log in to GitHub</button>
 ```
 
 The “Log Out” button was already associated with the `logout()` action, but
