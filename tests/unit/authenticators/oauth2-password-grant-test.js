@@ -115,6 +115,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           'password': 'password'
         });
         done();
+
+        return [201, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }'];
       });
 
       authenticator.authenticate('username', 'password');
@@ -124,6 +126,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       server.post('/token', (request) => {
         expect(request.requestHeaders['authorization']).to.eql('Basic dGVzdC1jbGllbnQ6');
         done();
+
+        return [201, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }'];
       });
 
       authenticator.set('clientId', 'test-client');
@@ -142,7 +146,11 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         next(message, options);
       });
 
-      server.post('/token', () => done());
+      server.post('/token', () => {
+        done();
+
+        return [201, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }'];
+      });
       authenticator.set('clientId', 'test-client');
       authenticator.authenticate('username', 'password');
 
@@ -159,6 +167,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           'password': 'password'
         });
         done();
+
+        return [201, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }'];
       });
 
       authenticator.set('sendClientIdAsQueryParam', true);
@@ -170,6 +180,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       server.post('/token', (request) => {
         expect(request.requestHeaders['x-custom-context']).to.eql('foobar');
         done();
+
+        return [201, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }'];
       });
 
       authenticator.authenticate('username', 'password', [], { 'X-Custom-Context': 'foobar' });
@@ -181,6 +193,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         let { scope } = parsePostData(requestBody);
         expect(scope).to.eql('public');
         done();
+
+        return [201, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }'];
       });
 
       authenticator.authenticate('username', 'password', 'public');
@@ -192,6 +206,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         let { scope } = parsePostData(requestBody);
         expect(scope).to.eql('public private');
         done();
+
+        return [201, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }'];
       });
 
       authenticator.authenticate('username', 'password', ['public', 'private']);
@@ -204,6 +220,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         let { scope } = parsePostData(requestBody);
         expect(scope).to.eql('public private');
         done();
+
+        return [201, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }'];
       });
 
       let warnings = [];
@@ -212,7 +230,11 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         next(message, options);
       });
 
-      server.post('/token', () => done());
+      server.post('/token', () => {
+        done();
+
+        return [201, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }'];
+      });
       authenticator.authenticate('username', 'password');
 
       expect(warnings[1]).to.eq('Ember Simple Auth: The default value of false for the rejectWithResponse property should no longer be relied on; instead set the property to true to enable the future behavior.');

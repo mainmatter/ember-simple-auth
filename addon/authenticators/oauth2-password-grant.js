@@ -305,8 +305,8 @@ export default BaseAuthenticator.extend({
             resolve(json);
           }).catch(reject);
         }).catch(reject);
-      }, (response) => {
-        run(null, reject, rejectWithResponse ? response : (response.responseJSON || response.responseText));
+      }, (error) => {
+        run(null, reject, error);
       });
     });
   },
@@ -440,8 +440,8 @@ export default BaseAuthenticator.extend({
             resolve(data);
           }).catch(reject);
         }).catch(reject);
-      }, (response) => {
-        warn(`Access token could not be refreshed - server responded with ${response.responseJSON}.`, false, { id: 'ember-simple-auth.failedOAuth2TokenRefresh' });
+      }, (body) => {
+        warn(`Access token could not be refreshed - server responded with ${body}.`, false, { id: 'ember-simple-auth.failedOAuth2TokenRefresh' });
         reject();
       });
     });
