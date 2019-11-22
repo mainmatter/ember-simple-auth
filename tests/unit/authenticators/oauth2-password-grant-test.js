@@ -504,7 +504,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }']);
       });
 
-      it('shows a deprecation warning when not resolcing with a Response object', function() {
+      it('shows a deprecation warning when not resolving with a Response object', function() {
         let warnings = [];
         registerDeprecationHandler((message, options, next) => {
           warnings.push(message);
