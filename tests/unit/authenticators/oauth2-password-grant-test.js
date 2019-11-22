@@ -59,6 +59,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
             it('returns a rejecting promise', async function() {
               try {
                 await authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 });
+                expect(false).to.be.true;
               } catch (_error) {
                 expect(true).to.be.true;
               }
@@ -74,6 +75,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           it('returns a rejecting promise', async function() {
             try {
               await authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 });
+              expect(false).to.be.true;
             } catch (_error) {
               expect(true).to.be.true;
             }
@@ -207,6 +209,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
           try {
             await authenticator.authenticate('username', 'password');
+            expect(false).to.be.true;
           } catch (error) {
             expect(error).to.eql('access_token is missing in server response');
           }
@@ -219,6 +222,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
           try {
             await authenticator.authenticate('username', 'password');
+            expect(false).to.be.true;
           } catch (error) {
             expect(error.responseText).to.eql('Something went wrong');
           }
@@ -234,6 +238,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       it('rejects with response object containing responseJSON', async function() {
         try {
           await authenticator.authenticate('username', 'password');
+          expect(false).to.be.true;
         } catch (error) {
           expect(error.responseJSON).to.eql({ error: 'invalid_grant' });
         }
@@ -242,6 +247,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       it('provides access to custom headers', async function() {
         try {
           await authenticator.authenticate('username', 'password');
+          expect(false).to.be.true;
         } catch (error) {
           expect(error.headers.get('x-custom-context')).to.eql('foobar');
         }
@@ -256,6 +262,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       it('rejects with response object containing responseText', async function() {
         try {
           await authenticator.authenticate('username', 'password');
+          expect(false).to.be.true;
         } catch (error) {
           expect(error.responseJSON).to.not.exist;
           expect(error.responseText).to.eql('The server has failed completely.');
@@ -265,6 +272,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       it('provides access to custom headers', async function() {
         try {
           await authenticator.authenticate('username', 'password');
+          expect(false).to.be.true;
         } catch (error) {
           expect(error.headers.get('x-custom-context')).to.eql('foobar');
         }

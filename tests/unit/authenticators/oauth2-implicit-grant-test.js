@@ -26,6 +26,7 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
         it('returns a rejecting promise', async function() {
           try {
             await authenticator.restore();
+            expect(false).to.be.true;
           } catch (error) {
             expect(error).to.eql('Could not restore session - "access_token" missing.');
           }
@@ -47,6 +48,7 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
       it('rejects with an error', async function() {
         try {
           await authenticator.authenticate({ foo: 'bar' });
+          expect(false).to.be.true;
         } catch (error) {
           expect(error).to.eql('Invalid auth params - "access_token" missing.');
         }
@@ -57,6 +59,7 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
       it('rejects with that error', async function() {
         try {
           await authenticator.authenticate({ error: 'access_denied' });
+          expect(false).to.be.true;
         } catch (error) {
           expect(error).to.eql('access_denied');
         }

@@ -77,6 +77,7 @@ describe('DeviseAuthenticator', () => {
 
           try {
             await authenticator.authenticate('email@address.com', 'password');
+            expect(false).to.be.true;
           } catch (error) {
             expect(error).to.eql('Check that server response includes token and email');
           }
@@ -87,6 +88,7 @@ describe('DeviseAuthenticator', () => {
 
           try {
             await authenticator.authenticate('email@address.com', 'password');
+            expect(false).to.be.true;
           } catch (error) {
             expect(error).to.eql('Check that server response includes token and email');
           }
@@ -102,6 +104,7 @@ describe('DeviseAuthenticator', () => {
       it('rejects with the response', async function() {
         try {
           await authenticator.authenticate('username', 'password');
+          expect(false).to.be.true;
         } catch (response) {
           expect(response.ok).to.be.false;
         }
