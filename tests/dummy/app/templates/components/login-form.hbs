@@ -1,7 +1,7 @@
 {{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
-<a {{action 'authenticateWithFacebook'}} class="btn btn-default" style="cursor: pointer;">Login with Facebook</a>
+<a {{action 'authenticateWithFacebook'}} class="btn btn-primary" href="#" role="button">Login with Facebook</a>
 <hr/>
-<a {{action 'authenticateWithGoogleImplicitGrant'}} class="btn btn-default" style="cursor: pointer;">Login with Google (Implicit Grant)</a>
+<a {{action 'authenticateWithGoogleImplicitGrant'}} class="btn btn-primary" href="#" role="button">Login with Google (Implicit Grant)</a>
 <hr/>
 <p>or login with OAuth 2.0 <em>Resource Owner Password Credentials</em>:</p>
 <form {{action 'authenticateWithOAuth2' on='submit'}}>
@@ -13,13 +13,13 @@
     <label for="password">Password</label>
     {{input value=password placeholder='Enter Password' class='form-control' type='password'}}
   </div>
-  <div class="checkbox">
-    <label for='rememberMe'>
-      {{input checked=rememberMe name='rememberMe' type='checkbox' id='rememberMe'}}
+  <div class="form-group form-check">
+    {{input checked=rememberMe name='rememberMe' type='checkbox' id='rememberMe' class='form-check-input'}}
+    <label for="rememberMe" class="form-check-label">
       Remember me
     </label>
   </div>
-  <button type="submit" class="btn btn-default">Login</button>
+  <button type="submit" class="btn btn-primary">Login</button>
 </form>
 {{#if errorMessage}}
   <div class="alert alert-danger">
