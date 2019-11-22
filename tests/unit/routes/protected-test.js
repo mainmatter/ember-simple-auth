@@ -3,12 +3,10 @@ import { it, describe } from 'mocha';
 import { setupTest } from 'ember-mocha';
 
 describe('ProtectedRoute', function() {
-  setupTest('route:protected', {
-    needs: ['router:main', 'service:session']
-  });
+  setupTest();
 
   it('is still testable when using the AuthenticatedRouteMixin', function() {
-    const route = this.subject();
+    const route = this.owner.lookup('route:protected');
 
     expect(route).to.be.ok;
   });

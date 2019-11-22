@@ -3,4 +3,8 @@ module.exports = {
     'simplabs/configs/ember-mocha',
     'simplabs/plugins/mocha',
   ],
+  parserOptions: {
+    ecmaVersion: 2017,
+    sourceType: 'module'
+  },
 };

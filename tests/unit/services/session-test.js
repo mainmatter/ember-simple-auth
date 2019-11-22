@@ -1,13 +1,17 @@
 import ObjectProxy from '@ember/object/proxy';
+import { setOwner } from '@ember/application';
 import Evented from '@ember/object/evented';
 import { next } from '@ember/runloop';
-import { set } from '@ember/object';
+import EmberObject, { set } from '@ember/object';
 import { describe, beforeEach, it } from 'mocha';
+import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
 import Session from 'ember-simple-auth/services/session';
 
 describe('SessionService', () => {
+  setupTest();
+
   let sinon;
   let sessionService;
   let session;
@@ -17,7 +21,12 @@ describe('SessionService', () => {
     session = ObjectProxy.extend(Evented, {
       content: {}
     }).create();
+
+    this.owner.register('authorizer:custom', EmberObject.extend({
+      authorize() {}
+    }));
     sessionService = Session.create({ session });
+    setOwner(sessionService, this.owner);
   });
 
   afterEach(function() {

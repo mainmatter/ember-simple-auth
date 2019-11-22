@@ -140,13 +140,13 @@ export default function(options) {
   describe('#renew', function() {
     let now = new Date();
 
-    beforeEach(function(done) {
+    beforeEach(async function() {
       store = createStore(cookieService, {
         cookieName:           'test-session',
         cookieExpirationTime: 60
       });
       store.persist({ key: 'value' });
-      renew(store).then(done);
+      await renew(store);
     });
 
     it('stores the expiration time in a cookie named "test-session-expiration_time"', function() {

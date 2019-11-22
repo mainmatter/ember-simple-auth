@@ -33,11 +33,10 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
   describe('#restore', function() {
     describe('when the data includes expiration data', function() {
-      it('resolves with the correct data', function(done) {
-        authenticator.restore({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' }).then((data) => {
-          expect(data).to.eql({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
-          done();
-        });
+      it('resolves with the correct data', async function() {
+        let data = await authenticator.restore({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
+
+        expect(data).to.eql({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
       });
 
       describe('when the data includes an expiration time in the past', function() {
@@ -47,22 +46,23 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
               server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }']);
             });
 
-            it('resolves with the correct data', function(done) {
-              authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).then((data) => {
-                expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
-                delete data['expires_at'];
-                expect(data).to.eql({ 'access_token': 'secret token 2!', 'expires_in': 67890, 'refresh_token': 'refresh token 2!' });
-                done();
-              });
+            it('resolves with the correct data', async function() {
+              let data = await authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 });
+
+              expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
+              delete data['expires_at'];
+              expect(data).to.eql({ 'access_token': 'secret token 2!', 'expires_in': 67890, 'refresh_token': 'refresh token 2!' });
             });
           });
 
           describe('when the access token is not refreshed successfully', function() {
-            it('returns a rejecting promise', function(done) {
-              authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).catch(() => {
+            it('returns a rejecting promise', async function() {
+              try {
+                await authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 });
+                expect(false).to.be.true;
+              } catch (_error) {
                 expect(true).to.be.true;
-                done();
-              });
+              }
             });
           });
         });
@@ -72,11 +72,13 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
             authenticator.set('refreshAccessTokens', false);
           });
 
-          it('returns a rejecting promise', function(done) {
-            authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 }).catch(() => {
+          it('returns a rejecting promise', async function() {
+            try {
+              await authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 });
+              expect(false).to.be.true;
+            } catch (_error) {
               expect(true).to.be.true;
-              done();
-            });
+            }
           });
         });
       });
@@ -84,95 +86,95 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
     describe('when the data does not include expiration data', function() {
       describe('when the data contains an access_token', function() {
-        it('resolves with the correct data', function(done) {
-          authenticator.restore({ 'access_token': 'secret token!' }).then((data) => {
-            expect(data).to.eql({ 'access_token': 'secret token!' });
-            done();
-          });
+        it('resolves with the correct data', async function() {
+          let data = await authenticator.restore({ 'access_token': 'secret token!' });
+
+          expect(data).to.eql({ 'access_token': 'secret token!' });
         });
       });
 
       describe('when the data does not contain an access_token', function() {
-        it('returns a rejecting promise', function(done) {
-          authenticator.restore().catch(() => {
+        it('returns a rejecting promise', async function() {
+          try {
+            await authenticator.restore();
+            expect(false).to.be.true;
+          } catch (_error) {
             expect(true).to.be.true;
-            done();
-          });
+          }
         });
       });
     });
   });
 
   describe('#authenticate', function() {
-    it('sends an AJAX request to the token endpoint', function(done) {
+    it('sends an AJAX request to the token endpoint', async function() {
       server.post('/token', (request) => {
         let body = parsePostData(request.requestBody);
+
         expect(body).to.eql({
           'grant_type': 'password',
           'username': 'username',
           'password': 'password'
         });
-        done();
 
         return [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }'];
       });
 
-      authenticator.authenticate('username', 'password');
+      await authenticator.authenticate('username', 'password');
     });
 
-    it('sends an AJAX request to the token endpoint with client_id as parameter in the body', function(done) {
+    it('sends an AJAX request to the token endpoint with client_id as parameter in the body', async function() {
       server.post('/token', (request) => {
         let body = parsePostData(request.requestBody);
+
         expect(body).to.eql({
           'client_id': 'test-client',
           'grant_type': 'password',
           'username': 'username',
           'password': 'password'
         });
-        done();
 
         return [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }'];
       });
 
       authenticator.set('clientId', 'test-client');
-      authenticator.authenticate('username', 'password');
+      await authenticator.authenticate('username', 'password');
     });
 
-    it('sends an AJAX request to the token endpoint with customized headers', function(done) {
+    it('sends an AJAX request to the token endpoint with customized headers', async function() {
       server.post('/token', (request) => {
         expect(request.requestHeaders['x-custom-context']).to.eql('foobar');
-        done();
 
         return [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }'];
       });
 
-      authenticator.authenticate('username', 'password', [], { 'X-Custom-Context': 'foobar' });
+      await authenticator.authenticate('username', 'password', [], { 'X-Custom-Context': 'foobar' });
     });
 
-    it('sends a single OAuth scope to the token endpoint', function(done) {
+    it('sends a single OAuth scope to the token endpoint', async function() {
       server.post('/token', (request) => {
         let { requestBody } = request;
         let { scope } = parsePostData(requestBody);
+
         expect(scope).to.eql('public');
-        done();
 
         return [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }'];
       });
 
-      authenticator.authenticate('username', 'password', 'public');
+      await authenticator.authenticate('username', 'password', 'public');
     });
 
-    it('sends multiple OAuth scopes to the token endpoint', function(done) {
+    it('sends multiple OAuth scopes to the token endpoint', async function() {
       server.post('/token', (request) => {
         let { requestBody } = request;
         let { scope } = parsePostData(requestBody);
+
         expect(scope).to.eql('public private');
-        done();
 
         return [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }'];
       });
 
-      authenticator.authenticate('username', 'password', ['public', 'private']);
+      await authenticator.authenticate('username', 'password', ['public', 'private']);
     });
 
     describe('when the authentication request is successful', function() {
@@ -180,13 +182,11 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }']);
       });
 
-      it('resolves with the correct data', function(done) {
+      it('resolves with the correct data', async function() {
         authenticator.set('refreshAccessTokens', false);
-        authenticator.authenticate('username', 'password').then((data) => {
-          expect(true).to.be.true;
-          expect(data).to.eql({ 'access_token': 'secret token!' });
-          done();
-        });
+        let data = await authenticator.authenticate('username', 'password');
+
+        expect(data).to.eql({ 'access_token': 'secret token!' });
       });
 
       describe('when the server response includes expiration data', function() {
@@ -194,33 +194,38 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!", "expires_in": 12345, "refresh_token": "refresh token!" }']);
         });
 
-        it('resolves with the correct data', function(done) {
-          authenticator.authenticate('username', 'password').then((data) => {
-            expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
-            delete data['expires_at'];
-            expect(data).to.eql({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
-            done();
-          });
+        it('resolves with the correct data', async function() {
+          let data = await authenticator.authenticate('username', 'password');
+
+          expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
+          delete data['expires_at'];
+          expect(data).to.eql({ 'access_token': 'secret token!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
         });
       });
 
       describe('when the server response is missing access_token', function() {
-        it('fails with a string describing the issue', function() {
+        it('fails with a string describing the issue', async function() {
           server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{}']);
 
-          return authenticator.authenticate('username', 'password').catch((error) => {
+          try {
+            await authenticator.authenticate('username', 'password');
+            expect(false).to.be.true;
+          } catch (error) {
             expect(error).to.eql('access_token is missing in server response');
-          });
+          }
         });
       });
 
       describe('but the response is not valid JSON', function() {
-        it('fails with the string of the response', function() {
+        it('fails with the string of the response', async function() {
           server.post('/token', () => [200, { 'Content-Type': 'text/plain' }, 'Something went wrong']);
 
-          return authenticator.authenticate('username', 'password').catch((error) => {
+          try {
+            await authenticator.authenticate('username', 'password');
+            expect(false).to.be.true;
+          } catch (error) {
             expect(error.responseText).to.eql('Something went wrong');
-          });
+          }
         });
       });
     });
@@ -230,16 +235,22 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         server.post('/token', () => [400, { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' }, '{ "error": "invalid_grant" }']);
       });
 
-      it('rejects with response object containing responseJSON', function() {
-        return authenticator.authenticate('username', 'password').catch((error) => {
+      it('rejects with response object containing responseJSON', async function() {
+        try {
+          await authenticator.authenticate('username', 'password');
+          expect(false).to.be.true;
+        } catch (error) {
           expect(error.responseJSON).to.eql({ error: 'invalid_grant' });
-        });
+        }
       });
 
-      it('provides access to custom headers', function() {
-        return authenticator.authenticate('username', 'password').catch((error) => {
+      it('provides access to custom headers', async function() {
+        try {
+          await authenticator.authenticate('username', 'password');
+          expect(false).to.be.true;
+        } catch (error) {
           expect(error.headers.get('x-custom-context')).to.eql('foobar');
-        });
+        }
       });
     });
 
@@ -248,28 +259,36 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         server.post('/token', () => [500, { 'Content-Type': 'text/plain', 'X-Custom-Context': 'foobar' }, 'The server has failed completely.']);
       });
 
-      it('rejects with response object containing responseText', function() {
-        return authenticator.authenticate('username', 'password').catch((error) => {
+      it('rejects with response object containing responseText', async function() {
+        try {
+          await authenticator.authenticate('username', 'password');
+          expect(false).to.be.true;
+        } catch (error) {
           expect(error.responseJSON).to.not.exist;
           expect(error.responseText).to.eql('The server has failed completely.');
-        });
+        }
       });
 
-      it('provides access to custom headers', function() {
-        return authenticator.authenticate('username', 'password').catch((error) => {
+      it('provides access to custom headers', async function() {
+        try {
+          await authenticator.authenticate('username', 'password');
+          expect(false).to.be.true;
+        } catch (error) {
           expect(error.headers.get('x-custom-context')).to.eql('foobar');
-        });
+        }
       });
     });
   });
 
   describe('#invalidate', function() {
     function itSuccessfullyInvalidatesTheSession() {
-      it('returns a resolving promise', function(done) {
-        authenticator.invalidate({ 'access_token': 'access token!' }).then(() => {
+      it('returns a resolving promise', async function() {
+        try {
+          await authenticator.invalidate({ 'access_token': 'access token!' });
           expect(true).to.be.true;
-          done();
-        });
+        } catch (_error) {
+          expect(false).to.be.true;
+        }
       });
     }
 
@@ -278,18 +297,18 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
         authenticator.serverTokenRevocationEndpoint = '/revoke';
       });
 
-      it('sends an AJAX request to the revokation endpoint', function(done) {
+      it('sends an AJAX request to the revokation endpoint', async function() {
         server.post('/revoke', (request) => {
           let { requestBody } = request;
           let body = parsePostData(requestBody);
+
           expect(body).to.eql({
             'token_type_hint': 'access_token',
             'token': 'access token!'
           });
-          done();
         });
 
-        authenticator.invalidate({ 'access_token': 'access token!' });
+        await authenticator.invalidate({ 'access_token': 'access token!' });
       });
 
       describe('when the revokation request is successful', function() {
@@ -309,18 +328,18 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
       });
 
       describe('when a refresh token is set', function() {
-        it('sends an AJAX request to invalidate the refresh token', function(done) {
+        it('sends an AJAX request to invalidate the refresh token', async function() {
           server.post('/revoke', (request) => {
             let { requestBody } = request;
             let body = parsePostData(requestBody);
+
             expect(body).to.eql({
               'token_type_hint': 'refresh_token',
               'token': 'refresh token!'
             });
-            done();
           });
 
-          authenticator.invalidate({ 'access_token': 'access token!', 'refresh_token': 'refresh token!' });
+          await authenticator.invalidate({ 'access_token': 'access token!', 'refresh_token': 'refresh token!' });
         });
       });
     });
@@ -347,18 +366,18 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
   // testing private API here ;(
   describe('#_refreshAccessToken', function() {
-    it('sends an AJAX request to the token endpoint', function(done) {
+    it('sends an AJAX request to the token endpoint', async function() {
       server.post('/token', (request) => {
         let { requestBody } = request;
         let body = parsePostData(requestBody);
+
         expect(body).to.eql({
           'grant_type': 'refresh_token',
           'refresh_token': 'refresh token!'
         });
-        done();
       });
 
-      authenticator._refreshAccessToken(12345, 'refresh token!');
+      await authenticator._refreshAccessToken(12345, 'refresh token!');
     });
 
     describe('when the refresh request is successful', function() {
@@ -371,6 +390,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           expect(data['expires_at']).to.be.greaterThan(new Date().getTime());
           delete data['expires_at'];
           expect(data).to.eql({ 'access_token': 'secret token 2!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
+
           done();
         });
 

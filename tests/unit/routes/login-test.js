@@ -3,12 +3,10 @@ import { it, describe } from 'mocha';
 import { setupTest } from 'ember-mocha';
 
 describe('LoginRoute', function() {
-  setupTest('route:login', {
-    needs: ['router:main', 'service:session']
-  });
+  setupTest();
 
   it('is still testable when using the UnauthenticatedRouteMixin', function() {
-    const route = this.subject();
+    const route = this.owner.lookup('route:login');
 
     expect(route).to.be.ok;
   });

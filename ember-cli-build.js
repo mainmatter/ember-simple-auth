@@ -22,6 +22,9 @@ module.exports = function(defaults) {
     sourcemaps: {
       enabled: true,
       extensions: ['js']
+    },
+    'ember-cli-babel': {
+      includePolyfill: true
     }
   });
 

@@ -10,38 +10,47 @@ describe('TestAuthenticator', () => {
   });
 
   describe('#restore', function() {
-    it('returns a resolving promise', function() {
-      return authenticator.restore().then(() => {
+    it('returns a resolving promise', async function() {
+      try {
+        await authenticator.restore();
         expect(true).to.be.true;
-      });
+      } catch (_error) {
+        expect(false).to.be.true;
+      }
     });
 
-    it('resolves with session data', function() {
-      return authenticator.restore({ userId: 1, otherData: 'some-data' }).then((data) => {
-        expect(data).to.eql({ userId: 1, otherData: 'some-data' });
-      });
+    it('resolves with session data', async function() {
+      let data = await authenticator.restore({ userId: 1, otherData: 'some-data' });
+
+      expect(data).to.eql({ userId: 1, otherData: 'some-data' });
     });
   });
 
   describe('#authenticate', function() {
-    it('returns a resolving promise', function() {
-      return authenticator.authenticate().then(() => {
+    it('returns a resolving promise', async function() {
+      try {
+        await authenticator.authenticate();
         expect(true).to.be.true;
-      });
+      } catch (_error) {
+        expect(false).to.be.true;
+      }
     });
 
-    it('resolves with session data', function() {
-      return authenticator.authenticate({ userId: 1, otherData: 'some-data' }).then((data) => {
-        expect(data).to.eql({ userId: 1, otherData: 'some-data' });
-      });
+    it('resolves with session data', async function() {
+      let data = await authenticator.authenticate({ userId: 1, otherData: 'some-data' });
+
+      expect(data).to.eql({ userId: 1, otherData: 'some-data' });
     });
   });
 
   describe('#invalidate', function() {
-    it('returns a resolving promise', function() {
-      return authenticator.invalidate().then(() => {
+    it('returns a resolving promise', async function() {
+      try {
+        await authenticator.invalidate();
         expect(true).to.be.true;
-      });
+      } catch (_error) {
+        expect(false).to.be.true;
+      }
     });
   });
 });

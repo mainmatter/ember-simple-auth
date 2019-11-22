@@ -132,8 +132,12 @@ export default Mixin.create({
       if (this.get('_isFastBoot')) {
         this.transitionTo(Configuration.rootURL);
       } else {
-        window.location.replace(Configuration.rootURL);
+        this._refresh();
       }
     }
+  },
+
+  _refresh() {
+    window.location.replace(Configuration.rootURL);
   }
 });

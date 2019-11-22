@@ -10,29 +10,35 @@ describe('BaseAuthenticator', () => {
   });
 
   describe('#restore', function() {
-    it('returns a rejecting promise', function(done) {
-      authenticator.restore().catch(() => {
+    it('returns a rejecting promise', async function() {
+      try {
+        await authenticator.restore();
+        expect(false).to.be.true;
+      } catch (_error) {
         expect(true).to.be.true;
-        done();
-      });
+      }
     });
   });
 
   describe('#authenticate', function() {
-    it('returns a rejecting promise', function(done) {
-      authenticator.authenticate().catch(() => {
+    it('returns a rejecting promise', async function() {
+      try {
+        await authenticator.authenticate();
+        expect(false).to.be.true;
+      } catch (_error) {
         expect(true).to.be.true;
-        done();
-      });
+      }
     });
   });
 
   describe('#invalidate', function() {
-    it('returns a resolving promise', function(done) {
-      authenticator.invalidate().then(() => {
+    it('returns a resolving promise', async function() {
+      try {
+        await authenticator.invalidate();
         expect(true).to.be.true;
-        done();
-      });
+      } catch (_error) {
+        expect(false).to.be.true;
+      }
     });
   });
 });

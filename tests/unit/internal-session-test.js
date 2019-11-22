@@ -1,28 +1,31 @@
 import RSVP from 'rsvp';
 import { next } from '@ember/runloop';
+import { setOwner } from '@ember/application';
 import { describe, beforeEach, it } from 'mocha';
+import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import Authenticator from 'ember-simple-auth/authenticators/base';
 
-import createWithContainer from '../helpers/create-with-container';
-
 describe('InternalSession', () => {
+  setupTest();
+
   let sinon;
   let session;
   let store;
   let authenticator;
-  let container;
 
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
-    container = { lookup() {} };
+
     store = EphemeralStore.create();
     authenticator = Authenticator.create();
-    session = createWithContainer(InternalSession, { store }, container);
-    sinon.stub(container, 'lookup').withArgs('authenticator').returns(authenticator);
+    this.owner.register('authenticator:test', authenticator, { instantiate: false });
+
+    session = InternalSession.create({ store });
+    setOwner(session, this.owner);
   });
 
   afterEach(function() {
@@ -45,7 +48,7 @@ describe('InternalSession', () => {
         authenticator.trigger('sessionDataUpdated', { some: 'property' });
 
         next(() => {
-          expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator' });
+          expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator:test' });
           done();
         });
       });
@@ -78,11 +81,12 @@ describe('InternalSession', () => {
       it('updates the store', function(done) {
         authenticator.trigger('sessionDataInvalidated');
 
-        next(() => {
-          store.restore().then((properties) => {
-            expect(properties.authenticated).to.eql({});
-            done();
-          });
+        next(async() => {
+          let properties = await store.restore();
+
+          expect(properties.authenticated).to.eql({});
+
+          done();
         });
       });
 
@@ -103,30 +107,37 @@ describe('InternalSession', () => {
 
   describe('restore', function() {
     function itDoesNotRestore() {
-      it('returns a rejecting promise', function() {
-        return session.restore().catch(() => {
+      it('returns a rejecting promise', async function() {
+        try {
+          await session.restore();
+          expect(false).to.be.true;
+        } catch (_error) {
           expect(true).to.be.true;
-        });
+        }
       });
 
-      it('is not authenticated', function() {
-        return session.restore().catch(() => {
+      it('is not authenticated', async function() {
+        try {
+          await session.restore();
+        } catch (_error) {
           expect(session.get('isAuthenticated')).to.be.false;
-        });
+        }
       });
 
-      it('clears its authenticated section', function() {
+      it('clears its authenticated section', async function() {
         store.persist({ some: 'property', authenticated: { some: 'other property' } });
 
-        return session.restore().catch(() => {
+        try {
+          await session.restore();
+        } catch (_error) {
           expect(session.get('content')).to.eql({ some: 'property', authenticated: {} });
-        });
+        }
       });
     }
 
     describe('when the restored data contains an authenticator factory', function() {
       beforeEach(function() {
-        store.persist({ authenticated: { authenticator: 'authenticator' } });
+        store.persist({ authenticated: { authenticator: 'authenticator:test' } });
       });
 
       describe('when the authenticator resolves restoration', function() {
@@ -134,61 +145,58 @@ describe('InternalSession', () => {
           sinon.stub(authenticator, 'restore').returns(RSVP.resolve({ some: 'property' }));
         });
 
-        it('returns a resolving promise', function() {
-          return session.restore().then(() => {
+        it('returns a resolving promise', async function() {
+          try {
+            await session.restore();
             expect(true).to.be.true;
-          });
+          } catch (_error) {
+            expect(false).to.be.true;
+          }
         });
 
-        it('is authenticated', function() {
-          return session.restore().then(() => {
-            expect(session.get('isAuthenticated')).to.be.true;
-          });
+        it('is authenticated', async function() {
+          await session.restore();
+
+          expect(session.get('isAuthenticated')).to.be.true;
         });
 
-        it('stores the data the authenticator resolves with in its authenticated section', function() {
-          return store.persist({ authenticated: { authenticator: 'authenticator' } }).then(() => {
-            return session.restore().then(() => {
-              return store.restore().then((properties) => {
-                delete properties.authenticator;
+        it('stores the data the authenticator resolves with in its authenticated section', async function() {
+          await store.persist({ authenticated: { authenticator: 'authenticator:test' } });
+          await session.restore();
+          let properties = await store.restore();
 
-                expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator' });
-              });
-            });
-          });
+          delete properties.authenticator;
+
+          expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator:test' });
         });
 
-        it('persists its content in the store', function() {
-          return store.persist({ authenticated: { authenticator: 'authenticator' }, someOther: 'property' }).then(() => {
-            return session.restore().then(() => {
-              return store.restore().then((properties) => {
-                delete properties.authenticator;
+        it('persists its content in the store', async function() {
+          await store.persist({ authenticated: { authenticator: 'authenticator:test' }, someOther: 'property' });
+          await session.restore();
+          let properties = await store.restore();
 
-                expect(properties).to.eql({ authenticated: { some: 'property', authenticator: 'authenticator' }, someOther: 'property' });
-              });
-            });
-          });
+          delete properties.authenticator;
+
+          expect(properties).to.eql({ authenticated: { some: 'property', authenticator: 'authenticator:test' }, someOther: 'property' });
         });
 
-        it('persists the authenticator factory in the store', function() {
-          return session.restore().then(() => {
-            return store.restore().then((properties) => {
-              expect(properties.authenticated.authenticator).to.eql('authenticator');
-            });
-          });
+        it('persists the authenticator factory in the store', async function() {
+          await session.restore();
+          let properties = await store.restore();
+
+          expect(properties.authenticated.authenticator).to.eql('authenticator:test');
         });
 
-        it('does not trigger the "authenticationSucceeded" event', function() {
+        it('does not trigger the "authenticationSucceeded" event', async function() {
           let triggered = false;
           session.one('authenticationSucceeded', () => (triggered = true));
+          await session.restore();
 
-          return session.restore().then(() => {
-            expect(triggered).to.be.false;
-          });
+          expect(triggered).to.be.false;
         });
 
-        itHandlesAuthenticatorEvents(() => {
-          return session.restore();
+        itHandlesAuthenticatorEvents(async() => {
+          await session.restore();
         });
       });
 
@@ -210,10 +218,10 @@ describe('InternalSession', () => {
         sinon.stub(store, 'restore').returns(RSVP.Promise.reject());
       });
 
-      it('is not authenticated', function() {
-        return session.restore().then(() => {
-          expect(session.get('isAuthenticated')).to.be.false;
-        });
+      it('is not authenticated', async function() {
+        await session.restore();
+
+        expect(session.get('isAuthenticated')).to.be.false;
       });
     });
 
@@ -222,10 +230,10 @@ describe('InternalSession', () => {
         sinon.stub(store, 'persist').returns(RSVP.reject());
       });
 
-      it('is not authenticated', function() {
-        return session.restore().then(() => {
-          expect(session.get('isAuthenticated')).to.be.false;
-        });
+      it('is not authenticated', async function() {
+        await session.restore();
+
+        expect(session.get('isAuthenticated')).to.be.false;
       });
     });
   });
@@ -236,101 +244,113 @@ describe('InternalSession', () => {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.resolve({ some: 'property' }));
       });
 
-      it('is authenticated', function() {
-        return session.authenticate('authenticator').then(() => {
-          expect(session.get('isAuthenticated')).to.be.true;
-        });
+      it('is authenticated', async function() {
+        await session.authenticate('authenticator:test');
+
+        expect(session.get('isAuthenticated')).to.be.true;
       });
 
-      it('returns a resolving promise', function() {
-        return session.authenticate('authenticator').then(() => {
+      it('returns a resolving promise', async function() {
+        try {
+          await session.authenticate('authenticator:test');
           expect(true).to.be.true;
-        });
+        } catch (_error) {
+          expect(false).to.be.true;
+        }
       });
 
-      it('stores the data the authenticator resolves with in its authenticated section', function() {
-        return session.authenticate('authenticator').then(() => {
-          expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator' });
-        });
+      it('stores the data the authenticator resolves with in its authenticated section', async function() {
+        await session.authenticate('authenticator:test');
+
+        expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator:test' });
       });
 
-      it('persists its content in the store', function() {
-        return session.authenticate('authenticator').then(() => {
-          return store.restore().then((properties) => {
-            delete properties.authenticator;
+      it('persists its content in the store', async function() {
+        await session.authenticate('authenticator:test');
+        let properties = await store.restore();
 
-            expect(properties).to.eql({ authenticated: { some: 'property', authenticator: 'authenticator' } });
-          });
-        });
+        delete properties.authenticator;
+
+        expect(properties).to.eql({ authenticated: { some: 'property', authenticator: 'authenticator:test' } });
       });
 
-      it('persists the authenticator factory in the store', function() {
-        return session.authenticate('authenticator').then(() => {
-          return store.restore().then((properties) => {
-            expect(properties.authenticated.authenticator).to.eql('authenticator');
-          });
-        });
+      it('persists the authenticator factory in the store', async function() {
+        await session.authenticate('authenticator:test');
+        let properties = await store.restore();
+
+        expect(properties.authenticated.authenticator).to.eql('authenticator:test');
       });
 
-      it('triggers the "authenticationSucceeded" event', function() {
+      it('triggers the "authenticationSucceeded" event', async function() {
         let triggered = false;
         session.one('authenticationSucceeded', () => (triggered = true));
 
-        return session.authenticate('authenticator').then(() => {
-          expect(triggered).to.be.true;
-        });
+        await session.authenticate('authenticator:test');
+
+        expect(triggered).to.be.true;
       });
 
-      itHandlesAuthenticatorEvents(() => {
-        return session.authenticate('authenticator');
+      itHandlesAuthenticatorEvents(async() => {
+        await session.authenticate('authenticator:test');
       });
     });
 
     describe('when the authenticator rejects authentication', function() {
-      it('is not authenticated', function() {
+      it('is not authenticated', async function() {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
 
-        return session.authenticate('authenticator').catch(() => {
+        try {
+          await session.authenticate('authenticator:test');
+        } catch (_error) {
           expect(session.get('isAuthenticated')).to.be.false;
-        });
+        }
       });
 
-      it('returns a rejecting promise', function() {
+      it('returns a rejecting promise', async function() {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
 
-        return session.authenticate('authenticator').catch(() => {
+        try {
+          await session.authenticate('authenticator:test');
+          expect(false).to.be.true;
+        } catch (_error) {
           expect(true).to.be.true;
-        });
+        }
       });
 
-      it('clears its authenticated section', function() {
+      it('clears its authenticated section', async function() {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
-        return session.authenticate('authenticator').catch(() => {
+        try {
+          await session.authenticate('authenticator:test');
+        } catch (_error) {
           expect(session.get('content')).to.eql({ some: 'property', authenticated: {} });
-        });
+        }
       });
 
-      it('updates the store', function() {
+      it('updates the store', async function() {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
-        return session.authenticate('authenticator').catch(() => {
-          return store.restore().then((properties) => {
-            expect(properties).to.eql({ some: 'property', authenticated: {} });
-          });
-        });
+        try {
+          await session.authenticate('authenticator:test');
+        } catch (_error) {
+          let properties = await store.restore();
+
+          expect(properties).to.eql({ some: 'property', authenticated: {} });
+        }
       });
 
-      it('does not trigger the "authenticationSucceeded" event', function() {
+      it('does not trigger the "authenticationSucceeded" event', async function() {
         let triggered = false;
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
         session.one('authenticationSucceeded', () => (triggered = true));
 
-        return session.authenticate('authenticator').catch(() => {
+        try {
+          await session.authenticate('authenticator:test');
+        } catch (_error) {
           expect(triggered).to.be.false;
-        });
+        }
       });
     });
 
@@ -339,18 +359,18 @@ describe('InternalSession', () => {
         sinon.stub(store, 'persist').returns(RSVP.reject());
       });
 
-      it('is not authenticated', function() {
-        return session.authenticate('authenticator').then(() => {
-          expect(session.get('isAuthenticated')).to.be.false;
-        });
+      it('is not authenticated', async function() {
+        await session.authenticate('authenticator:test');
+
+        expect(session.get('isAuthenticated')).to.be.false;
       });
     });
   });
 
   describe('invalidation', function() {
-    beforeEach(function() {
+    beforeEach(async function() {
       sinon.stub(authenticator, 'authenticate').returns(RSVP.resolve({ some: 'property' }));
-      return session.authenticate('authenticator');
+      await session.authenticate('authenticator:test');
     });
 
     describe('when invalidate gets called with additional params', function() {
@@ -370,89 +390,102 @@ describe('InternalSession', () => {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.resolve());
       });
 
-      it('is not authenticated', function() {
-        return session.invalidate().then(() => {
-          expect(session.get('isAuthenticated')).to.be.false;
-        });
+      it('is not authenticated', async function() {
+        await session.invalidate();
+
+        expect(session.get('isAuthenticated')).to.be.false;
       });
 
-      it('returns a resolving promise', function() {
-        return session.invalidate().then(() => {
+      it('returns a resolving promise', async function() {
+        try {
+          await session.invalidate();
           expect(true).to.be.true;
-        });
+        } catch (_error) {
+          expect(false).to.be.true;
+        }
       });
 
-      it('clears its authenticated section', function() {
+      it('clears its authenticated section', async function() {
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
-        return session.invalidate().then(() => {
-          expect(session.get('content')).to.eql({ some: 'property', authenticated: {} });
-        });
+        await session.invalidate();
+
+        expect(session.get('content')).to.eql({ some: 'property', authenticated: {} });
       });
 
-      it('updates the store', function() {
+      it('updates the store', async function() {
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
-        return session.invalidate().then(() => {
-          return store.restore().then((properties) => {
-            expect(properties).to.eql({ some: 'property', authenticated: {} });
-          });
-        });
+        await session.invalidate();
+        let properties = await store.restore();
+
+        expect(properties).to.eql({ some: 'property', authenticated: {} });
       });
 
-      it('triggers the "invalidationSucceeded" event', function() {
+      it('triggers the "invalidationSucceeded" event', async function() {
         let triggered = false;
         session.one('invalidationSucceeded', () => (triggered = true));
 
-        return session.invalidate().then(() => {
-          expect(triggered).to.be.true;
-        });
+        await session.invalidate();
+
+        expect(triggered).to.be.true;
       });
     });
 
     describe('when the authenticator rejects invalidation', function() {
-      it('stays authenticated', function() {
+      it('stays authenticated', async function() {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
-        return session.invalidate().catch(() => {
+        try {
+          await session.invalidate();
+        } catch (_error) {
           expect(session.get('isAuthenticated')).to.be.true;
-        });
+        }
       });
 
-      it('returns a rejecting promise', function() {
+      it('returns a rejecting promise', async function() {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
-        return session.invalidate().catch(() => {
+        try {
+          await session.invalidate();
+          expect(false).to.be.true;
+        } catch (_error) {
           expect(true).to.be.true;
-        });
+        }
       });
 
-      it('keeps its content', function() {
+      it('keeps its content', async function() {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
-        return session.invalidate().catch(() => {
-          expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator' });
-        });
+        try {
+          await session.invalidate();
+        } catch (_error) {
+          expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator:test' });
+        }
       });
 
-      it('does not update the store', function() {
+      it('does not update the store', async function() {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
-        return session.invalidate().catch(() => {
-          return store.restore().then((properties) => {
-            expect(properties).to.eql({ authenticated: { some: 'property', authenticator: 'authenticator' } });
-          });
-        });
+        try {
+          await session.invalidate();
+        } catch (_error) {
+          let properties = await store.restore();
+
+          expect(properties).to.eql({ authenticated: { some: 'property', authenticator: 'authenticator:test' } });
+        }
       });
 
-      it('does not trigger the "invalidationSucceeded" event', function() {
+      it('does not trigger the "invalidationSucceeded" event', async function() {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
         let triggered = false;
         session.one('invalidationSucceeded', () => (triggered = true));
 
-        return session.invalidate().catch(() => {
+        try {
+          await session.invalidate();
+        } catch (_error) {
           expect(triggered).to.be.false;
-        });
+        }
       });
 
       itHandlesAuthenticatorEvents(function() {});
@@ -463,10 +496,12 @@ describe('InternalSession', () => {
         sinon.stub(store, 'persist').returns(RSVP.reject());
       });
 
-      it('rejects but is not authenticated', function() {
-        return session.invalidate().catch(() => {
+      it('rejects but is not authenticated', async function() {
+        try {
+          await session.invalidate();
+        } catch (_error) {
           expect(session.get('isAuthenticated')).to.be.false;
-        });
+        }
       });
     });
   });
@@ -478,12 +513,11 @@ describe('InternalSession', () => {
           session.set('_some', 'property');
         });
 
-        it('does not persist its content in the store', function() {
-          return store.restore().then((properties) => {
-            delete properties.authenticator;
+        it('does not persist its content in the store', async function() {
+          let properties = await store.restore();
+          delete properties.authenticator;
 
-            expect(properties).to.eql({});
-          });
+          expect(properties).to.eql({});
         });
       });
 
@@ -492,12 +526,11 @@ describe('InternalSession', () => {
           session.set('some', 'property');
         });
 
-        it('persists its content in the store', function() {
-          return store.restore().then((properties) => {
-            delete properties.authenticator;
+        it('persists its content in the store', async function() {
+          let properties = await store.restore();
+          delete properties.authenticator;
 
-            expect(properties).to.eql({ some: 'property', authenticated: {} });
-          });
+          expect(properties).to.eql({ some: 'property', authenticated: {} });
         });
       });
     });
@@ -508,12 +541,11 @@ describe('InternalSession', () => {
         session.setProperties({ another: 'property', multiple: 'properties' });
       });
 
-      it('persists its content in the store', function() {
-        return store.restore().then((properties) => {
-          delete properties.authenticator;
+      it('persists its content in the store', async function() {
+        let properties = await store.restore();
+        delete properties.authenticator;
 
-          expect(properties).to.eql({ some: 'property', another: 'property', multiple: 'properties', authenticated: {} });
-        });
+        expect(properties).to.eql({ some: 'property', another: 'property', multiple: 'properties', authenticated: {} });
       });
     });
   });
@@ -526,10 +558,11 @@ describe('InternalSession', () => {
         }));
       });
 
-      it('does not process the event', function(done) {
+      it('does not process the event', async function() {
         sinon.spy(authenticator, 'restore');
-        session.restore().then(done).catch(done);
-        store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+        let restoration = session.restore();
+        store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
+        await restoration;
 
         expect(authenticator.restore).to.not.have.been.called;
       });
@@ -543,7 +576,7 @@ describe('InternalSession', () => {
           });
 
           it('is authenticated', function(done) {
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
             next(() => {
               expect(session.get('isAuthenticated')).to.be.true;
@@ -552,23 +585,23 @@ describe('InternalSession', () => {
           });
 
           it('stores the data the authenticator resolves with in its authenticated section', function(done) {
-            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator:test' } });
 
             next(() => {
-              expect(session.get('authenticated')).to.eql({ some: 'other property', authenticator: 'authenticator' });
+              expect(session.get('authenticated')).to.eql({ some: 'other property', authenticator: 'authenticator:test' });
               done();
             });
           });
 
           it('persists its content in the store', function(done) {
-            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator:test' } });
 
-            next(() => {
-              store.restore().then((properties) => {
+            next(async() => {
+              let properties = await store.restore();
 
-                expect(properties).to.eql({ some: 'property', authenticated: { some: 'other property', authenticator: 'authenticator' } });
-                done();
-              });
+              expect(properties).to.eql({ some: 'property', authenticated: { some: 'other property', authenticator: 'authenticator:test' } });
+
+              done();
             });
           });
 
@@ -580,7 +613,7 @@ describe('InternalSession', () => {
             it('does not trigger the "authenticationSucceeded" event', function(done) {
               let triggered = false;
               session.one('authenticationSucceeded', () => (triggered = true));
-              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
               next(() => {
                 expect(triggered).to.be.false;
@@ -597,7 +630,7 @@ describe('InternalSession', () => {
             it('triggers the "authenticationSucceeded" event', function(done) {
               let triggered = false;
               session.one('authenticationSucceeded', () => (triggered = true));
-              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
               next(() => {
                 expect(triggered).to.be.true;
@@ -613,7 +646,7 @@ describe('InternalSession', () => {
           });
 
           it('is not authenticated', function(done) {
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
             next(() => {
               expect(session.get('isAuthenticated')).to.be.false;
@@ -623,7 +656,7 @@ describe('InternalSession', () => {
 
           it('clears its authenticated section', function(done) {
             session.set('content', { some: 'property', authenticated: { some: 'other property' } });
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
             next(() => {
               expect(session.get('content')).to.eql({ some: 'other property', authenticated: {} });
@@ -633,13 +666,14 @@ describe('InternalSession', () => {
 
           it('updates the store', function(done) {
             session.set('content', { some: 'property', authenticated: { some: 'other property' } });
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
-            next(() => {
-              store.restore().then((properties) => {
-                expect(properties).to.eql({ some: 'other property', authenticated: {} });
-                done();
-              });
+            next(async() => {
+              let properties = await store.restore();
+
+              expect(properties).to.eql({ some: 'other property', authenticated: {} });
+
+              done();
             });
           });
 
@@ -651,7 +685,7 @@ describe('InternalSession', () => {
             it('triggers the "invalidationSucceeded" event', function(done) {
               let triggered = false;
               session.one('invalidationSucceeded', () => (triggered = true));
-              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
               next(() => {
                 expect(triggered).to.be.true;
@@ -668,7 +702,7 @@ describe('InternalSession', () => {
             it('does not trigger the "invalidationSucceeded" event', function(done) {
               let triggered = false;
               session.one('invalidationSucceeded', () => (triggered = true));
-              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator' } });
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
               next(() => {
                 expect(triggered).to.be.false;
@@ -703,11 +737,12 @@ describe('InternalSession', () => {
           session.set('content', { some: 'property', authenticated: { some: 'other property' } });
           store.trigger('sessionDataUpdated', { some: 'other property' });
 
-          next(() => {
-            store.restore().then((properties) => {
-              expect(properties).to.eql({ some: 'other property', authenticated: {} });
-              done();
-            });
+          next(async() => {
+            let properties = await store.restore();
+
+            expect(properties).to.eql({ some: 'other property', authenticated: {} });
+
+            done();
           });
         });
 
@@ -744,19 +779,22 @@ describe('InternalSession', () => {
             });
           });
 
-          it('it does not trigger the "sessionInvalidationFailed" event', function() {
+          it('it does not trigger the "sessionInvalidationFailed" event', async function() {
             let triggered = false;
             session.one('sessionInvalidationFailed', () => (triggered = true));
 
-            return session.invalidate().then(() => {
-              expect(triggered).to.be.false;
-            });
+            await session.invalidate();
+
+            expect(triggered).to.be.false;
           });
 
-          it('it returns with a resolved Promise', function() {
-            return session.invalidate().then(() => {
+          it('it returns with a resolved Promise', async function() {
+            try {
+              await session.invalidate();
               expect(true).to.be.true;
-            });
+            } catch (_error) {
+              expect(false).to.be.true;
+            }
           });
         });
       });
@@ -764,7 +802,8 @@ describe('InternalSession', () => {
   });
 
   it('does not share the content object between multiple instances', function() {
-    let session2 = createWithContainer(InternalSession, { store }, container);
+    let session2 = InternalSession.create({ store });
+    setOwner(session2, this.owner);
 
     expect(session2.get('content')).to.not.equal(session.get('content'));
   });
