@@ -1,26 +1,24 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      {{#link-to 'index' classNames='navbar-brand'}}
-        Home
-      {{/link-to}}
-    </div>
-    <ul class="nav navbar-nav navbar-left">
-      {{#link-to 'protected' tagName='li'}}
-        <a>Protected Page</a>
-      {{/link-to}}
-      {{#link-to 'auth-error' tagName='li'}}
-        <a>Auth Error Page</a>
-      {{/link-to}}
-    </ul>
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+  {{#link-to 'index' classNames='navbar-brand'}}
+    Home
+  {{/link-to}}
+  <ul class="navbar-nav mr-auto">
+    {{#link-to 'protected' tagName='li' class='nav-item'}}
+      <a class="nav-link" href="#">Protected Page</a>
+    {{/link-to}}
+    {{#link-to 'auth-error' tagName='li' class='nav-item'}}
+      <a class="nav-link" href="#">Auth Error Page</a>
+    {{/link-to}}
+  </ul>
+  <form class="form-inline">
     {{! display logout button when the session is authenticated, login button otherwise }}
     {{#if session.isAuthenticated}}
-      <a {{action 'logout'}} class="btn btn-danger navbar-btn navbar-right">Logout</a>
       {{#if sessionAccount.account}}
-        <p class="navbar-text pull-right">Signed in as {{sessionAccount.account.name}}</p>
+        <span class="navbar-text mr-3">Signed in as {{sessionAccount.account.name}}</span>
       {{/if}}
+      <a {{action 'logout'}} class="btn btn-danger" href="#" role="button">Logout</a>
     {{else}}
-      <a {{action 'login'}} class="btn btn-success navbar-btn navbar-right">Login</a>
+      <a {{action 'login'}} class="btn btn-success" href="#" role="button">Login</a>
     {{/if}}
-  </div>
+  </form>
 </nav>
