@@ -54,17 +54,18 @@ describe('DataAdapterMixin', () => {
       expect(hash).to.have.ownProperty('beforeSend');
     });
 
-    if (ed_major_version < 2) {
-      it('asserts `authorize` is overridden', function() {
-        adapter.set('authorizer', null);
+    it('asserts `authorize` is overridden', function() {
+      if (ed_major_version >= 2) {
+        this.skip();
+      }
 
+      adapter.set('authorizer', null);
 
-        expect(function() {
-          adapter.ajaxOptions();
-          hash.beforeSend();
-        }).to.throw(/Assertion Failed/);
-      });
-    }
+      expect(function() {
+        adapter.ajaxOptions();
+        hash.beforeSend();
+      }).to.throw(/Assertion Failed/);
+    });
 
     it('calls `authorize` when request is made', function() {
       const authorize = sinon.spy();
@@ -92,6 +93,10 @@ describe('DataAdapterMixin', () => {
     });
 
     it('does not show a deprecation warning when `authorize` is not overriden', function() {
+      if (ed_major_version < 2) {
+        this.skip();
+      }
+
       let warnings = [];
       registerDeprecationHandler((message, options, next) => {
         warnings.push(message);
