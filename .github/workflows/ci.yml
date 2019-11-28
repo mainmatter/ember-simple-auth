@@ -100,4 +100,5 @@ jobs:
         run: yarn install
 
       - name: tests
+        continue-on-error: true
         run: yarn ${{ matrix.test-suite }}
