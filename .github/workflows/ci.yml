@@ -39,13 +39,18 @@ jobs:
       - name: lint
         run: yarn lint
 
-  core-tests:
-    name: Core Tests
+  tests:
+    name: Tests
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        test-suite: ["test:one ember-3.0", "test:one ember-lts-3.4", "test:one ember-lts-3.8", "test:one ember-lts-3.12", "test:one ember-release", "test:one ember-beta", "test:node"]
+        test-suite: ["test:one ember-3.0", "test:one ember-lts-3.4", "test:one ember-lts-3.8", "test:one ember-lts-3.12", "test:one ember-release", "test:one ember-beta", "test:node", "test:fastboot", "test:one ember-canary"]
+        include:
+          - test-suite: "test:fastboot"
+            allow-failure: true
+          - test-suite: "test:one ember-canary"
+            allow-failure: true
 
     steps:
       - uses: actions/checkout@v1
@@ -69,35 +74,4 @@ jobs:
 
       - name: tests
         run: yarn ${{ matrix.test-suite }}
-
-  optional-tests:
-    name: Optional Tests
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        test-suite: ["test:fastboot", "test:one ember-canary"]
-
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 10.x
-
-      - name: get yarn cache dir
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-test-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: install dependencies
-        run: yarn install
-
-      - name: tests
-        continue-on-error: true
-        run: yarn ${{ matrix.test-suite }}
+        continue-on-error: ${{matrix.allow-failure}}
