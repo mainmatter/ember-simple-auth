@@ -51,11 +51,8 @@ jobs:
           - test:one ember-release
           - test:one ember-beta
           - test:node
-          - test:fastboot
           - test:one ember-canary
         include:
-          - test-suite: "test:fastboot"
-            allow-failure: true
           - test-suite: "test:one ember-canary"
             allow-failure: true
 
