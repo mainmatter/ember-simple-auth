@@ -3,6 +3,11 @@ import { deprecate } from '@ember/application/deprecations';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
 import { isPresent } from '@ember/utils';
+import DS from 'ember-data';
+import { symbol } from '../utils/symbol';
+
+const { VERSION } = DS;
+const AUTHORIZE_SYMBOL = symbol('ORIGINAL_AUTHORIZE');
 
 /**
   __This mixin can be used to make Ember Data adapters authorize all outgoing
@@ -110,11 +115,12 @@ export default Mixin.create({
           xhr.setRequestHeader(headerName, headerValue);
         });
       } else {
-        deprecate('Ember Simple Auth: The authorize method should no longer be used. Instead, set the headers property or implement it as a computed property.', false, {
-          id: `ember-simple-auth.data-adapter-mixin.authorize`,
-          until: '3.0.0'
-        });
-        this.authorize(xhr);
+        if (this.authorize(xhr) !== AUTHORIZE_SYMBOL) {
+          deprecate('Ember Simple Auth: The authorize method should no longer be used. Instead, set the headers property or implement it as a computed property.', false, {
+            id: `ember-simple-auth.data-adapter-mixin.authorize`,
+            until: '3.0.0'
+          });
+        }
       }
 
       if (beforeSend) {
@@ -125,7 +131,11 @@ export default Mixin.create({
   },
 
   authorize() {
-    assert('The `authorize` method should be overridden in your application adapter. It should accept a single argument, the request object.');
+    let [major_version] = VERSION.split('.');
+
+    assert('The `authorize` method should be overridden in your application adapter. It should accept a single argument, the request object.', major_version >= 2);
+
+    return AUTHORIZE_SYMBOL;
   },
 
   /**
