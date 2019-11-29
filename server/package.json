@@ -1,7 +1,8 @@
 {
   "name": "simple-auth-server",
   "scripts": {
-    "start": "node app"
+    "start": "node app",
+    "build": "mkdir public && cp -R $(ls | ls | grep -v '^public$') public/"
   },
   "now": {
     "name": "ember-simple-auth-server",
