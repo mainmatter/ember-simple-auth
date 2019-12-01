@@ -31,6 +31,7 @@ const keys = Object.keys || emberKeys; // Ember.keys deprecated in 1.13
   @public
 */
 export default BaseAuthenticator.extend({
+  _isFastBoot: isFastBoot(),
   /**
     Triggered when the authenticator refreshed the access token (see
     [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
@@ -329,7 +330,7 @@ export default BaseAuthenticator.extend({
   },
 
   _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
-    const refreshAccessTokens = this.get('refreshAccessTokens') && !isFastBoot();
+    const refreshAccessTokens = this.get('refreshAccessTokens') && !this.get('_isFastBoot');
     if (refreshAccessTokens) {
       const now = (new Date()).getTime();
       if (isEmpty(expiresAt) && !isEmpty(expiresIn)) {
