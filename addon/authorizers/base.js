@@ -30,7 +30,7 @@ export default EmberObject.extend({
       {
         id: 'ember-simple-auth.baseAuthorizer',
         until: '3.0.0',
-        url: 'https://github.com/simplabs/ember-simple-auth#deprecation-of-authorizers',
+        url: 'https://github.com/simplabs/ember-simple-auth/tree/2.0.0#deprecation-of-authorizers',
       }
     );
   },
