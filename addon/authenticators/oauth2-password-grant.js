@@ -271,7 +271,7 @@ export default BaseAuthenticator.extend({
         {
           id: 'ember-simple-auth.oauth2-password-grant-authenticator.client-id-as-authorization',
           until: '3.0.0',
-          url: 'https://github.com/simplabs/ember-simple-auth#deprecation-of-client-id-as-header',
+          url: 'https://github.com/simplabs/ember-simple-auth/tree/2.0.0#deprecation-of-client-id-as-header',
         }
       );
     }

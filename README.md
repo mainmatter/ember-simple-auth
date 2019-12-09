@@ -445,7 +445,7 @@ export default Base.extend({
 
 __Authorizers use the session data acquired by the authenticator to construct
 authorization data__ that can be injected into outgoing network requests. As
-[Deprecation warning: Authorizers are deprecated](https://github.com/simplabs/ember-simple-auth#deprecation-of-authorizers)
+[Deprecation warning: Authorizers are deprecated](#deprecation-of-authorizers)
 
 the authorizer depends on the data that the authenticator acquires,
 __authorizers and authenticators have to fit together__.
