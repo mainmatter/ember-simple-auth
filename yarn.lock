@@ -9570,9 +9570,9 @@ normalize-url@2.0.1:
     sort-keys "^2.0.0"
 
 now@^16.6.0:
-  version "16.6.1"
-  resolved "https://registry.yarnpkg.com/now/-/now-16.6.1.tgz#5ec795f82f00bc9a3986de200714924241ed5eea"
-  integrity sha512-uddAO2OiScmIXVUrMc2Zr7RiP4ommugyzukqt2rIEg+qZKmPRHlJRX++Yj18TQLXtEfvqkUGzqK+a+CrogHZmg==
+  version "16.6.3"
+  resolved "https://registry.yarnpkg.com/now/-/now-16.6.3.tgz#00a940223bcac7de0a0d892ad07b9dbdf44cf5e8"
+  integrity sha512-bNAaQUL+ggTfpzsO6WxqCvEAz8sbm/2mI2OxJIsVq+v4cRPpH09z8+4EQeP6cfWll2ospH1UFxW2wF+9EaEFKA==
 
 npm-bundled@^1.0.1:
   version "1.0.6"
