@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.1.1 (2019-12-13)
+
+#### :bug: Bug Fix
+* [#2010](https://github.com/simplabs/ember-simple-auth/pull/2010) Remove authorize assertion and update migration example ([@sdebarros](https://github.com/sdebarros))
+
+#### :memo: Documentation
+* [#2051](https://github.com/simplabs/ember-simple-auth/pull/2051) Update deprecation links in v2 ([@sdebarros](https://github.com/sdebarros))
+* [#2010](https://github.com/simplabs/ember-simple-auth/pull/2010) Remove authorize assertion and update migration example ([@sdebarros](https://github.com/sdebarros))
+
+#### Committers: 1
+- Samanta de Barros ([@sdebarros](https://github.com/sdebarros))
+
 ## v2.1.0 (2019-10-31)
 
 #### :rocket: Enhancement
