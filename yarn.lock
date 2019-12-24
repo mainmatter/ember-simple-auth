@@ -11986,9 +11986,9 @@ symbol-tree@^3.2.2:
   integrity sha1-rifbOPZgp64uHDt9G8KQgZuFGeY=
 
 symlink-or-copy@^1.0.0, symlink-or-copy@^1.0.1, symlink-or-copy@^1.1.3, symlink-or-copy@^1.1.8, symlink-or-copy@^1.2.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/symlink-or-copy/-/symlink-or-copy-1.3.0.tgz#a034398f11408ef083f51e0f7433040b6123ebf0"
-  integrity sha512-czheMn4hgCWK/nxqtm9On5JgUrl5KBPCdXYWZjvwiRQ4NA7XhdHY2GSASxQoVh+mbXPMoGcR7/MnngLtUZij4Q==
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/symlink-or-copy/-/symlink-or-copy-1.3.1.tgz#9506dd64d8e98fa21dcbf4018d1eab23e77f71fe"
+  integrity sha512-0K91MEXFpBUaywiwSSkmKjnGcasG/rVBXFLJz5DrgGabpYD6N+3yZrfD6uUIfpuTu65DZLHi7N8CizHc07BPZA==
 
 sync-disk-cache@^1.3.3:
   version "1.3.4"
