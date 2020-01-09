@@ -9710,9 +9710,9 @@ normalize-url@2.0.1:
     sort-keys "^2.0.0"
 
 now@^16.6.0:
-  version "16.7.0"
-  resolved "https://registry.yarnpkg.com/now/-/now-16.7.0.tgz#4a1f1588410e7cbe9ca8d2c3fdcdc61e7116e8cc"
-  integrity sha512-YUMFYphAxcLE441/o2h55QgtXerF3M0GlQgy7ihJhPcz6OsllCqGgxaN5/XgnAJOlgKCW84HxSB8ZzCY55H4lQ==
+  version "16.7.2"
+  resolved "https://registry.yarnpkg.com/now/-/now-16.7.2.tgz#ca6a0208b5a1b8d62b3c1466044d051aeacc0f09"
+  integrity sha512-YNieAvW2vsUDQl+vAXikxrElB4rqcB2TeTU5S6ah5MB6TkYtzo2qkbdjl5mp6j7KuzGWfQHGVywi01rZQYqkog==
 
 npm-bundled@^1.0.1:
   version "1.0.6"
