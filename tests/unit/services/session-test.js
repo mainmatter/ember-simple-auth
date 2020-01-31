@@ -19,7 +19,10 @@ describe('SessionService', () => {
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
     session = ObjectProxy.extend(Evented, {
-      content: {}
+      init() {
+        this._super(...arguments);
+        this.content = {};
+      }
     }).create();
 
     this.owner.register('authorizer:custom', EmberObject.extend({

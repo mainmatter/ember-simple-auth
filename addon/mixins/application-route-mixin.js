@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-new-mixins */
+
 import Mixin from '@ember/object/mixin';
 import { A } from '@ember/array';
 import { getOwner } from '@ember/application';

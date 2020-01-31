@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-new-mixins */
+
 import Mixin from '@ember/object/mixin';
 import { setOwner } from '@ember/application';
 import RSVP from 'rsvp';

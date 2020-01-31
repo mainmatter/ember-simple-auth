@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-new-mixins */
+
 import EmberObject from '@ember/object';
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';

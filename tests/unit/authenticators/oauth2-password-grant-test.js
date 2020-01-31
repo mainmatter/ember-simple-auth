@@ -362,7 +362,9 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
     it('can be overridden in a subclass', function() {
       let authenticator = OAuth2PasswordGrant.extend({
-        tokenRefreshOffset: computed(() => 42).volatile(),
+        tokenRefreshOffset: computed(function() {
+          return 42;
+        }),
       }).create();
 
       expect(authenticator.get('tokenRefreshOffset')).to.equal(42);

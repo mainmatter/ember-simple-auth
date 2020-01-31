@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-new-mixins */
+
 import { next } from '@ember/runloop';
 import Service from '@ember/service';
 import { describe, beforeEach, it } from 'mocha';
