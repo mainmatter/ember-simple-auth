@@ -21,7 +21,7 @@ describe('setupSession', () => {
       register() {},
       injection() {}
     };
-    Ember.testing = true;
+    Ember.testing = true; // eslint-disable-line ember/no-ember-testing-in-module-scope
   });
 
   afterEach(function() {
@@ -53,11 +53,11 @@ describe('setupSession', () => {
 
   describe('when Ember.testing is false', function() {
     beforeEach(function() {
-      Ember.testing = false;
+      Ember.testing = false; // eslint-disable-line ember/no-ember-testing-in-module-scope
     });
 
     afterEach(function() {
-      Ember.testing = true;
+      Ember.testing = true; // eslint-disable-line ember/no-ember-testing-in-module-scope
     });
 
     it('injects the application session store into the session', function() {

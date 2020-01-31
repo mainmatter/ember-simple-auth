@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-new-mixins */
+
 import EmberObject from '@ember/object';
 import RSVP from 'rsvp';
 import Route from '@ember/routing/route';

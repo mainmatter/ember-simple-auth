@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-new-mixins */
+
 import Mixin from '@ember/object/mixin';
 import { setOwner } from '@ember/application';
 import RSVP from 'rsvp';
@@ -91,10 +93,13 @@ describe('AuthenticatedRouteMixin', () => {
 
       it('sets the redirectTarget cookie in fastboot', function() {
         this.owner.register('service:fastboot', Service.extend({
-          request: {
-            protocol: 'https'
+          isFastBoot: true,
+          init() {
+            this._super(...arguments);
+            this.request = {
+              protocol: 'https'
+            };
           },
-          isFastBoot: true
         }));
         let writeCookieStub = sinon.stub();
         this.owner.register('service:cookies', Service.extend({
