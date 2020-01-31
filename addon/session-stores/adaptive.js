@@ -105,12 +105,6 @@ export default Base.extend({
 
   _cookies: service('cookies'),
 
-  _fastboot: computed(function() {
-    let owner = getOwner(this);
-
-    return owner && owner.lookup('service:fastboot');
-  }),
-
   _isLocalStorageAvailable: computed(function() {
     try {
       localStorage.setItem(LOCAL_STORAGE_TEST_KEY, true);
@@ -123,6 +117,11 @@ export default Base.extend({
 
   init() {
     this._super(...arguments);
+
+    let owner = getOwner(this);
+    if (owner && !this.hasOwnProperty('_fastboot')) {
+      this._fastboot = owner.lookup('service:fastboot');
+    }
 
     let store;
     if (this.get('_isLocalStorageAvailable')) {
