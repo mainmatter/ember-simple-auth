@@ -1,9 +1,8 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
-import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
-import isFastBootCPM, { isFastBoot } from '../utils/is-fastboot';
+import isFastBoot from '../utils/is-fastboot';
 
 /**
  * If the user is unauthenticated, invoke `callback`
@@ -60,13 +59,6 @@ export default Mixin.create({
     @public
   */
   session: service('session'),
-
-  _authRouter: computed(function() {
-    let owner = getOwner(this);
-    return owner.lookup('service:router') || owner.lookup('router:main');
-  }),
-
-  _isFastBoot: isFastBootCPM(),
 
   /**
     The route to transition to for authentication. The
@@ -125,6 +117,8 @@ export default Mixin.create({
     let authenticationRoute = this.get('authenticationRoute');
     assert('The route configured as AuthenticatedRouteMixin.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
 
-    this.get('_authRouter').transitionTo(authenticationRoute);
+    let owner = getOwner(this);
+    let authRouter = owner.lookup('service:router') || owner.lookup('router:main');
+    authRouter.transitionTo(authenticationRoute);
   },
 });

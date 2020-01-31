@@ -2,7 +2,8 @@ import EmberObject from '@ember/object';
 import RSVP from 'rsvp';
 import Route from '@ember/routing/route';
 import { isEmpty } from '@ember/utils';
-import { it } from 'ember-mocha';
+import { setOwner } from '@ember/application';
+import { it, setupTest } from 'ember-mocha';
 import { describe, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
@@ -10,6 +11,8 @@ import OAuth2ImplicitGrantCallbackRouteMixin from 'ember-simple-auth/mixins/oaut
 import * as LocationUtil from 'ember-simple-auth/utils/location';
 
 describe('OAuth2ImplicitGrantCallbackRouteMixin', function() {
+  setupTest();
+
   let sinon;
   let route;
   let session;
@@ -40,6 +43,7 @@ describe('OAuth2ImplicitGrantCallbackRouteMixin', function() {
         authenticator: 'authenticator:oauth2',
         _isFastBoot: false
       }).create({ session });
+      setOwner(route, this.owner);
 
       sinon.spy(route, 'transitionTo');
     });

@@ -33,19 +33,20 @@ describe('AuthenticatedRouteMixin', () => {
         }
       });
 
-      router = { transitionTo() {} };
       transition = {
         intent: {
           url: '/transition/target/url'
         },
         send() {}
       };
+      this.owner.register('service:router', Service.extend({
+        transitionTo() {}
+      }));
+      router = this.owner.lookup('service:router');
 
       this.owner.register('service:session', Service.extend());
 
-      route = Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin).create({
-        _authRouter: router
-      });
+      route = Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin).create();
       setOwner(route, this.owner);
 
       sinon.spy(transition, 'send');
@@ -67,7 +68,7 @@ describe('AuthenticatedRouteMixin', () => {
       it('does not transition to the authentication route', function() {
         route.beforeModel(transition);
 
-        expect(route._authRouter.transitionTo).to.not.have.been.calledWith('login');
+        expect(router.transitionTo).to.not.have.been.calledWith('login');
       });
     });
 
@@ -78,7 +79,7 @@ describe('AuthenticatedRouteMixin', () => {
 
       it('transitions to "login" as the default authentication route', function() {
         route.beforeModel(transition);
-        expect(route._authRouter.transitionTo).to.have.been.calledWith('login');
+        expect(router.transitionTo).to.have.been.calledWith('login');
       });
 
       it('transitions to the set authentication route', function() {
@@ -86,7 +87,7 @@ describe('AuthenticatedRouteMixin', () => {
         route.set('authenticationRoute', authenticationRoute);
 
         route.beforeModel(transition);
-        expect(route._authRouter.transitionTo).to.have.been.calledWith(authenticationRoute);
+        expect(router.transitionTo).to.have.been.calledWith(authenticationRoute);
       });
 
       it('sets the redirectTarget cookie in fastboot', function() {

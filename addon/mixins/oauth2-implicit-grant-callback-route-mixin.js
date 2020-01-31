@@ -1,7 +1,8 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
+import { getOwner } from '@ember/application';
 import location from '../utils/location';
-import isFastBootCPM from '../utils/is-fastboot';
+import isFastBoot from '../utils/is-fastboot';
 
 function _parseResponse(locationHash) {
   let params = {};
@@ -77,7 +78,8 @@ export default Mixin.create({
     @public
   */
   activate() {
-    if (this.get('_isFastBoot')) {
+    let _isFastBoot = this.hasOwnProperty('_isFastBoot') ? this._isFastBoot : isFastBoot(getOwner(this));
+    if (_isFastBoot) {
       return;
     }
 
@@ -89,6 +91,4 @@ export default Mixin.create({
       this.set('error', err);
     });
   },
-
-  _isFastBoot: isFastBootCPM()
 });

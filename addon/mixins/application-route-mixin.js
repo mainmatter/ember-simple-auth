@@ -55,8 +55,6 @@ export default Mixin.create({
   */
   session: inject('session'),
 
-  _isFastBoot: isFastBoot(),
-
   /**
     The route to transition to after successful authentication.
 
@@ -69,6 +67,8 @@ export default Mixin.create({
 
   init() {
     this._super(...arguments);
+
+    this._isFastBoot = this.hasOwnProperty('_isFastBoot') ? this._isFastBoot : isFastBoot(getOwner(this));
     this._subscribeToSessionEvents();
   },
 
