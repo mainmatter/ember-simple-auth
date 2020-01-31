@@ -194,7 +194,7 @@ export default ObjectProxy.extend(Evented, {
 
   _lookupAuthenticator(authenticatorName) {
     let owner = getOwner(this);
-    let authenticator = getOwner(this).lookup(authenticatorName);
+    let authenticator = owner.lookup(authenticatorName);
     setOwner(authenticator, owner);
     return authenticator;
   }
