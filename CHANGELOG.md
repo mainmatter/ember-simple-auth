@@ -1,5 +1,40 @@
 # Changelog
 
+## v3.0.0 (2020-02-10)
+
+#### :boom: Breaking Change
+* [#1933](https://github.com/simplabs/ember-simple-auth/pull/1933) Remove deprecations and drop support for Ember < 3.0 ([@sdebarros](https://github.com/sdebarros))
+* [#2005](https://github.com/simplabs/ember-simple-auth/pull/2005) upgrade ember-cli-babel dependency to latest ([@marcoow](https://github.com/marcoow))
+* [#2004](https://github.com/simplabs/ember-simple-auth/pull/2004) make ember-fetch a peer dependency ([@marcoow](https://github.com/marcoow))
+* [#1993](https://github.com/simplabs/ember-simple-auth/pull/1993) require Node 10+ ([@marcoow](https://github.com/marcoow))
+
+#### :rocket: Enhancement
+* [#2076](https://github.com/simplabs/ember-simple-auth/pull/2076) Fix deprecations regarding Computed Property Overrides ([@marcoow](https://github.com/marcoow))
+* [#1848](https://github.com/simplabs/ember-simple-auth/pull/1848) Add SameSite cookie attribute support ([@Exelord](https://github.com/Exelord))
+* [#1941](https://github.com/simplabs/ember-simple-auth/pull/1941) Update with async/await example ([@geekygrappler](https://github.com/geekygrappler))
+
+#### :memo: Documentation
+* [#2032](https://github.com/simplabs/ember-simple-auth/pull/2032) Use `on` modifier rather in octane examples ([@kategengler](https://github.com/kategengler))
+* [#2023](https://github.com/simplabs/ember-simple-auth/pull/2023) Fixes to code Indentation ([@AddisonG](https://github.com/AddisonG))
+* [#2020](https://github.com/simplabs/ember-simple-auth/pull/2020) fix configuration options use ([@sly7-7](https://github.com/sly7-7))
+* [#2014](https://github.com/simplabs/ember-simple-auth/pull/2014) Fixed Typo in file title, and other spelling ([@AddisonG](https://github.com/AddisonG))
+* [#1941](https://github.com/simplabs/ember-simple-auth/pull/1941) Update with async/await example ([@geekygrappler](https://github.com/geekygrappler))
+
+#### :house: Internal
+* [#2043](https://github.com/simplabs/ember-simple-auth/pull/2043) disable FastBoot tests for now ([@marcoow](https://github.com/marcoow))
+* [#2034](https://github.com/simplabs/ember-simple-auth/pull/2034) switch to github actions ([@marcoow](https://github.com/marcoow))
+* [#2013](https://github.com/simplabs/ember-simple-auth/pull/2013) Modernize tests ([@marcoow](https://github.com/marcoow))
+
+#### Committers: 8
+- Addison G ([@AddisonG](https://github.com/AddisonG))
+- Andy Brown ([@geekygrappler](https://github.com/geekygrappler))
+- Katie Gengler ([@kategengler](https://github.com/kategengler))
+- Maciej Kwaśniak ([@Exelord](https://github.com/Exelord))
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- Samanta de Barros ([@sdebarros](https://github.com/sdebarros))
+- Sylvain MINA ([@sly7-7](https://github.com/sly7-7))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v2.1.0 (2019-10-31)
 
 #### :rocket: Enhancement
