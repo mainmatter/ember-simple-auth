@@ -5873,9 +5873,9 @@ ember-source-channel-url@^2.0.1:
     got "^8.0.1"
 
 ember-source@~3.16.0:
-  version "3.16.1"
-  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-3.16.1.tgz#997f51c2b74620906d2a8111089b6e894b6165e6"
-  integrity sha512-4cYfQ+DsqeSTqG0RztuTsh8d8p0XdeIaPWe9Ol229GhQjM1JgpjQNTXGJDTIB8FfbAxycPlCwIk2qXygA+pFsA==
+  version "3.16.2"
+  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-3.16.2.tgz#bdb342445804d20b46796b98919a924e5a8eb61e"
+  integrity sha512-aRF90V88rJ6h47ootUw8oGcV7O4ulwLYNVqnokTr9RTeWjEimwMtzLLazUfDR1LZMkdMTLVLGcQkJCJVvUAg5A==
   dependencies:
     "@babel/helper-module-imports" "^7.0.0"
     "@babel/plugin-transform-block-scoping" "^7.6.2"
@@ -11169,14 +11169,7 @@ resolve-url@^0.2.1:
   resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
   integrity sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
 
-resolve@^1.1.6, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.10.1, resolve@^1.11.1, resolve@^1.12.0, resolve@^1.14.0, resolve@^1.3.2, resolve@^1.3.3, resolve@^1.4.0, resolve@^1.5.0, resolve@^1.7.1, resolve@^1.8.1:
-  version "1.14.1"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.14.1.tgz#9e018c540fcf0c427d678b9931cbf45e984bcaff"
-  integrity sha512-fn5Wobh4cxbLzuHaE+nphztHy43/b++4M6SsGFC2gB8uYwf0C8LcarfCz1un7UTW8OFQg9iNjZ4xpcFVGebDPg==
-  dependencies:
-    path-parse "^1.0.6"
-
-resolve@^1.13.1:
+resolve@^1.1.6, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.10.1, resolve@^1.11.1, resolve@^1.12.0, resolve@^1.13.1, resolve@^1.14.0, resolve@^1.3.2, resolve@^1.3.3, resolve@^1.4.0, resolve@^1.5.0, resolve@^1.7.1, resolve@^1.8.1:
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.15.1.tgz#27bdcdeffeaf2d6244b95bb0f9f4b4653451f3e8"
   integrity sha512-84oo6ZTtoTUpjgNEr5SJyzQhzL72gaRodsSfyxC/AXRvwu0Yse9H8eF9IpGo7b8YetZhlI6v7ZQ6bKBFV/6S7w==
