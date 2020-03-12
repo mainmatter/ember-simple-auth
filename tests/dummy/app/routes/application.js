@@ -2,19 +2,20 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-export default Route.extend(ApplicationRouteMixin, {
-  sessionAccount: service('session-account'),
+export default class ApplicationRoute extends Route.extend(ApplicationRouteMixin) {
+  @service sessionAccount
 
   beforeModel() {
     return this._loadCurrentUser();
-  },
+  }
 
   sessionAuthenticated() {
-    this._super(...arguments);
+    super.sessionAuthenticated(...arguments);
+
     this._loadCurrentUser();
-  },
+  }
 
   _loadCurrentUser() {
-    return this.get('sessionAccount').loadCurrentUser().catch(() => this.get('session').invalidate());
+    return this.sessionAccount.loadCurrentUser().catch(() => this.session.invalidate());
   }
-});
+}

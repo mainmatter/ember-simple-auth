@@ -2,7 +2,7 @@ import DS from 'ember-data';
 
 const { attr, Model } = DS;
 
-export default Model.extend({
-  title: attr('string'),
-  body:  attr('string')
-});
+export default class PostModel extends Model {
+  @attr title;
+  @attr body;
+}

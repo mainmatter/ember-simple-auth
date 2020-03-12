@@ -5,15 +5,16 @@ import { computed } from '@ember/object';
 
 const { JSONAPIAdapter } = DS;
 
-export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  host: config.apiHost,
+export default class ApplicationAdapter extends JSONAPIAdapter.extend(DataAdapterMixin) {
+  host = config.apiHost;
 
-  headers: computed('session.data.authenticated.access_token', function() {
+  @computed('session.data.authenticated.access_token')
+  get headers() {
     let headers = {};
-    if (this.get('session.isAuthenticated')) {
-      headers['Authorization'] = `Bearer ${this.get('session.data.authenticated.access_token')}`;
+    if (this.session.isAuthenticated) {
+      headers['Authorization'] = `Bearer ${this.session.data.authenticated.access_token}`;
     }
 
     return headers;
-  }),
-});
+  }
+}

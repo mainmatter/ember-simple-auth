@@ -1,9 +1,9 @@
 import Controller from '@ember/controller';
+import { action } from '@ember/object';
 
-export default Controller.extend({
-  actions: {
-    transitionToLoginRoute() {
-      this.transitionToRoute('login');
-    }
+export default class ApplicationController extends Controller {
+  @action
+  transitionToLoginRoute() {
+    this.transitionToRoute('login');
   }
-});
+}

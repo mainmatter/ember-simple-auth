@@ -1,19 +1,18 @@
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  session:        service('session'),
-  sessionAccount: service('session-account'),
+export default class MainNavigationComponent extends Component {
+  @service session;
+  @service sessionAccount;
 
-  actions: {
-    login() {
-      // Closure actions are not yet available in Ember 1.12
-      // eslint-disable-next-line ember/closure-actions
-      this.sendAction('onLogin');
-    },
-
-    logout() {
-      this.get('session').invalidate();
-    }
+  @action
+  login() {
+    this.args.onLogin();
   }
-});
+
+  @action
+  logout() {
+    this.session.invalidate();
+  }
+}
