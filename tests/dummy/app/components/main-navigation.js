@@ -7,11 +7,6 @@ export default class MainNavigationComponent extends Component {
   @service sessionAccount;
 
   @action
-  login() {
-    this.args.onLogin();
-  }
-
-  @action
   logout() {
     this.session.invalidate();
   }

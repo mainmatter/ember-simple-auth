@@ -12,7 +12,9 @@ export default class LoginFormComponent extends Component {
   @tracked errorMessage;
 
   @action
-  authenticateWithOAuth2() {
+  authenticateWithOAuth2(e) {
+    e.preventDefault();
+
     let { identification, password } = this;
     this.session.authenticate('authenticator:oauth2-password-grant', identification, password)
       .then(() => {
