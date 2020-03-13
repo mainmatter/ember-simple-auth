@@ -1,14 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-  {{#link-to 'index' classNames='navbar-brand'}}
-    Home
-  {{/link-to}}
+  <LinkTo @route="index" class="navbar-brand">Home</LinkTo>
   <ul class="navbar-nav mr-auto">
-    {{#link-to 'protected' tagName='li' class='nav-item'}}
-      <a class="nav-link" href="#">Protected Page</a>
-    {{/link-to}}
-    {{#link-to 'auth-error' tagName='li' class='nav-item'}}
-      <a class="nav-link" href="#">Auth Error Page</a>
-    {{/link-to}}
+    <li class="nav-item">
+      <LinkTo @route="protected" class="nav-link">Protected Page</LinkTo>
+    </li>
+    <li class="nav-item">
+      <LinkTo @route="auth-error" class="nav-link">Auth Error Page</LinkTo>
+    </li>
   </ul>
   <form class="form-inline">
     {{! display logout button when the session is authenticated, login button otherwise }}
