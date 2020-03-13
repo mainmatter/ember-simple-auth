@@ -32,6 +32,18 @@ export default Component.extend({
                             + `&response_type=${responseType}`
                             + `&scope=${scope}`
       );
-    }
+    },
+
+    updateIdentification(e) {
+      this.set('identification', e.target.value);
+    },
+
+    updatePassword(e) {
+      this.set('password', e.target.value);
+    },
+
+    updateRememberMe(e) {
+      this.set('rememberMe', e.target.checked);
+    },
   }
 });
