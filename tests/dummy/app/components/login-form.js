@@ -44,4 +44,19 @@ export default class LoginFormComponent extends Component {
                           + `&scope=${scope}`
     );
   }
+
+  @action
+  updateIdentification(e) {
+    this.identification = e.target.value;
+  }
+
+  @action
+  updatePassword(e) {
+    this.password = e.target.value;
+  }
+
+  @action
+  updateRememberMe(e) {
+    this.rememberMe = e.target.checked;
+  }
 }
