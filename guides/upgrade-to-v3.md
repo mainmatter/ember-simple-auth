@@ -16,13 +16,15 @@ routes including the mixins that define them.
 Defined in [`AuthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/AuthenticatedRouteMixin.html) with
 `'login'` as the default value, should be overridden as:
 
-```js app/routes/protected.js
+```js
+// app/routes/protected.js
+
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Route.extend(AuthenticatedRouteMixin, {
-  authenticationRoute: 'signin',
-});
+export default class ProtedtedRoute extends Route.extend(AuthenticatedRouteMixin), {
+  authenticationRoute = 'signin';
+}
 ```
 
 **routeAfterAuthentication**
@@ -30,13 +32,15 @@ export default Route.extend(AuthenticatedRouteMixin, {
 Defined in [`ApplicationRouteMixin`](http://ember-simple-auth.com/api/classes/ApplicationRouteMixin.html) with
 `'index'` as the default value, should be overridden as:
 
-```js app/routes/application.js
+```js
+// app/routes/application.js
+
 import Route from '@ember/routing/route';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-export default Route.extend(ApplicationRouteMixin, {
-  routeAfterAuthentication: 'profile',
-});
+export default class ApplicationRoute extends Route.extend(ApplicationRouteMixin) {
+  routeAfterAuthentication = 'profile';
+}
 ```
 
 **routeIfAlreadyAuthenticated**
@@ -44,13 +48,15 @@ export default Route.extend(ApplicationRouteMixin, {
 Defined in [`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/UnauthenticatedRouteMixin.html) with
 `'index'` as the default value, should be overridden as:
 
-```js app/routes/application.js
+```js
+// app/routes/login.js
+
 import Route from '@ember/routing/route';
 import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 
-export default Route.extend(UnauthenticatedRouteMixin, {
-  routeIfAlreadyAuthenticated: 'search',
-});
+export default class LoginRoute extends Route.extend(UnauthenticatedRouteMixin) {
+  routeIfAlreadyAuthenticated = 'search';
+}
 ```
 
 ### Make your custom session store asynchronous
@@ -60,25 +66,22 @@ The example below shows how to adapt your current stores using `RSVP`.
 
 ```js
 // app/session-stores/application.js
+
 import Base from 'ember-simple-auth/session-stores/base';
-import RSVP from 'rsvp';
 
-export default Base.extend({
-  persist() {
+export default class ApplicationSessionStore extends Base {
+  async persist() {
     …
-    return RSVP.resolve();
   },
 
-  restore() {
+  async restore() {
     …
-    return RSVP.resolve(return_data);
   },
 
-  clear() {
+  async clear() {
     …
-    return RSVP.resolve();
   },
-});
+}
 ```
 
 ### Refactor Ember Data adapters to remove use of Authorizers
@@ -96,44 +99,46 @@ for details on adapters). Replacing authorizers in these scenarios is straightfo
 Examples:
 
 ```js
+// app/adapters/application.js
+
 // OAuth 2
-import DS from 'ember-data';
+import JSONAPIAdapter from '@ember-data/adapter/json-api';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 
-const { JSONAPIAdapter } = DS;
+export default class ApplicationAdapter extends JSONAPIAdapter.extend(DataAdapterMixin) {
+  @service session;
 
-export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  session: service(),
-
-  headers: computed('session.data.authenticated.access_token', function() {
+  @computed('session.data.authenticated.access_token')
+  get headers() {
     const headers = {};
     if (this.session.isAuthenticated) {
       headers['Authorization'] = `Bearer ${this.session.data.authenticated.access_token}`;
     }
 
     return headers;
-  }),
-});
+  }
+}
 
 // DataAdapterMixin already injects the `session` service. It is
 // included here for clarity.
 ```
 
 ```js
+// app/adapters/application.js
+
 // Devise
 import DS from 'ember-data';
 import { inject as service } from '@ember/service';
 import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 
-const { JSONAPIAdapter } = DS;
-
-export default JSONAPIAdapter.extend(DataAdapterMixin, {
+export default class ApplicationAdapter extends JSONAPIAdapter.extend(DataAdapterMixin) {
   // defaults
   // identificationAttributeName: 'email'
   // tokenAttributeName: 'token'
-  headers: computed('session.data.authenticated.token', function() {
+  @computed('session.data.authenticated.token')
+  get headers() {
     let headers = {};
 
     if (this.session.isAuthenticated) {

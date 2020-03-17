@@ -167,13 +167,14 @@ API Key: {{config.apiKey}} <br />
 ```js
 // app/controllers/application.js
 
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import config from '../config/environment';
 
-export default Ember.Controller.extend({
-  session: Ember.inject.service(),
-  config: config.torii.providers['github-oauth2']
-});
+export default class ApplicationController extends Controller {
+  @service session;
+  config = config.torii.providers['github-oauth2'];
+}
 ```
 
 For the `index.hbs` let's put a placeholder until we're ready to fill in real data.
@@ -212,11 +213,13 @@ our application route. This is optional, but adds methods supporting the authent
 otherwise have to implement explicitly.
 
 ```js
-import Ember from 'ember';
+// app/routes/application.js
+
+import Route from '@ember/routing';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-export default Ember.Route.extend(ApplicationRouteMixin, {
-});
+export default class ApplicationRoute extends Route.extend(ApplicationRouteMixin) {
+}
 ```
 
 Next, we'll designate the `index` route as an authenticated route using the
@@ -227,11 +230,11 @@ by default `login`, if you are not authenticated.
 ```js
 // app/routes/index.js
 
-import Ember from 'ember';
+import Route from '@ember/routing';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin, {
-});
+export default IndexRoute extends Route.extend(AuthenticatedRouteMixin) {
+}
 ```
 
 If you're still running the app when you save this, you will see it redirect to the `login` route.
@@ -246,12 +249,12 @@ Next, we'll set up our torii authenticator to start.
 ```js
 // app/authenticators/torii.js
 
-import Ember from 'ember';
-import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
+import { inject as service } from '@ember/service';
+import Torii from 'ember-simple-auth/authenticators/torii';
 
-export default ToriiAuthenticator.extend({
-  torii: Ember.inject.service()
-});
+export default class ToriiAuthenticator extends Torii {
+  @service torii;
+}
 ```
 
 We also need to define a Torii provider. Because Torii doesn't provide a generator, we need to create the `app/torii-providers`
@@ -260,13 +263,13 @@ directory ourselves and create the following `github.js` inside it.
 ```js
 // app/torii-providers/github.js
 
-import GitHubOAuth2Provider from 'torii/providers/github-oauth2';
+import GitHubOAuth2 from 'torii/providers/github-oauth2';
 
-export default GitHubOAuth2Provider.extend({
+export default class GithubToriiProvider extends GitHubOAuth2 {
   fetch(data) {
     return data;
   }
-});
+}
 ```
 
 There's only one more piece in this step, connecting our "Log in" button to the authentication mechanism. First, add a
@@ -279,17 +282,18 @@ ember g controller login
 ```js
 // app/controllers/login.js
   
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
-export default Ember.Controller.extend({
-  session: Ember.inject.service(),
-  
-  actions: {
-    login() {
-      this.get('session').authenticate('authenticator:torii', 'github');
-    }
+export default class LoginController extends Controller {
+  @service session;
+
+  @action
+  login() {
+    this.session.authenticate('authenticator:torii', 'github');
   }
-});
+}
 ```
 
 Finally, change your `login` template to send the action when the button is pressed.
@@ -484,34 +488,33 @@ ENV.torii.providers['github-oauth2'].tokenExchangeUri = process.env.DEV_TOKEN_EX
 Now that we've set up a token exchange service, let's use it. Replace your `torii` authenticator with
 
 ```js
-import Ember from 'ember';
-import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
+// app/authenticators/torii.js
+
+import { inject as service } from '@ember/service';
+import Torii from 'ember-simple-auth/authenticators/torii';
 import config from '../config/environment';
 
-export default ToriiAuthenticator.extend({
-  torii: Ember.inject.service(),
-  ajax: Ember.inject.service(),
+export default class ToriiAuthenticator extends Torii {
+  @service torii;
+  @service ajax;
 
-  authenticate() {
-    const ajax = this.get('ajax');
+  async authenticate() {
     const tokenExchangeUri = config.torii.providers['github-oauth2'].tokenExchangeUri;
 
-    return this._super(...arguments).then((data) => {
-      return ajax.request(tokenExchangeUri, {
-        type: 'POST',
-        crossDomain: true,
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify({
-          authorizationCode: data.authorizationCode
-        })
-      }).then( (response) => {
-        return {
-          access_token: JSON.parse(response).access_token,
-          provider: data.provider
-        };
-      });
+    let data = await super.authenticate(...arguments);
+    let response = await this.ajax.request(tokenExchangeUri, {
+      type: 'POST',
+      crossDomain: true,
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        authorizationCode: data.authorizationCode
     });
+
+    return {
+      access_token: JSON.parse(response).access_token,
+      provider: data.provider
+    };
   }
 });
 ```
@@ -537,11 +540,13 @@ ember g adapter github-user
 ```js
 // app/adapters/github-user.js
 
+import { computed } from '@ember/object';
 import GitHubUserAdapter from 'ember-data-github/adapters/github-user';
 import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 
-export default GitHubUserAdapter.extend(DataAdapterMixin, {
-  headers: computed("session.data.authenticated.access_token", function() {
+export default class GithubUserAdapter extends GitHubUserAdapter.extend(DataAdapterMixin) {
+  @computed("session.data.authenticated.access_token")
+  get headers() {
     const headers = {};
     if (this.session.isAuthenticated) {
       headers.Authorization = `token ${
@@ -550,8 +555,8 @@ export default GitHubUserAdapter.extend(DataAdapterMixin, {
     }
 
     return headers;
-  })
-});
+  }
+}
 ```
 
 This adapter injects an authorization header into the GitHub request now.  The `DataAdapterMixin` is a mixin provided by
