@@ -6,7 +6,9 @@ export default Component.extend({
   session: service('session'),
 
   actions: {
-    async authenticateWithOAuth2() {
+    async authenticateWithOAuth2(e) {
+      e.preventDefault();
+
       try {
         let { identification, password } = this;
         await this.get('session').authenticate('authenticator:oauth2', identification, password);
