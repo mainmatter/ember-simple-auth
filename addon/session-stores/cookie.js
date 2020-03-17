@@ -53,6 +53,7 @@ export default BaseStore.extend({
     @public
   */
   cookieDomain: null,
+  sameSite: 'Lax',
 
   /**
     The name of the cookie.
@@ -158,10 +159,11 @@ export default BaseStore.extend({
     let domain      = Ember.isEmpty(this.cookieDomain) ? '' : `; domain=${this.cookieDomain}`;
     let expires     = Ember.isEmpty(expiration) ? '' : `; expires=${new Date(expiration).toUTCString()}`;
     let secure      = !!this._secureCookies ? ';secure' : '';
+    let sameSite    = `; SameSite=${this.sameSite}`;
     document.cookie = `${this.cookieName}=${encodeURIComponent(value)}${domain}${path}${expires}${secure}`;
     if (expiration !== null) {
       let cachedExpirationTime = this._read(`${this.cookieName}:expiration_time`);
-      document.cookie = `${this.cookieName}:expiration_time=${encodeURIComponent(this.cookieExpirationTime || cachedExpirationTime)}${domain}${path}${expires}${secure}`;
+      document.cookie = `${this.cookieName}:expiration_time=${encodeURIComponent(this.cookieExpirationTime || cachedExpirationTime)}${domain}${path}${expires}${secure}${sameSite}`;
     }
   },
 
