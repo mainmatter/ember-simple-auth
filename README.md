@@ -131,8 +131,8 @@ export default class ApplicationController extends Controller {
 {{!-- app/templates/application.hbs --}}
 <div class="menu">
   …
-  {{#if session.isAuthenticated}}
-    <a {{action 'invalidateSession'}}>Logout</a>
+  {{#if this.session.isAuthenticated}}
+    <a {{on "click" this.invalidateSession}}>Logout</a>
   {{else}}
     {{#link-to 'login'}}Login{{/link-to}}
   {{/if}}
@@ -182,14 +182,14 @@ With that authenticator and a login form like
 
 ```handlebars
 {{!-- app/templates/login.hbs --}}
-<form {{action 'authenticate' on='submit'}}>
+<form {{on "submit" this.authenticate}}>
   <label for="identification">Login</label>
-  {{input id='identification' placeholder='Enter Login' value=identification}}
+  <input placeholder="Enter Login" value={{this.identification}} {{on "change" this.updateIdentification}}>
   <label for="password">Password</label>
-  {{input id='password' placeholder='Enter Password' type='password' value=password}}
+  <input placeholder="Enter Password" value={{this.password}} {{on "change" this.updatePassword}}>
   <button type="submit">Login</button>
-  {{#if errorMessage}}
-    <p>{{errorMessage}}</p>
+  {{#if this.errorMessage}}
+    <p>{{this.errorMessage}}</p>
   {{/if}}
 </form>
 ```
