@@ -2,6 +2,7 @@ import { tryInvoke } from '@ember/utils';
 import {
   currentURL,
   visit,
+  fillIn,
   click
 } from '@ember/test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
@@ -26,6 +27,36 @@ describe('Acceptance: Authentication', function() {
 
   afterEach(function() {
     tryInvoke(server, 'shutdown');
+  });
+
+  it('logging in with correct credentials works', async function() {
+    server = new Pretender(function() {
+      this.post(`${config.apiHost}/token`, () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!", "account_id": 1 }']);
+      this.get(`${config.apiHost}/accounts/1`, () => [200, { 'Content-Type': 'application/json' }, '{ "data": { "type": "accounts", "id": "1", "attributes": { "login": "letme", "name": "Some person" } } }']);
+    });
+
+    await invalidateSession();
+    await visit('/login');
+    await fillIn('[data-test-identification]', 'identification');
+    await fillIn('[data-test-password]', 'password');
+    await click('button[type="submit"]');
+
+    expect(currentURL()).to.eq('/');
+  });
+
+  it('logging in with incorrect credentials shows an error', async function() {
+    server = new Pretender(function() {
+      this.post(`${config.apiHost}/token`, () => [400, { 'Content-Type': 'application/json' }, '{ "error": "invalid_grant" }']);
+    });
+
+    await invalidateSession();
+    await visit('/login');
+    await fillIn('[data-test-identification]', 'identification');
+    await fillIn('[data-test-password]', 'wrong-password!');
+    await click('button[type="submit"]');
+
+    expect(currentURL()).to.eq('/login');
+    expect(document.querySelector('[data-test-error-message]')).to.exist;
   });
 
   describe('the protected route', function() {
