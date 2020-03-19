@@ -6,15 +6,17 @@ export default Component.extend({
   session: service('session'),
 
   actions: {
-    authenticateWithOAuth2() {
-      let { identification, password } = this.getProperties('identification', 'password');
-      this.get('session').authenticate('authenticator:oauth2', identification, password)
-        .then(() => {
-          this.get('rememberMe') && this.set('session.store.cookieExpirationTime', 60 * 60 * 24 * 14);
-        })
-        .catch((reason) => {
-          this.set('errorMessage', reason.error);
-        });
+    async authenticateWithOAuth2() {
+      try {
+        let { identification, password } = this;
+        await this.get('session').authenticate('authenticator:oauth2', identification, password);
+
+        if (this.rememberMe) {
+          this.get('session').set('store.cookieExpirationTime', 60 * 60 * 24 * 14);
+        }
+      } catch (reason) {
+        this.set('errorMessage', reason.error);
+      }
     },
 
     authenticateWithFacebook() {
@@ -32,6 +34,18 @@ export default Component.extend({
                             + `&response_type=${responseType}`
                             + `&scope=${scope}`
       );
-    }
+    },
+
+    updateIdentification(e) {
+      this.set('identification', e.target.value);
+    },
+
+    updatePassword(e) {
+      this.set('password', e.target.value);
+    },
+
+    updateRememberMe(e) {
+      this.set('rememberMe', e.target.checked);
+    },
   }
 });
