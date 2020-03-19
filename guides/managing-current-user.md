@@ -36,13 +36,13 @@ export default class MyComponent extends Component {
     Home
   {{/link-to}}
 
-  {{#if session.isAuthenticated}}
-    <button onclick={{action 'logout'}}>Logout</button>
-    {{#if currentUser.user}}
-      <p>Signed in as {{currentUser.user.name}}</p>
+  {{#if this.session.isAuthenticated}}
+    <button {{on "click" this.logout}}>Logout</button>
+    {{#if this.currentUser.user}}
+      <p>Signed in as {{this.currentUser.user.name}}</p>
     {{/if}}
   {{else}}
-    <button onclick={{action 'login'}}>Login</button>
+    <button {{on "click" this.login}}>Login</button>
   {{/if}}
 </nav>
 ```
@@ -111,9 +111,9 @@ export default class CurrentUserService extends Service {
   @service store;
 
   async load() {
-    let userId = this.get('session.data.authenticated.user_id');
+    let userId = this.session.data.authenticated.user_id;
     if (userId) {
-      let user = await this.get('store').findRecord('user', userId);
+      let user = await this.store.findRecord('user', userId);
       this.set('user', user);
     }
   }
