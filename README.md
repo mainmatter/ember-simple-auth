@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/simplabs/ember-simple-auth.svg?branch=master)](https://travis-ci.org/simplabs/ember-simple-auth)
-
 __[Ember Simple Auth API docs](http://ember-simple-auth.com/api/)__
 
 __[![Discord](https://img.shields.io/discord/480462759797063690.svg?logo=discord)](https://discord.gg/zT3asNS)__
