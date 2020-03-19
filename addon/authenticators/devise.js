@@ -99,7 +99,7 @@ export default BaseAuthenticator.extend({
     @method authenticate
     @param {String} identification The user's identification
     @param {String} password The user's password
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
+    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated. If authentication fails, the promise will reject with the server response; however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
     @public
   */
   authenticate(identification, password) {
