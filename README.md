@@ -38,6 +38,7 @@ authorization mechanisms__.
 * [Session Stores](#session-stores)
   * [Store Types](#store-types)
   * [Implementing a Custom Store](#implementing-a-custom-store)
+* [FastBoot](#fastboot)
 * [Testing](#testing)
 
 **Other Guides**
