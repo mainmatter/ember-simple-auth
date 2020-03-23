@@ -6300,9 +6300,9 @@ eslint-config-simplabs@^0.4.0:
     supports-color "^3.2.3"
 
 eslint-plugin-ember@^7.1.0:
-  version "7.8.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-ember/-/eslint-plugin-ember-7.8.1.tgz#9b2d0526bb6b697f3f18e5c7d3fcf64e447813af"
-  integrity sha512-74Whm5MHV+llWv0LA/4b4IaLQxMTj5Jc1zoK11gYEPQbPIAviTF4JsRuzPM/x7QMo5pQZyTdfGYF5zVMbgQ2RA==
+  version "7.11.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-ember/-/eslint-plugin-ember-7.11.0.tgz#b770b0c68a18bbba4b66d32921750af143a4abf9"
+  integrity sha512-hlBhipZbBpwEroig7wPLtYCAz+ETNPtrpNQMRb5nK9BIZemhC+9S2lXQbWQrtJJwfxyUFpQdQU61FWtJJn561g==
   dependencies:
     "@ember-data/rfc395-data" "^0.0.4"
     ember-rfc176-data "^0.3.12"
