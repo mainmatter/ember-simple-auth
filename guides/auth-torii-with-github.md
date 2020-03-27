@@ -538,7 +538,7 @@ response, and send it back to your Ember app.
 
 Gatekeeper expects the authorization code to come at the end of a URL in the
 format of `http://<gatekeeper-server>/authenticate/<authorization-code>`,
-which is why we set the value of `DEV_TOKEN_EXCHANGE_URL` to
+which is why we set the value of `AUTH_TOKEN_EXCHANGE_URL` to
 `http://localhost:9999/authenticate` in the `.env` file. This is the URL we
 will shortly be using.
 
