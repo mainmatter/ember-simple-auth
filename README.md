@@ -186,7 +186,7 @@ With that authenticator and a login form like
   <label for="identification">Login</label>
   <input id='identification' placeholder="Enter Login" value={{this.identification}} {{on "change" this.updateIdentification}}>
   <label for="password">Password</label>
-  <input placeholder="Enter Password" value={{this.password}} {{on "change" this.updatePassword}}>
+  <input id='password' placeholder="Enter Password" value={{this.password}} {{on "change" this.updatePassword}}>
   <button type="submit">Login</button>
   {{#if this.errorMessage}}
     <p>{{this.errorMessage}}</p>

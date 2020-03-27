@@ -29,7 +29,7 @@ configuration and base classes. For GitHub specifically, the authentication flow
    server forwards to the app.
 5. The app uses the `access_token` in an `Authorization: Bearer
    <access_token>` header request to, say, `https://api.github.com/user`,
-   which returns the GitHub user’s user info, at which point it can be matched to the app's own `User` model or whatever. 
+   which returns the GitHub user’s user info, at which point it can be matched to the app's own `User` model. 
 
 You can find a sequence diagram for the full flow [here](./assets/esa-initial-flow.txt.png).
 
@@ -86,7 +86,7 @@ includes `session`, an [Ember
 service](https://guides.emberjs.com/release/applications/services/) that
 provides authentication persistence even when the server is restarted.
 `torii` provides the abstraction needed to write the GitHub-specific
-authorization “provider”.
+authorization provider.
 
 ### Configuration
 
@@ -185,7 +185,7 @@ ember g route index
 ember g route login
 ```
 
-Ember-cli will ask about overwriting app/templates/application.hbs. That’s fine to do so.
+Ember-cli will ask about overwriting app/templates/application.hbs. It's fine to do so.
 
 Also, now is a good time to remove `ember-welcome-page` from your `package.json`.
 
