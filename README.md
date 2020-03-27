@@ -184,7 +184,7 @@ With that authenticator and a login form like
 {{!-- app/templates/login.hbs --}}
 <form {{on "submit" this.authenticate}}>
   <label for="identification">Login</label>
-  <input placeholder="Enter Login" value={{this.identification}} {{on "change" this.updateIdentification}}>
+  <input id='identification' placeholder="Enter Login" value={{this.identification}} {{on "change" this.updateIdentification}}>
   <label for="password">Password</label>
   <input placeholder="Enter Password" value={{this.password}} {{on "change" this.updatePassword}}>
   <button type="submit">Login</button>
