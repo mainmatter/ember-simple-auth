@@ -15,11 +15,12 @@ import BaseAuthenticator from './base';
 
   ```js
   // app/authenticators/torii.js
-  import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
+  import Torii from 'ember-simple-auth/authenticators/torii';
+  import { inject as service } from '@ember/service';
 
-  export default ToriiAuthenticator.extend({
-    torii: Ember.inject.service()
-  });
+  export default class ToriiAuthenticator extends Torii {
+    @service torii;
+  }
   ```
 
   @class ToriiAuthenticator
@@ -40,11 +41,11 @@ export default BaseAuthenticator.extend({
     // app/torii-providers/facebook.js
     import FacebookOauth2Provider from 'torii/providers/facebook-oauth2';
 
-    export default FacebookOauth2Provider.extend({
+    export default class FacebookToriiProvider extends FacebookOauth2Provider {
       fetch(data) {
         return data;
       }
-    });
+    }
     ```
 
     @method restore

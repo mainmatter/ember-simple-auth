@@ -12,11 +12,12 @@ const SESSION_DATA_KEY_PREFIX = /^data\./;
 
   ```js
   // app/components/login-form.js
-  import Ember from 'ember';
+  import Component from '@ember/component';
+  import { inject as service } from '@ember/service';
 
-  export default Ember.Component.extend({
-    session: Ember.inject.service('session')
-  });
+  export default class LoginFormComponent extends Component {
+    @service session;
+  }
   ```
 
   @class SessionService

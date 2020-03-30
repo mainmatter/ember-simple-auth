@@ -1,5 +1,4 @@
 /* eslint-disable ember/no-new-mixins */
-
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
@@ -28,9 +27,10 @@ function runIfAuthenticated(owner, callback) {
 
   ```js
   // app/routes/login.js
+  import Route from '@ember/routing/route';
   import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 
-  export default Ember.Route.extend(UnauthenticatedRouteMixin);
+  export default class LoginRoute extends Route.extend(UnauthenticatedRouteMixin) {}
   ```
 
   @class UnauthenticatedRouteMixin

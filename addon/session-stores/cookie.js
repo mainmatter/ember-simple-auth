@@ -37,18 +37,23 @@ const persistingProperty = function(beforeSet = function() {}) {
 
   ```js
   // app/controllers/login.js
-  export default Ember.Controller.extend({
-    rememberMe: computed({
-      get(key) {
-        return false;
-      },
-      set(key, value) {
-        let expirationTime = value ? (14 * 24 * 60 * 60) : null;
-        this.set('session.store.cookieExpirationTime', expirationTime);
-        return value;
-      }
-    })
-  });
+  import Controller from '@ember/controller';
+  import { inject as service } from '@ember/service';
+
+  export default class LoginController extends Controller {
+    @service session;
+    _rememberMe = false;
+
+    get rememberMe() {
+      return this._rememberMe;
+    }
+
+    set rememberMe(value) {
+      let expirationTime = value ? (14 * 24 * 60 * 60) : null;
+      this.set('session.store.cookieExpirationTime', expirationTime);
+      this._rememberMe = value;
+    }
+  }
   ```
 
   __Applications that use FastBoot must use this session store by defining the
@@ -58,7 +63,7 @@ const persistingProperty = function(beforeSet = function() {}) {
   // app/session-stores/application.js
   import CookieStore from 'ember-simple-auth/session-stores/cookie';
 
-  export default CookieStore.extend();
+  export default class ApplicationSessionStore extends CookieStore {}
   ```
 
   @class CookieStore

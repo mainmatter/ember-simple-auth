@@ -43,7 +43,7 @@ function runIfUnauthenticated(owner, transition, callback) {
   // app/routes/protected.js
   import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-  export default Ember.Route.extend(AuthenticatedRouteMixin);
+  export default class ProtectedRoute extends Route.extend(AuthenticatedRouteMixin) {}
   ```
 
   @class AuthenticatedRouteMixin
@@ -90,7 +90,7 @@ export default Mixin.create({
     the browser after authentication is complete.
 
     __If `beforeModel` is overridden in a route that uses this mixin, the route's
-   implementation must call `this._super(...arguments)`__ so that the mixin's
+   implementation must call `super.beforeModel(...arguments)`__ so that the mixin's
    `beforeModel` method is actually executed.
 
     @method beforeModel

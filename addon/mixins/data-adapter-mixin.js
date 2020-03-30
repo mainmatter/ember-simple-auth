@@ -14,19 +14,21 @@ import Mixin from '@ember/object/mixin';
 
   ```js
   // app/adapters/application.js
-  import DS from 'ember-data';
+  import JSONAPIAdapter from '@ember-data/adapter/json-api';
   import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
+  import { computed } from '@ember/object';
 
-  export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
-    headers: computed('session.data.authenticated.token', function() {
+  export default class ApplicationAdapter extends JSONAPIAdapter.extend(DataAdapterMixin) {
+    @computed('session.data.authenticated.token')
+    get headers() {
       let headers = {};
       if (this.session.isAuthenticated) {
         headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
       }
 
       return headers;
-    })
-  });
+    }
+  }
   ```
 
   __The `DataAdapterMixin` requires Ember Data 1.13 or later.__

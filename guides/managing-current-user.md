@@ -19,13 +19,15 @@ The service can then be injected into e.g. controllers or components that need
 access to the current user record, e.g.:
 
 ```js
+// app/components/my.js
+
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 
-export default Component.extend({
-  session:     service(),
-  currentUser: service()
-});
+export default class MyComponent extends Component {
+  @service session;
+  @service currentUser;
+}
 ```
 
 ```hbs
@@ -34,13 +36,13 @@ export default Component.extend({
     Home
   {{/link-to}}
 
-  {{#if session.isAuthenticated}}
-    <button onclick={{action 'logout'}}>Logout</button>
-    {{#if currentUser.user}}
-      <p>Signed in as {{currentUser.user.name}}</p>
+  {{#if this.session.isAuthenticated}}
+    <button {{on "click" this.logout}}>Logout</button>
+    {{#if this.currentUser.user}}
+      <p>Signed in as {{this.currentUser.user.name}}</p>
     {{/if}}
   {{else}}
-    <button onclick={{action 'login'}}>Login</button>
+    <button {{on "click" this.login}}>Login</button>
   {{/if}}
 </nav>
 ```
@@ -60,38 +62,37 @@ invoked with a query param where the `me` param is present.
 
 ```js
 // app/services/current-user.js
+
 import Service from '@ember/service';
-import { resolve } from 'rsvp';
 import { inject as service } from '@ember/service';
 
-export default Service.extend({
-  session: service(),
-  store: service(),
+export default class CurrentUserService extends Service {
+  @service session;
+  @service store;
 
-  load() {
-    if (this.get('session.isAuthenticated')) {
-      return this.get('store').queryRecord('user', { me: true }).then((user) => {
-        this.set('user', user);
-      });
-    } else {
-      return resolve();
+  async load() {
+    if (this.session.isAuthenticated) {
+      let user = await this.store.queryRecord('user', { me: true });
+      this.set('user', user);
     }
   }
 });
 
 // app/adapters/user.js
+
 import ApplicationAdapter from './application';
 
-export default ApplicationAdapter.extend({
+export default class UserAdapter extends ApplicationAdapter {
   urlForQueryRecord(query) {
+    let originalUrl = super.urlForQueryRecord(...arguments);
     if (query.me) {
       delete query.me;
-      return `${this._super(...arguments)}/me`;
+      return `${originalUrl}/me`;
     }
 
-    return this._super(...arguments);
+    return originalUrl;
   }
-});
+}
 ```
 
 #### Loading the user with its id
@@ -104,24 +105,19 @@ the id is then stored in the session data and can be read from there.
 // app/services/current-user.js
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
-import { isEmpty } from '@ember/utils';
-import { resolve } from 'rsvp';
 
-export default Service.extend({
-  session: service(),
-  store: service(),
+export default class CurrentUserService extends Service {
+  @service session;
+  @service store;
 
-  load() {
-    let userId = this.get('session.data.authenticated.user_id');
-    if (!isEmpty(userId)) {
-      return this.get('store').findRecord('user', userId).then((user) => {
-        this.set('user', user);
-      });
-    } else {
-      return resolve();
+  async load() {
+    let userId = this.session.data.authenticated.user_id;
+    if (userId) {
+      let user = await this.store.findRecord('user', userId);
+      this.set('user', user);
     }
   }
-});
+}
 ```
 
 ### Loading the current user
@@ -138,13 +134,14 @@ the session is authenticated:
 
 ```js
 // app/routes/application.js
+
 import Route from '@ember/routing/route';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
 import { inject as service } from '@ember/service';
 
-export default Route.extend(ApplicationRouteMixin, {
-  currentUser: service(),
+export default class ApplicationRoute extends Route.extend(ApplicationRouteMixin) {
+  @service currentUser;
 
   beforeModel() {
     return this._loadCurrentUser();
@@ -156,8 +153,12 @@ export default Route.extend(ApplicationRouteMixin, {
     _super.call(this, ...arguments);
   },
 
-  _loadCurrentUser() {
-    return this.get('currentUser').load().catch(() => this.get('session').invalidate());
+  async _loadCurrentUser() {
+    try {
+      await this.currentUser.load();
+    } catch(err) {
+      await this.session.invalidate();
+    }
   }
 });
 ```

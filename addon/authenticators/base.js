@@ -30,9 +30,9 @@ import EmberObject from '@ember/object';
   // app/authenticators/oauth2.js
   import OAuth2PasswordGrantAuthenticator from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
-  export default OAuth2PasswordGrantAuthenticator.extend({
+  export default class OAuth2Authenticator extends OAuth2PasswordGrantAuthenticator {
     ...
-  });
+  }
   ```
 
   and can then be used via the name Ember CLI automatically registers for them
@@ -40,15 +40,18 @@ import EmberObject from '@ember/object';
 
   ```js
   // app/components/login-form.js
-  export default Ember.Controller.extend({
-    session: Ember.inject.service(),
+  import Component from '@ember/component';
+  import { inject as service } from '@ember/service';
+  import { action } from '@ember/object';
 
-    actions: {
-      authenticate: function() {
-        this.get('session').authenticate('authenticator:oauth2');
-      }
+  export default class LoginFormComponent extends Component {
+    @service session;
+
+    @action
+    authenticate() {
+      this.session.authenticate('authenticator:oauth2');
     }
-  });
+  }
   ```
 
   @class BaseAuthenticator

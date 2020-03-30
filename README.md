@@ -119,19 +119,19 @@ in the template__:
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 
-export default Controller.extend({
-  session: service()
+export default class ApplicationController extends Controller {
+  @service session;
 
   …
-});
+}
 ```
 
 ```handlebars
 {{!-- app/templates/application.hbs --}}
 <div class="menu">
   …
-  {{#if session.isAuthenticated}}
-    <a {{action 'invalidateSession'}}>Logout</a>
+  {{#if this.session.isAuthenticated}}
+    <a {{on "click" this.invalidateSession}}>Logout</a>
   {{else}}
     {{#link-to 'login'}}Login{{/link-to}}
   {{/if}}
@@ -149,18 +149,18 @@ to invalidate the session__ and log the user out:
 // app/controllers/application.js
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import { action } from "@ember/object";
 
-export default Controller.extend({
-  session: service(),
+export default class ApplicationController extends Controller {
+  @service session;
 
   …
 
-  actions: {
-    invalidateSession() {
-      this.get('session').invalidate();
-    }
+  @action
+  invalidateSession() {
+    this.session.invalidate();
   }
-});
+}
 ```
 
 For authenticating the session, __the session service provides the
@@ -174,21 +174,21 @@ library comes with, e.g.:
 // app/authenticators/oauth2.js
 import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
-export default OAuth2PasswordGrant.extend();
+export default class OAuth2Authenticator extends OAuth2PasswordGrant {}
 ```
 
 With that authenticator and a login form like
 
 ```handlebars
 {{!-- app/templates/login.hbs --}}
-<form {{action 'authenticate' on='submit'}}>
+<form {{on "submit" this.authenticate}}>
   <label for="identification">Login</label>
-  {{input id='identification' placeholder='Enter Login' value=identification}}
+  <input id='identification' placeholder="Enter Login" value={{this.identification}} {{on "change" this.updateIdentification}}>
   <label for="password">Password</label>
-  {{input id='password' placeholder='Enter Password' type='password' value=password}}
+  <input id='password' placeholder="Enter Password" value={{this.password}} {{on "change" this.updatePassword}}>
   <button type="submit">Login</button>
-  {{#if errorMessage}}
-    <p>{{errorMessage}}</p>
+  {{#if this.errorMessage}}
+    <p>{{this.errorMessage}}</p>
   {{/if}}
 </form>
 ```
@@ -200,25 +200,27 @@ the __session can be authenticated with the
 // app/controllers/login.js
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import { action } from "@ember/object";
+import { tracked } from "@glimmer/tracking";
 
-export default Controller.extend({
-  session: service(),
+export default class LoginController extends Controller {
+  @tracked errorMessage;
+  @service session;
 
-  actions: {
-    async authenticate() {
-      let { identification, password } = this.getProperties('identification', 'password');
-      try {
-        await this.session.authenticate('authenticator:oauth2', identification, password);
-      } catch(error) {
-        this.set('errorMessage', error.error || error);
-      }
+  @action
+  async authenticate() {
+    let { identification, password } = this;
+    try {
+      await this.session.authenticate('authenticator:oauth2', identification, password);
+    } catch(error) {
+      this.errorMessage = error.error || error;
+    }
 
-      if (this.session.isAuthenticated) {
-        // What to do with all this success?
-      }
+    if (this.session.isAuthenticated) {
+      // What to do with all this success?
     }
   }
-});
+}
 ```
 
 __The session service also provides the
@@ -238,7 +240,7 @@ into the application route__:
 import Route from '@ember/routing/route';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-export default Route.extend(ApplicationRouteMixin);
+export default class ApplicationRoute extends Route.extend(ApplicationRouteMixin) {}
 ```
 
 The `ApplicationRouteMixin` automatically maps the session events to the
@@ -259,7 +261,7 @@ into the respective route:
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Route.extend(AuthenticatedRouteMixin);
+export default class ProtectedRoute extends Route.extend(AuthenticatedRouteMixin) {}
 ```
 
 This will make the route (and all of its subroutes) transition to the `login`
@@ -304,14 +306,13 @@ It can be used as:
 
 ```js
 // app/adapters/application.js
-import DS from 'ember-data';
+import JSONAPIAdapter from '@ember-data/adapter/json-api';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import { computed } from '@ember/object';
 
-const { JSONAPIAdapter } = DS;
-
-export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  headers: computed('session.data.authenticated.access_token', function() {
+export default class ApplicationAdapter extends JSONAPIAdapter.extend(DataAdapterMixin) {
+  @computed('session.data.authenticated.access_token')
+  get headers() {
     let headers = {};
     if (this.session.isAuthenticated) {
       // OAuth 2
@@ -319,8 +320,8 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
     }
 
     return headers;
-  }),
-});
+  }
+}
 ```
 
 ## The Session Service
@@ -342,7 +343,7 @@ side data that needs to be persisted and synchronized across tabs and windows,
 e.g.:
 
 ```js
-this.get('session').set('data.locale', 'de');
+this.session.set('data.locale', 'de');
 ```
 
 ## Authenticators
@@ -356,7 +357,7 @@ is chosen when authentication is triggered via the name it is registered with
 in the Ember container:
 
 ```js
-this.get('session').authenticate('authenticator:some');
+this.session.authenticate('authenticator:some');
 ```
 
 Ember Simple Auth comes with 4 authenticators:
@@ -374,14 +375,14 @@ authenticator
 // app/authenticators/oauth2.js
 import OAuth2PasswordGrantAuthenticator from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
-export default OAuth2PasswordGrantAuthenticator.extend();
+export default class OAuth2Authenticator extends OAuth2PasswordGrantAuthenticator {}
 ```
 
 and invoke the session service's `authenticate` method with the respective
 name, specifying more arguments as needed by the authenticator:
 
 ```js
-this.get('session').authenticate('authenticator:some', data);
+this.session.authenticate('authenticator:some', data);
 ```
 
 ### Customizing an Authenticator
@@ -393,9 +394,9 @@ e.g.:
 // app/authenticators/oauth2.js
 import OAuth2PasswordGrantAuthenticator from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
-export default OAuth2PasswordGrantAuthenticator.extend({
-  serverTokenEndpoint: '/custom/endpoint'
-});
+export default class OAuth2Authenticator extends OAuth2PasswordGrantAuthenticator {
+  serverTokenEndpoint = '/custom/endpoint';
+}
 ```
 
 ### Implementing a custom Authenticator
@@ -414,17 +415,19 @@ methods:
 // app/authenticators/custom.js
 import Base from 'ember-simple-auth/authenticators/base';
 
-export default Base.extend({
+export default class CustomAuthenticator extends Base {
   restore(data) {
     …
-  },
+  }
+
   authenticate(options) {
     …
-  },
+  }
+
   invalidate(data) {
     …
   }
-});
+}
 ```
 
 ## Session Stores
@@ -437,7 +440,7 @@ defined in `app/session-stores/application.js`:
 // app/session-stores/application.js
 import Cookie from 'ember-simple-auth/session-stores/cookie';
 
-export default Cookie.extend();
+export default class ApplicationSessionStore extends Cookie {}
 ```
 
 If the application does not define a session store, the adaptive store which
@@ -494,9 +497,9 @@ e.g.:
 // app/session-stores/application.js
 import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
 
-export default AdaptiveStore.extend({
-  cookieName: 'my-apps-session-cookie'
-});
+export default class ApplicationSessionStore extends AdaptiveStore {
+  cookieName = 'my-apps-session-cookie';
+}
 ```
 
 ### Implementing a custom Store
@@ -515,15 +518,15 @@ methods:
 // app/session-stores/application.js
 import Base from 'ember-simple-auth/session-stores/base';
 
-export default Base.extend({
+export default class ApplicationSessionStore extends Base {
   persist() {
     …
-  },
+  }
 
   restore() {
     …
   }
-});
+}
 ```
 
 ## FastBoot
@@ -536,7 +539,7 @@ the application store:
 // app/session-stores/application.js
 import CookieStore from 'ember-simple-auth/session-stores/cookie';
 
-export default CookieStore.extend();
+export default class ApplicationSessionStore extends CookieStore {}
 ```
 
 If you are using the
