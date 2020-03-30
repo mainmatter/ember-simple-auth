@@ -6304,10 +6304,10 @@ eslint-config-simplabs@^0.4.0:
     pify "^2.3.0"
     supports-color "^3.2.3"
 
-eslint-plugin-ember@^7.1.0:
-  version "7.11.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-ember/-/eslint-plugin-ember-7.11.1.tgz#d0f0205eab605d5fddaeb706ec6f73b3a71bb971"
-  integrity sha512-BebVe2jXos+nAU6ptdhxAVFqX6y7ZITjpDS+FhKD33FxtPPzNghJIqg/Yc2NwKCjetrW5zmfHXkIODtq49M1Sg==
+eslint-plugin-ember@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-ember/-/eslint-plugin-ember-8.1.0.tgz#bfc9333b6212e6f32f210fc39404379d365a4328"
+  integrity sha512-ZGo/vXIapt+85+06hjd08jnjMuRM/1aOLrhjdipqvClGPLlTjTqvYuyUQZws0TZAo8qOPBEK2EaI2u5W1whtyA==
   dependencies:
     "@ember-data/rfc395-data" "^0.0.4"
     ember-rfc176-data "^0.3.12"
