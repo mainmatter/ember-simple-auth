@@ -37,4 +37,4 @@ jobs:
           NOW_AUTH_TOKEN: ${{ secrets.NOW_TOKEN }}
         run: |
           now deploy --token=$NOW_AUTH_TOKEN --scope=e-simple-auth && now alias --token=$NOW_AUTH_TOKEN --scope=e-simple-auth
-          cd server && now deploy --token=$NOW_AUTH_TOKEN --scope=e-simple-auth && now alias --token=$NOW_AUTH_TOKEN --scope=e-simple-auth
+          cd server && now deploy --token=$NOW_AUTH_TOKEN --scope=e-simple-auth

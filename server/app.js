@@ -1,11 +1,9 @@
 'use strict';
 
-var express = require('express');
-var app = express();
-// eslint-disable-next-line no-unused-vars
-var server = require('./index.js')(app);
+const express = require('express');
+const app = express();
 
-app.listen(3000, function() {
-  // eslint-disable-next-line no-console
-  console.log('Server started on port 3000');
-});
+let setupApp = require('./index.js')
+setupApp(app);
+
+module.exports = app;

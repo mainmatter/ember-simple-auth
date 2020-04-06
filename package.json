@@ -28,7 +28,8 @@
   },
   "now": {
     "name": "ember-simple-auth",
-    "alias": "ember-simple-auth"
+    "alias": "ember-simple-auth",
+    "version": 2
   },
   "dependencies": {
     "base-64": "^0.1.0",

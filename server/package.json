@@ -1,19 +1,34 @@
 {
   "name": "simple-auth-server",
-  "scripts": {
-    "start": "node app",
-    "build": "mkdir public && cp -R $(ls | ls | grep -v '^public$') public/"
-  },
   "now": {
-    "name": "ember-simple-auth-server",
-    "alias": "ember-simple-auth-server.now.sh"
+    "version": 2,
+    "routes": [
+      {
+        "src": "/.*",
+        "dest": "/app.js",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      }
+    ],
+    "builds": [
+      {
+        "src": "app.js",
+        "use": "@now/node"
+      }
+    ],
+    "build": {
+      "env": {
+        "NODEJS_HELPERS": "0"
+      }
+    }
   },
   "dependencies": {
     "body-parser": "^1.17.2",
     "cors": "^2.8.1",
+    "express": "^4.17.1",
     "glob": "^7.1.1",
-    "morgan": "^1.8.1",
-    "express": "^4.15.2",
-    "micro": "latest"
+    "morgan": "^1.8.1"
   }
 }
