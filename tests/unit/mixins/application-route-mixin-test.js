@@ -1,4 +1,4 @@
-/* eslint-disable ember/no-new-mixins */
+/* eslint-disable ember/no-mixins, ember/no-new-mixins */
 
 import { next } from '@ember/runloop';
 import Service from '@ember/service';
