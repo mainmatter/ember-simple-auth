@@ -37,6 +37,7 @@ authorization mechanisms__.
   * [Store Types](#store-types)
   * [Implementing a Custom Store](#implementing-a-custom-store)
 * [FastBoot](#fastboot)
+* [Engines](#engines)
 * [Testing](#testing)
 
 **Other Guides**
@@ -555,6 +556,58 @@ in `package.json`:
     "node-fetch"
   ]
 }
+```
+
+## Engines
+
+Ember Simple Auth works with engines out of the box. The host app and any
+engine(s) share the same `session` service so they can synchronize the
+authentication status:
+
+```
+// my-engine/addon/routes/index.js
+import Application from '@ember/application';
+import loadInitializers from 'ember-load-initializers';
+
+class App extends Application {
+  …
+
+  engines = {
+    myEngine: {
+      dependencies: {
+        services: [
+          'session'
+        ]
+      }
+    }
+  }
+});
+
+…
+
+export default App;
+
+```
+
+The session can then be authenticated or invalidated from the host app or any
+of the engines and the state will be synchronized via the service.
+
+One thing to be aware of is that if the authentication route is outside of the
+engine (e.g. in the host app), it is necessary to override the
+`triggerAuthentication` method of the `AuthenticatedRouteMixin` inside of the
+engine as that needs to transition to an **external** route in that case:
+
+```
+// my-engine/addon/routes/index.js
+import Route from '@ember/routing/route';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+
+export default class IndexRoute extends Route.extend(AuthenticatedRouteMixin) {
+  triggerAuthentication() {
+    this.transitionToExternal('login');
+  }
+}
+
 ```
 
 ## Testing

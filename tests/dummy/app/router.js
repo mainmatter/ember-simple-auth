@@ -11,6 +11,7 @@ Router.map(function() {
   this.route('protected');
   this.route('auth-error');
   this.route('callback');
+  this.mount('my-engine', { as: 'engine', path: '/engine' });
 });
 
 export default Router;
