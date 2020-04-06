@@ -26,10 +26,6 @@
     "test:fastboot": "ember fastboot:test",
     "test:node": "mocha node-tests --recursive"
   },
-  "now": {
-    "name": "ember-simple-auth",
-    "alias": "ember-simple-auth"
-  },
   "dependencies": {
     "base-64": "^0.1.0",
     "broccoli-file-creator": "^2.0.0",
@@ -94,7 +90,6 @@
     "mocha": "^7.0.1",
     "morgan": "^1.10.0",
     "my-engine": "./tests/dummy/lib/my-engine",
-    "now": "^17.0.1",
     "rimraf": "^3.0.0",
     "sinon-chai": "~3.5.0",
     "torii": "^0.10.0"
