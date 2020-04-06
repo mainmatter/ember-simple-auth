@@ -2,6 +2,8 @@ name: Deploy
 
 on:
   push:
+    branches:
+      - zeit-2
     tags:
       - '*'
 
