@@ -1,4 +1,4 @@
-/* eslint-disable ember/no-new-mixins */
+/* eslint-disable ember/no-mixins, ember/no-new-mixins */
 
 import EmberObject from '@ember/object';
 import { describe, beforeEach, it } from 'mocha';

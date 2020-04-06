@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-mixins */
 import Route from '@ember/routing/route';
 import OAuth2ImplicitGrantCallbackRouteMixin from 'ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin';
 

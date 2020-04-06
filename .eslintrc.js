@@ -7,6 +7,7 @@ module.exports = {
   ],
   rules: {
     'ember/local-modules': 'off',
+    'ember/no-get': 'off',
     'ember/avoid-leaking-state-in-components': 'off',
   },
   parserOptions: {
