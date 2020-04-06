@@ -40,6 +40,7 @@ module.exports = function(environment) {
     },
 
     apiHost: 'http://localhost:4200',
+    apiNamespace: 'api',
 
     googleClientID: '694766332436-1g5bakjoo5flkfpv3t2mfsch9ghg7ggd.apps.googleusercontent.com',
 

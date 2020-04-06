@@ -28,5 +28,5 @@ module.exports = function(app) {
     }
   });
 
-  app.use('/', tokenRouter);
+  app.use('/api/', tokenRouter);
 };

@@ -34,5 +34,5 @@ module.exports = function(app) {
     res.status(401).end();
   });
 
-  app.use('/posts', postsRouter);
+  app.use('/api/posts', postsRouter);
 };

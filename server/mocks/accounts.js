@@ -25,5 +25,5 @@ module.exports = function(app) {
     }
   });
 
-  app.use('/accounts', accountsRouter);
+  app.use('/api/accounts', accountsRouter);
 };

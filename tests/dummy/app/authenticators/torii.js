@@ -1,5 +1,6 @@
 import { inject as service } from '@ember/service';
 import Torii from 'ember-simple-auth/authenticators/torii';
+import config from '../config/environment';
 
 export default Torii.extend({
   torii: service(),
@@ -9,7 +10,7 @@ export default Torii.extend({
     const ajax = this.get('ajax');
 
     return this._super(...arguments).then((data) => {
-      return ajax.request('/token', {
+      return ajax.request(`${config.apiHost}/${config.apiNamespace}/token`, {
         type:     'POST',
         dataType: 'json',
         data:     { 'grant_type': 'facebook_auth_code', 'auth_code': data.authorizationCode }

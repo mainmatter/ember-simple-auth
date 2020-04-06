@@ -5,6 +5,7 @@ import { computed } from '@ember/object';
 
 export default JSONAPIAdapter.extend(DataAdapterMixin, {
   host: config.apiHost,
+  namespace: config.apiNamespace,
 
   headers: computed('session.data.authenticated.access_token', function() {
     let headers = {};
