@@ -6,8 +6,6 @@ module.exports = {
     'plugin:ember/recommended',
   ],
   rules: {
-    'ember/local-modules': 'off',
-    'ember/avoid-leaking-state-in-components': 'off',
   },
   parserOptions: {
     ecmaVersion: 2017,
