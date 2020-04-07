@@ -75,7 +75,7 @@ module.exports = function(environment) {
     ENV.fastboot = {
       hostWhitelist: ['demo.ember-simple-auth.com', 'esa-demo.herokuapp.com']
     };
-    ENV.apiHost = 'http://demo-api.ember-simple-auth.com';
+    ENV.apiHost = 'https://demo-api.ember-simple-auth.com';
   }
 
   return ENV;
