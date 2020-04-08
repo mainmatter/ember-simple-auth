@@ -14,8 +14,9 @@ export default Component.extend({
         if (this.rememberMe) {
           this.get('session').set('store.cookieExpirationTime', 60 * 60 * 24 * 14);
         }
-      } catch (reason) {
-        this.set('errorMessage', reason.error);
+      } catch (response) {
+        let responseBody = await response.clone().json();
+        this.set('errorMessage', responseBody);
       }
     },
 

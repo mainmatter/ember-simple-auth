@@ -72,6 +72,7 @@
     "ember-sinon": "~5.0.0",
     "ember-source": "~3.17.0",
     "ember-source-channel-url": "^1.1.0",
+    "ember-test-selectors": "^4.0.0",
     "ember-try": "^1.1.0",
     "eslint": "^5.16.0",
     "eslint-config-simplabs": "^0.4.0",
