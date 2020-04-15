@@ -2,10 +2,12 @@
 
 import { next } from '@ember/runloop';
 import Service from '@ember/service';
+import Route from '@ember/routing/route';
 import { describe, beforeEach, it } from 'mocha';
 import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 
@@ -29,6 +31,7 @@ describe('ApplicationRouteMixin', () => {
       clear: sinon.stub()
     }));
 
+    this.owner.register('route:application', Route.extend(ApplicationRouteMixin));
     route = this.owner.lookup('route:application');
     sinon.stub(route, 'transitionTo');
   });

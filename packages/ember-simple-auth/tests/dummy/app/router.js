@@ -7,11 +7,6 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  this.route('login');
-  this.route('protected');
-  this.route('auth-error');
-  this.route('callback');
-  this.mount('my-engine', { as: 'engine', path: '/engine' });
 });
 
 export default Router;

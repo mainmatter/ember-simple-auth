@@ -26,28 +26,7 @@ module.exports = function(environment) {
       'style-src': "'self' 'unsafe-inline'"
     },
 
-    browserify: {
-      tests: true
-    },
-
-    torii: {
-      allowUnsafeRedirects: true,
-      providers: {
-        'facebook-oauth2': {
-          apiKey: '631252926924840'
-        }
-      }
-    },
-
-    apiHost: 'http://localhost:4200',
-
-    googleClientID: '694766332436-1g5bakjoo5flkfpv3t2mfsch9ghg7ggd.apps.googleusercontent.com',
-
-    fastboot: {
-      hostWhitelist: [/^localhost:\d+$/]
-    },
-
-    esaVersion: require('../../../package.json').version,
+    esaVersion: require('../../../package.json').version
   };
 
   if (environment === 'development') {
@@ -72,10 +51,6 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     // put production settings here
-    ENV.fastboot = {
-      hostWhitelist: ['demo.ember-simple-auth.com', 'esa-demo.herokuapp.com']
-    };
-    ENV.apiHost = 'https://demo-api.ember-simple-auth.com';
   }
 
   return ENV;
