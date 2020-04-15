@@ -1,0 +1,1 @@
+web: yarn workspace test-app start:demo-api
