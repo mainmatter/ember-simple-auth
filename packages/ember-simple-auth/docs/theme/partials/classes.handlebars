@@ -1,0 +1,138 @@
+{{log this}}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="page-header">
+          <h1 class="class">{{moduleName}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-9">
+        <div class="row">
+          <div class="col-sm-12">
+            {{#if namespace}}
+              <pre><code>import {{namespace}} from '{{module}}';</code></pre>
+            {{else}}
+              <pre><code>import {{moduleName}} from '{{module}}';</code></pre>
+            {{/if}}
+            {{{classDescription}}}
+          </div>
+        </div>
+        {{#if methods}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h3 class="section">Methods</h3>
+            </div>
+          </div>
+          {{#methods}}
+            <div class="row">
+              <div class="col-sm-12">
+                {{>method}}
+              </div>
+            </div>
+          {{/methods}}
+        {{/if}}
+        {{#if properties}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h3 class="section">Properties</h3>
+            </div>
+          </div>
+          {{#properties}}
+            <div class="row">
+              <div class="col-sm-12">
+                {{>props}}
+              </div>
+            </div>
+          {{/properties}}
+        {{/if}}
+        {{#if events}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h3 class="section">Events</h3>
+            </div>
+          </div>
+          {{#events}}
+            <div class="row">
+              <div class="col-sm-12">
+                {{>events}}
+              </div>
+            </div>
+          {{/events}}
+        {{/if}}
+      </div>
+      <div class="quick-menu col-sm-3">
+        {{#if extends}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Extends</h4>
+              <code>{{#crossLink extends}}{{/crossLink}}</code>
+            </div>
+          </div>
+        {{/if}}
+        {{#if uses}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Uses</h4>
+              <ul class="list-unstyled">
+                {{#each uses}}
+                  <code>{{#crossLink this}}{{/crossLink}}</code>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+        {{#if extension_for}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Extension For</h4>
+              <ul class="list-unstyled">
+                {{#each extension_for}}
+                  <code>{{#crossLink this}}{{/crossLink}}</code>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+        {{#if methods}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Methods</h4>
+              <ul class="list-unstyled">
+                {{#methods}}
+                  <li><a href="#method_{{name}}">{{name}}</a></li>
+                {{/methods}}
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+        {{#if properties}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Properties</h4>
+              <ul class="list-unstyled">
+                {{#properties}}
+                  <li><a href="#property_{{name}}">{{name}}</a></li>
+                {{/properties}}
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+        {{#if events}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Events</h4>
+              <ul class="list-unstyled">
+                {{#events}}
+                  <li><a href="#event_{{name}}">{{name}}</a></li>
+                {{/events}}
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>

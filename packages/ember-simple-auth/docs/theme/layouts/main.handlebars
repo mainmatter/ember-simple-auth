@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{htmlTitle}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{projectAssets}}/vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{projectAssets}}/vendor/css/github.css">
+    <link rel="stylesheet" href="{{projectAssets}}/vendor/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{projectAssets}}/css/main.css">
+    <script src="{{projectAssets}}/vendor/js/jquery.min.js"></script>
+    <script src="{{projectAssets}}/vendor/js/bootstrap.min.js"></script>
+    <script src="{{projectAssets}}/vendor/js/highlight.pack.js"></script>
+  </head>
+  <body>
+    <header class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{projectRoot}}index.html">{{projectName}}</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{githubUrl}}"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text project-version"><a href="{{githubUrl}}/releases/tag/{{projectVersion}}"><span class="label label-primary">{{projectVersion}}</span></a></p></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div class="container">
+      <div class="row">
+        <div id="sidebar" class="col-sm-3">
+          {{>sidebar}}
+        </div>
+        <div id="main" class="col-sm-9">
+          {{>layout_content}}
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" charset="utf-8">
+      function fixLeadingWhitespace(codeBlock) {
+        var text = $(codeBlock).text();
+        var lines = text.split('\n');
+        var minLeadindSpaces = text.length;
+        $.each(lines.slice(1), function(i, line) {
+          var match = line.match(/^\s+/);
+          if (match) {
+            minLeadindSpaces = Math.min(match[0].length);
+          }
+        });
+        var regexp = new RegExp('^\\s{' + minLeadindSpaces + '}');
+        var fixedLines = lines.slice(0, 1).concat($.map(lines.slice(1), function(line) {
+          return line.replace(regexp, '');
+        }));
+        $(codeBlock).text(fixedLines.join('\n'));
+      }
+
+      $(document).ready(function() {
+        $('pre code').each(function(i, codeBlock) {
+          fixLeadingWhitespace(codeBlock);
+          hljs.highlightBlock(codeBlock);
+        });
+      });
+    </script>
+  </body>
+</html>

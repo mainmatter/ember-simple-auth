@@ -35,7 +35,7 @@ jobs:
         run: yarn install
 
       - name: lint
-        run: yarn lint
+        run: yarn workspace ember-simple-auth lint
 
   tests:
     name: Tests
@@ -77,7 +77,7 @@ jobs:
         run: yarn install
 
       - name: tests
-        run: yarn ${{ matrix.test-suite }}
+        run: yarn workspace ember-simple-auth ${{ matrix.test-suite }}
         continue-on-error: ${{matrix.allow-failure}}
 
   extra-tests:
@@ -105,5 +105,5 @@ jobs:
         run: yarn install --no-lockfile
 
       - name: tests
-        run: yarn test
+        run: yarn workspace ember-simple-auth test
         continue-on-error: true
