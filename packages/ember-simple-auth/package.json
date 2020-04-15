@@ -11,10 +11,8 @@
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "https://github.com/simplabs/ember-simple-auth",
   "scripts": {
     "build": "ember build",
-    "changelog": "lerna-changelog",
     "diagrams": "mermaid --sequenceConfig guides/assets/esa-initial-flow.config.json --width 2400 -o guides/assets guides/assets/esa-initial-flow.txt",
     "lint": "eslint app addon blueprints config tests *.js",
     "start": "ember serve",
@@ -70,7 +68,6 @@
     "eslint-plugin-node": "^11.0.0",
     "glob": "^7.1.6",
     "handlebars": "~4.7.1",
-    "lerna-changelog": "^1.0.0",
     "loader.js": "^4.5.1",
     "marked": "^1.0.0",
     "mermaid": "^7.0.3",

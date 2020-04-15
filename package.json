@@ -1,6 +1,13 @@
 {
   "private": true,
+  "repository": "https://github.com/simplabs/ember-simple-auth",
+  "scripts": {
+    "changelog": "lerna-changelog"
+  },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "lerna-changelog": "^1.0.1"
+  }
 }
