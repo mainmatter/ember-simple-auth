@@ -22,10 +22,6 @@ module.exports = function(environment) {
       // when it is created
     },
 
-    contentSecurityPolicy: {
-      'style-src': "'self' 'unsafe-inline'"
-    },
-
     esaVersion: require('../../../package.json').version
   };
 
