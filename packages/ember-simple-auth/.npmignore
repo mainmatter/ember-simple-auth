@@ -6,7 +6,6 @@
 /tmp
 /fastboot-dist
 /fastboot-tests
-/guides
 **/.gitkeep
 .bowerrc
 .editorconfig
