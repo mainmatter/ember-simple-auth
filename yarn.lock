@@ -5068,14 +5068,6 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-ember-ajax@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/ember-ajax/-/ember-ajax-5.0.0.tgz#404b17c93194ab37aff86b7b8607d8edab93c9ec"
-  integrity sha512-Pet0S5VuiO7PDOwyTIF28VHdR7BpugL+jp+6PxNHRQvAq3SkKmVnXN0W06rnOgicH3xX29S46fx7czkKOGB3gA==
-  dependencies:
-    ember-cli-babel "^7.5.0"
-    najax "^1.0.3"
-
 ember-angle-bracket-invocation-polyfill@^2.0.1, ember-angle-bracket-invocation-polyfill@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/ember-angle-bracket-invocation-polyfill/-/ember-angle-bracket-invocation-polyfill-2.0.2.tgz#117ab5238305f11046a2eb3a5bc026c98d2cf5c1"
@@ -7700,7 +7692,7 @@ git-read-pkt-line@0.0.8:
     bops "0.0.3"
     through "~2.2.7"
 
-git-repo-info@^1.0.4, git-repo-info@^1.4.1:
+git-repo-info@^1.0.4:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/git-repo-info/-/git-repo-info-1.4.1.tgz#2a072823254aaf62fcf0766007d7b6651bd41943"
   integrity sha1-KgcoIyVKr2L88HZgB9e2ZRvUGUM=
@@ -7716,13 +7708,6 @@ git-repo-version@0.2.0:
   integrity sha1-mh0AGaUPyeYjxD0cD8xDc5EgfQ0=
   dependencies:
     git-repo-info "^1.0.4"
-
-git-repo-version@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/git-repo-version/-/git-repo-version-1.0.2.tgz#2c8e9bee5d970cafc0dd58480f9dc56d9afe8e4f"
-  integrity sha512-OPtwtHx9E8/rTMcWT+BU6GNj6Kq/O40bHJZaZAGy+pN2RXGmeKcfr0ix4M+SQuFY8vl5L/wfPSGOAtvUT/e3Qg==
-  dependencies:
-    git-repo-info "^1.4.1"
 
 git-transport-protocol@^0.1.0:
   version "0.1.0"
@@ -9523,11 +9508,6 @@ markdown-it@^8.3.1:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-marked@^0.8.0:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.8.2.tgz#4faad28d26ede351a7a1aaa5fec67915c869e355"
-  integrity sha512-EGwzEeCcLniFX51DhTpmTom+dSA/MG/OBUDjnWtHbEnjAH180VzUeAw+oE4+Zv+CoYBWyRlYOTR0N8SO9R1PVw==
-
 marked@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/marked/-/marked-1.0.0.tgz#d35784245a04871e5988a491e28867362e941693"
@@ -9967,7 +9947,7 @@ moment@^2.20.1:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
-morgan@^1.10.0, morgan@^1.9.1:
+morgan@^1.9.1:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.10.0.tgz#091778abc1fc47cd3509824653dae1faab6b17d7"
   integrity sha512-AbegBVI4sh6El+1gNwvD5YIck7nSA36weD7xvIxG4in80j/UoK8AEGaWnnz8v1GxonMCltmlNs5ZKbGvl9b1XQ==

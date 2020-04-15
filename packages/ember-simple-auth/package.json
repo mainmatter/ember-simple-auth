@@ -34,19 +34,13 @@
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
-    "body-parser": "^1.19.0",
-    "bootstrap": "^4.3.1",
     "broccoli-asset-rev": "^3.0.0",
     "chai": "^4.1.0",
-    "cors": "^2.8.5",
-    "ember-ajax": "^5.0.0",
-    "ember-bootstrap": "~3.1.0",
     "ember-cli": "~3.18.0",
     "ember-cli-blueprint-test-helpers": "^0.19.2",
     "ember-cli-chai": "^0.5.0",
     "ember-cli-content-security-policy": "~1.1.1",
     "ember-cli-dependency-checker": "^3.0.0",
-    "ember-cli-fastboot": "^2.2.1",
     "ember-cli-htmlbars": "^5.0.0",
     "ember-cli-htmlbars-inline-precompile": "^3.0.1",
     "ember-cli-inject-live-reload": "^2.0.0",
@@ -59,9 +53,7 @@
     "ember-data": "~3.18.0",
     "ember-debug-handlers-polyfill": "^1.1.0",
     "ember-disable-prototype-extensions": "^1.1.2",
-    "ember-engines": "^0.8.5",
     "ember-export-application-global": "^2.0.0",
-    "ember-fastboot-addon-tests": "^0.5.0",
     "ember-fetch": "^8.0.1",
     "ember-load-initializers": "^2.0.0",
     "ember-mocha": "^0.16.2",
@@ -76,9 +68,6 @@
     "eslint-plugin-ember": "^8.1.1",
     "eslint-plugin-mocha": "^6.1.1",
     "eslint-plugin-node": "^11.0.0",
-    "express": "^4.17.1",
-    "fastboot-app-server": "^2.0.0",
-    "git-repo-version": "^1.0.0",
     "glob": "^7.1.6",
     "handlebars": "~4.7.1",
     "lerna-changelog": "^1.0.0",
@@ -86,8 +75,6 @@
     "marked": "^1.0.0",
     "mermaid": "^7.0.3",
     "mocha": "^7.0.1",
-    "morgan": "^1.10.0",
-    "rimraf": "^3.0.0",
     "sinon-chai": "~3.5.0",
     "torii": "^0.10.0"
   },
@@ -100,9 +87,6 @@
       "ember": ">=1.12"
     }
   },
-  "fastbootDependencies": [
-    "node-fetch"
-  ],
   "greenkeeper": {
     "ignore": [
       "eslint-plugin-ember",

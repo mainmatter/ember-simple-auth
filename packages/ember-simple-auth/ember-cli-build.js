@@ -9,11 +9,6 @@ var sourceTrees = [];
 module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
     storeConfigInMeta: true,
-    'ember-bootstrap': {
-      bootstrapVersion: 4,
-      importBootstrapFont: false,
-      importBootstrapCSS: true
-    },
     fingerprint: {
       generateAssetMap: EmberAddon.env() === 'production'
     },
