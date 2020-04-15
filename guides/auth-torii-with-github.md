@@ -31,7 +31,7 @@ configuration and base classes. For GitHub specifically, the authentication flow
    <access_token>` header request to, say, `https://api.github.com/user`,
    which returns the GitHub user’s user info, at which point it can be matched to the app's own `User` model. 
 
-You can find a sequence diagram for the full flow [here](./assets/esa-initial-flow.txt.png).
+You can find a sequence diagram for the full flow [here](./assets/esa-initial-flow.svg).
 
 This guide assumes you know how to start an Ember app and are familiar with the various
 files and concepts.

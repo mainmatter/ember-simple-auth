@@ -13,7 +13,6 @@
   },
   "scripts": {
     "build": "ember build",
-    "diagrams": "mermaid --sequenceConfig guides/assets/esa-initial-flow.config.json --width 2400 -o guides/assets guides/assets/esa-initial-flow.txt",
     "lint": "eslint app addon blueprints config tests *.js",
     "start": "ember serve",
     "test": "ember test",
@@ -70,7 +69,6 @@
     "handlebars": "~4.7.1",
     "loader.js": "^4.5.1",
     "marked": "^1.0.0",
-    "mermaid": "^7.0.3",
     "mocha": "^7.0.1",
     "sinon-chai": "~3.5.0",
     "torii": "^0.10.0"
