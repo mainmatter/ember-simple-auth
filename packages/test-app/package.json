@@ -6,7 +6,7 @@
   "repository": "https://github.com/simplabs/ember-simple-auth",
   "scripts": {
     "build": "ember build",
-    "lint": "eslint app addon blueprints config server tests *.js",
+    "lint": "eslint app config server tests *.js",
     "start": "ember serve",
     "start:fastboot": "NODE_ENV=production node fastboot-server.js",
     "start:demo-api": "node server/demo-api.js",

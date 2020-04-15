@@ -20,19 +20,11 @@ module.exports = {
       files: [
         'ember-cli-build.js',
         'fastboot-server.js',
-        'index.js',
         'testem.js',
-        'blueprints/utils.js',
-        'blueprints/*/index.js',
         'config/**/*.js',
-        'tests/dummy/config/**/*.js'
       ],
       excludedFiles: [
-        'addon/**',
-        'addon-test-support/**',
         'app/**',
-        'tests/dummy/app/**',
-        'tests/dummy/lib/my-engine/**'
       ],
       parserOptions: {
         sourceType: 'script',
@@ -48,14 +40,6 @@ module.exports = {
         "node/no-unpublished-require": "off"
         // add your custom rules and overrides for node files here
       })
-    }, {
-      files: [
-        "node-tests/blueprints/**/*.js"
-      ],
-      env: {
-        node: true,
-        mocha: true
-      }
     }
   ]
 };

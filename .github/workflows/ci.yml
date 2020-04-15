@@ -14,6 +14,12 @@ jobs:
     name: Linting
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        workspace:
+          - ember-simple-auth
+          - test-app
+
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -35,7 +41,7 @@ jobs:
         run: yarn install
 
       - name: lint
-        run: yarn workspace ember-simple-auth lint
+        run: yarn workspace ${{ matrix.workspace }} lint
 
   tests:
     name: Tests

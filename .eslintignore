@@ -1,16 +1,3 @@
-/blueprints/*/files
-
-# unconventional js
-/blueprints/*/files/
-/vendor/
-
-# compiled output
-/dist/
-/tmp/
-
-# dependencies
-/bower_components/
-
 # misc
 /coverage/
 
