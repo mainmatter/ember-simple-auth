@@ -18,12 +18,9 @@
     "diagrams": "mermaid --sequenceConfig guides/assets/esa-initial-flow.config.json --width 2400 -o guides/assets guides/assets/esa-initial-flow.txt",
     "lint": "eslint app addon blueprints config tests *.js",
     "start": "ember serve",
-    "start:fastboot": "NODE_ENV=production node fastboot-server.js",
-    "start:demo-api": "node server/demo-api.js",
     "test": "ember test",
     "test:all": "ember try:each",
     "test:one": "ember try:one",
-    "test:fastboot": "ember fastboot:test",
     "test:node": "mocha node-tests --recursive"
   },
   "dependencies": {
