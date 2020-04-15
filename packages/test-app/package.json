@@ -1,9 +1,7 @@
 {
   "name": "test-app",
   "version": "3.0.0",
-  "license": "MIT",
-  "author": "simplabs GmbH",
-  "repository": "https://github.com/simplabs/ember-simple-auth",
+  "private": true,
   "scripts": {
     "build": "ember build",
     "lint": "eslint app config server tests *.js",
@@ -64,24 +62,12 @@
     "sinon-chai": "~3.5.0",
     "torii": "^0.10.0"
   },
-  "engines": {
-    "node": "10.* || >= 12.*"
-  },
   "fastbootDependencies": [
     "node-fetch"
   ],
-  "greenkeeper": {
-    "ignore": [
-      "eslint-plugin-ember",
-      "eslint-plugin-mocha"
-    ]
-  },
   "resolutions": {
     "@babel/plugin-transform-typescript": "~7.4.5",
     "cssstyle": "~1.2.2",
     "jsdom": "^11.10.0"
-  },
-  "peerDependencies": {
-    "ember-fetch": "^8.0.1"
   }
 }
