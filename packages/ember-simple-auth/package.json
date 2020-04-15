@@ -87,12 +87,6 @@
       "ember": ">=1.12"
     }
   },
-  "greenkeeper": {
-    "ignore": [
-      "eslint-plugin-ember",
-      "eslint-plugin-mocha"
-    ]
-  },
   "resolutions": {
     "@babel/plugin-transform-typescript": "~7.4.5",
     "cssstyle": "~1.2.2",
