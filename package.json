@@ -86,7 +86,7 @@
     "handlebars": "~4.7.1",
     "lerna-changelog": "^1.0.0",
     "loader.js": "^4.5.1",
-    "marked": "^0.8.0",
+    "marked": "^1.0.0",
     "mermaid": "^7.0.3",
     "mocha": "^7.0.1",
     "morgan": "^1.10.0",
