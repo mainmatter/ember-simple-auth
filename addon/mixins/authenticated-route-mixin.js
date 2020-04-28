@@ -13,7 +13,7 @@ import isFastBoot from '../utils/is-fastboot';
  * @param {Transition} transition Transition for the user's original navigation
  * @param {(...args: []any) => any} callback Callback that will be invoked if the user is unauthenticated
  */
-function runIfUnauthenticated(owner, transition, callback) {
+function runIfUnauthenticated(owner, transition) {
   const isFb = isFastBoot(owner);
   const sessionSvc = owner.lookup('service:session');
   if (!sessionSvc.get('isAuthenticated')) {
@@ -27,9 +27,19 @@ function runIfUnauthenticated(owner, transition, callback) {
     } else {
       sessionSvc.set('attemptedTransition', transition);
     }
-    callback();
     return true;
   }
+}
+
+export function requireAuthentication(owner, transition) {
+  let isUnauthenticated = runIfUnauthenticated(owner, transition);
+  return !isUnauthenticated;
+}
+
+export function triggerAuthentication(owner, authenticationRoute) {
+  //assert('The route configured as AuthenticatedRouteMixin.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', route.get('routeName') !== authenticationRoute);
+  let authRouter = owner.lookup('service:router') || owner.lookup('router:main');
+  authRouter.transitionTo(authenticationRoute);
 }
 
 /**
@@ -98,10 +108,10 @@ export default Mixin.create({
     @public
   */
   beforeModel(transition) {
-    const didRedirect = runIfUnauthenticated(getOwner(this), transition, () => {
+    let isAuthenticated = requireAuthentication(getOwner(this), transition);
+    if (!isAuthenticated) {
       this.triggerAuthentication();
-    });
-    if (!didRedirect) {
+    } else {
       return this._super(...arguments);
     }
   },
@@ -117,10 +127,6 @@ export default Mixin.create({
   */
   triggerAuthentication() {
     let authenticationRoute = this.get('authenticationRoute');
-    assert('The route configured as AuthenticatedRouteMixin.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
-
-    let owner = getOwner(this);
-    let authRouter = owner.lookup('service:router') || owner.lookup('router:main');
-    authRouter.transitionTo(authenticationRoute);
+    triggerAuthentication(getOwner(this), authenticationRoute);
   },
 });

@@ -2,6 +2,9 @@ import { computed } from '@ember/object';
 import { A } from '@ember/array';
 import Service from '@ember/service';
 import Evented from '@ember/object/evented';
+import { getOwner } from '@ember/application';
+
+import { requireAuthentication, triggerAuthentication } from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -143,6 +146,18 @@ export default Service.extend(Evented, {
         });
       }
     });
+  },
+
+  requireAuthentication(transition, route) {
+    let isAuthenticated = requireAuthentication(getOwner(this), transition);
+    if (!isAuthenticated) {
+      this.triggerAuthentication(route);
+    }
+    return isAuthenticated;
+  },
+
+  triggerAuthentication(route) {
+    triggerAuthentication(getOwner(this), route);
   },
 
   /**
