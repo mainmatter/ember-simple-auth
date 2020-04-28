@@ -5,6 +5,7 @@ import Evented from '@ember/object/evented';
 import { getOwner } from '@ember/application';
 
 import { requireAuthentication, triggerAuthentication } from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import { prohibitAuthentication } from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -158,6 +159,11 @@ export default Service.extend(Evented, {
 
   triggerAuthentication(route) {
     triggerAuthentication(getOwner(this), route);
+  },
+
+  prohibitAuthentication(transition, route) {
+    let isUnauthenticated = prohibitAuthentication(getOwner(this), route);
+    return isUnauthenticated;
   },
 
   /**

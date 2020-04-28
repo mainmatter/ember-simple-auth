@@ -11,10 +11,17 @@ import { getOwner } from '@ember/application';
  */
 function runIfAuthenticated(owner, callback) {
   const sessionSvc = owner.lookup('service:session');
-  if (sessionSvc.get('isAuthenticated')) {
-    callback();
-    return true;
+  return sessionSvc.get('isAuthenticated');
+}
+
+export function prohibitAuthentication(owner, route) {
+  let isAuthenticated = runIfAuthenticated(owner);
+  if (isAuthenticated) {
+    let authRouter = owner.lookup('service:router') || owner.lookup('router:main');
+    console.log(authRouter);
+    authRouter.transitionTo(route);
   }
+  return !isAuthenticated;
 }
 
 /**
@@ -74,13 +81,11 @@ export default Mixin.create({
     @public
   */
   beforeModel() {
-    const didRedirect = runIfAuthenticated(getOwner(this), () => {
-      let routeIfAlreadyAuthenticated = this.get('routeIfAlreadyAuthenticated');
-      assert('The route configured as UnauthenticatedRouteMixin.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
+    let routeIfAlreadyAuthenticated = this.get('routeIfAlreadyAuthenticated');
+    assert('The route configured as UnauthenticatedRouteMixin.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
 
-      this.transitionTo(routeIfAlreadyAuthenticated);
-    });
-    if (!didRedirect) {
+    let isUnauthencited = prohibitAuthentication(getOwner(this), routeIfAlreadyAuthenticated);
+    if (isUnauthencited) {
       return this._super(...arguments);
     }
   }
