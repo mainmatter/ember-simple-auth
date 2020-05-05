@@ -175,6 +175,12 @@ export default Service.extend(Evented, {
     handleSessionInvalidated(getOwner(this));
   },
 
+  handleAuthorizationError() {
+    if (this.get('isAuthenticated')) {
+      this.invalidate();
+    }
+  },
+
   /**
     __Authenticates the session with an `authenticator`__ and appropriate
     arguments. The authenticator implements the actual steps necessary to
