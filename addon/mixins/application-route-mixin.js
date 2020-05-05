@@ -7,6 +7,37 @@ import { inject } from '@ember/service';
 import Ember from 'ember';
 import Configuration from './../configuration';
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
+import location from '../utils/location';
+
+export function handleSessionAuthenticated(owner, routeAfterAuthentication) {
+  let sessionService = owner.lookup('service:session');
+  let attemptedTransition = sessionService.get('attemptedTransition');
+  let cookiesService = owner.lookup('service:cookies');
+  const redirectTarget = cookiesService.read('ember_simple_auth-redirectTarget');
+
+  let routerService = owner.lookup('service:router');
+
+  if (attemptedTransition) {
+    attemptedTransition.retry();
+    sessionService.set('attemptedTransition', null);
+  } else if (redirectTarget) {
+    routerService.transitionTo(redirectTarget);
+    cookiesService.clear('ember_simple_auth-redirectTarget');
+  } else {
+    routerService.transitionTo(routeAfterAuthentication);
+  }
+}
+
+export function handleSessionInvalidated(owner) {
+  if (!Ember.testing) {
+    if (isFastBoot(owner)) {
+      this.transitionTo(Configuration.rootURL);
+    } else {
+      console.log(location)
+      location().replace(Configuration.rootURL);
+    }
+  }
+}
 
 /**
   The mixin for the application route, __defining methods that are called when
@@ -99,19 +130,7 @@ export default Mixin.create({
     @public
   */
   sessionAuthenticated() {
-    const attemptedTransition = this.get('session.attemptedTransition');
-    const cookies = getOwner(this).lookup('service:cookies');
-    const redirectTarget = cookies.read('ember_simple_auth-redirectTarget');
-
-    if (attemptedTransition) {
-      attemptedTransition.retry();
-      this.set('session.attemptedTransition', null);
-    } else if (redirectTarget) {
-      this.transitionTo(redirectTarget);
-      cookies.clear('ember_simple_auth-redirectTarget');
-    } else {
-      this.transitionTo(this.get('routeAfterAuthentication'));
-    }
+    handleSessionAuthenticated(getOwner(this), this.get('routeAfterAuthentication'));
   },
 
   /**
@@ -130,16 +149,6 @@ export default Mixin.create({
     @public
   */
   sessionInvalidated() {
-    if (!Ember.testing) {
-      if (this.get('_isFastBoot')) {
-        this.transitionTo(Configuration.rootURL);
-      } else {
-        this._refresh();
-      }
-    }
-  },
-
-  _refresh() {
-    window.location.replace(Configuration.rootURL);
+    handleSessionInvalidated(getOwner(this));
   }
 });
