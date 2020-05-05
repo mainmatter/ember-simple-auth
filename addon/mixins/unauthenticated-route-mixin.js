@@ -18,7 +18,6 @@ export function prohibitAuthentication(owner, route) {
   let isAuthenticated = runIfAuthenticated(owner);
   if (isAuthenticated) {
     let authRouter = owner.lookup('service:router') || owner.lookup('router:main');
-    console.log(authRouter);
     authRouter.transitionTo(route);
   }
   return !isAuthenticated;

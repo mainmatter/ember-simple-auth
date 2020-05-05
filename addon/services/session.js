@@ -153,7 +153,7 @@ export default Service.extend(Evented, {
   requireAuthentication(transition, route) {
     let isAuthenticated = requireAuthentication(getOwner(this), transition);
     if (!isAuthenticated) {
-      this.triggerAuthentication(route);
+      this.trigger('authenticationRequested', route);
     }
     return isAuthenticated;
   },

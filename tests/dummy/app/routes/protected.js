@@ -5,7 +5,7 @@ export default Route.extend({
   session: service(),
 
   beforeModel(transition) {
-    this.session.requireAuthentication(transition, 'login');
+    return this.session.requireAuthentication(transition, 'login');
   },
 
   model() {

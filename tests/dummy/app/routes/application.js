@@ -9,6 +9,7 @@ export default Route.extend({
     this._super(...arguments);
     this.session.on('authenticationSucceeded', () => this.sessionAuthenticated());
     this.session.on('invalidationSucceeded', () => this.session.handleInvalidation());
+    this.session.on('authenticationRequested', () => this.session.triggerAuthentication('login'));
   },
 
   beforeModel() {

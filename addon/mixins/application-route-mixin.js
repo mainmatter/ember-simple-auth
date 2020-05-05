@@ -33,7 +33,6 @@ export function handleSessionInvalidated(owner) {
     if (isFastBoot(owner)) {
       this.transitionTo(Configuration.rootURL);
     } else {
-      console.log(location)
       location().replace(Configuration.rootURL);
     }
   }
