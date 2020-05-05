@@ -6,7 +6,7 @@ import { getOwner } from '@ember/application';
 import location from '../utils/location';
 import isFastBoot from '../utils/is-fastboot';
 
-function _parseResponse(locationHash) {
+export function parseResponse(locationHash) {
   let params = {};
   const query = locationHash.substring(locationHash.indexOf('?'));
   const regex = /([^#?&=]+)=([^&]*)/g;
@@ -87,7 +87,7 @@ export default Mixin.create({
 
     let authenticator = this.get('authenticator');
 
-    let hash = _parseResponse(location().hash);
+    let hash = parseResponse(location().hash);
 
     this.get('session').authenticate(authenticator, hash).catch((err) => {
       this.set('error', err);
