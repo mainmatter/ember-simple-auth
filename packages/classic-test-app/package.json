@@ -1,5 +1,5 @@
 {
-  "name": "test-app",
+  "name": "classic-test-app",
   "version": "3.0.0",
   "private": true,
   "scripts": {
@@ -58,7 +58,7 @@
     "handlebars": "~4.7.1",
     "loader.js": "^4.5.1",
     "mocha": "^7.0.1",
-    "my-engine": "./packages/test-app/lib/my-engine",
+    "my-engine": "./packages/classic-test-app/lib/my-engine",
     "sinon-chai": "~3.5.0",
     "torii": "^0.10.0"
   },

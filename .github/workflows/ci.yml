@@ -18,7 +18,7 @@ jobs:
       matrix:
         workspace:
           - ember-simple-auth
-          - test-app
+          - classic-test-app
 
     steps:
       - uses: actions/checkout@v1
@@ -51,7 +51,7 @@ jobs:
       matrix:
         workspace:
           - ember-simple-auth
-          - test-app
+          - classic-test-app
         test-suite:
           - test:one ember-3.0
           - test:one ember-lts-3.4
@@ -96,7 +96,7 @@ jobs:
       matrix:
         workspace:
           - ember-simple-auth
-          - test-app
+          - classic-test-app
 
     steps:
       - uses: actions/checkout@v1
