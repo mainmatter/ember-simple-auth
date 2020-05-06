@@ -10029,6 +10029,12 @@ my-engine@./packages/classic-test-app/lib/my-engine:
     ember-cli-babel "*"
     ember-cli-htmlbars "*"
 
+my-engine@./packages/test-app/lib/my-engine:
+  version "0.0.1"
+  dependencies:
+    ember-cli-babel "*"
+    ember-cli-htmlbars "*"
+
 mz@^2.4.0, mz@^2.6.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/mz/-/mz-2.7.0.tgz#95008057a56cafadc2bc63dde7f9ff6955948e32"

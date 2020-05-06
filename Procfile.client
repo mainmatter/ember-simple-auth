@@ -1,1 +1,1 @@
-web: yarn workspace classic-test-app start:fastboot
+web: yarn workspace test-app start:fastboot

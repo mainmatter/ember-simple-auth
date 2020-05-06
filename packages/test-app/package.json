@@ -1,5 +1,5 @@
 {
-  "name": "classic-test-app",
+  "name": "test-app",
   "version": "3.0.0",
   "private": true,
   "scripts": {
@@ -21,7 +21,7 @@
     "cors": "^2.8.5",
     "ember-bootstrap": "~3.1.0",
     "ember-cli": "~3.17.0",
-    "ember-cli-babel": "^7.20.1",
+    "ember-cli-babel": "^7.19.0",
     "ember-cli-chai": "^0.5.0",
     "ember-cli-content-security-policy": "~1.1.1",
     "ember-cli-dependency-checker": "^3.0.0",
@@ -53,11 +53,12 @@
     "eslint-plugin-mocha": "^6.1.1",
     "eslint-plugin-node": "^11.0.0",
     "express": "^4.17.1",
+    "fastboot-app-server": "^2.0.0",
     "glob": "^7.1.6",
     "handlebars": "~4.7.1",
     "loader.js": "^4.5.1",
     "mocha": "^7.0.1",
-    "my-engine": "./packages/classic-test-app/lib/my-engine",
+    "my-engine": "./packages/test-app/lib/my-engine",
     "sinon-chai": "~3.5.0",
     "torii": "^0.10.0"
   },

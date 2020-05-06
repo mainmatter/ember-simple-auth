@@ -19,6 +19,7 @@ jobs:
         workspace:
           - ember-simple-auth
           - classic-test-app
+          - test-app
 
     steps:
       - uses: actions/checkout@v1
@@ -52,6 +53,7 @@ jobs:
         workspace:
           - ember-simple-auth
           - classic-test-app
+          - test-app
         test-suite:
           - test:one ember-3.0
           - test:one ember-lts-3.4
@@ -97,6 +99,7 @@ jobs:
         workspace:
           - ember-simple-auth
           - classic-test-app
+          - test-app
 
     steps:
       - uses: actions/checkout@v1
