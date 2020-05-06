@@ -4,33 +4,7 @@ import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
-import isFastBoot from '../utils/is-fastboot';
-
-/**
- * If the user is unauthenticated, invoke `callback`
- *
- * @param {ApplicationInstance} owner The ApplicationInstance that owns the service (and possibly fastboot and cookie) service(s)
- * @param {Transition} transition Transition for the user's original navigation
- * @param {(...args: []any) => any} callback Callback that will be invoked if the user is unauthenticated
- */
-function runIfUnauthenticated(owner, transition, callback) {
-  const isFb = isFastBoot(owner);
-  const sessionSvc = owner.lookup('service:session');
-  if (!sessionSvc.get('isAuthenticated')) {
-    if (isFb) {
-      const fastboot = owner.lookup('service:fastboot');
-      const cookies = owner.lookup('service:cookies');
-      cookies.write('ember_simple_auth-redirectTarget', transition.intent.url, {
-        path: '/',
-        secure: fastboot.get('request.protocol') === 'https'
-      });
-    } else {
-      sessionSvc.set('attemptedTransition', transition);
-    }
-    callback();
-    return true;
-  }
-}
+import { requireAuthentication, triggerAuthentication } from '../-internals/routing';
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -98,10 +72,10 @@ export default Mixin.create({
     @public
   */
   beforeModel(transition) {
-    const didRedirect = runIfUnauthenticated(getOwner(this), transition, () => {
+    let isAuthenticated = requireAuthentication(getOwner(this), transition);
+    if (!isAuthenticated) {
       this.triggerAuthentication();
-    });
-    if (!didRedirect) {
+    } else {
       return this._super(...arguments);
     }
   },
@@ -119,8 +93,6 @@ export default Mixin.create({
     let authenticationRoute = this.get('authenticationRoute');
     assert('The route configured as AuthenticatedRouteMixin.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
 
-    let owner = getOwner(this);
-    let authRouter = owner.lookup('service:router') || owner.lookup('router:main');
-    authRouter.transitionTo(authenticationRoute);
+    triggerAuthentication(getOwner(this), authenticationRoute);
   },
 });
