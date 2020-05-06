@@ -1,4 +1,5 @@
 import ObjectProxy from '@ember/object/proxy';
+import Service from '@ember/service';
 import { setOwner } from '@ember/application';
 import Evented from '@ember/object/evented';
 import { next } from '@ember/runloop';
@@ -28,8 +29,10 @@ describe('SessionService', () => {
     this.owner.register('authorizer:custom', EmberObject.extend({
       authorize() {}
     }));
+
     sessionService = Session.create({ session });
     setOwner(sessionService, this.owner);
+    this.owner.register('service:session', sessionService, { instantiate: false });
   });
 
   afterEach(function() {
@@ -165,6 +168,146 @@ describe('SessionService', () => {
 
     it("returns the session's invalidation return value", function() {
       expect(sessionService.invalidate()).to.eq('value');
+    });
+  });
+
+  describe('requireAuthentication', function() {
+    let transition;
+    let router;
+
+    beforeEach(function() {
+      transition = {
+        intent: {
+          url: '/transition/target/url'
+        },
+        send() {}
+      };
+      this.owner.register('service:router', Service.extend({
+        transitionTo() {}
+      }));
+      router = this.owner.lookup('service:router');
+
+      sinon.spy(transition, 'send');
+      sinon.spy(router, 'transitionTo');
+    });
+
+    describe('if the session is authenticated', function() {
+      beforeEach(function() {
+        session.set('isAuthenticated', true);
+      });
+
+      it('returns true', function() {
+        let result = sessionService.requireAuthentication(transition, 'login');
+
+        expect(result).to.be.true;
+      });
+
+      describe('if a route name is passed as second argument', function() {
+        it('does not transition to the authentication route', function() {
+          sessionService.requireAuthentication(transition, 'login');
+
+          expect(router.transitionTo).to.not.have.been.calledWith('login');
+        });
+      });
+
+      describe('if a callback function is passed as second argument', function() {
+        it('does not invoke the callback', function() {
+          let callback = sinon.spy();
+          sessionService.requireAuthentication(transition, callback);
+
+          expect(callback).to.not.have.been.called;
+        });
+      });
+    });
+
+    describe('if the session is not authenticated', function() {
+      beforeEach(function() {
+        session.set('isAuthenticated', false);
+      });
+
+      it('returns false', function() {
+        let result = sessionService.requireAuthentication(transition, 'login');
+
+        expect(result).to.be.false;
+      });
+
+      describe('if a route name is passed as second argument', function() {
+        it('transitions to the specified route', function() {
+          sessionService.requireAuthentication(transition, 'login');
+
+          expect(router.transitionTo).to.have.been.calledWith('login');
+        });
+      });
+
+      describe('if a callback function is passed as second argument', function() {
+        it('does invokes the callback', function() {
+          let callback = sinon.spy();
+          sessionService.requireAuthentication(transition, callback);
+
+          expect(callback).to.have.been.calledOnce;
+        });
+      });
+
+      describe('if a transition is passed', function() {
+        it('stores it in the session', function() {
+          sessionService.requireAuthentication(transition, 'login');
+
+          expect(sessionService.get('attemptedTransition')).to.eq(transition);
+        });
+
+        it('sets the redirectTarget cookie in fastboot', function() {
+          this.owner.register('service:fastboot', Service.extend({
+            isFastBoot: true,
+            init() {
+              this._super(...arguments);
+              this.request = {
+                protocol: 'https'
+              };
+            },
+          }));
+          let writeCookieStub = sinon.stub();
+          this.owner.register('service:cookies', Service.extend({
+            write: writeCookieStub
+          }));
+
+          let cookieName = 'ember_simple_auth-redirectTarget';
+
+          sessionService.requireAuthentication(transition, 'login');
+
+          expect(writeCookieStub).to.have.been.calledWith(cookieName, transition.intent.url, {
+            path: '/',
+            secure: true
+          });
+        });
+      });
+
+      describe('if no transition is passed', function() {
+        it("does not set the session's 'attemptedTransition' property", function() {
+          sessionService.requireAuthentication(null, 'login');
+
+          expect(sessionService.get('attemptedTransition')).to.be.undefined;
+        });
+
+        it('does not set the redirectTarget cookie in fastboot', function() {
+          this.owner.register('service:fastboot', Service.extend({
+            isFastBoot: true,
+            init() {
+              this._super(...arguments);
+              this.request = {
+                protocol: 'https'
+              };
+            },
+          }));
+          let writeCookieStub = sinon.stub();
+          this.owner.register('service:cookies', Service.extend({
+            write: writeCookieStub
+          }));
+
+          sessionService.requireAuthentication(null, 'login');
+
+          expect(writeCookieStub).to.not.have.been.called;
+        });
+      });
     });
   });
 });

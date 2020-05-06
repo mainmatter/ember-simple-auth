@@ -2,6 +2,10 @@ import { computed } from '@ember/object';
 import { A } from '@ember/array';
 import Service from '@ember/service';
 import Evented from '@ember/object/evented';
+import { getOwner } from '@ember/application';
+import { assert } from '@ember/debug';
+
+import { requireAuthentication, triggerAuthentication } from '../-internals/routing';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -211,5 +215,38 @@ export default Service.extend(Evented, {
     const session = this.get('session');
 
     return session.invalidate(...arguments);
+  },
+
+  /**
+    Checks whether the session is authenticated and if it is not, transitions
+    to the specified route or invokes the specified callback.
+
+    If a transition is in progress and is aborted, this method will save it in the
+    session service's
+    {{#crossLink "SessionService/attemptedTransition:property"}}{{/crossLink}}
+    property so that  it can be retried after the session is authenticated. If
+    the transition is aborted in Fastboot mode, the transition's target URL
+    will be saved in a `ember_simple_auth-redirectTarget` cookie for use by the
+    browser after authentication is complete.
+
+    @method requireAuthentication
+    @param {Transition} transition A transition that triggered the authentication requirement or null if the requirement originated independently of a transition
+    @param {String|Function} routeOrCallback The route to transition to in case that the session is not authenticated or a callback function to invoke in that case
+    @return {Boolean} true when the session is authenticated, false otherwise
+    @public
+  */
+  requireAuthentication(transition, routeOrCallback) {
+    let isAuthenticated = requireAuthentication(getOwner(this), transition);
+    if (!isAuthenticated) {
+      let argType = typeof routeOrCallback;
+      if (argType === 'string') {
+        triggerAuthentication(getOwner(this), routeOrCallback);
+      } else if (argType === 'function') {
+        routeOrCallback();
+      } else {
+        assert(`The second argument to requireAuthentication must be a String or Function, got "${argType}"!`, false);
+      }
+    }
+    return isAuthenticated;
   },
 });

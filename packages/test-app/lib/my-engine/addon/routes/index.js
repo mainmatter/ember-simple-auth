@@ -1,9 +1,11 @@
 /* eslint-disable ember/no-mixins */
 import Route from '@ember/routing/route';
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import { inject as service } from '@ember/service';
 
-export default Route.extend(AuthenticatedRouteMixin, {
-  triggerAuthentication() {
-    this.transitionToExternal('login');
+export default Route.extend({
+  session: service(),
+
+  beforeModel(transition) {
+    this.get('session').requireAuthentication(transition, () => this.transitionToExternal('login'));
   }
 });

@@ -4,14 +4,14 @@ export function requireAuthentication(owner, transition) {
   let sessionService = owner.lookup('service:session');
   let isAuthenticated = sessionService.get('isAuthenticated');
   if (!isAuthenticated) {
-    if (isFastBoot(owner)) {
+    if (transition && isFastBoot(owner)) {
       const fastbootService = owner.lookup('service:fastboot');
       const cookiesService = owner.lookup('service:cookies');
       cookiesService.write('ember_simple_auth-redirectTarget', transition.intent.url, {
         path: '/',
         secure: fastbootService.get('request.protocol') === 'https'
       });
-    } else {
+    } else if (transition) {
       sessionService.set('attemptedTransition', transition);
     }
   }
