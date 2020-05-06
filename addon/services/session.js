@@ -3,6 +3,7 @@ import { A } from '@ember/array';
 import Service from '@ember/service';
 import Evented from '@ember/object/evented';
 import { getOwner } from '@ember/application';
+import Configuration from './../configuration';
 
 import { requireAuthentication, triggerAuthentication } from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import { prohibitAuthentication } from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
@@ -32,40 +33,6 @@ const SESSION_DATA_KEY_PREFIX = /^data\./;
   @public
 */
 export default Service.extend(Evented, {
-  /**
-    Triggered whenever the session is successfully authenticated. This happens
-    when the session gets authenticated via
-    {{#crossLink "SessionService/authenticate:method"}}{{/crossLink}} but also
-    when the session is authenticated in another tab or window of the same
-    application and the session state gets synchronized across tabs or windows
-    via the store (see
-    {{#crossLink "BaseStore/sessionDataUpdated:event"}}{{/crossLink}}).
-
-    When using the {{#crossLink "ApplicationRouteMixin"}}{{/crossLink}} this
-    event will automatically get handled (see
-    {{#crossLink "ApplicationRouteMixin/sessionAuthenticated:method"}}{{/crossLink}}).
-
-    @event authenticationSucceeded
-    @public
-  */
-
-  /**
-    Triggered whenever the session is successfully invalidated. This happens
-    when the session gets invalidated via
-    {{#crossLink "SessionService/invalidate:method"}}{{/crossLink}} but also
-    when the session is invalidated in another tab or window of the same
-    application and the session state gets synchronized across tabs or windows
-    via the store (see
-    {{#crossLink "BaseStore/sessionDataUpdated:event"}}{{/crossLink}}).
-
-    When using the {{#crossLink "ApplicationRouteMixin"}}{{/crossLink}} this
-    event will automatically get handled (see
-    {{#crossLink "ApplicationRouteMixin/sessionInvalidated:method"}}{{/crossLink}}).
-
-    @event invalidationSucceeded
-    @public
-  */
-
   /**
     Returns whether the session is currently authenticated.
 
@@ -122,7 +89,9 @@ export default Service.extend(Evented, {
 
   init() {
     this._super(...arguments);
-    this._forwardSessionEvents();
+
+    this.get('session').on('authenticationSucceeded', () => this.handleAuthentication(Configuration.routeAfterAuthentication));
+    this.get('session').on('invalidationSucceeded', () => this.handleInvalidation());
   },
 
   set(key, value) {
@@ -135,25 +104,10 @@ export default Service.extend(Evented, {
     }
   },
 
-  _forwardSessionEvents() {
-    A([
-      'authenticationSucceeded',
-      'invalidationSucceeded'
-    ]).forEach((event) => {
-      const session = this.get('session');
-      // the internal session won't be available in route unit tests
-      if (session) {
-        session.on(event, () => {
-          this.trigger(event, ...arguments);
-        });
-      }
-    });
-  },
-
   requireAuthentication(transition, route) {
     let isAuthenticated = requireAuthentication(getOwner(this), transition);
     if (!isAuthenticated) {
-      this.trigger('authenticationRequested', route);
+      this.triggerAuthentication(route);
     }
     return isAuthenticated;
   },

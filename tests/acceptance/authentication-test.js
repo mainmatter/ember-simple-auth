@@ -21,8 +21,8 @@ import {
 } from 'ember-simple-auth/test-support';
 import config from '../../config/environment';
 
-describe('Acceptance: Authentication', function() {
-  setupApplicationTest();
+describe('Acceptance: Authentication', function(hooks) {
+  setupApplicationTest(hooks);
   let server;
 
   afterEach(function() {

@@ -47,46 +47,6 @@ describe('ApplicationRouteMixin', () => {
     sinon.restore();
   });
 
-  describe('mapping of service events to route methods', function() {
-    beforeEach(function() {
-      sinon.spy(route, 'sessionAuthenticated');
-      sinon.spy(route, 'sessionInvalidated');
-      sinon.stub(LocationUtil, 'default').returns({ replace() {} });
-    });
-
-    afterEach(function() {
-      sinon.restore();
-    });
-
-    it("maps the services's 'authenticationSucceeded' event into a method call", function(done) {
-      sessionService.trigger('authenticationSucceeded');
-
-      next(() => {
-        expect(route.sessionAuthenticated).to.have.been.calledOnce;
-        done();
-      });
-    });
-
-    it("maps the services's 'invalidationSucceeded' event into a method call", function(done) {
-      sessionService.trigger('invalidationSucceeded');
-
-      next(() => {
-        expect(route.sessionInvalidated).to.have.been.calledOnce;
-        done();
-      });
-    });
-
-    it('does not attach the event listeners twice', function(done) {
-      route.beforeModel();
-      sessionService.trigger('authenticationSucceeded');
-
-      next(() => {
-        expect(route.sessionAuthenticated).to.have.been.calledOnce;
-        done();
-      });
-    });
-  });
-
   describe('sessionAuthenticated', function() {
     describe('when an attempted transition is stored in the session', function() {
       let attemptedTransition;

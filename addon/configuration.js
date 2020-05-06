@@ -25,6 +25,16 @@ export default {
   */
   rootURL: DEFAULTS.rootURL,
 
+  /**
+    The route to transition to after successful authentication.
+
+    @property routeAfterAuthentication
+    @type String
+    @default 'index'
+    @public
+  */
+  routeAfterAuthentication: 'index',
+
   load(config) {
     this.rootURL = getWithDefault(config, 'rootURL', DEFAULTS.rootURL);
   }

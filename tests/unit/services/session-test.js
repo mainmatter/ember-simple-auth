@@ -36,28 +36,6 @@ describe('SessionService', () => {
     sinon.restore();
   });
 
-  it('forwards the "authenticationSucceeded" event from the session', function(done) {
-    let triggered = false;
-    sessionService.one('authenticationSucceeded', () => (triggered = true));
-    session.trigger('authenticationSucceeded');
-
-    next(() => {
-      expect(triggered).to.be.true;
-      done();
-    });
-  });
-
-  it('forwards the "invalidationSucceeded" event from the session', function(done) {
-    let triggered = false;
-    sessionService.one('invalidationSucceeded', () => (triggered = true));
-    session.trigger('invalidationSucceeded');
-
-    next(() => {
-      expect(triggered).to.be.true;
-      done();
-    });
-  });
-
   describe('isAuthenticated', function() {
     it('is read from the session', function() {
       session.set('isAuthenticated', true);
