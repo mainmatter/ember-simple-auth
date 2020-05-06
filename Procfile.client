@@ -1,1 +1,1 @@
-web: yarn workspace ember-simple-auth start:fastboot
+web: yarn workspace test-app start:fastboot
