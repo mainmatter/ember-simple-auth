@@ -18,6 +18,7 @@ describe('ApplicationRouteMixin', () => {
   let session;
   let sessionService;
   let route;
+  let router;
 
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
@@ -31,9 +32,14 @@ describe('ApplicationRouteMixin', () => {
       clear: sinon.stub()
     }));
 
+    this.owner.register('service:router', Service.extend({
+      transitionTo() {}
+    }));
+    router = this.owner.lookup('service:router');
+
     this.owner.register('route:application', Route.extend(ApplicationRouteMixin));
     route = this.owner.lookup('route:application');
-    sinon.stub(route, 'transitionTo');
+    sinon.stub(router, 'transitionTo');
   });
 
   afterEach(function() {
@@ -122,7 +128,7 @@ describe('ApplicationRouteMixin', () => {
       it('transitions to the url', function() {
         route.sessionAuthenticated();
 
-        expect(route.transitionTo).to.have.been.calledWith(targetUrl);
+        expect(router.transitionTo).to.have.been.calledWith(targetUrl);
       });
 
       it('clears the cookie', function() {
@@ -136,7 +142,7 @@ describe('ApplicationRouteMixin', () => {
       it('transitions to "index" by default', function() {
         route.sessionAuthenticated();
 
-        expect(route.transitionTo).to.have.been.calledWith('index');
+        expect(router.transitionTo).to.have.been.calledWith('index');
       });
 
       it('transitions to "routeAfterAuthentication"', function() {
@@ -144,7 +150,7 @@ describe('ApplicationRouteMixin', () => {
         route.set('routeAfterAuthentication', routeAfterAuthentication);
         route.sessionAuthenticated();
 
-        expect(route.transitionTo).to.have.been.calledWith(routeAfterAuthentication);
+        expect(router.transitionTo).to.have.been.calledWith(routeAfterAuthentication);
       });
     });
   });

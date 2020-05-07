@@ -6,7 +6,9 @@ import { getOwner } from '@ember/application';
 import { inject } from '@ember/service';
 import Ember from 'ember';
 import Configuration from './../configuration';
+
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
+import { handleSessionAuthenticated } from '../-internals/routing';
 
 /**
   The mixin for the application route, __defining methods that are called when
@@ -99,19 +101,7 @@ export default Mixin.create({
     @public
   */
   sessionAuthenticated() {
-    const attemptedTransition = this.get('session.attemptedTransition');
-    const cookies = getOwner(this).lookup('service:cookies');
-    const redirectTarget = cookies.read('ember_simple_auth-redirectTarget');
-
-    if (attemptedTransition) {
-      attemptedTransition.retry();
-      this.set('session.attemptedTransition', null);
-    } else if (redirectTarget) {
-      this.transitionTo(redirectTarget);
-      cookies.clear('ember_simple_auth-redirectTarget');
-    } else {
-      this.transitionTo(this.get('routeAfterAuthentication'));
-    }
+    handleSessionAuthenticated(getOwner(this), this.get('routeAfterAuthentication'));
   },
 
   /**

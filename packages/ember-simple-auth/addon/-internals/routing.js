@@ -27,3 +27,22 @@ export function prohibitAuthentication(owner, routeIfAlreadyAuthenticated) {
   let authRouter = owner.lookup('service:router') || owner.lookup('router:main');
   authRouter.transitionTo(routeIfAlreadyAuthenticated);
 }
+
+export function handleSessionAuthenticated(owner, routeAfterAuthentication) {
+  let sessionService = owner.lookup('service:session');
+  let attemptedTransition = sessionService.get('attemptedTransition');
+  let cookiesService = owner.lookup('service:cookies');
+  const redirectTarget = cookiesService.read('ember_simple_auth-redirectTarget');
+
+  let routerService = owner.lookup('service:router');
+
+  if (attemptedTransition) {
+    attemptedTransition.retry();
+    sessionService.set('attemptedTransition', null);
+  } else if (redirectTarget) {
+    routerService.transitionTo(redirectTarget);
+    cookiesService.clear('ember_simple_auth-redirectTarget');
+  } else {
+    routerService.transitionTo(routeAfterAuthentication);
+  }
+}
