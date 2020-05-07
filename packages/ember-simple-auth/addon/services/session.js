@@ -5,7 +5,7 @@ import Evented from '@ember/object/evented';
 import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
 
-import { requireAuthentication, triggerAuthentication, prohibitAuthentication } from '../-internals/routing';
+import { requireAuthentication, triggerAuthentication, prohibitAuthentication, handleSessionAuthenticated } from '../-internals/routing';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -272,5 +272,24 @@ export default Service.extend(Evented, {
       }
     }
     return !isAuthenticated;
+  },
+
+  /**
+    This method is called whenever the session goes from being unauthenticated
+    to being authenticated. If there is a transition that was previously
+    intercepted by the
+    {{#crossLink "SessionService/requireAuthentication:method"}}{{/crossLink}},
+    it will retry it. If there is no such transition, the
+    `ember_simple_auth-redirectTarget` cookie will be checked for a url that
+    represents an attemptedTransition that was aborted in Fastboot mode,
+    otherwise this action transitions to the specified
+    routeAfterAuthentication.
+
+    @method handleAuthentication
+    @param {String} routeAfterAuthentication The route to transition to
+    @public
+  */
+  handleAuthentication(routeAfterAuthentication) {
+    handleSessionAuthenticated(getOwner(this), routeAfterAuthentication);
   }
 });

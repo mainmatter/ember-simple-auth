@@ -381,4 +381,76 @@ describe('SessionService', () => {
       });
     });
   });
+
+  describe('handleAuthentication', function() {
+    let router;
+
+    beforeEach(function() {
+      this.owner.register('service:router', Service.extend({
+        transitionTo() {}
+      }));
+      router = this.owner.lookup('service:router');
+      sinon.spy(router, 'transitionTo');
+    });
+
+    describe('when an attempted transition is stored in the session', function() {
+      let attemptedTransition;
+
+      beforeEach(function() {
+        attemptedTransition = {
+          retry: sinon.stub()
+        };
+        session.set('attemptedTransition', attemptedTransition);
+      });
+
+      it('retries that transition', function() {
+        sessionService.handleAuthentication();
+
+        expect(attemptedTransition.retry).to.have.been.calledOnce;
+      });
+
+      it('removes it from the session', function() {
+        sessionService.handleAuthentication();
+
+        expect(session.get('attemptedTransition')).to.be.null;
+      });
+    });
+
+    describe('when a redirect target is stored in a cookie', function() {
+      let cookieName = 'ember_simple_auth-redirectTarget';
+      let targetUrl = 'transition/target/url';
+      let clearStub;
+
+      beforeEach(function() {
+        clearStub = sinon.stub();
+        this.owner.register('service:cookies', Service.extend({
+          read() {
+            return targetUrl;
+          },
+          clear: clearStub
+        }));
+      });
+
+      it('transitions to the url', function() {
+        sessionService.handleAuthentication();
+
+        expect(router.transitionTo).to.have.been.calledWith(targetUrl);
+      });
+
+      it('clears the cookie', function() {
+        sessionService.handleAuthentication();
+
+        expect(clearStub).to.have.been.calledWith(cookieName);
+      });
+    });
+
+    describe('when no attempted transition is stored in the session', function() {
+      it('transitions to "routeAfterAuthentication"', function() {
+        let routeAfterAuthentication = 'index';
+        sessionService.handleAuthentication(routeAfterAuthentication);
+
+        expect(router.transitionTo).to.have.been.calledWith(routeAfterAuthentication);
+      });
+    });
+  });
 });
