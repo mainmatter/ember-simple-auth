@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import ObjectProxy from '@ember/object/proxy';
 import Service from '@ember/service';
 import { setOwner } from '@ember/application';
@@ -9,6 +10,7 @@ import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
 import Session from 'ember-simple-auth/services/session';
+import * as LocationUtil from 'ember-simple-auth/utils/location';
 
 describe('SessionService', () => {
   setupTest();
@@ -41,6 +43,7 @@ describe('SessionService', () => {
 
   it('forwards the "authenticationSucceeded" event from the session', function(done) {
     let triggered = false;
+    sinon.stub(sessionService, 'handleAuthentication');
     sessionService.one('authenticationSucceeded', () => (triggered = true));
     session.trigger('authenticationSucceeded');
 
@@ -450,6 +453,52 @@ describe('SessionService', () => {
         sessionService.handleAuthentication(routeAfterAuthentication);
 
         expect(router.transitionTo).to.have.been.calledWith(routeAfterAuthentication);
+      });
+    });
+  });
+
+  describe('handleInvalidation', function() {
+    let router;
+
+    describe('when running in FastBoot', function() {
+      beforeEach(function() {
+        this.owner.register('service:fastboot', Service.extend({
+          isFastBoot: true
+        }));
+        this.owner.register('service:router', Service.extend({
+          transitionTo() {}
+        }));
+        router = this.owner.lookup('service:router');
+        sinon.spy(router, 'transitionTo');
+      });
+
+      it('transitions to the route', function() {
+        sessionService.handleInvalidation('index');
+
+        expect(router.transitionTo).to.have.been.calledWith('index');
+      });
+    });
+
+    describe('when not running in FastBoot', function() {
+      beforeEach(function() {
+        this.owner.register('service:fastboot', Service.extend({
+          isFastBoot: false
+        }));
+        sinon.stub(LocationUtil, 'default').returns({ replace() {} });
+        sinon.spy(LocationUtil.default(), 'replace');
+        // eslint-disable-next-line ember/no-ember-testing-in-module-scope
+        Ember.testing = false;
+      });
+
+      afterEach(function() {
+        // eslint-disable-next-line ember/no-ember-testing-in-module-scope
+        Ember.testing = true;
+      });
+
+      it('replaces the location with the route', function() {
+        sessionService.handleInvalidation('index');
+
+        expect(LocationUtil.default().replace).to.have.been.calledWith('index');
       });
     });
   });
