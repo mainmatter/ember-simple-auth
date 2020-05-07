@@ -14,6 +14,12 @@ jobs:
     name: Linting
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        workspace:
+          - ember-simple-auth
+          - test-app
+
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -35,7 +41,7 @@ jobs:
         run: yarn install
 
       - name: lint
-        run: yarn lint
+        run: yarn workspace ${{ matrix.workspace }} lint
 
   tests:
     name: Tests
@@ -43,6 +49,9 @@ jobs:
 
     strategy:
       matrix:
+        workspace:
+          - ember-simple-auth
+          - test-app
         test-suite:
           - test:one ember-3.0
           - test:one ember-lts-3.4
@@ -50,7 +59,6 @@ jobs:
           - test:one ember-lts-3.12
           - test:one ember-release
           - test:one ember-beta
-          - test:node
           - test:one ember-canary
         include:
           - test-suite: "test:one ember-canary"
@@ -77,12 +85,18 @@ jobs:
         run: yarn install
 
       - name: tests
-        run: yarn ${{ matrix.test-suite }}
+        run: yarn workspace ${{ matrix.workspace }} ${{ matrix.test-suite }}
         continue-on-error: ${{matrix.allow-failure}}
 
   extra-tests:
     name: Tests (Floating Dependenies)
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        workspace:
+          - ember-simple-auth
+          - test-app
 
     steps:
       - uses: actions/checkout@v1
@@ -105,5 +119,32 @@ jobs:
         run: yarn install --no-lockfile
 
       - name: tests
-        run: yarn test
+        run: yarn workspace ${{ matrix.workspace }} test
         continue-on-error: true
+
+  node-tests:
+    name: Node Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
+      - name: get yarn cache dir
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-test-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: install dependencies
+        run: yarn install
+
+      - name: tests
+        run: yarn workspace ember-simple-auth test:node

@@ -1,0 +1,19 @@
+/bower_components
+/config/ember-try.js
+/dist
+/* /tests */
+/node-tests
+/tmp
+/fastboot-dist
+/fastboot-tests
+**/.gitkeep
+.bowerrc
+.editorconfig
+.ember-cli
+.gitignore
+.eslintrc.js
+.watchmanconfig
+.travis.yml
+bower.json
+/* ember-cli-build.js */
+testem.js
