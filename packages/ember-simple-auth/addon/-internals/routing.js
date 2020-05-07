@@ -1,4 +1,5 @@
 import isFastBoot from '../utils/is-fastboot';
+import location from '../utils/location';
 
 export function requireAuthentication(owner, transition) {
   let sessionService = owner.lookup('service:session');
@@ -44,5 +45,14 @@ export function handleSessionAuthenticated(owner, routeAfterAuthentication) {
     cookiesService.clear('ember_simple_auth-redirectTarget');
   } else {
     routerService.transitionTo(routeAfterAuthentication);
+  }
+}
+
+export function handleSessionInvalidated(owner, routeAfterInvalidation) {
+  if (isFastBoot(owner)) {
+    let routerService = owner.lookup('service:router');
+    routerService.transitionTo(routeAfterInvalidation);
+  } else {
+    location().replace(routeAfterInvalidation);
   }
 }

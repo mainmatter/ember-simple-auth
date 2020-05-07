@@ -8,7 +8,7 @@ import Ember from 'ember';
 import Configuration from './../configuration';
 
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
-import { handleSessionAuthenticated } from '../-internals/routing';
+import { handleSessionAuthenticated, handleSessionInvalidated } from '../-internals/routing';
 
 /**
   The mixin for the application route, __defining methods that are called when
@@ -121,15 +121,7 @@ export default Mixin.create({
   */
   sessionInvalidated() {
     if (!Ember.testing) {
-      if (this.get('_isFastBoot')) {
-        this.transitionTo(Configuration.rootURL);
-      } else {
-        this._refresh();
-      }
+      handleSessionInvalidated(getOwner(this), Configuration.rootURL);
     }
-  },
-
-  _refresh() {
-    window.location.replace(Configuration.rootURL);
   }
 });

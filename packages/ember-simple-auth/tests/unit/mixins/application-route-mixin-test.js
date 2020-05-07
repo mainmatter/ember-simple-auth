@@ -10,6 +10,7 @@ import sinonjs from 'sinon';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
+import * as LocationUtil from 'ember-simple-auth/utils/location';
 
 describe('ApplicationRouteMixin', () => {
   setupTest();
@@ -50,7 +51,7 @@ describe('ApplicationRouteMixin', () => {
     beforeEach(function() {
       sinon.spy(route, 'sessionAuthenticated');
       sinon.spy(route, 'sessionInvalidated');
-      sinon.stub(route, '_refresh');
+      sinon.stub(LocationUtil, 'default').returns({ replace() {} });
     });
 
     afterEach(function() {
