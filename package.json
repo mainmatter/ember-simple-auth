@@ -3,7 +3,8 @@
   "repository": "https://github.com/simplabs/ember-simple-auth",
   "scripts": {
     "changelog": "lerna-changelog",
-    "diagrams": "mmdc -i guides/assets/esa-initial-flow.txt -o guides/assets/esa-initial-flow.svg"
+    "diagrams": "mmdc -i guides/assets/esa-initial-flow.txt -o guides/assets/esa-initial-flow.svg",
+    "heroku-postbuild": "yarn workspace test-app build -prod"
   },
   "workspaces": [
     "packages/*"
