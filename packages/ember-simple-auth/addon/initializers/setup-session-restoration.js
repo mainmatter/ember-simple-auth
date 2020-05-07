@@ -11,8 +11,10 @@ export default function setupSessionRestoration(registry) {
 
       const originalBeforeModel = this.beforeModel;
       this.beforeModel = function() {
-        const sessionService = getOwner(this).lookup('service:session');
-        sessionService._setupHandlers();
+        if (!this.__usesApplicationRouteMixn__) {
+          const sessionService = getOwner(this).lookup('service:session');
+          sessionService._setupHandlers();
+        }
 
         const session = getOwner(this).lookup('session:main');
         return session.restore().then(

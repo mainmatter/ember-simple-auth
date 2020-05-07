@@ -5,10 +5,15 @@ import { A } from '@ember/array';
 import { getOwner } from '@ember/application';
 import { inject } from '@ember/service';
 import Ember from 'ember';
+import { deprecate } from '@ember/application/deprecations';
 import Configuration from './../configuration';
 
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
-import { handleSessionAuthenticated, handleSessionInvalidated } from '../-internals/routing';
+
+deprecate('Ember Simple Auth: The ApplicationRouteMixin is now deprecated; it can be safely removed.', false, {
+  id: 'ember-simple-auth.mixins.application-route-mixin',
+  until: '4.0.0'
+});
 
 /**
   The mixin for the application route, __defining methods that are called when
@@ -44,6 +49,7 @@ import { handleSessionAuthenticated, handleSessionInvalidated } from '../-intern
   `needs: ['service:session']` in the application route's unit test.__
 
   @class ApplicationRouteMixin
+  @deprecated Call the session service's setup method in the application route's constructor instead
   @module ember-simple-auth/mixins/application-route-mixin
   @extends Ember.Mixin
   @public
@@ -71,6 +77,7 @@ export default Mixin.create({
 
   init() {
     this._super(...arguments);
+    this.__usesApplicationRouteMixn__ = true;
 
     this._isFastBoot = this.hasOwnProperty('_isFastBoot') ? this._isFastBoot : isFastBoot(getOwner(this));
     this._subscribeToSessionEvents();
@@ -101,7 +108,7 @@ export default Mixin.create({
     @public
   */
   sessionAuthenticated() {
-    handleSessionAuthenticated(getOwner(this), this.get('routeAfterAuthentication'));
+    this.get('session').handleAuthentication(this.get('routeAfterAuthentication'));
   },
 
   /**
@@ -121,7 +128,7 @@ export default Mixin.create({
   */
   sessionInvalidated() {
     if (!Ember.testing) {
-      handleSessionInvalidated(getOwner(this), Configuration.rootURL);
+      this.get('session').handleInvalidation(Configuration.rootURL);
     }
   }
 });

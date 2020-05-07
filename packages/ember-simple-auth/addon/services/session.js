@@ -4,6 +4,7 @@ import Service from '@ember/service';
 import Evented from '@ember/object/evented';
 import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
+import { deprecate } from '@ember/application/deprecations';
 import Configuration from '../configuration';
 
 import {
@@ -15,6 +16,16 @@ import {
 } from '../-internals/routing';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
+
+let enableEventsDeprecation = true;
+function deprecateSessionEvents() {
+  if (enableEventsDeprecation) {
+    deprecate("Ember Simple Auth: The session service's events API is deprecated; to add custom behavior to the authentication or invalidation handling, override the handleAuthentication or handleInvalidation methods.", false, {
+      id: 'ember-simple-auth.events.session-service',
+      until: '4.0.0'
+    });
+  }
+}
 
 /**
   __The session service provides access to the current session as well as
@@ -150,10 +161,42 @@ export default Service.extend(Evented, {
       // the internal session won't be available in route unit tests
       if (session) {
         session.on(event, () => {
+          enableEventsDeprecation = false;
           this.trigger(event, ...arguments);
+          enableEventsDeprecation = true;
         });
       }
     });
+  },
+
+  on() {
+    deprecateSessionEvents();
+
+    return this._super(...arguments);
+  },
+
+  one() {
+    deprecateSessionEvents();
+
+    return this._super(...arguments);
+  },
+
+  off() {
+    deprecateSessionEvents();
+
+    return this._super(...arguments);
+  },
+
+  has() {
+    deprecateSessionEvents();
+
+    return this._super(...arguments);
+  },
+
+  trigger() {
+    deprecateSessionEvents();
+
+    return this._super(...arguments);
   },
 
   _setupHandlers() {
