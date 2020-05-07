@@ -4,18 +4,7 @@ import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 
-/**
- *
- * @param {ApplicationInstance} owner The ApplicationInstance that owns the session service
- * @param {(...args: [any]) => any} callback Callback that will be invoked if the user is authenticated
- */
-function runIfAuthenticated(owner, callback) {
-  const sessionSvc = owner.lookup('service:session');
-  if (sessionSvc.get('isAuthenticated')) {
-    callback();
-    return true;
-  }
-}
+import { prohibitAuthentication } from '../-internals/routing';
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -74,13 +63,14 @@ export default Mixin.create({
     @public
   */
   beforeModel() {
-    const didRedirect = runIfAuthenticated(getOwner(this), () => {
-      let routeIfAlreadyAuthenticated = this.get('routeIfAlreadyAuthenticated');
-      assert('The route configured as UnauthenticatedRouteMixin.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
+    let routeIfAlreadyAuthenticated = this.get('routeIfAlreadyAuthenticated');
+    assert('The route configured as UnauthenticatedRouteMixin.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
 
-      this.transitionTo(routeIfAlreadyAuthenticated);
-    });
-    if (!didRedirect) {
+    let owner = getOwner(this);
+    let sessionService = owner.lookup('service:session');
+    if (sessionService.get('isAuthenticated')) {
+      prohibitAuthentication(owner, routeIfAlreadyAuthenticated);
+    } else {
       return this._super(...arguments);
     }
   }

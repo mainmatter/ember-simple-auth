@@ -310,4 +310,75 @@ describe('SessionService', () => {
       });
     });
   });
+
+  describe('prohibitAuthentication', function() {
+    let router;
+
+    beforeEach(function() {
+      this.owner.register('service:router', Service.extend({
+        transitionTo() {}
+      }));
+      router = this.owner.lookup('service:router');
+
+      sinon.spy(router, 'transitionTo');
+    });
+
+    describe('if the session is not authenticated', function() {
+      beforeEach(function() {
+        session.set('isAuthenticated', false);
+      });
+
+      it('returns true', function() {
+        let result = sessionService.prohibitAuthentication('index');
+
+        expect(result).to.be.true;
+      });
+
+      describe('if a route name is passed as first argument', function() {
+        it('does not transition to the route', function() {
+          sessionService.prohibitAuthentication('index');
+
+          expect(router.transitionTo).to.not.have.been.called;
+        });
+      });
+
+      describe('if a callback function is passed as first argument', function() {
+        it('does not invoke the callback', function() {
+          let callback = sinon.spy();
+          sessionService.prohibitAuthentication(callback);
+
+          expect(callback).to.not.have.been.called;
+        });
+      });
+    });
+
+    describe('if the session is authenticated', function() {
+      beforeEach(function() {
+        session.set('isAuthenticated', true);
+      });
+
+      it('returns false', function() {
+        let result = sessionService.prohibitAuthentication('login');
+
+        expect(result).to.be.false;
+      });
+
+      describe('if a route name is passed as first argument', function() {
+        it('transitions to the specified route', function() {
+          sessionService.prohibitAuthentication('index');
+
+          expect(router.transitionTo).to.have.been.calledWith('index');
+        });
+      });
+
+      describe('if a callback function is passed as first argument', function() {
+        it('invokes the callback', function() {
+          let callback = sinon.spy();
+          sessionService.prohibitAuthentication(callback);
+
+          expect(callback).to.have.been.calledOnce;
+        });
+      });
+    });
+  });
 });

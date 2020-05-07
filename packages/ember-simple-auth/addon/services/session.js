@@ -5,7 +5,7 @@ import Evented from '@ember/object/evented';
 import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
 
-import { requireAuthentication, triggerAuthentication } from '../-internals/routing';
+import { requireAuthentication, triggerAuthentication, prohibitAuthentication } from '../-internals/routing';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -249,4 +249,28 @@ export default Service.extend(Evented, {
     }
     return isAuthenticated;
   },
+
+  /**
+    Checks whether the session is authenticated and if it is, transitions
+    to the specified route or invokes the specified callback.
+
+    @method prohibitAuthentication
+    @param {String|Function} routeOrCallback The route to transition to in case that the session is authenticated or a callback function to invoke in that case
+    @return {Boolean} true when the session is not authenticated, false otherwise
+    @public
+  */
+  prohibitAuthentication(routeOrCallback) {
+    let isAuthenticated = this.get('isAuthenticated');
+    if (isAuthenticated) {
+      let argType = typeof routeOrCallback;
+      if (argType === 'string') {
+        prohibitAuthentication(getOwner(this), routeOrCallback);
+      } else if (argType === 'function') {
+        routeOrCallback();
+      } else {
+        assert(`The second argument to prohibitAuthentication must be a String or Function, got "${argType}"!`, false);
+      }
+    }
+    return !isAuthenticated;
+  }
 });

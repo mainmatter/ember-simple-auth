@@ -6,8 +6,11 @@
     {{#link-to 'protected' tagName='li' class='nav-item'}}
       <a class="nav-link" href="#">Protected Page</a>
     {{/link-to}}
-    {{#link-to 'engine.index' tagName='li'}}
-      <a class="nav-link" href="#">Engine</a>
+    {{#link-to 'engine.protected' tagName='li'}}
+      <a class="nav-link" href="#">Protected Engine Page</a>
+    {{/link-to}}
+    {{#link-to 'engine.open-only' tagName='li'}}
+      <a class="nav-link" href="#">Open-only Engine Page</a>
     {{/link-to}}
     {{#link-to 'auth-error' tagName='li' class='nav-item'}}
       <a class="nav-link" href="#">Auth Error Page</a>

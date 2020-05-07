@@ -22,3 +22,8 @@ export function triggerAuthentication(owner, authenticationRoute) {
   let authRouter = owner.lookup('service:router') || owner.lookup('router:main');
   authRouter.transitionTo(authenticationRoute);
 }
+
+export function prohibitAuthentication(owner, routeIfAlreadyAuthenticated) {
+  let authRouter = owner.lookup('service:router') || owner.lookup('router:main');
+  authRouter.transitionTo(routeIfAlreadyAuthenticated);
+}

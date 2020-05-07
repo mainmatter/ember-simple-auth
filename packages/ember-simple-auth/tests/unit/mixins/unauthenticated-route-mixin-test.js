@@ -16,6 +16,7 @@ describe('UnauthenticatedRouteMixin', () => {
 
   let sinon;
   let route;
+  let router;
 
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
@@ -35,14 +36,15 @@ describe('UnauthenticatedRouteMixin', () => {
 
       this.owner.register('service:session', Service.extend());
 
-      route = Route.extend(MixinImplementingBeforeModel, UnauthenticatedRouteMixin, {
-        // pretend this is never FastBoot
-        // replace actual transitionTo as the router isn't set up etc.
-        transitionTo() {}
-      }).create();
+      route = Route.extend(MixinImplementingBeforeModel, UnauthenticatedRouteMixin).create();
       setOwner(route, this.owner);
 
-      sinon.spy(route, 'transitionTo');
+      this.owner.register('service:router', Service.extend({
+        transitionTo() {}
+      }));
+      router = this.owner.lookup('service:router');
+
+      sinon.spy(router, 'transitionTo');
     });
 
     describe('if the session is authenticated', function() {
@@ -53,7 +55,8 @@ describe('UnauthenticatedRouteMixin', () => {
 
       it('transitions to "index" by default', function() {
         route.beforeModel();
-        expect(route.transitionTo).to.have.been.calledWith('index');
+
+        expect(router.transitionTo).to.have.been.calledWith('index');
       });
 
       it('transitions to set routeIfAlreadyAuthenticated', function() {
@@ -61,7 +64,7 @@ describe('UnauthenticatedRouteMixin', () => {
         route.set('routeIfAlreadyAuthenticated', routeIfAlreadyAuthenticated);
 
         route.beforeModel();
-        expect(route.transitionTo).to.have.been.calledWith(routeIfAlreadyAuthenticated);
+        expect(router.transitionTo).to.have.been.calledWith(routeIfAlreadyAuthenticated);
       });
 
       it('does not return the upstream promise', function() {
@@ -70,10 +73,10 @@ describe('UnauthenticatedRouteMixin', () => {
     });
 
     describe('if the session is not authenticated', function() {
-      it('does not call route transitionTo', function() {
+      it('does not transition', function() {
         route.beforeModel();
 
-        expect(route.transitionTo).to.not.have.been.called;
+        expect(router.transitionTo).to.not.have.been.called;
       });
 
       it('returns the upstream promise', async function() {
