@@ -15,11 +15,25 @@ describe('Configuration', () => {
     });
   });
 
+  describe('routeAfterAuthentication', function() {
+    it('defaults to "index"', function() {
+      Configuration.load({});
+
+      expect(Configuration.routeAfterAuthentication).to.eql('index');
+    });
+  });
+
   describe('.load', function() {
     it('sets rootURL correctly', function() {
       Configuration.load({ rootURL: '/rootURL' });
 
       expect(Configuration.rootURL).to.eql('/rootURL');
+    });
+
+    it('sets routeAfterAuthentication correctly', function() {
+      Configuration.load({ 'ember-simple-auth': { routeAfterAuthentication: '/some-route' } });
+
+      expect(Configuration.routeAfterAuthentication).to.eql('/some-route');
     });
   });
 });
