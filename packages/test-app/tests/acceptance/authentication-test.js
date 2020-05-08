@@ -88,6 +88,24 @@ describe('Acceptance: Authentication', function() {
     });
   });
 
+  describe('the auth-error route', function() {
+    it('invalidates the session', async function() {
+      server = new Pretender(function() {
+        this.get(`${config.apiHost}/posts/3`, () => [401, { 'Content-Type': 'application/json' }, '']);
+      });
+
+      await authenticateSession({});
+      try {
+        await visit('/auth-error');
+      } catch (e) {
+        // ignore the error
+      }
+
+      let session = currentSession();
+      expect(session.get('isAuthenticated')).to.be.false;
+    });
+  });
+
   describe('the protected route in the engine', function() {
     it('cannot be visited when the session is not authenticated', async function() {
       await invalidateSession();
