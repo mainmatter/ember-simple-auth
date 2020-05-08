@@ -2,6 +2,12 @@
 
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
+import { deprecate } from '@ember/application/deprecations';
+
+deprecate("Ember Simple Auth: The DataAdapterMixin is now deprecated; call the session service's invalidate method in the adapter's handleResponse method instead in case of a 401 response.", false, {
+  id: 'ember-simple-auth.mixins.data-adapter-mixin',
+  until: '4.0.0'
+});
 
 /**
   __This mixin can be used to make Ember Data adapters authorize all outgoing
@@ -34,6 +40,7 @@ import Mixin from '@ember/object/mixin';
   __The `DataAdapterMixin` requires Ember Data 1.13 or later.__
 
   @class DataAdapterMixin
+  @deprecated Call the session service's invalidate method in the adapter's handleResponse method instead in case of a 401 response
   @module ember-simple-auth/mixins/data-adapter-mixin
   @extends Ember.Mixin
   @public
