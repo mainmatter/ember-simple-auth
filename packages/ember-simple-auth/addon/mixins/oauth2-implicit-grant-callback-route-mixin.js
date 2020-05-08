@@ -3,9 +3,15 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { getOwner } from '@ember/application';
+import { deprecate } from '@ember/application/deprecations';
 import location from '../utils/location';
 import isFastBoot from '../utils/is-fastboot';
 import { parseResponse } from '../authenticators/oauth2-implicit-grant';
+
+deprecate("Ember Simple Auth: The OAuth2ImplicitGrantCallbackRouteMixin is now deprecated; call the session service's authenticate method with the appropriate authenticator in the respective route's activate method instead.", false, {
+  id: 'ember-simple-auth.mixins.oauth2-implicit-grant-callback-route-mixin',
+  until: '4.0.0'
+});
 
 /**
   __This mixin is used in the callback route when using OAuth 2.0 Implicit
@@ -17,6 +23,7 @@ import { parseResponse } from '../authenticators/oauth2-implicit-grant';
   {{#crossLink "OAuth2ImplicitGrantAuthenticator"}}{{/crossLink}}
 
   @class OAuth2ImplicitGrantCallbackRouteMixin
+  @deprecated Call the session service's authenticate method with the appropriate authenticator in the respective route's activate method instead
   @module ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin
   @extends Ember.Mixin
   @public
