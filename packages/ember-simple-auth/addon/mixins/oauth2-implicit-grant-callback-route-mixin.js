@@ -5,20 +5,7 @@ import Mixin from '@ember/object/mixin';
 import { getOwner } from '@ember/application';
 import location from '../utils/location';
 import isFastBoot from '../utils/is-fastboot';
-
-function _parseResponse(locationHash) {
-  let params = {};
-  const query = locationHash.substring(locationHash.indexOf('?'));
-  const regex = /([^#?&=]+)=([^&]*)/g;
-  let match;
-
-  // decode all parameter pairs
-  while ((match = regex.exec(query)) !== null) {
-    params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
-  }
-
-  return params;
-}
+import { parseResponse } from '../authenticators/oauth2-implicit-grant';
 
 /**
   __This mixin is used in the callback route when using OAuth 2.0 Implicit
@@ -87,7 +74,7 @@ export default Mixin.create({
 
     let authenticator = this.get('authenticator');
 
-    let hash = _parseResponse(location().hash);
+    let hash = parseResponse(location().hash);
 
     this.get('session').authenticate(authenticator, hash).catch((err) => {
       this.set('error', err);
