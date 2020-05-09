@@ -250,41 +250,32 @@ When you spin up the server again with `ember serve`, you should see, at
 
 ### Adding Authentication
 
-First, we'll add the [ApplicationRouteMixin](http://ember-simple-auth.com/api/classes/ApplicationRouteMixin.html) to
-our application route. This is optional, but adds methods supporting the authentication lifecycle that we would
-otherwise have to implement explicitly.
-
-```js
-// app/routes/application.js
-
-import Route from '@ember/routing';
-import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
-
-export default class ApplicationRoute extends Route.extend(ApplicationRouteMixin) {
-}
-```
-
-Next, we'll designate the `index` route as an authenticated route using the
-[AuthenticatedRouteMixin](http://ember-simple-auth.com/api/classes/AuthenticatedRouteMixin.html). This will make the
-route inaccessible until we finish the authentication. It will automatically redirect you to the specified login route,
-by default `login`, if you are not authenticated.
+First, we'll designate the `index` route as an authenticated route using the
+session service's
+[requireAuthentication](http://ember-simple-auth.com/api/classes/SessionService.html#method_requireAuthentication)
+method. This will make the route inaccessible until we finish the
+authentication. It will automatically redirect you to the specified login
+route, if you are not authenticated.
 
 ```js
 // app/routes/index.js
-
 import Route from '@ember/routing';
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import { inject as service } from '@ember/service';
 
-export default IndexRoute extends Route.extend(AuthenticatedRouteMixin) {
+export default IndexRoute extends Route {
+  @service session;
+
+  beforeModel(transition) {
+    this.get('session').requireAuthentication(transition, 'login');
+  },
 }
 ```
 
 If you're still running the app when you save this, you will see it redirect to the `login` route.
 
-We'll also designate the `login` route as available for unauthenticated access only by applying the
-[UnauthenticatedRouteMixin](http://ember-simple-auth.com/api/classes/UnauthenticatedRouteMixin.html) to it. This will
-redirect you to the `routeIfAlreadyAuthenticated` which defaults to `index`. As you can see, `ember-simple-auth` has
-sensible and convenient defaults.
+We'll also designate the `login` route as available for unauthenticated access only by calling the session service's
+[prohibitAuthentication](http://ember-simple-auth.com/api/classes/SessionService.html#method_prohibitAuthentication).
+This will redirect you to the `index` route.
 
 Next, we'll create and set up our torii authenticator to start.
 
@@ -680,9 +671,11 @@ ember g adapter github-user
 
 import { computed } from '@ember/object';
 import GitHubUserAdapter from 'ember-data-github/adapters/github-user';
-import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
+import { inject as service } from '@ember/service';
 
-export default class GithubUserAdapter extends GitHubUserAdapter.extend(DataAdapterMixin) {
+export default class GithubUserAdapter extends GitHubUserAdapter {
+  @service session;
+
   @computed("session.data.authenticated.access_token")
   get headers() {
     const headers = {};
@@ -697,8 +690,7 @@ export default class GithubUserAdapter extends GitHubUserAdapter.extend(DataAdap
 }
 ```
 
-This adapter injects an authorization header into the GitHub request now.  The `DataAdapterMixin` is a mixin provided by
-`ember-simple-auth` that injects the `session` service we use to generate the authentication header.
+This adapter injects an authorization header into the GitHub request now.
 
 ### Wrapping Up
 

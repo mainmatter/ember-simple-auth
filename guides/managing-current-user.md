@@ -126,31 +126,20 @@ The Ember Simple Auth session can either be authenticated already when the
 application starts up or become authenticated later when either the user logs
 in via that instance of the application or the session state is synced from
 another tab or window. In the first case, the session will already be
-authenticated when the application route's `beforeModel` method is called and
-in the latter case Ember Simple Auth will call the application route's
-`sessionAuthenticated` method. The `currentUser` service's `load` method must
-be called in both cases so that it's `user` property is always populated when
-the session is authenticated:
+authenticated when the application route's `beforeModel` method is called:
 
 ```js
 // app/routes/application.js
 
 import Route from '@ember/routing/route';
-import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
-
 import { inject as service } from '@ember/service';
 
-export default class ApplicationRoute extends Route.extend(ApplicationRouteMixin) {
+export default class ApplicationRoute extends Route {
+  @service session;
   @service currentUser;
 
   beforeModel() {
     return this._loadCurrentUser();
-  },
-
-  async sessionAuthenticated() {
-    let _super = this._super;
-    await this._loadCurrentUser();
-    _super.call(this, ...arguments);
   },
 
   async _loadCurrentUser() {
@@ -158,6 +147,31 @@ export default class ApplicationRoute extends Route.extend(ApplicationRouteMixin
       await this.currentUser.load();
     } catch(err) {
       await this.session.invalidate();
+    }
+  }
+});
+```
+
+In the latter case Ember Simple Auth will call the session service's
+`handleAuthentication` method. The `currentUser` service's `load` method must
+be called in that cases as well. We can do that by overriding the session
+sevice's method in a custom extension of Ember Simple Auth's standard session
+service:
+
+```js
+import { inject as service } from '@ember/service';
+import SessionService from 'ember-simple-auth/services/session';
+
+export default SessionService.extend({
+  @service currentUser;
+
+  async handleAuthentication() {
+    this._super(...arguments);
+
+    try {
+      await this.currentUser.load();
+    } catch(err) {
+      await this.invalidate();
     }
   }
 });
