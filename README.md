@@ -80,10 +80,10 @@ etc.
 ## Example App
 
 __Ember Simple Auth comes with a
-[dummy app](tests/dummy)
+[test app](packages/test-app/)
 that implements a complete auth solution__ including authentication against
 the application's own server as well as Facebook, authorization of Ember Data
-requests and error handling. __Check out that dummy app for reference.__ To
+requests and error handling. __Check out that test app for reference.__ To
 start it, run
 
 ```
@@ -103,15 +103,16 @@ ember install ember-simple-auth
 ```
 
 ### Upgrading from a pre-3.0 release?
-The 3.0 release of ember-simple-auth removes previously deprecated code, introducing some breaking changes,
-but thankfully there is an [upgrade guide](guides/upgrade-to-v3.md).
+The 3.0 release of ember-simple-auth removes previously deprecated code,
+introducing some breaking changes, but thankfully there is an
+[upgrade guide](guides/upgrade-to-v3.md).
 
 ## Walkthrough
 
 Once the library is installed, __the session service can be injected wherever
-needed in the application__. In order to display login/logout buttons
-depending on the current session state, inject the service into the respective
-controller or component and __query its
+needed in the application__. In order to display login/logout buttons depending
+on the current session state, inject the service into the respective controller
+or component and __query its
 [`isAuthenticated` property](http://ember-simple-auth.com/api/classes/SessionService.html#property_isAuthenticated)
 in the template__:
 
@@ -224,45 +225,23 @@ export default class LoginController extends Controller {
 }
 ```
 
-__The session service also provides the
-[`authenticationSucceeded`](http://ember-simple-auth.com/api/classes/SessionService.html#event_authenticationSucceeded)
-and
-[`invalidationSucceeded`](http://ember-simple-auth.com/api/classes/SessionService.html#event_invalidationSucceeded)
-events__ that are triggered whenever the session is successfully authenticated
-or invalidated (which not only happens when the user submits the login form or
-clicks the logout button but also when the session is authenticated or
-invalidated in another tab or window of the application). __To have these
-events handled automatically, simply mix
-[`ApplicationRouteMixin`](http://ember-simple-auth.com/api/classes/ApplicationRouteMixin.html)
-into the application route__:
-
-```js
-// app/routes/application.js
-import Route from '@ember/routing/route';
-import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
-
-export default class ApplicationRoute extends Route.extend(ApplicationRouteMixin) {}
-```
-
-The `ApplicationRouteMixin` automatically maps the session events to the
-[`sessionAuthenticated`](http://ember-simple-auth.com/api/classes/ApplicationRouteMixin.html#method_sessionAuthenticated)
-and
-[`sessionInvalidated`](http://ember-simple-auth.com/api/classes/ApplicationRouteMixin.html#method_sessionInvalidated)
-methods it implements. The `sessionAuthenticated` method will transition to a
-configurable route while the `sessionInvalidated` method will reload the page
-to clear all potentially sensitive data from memory.
-
 __To make a route in the application accessible only when the session is
-authenticated__, mix the
-[`AuthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/AuthenticatedRouteMixin.html)
-into the respective route:
+authenticated__, call the session service's
+[`method_requireAuthentication`](http://ember-simple-auth.com/api/classes/SessionService.html#method_requireAuthentication)
+method in the respective route's  `beforeModel` method:
 
 ```js
-// app/routes/protected.js
+// app/routes/authenticated.js
 import Route from '@ember/routing/route';
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import { inject as service } from '@ember/service';
 
-export default class ProtectedRoute extends Route.extend(AuthenticatedRouteMixin) {}
+export default class AuthenticatedRoute extends Route {
+  @service session;
+
+  beforeModel(transition) {
+    this.get('session').requireAuthentication(transition, 'login');
+  },
+}
 ```
 
 This will make the route (and all of its subroutes) transition to the `login`
@@ -275,10 +254,6 @@ Router.map(function() {
   this.route('login');
 });
 ```
-
-The route to transition to if the session is not authenticated can also be
-[overridden](https://ember-simple-auth.com/api/classes/AuthenticatedRouteMixin.html#property_authenticationRoute)
-to be another one than `login`.
 
 It is recommended to nest all of an application's routes that require the
 session to be authenticated under a common parent route:
@@ -294,24 +269,52 @@ Router.map(function() {
 ```
 
 To prevent a route from being accessed when the session is authenticated (which
-makes sense for login and registration routes for example), mix the
-[`UnauthenticatedRouteMixin`](http://ember-simple-auth.com/api/classes/UnauthenticatedRouteMixin.html)
-into the respective route.
+makes sense for login and registration routes for example), call the session
+service's
+[`prohibitAuthentication`](http://ember-simple-auth.com/api/classes/SessionService.html#method_prohibitAuthentication)
+method in the respective route's `beforeModel` method:
 
-In order to add authorization information to requests, you can use the session service
-to check if the session is authenticated and access authentication/authorization data, e.g. a token.
+```js
+// app/routes/login.js
+import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
-We provide the `DataAdapterMixin` for Ember Data adapters, that injects the session service
-and also makes sure the session is invalidated if any of the requests returns an unauthorized response.
-It can be used as:
+export default class LoginRoute extends Route {
+  @service session;
+
+  beforeModel(transition) {
+    this.get('session').prohibitAuthentication('index');
+  },
+}
+```
+
+__The session service also provides the
+[`handleAuthentication`](http://ember-simple-auth.com/api/classes/SessionService.html#method_handleAuthentication)
+and
+[`handleInvalidation`](http://ember-simple-auth.com/api/classes/SessionService.html#method_handleInvalidation)
+methods__ for handling authentication and invalidation of the session (which
+not only happens when the user submits the login form or clicks the logout
+button but also when the session is authenticated or invalidated in another tab
+or window of the application). The `handleAuthentication` method will
+transition to a configurable route while the `handleInvalidation` method will
+reload the page to clear all potentially sensitive data from memory. In order
+to customize those behaviours, these methods can be overridden when the
+application defines its own session service that extends the one provided by
+Ember Simple Auth.
+
+To add authorization information to requests, you can use the session service
+to check if the session is authenticated and access
+authentication/authorization data, e.g. a token:
 
 ```js
 // app/adapters/application.js
 import JSONAPIAdapter from '@ember-data/adapter/json-api';
-import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 
-export default class ApplicationAdapter extends JSONAPIAdapter.extend(DataAdapterMixin) {
+export default class ApplicationAdapter extends JSONAPIAdapter {
+  @service session;
+
   @computed('session.data.authenticated.access_token')
   get headers() {
     let headers = {};
@@ -593,21 +596,23 @@ The session can then be authenticated or invalidated from the host app or any
 of the engines and the state will be synchronized via the service.
 
 One thing to be aware of is that if the authentication route is outside of the
-engine (e.g. in the host app), it is necessary to override the
-`triggerAuthentication` method of the `AuthenticatedRouteMixin` inside of the
-engine as that needs to transition to an **external** route in that case:
+engine (e.g. in the host app), it is necessary to use the special
+`transitionToExternal` method in the engine to transition to it. That can be
+done by passing a callback instead of a route name to the session service's
+`requireAuthentication` method in that case:
 
 ```
 // my-engine/addon/routes/index.js
 import Route from '@ember/routing/route';
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import { inject as service } from '@ember/service';
 
-export default class IndexRoute extends Route.extend(AuthenticatedRouteMixin) {
-  triggerAuthentication() {
-    this.transitionToExternal('login');
-  }
+export default class IndexRoute extends Route {
+  @service session;
+
+  beforeModel(transition) {
+    this.get('session').requireAuthentication(transition, () => this.transitionToExternal('login'));
+  },
 }
-
 ```
 
 ## Testing
