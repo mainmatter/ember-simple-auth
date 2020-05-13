@@ -131,6 +131,7 @@ export default class ApplicationAdapter extends JSONAPIAdapter.extend(DataAdapte
 // Devise
 import DS from 'ember-data';
 import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 
 export default class ApplicationAdapter extends JSONAPIAdapter.extend(DataAdapterMixin) {
