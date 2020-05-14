@@ -148,10 +148,9 @@ export default class ApplicationRoute extends Route.extend(ApplicationRouteMixin
   },
 
   async sessionAuthenticated() {
-    let _super = this._super;
     await this._loadCurrentUser();
-    _super.call(this, ...arguments);
-  },
+    super.sessionAuthenticated(...arguments)
+  }
 
   async _loadCurrentUser() {
     try {
