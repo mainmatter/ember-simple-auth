@@ -129,12 +129,14 @@ export default class ApplicationAdapter extends JSONAPIAdapter.extend(DataAdapte
 // app/adapters/application.js
 
 // Devise
-import DS from 'ember-data';
+import JSONAPIAdapter from '@ember-data/adapter/json-api';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import DataAdapterMixin from "ember-simple-auth/mixins/data-adapter-mixin";
 
 export default class ApplicationAdapter extends JSONAPIAdapter.extend(DataAdapterMixin) {
+  @service session;
+  
   // defaults
   // identificationAttributeName: 'email'
   // tokenAttributeName: 'token'
@@ -148,8 +150,8 @@ export default class ApplicationAdapter extends JSONAPIAdapter.extend(DataAdapte
     }
 
     return headers;
-  }),
-});
+  };
+};
 ```
 
 ### Expect the whole Fetch API response on rejected authentications
