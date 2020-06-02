@@ -650,7 +650,7 @@ export default class ToriiAuthenticator extends Torii {
       }),
       // Adding headers to the request 
       headers: {
-        'Content-Type': 'application/json' // 'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json'
       }
     });
 
