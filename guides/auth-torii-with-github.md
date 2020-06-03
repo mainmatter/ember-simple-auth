@@ -636,8 +636,7 @@ export default class ToriiAuthenticator extends Torii {
   @service torii;
 
   async authenticate() {
-    const tokenExchangeUri = config.torii.providers['google-oauth2'].tokenExchangeUri;
-
+    const tokenExchangeUri = config.torii.providers['github-oauth2'].tokenExchangeUri;
     let data = await super.authenticate(...arguments);
     const response = await fetch(tokenExchangeUri, {
       // Adding method type 
