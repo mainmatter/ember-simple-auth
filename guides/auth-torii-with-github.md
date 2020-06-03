@@ -634,19 +634,23 @@ import config from '../config/environment';
 
 export default class ToriiAuthenticator extends Torii {
   @service torii;
-  @service ajax;
 
   async authenticate() {
     const tokenExchangeUri = config.torii.providers['github-oauth2'].tokenExchangeUri;
-
     let data = await super.authenticate(...arguments);
-    let response = await this.ajax.request(tokenExchangeUri, {
-      type: 'POST',
-      crossDomain: true,
-      dataType: 'json',
-      contentType: 'application/json',
-      data: JSON.stringify({
+    const response = await fetch(tokenExchangeUri, {
+      // Adding method type 
+      method: "POST",
+      // no-cors, *cors, same-origin
+      mode: 'cors',
+      // Adding body or contents to send 
+      body: JSON.stringify({
         authorizationCode: data.authorizationCode
+      }),
+      // Adding headers to the request 
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
 
     return {
@@ -654,7 +658,7 @@ export default class ToriiAuthenticator extends Torii {
       provider: data.provider
     };
   }
-});
+}
 ```
 
 This makes a `POST` request to your service and gives the response back to Ember Simple Auth. Notice that it returns the `access_token`
