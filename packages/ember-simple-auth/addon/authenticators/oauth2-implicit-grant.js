@@ -3,6 +3,32 @@ import { isEmpty } from '@ember/utils';
 import BaseAuthenticator from './base';
 
 /**
+  Parses the location hash (as received from `window.location.hash`) into an
+  object, e.g.:
+
+  ```js
+  parseResponse('/routepath#access_token=secret-token&scope=something'); // => { access_token: 'secret-token', scope: 'something' }
+  ```
+
+  @function parseResponse
+  @param {String} locationHash The location hash (as received from `window.location.hash`)
+  @return {Object} An obect with individual properties and values for the data parsed from the location hash
+*/
+export function parseResponse(locationHash) {
+  let params = {};
+  const query = locationHash.substring(locationHash.indexOf('?'));
+  const regex = /([^#?&=]+)=([^&]*)/g;
+  let match;
+
+  // decode all parameter pairs
+  while ((match = regex.exec(query)) !== null) {
+    params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
+  }
+
+  return params;
+}
+
+/**
  Authenticator that conforms to OAuth 2
  ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Implicit
  Grant Type"_.

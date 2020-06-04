@@ -12,7 +12,8 @@ const App = Application.extend({
     myEngine: {
       dependencies: {
         externalRoutes: {
-          login: 'login'
+          login: 'login',
+          index: 'index'
         },
         services: [
           'session'

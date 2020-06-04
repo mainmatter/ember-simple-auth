@@ -10,6 +10,7 @@ import sinonjs from 'sinon';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import InternalSession from 'ember-simple-auth/internal-session';
 import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
+import * as LocationUtil from 'ember-simple-auth/utils/location';
 
 describe('ApplicationRouteMixin', () => {
   setupTest();
@@ -18,6 +19,7 @@ describe('ApplicationRouteMixin', () => {
   let session;
   let sessionService;
   let route;
+  let router;
 
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
@@ -31,9 +33,14 @@ describe('ApplicationRouteMixin', () => {
       clear: sinon.stub()
     }));
 
+    this.owner.register('service:router', Service.extend({
+      transitionTo() {}
+    }));
+    router = this.owner.lookup('service:router');
+
     this.owner.register('route:application', Route.extend(ApplicationRouteMixin));
     route = this.owner.lookup('route:application');
-    sinon.stub(route, 'transitionTo');
+    sinon.stub(router, 'transitionTo');
   });
 
   afterEach(function() {
@@ -44,7 +51,7 @@ describe('ApplicationRouteMixin', () => {
     beforeEach(function() {
       sinon.spy(route, 'sessionAuthenticated');
       sinon.spy(route, 'sessionInvalidated');
-      sinon.stub(route, '_refresh');
+      sinon.stub(LocationUtil, 'default').returns({ replace() {} });
     });
 
     afterEach(function() {
@@ -122,7 +129,7 @@ describe('ApplicationRouteMixin', () => {
       it('transitions to the url', function() {
         route.sessionAuthenticated();
 
-        expect(route.transitionTo).to.have.been.calledWith(targetUrl);
+        expect(router.transitionTo).to.have.been.calledWith(targetUrl);
       });
 
       it('clears the cookie', function() {
@@ -136,7 +143,7 @@ describe('ApplicationRouteMixin', () => {
       it('transitions to "index" by default', function() {
         route.sessionAuthenticated();
 
-        expect(route.transitionTo).to.have.been.calledWith('index');
+        expect(router.transitionTo).to.have.been.calledWith('index');
       });
 
       it('transitions to "routeAfterAuthentication"', function() {
@@ -144,7 +151,7 @@ describe('ApplicationRouteMixin', () => {
         route.set('routeAfterAuthentication', routeAfterAuthentication);
         route.sessionAuthenticated();
 
-        expect(route.transitionTo).to.have.been.calledWith(routeAfterAuthentication);
+        expect(router.transitionTo).to.have.been.calledWith(routeAfterAuthentication);
       });
     });
   });

@@ -17,6 +17,9 @@
             {{else}}
               <pre><code>import {{moduleName}} from '{{module}}';</code></pre>
             {{/if}}
+            {{#if deprecationMessage}}
+              <p><span class="label label-warning label-deprecated">Deprecated:</span><strong>{{#crossLink deprecationMessage}}{{/crossLink}}</strong></p>
+            {{/if}}
             {{{classDescription}}}
           </div>
         </div>

@@ -77,6 +77,7 @@ describe('Acceptance: Authentication', function() {
         this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
 
+      await visit('/');
       await authenticateSession({ userId: 1, otherData: 'some-data' });
       await visit('/protected');
 
@@ -87,10 +88,28 @@ describe('Acceptance: Authentication', function() {
     });
   });
 
+  describe('the auth-error route', function() {
+    it('invalidates the session', async function() {
+      server = new Pretender(function() {
+        this.get(`${config.apiHost}/posts/3`, () => [401, { 'Content-Type': 'application/json' }, '']);
+      });
+
+      await authenticateSession({});
+      try {
+        await visit('/auth-error');
+      } catch (e) {
+        // ignore the error
+      }
+
+      let session = currentSession();
+      expect(session.get('isAuthenticated')).to.be.false;
+    });
+  });
+
   describe('the protected route in the engine', function() {
     it('cannot be visited when the session is not authenticated', async function() {
       await invalidateSession();
-      await visit('/engine');
+      await visit('/engine/protected');
 
       expect(currentURL()).to.eq('/login');
     });
@@ -100,9 +119,9 @@ describe('Acceptance: Authentication', function() {
         this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
       await authenticateSession({ userId: 1, otherData: 'some-data' });
-      await visit('/engine');
+      await visit('/engine/protected');
 
-      expect(currentURL()).to.eq('/engine');
+      expect(currentURL()).to.eq('/engine/protected');
       let session = currentSession();
       expect(session.get('data.authenticated.userId')).to.eql(1);
       expect(session.get('data.authenticated.otherData')).to.eql('some-data');
@@ -113,11 +132,30 @@ describe('Acceptance: Authentication', function() {
         this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
       await authenticateSession({ userId: 1, otherData: 'some-data' });
-      await visit('/engine');
+      await visit('/engine/protected');
       await click('[data-test-logout-button]');
 
       let session = currentSession();
       expect(session.get('isAuthenticated')).to.be.false;
+    });
+  });
+
+  describe('the open-only route in the engine', function() {
+    it('cannot be visited when the session is authenticated', async function() {
+      server = new Pretender(function() {
+        this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
+      });
+      await authenticateSession({ userId: 1, otherData: 'some-data' });
+      await visit('/engine/open-only');
+
+      expect(currentURL()).to.eq('/');
+    });
+
+    it('can be visited when the session is not authenticated', async function() {
+      await invalidateSession();
+      await visit('/engine/open-only');
+
+      expect(currentURL()).to.eq('/engine/open-only');
     });
   });
 

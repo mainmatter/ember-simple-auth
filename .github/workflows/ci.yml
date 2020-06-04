@@ -18,6 +18,7 @@ jobs:
       matrix:
         workspace:
           - ember-simple-auth
+          - classic-test-app
           - test-app
 
     steps:
@@ -51,6 +52,7 @@ jobs:
       matrix:
         workspace:
           - ember-simple-auth
+          - classic-test-app
           - test-app
         test-suite:
           - test:one ember-3.0
@@ -96,6 +98,7 @@ jobs:
       matrix:
         workspace:
           - ember-simple-auth
+          - classic-test-app
           - test-app
 
     steps:

@@ -5,8 +5,15 @@ import { A } from '@ember/array';
 import { getOwner } from '@ember/application';
 import { inject } from '@ember/service';
 import Ember from 'ember';
+import { deprecate } from '@ember/application/deprecations';
 import Configuration from './../configuration';
+
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
+
+deprecate('Ember Simple Auth: The ApplicationRouteMixin is now deprecated; it can be safely removed.', false, {
+  id: 'ember-simple-auth.mixins.application-route-mixin',
+  until: '4.0.0'
+});
 
 /**
   The mixin for the application route, __defining methods that are called when
@@ -42,6 +49,7 @@ import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
   `needs: ['service:session']` in the application route's unit test.__
 
   @class ApplicationRouteMixin
+  @deprecated Call the session service's setup method in the application route's constructor instead
   @module ember-simple-auth/mixins/application-route-mixin
   @extends Ember.Mixin
   @public
@@ -69,6 +77,7 @@ export default Mixin.create({
 
   init() {
     this._super(...arguments);
+    this.__usesApplicationRouteMixn__ = true;
 
     this._isFastBoot = this.hasOwnProperty('_isFastBoot') ? this._isFastBoot : isFastBoot(getOwner(this));
     this._subscribeToSessionEvents();
@@ -99,19 +108,7 @@ export default Mixin.create({
     @public
   */
   sessionAuthenticated() {
-    const attemptedTransition = this.get('session.attemptedTransition');
-    const cookies = getOwner(this).lookup('service:cookies');
-    const redirectTarget = cookies.read('ember_simple_auth-redirectTarget');
-
-    if (attemptedTransition) {
-      attemptedTransition.retry();
-      this.set('session.attemptedTransition', null);
-    } else if (redirectTarget) {
-      this.transitionTo(redirectTarget);
-      cookies.clear('ember_simple_auth-redirectTarget');
-    } else {
-      this.transitionTo(this.get('routeAfterAuthentication'));
-    }
+    this.get('session').handleAuthentication(this.get('routeAfterAuthentication'));
   },
 
   /**
@@ -131,15 +128,7 @@ export default Mixin.create({
   */
   sessionInvalidated() {
     if (!Ember.testing) {
-      if (this.get('_isFastBoot')) {
-        this.transitionTo(Configuration.rootURL);
-      } else {
-        this._refresh();
-      }
+      this.get('session').handleInvalidation(Configuration.rootURL);
     }
-  },
-
-  _refresh() {
-    window.location.replace(Configuration.rootURL);
   }
 });

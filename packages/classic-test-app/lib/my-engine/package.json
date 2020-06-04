@@ -1,0 +1,12 @@
+{
+  "name": "my-engine",
+  "version": "0.0.1",
+  "keywords": [
+    "ember-addon",
+    "ember-engine"
+  ],
+  "dependencies": {
+    "ember-cli-htmlbars": "*",
+    "ember-cli-babel": "*"
+  }
+}

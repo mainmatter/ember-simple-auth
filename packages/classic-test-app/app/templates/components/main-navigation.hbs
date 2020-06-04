@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+  {{#link-to 'index' classNames='navbar-brand'}}
+    Home
+  {{/link-to}}
+  <ul class="navbar-nav mr-auto">
+    {{#link-to 'protected' tagName='li' class='nav-item'}}
+      <a class="nav-link" href="#">Protected Page</a>
+    {{/link-to}}
+    {{#link-to 'engine.index' tagName='li'}}
+      <a class="nav-link" href="#">Engine</a>
+    {{/link-to}}
+    {{#link-to 'auth-error' tagName='li' class='nav-item'}}
+      <a class="nav-link" href="#">Auth Error Page</a>
+    {{/link-to}}
+  </ul>
+  <form class="form-inline">
+    {{! display logout button when the session is authenticated, login button otherwise }}
+    {{#if session.isAuthenticated}}
+      {{#if sessionAccount.account}}
+        <span class="navbar-text mr-3">Signed in as {{sessionAccount.account.name}}</span>
+      {{/if}}
+      <a {{action 'logout'}} class="btn btn-danger" href="#" role="button">Logout</a>
+    {{else}}
+      <a {{action onLogin}} class="btn btn-success" href="#" role="button">Login</a>
+    {{/if}}
+  </form>
+</nav>

@@ -2,8 +2,30 @@ import { computed } from '@ember/object';
 import { A } from '@ember/array';
 import Service from '@ember/service';
 import Evented from '@ember/object/evented';
+import { getOwner } from '@ember/application';
+import { assert } from '@ember/debug';
+import { deprecate } from '@ember/application/deprecations';
+import Configuration from '../configuration';
+
+import {
+  requireAuthentication,
+  triggerAuthentication,
+  prohibitAuthentication,
+  handleSessionAuthenticated,
+  handleSessionInvalidated
+} from '../-internals/routing';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
+
+let enableEventsDeprecation = true;
+function deprecateSessionEvents() {
+  if (enableEventsDeprecation) {
+    deprecate("Ember Simple Auth: The session service's events API is deprecated; to add custom behavior to the authentication or invalidation handling, override the handleAuthentication or handleInvalidation methods.", false, {
+      id: 'ember-simple-auth.events.session-service',
+      until: '4.0.0'
+    });
+  }
+}
 
 /**
   __The session service provides access to the current session as well as
@@ -139,10 +161,47 @@ export default Service.extend(Evented, {
       // the internal session won't be available in route unit tests
       if (session) {
         session.on(event, () => {
+          enableEventsDeprecation = false;
           this.trigger(event, ...arguments);
+          enableEventsDeprecation = true;
         });
       }
     });
+  },
+
+  on() {
+    deprecateSessionEvents();
+
+    return this._super(...arguments);
+  },
+
+  one() {
+    deprecateSessionEvents();
+
+    return this._super(...arguments);
+  },
+
+  off() {
+    deprecateSessionEvents();
+
+    return this._super(...arguments);
+  },
+
+  has() {
+    deprecateSessionEvents();
+
+    return this._super(...arguments);
+  },
+
+  trigger() {
+    deprecateSessionEvents();
+
+    return this._super(...arguments);
+  },
+
+  _setupHandlers() {
+    this.get('session').on('authenticationSucceeded', () => this.handleAuthentication(Configuration.routeAfterAuthentication));
+    this.get('session').on('invalidationSucceeded', () => this.handleInvalidation(Configuration.rootURL));
   },
 
   /**
@@ -212,4 +271,99 @@ export default Service.extend(Evented, {
 
     return session.invalidate(...arguments);
   },
+
+  /**
+    Checks whether the session is authenticated and if it is not, transitions
+    to the specified route or invokes the specified callback.
+
+    If a transition is in progress and is aborted, this method will save it in the
+    session service's
+    {{#crossLink "SessionService/attemptedTransition:property"}}{{/crossLink}}
+    property so that  it can be retried after the session is authenticated. If
+    the transition is aborted in Fastboot mode, the transition's target URL
+    will be saved in a `ember_simple_auth-redirectTarget` cookie for use by the
+    browser after authentication is complete.
+
+    @method requireAuthentication
+    @param {Transition} transition A transition that triggered the authentication requirement or null if the requirement originated independently of a transition
+    @param {String|Function} routeOrCallback The route to transition to in case that the session is not authenticated or a callback function to invoke in that case
+    @return {Boolean} true when the session is authenticated, false otherwise
+    @public
+  */
+  requireAuthentication(transition, routeOrCallback) {
+    let isAuthenticated = requireAuthentication(getOwner(this), transition);
+    if (!isAuthenticated) {
+      let argType = typeof routeOrCallback;
+      if (argType === 'string') {
+        triggerAuthentication(getOwner(this), routeOrCallback);
+      } else if (argType === 'function') {
+        routeOrCallback();
+      } else {
+        assert(`The second argument to requireAuthentication must be a String or Function, got "${argType}"!`, false);
+      }
+    }
+    return isAuthenticated;
+  },
+
+  /**
+    Checks whether the session is authenticated and if it is, transitions
+    to the specified route or invokes the specified callback.
+
+    @method prohibitAuthentication
+    @param {String|Function} routeOrCallback The route to transition to in case that the session is authenticated or a callback function to invoke in that case
+    @return {Boolean} true when the session is not authenticated, false otherwise
+    @public
+  */
+  prohibitAuthentication(routeOrCallback) {
+    let isAuthenticated = this.get('isAuthenticated');
+    if (isAuthenticated) {
+      let argType = typeof routeOrCallback;
+      if (argType === 'string') {
+        prohibitAuthentication(getOwner(this), routeOrCallback);
+      } else if (argType === 'function') {
+        routeOrCallback();
+      } else {
+        assert(`The second argument to prohibitAuthentication must be a String or Function, got "${argType}"!`, false);
+      }
+    }
+    return !isAuthenticated;
+  },
+
+  /**
+    This method is called whenever the session goes from being unauthenticated
+    to being authenticated. If there is a transition that was previously
+    intercepted by the
+    {{#crossLink "SessionService/requireAuthentication:method"}}{{/crossLink}},
+    it will retry it. If there is no such transition, the
+    `ember_simple_auth-redirectTarget` cookie will be checked for a url that
+    represents an attemptedTransition that was aborted in Fastboot mode,
+    otherwise this action transitions to the specified
+    routeAfterAuthentication.
+
+    @method handleAuthentication
+    @param {String} routeAfterAuthentication The route to transition to
+    @public
+  */
+  handleAuthentication(routeAfterAuthentication) {
+    handleSessionAuthenticated(getOwner(this), routeAfterAuthentication);
+  },
+
+  /**
+    This method is called whenever the session goes from being authenticated to
+    not being authenticated. __It reloads the Ember.js application__ by
+    redirecting the browser to the specified route so that all in-memory data
+    (such as Ember Data stores etc.) gets cleared.
+
+    If the Ember.js application will be used in an environment where the users
+    don't have direct access to any data stored on the client (e.g.
+    [cordova](http://cordova.apache.org)) this action can be overridden to e.g.
+    simply transition to the index route.
+
+    @method handleInvalidation
+    @param {String} routeAfterInvalidation The route to transition to
+    @public
+  */
+  handleInvalidation(routeAfterInvalidation) {
+    handleSessionInvalidated(getOwner(this), routeAfterInvalidation);
+  }
 });

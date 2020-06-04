@@ -10,7 +10,8 @@ const Eng = Engine.extend({
   Resolver,
   dependencies: Object.freeze({
     externalRoutes: [
-      'login'
+      'login',
+      'index'
     ],
     services: [
       'session'

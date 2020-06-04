@@ -1,7 +1,7 @@
 import { it } from 'ember-mocha';
 import { describe, beforeEach } from 'mocha';
 import { expect } from 'chai';
-import OAuth2ImplicitGrant from 'ember-simple-auth/authenticators/oauth2-implicit-grant';
+import OAuth2ImplicitGrant, { parseResponse } from 'ember-simple-auth/authenticators/oauth2-implicit-grant';
 
 describe('OAuth2ImplicitGrantAuthenticator', () => {
   let authenticator;
@@ -12,6 +12,20 @@ describe('OAuth2ImplicitGrantAuthenticator', () => {
 
   beforeEach(function() {
     authenticator = OAuth2ImplicitGrant.create();
+  });
+
+  describe('parseResponse', function() {
+    it('parses a URL into a data hash', function() {
+      let result = parseResponse('/routepath#access_token=secret-token&scope=something');
+
+      expect(result).to.deep.equal({ access_token: 'secret-token', scope: 'something' });
+    });
+
+    it('parses a URL into a data hash when the app uses hash routing', function() {
+      let result = parseResponse('#/routepath#access_token=secret-token&scope=something');
+
+      expect(result).to.deep.equal({ access_token: 'secret-token', scope: 'something' });
+    });
   });
 
   describe('#restore', function() {

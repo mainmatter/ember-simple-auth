@@ -1,11 +1,12 @@
 /* eslint-disable ember/no-mixins */
 import JSONAPIAdapter from '@ember-data/adapter/json-api';
-import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import config from '../config/environment';
 import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 
-export default JSONAPIAdapter.extend(DataAdapterMixin, {
+export default JSONAPIAdapter.extend({
   host: config.apiHost,
+  session: service(),
 
   headers: computed('session.{data.authenticated.access_token,isAuthenticated}', function() {
     let headers = {};
@@ -15,4 +16,11 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
 
     return headers;
   }),
+
+  handleResponse(status) {
+    if (status === 401 && this.get('session.isAuthenticated')) {
+      this.get('session').invalidate();
+    }
+    return this._super(...arguments);
+  },
 });

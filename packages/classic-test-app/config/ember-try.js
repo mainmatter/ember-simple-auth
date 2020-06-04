@@ -1,0 +1,1 @@
+../../ember-simple-auth/config/ember-try.js
