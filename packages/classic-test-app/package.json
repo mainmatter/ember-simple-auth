@@ -38,7 +38,6 @@
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-engines": "^0.8.5",
     "ember-export-application-global": "^2.0.0",
-    "ember-fastboot-addon-tests": "^0.5.0",
     "ember-fetch": "^8.0.1",
     "ember-load-initializers": "^2.0.0",
     "ember-mocha": "^0.16.2",
