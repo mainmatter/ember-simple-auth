@@ -160,9 +160,9 @@ service:
 
 ```js
 import { inject as service } from '@ember/service';
-import SessionService from 'ember-simple-auth/services/session';
+import BaseSessionService from 'ember-simple-auth/services/session';
 
-export default SessionService.extend({
+export default SessionService extends BaseSessionService {
   @service currentUser;
 
   async handleAuthentication() {
@@ -174,5 +174,5 @@ export default SessionService.extend({
       await this.invalidate();
     }
   }
-});
+}
 ```
