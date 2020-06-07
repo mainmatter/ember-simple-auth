@@ -162,7 +162,7 @@ service:
 import { inject as service } from '@ember/service';
 import BaseSessionService from 'ember-simple-auth/services/session';
 
-export default SessionService extends BaseSessionService {
+export default class SessionService extends BaseSessionService {
   @service currentUser;
 
   async handleAuthentication() {
