@@ -40,6 +40,10 @@ export default {
 
   load(config) {
     this.rootURL = getWithDefault(config, 'rootURL', DEFAULTS.rootURL);
-    this.routeAfterAuthentication = getWithDefault(config, 'ember-simple-auth.routeAfterAuthentication', DEFAULTS.routeAfterAuthentication);
-  }
+    this.routeAfterAuthentication = getWithDefault(
+      config,
+      'routeAfterAuthentication',
+      DEFAULTS.routeAfterAuthentication
+    );
+  },
 };
