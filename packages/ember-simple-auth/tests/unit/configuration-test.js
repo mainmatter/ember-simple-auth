@@ -31,7 +31,7 @@ describe('Configuration', () => {
     });
 
     it('sets routeAfterAuthentication correctly', function() {
-      Configuration.load({ 'ember-simple-auth': { routeAfterAuthentication: '/some-route' } });
+      Configuration.load({ routeAfterAuthentication: '/some-route' });
 
       expect(Configuration.routeAfterAuthentication).to.eql('/some-route');
     });
