@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>addon/authenticators/torii.js - ember-simple-auth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/vendor/css/github.css">
+    <link rel="stylesheet" href="../assets/vendor/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <script src="../assets/vendor/js/jquery.min.js"></script>
+    <script src="../assets/vendor/js/bootstrap.min.js"></script>
+    <script src="../assets/vendor/js/highlight.pack.js"></script>
+  </head>
+  <body>
+    <header class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="../index.html">ember-simple-auth</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/3.1.0-beta.0"><span class="label label-primary">3.1.0-beta.0</span></a></p></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div class="container">
+      <div class="row">
+        <div id="sidebar" class="col-sm-3">
+          <div class="row">
+            <div id="classes" class="col-sm-12">
+              <h4>Classes</h4>
+              <ul class="list-unstyled">
+                  <li><a href="../classes/AdaptiveStore.html">AdaptiveStore</a></li>
+                  <li><a href="../classes/ApplicationRouteMixin.html">ApplicationRouteMixin</a></li>
+                  <li><a href="../classes/AuthenticatedRouteMixin.html">AuthenticatedRouteMixin</a></li>
+                  <li><a href="../classes/BaseAuthenticator.html">BaseAuthenticator</a></li>
+                  <li><a href="../classes/BaseStore.html">BaseStore</a></li>
+                  <li><a href="../classes/Configuration.html">Configuration</a></li>
+                  <li><a href="../classes/CookieStore.html">CookieStore</a></li>
+                  <li><a href="../classes/DataAdapterMixin.html">DataAdapterMixin</a></li>
+                  <li><a href="../classes/DeviseAuthenticator.html">DeviseAuthenticator</a></li>
+                  <li><a href="../classes/EphemeralStore.html">EphemeralStore</a></li>
+                  <li><a href="../classes/LocalStorageStore.html">LocalStorageStore</a></li>
+                  <li><a href="../classes/OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li>
+                  <li><a href="../classes/OAuth2ImplicitGrantCallbackRouteMixin.html">OAuth2ImplicitGrantCallbackRouteMixin</a></li>
+                  <li><a href="../classes/OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li>
+                  <li><a href="../classes/SessionService.html">SessionService</a></li>
+                  <li><a href="../classes/SessionStorageStore.html">SessionStorageStore</a></li>
+                  <li><a href="../classes/ToriiAuthenticator.html">ToriiAuthenticator</a></li>
+                  <li><a href="../classes/UnauthenticatedRouteMixin.html">UnauthenticatedRouteMixin</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div id="main" class="col-sm-9">
+          <h1 class="file-heading">File: addon/authenticators/torii.js</h1>
+          
+          <div class="file">
+              <pre class="code prettyprint linenums">
+          import RSVP from &#x27;rsvp&#x27;;
+          import { assert } from &#x27;@ember/debug&#x27;;
+          import { isPresent, isEmpty } from &#x27;@ember/utils&#x27;;
+          import { assign as emberAssign } from &#x27;@ember/polyfills&#x27;;
+          import BaseAuthenticator from &#x27;./base&#x27;;
+          
+          /**
+            Authenticator that wraps the
+            [Torii library](https://github.com/Vestorly/torii) and thus allows to connect
+            any external authentication provider that torii defines a provider for.
+          
+            In order to use this authenticator, __the application needs to have the
+            [torii addon](https://github.com/Vestorly/torii) installed and must inject
+            the torii service into the authenticator__:
+          
+            &#x60;&#x60;&#x60;js
+            // app/authenticators/torii.js
+            import Torii from &#x27;ember-simple-auth/authenticators/torii&#x27;;
+            import { inject as service } from &#x27;@ember/service&#x27;;
+          
+            export default class ToriiAuthenticator extends Torii {
+              @service torii;
+            }
+            &#x60;&#x60;&#x60;
+          
+            @class ToriiAuthenticator
+            @module ember-simple-auth/authenticators/torii
+            @extends BaseAuthenticator
+            @public
+          */
+          export default BaseAuthenticator.extend({
+            _provider: null,
+          
+            /**
+              Restores the session by calling the torii provider&#x27;s &#x60;fetch&#x60; method.
+          
+              __Many torii providers do not implement the &#x60;fetch&#x60; method__. If the
+              provider in use does not implement the method simply add it as follows:
+          
+              &#x60;&#x60;&#x60;js
+              // app/torii-providers/facebook.js
+              import FacebookOauth2Provider from &#x27;torii/providers/facebook-oauth2&#x27;;
+          
+              export default class FacebookToriiProvider extends FacebookOauth2Provider {
+                fetch(data) {
+                  return data;
+                }
+              }
+              &#x60;&#x60;&#x60;
+          
+              @method restore
+              @param {Object} data The data to restore the session from
+              @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+              @public
+            */
+            restore(data) {
+              this._assertToriiIsPresent();
+          
+              data = data || {};
+              if (!isEmpty(data.provider)) {
+                const { provider } = data;
+          
+                return this.get(&#x27;torii&#x27;).fetch(data.provider, data).then(
+                  (fetchedData) =&gt; {
+                    this._authenticateWithProvider(provider, fetchedData);
+                    return emberAssign(data, fetchedData);
+                  },
+                  (err) =&gt; {
+                    delete this._provider;
+                    throw err;
+                  }
+                );
+              } else {
+                delete this._provider;
+                return RSVP.reject();
+              }
+            },
+          
+            /**
+              Authenticates the session by opening the specified torii provider. For more
+              documentation on torii and its providers abstraction, see the
+              [project&#x27;s README](https://github.com/Vestorly/torii#readme), specifically
+              the
+              [section on providers](https://github.com/Vestorly/torii#configuring-a-torii-provider).
+          
+              @method authenticate
+              @param {String} provider The torii provider to authenticate the session with
+              @param {Object} options The options to pass to the torii provider
+              @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
+              @public
+            */
+            authenticate(provider, options) {
+              this._assertToriiIsPresent();
+          
+              return this.get(&#x27;torii&#x27;).open(provider, options || {}).then((data) =&gt; {
+                this._authenticateWithProvider(provider, data);
+                return data;
+              });
+            },
+          
+            /**
+              Closes the torii provider. If the provider is successfully closed, this
+              method returns a resolving promise, otherwise it will return a rejecting
+              promise, thus intercepting session invalidation.
+          
+              @method invalidate
+              @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
+              @public
+            */
+            invalidate(data) {
+              return this.get(&#x27;torii&#x27;).close(this._provider, data).then(() =&gt; {
+                delete this._provider;
+              });
+            },
+          
+            _authenticateWithProvider(provider, data) {
+              data.provider = provider;
+              this._provider = data.provider;
+            },
+          
+            _assertToriiIsPresent() {
+              const torii = this.get(&#x27;torii&#x27;);
+              assert(&#x27;You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with &quot;torii: Ember.inject.service()&quot;.&#x27;, isPresent(torii));
+            }
+          });
+          
+              </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" charset="utf-8">
+      function fixLeadingWhitespace(codeBlock) {
+        var text = $(codeBlock).text();
+        var lines = text.split('\n');
+        var minLeadindSpaces = text.length;
+        $.each(lines.slice(1), function(i, line) {
+          var match = line.match(/^\s+/);
+          if (match) {
+            minLeadindSpaces = Math.min(match[0].length);
+          }
+        });
+        var regexp = new RegExp('^\\s{' + minLeadindSpaces + '}');
+        var fixedLines = lines.slice(0, 1).concat($.map(lines.slice(1), function(line) {
+          return line.replace(regexp, '');
+        }));
+        $(codeBlock).text(fixedLines.join('\n'));
+      }
+
+      $(document).ready(function() {
+        $('pre code').each(function(i, codeBlock) {
+          fixLeadingWhitespace(codeBlock);
+          hljs.highlightBlock(codeBlock);
+        });
+      });
+    </script>
+  </body>
+</html>
