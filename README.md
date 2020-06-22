@@ -1,5 +1,7 @@
 __[Ember Simple Auth API docs](http://ember-simple-auth.com/api/)__
 
+![CI](https://github.com/simplabs/ember-simple-auth/workflows/CI/badge.svg)
+
 __[![Discord](https://img.shields.io/discord/480462759797063690.svg?logo=discord)](https://discord.gg/zT3asNS)__
 
 Ember Simple Auth __supports all Ember.js versions starting with 3.0.__
