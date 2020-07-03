@@ -323,7 +323,7 @@ export default Service.extend(Evented, {
       } else if (argType === 'function') {
         routeOrCallback();
       } else {
-        assert(`The second argument to prohibitAuthentication must be a String or Function, got "${argType}"!`, false);
+        assert(`The first argument to prohibitAuthentication must be a String or Function, got "${argType}"!`, false);
       }
     }
     return !isAuthenticated;
