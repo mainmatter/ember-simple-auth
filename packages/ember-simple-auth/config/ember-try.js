@@ -63,38 +63,6 @@ module.exports = function() {
           },
         },
         {
-          name: 'ember-lts-3.4',
-          bower: {
-            dependencies: {
-              ember: null,
-              'ember-cli-shims': null,
-              'ember-data': null,
-            },
-          },
-          npm: {
-            devDependencies: {
-              'ember-data': '~3.4.0',
-              'ember-source': '~3.4.0',
-            },
-          },
-        },
-        {
-          name: 'ember-lts-3.8',
-          bower: {
-            dependencies: {
-              ember: null,
-              'ember-cli-shims': null,
-              'ember-data': null,
-            },
-          },
-          npm: {
-            devDependencies: {
-              'ember-data': '~3.8.0',
-              'ember-source': '~3.8.0',
-            },
-          },
-        },
-        {
           name: 'ember-lts-3.12',
           bower: {
             dependencies: {
