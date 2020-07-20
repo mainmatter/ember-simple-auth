@@ -242,7 +242,7 @@ export default class AuthenticatedRoute extends Route {
 
   beforeModel(transition) {
     this.get('session').requireAuthentication(transition, 'login');
-  },
+  }
 }
 ```
 
@@ -286,7 +286,7 @@ export default class LoginRoute extends Route {
 
   beforeModel(transition) {
     this.get('session').prohibitAuthentication('index');
-  },
+  }
 }
 ```
 
@@ -569,7 +569,7 @@ Ember Simple Auth works with engines out of the box. The host app and any
 engine(s) share the same `session` service so they can synchronize the
 authentication status:
 
-```
+```js
 // my-engine/addon/routes/index.js
 import Application from '@ember/application';
 import loadInitializers from 'ember-load-initializers';
@@ -603,7 +603,7 @@ engine (e.g. in the host app), it is necessary to use the special
 done by passing a callback instead of a route name to the session service's
 `requireAuthentication` method in that case:
 
-```
+```js
 // my-engine/addon/routes/index.js
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
