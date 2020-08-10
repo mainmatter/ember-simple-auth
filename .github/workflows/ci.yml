@@ -62,6 +62,7 @@ jobs:
           - test:one ember-release
           - test:one ember-beta
           - test:one ember-canary
+        allow-failure: [false]
         include:
           - test-suite: "test:one ember-canary"
             allow-failure: true
