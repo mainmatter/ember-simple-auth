@@ -224,6 +224,16 @@ export default class LoginController extends Controller {
       // What to do with all this success?
     }
   }
+
+  @action
+  updateIdentification(e) {
+    this.identification = e.target.value;
+  }
+
+  @action
+  updatePassword(e) {
+    this.password = e.target.value;
+  }
 }
 ```
 
