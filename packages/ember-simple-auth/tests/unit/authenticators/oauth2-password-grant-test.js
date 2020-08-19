@@ -148,7 +148,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
     it('sends an AJAX request to the token endpoint with customized headers', async function() {
       server.post('/token', (request) => {
-        expect(request.requestHeaders['x-custom-context']).to.eql('foobar');
+        expect(request.requestHeaders['X-Custom-Context']).to.eql('foobar');
 
         return [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!" }'];
       });
@@ -279,7 +279,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           await authenticator.authenticate('username', 'password');
           expect(false).to.be.true;
         } catch (error) {
-          expect(error.headers.get('x-custom-context')).to.eql('foobar');
+          expect(error.headers.get('X-Custom-Context')).to.eql('foobar');
         }
       });
     });
