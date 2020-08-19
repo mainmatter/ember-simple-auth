@@ -40,6 +40,7 @@ export default ObjectProxy.extend(Evented, {
 
   invalidate() {
     this._busy = true;
+    this.set('attemptedTransition', null);
 
     if (!this.get('isAuthenticated')) {
       this._busy = false;
