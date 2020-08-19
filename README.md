@@ -212,7 +212,8 @@ export default class LoginController extends Controller {
   @service session;
 
   @action
-  async authenticate() {
+  async authenticate(e) {
+    e.preventDefault();
     let { identification, password } = this;
     try {
       await this.session.authenticate('authenticator:oauth2', identification, password);
