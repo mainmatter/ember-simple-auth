@@ -1,5 +1,3 @@
-import { getWithDefault } from '@ember/object';
-
 const DEFAULTS = {
   rootURL: '',
   routeAfterAuthentication: 'index',
@@ -39,11 +37,10 @@ export default {
   routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
 
   load(config) {
-    this.rootURL = getWithDefault(config, 'rootURL', DEFAULTS.rootURL);
-    this.routeAfterAuthentication = getWithDefault(
-      config,
-      'routeAfterAuthentication',
-      DEFAULTS.routeAfterAuthentication
-    );
+    this.rootURL = config.rootURL !== undefined ? config.rootURL : DEFAULTS.rootURL;
+    this.routeAfterAuthentication =
+      config.routeAfterAuthentication !== undefined
+        ? config.routeAfterAuthentication
+        : DEFAULTS.routeAfterAuthentication;
   },
 };
