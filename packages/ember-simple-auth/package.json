@@ -79,7 +79,7 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "versionCompatibility": {
-      "ember": ">=1.12"
+      "ember": ">=3.0"
     }
   },
   "resolutions": {
