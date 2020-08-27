@@ -95,7 +95,8 @@ module('AdaptiveStore', function(hooks) {
 
         store.setProperties({
           cookieName:           'test:session',
-          cookieExpirationTime: 60
+          cookieExpirationTime: 60,
+          sameSite:             'Strict',
         });
       });
       await store.persist({ key: 'value' });
@@ -103,10 +104,11 @@ module('AdaptiveStore', function(hooks) {
       assert.ok(cookieService.write.calledWith(
         'test:session-expiration_time',
         60,
-        sinon.match(function({ domain, expires, path, secure }) {
+        sinon.match(function({ domain, expires, path, secure, sameSite }) {
           return domain === null &&
             path === '/' &&
-            secure === false && expires >= new Date(now.getTime() + 60 * 1000);
+            secure === false && expires >= new Date(now.getTime() + 60 * 1000) &&
+            sameSite === 'Strict';
         })
       ));
     });

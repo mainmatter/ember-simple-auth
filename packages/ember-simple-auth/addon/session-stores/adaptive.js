@@ -66,6 +66,23 @@ export default Base.extend({
   cookieDomain: proxyToInternalStore(),
 
   /**
+    Allows servers to assert that a cookie ought not to be sent along with
+    cross-site requests, which provides some protection against cross-site
+    request forgery attacks (CSRF).
+
+    Available options:
+    - "Strict"
+    - "Lax"
+
+    @property sameSite
+    @type String
+    @default null
+    @public
+  */
+  _sameSite: null,
+  sameSite: proxyToInternalStore(),
+
+  /**
     The name of the cookie to use if `localStorage` is not available.
 
     @property cookieName
@@ -100,9 +117,6 @@ export default Base.extend({
   _cookieExpirationTime: null,
   cookieExpirationTime: proxyToInternalStore(),
 
-  _sameSite: null,
-  sameSite: proxyToInternalStore(),
-
   _cookies: service('cookies'),
 
   _isLocalStorageAvailable: computed({
@@ -134,7 +148,7 @@ export default Base.extend({
       store = localStorage;
     } else {
       const cookieStorage = owner.lookup('session-store:cookie');
-      const options = this.getProperties('sameSite', 'cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath');
+      const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath', 'sameSite');
 
       cookieStorage.setProperties(options);
       this.set('cookieExpirationTime', cookieStorage.get('cookieExpirationTime'));
