@@ -373,6 +373,14 @@ describe('InternalSession', () => {
       await session.authenticate('authenticator:test');
     });
 
+    it('unsets the attemptedTransition', function() {
+      session.set('attemptedTransition', { some: 'transition' });
+      session.invalidate();
+
+      expect(session.get('attemptedTransition')).to.be.null;
+    });
+
+
     describe('when invalidate gets called with additional params', function() {
       beforeEach(function() {
         sinon.spy(authenticator, 'invalidate');
