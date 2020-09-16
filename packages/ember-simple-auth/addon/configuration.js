@@ -1,5 +1,3 @@
-import { getWithDefault } from '@ember/object';
-
 const DEFAULTS = {
   rootURL: '',
 };
@@ -26,6 +24,6 @@ export default {
   rootURL: DEFAULTS.rootURL,
 
   load(config) {
-    this.rootURL = getWithDefault(config, 'rootURL', DEFAULTS.rootURL);
+    this.rootURL = config.rootURL !== undefined ? config.rootURL : DEFAULTS.rootURL;
   }
 };
