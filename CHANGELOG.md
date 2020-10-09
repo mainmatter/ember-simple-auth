@@ -1,5 +1,42 @@
 # Changelog
 
+## v3.1.0-beta.1 (2020-10-09)
+
+#### :rocket: Enhancement
+* `ember-simple-auth`
+  * [#2237](https://github.com/simplabs/ember-simple-auth/pull/2237) Remove use of the deprecated getWithDefault API ([@richard-viney](https://github.com/richard-viney))
+  * [#2219](https://github.com/simplabs/ember-simple-auth/pull/2219) Fix assertion message of prohibitAuthentication() ([@ursm](https://github.com/ursm))
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2234](https://github.com/simplabs/ember-simple-auth/pull/2234) Unset attemptedTransition on invalidation ([@marcoow](https://github.com/marcoow))
+  * [#2215](https://github.com/simplabs/ember-simple-auth/pull/2215) fix: Incorrect path to fetch the routeAfterAuthentication property in the config object ([@LuisAverhoff](https://github.com/LuisAverhoff))
+
+#### :memo: Documentation
+* [#2233](https://github.com/simplabs/ember-simple-auth/pull/2233) prevent form submission in README example ([@marcoow](https://github.com/marcoow))
+* [#2232](https://github.com/simplabs/ember-simple-auth/pull/2232) Add missing actions for login controller to readme ([@marcoow](https://github.com/marcoow))
+* [#2226](https://github.com/simplabs/ember-simple-auth/pull/2226) Fix Readme ([@ngouy](https://github.com/ngouy))
+* [#2218](https://github.com/simplabs/ember-simple-auth/pull/2218) Add CI badge ([@marcoow](https://github.com/marcoow))
+* [#2212](https://github.com/simplabs/ember-simple-auth/pull/2212) Fix code example in guide ([@marcoow](https://github.com/marcoow))
+* [#2210](https://github.com/simplabs/ember-simple-auth/pull/2210) Fix code example in the "Managing Current User" guide ([@marcoow](https://github.com/marcoow))
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2235](https://github.com/simplabs/ember-simple-auth/pull/2235) Update versionCompatibility to >=3.0 ([@marcoow](https://github.com/marcoow))
+  * [#2229](https://github.com/simplabs/ember-simple-auth/pull/2229) Fix CI config ([@marcoow](https://github.com/marcoow))
+* `ember-simple-auth`, `test-app`
+  * [#2224](https://github.com/simplabs/ember-simple-auth/pull/2224) Remove duplicated scenarios in ember-try config ([@sdebarros](https://github.com/sdebarros))
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2209](https://github.com/simplabs/ember-simple-auth/pull/2209) Re-enable FastBoot tests ([@marcoow](https://github.com/marcoow))
+
+#### Committers: 6
+- Keita Urashima ([@ursm](https://github.com/ursm))
+- Luis Manuel Averhoff ([@LuisAverhoff](https://github.com/LuisAverhoff))
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- Richard Viney ([@richard-viney](https://github.com/richard-viney))
+- Samanta de Barros ([@sdebarros](https://github.com/sdebarros))
+- ngouy ([@ngouy](https://github.com/ngouy))
+
 ## v3.1.0-beta.0 (2020-06-05)
 
 #### :rocket: Enhancement
