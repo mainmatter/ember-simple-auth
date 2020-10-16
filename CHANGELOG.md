@@ -1,5 +1,46 @@
 # Changelog
 
+## v3.0.1 (2020-10-16)
+
+#### :rocket: Enhancement
+* `ember-simple-auth`
+  * [#2237](https://github.com/simplabs/ember-simple-auth/pull/2237) Remove use of the deprecated getWithDefault API ([@richard-viney](https://github.com/richard-viney))
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2234](https://github.com/simplabs/ember-simple-auth/pull/2234) Unset attemptedTransition on invalidation ([@marcoow](https://github.com/marcoow))
+
+#### :memo: Documentation
+* [#2208](https://github.com/simplabs/ember-simple-auth/pull/2208) Update /guides/auth-torii-with-github.md ([@sutharmonil](https://github.com/sutharmonil))
+* [#2205](https://github.com/simplabs/ember-simple-auth/pull/2205) upgrade-to-v3 devise syntax ([@MichalBryxi](https://github.com/MichalBryxi))
+* [#2201](https://github.com/simplabs/ember-simple-auth/pull/2201) Devise example also needed computed import ([@chrism](https://github.com/chrism))
+* [#2138](https://github.com/simplabs/ember-simple-auth/pull/2138) Fix handling of login errors in the dummy app ([@marcoow](https://github.com/marcoow))
+* [#1764](https://github.com/simplabs/ember-simple-auth/pull/1764) Engine Support ([@marcoow](https://github.com/marcoow))
+* [#2136](https://github.com/simplabs/ember-simple-auth/pull/2136) Modernize docs ([@marcoow](https://github.com/marcoow))
+* [#2143](https://github.com/simplabs/ember-simple-auth/pull/2143) add FastBoot to TOC in README ([@marcoow](https://github.com/marcoow))
+* [#2135](https://github.com/simplabs/ember-simple-auth/pull/2135) Modernize dummy app ([@marcoow](https://github.com/marcoow))
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2235](https://github.com/simplabs/ember-simple-auth/pull/2235) Update versionCompatibility to >=3.0 ([@marcoow](https://github.com/marcoow))
+  * [#2229](https://github.com/simplabs/ember-simple-auth/pull/2229) Fix CI config ([@marcoow](https://github.com/marcoow))
+* `ember-simple-auth`, `test-app`
+  * [#2224](https://github.com/simplabs/ember-simple-auth/pull/2224) Remove duplicated scenarios in ember-try config ([@sdebarros](https://github.com/sdebarros))
+* Other
+  * [#2197](https://github.com/simplabs/ember-simple-auth/pull/2197) Fix Heroku Deployment ([@marcoow](https://github.com/marcoow))
+  * [#2145](https://github.com/simplabs/ember-simple-auth/pull/2145) Remove old Chrome option on CI ([@marcoow](https://github.com/marcoow))
+  * [#2137](https://github.com/simplabs/ember-simple-auth/pull/2137) Generate docs with ember-cli-yuidoc ([@marcoow](https://github.com/marcoow))
+  * [#2106](https://github.com/simplabs/ember-simple-auth/pull/2106) Fix Github Action for releasing new versions ([@marcoow](https://github.com/marcoow))
+
+#### Committers: 7
+- Chris Masters ([@chrism](https://github.com/chrism))
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- Michal Bryxí ([@MichalBryxi](https://github.com/MichalBryxi))
+- Monil Suthar ([@sutharmonil](https://github.com/sutharmonil))
+- Richard Viney ([@richard-viney](https://github.com/richard-viney))
+- Samanta de Barros ([@sdebarros](https://github.com/sdebarros))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v3.0.0 (2020-02-10)
 
 #### :boom: Breaking Change
