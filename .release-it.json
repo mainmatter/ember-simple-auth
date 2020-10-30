@@ -1,0 +1,19 @@
+{
+  "plugins": {
+    "release-it-lerna-changelog": {
+      "infile": "CHANGELOG.md"
+    },
+    "release-it-yarn-workspaces": {
+      "publish": false
+    }
+  },
+  "git": {
+    "commitMessage": "v${version}"
+  },
+  "github": {
+    "release": true,
+    "releaseName": "${version}",
+    "tokenRef": "GITHUB_AUTH"
+  },
+  "npm": false
+}
