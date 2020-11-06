@@ -90,7 +90,7 @@ start it, run
 
 ```
 git clone https://github.com/simplabs/ember-simple-auth.git
-cd ember-simple-auth
+cd ember-simple-auth/packages/test-app
 yarn install && ember serve
 ```
 
