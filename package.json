@@ -4,13 +4,17 @@
   "scripts": {
     "changelog": "lerna-changelog",
     "diagrams": "mmdc -i guides/assets/esa-initial-flow.txt -o guides/assets/esa-initial-flow.svg",
-    "heroku-postbuild": "yarn workspace test-app build -prod"
+    "heroku-postbuild": "yarn workspace test-app build -prod",
+    "release": "release-it"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^8.4.8",
-    "lerna-changelog": "^1.0.1"
+    "lerna-changelog": "^1.0.1",
+    "release-it": "^14.2.0",
+    "release-it-lerna-changelog": "^3.1.0",
+    "release-it-yarn-workspaces": "^2.0.0"
   }
 }
