@@ -287,7 +287,7 @@ export default BaseStore.extend({
 
   _renew() {
     return this.restore().then((data) => {
-      if (!isEmpty(data) && data !== {}) {
+      if (!isEmpty(data) && !(data.constructor === Object && Object.keys(data).length === 0)) {
         data = typeOf(data) === 'string' ? data : JSON.stringify(data || {});
         let expiration = this._calculateExpirationTime();
         this._write(data, expiration);
