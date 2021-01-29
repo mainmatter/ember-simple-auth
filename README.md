@@ -101,7 +101,7 @@ and go to [http://localhost:4200](http://localhost:4200).
 Installing the library is as easy as:
 
 ```bash
-ember install ember-simple-auth@3.1.0-beta.1
+ember install ember-simple-auth
 ```
 
 ### Upgrading from a pre-3.0 release?
