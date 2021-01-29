@@ -16,5 +16,6 @@
     "release-it": "^14.2.0",
     "release-it-lerna-changelog": "^3.1.0",
     "release-it-yarn-workspaces": "^2.0.0"
-  }
+  },
+  "version": "3.1.0"
 }

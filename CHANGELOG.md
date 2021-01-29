@@ -1,5 +1,27 @@
 # Changelog
 
+## 3.1.0 (2021-01-29)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2263](https://github.com/simplabs/ember-simple-auth/pull/2263) Fix empty object check in `_renew()` cookie session store ([@reidab](https://github.com/reidab))
+
+#### :memo: Documentation
+* [#2254](https://github.com/simplabs/ember-simple-auth/pull/2254) Update README.md ([@ErvinSabic](https://github.com/ErvinSabic))
+* [#2252](https://github.com/simplabs/ember-simple-auth/pull/2252) Fix location of test app in example ([@sdebarros](https://github.com/sdebarros))
+
+#### :house: Internal
+* Other
+  * [#2264](https://github.com/simplabs/ember-simple-auth/pull/2264) Copy README to ember-simple-auth package before NPM release ([@sdebarros](https://github.com/sdebarros))
+  * [#2251](https://github.com/simplabs/ember-simple-auth/pull/2251) Add release-it to simplify the release process ([@sdebarros](https://github.com/sdebarros))
+* `ember-simple-auth`, `test-app`
+  * [#2262](https://github.com/simplabs/ember-simple-auth/pull/2262) Fix tests failing in master ([@sdebarros](https://github.com/sdebarros))
+
+#### Committers: 3
+- Ervin Sabic ([@ErvinSabic](https://github.com/ErvinSabic))
+- Reid Beels ([@reidab](https://github.com/reidab))
+- Samanta de Barros ([@sdebarros](https://github.com/sdebarros))
+
 ## v3.1.0-beta.1 (2020-10-09)
 
 #### :rocket: Enhancement

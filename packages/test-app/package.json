@@ -1,6 +1,6 @@
 {
   "name": "test-app",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "private": true,
   "scripts": {
     "build": "ember build",
@@ -43,7 +43,7 @@
     "ember-load-initializers": "^2.0.0",
     "ember-mocha": "^0.16.2",
     "ember-resolver": "^7.0.0",
-    "ember-simple-auth": "* || >= 3.1.0-beta",
+    "ember-simple-auth": "3.1.0",
     "ember-source": "~3.17.0",
     "ember-source-channel-url": "^1.1.0",
     "ember-try": "^1.1.0",
