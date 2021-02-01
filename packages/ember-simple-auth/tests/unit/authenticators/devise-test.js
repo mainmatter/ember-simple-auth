@@ -1,4 +1,3 @@
-import { tryInvoke } from '@ember/utils';
 import {
   describe,
   beforeEach,
@@ -19,7 +18,7 @@ describe('DeviseAuthenticator', () => {
   });
 
   afterEach(function() {
-    tryInvoke(server, 'shutdown');
+    server && server.shutdown();
   });
 
   describe('#restore', function() {
