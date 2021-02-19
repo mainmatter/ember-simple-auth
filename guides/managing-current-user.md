@@ -166,7 +166,7 @@ export default class SessionService extends BaseSessionService {
   @service currentUser;
 
   async handleAuthentication() {
-    this._super(...arguments);
+    super.handleAuthentication(...arguments);
 
     try {
       await this.currentUser.load();
