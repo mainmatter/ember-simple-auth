@@ -309,7 +309,7 @@ methods__ for handling authentication and invalidation of the session (which
 not only happens when the user submits the login form or clicks the logout
 button but also when the session is authenticated or invalidated in another tab
 or window of the application). The `handleAuthentication` method will
-transition to a configurable route while the `handleInvalidation` method will
+transition to a [configurable route](http://ember-simple-auth.com/api/classes/Configuration.html) while the `handleInvalidation` method will
 reload the page to clear all potentially sensitive data from memory. In order
 to customize those behaviours, these methods can be overridden when the
 application defines its own session service that extends the one provided by
@@ -339,6 +339,16 @@ export default class ApplicationAdapter extends JSONAPIAdapter {
     return headers;
   }
 }
+```
+
+### Redirecting to a route after authentication
+
+Add the following to your app's config/envvironment.js file:
+
+```js
+    ENV['ember-simple-auth'] = {                 
+      routeAfterAuthentication: 'dashboard',         
+    };  
 ```
 
 ## The Session Service
