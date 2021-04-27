@@ -1,4 +1,3 @@
-/* global localStorage */
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { getOwner } from '@ember/application';
