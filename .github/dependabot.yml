@@ -1,0 +1,39 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: ember-bootstrap
+    versions:
+    - ">= 1.1.a, < 1.2"
+  - dependency-name: ember-bootstrap
+    versions:
+    - ">= 1.2.a, < 1.3"
+  - dependency-name: ember-bootstrap
+    versions:
+    - ">= 2.a, < 3"
+  - dependency-name: ember-cli-uglify
+    versions:
+    - ">= 3.a, < 4"
+  - dependency-name: ember-data
+    versions:
+    - ">= 3.11.a, < 3.12"
+  - dependency-name: ember-sinon
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: ember-source-channel-url
+    versions:
+    - ">= 2.a, < 3"
+  - dependency-name: eslint
+    versions:
+    - ">= 6.a, < 7"
+  - dependency-name: eslint-plugin-node
+    versions:
+    - ">= 9.a, < 10"
+  - dependency-name: mermaid
+    versions:
+    - ">= 8.a, < 9"
