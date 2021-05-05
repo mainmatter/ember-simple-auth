@@ -49,6 +49,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         workspace:
           - ember-simple-auth
