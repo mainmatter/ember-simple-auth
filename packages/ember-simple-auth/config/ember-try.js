@@ -19,7 +19,6 @@ module.exports = function() {
           bower: {
             dependencies: {
               ember: null,
-              'ember-cli-shims': null,
               'ember-data': null,
             },
           },
@@ -35,7 +34,6 @@ module.exports = function() {
           bower: {
             dependencies: {
               ember: null,
-              'ember-cli-shims': null,
               'ember-data': null,
             },
           },
@@ -51,7 +49,6 @@ module.exports = function() {
           bower: {
             dependencies: {
               ember: null,
-              'ember-cli-shims': null,
               'ember-data': null,
             },
           },
@@ -67,7 +64,6 @@ module.exports = function() {
           bower: {
             dependencies: {
               ember: null,
-              'ember-cli-shims': null,
               'ember-data': null,
             },
           },
@@ -82,7 +78,6 @@ module.exports = function() {
           name: 'ember-release',
           bower: {
             dependencies: {
-              'ember-cli-shims': null,
               'ember-data': null,
             }
           },
@@ -97,7 +92,6 @@ module.exports = function() {
           name: 'ember-beta',
           bower: {
             dependencies: {
-              'ember-cli-shims': null,
               'ember-data': null,
             },
           },
@@ -113,7 +107,6 @@ module.exports = function() {
           name: 'ember-canary',
           bower: {
             dependencies: {
-              'ember-cli-shims': null,
               'ember-data': null,
             },
           },
