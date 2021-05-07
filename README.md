@@ -240,7 +240,7 @@ export default class LoginController extends Controller {
 
 __To make a route in the application accessible only when the session is
 authenticated__, call the session service's
-[`method_requireAuthentication`](http://ember-simple-auth.com/api/classes/SessionService.html#method_requireAuthentication)
+[`requireAuthentication`](http://ember-simple-auth.com/api/classes/SessionService.html#method_requireAuthentication)
 method in the respective route's  `beforeModel` method:
 
 ```js
