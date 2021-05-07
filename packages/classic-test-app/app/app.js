@@ -9,7 +9,7 @@ const App = Application.extend({
   Resolver,
 
   engines: Object.freeze({
-    myEngine: {
+    'my-engine': {
       dependencies: {
         externalRoutes: {
           login: 'login'

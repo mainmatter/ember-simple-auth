@@ -589,7 +589,7 @@ class App extends Application {
   …
 
   engines = {
-    myEngine: {
+    'my-engine': {
       dependencies: {
         services: [
           'session'
