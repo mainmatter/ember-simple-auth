@@ -1,4 +1,3 @@
-import { tryInvoke } from '@ember/utils';
 import {
   currentURL,
   visit,
@@ -26,7 +25,7 @@ describe('Acceptance: Authentication', function() {
   let server;
 
   afterEach(function() {
-    tryInvoke(server, 'shutdown');
+    server && server.shutdown();
   });
 
   it('logging in with correct credentials works', async function() {

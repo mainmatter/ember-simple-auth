@@ -1,5 +1,4 @@
 import { computed } from '@ember/object';
-import { tryInvoke } from '@ember/utils';
 import {
   describe,
   beforeEach,
@@ -33,7 +32,7 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
   });
 
   afterEach(function() {
-    tryInvoke(server, 'shutdown');
+    server && server.shutdown();
   });
 
   describe('#restore', function() {
