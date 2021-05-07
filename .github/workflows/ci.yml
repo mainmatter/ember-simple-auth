@@ -71,7 +71,7 @@ jobs:
             allow-failure: true
           - workspace: classic-test-app
             test-suite: "test:one ember-release"
-            allow-failure: true
+            allow-failure: false
           - workspace: ember-simple-auth
             test-suite: "test:one ember-canary"
             allow-failure: true

@@ -99,7 +99,6 @@ module.exports = function() {
             devDependencies: {
               'ember-data': 'beta',
               'ember-source': betaUrl,
-              'ember-bootstrap': '^4.6.2',
             },
           },
         },
@@ -114,7 +113,6 @@ module.exports = function() {
             devDependencies: {
               'ember-data': 'canary',
               'ember-source': canaryUrl,
-              'ember-bootstrap': '^4.6.2',
             },
           },
         },
