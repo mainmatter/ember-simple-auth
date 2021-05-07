@@ -69,7 +69,7 @@ jobs:
             allow-failure: false
           - workspace: test-app
             test-suite: "test:one ember-release"
-            allow-failure: true
+            allow-failure: false
           - workspace: classic-test-app
             test-suite: "test:one ember-release"
             allow-failure: true
