@@ -1,4 +1,3 @@
-/* global localStorage */
 import RSVP from 'rsvp';
 
 import { bind } from '@ember/runloop';

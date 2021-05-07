@@ -25,8 +25,8 @@ describe('ApplicationRouteMixin', () => {
     sinon = sinonjs.createSandbox();
 
     session = InternalSession.create({ store: EphemeralStore.create() });
+    this.owner.register('session:main', session, { instantiate: false });
     sessionService = this.owner.lookup('service:session');
-    sessionService.set('session', session);
 
     this.owner.register('service:cookies', Service.extend({
       read: sinon.stub(),

@@ -49,6 +49,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         workspace:
           - ember-simple-auth
@@ -59,12 +60,18 @@ jobs:
           - test:one ember-lts-3.4
           - test:one ember-lts-3.8
           - test:one ember-lts-3.12
-          - test:one ember-release
           - test:one ember-beta
           - test:one ember-canary
         allow-failure: [false]
         include:
-          - test-suite: "test:one ember-canary"
+          - workspace: ember-simple-auth
+            test-suite: "test:one ember-release"
+            allow-failure: false
+          - workspace: test-app
+            test-suite: "test:one ember-release"
+            allow-failure: true
+          - workspace: classic-test-app
+            test-suite: "test:one ember-release"
             allow-failure: true
 
     steps:

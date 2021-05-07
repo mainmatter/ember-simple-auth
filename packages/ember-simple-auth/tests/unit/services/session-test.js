@@ -56,7 +56,7 @@ describe('SessionService', () => {
 
     next(() => {
       expect(triggered).to.be.true;
-      expect(deprecations).to.have.length(1); // the call to .one above triggers a deprecation but forwarding the event should *not* trigger a deprecation
+      expect(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:'))).to.have.length(1); // the call to .one above triggers a deprecation but forwarding the event should *not* trigger a deprecation
       done();
     });
   });
@@ -74,7 +74,7 @@ describe('SessionService', () => {
 
     next(() => {
       expect(triggered).to.be.true;
-      expect(deprecations).to.have.length(1); // the call to .one above triggers a deprecation but forwarding the event should *not* trigger a deprecation
+      expect(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:'))).to.have.length(1); // the call to .one above triggers a deprecation but forwarding the event should *not* trigger a deprecation
       done();
     });
   });
@@ -94,8 +94,9 @@ describe('SessionService', () => {
     sessionService.has('invalidationSucceeded');
     sessionService.one('invalidationSucceeded', handler);
 
-    expect(deprecations).to.have.length(5);
-    for (let deprecation of deprecations) {
+    let emberSimpleAuthDeprecations = deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:'));
+    expect(emberSimpleAuthDeprecations).to.have.length(5);
+    for (let deprecation of emberSimpleAuthDeprecations) {
       expect(deprecation).to.eq("Ember Simple Auth: The session service's events API is deprecated; to add custom behavior to the authentication or invalidation handling, override the handleAuthentication or handleInvalidation methods.");
     }
   });
