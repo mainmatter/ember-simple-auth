@@ -328,7 +328,7 @@ import { inject as service } from '@ember/service';
 export default class ApplicationAdapter extends JSONAPIAdapter {
   @service session;
 
-  @computed('session.data.authenticated.access_token')
+  @computed('session.{data.authenticated.access_token,isAuthenticated}')
   get headers() {
     let headers = {};
     if (this.session.isAuthenticated) {
