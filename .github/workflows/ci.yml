@@ -60,6 +60,9 @@ jobs:
           - test:one ember-lts-3.4
           - test:one ember-lts-3.8
           - test:one ember-lts-3.12
+          - test:one ember-lts-3.16
+          - test:one ember-lts-3.20
+          - test:one ember-lts-3.24
           - test:one ember-beta
         allow-failure: [false]
         include:
