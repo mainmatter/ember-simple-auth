@@ -52,8 +52,8 @@ export default function(options) {
         triggered = true;
       });
 
-      store.persist({ key: 'value' }); // this data will be read again when the event is handled so that no change will be detected
-      window.dispatchEvent(new StorageEvent('storage', { key: store.get('key') }));
+      store.persist({ someOtherKey: 'value' }); // this data will be read again when the event is handled so that no change will be detected
+      window.dispatchEvent(new StorageEvent('storage', { someOtherKey: store.get('key') }));
 
       expect(triggered).to.be.false;
     });
