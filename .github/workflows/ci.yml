@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - master
-      - 'v*'
+      - "v*"
   pull_request: {}
   schedule:
-    - cron:  '0 3 * * *' # daily, at 3am
+    - cron: "0 3 * * *" # daily, at 3am
 
 jobs:
   lint:
@@ -23,9 +23,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 10.x
+          cache: npm
 
       - name: get yarn cache dir
         id: yarn-cache
@@ -87,9 +88,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 10.x
+          cache: npm
 
       - name: get yarn cache dir
         id: yarn-cache
@@ -122,9 +124,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 10.x
+          cache: npm
 
       - name: get yarn cache dir
         id: yarn-cache
@@ -150,9 +153,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 10.x
+          cache: npm
 
       - name: get yarn cache dir
         id: yarn-cache
