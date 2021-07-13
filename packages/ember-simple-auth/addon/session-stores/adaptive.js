@@ -139,10 +139,13 @@ export default Base.extend({
       options._isFastBoot = false;
       store.setProperties(options);
     } else {
-      store = getOwner(this).lookup(`session-store:cookie`, { dupa: true });
+      store = this.get('cookie');
       const options = this.getProperties('sameSite', 'cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath');
+
       store._initialize(options);
+      this.set('cookieExpirationTime', store.get('cookieExpirationTime'));
     }
+
     this.set('_store', store);
     this._setupStoreEvents(store);
   },
