@@ -1,3 +1,4 @@
+import { run } from '@ember/runloop';
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
@@ -78,20 +79,24 @@ describe('AdaptiveStore', () => {
       let sinon = sinonjs.createSandbox();
       let store;
       let cookieService;
+      let now;
+
       this.owner.register('service:cookies', FakeCookieService);
       cookieService = this.owner.lookup('service:cookies');
       sinon.spy(cookieService, 'read');
       sinon.spy(cookieService, 'write');
-      store = createAdaptiveStore(cookieService, {
-        _isLocal: false,
-        _isLocalStorageAvailable: false,
-        _cookieName: 'test:session',
-      }, this.owner);
-      let now = new Date();
+      run(() => {
+        now = new Date();
+        store = createAdaptiveStore(cookieService, {
+          _isLocal: false,
+          _isLocalStorageAvailable: false,
+          _cookieName: 'test:session',
+        }, this.owner);
 
-      store.setProperties({
-        cookieName:           'test:session',
-        cookieExpirationTime: 60
+        store.setProperties({
+          cookieName:           'test:session',
+          cookieExpirationTime: 60
+        });
       });
       await store.persist({ key: 'value' });
 

@@ -1,7 +1,6 @@
-import { next } from '@ember/runloop';
+import { next, run } from '@ember/runloop';
 import { describe, beforeEach, afterEach, it } from 'mocha';
 import { expect } from 'chai';
-import { setupTest } from 'ember-mocha';
 import sinonjs from 'sinon';
 
 export default function(options) {
@@ -19,8 +18,12 @@ export default function(options) {
   });
 
   describe('#persist', function() {
+    let store;
+    beforeEach(function() {
+      store = options.store(sinon, this.owner);
+    });
+
     it('persists an object', async function() {
-      let store = options.store(sinon, this.owner);
       await store.persist({ key: 'value' });
       let restoredContent = await store.restore();
 
@@ -28,7 +31,7 @@ export default function(options) {
     });
 
     it('overrides existing data', async function() {
-      let store = options.store(sinon, this.owner);
+      await store.persist({ key: 'value' });
       await store.persist({ key1: 'value1' });
       await store.persist({ key2: 'value2' });
       let restoredContent = await store.restore();
@@ -37,7 +40,6 @@ export default function(options) {
     });
 
     it('does not trigger the "sessionDataUpdated" event', function(done) {
-      let store = options.store(sinon, this.owner);
       let triggered = false;
       store.one('sessionDataUpdated', () => (triggered = true));
       store.persist({ key: 'other value' });
@@ -53,7 +55,10 @@ export default function(options) {
   describe('#restore', function() {
     describe('when the store is empty', function() {
       it('returns an empty object', async function() {
-        let store = options.store(sinon, this.owner);
+        let store;
+        run(() => {
+          store = options.store(sinon, this.owner);
+        });
         await store.clear();
         let restoredContent = await store.restore();
 
@@ -86,7 +91,10 @@ export default function(options) {
 
   describe('#clear', function() {
     it('empties the store', async function() {
-      let store = options.store(sinon, this.owner);
+      let store;
+      run(() => {
+        store = options.store(sinon, this.owner);
+      });
       await store.persist({ key1: 'value1', key2: 'value2' });
       await store.clear();
       let restoredContent = await store.restore();

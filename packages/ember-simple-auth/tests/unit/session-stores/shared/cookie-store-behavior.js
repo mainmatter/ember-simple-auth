@@ -9,7 +9,6 @@ import {
 import { expect } from 'chai';
 import sinonjs from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';
-import { setupTest } from 'ember-mocha';
 
 let warnings;
 registerWarnHandler((message, options, next) => {
@@ -61,8 +60,10 @@ export default function(options) {
 
     it('respects the configured cookieDomain', async function() {
       let cookieService = store.get('_cookies');
-      store.set('cookieName', 'session-cookie-domain');
-      store.set('cookieDomain', 'example.com');
+      run(() => {
+        store.set('cookieName', 'session-cookie-domain');
+        store.set('cookieDomain', 'example.com');
+      });
       await store.persist({ key: 'value' });
 
       expect(cookieService.write).to.have.been.calledWith(
@@ -73,9 +74,11 @@ export default function(options) {
     });
 
     it('respects the configured cookiePath', async function() {
-      store.set('cookieName', 'session-cookie-domain');
-      store.set('cookieDomain', 'example.com');
-      store.set('cookiePath', '/hello-world');
+      run(() => {
+        store.set('cookieName', 'session-cookie-domain');
+        store.set('cookieDomain', 'example.com');
+        store.set('cookiePath', '/hello-world');
+      });
       let cookieService = store.get('_cookies');
       await store.persist({ key: 'value' });
 
@@ -87,9 +90,11 @@ export default function(options) {
     });
 
     it('respects the configured sameSite', async function() {
-      store.set('cookieName', 'session-cookie-domain');
-      store.set('cookieDomain', 'example.com');
-      store.set('sameSite', 'Strict');
+      run(() => {
+        store.set('cookieName', 'session-cookie-domain');
+        store.set('cookieDomain', 'example.com');
+        store.set('sameSite', 'Strict');
+      });
       let cookieService = store.get('_cookies');
       await store.persist({ key: 'value' });
       expect(cookieService.write).to.have.been.calledWith(
@@ -100,9 +105,11 @@ export default function(options) {
     });
 
     it('sends a warning when `cookieExpirationTime` is less than 90 seconds', async function(done) {
-      store.set('cookieName', 'session-cookie-domain');
-      store.set('cookieDomain', 'example.com');
-      store.set('cookieExpirationTime', 60);
+      run(() => {
+        store.set('cookieName', 'session-cookie-domain');
+        store.set('cookieDomain', 'example.com');
+        store.set('cookieExpirationTime', 60);
+      });
       await store.persist({ key: 'value' });
       run(() => {
         expect(warnings).to.have.length(1);
@@ -214,7 +221,9 @@ export default function(options) {
     });
 
     it('deletes the old cookie and writes a new one when name property changes', async function() {
-      store.set('cookieName', 'session-bar');
+      run(() => {
+        store.set('cookieName', 'session-bar');
+      });
       await store.persist({ key: 'value' });
 
       expect(cookieService.clear).to.have.been.calledWith('session-foo');
@@ -246,8 +255,10 @@ export default function(options) {
 
     it('deletes the old cookie and writes a new one when domain property changes', async function() {
       let defaultName = 'session-foo';
-      store.set('cookieDomain', 'example.com');
-      store.set('cookieName', 'session-bar');
+      run(() => {
+        store.set('cookieDomain', 'example.com');
+        store.set('cookieName', 'session-bar');
+      });
       await store.persist({ key: 'value' });
 
       expect(cookieService.clear).to.have.been.calledWith(defaultName);
@@ -269,8 +280,10 @@ export default function(options) {
     it('deletes the old cookie and writes a new one when expiration property changes', async function() {
       let defaultName = 'session-foo';
       let expirationTime = 180;
-      store.set('cookieExpirationTime', expirationTime);
-      store.set('cookieName', 'session-bar');
+      run(() => {
+        store.set('cookieExpirationTime', expirationTime);
+        store.set('cookieName', 'session-bar');
+      });
       await store.persist({ key: 'value' });
 
       expect(cookieService.clear).to.have.been.calledWith(defaultName);
@@ -291,7 +304,9 @@ export default function(options) {
 
     // eslint-disable-next-line require-await
     it('clears cached expiration times when setting expiration to null', async function() {
-      await store.set('cookieExpirationTime', null);
+      run(() => {
+        store.set('cookieExpirationTime', null);
+      });
 
       expect(cookieService.clear).to.have.been.calledWith(`session-foo-expiration_time`);
     });
