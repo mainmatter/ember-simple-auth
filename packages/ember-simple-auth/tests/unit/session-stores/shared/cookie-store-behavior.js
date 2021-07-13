@@ -49,7 +49,7 @@ export default function(options) {
     });
 
     it('respects the configured cookieName', async function() {
-      let cookieService = store._cookies;
+      let cookieService = store.get('_cookies');
       await store.persist({ key: 'value' });
 
       expect(cookieService.write).to.have.been.calledWith(
@@ -60,7 +60,7 @@ export default function(options) {
     });
 
     it('respects the configured cookieDomain', async function() {
-      let cookieService = store._cookies;
+      let cookieService = store.get('_cookies');
       store.set('cookieName', 'session-cookie-domain');
       store.set('cookieDomain', 'example.com');
       await store.persist({ key: 'value' });
@@ -76,7 +76,7 @@ export default function(options) {
       store.set('cookieName', 'session-cookie-domain');
       store.set('cookieDomain', 'example.com');
       store.set('cookiePath', '/hello-world');
-      let cookieService = store._cookies;
+      let cookieService = store.get('_cookies');
       await store.persist({ key: 'value' });
 
       expect(cookieService.write).to.have.been.calledWith(
@@ -90,7 +90,7 @@ export default function(options) {
       store.set('cookieName', 'session-cookie-domain');
       store.set('cookieDomain', 'example.com');
       store.set('sameSite', 'Strict');
-      let cookieService = store._cookies;
+      let cookieService = store.get('_cookies');
       await store.persist({ key: 'value' });
       expect(cookieService.write).to.have.been.calledWith(
         'session-cookie-domain',
@@ -123,7 +123,7 @@ export default function(options) {
         cookieName: 'test-session',
         cookieExpirationTime: 60,
       });
-      cookieService = store._cookies;
+      cookieService = store.get('_cookies');
       await store.persist({ key: 'value' });
       await renew(store);
     });
