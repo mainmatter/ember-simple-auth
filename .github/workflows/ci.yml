@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - master
-      - "v*"
+      - 'v*'
   pull_request: {}
   schedule:
-    - cron: "0 3 * * *" # daily, at 3am
+    - cron:  '0 3 * * *' # daily, at 3am
 
 jobs:
   lint:
