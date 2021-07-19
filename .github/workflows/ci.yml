@@ -26,6 +26,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 12.x
+          cache: yarn
 
       - name: get yarn cache dir
         id: yarn-cache
@@ -98,6 +99,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 12.x
+          cache: yarn
 
       - name: get yarn cache dir
         id: yarn-cache
@@ -133,6 +135,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 12.x
+          cache: yarn
 
       - name: get yarn cache dir
         id: yarn-cache
@@ -161,6 +164,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 12.x
+          cache: yarn
 
       - name: get yarn cache dir
         id: yarn-cache
