@@ -10,6 +10,7 @@ import { setupTest } from 'ember-mocha';
 
 describe('AdaptiveStore', () => {
   setupTest();
+
   describe('when localStorage is available', function() {
     itBehavesLikeAStore({
       store(sinon, owner) {
@@ -20,7 +21,6 @@ describe('AdaptiveStore', () => {
         sinon.spy(cookieService, 'read');
         sinon.spy(cookieService, 'write');
         store = createAdaptiveStore(cookieService, {
-          _isLocal: false,
           _isLocalStorageAvailable: true,
         }, owner);
         return store;
@@ -38,7 +38,6 @@ describe('AdaptiveStore', () => {
         sinon.spy(cookieService, 'read');
         sinon.spy(cookieService, 'write');
         store = createAdaptiveStore(cookieService, {
-          _isLocal: false,
           _isLocalStorageAvailable: false,
           _cookieName: 'test:session',
         }, owner);
@@ -56,7 +55,6 @@ describe('AdaptiveStore', () => {
           sinon.spy(cookieService, 'read');
           sinon.spy(cookieService, 'write');
           let store = createAdaptiveStore(cookieService, Object.assign({
-            _isLocal: false,
             _isLocalStorageAvailable: false,
             _cookieName: 'test:session',
           }, storeOptions), owner);
@@ -88,7 +86,6 @@ describe('AdaptiveStore', () => {
       run(() => {
         now = new Date();
         store = createAdaptiveStore(cookieService, {
-          _isLocal: false,
           _isLocalStorageAvailable: false,
           _cookieName: 'test:session',
         }, this.owner);

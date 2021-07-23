@@ -5,12 +5,6 @@ import Base from 'ember-simple-auth/session-stores/base';
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 
-const injectStore = (store) => {
-  return computed(function() {
-    return getOwner(this).lookup(`session-store:${store}`);
-  });
-};
-
 const proxyToInternalStore = function() {
   return computed({
     get(key) {
@@ -56,8 +50,6 @@ export default Base.extend({
     @public
   */
   localStorageKey: 'ember_simple_auth-session',
-
-  localStorage: injectStore('local-storage'),
 
   /**
     The domain to use for the cookie if `localStorage` is not available, e.g.,
@@ -112,7 +104,6 @@ export default Base.extend({
   sameSite: proxyToInternalStore(),
 
   _cookies: service('cookies'),
-  cookie: injectStore('cookie'),
 
   _isLocalStorageAvailable: computed({
     get() {
@@ -134,16 +125,21 @@ export default Base.extend({
 
     let store;
     if (this.get('_isLocalStorageAvailable')) {
-      store = this.get('localStorage');
+      const localStorage = owner.lookup('session-store:local-storage');
       const options = { key: this.get('localStorageKey') };
+
       options._isFastBoot = false;
-      store.setProperties(options);
+      localStorage.setProperties(options);
+
+      store = localStorage;
     } else {
-      store = this.get('cookie');
+      const cookieStorage = owner.lookup('session-store:cookie');
       const options = this.getProperties('sameSite', 'cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath');
 
-      store._initialize(options);
-      this.set('cookieExpirationTime', store.get('cookieExpirationTime'));
+      cookieStorage._initialize(options);
+      this.set('cookieExpirationTime', cookieStorage.get('cookieExpirationTime'));
+
+      store = cookieStorage;
     }
 
     this.set('_store', store);
