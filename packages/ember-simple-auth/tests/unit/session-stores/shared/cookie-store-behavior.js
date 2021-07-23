@@ -302,13 +302,15 @@ export default function(options) {
       );
     });
 
-    // eslint-disable-next-line require-await
-    it('clears cached expiration times when setting expiration to null', async function() {
+    it('clears cached expiration times when setting expiration to null', function(done) {
       run(() => {
         store.set('cookieExpirationTime', null);
       });
 
-      expect(cookieService.clear).to.have.been.calledWith(`session-foo-expiration_time`);
+      next(() => {
+        expect(cookieService.clear).to.have.been.calledWith(`session-foo-expiration_time`);
+        done();
+      });
     });
 
     it('only rewrites the cookie once per run loop when multiple properties are changed', function(done) {
@@ -330,16 +332,15 @@ export default function(options) {
     let cookieName = 'ember_simple_auth-session-expiration_time';
     let expirationTime = 60 * 60 * 24;
 
-    beforeEach(function() {
+    beforeEach(async function() {
       store = options.store(sinon, this.owner, {
         cookieExpirationTime: expirationTime,
       });
       cookieService = store.get('_cookies');
-      cookieService.write(cookieName, expirationTime);
+      await cookieService.write(cookieName, expirationTime);
     });
 
-    // eslint-disable-next-line require-await
-    it('restores expiration time from cookie', async function() {
+    it('restores expiration time from cookie', function() {
       expect(store.get('cookieExpirationTime')).to.equal(expirationTime);
     });
   });
