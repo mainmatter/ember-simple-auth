@@ -8,8 +8,6 @@ import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
-import InternalSession from 'ember-simple-auth/internal-session';
-import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import * as LocationUtil from 'ember-simple-auth/utils/location';
 
 describe('ApplicationRouteMixin', () => {
@@ -24,8 +22,7 @@ describe('ApplicationRouteMixin', () => {
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
 
-    session = InternalSession.create({ store: EphemeralStore.create() });
-    this.owner.register('session:main', session, { instantiate: false });
+    session = this.owner.lookup('session:main');
     sessionService = this.owner.lookup('service:session');
 
     this.owner.register('service:cookies', Service.extend({
