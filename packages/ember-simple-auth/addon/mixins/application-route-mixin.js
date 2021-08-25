@@ -5,7 +5,7 @@ import { A } from '@ember/array';
 import { getOwner } from '@ember/application';
 import { inject } from '@ember/service';
 import Ember from 'ember';
-import { deprecate } from '@ember/application/deprecations';
+import { deprecate } from '@ember/debug';
 import Configuration from './../configuration';
 
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
