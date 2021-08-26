@@ -1,12 +1,9 @@
 import RSVP from 'rsvp';
 import { next } from '@ember/runloop';
-import { setOwner } from '@ember/application';
 import { describe, beforeEach, it } from 'mocha';
 import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
-import InternalSession from 'ember-simple-auth/internal-session';
-import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
 import Authenticator from 'ember-simple-auth/authenticators/base';
 
 describe('InternalSession', () => {
@@ -20,12 +17,10 @@ describe('InternalSession', () => {
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
 
-    store = EphemeralStore.create();
-    authenticator = Authenticator.create();
-    this.owner.register('authenticator:test', authenticator, { instantiate: false });
-
-    session = InternalSession.create({ store });
-    setOwner(session, this.owner);
+    this.owner.register('authenticator:test', Authenticator);
+    authenticator = this.owner.lookup('authenticator:test');
+    session = this.owner.lookup('session:main');
+    store = session.get('store');
   });
 
   afterEach(function() {
@@ -807,12 +802,5 @@ describe('InternalSession', () => {
         });
       });
     });
-  });
-
-  it('does not share the content object between multiple instances', function() {
-    let session2 = InternalSession.create({ store });
-    setOwner(session2, this.owner);
-
-    expect(session2.get('content')).to.not.equal(session.get('content'));
   });
 });

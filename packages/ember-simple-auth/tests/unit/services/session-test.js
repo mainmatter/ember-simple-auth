@@ -1,8 +1,5 @@
 import Ember from 'ember';
-import ObjectProxy from '@ember/object/proxy';
 import Service from '@ember/service';
-import { setOwner } from '@ember/application';
-import Evented from '@ember/object/evented';
 import { next } from '@ember/runloop';
 import EmberObject, { set } from '@ember/object';
 import { registerDeprecationHandler } from '@ember/debug';
@@ -10,7 +7,6 @@ import { describe, beforeEach, it } from 'mocha';
 import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
-import Session from 'ember-simple-auth/services/session';
 import * as LocationUtil from 'ember-simple-auth/utils/location';
 
 describe('SessionService', () => {
@@ -22,20 +18,12 @@ describe('SessionService', () => {
 
   beforeEach(function() {
     sinon = sinonjs.createSandbox();
-    session = ObjectProxy.extend(Evented, {
-      init() {
-        this._super(...arguments);
-        this.content = {};
-      }
-    }).create();
-
     this.owner.register('authorizer:custom', EmberObject.extend({
       authorize() {}
     }));
 
-    sessionService = Session.create({ session });
-    setOwner(sessionService, this.owner);
-    this.owner.register('service:session', sessionService, { instantiate: false });
+    sessionService = this.owner.lookup('service:session');
+    session = sessionService.get('session');
   });
 
   afterEach(function() {
@@ -147,19 +135,19 @@ describe('SessionService', () => {
     it("is read from the session's content", function() {
       session.set('some', 'data');
 
-      expect(sessionService.get('data')).to.eql({ some: 'data' });
+      expect(sessionService.get('data')).to.eql({ some: 'data', authenticated: {} });
     });
 
     it("is written back to the session's content", function() {
       sessionService.set('data.some', { other: 'data' });
 
-      expect(session.content).to.eql({ some: { other: 'data' } });
+      expect(session.content).to.eql({ some: { other: 'data' }, authenticated: {} });
     });
 
     it('can be set with Ember.set', function() {
       set(sessionService, 'data.emberSet', 'ember-set-data');
 
-      expect(session.content).to.eql({ emberSet: 'ember-set-data' });
+      expect(session.content).to.eql({ emberSet: 'ember-set-data', authenticated: {} });
     });
 
     it('is read-only', function() {
@@ -325,7 +313,7 @@ describe('SessionService', () => {
         it("does not set the session's 'attemptedTransition' property", function() {
           sessionService.requireAuthentication(null, 'login');
 
-          expect(sessionService.get('attemptedTransition')).to.be.undefined;
+          expect(sessionService.get('attemptedTransition')).to.be.null;
         });
 
         it('does not set the redirectTarget cookie in fastboot', function() {
