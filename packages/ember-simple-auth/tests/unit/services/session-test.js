@@ -527,4 +527,20 @@ describe('SessionService', () => {
       });
     });
   });
+
+  describe('setup', function() {
+    it('setups handlers', async function() {
+      const setupHandlersStub = sinon.stub(sessionService, '_setupHandlers');
+
+      await sessionService.setup();
+      expect(setupHandlersStub).to.have.been.calledOnce;
+    });
+
+    it("Doesn't raise an error when restore rejects", async function() {
+      sinon.stub(sessionService, '_setupHandlers');
+      sinon.stub(session, 'restore').throws();
+
+      await sessionService.setup();
+    });
+  });
 });
