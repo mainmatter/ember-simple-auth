@@ -6,6 +6,7 @@ import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
 import setupSessionRestoration from 'ember-simple-auth/initializers/setup-session-restoration';
+import Configuration from 'ember-simple-auth/configuration';
 
 describe('setupSessionRestoration', () => {
   setupTest();
@@ -27,6 +28,33 @@ describe('setupSessionRestoration', () => {
 
     const route = this.owner.lookup('route:application');
     expect(route).to.respondTo('beforeModel');
+  });
+
+  describe('useSessionSetupMethod', function() {
+    beforeEach(function() {
+      Configuration.useSessionSetupMethod = false;
+    });
+
+    afterEach(function() {
+      Configuration.useSessionSetupMethod = false;
+    });
+
+    it("doesn't extend application route when is true", function() {
+      Configuration.useSessionSetupMethod = true;
+      const route = this.owner.resolveRegistration('route:application');
+      const reopenStub = sinon.stub(route, 'reopen');
+
+      setupSessionRestoration(this.owner);
+      expect(reopenStub).to.not.have.been.called;
+    });
+
+    it('extends application route when is false', function() {
+      const route = this.owner.resolveRegistration('route:application');
+      const reopenStub = sinon.stub(route, 'reopen');
+
+      setupSessionRestoration(this.owner);
+      expect(reopenStub).to.have.been.called;
+    });
   });
 
   describe('the beforeModel method', function() {
