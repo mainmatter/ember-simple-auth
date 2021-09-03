@@ -1,3 +1,5 @@
+import useSessionSetupMethod from 'ember-simple-auth/use-session-setup-method';
+
 const DEFAULTS = {
   rootURL: '',
   routeAfterAuthentication: 'index',
@@ -44,9 +46,9 @@ export default {
 
     @property useSessionSetupMethod
     @default false
-    @public
+    @private
   */
-  useSessionSetupMethod: false,
+  useSessionSetupMethod,
 
   load(config) {
     this.rootURL = config.rootURL !== undefined ? config.rootURL : DEFAULTS.rootURL;
@@ -54,6 +56,5 @@ export default {
       config.routeAfterAuthentication !== undefined
         ? config.routeAfterAuthentication
         : DEFAULTS.routeAfterAuthentication;
-    this.useSessionSetupMethod = Boolean(config.useSessionSetupMethod);
   },
 };
