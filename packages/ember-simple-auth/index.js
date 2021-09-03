@@ -5,6 +5,8 @@
 
 var path = require('path');
 var Funnel = require('broccoli-funnel');
+var writeFile = require('broccoli-file-creator');
+var MergeTrees = require('broccoli-merge-trees');
 
 module.exports = {
   name: 'ember-simple-auth',
@@ -12,6 +14,10 @@ module.exports = {
   included() {
     this._super.included.apply(this, arguments);
     this._ensureThisImport();
+
+    const app = this._findHost();
+    const config = app.options['ember-simple-auth'] || {};
+    this.addonConfig = config;
 
     this.import('vendor/base64.js');
   },
@@ -22,7 +28,26 @@ module.exports = {
     });
   },
 
-  _ensureThisImport() {
+  treeForAddon(tree) {
+    let useSessionSetupMethodConfig = writeFile(
+      'use-session-setup-method.js',
+      `export default ${Boolean(this.addonConfig.useSessionSetupMethod)};`
+    );
+
+    return this._super.treeForAddon.call(this, MergeTrees([tree, useSessionSetupMethodConfig]));
+  },
+
+  treeForApp(tree) {
+    if (this.addonConfig.useSessionSetupMethod) {
+      return new Funnel(tree, {
+        exclude: ['routes/application.js']
+      });
+    }
+
+    return this._super.treeForApp.apply(this, arguments);
+  },
+
+  _ensureThisImport: function() {
     if (!this.import) {
       this._findHost = function findHostShim() {
         var current = this;
@@ -39,3 +64,4 @@ module.exports = {
     }
   }
 };
+
