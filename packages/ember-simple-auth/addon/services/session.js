@@ -367,5 +367,24 @@ export default Service.extend(Evented, {
   */
   handleInvalidation(routeAfterInvalidation) {
     handleSessionInvalidated(getOwner(this), routeAfterInvalidation);
-  }
+  },
+
+  /**
+    Sets up the session service.
+
+    This method must be called when the application starts up,
+    usually as the first thing in the `application` route's `beforeModel`
+    method.
+
+    @method setup
+    @public
+  */
+  async setup() {
+    try {
+      this._setupHandlers();
+      await this.session.restore();
+    } catch (error) {
+      // If it raises an error then it means that restore didn't find any restorable state.
+    }
+  },
 });
