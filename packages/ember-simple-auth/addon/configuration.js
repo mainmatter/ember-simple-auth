@@ -36,11 +36,24 @@ export default {
   */
   routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
 
+  /**
+    Flag used to determine whether users have decided to setup session service themselves.
+    This lets us to return early from initializer which would setup the service automatically.
+
+    This will be the default behavior in the future.
+
+    @property useSessionSetupMethod
+    @default false
+    @public
+  */
+  useSessionSetupMethod: false,
+
   load(config) {
     this.rootURL = config.rootURL !== undefined ? config.rootURL : DEFAULTS.rootURL;
     this.routeAfterAuthentication =
       config.routeAfterAuthentication !== undefined
         ? config.routeAfterAuthentication
         : DEFAULTS.routeAfterAuthentication;
+    this.useSessionSetupMethod = Boolean(config.useSessionSetupMethod);
   },
 };

@@ -1,6 +1,12 @@
 import { getOwner } from '@ember/application';
+import Configuration from '../configuration';
 
 export default function setupSessionRestoration(registry) {
+  if (Configuration.useSessionSetupMethod) {
+    // return early in case users chose to opt out of initializer behavior.
+    return;
+  }
+
   const ApplicationRoute = registry.resolveRegistration
     ? registry.resolveRegistration('route:application')
     : registry.resolve('route:application');
