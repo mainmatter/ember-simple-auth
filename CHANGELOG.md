@@ -1,5 +1,36 @@
 # Changelog
 
+## 4.0.0 (2021-09-08)
+
+#### :boom: Breaking Change
+* `ember-simple-auth`
+  * [#2313](https://github.com/simplabs/ember-simple-auth/pull/2313) Drop node 10 in favor of 12 ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :memo: Documentation
+* [#2291](https://github.com/simplabs/ember-simple-auth/pull/2291) add missing dependent key in README ([@marcoow](https://github.com/marcoow))
+* [#2274](https://github.com/simplabs/ember-simple-auth/pull/2274) Update super call in "managing-current-user" guide ([@bertdeblock](https://github.com/bertdeblock))
+* [#2265](https://github.com/simplabs/ember-simple-auth/pull/2265) Prepare README for 3.1.0 release ([@sdebarros](https://github.com/sdebarros))
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2315](https://github.com/simplabs/ember-simple-auth/pull/2315) [2302]  put internal-session into DI system ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2312](https://github.com/simplabs/ember-simple-auth/pull/2312) [2308] Refactor Adaptive store to use DI ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2296](https://github.com/simplabs/ember-simple-auth/pull/2296) fix computed import deprecation ([@knownasilya](https://github.com/knownasilya))
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2300](https://github.com/simplabs/ember-simple-auth/pull/2300) Remove extra resolver files ([@marcoow](https://github.com/marcoow))
+  * [#2301](https://github.com/simplabs/ember-simple-auth/pull/2301) Drop `ember-cli-shims` dependency ([@marcoow](https://github.com/marcoow))
+  * [#2294](https://github.com/simplabs/ember-simple-auth/pull/2294) Fix tests ([@marcoow](https://github.com/marcoow))
+
+#### Committers: 8
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Bert De Block ([@bertdeblock](https://github.com/bertdeblock))
+- Ilya Radchenko ([@knownasilya](https://github.com/knownasilya))
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- Samanta de Barros ([@sdebarros](https://github.com/sdebarros))
+- Tony Miller ([@mcfiredrill](https://github.com/mcfiredrill))
+- [@bekzod](https://github.com/bekzod)
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## 3.1.0 (2021-01-29)
 
 #### :bug: Bug Fix
