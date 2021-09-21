@@ -156,7 +156,7 @@ export default BaseStore.extend({
 
   _secureCookies() {
     if (this.get('_fastboot.isFastBoot')) {
-      return this.get('_fastboot.request.protocol') === 'https';
+      return this.get('_fastboot.request.protocol') === 'https:';
     }
 
     return window.location.protocol === 'https:';
