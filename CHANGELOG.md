@@ -1,5 +1,19 @@
 # Changelog
 
+## 4.0.1 (2021-09-24)
+
+#### :memo: Documentation
+* `ember-simple-auth`
+  * [#2323](https://github.com/simplabs/ember-simple-auth/pull/2323) Add repository to package ([@rwwagner90](https://github.com/rwwagner90))
+
+#### :house: Internal
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2321](https://github.com/simplabs/ember-simple-auth/pull/2321) Remove ESA version from ember inspector ([@brunoocasali](https://github.com/brunoocasali))
+
+#### Committers: 2
+- Bruno Casali ([@brunoocasali](https://github.com/brunoocasali))
+- Robert Wagner ([@rwwagner90](https://github.com/rwwagner90))
+
 ## 4.0.0 (2021-09-08)
 
 #### :boom: Breaking Change
