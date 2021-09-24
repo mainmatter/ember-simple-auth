@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
-import { deprecate } from '@ember/application/deprecations';
+import { deprecate } from '@ember/debug';
 
 import { prohibitAuthentication } from '../-internals/routing';
 
