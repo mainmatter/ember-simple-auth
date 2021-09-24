@@ -1,6 +1,6 @@
 import RSVP from 'rsvp';
 import { isEmpty } from '@ember/utils';
-import { run } from '@ember/runloop';
+import { run, later, cancel } from '@ember/runloop';
 import { A, makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
 import { getOwner } from '@ember/application';
@@ -256,7 +256,7 @@ export default BaseAuthenticator.extend({
   invalidate(data) {
     const serverTokenRevocationEndpoint = this.get('serverTokenRevocationEndpoint');
     function success(resolve) {
-      run.cancel(this._refreshTokenTimeout);
+      cancel(this._refreshTokenTimeout);
       delete this._refreshTokenTimeout;
       resolve();
     }
@@ -338,10 +338,10 @@ export default BaseAuthenticator.extend({
       }
       const offset = this.get('tokenRefreshOffset');
       if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now - offset) {
-        run.cancel(this._refreshTokenTimeout);
+        cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
         if (!Ember.testing) {
-          this._refreshTokenTimeout = run.later(this, this._refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
+          this._refreshTokenTimeout = later(this, this._refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
         }
       }
     }
