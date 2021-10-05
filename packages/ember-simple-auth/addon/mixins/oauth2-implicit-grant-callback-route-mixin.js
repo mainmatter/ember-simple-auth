@@ -3,7 +3,7 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { getOwner } from '@ember/application';
-import { deprecate } from '@ember/application/deprecations';
+import { deprecate } from '@ember/debug';
 import location from '../utils/location';
 import isFastBoot from '../utils/is-fastboot';
 import { parseResponse } from '../authenticators/oauth2-implicit-grant';

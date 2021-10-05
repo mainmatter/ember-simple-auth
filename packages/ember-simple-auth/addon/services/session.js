@@ -3,8 +3,7 @@ import { A } from '@ember/array';
 import Service from '@ember/service';
 import Evented from '@ember/object/evented';
 import { getOwner } from '@ember/application';
-import { assert } from '@ember/debug';
-import { deprecate } from '@ember/application/deprecations';
+import { assert, deprecate } from '@ember/debug';
 import Configuration from '../configuration';
 
 import {
