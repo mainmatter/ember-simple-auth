@@ -1,44 +1,37 @@
-import { describe, beforeEach, it } from 'mocha';
-import { expect } from 'chai';
 import Base from 'ember-simple-auth/authenticators/base';
+import { module, test } from 'qunit';
 
-describe('BaseAuthenticator', () => {
+module('Unit | authenticators | base', function (hooks) {
   let authenticator;
 
-  beforeEach(function() {
+  hooks.beforeEach(function () {
     authenticator = Base.create();
   });
 
-  describe('#restore', function() {
-    it('returns a rejecting promise', async function() {
-      try {
-        await authenticator.restore();
-        expect(false).to.be.true;
-      } catch (_error) {
-        expect(true).to.be.true;
-      }
-    });
+  test('returns a rejecting promise', async function (assert) {
+    try {
+      await authenticator.restore();
+      assert.ok(false);
+    } catch (_error) {
+      assert.ok(true);
+    }
   });
 
-  describe('#authenticate', function() {
-    it('returns a rejecting promise', async function() {
-      try {
-        await authenticator.authenticate();
-        expect(false).to.be.true;
-      } catch (_error) {
-        expect(true).to.be.true;
-      }
-    });
+  test('returns a rejecting promise', async function (assert) {
+    try {
+      await authenticator.authenticate();
+      assert.ok(false);
+    } catch (_error) {
+      assert.ok(true);
+    }
   });
 
-  describe('#invalidate', function() {
-    it('returns a resolving promise', async function() {
-      try {
-        await authenticator.invalidate();
-        expect(true).to.be.true;
-      } catch (_error) {
-        expect(false).to.be.true;
-      }
-    });
+  test('returns a resolving promise', async function (assert) {
+    try {
+      await authenticator.invalidate();
+      assert.ok(true);
+    } catch (_error) {
+      assert.ok(false);
+    }
   });
 });
