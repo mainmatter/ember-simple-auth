@@ -1,66 +1,65 @@
 import RSVP from 'rsvp';
-import { describe, beforeEach, it } from 'mocha';
-import { expect } from 'chai';
+import { module, test } from 'qunit';
 import sinonjs from 'sinon';
 import Torii from 'ember-simple-auth/authenticators/torii';
 
-describe('ToriiAuthenticator', () => {
+module('ToriiAuthenticator', function(hooks) {
   let sinon;
   let authenticator;
   let torii;
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
     torii = {
-      fetch() {},
-      open() {},
-      close() {}
+      fetch() { },
+      open() { },
+      close() { }
     };
     authenticator = Torii.create({ torii });
   });
 
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
 
-  describe('#restore', function() {
+  module('#restore', function(hooks) {
     function itDoesNotRestore(data) {
-      it('returns a rejecting promise', async function() {
+      test('returns a rejecting promise', async function(assert) {
         try {
           await authenticator.restore(data);
-          expect(false).to.be.true;
+          assert.ok(false);
         } catch (_error) {
-          expect(true).to.be.true;
+          assert.ok(true);
         }
       });
     }
 
-    it('throws if torii is not installed', async function() {
+    test('throws if torii is not installed', async function(assert) {
       authenticator.set('torii', null);
 
       try {
         await authenticator.restore();
-        expect(false).to.be.true;
+        assert.ok(false);
       } catch (_error) {
-        expect(true).to.be.true;
+        assert.ok(true);
       }
     });
 
-    describe('when there is a torii provider in the session data', function() {
-      describe('when torii fetches successfully', function() {
-        beforeEach(function() {
+    module('when there is a torii provider in the session data', function(hooks) {
+      module('when torii fetches successfully', function(hooks) {
+        hooks.beforeEach(function() {
           sinon.stub(torii, 'fetch').returns(RSVP.resolve({ some: 'other data' }));
         });
 
-        it('returns a promise that resolves with the session data merged with the data fetched from torri', async function() {
+        test('returns a promise that resolves with the session data merged with the data fetched from torri', async function(assert) {
           let data = await authenticator.restore({ some: 'data', provider: 'provider', another: 'prop' });
 
-          expect(data).to.eql({ some: 'other data', provider: 'provider', another: 'prop' });
+          assert.deepEqual(data, { some: 'other data', provider: 'provider', another: 'prop' });
         });
       });
 
-      describe('when torii does not fetch successfully', function() {
-        beforeEach(function() {
+      module('when torii does not fetch successfully', function(hooks) {
+        hooks.beforeEach(function() {
           sinon.stub(torii, 'fetch').returns(RSVP.reject());
         });
 
@@ -68,78 +67,78 @@ describe('ToriiAuthenticator', () => {
       });
     });
 
-    describe('when there is no torii provider in the session data', function() {
+    module('when there is no torii provider in the session data', function(hooks) {
       itDoesNotRestore();
     });
   });
 
-  describe('#authenticate', function() {
-    it('throws if torii is not installed', async function() {
+  module('#authenticate', function(hooks) {
+    test('throws if torii is not installed', async function(assert) {
       authenticator.set('torii', null);
 
       try {
         await authenticator.authenticate();
-        expect(false).to.be.true;
+        assert.ok(false);
       } catch (_error) {
-        expect(true).to.be.true;
+        assert.ok(true);
       }
     });
 
-    describe('when torii opens successfully', function() {
-      beforeEach(function() {
+    module('when torii opens successfully', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(torii, 'open').returns(RSVP.resolve({ some: 'data' }));
       });
 
-      it('returns a promise that resolves with the session data', async function() {
+      test('returns a promise that resolves with the session data', async function(assert) {
         let data = await authenticator.authenticate('provider');
 
-        expect(data).to.eql({ some: 'data', provider: 'provider' });
+        assert.deepEqual(data, { some: 'data', provider: 'provider' });
       });
     });
 
-    describe('when torii does not open successfully', function() {
-      beforeEach(function() {
+    module('when torii does not open successfully', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(torii, 'open').returns(RSVP.reject());
       });
 
-      it('returns a rejecting promise', async function() {
+      test('returns a rejecting promise', async function(assert) {
         try {
           await authenticator.authenticate('provider');
-          expect(false).to.be.true;
+          assert.ok(false);
         } catch (_error) {
-          expect(true).to.be.true;
+          assert.ok(true);
         }
       });
     });
   });
 
-  describe('#invalidate', function() {
-    describe('when torii closes successfully', function() {
-      beforeEach(function() {
+  module('#invalidate', function(hooks) {
+    module('when torii closes successfully', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(torii, 'close').returns(RSVP.resolve());
       });
 
-      it('returns a resolving promise', async function() {
+      test('returns a resolving promise', async function(assert) {
         try {
           await authenticator.invalidate({ some: 'data' });
-          expect(true).to.be.true;
+          assert.ok(true);
         } catch (_error) {
-          expect(false).to.be.true;
+          assert.ok(false);
         }
       });
     });
 
-    describe('when torii does not close successfully', function() {
-      beforeEach(function() {
+    module('when torii does not close successfully', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(torii, 'close').returns(RSVP.reject());
       });
 
-      it('returns a rejecting promise', async function() {
+      test('returns a rejecting promise', async function(assert) {
         try {
           await authenticator.invalidate({ some: 'data' });
-          expect(false).to.be.true;
+          assert.ok(false);
         } catch (_error) {
-          expect(true).to.be.true;
+          assert.ok(true);
         }
       });
     });
