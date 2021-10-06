@@ -1,5 +1,19 @@
 # Changelog
 
+## 4.0.2 (2021-10-06)
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2326](https://github.com/simplabs/ember-simple-auth/pull/2326) Bump ember-test-selectors to latest ([@snewcomer](https://github.com/snewcomer))
+  * [#2317](https://github.com/simplabs/ember-simple-auth/pull/2317) Update "deprecate" to import from @ember/debug ([@snewcomer](https://github.com/snewcomer))
+  * [#2320](https://github.com/simplabs/ember-simple-auth/pull/2320) chore: Fix deprecation warnings for run.cancel, run.later ([@josemarluedke](https://github.com/josemarluedke))
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2325](https://github.com/simplabs/ember-simple-auth/pull/2325) Remove ember-cli-htmlbars-inline-precompile ([@snewcomer](https://github.com/snewcomer))
+
+#### Committers: 2
+- Josemar Luedke ([@josemarluedke](https://github.com/josemarluedke))
+- Scott Newcomer ([@snewcomer](https://github.com/snewcomer))
+
 ## 4.0.1 (2021-09-24)
 
 #### :memo: Documentation
