@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "base-64": "^0.1.0",
+    "broccoli-file-creator": "^2.1.1",
+    "broccoli-merge-trees": "^4.0.0",
     "broccoli-funnel": "^1.2.0 || ^2.0.0",
     "ember-cli-babel": "^7.20.5",
     "ember-cli-is-package-missing": "^1.0.0",
