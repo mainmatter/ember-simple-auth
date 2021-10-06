@@ -8,6 +8,7 @@ import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
 import sinonjs from 'sinon';
 import * as LocationUtil from 'ember-simple-auth/utils/location';
+import Configuration from 'ember-simple-auth/configuration';
 
 describe('SessionService', () => {
   setupTest();
@@ -541,6 +542,41 @@ describe('SessionService', () => {
       sinon.stub(session, 'restore').throws();
 
       await sessionService.setup();
+    });
+
+    describe('when using session methods', function() {
+      beforeEach(function() {
+        Configuration.useSessionSetupMethod = false;
+      });
+
+      afterEach(function() {
+        Configuration.useSessionSetupMethod = false;
+      });
+
+      it('throws assertion when session methods are called before session#setup', async function() {
+        Configuration.useSessionSetupMethod = true;
+        let error;
+        try {
+          await sessionService.prohibitAuthentication();
+        } catch (assertion) {
+          error = assertion;
+        }
+        expect(error.message).to.eq("Assertion Failed: Ember Simple Auth: session#setup wasn't called. Make sure to call session#setup in your application route's beforeModel hook.");
+      });
+
+      it("doesn't throw assertion when session methods are called after session#setup", async function() {
+        Configuration.useSessionSetupMethod = true;
+        let error;
+
+        await sessionService.setup();
+        try {
+          await sessionService.prohibitAuthentication();
+        } catch (assertion) {
+          error = assertion;
+        }
+
+        expect(error).to.be.undefined;
+      });
     });
   });
 });
