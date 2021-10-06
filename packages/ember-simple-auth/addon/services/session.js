@@ -26,6 +26,12 @@ function deprecateSessionEvents() {
   }
 }
 
+function assertSetupHasBeenCalled(isSetupCalled) {
+  if (!isSetupCalled && Configuration.useSessionSetupMethod) {
+    assert("Ember Simple Auth: session#setup wasn't called. Make sure to call session#setup in your application route's beforeModel hook.", false);
+  }
+}
+
 /**
   __The session service provides access to the current session as well as
   methods to authenticate it, invalidate it, etc.__ It is the main interface for
@@ -293,6 +299,7 @@ export default Service.extend(Evented, {
     @public
   */
   requireAuthentication(transition, routeOrCallback) {
+    assertSetupHasBeenCalled(this._setupIsCalled);
     let isAuthenticated = requireAuthentication(getOwner(this), transition);
     if (!isAuthenticated) {
       let argType = typeof routeOrCallback;
@@ -317,6 +324,7 @@ export default Service.extend(Evented, {
     @public
   */
   prohibitAuthentication(routeOrCallback) {
+    assertSetupHasBeenCalled(this._setupIsCalled);
     let isAuthenticated = this.get('isAuthenticated');
     if (isAuthenticated) {
       let argType = typeof routeOrCallback;
@@ -380,6 +388,7 @@ export default Service.extend(Evented, {
     @public
   */
   async setup() {
+    this._setupIsCalled = true;
     try {
       this._setupHandlers();
       await this.session.restore();
