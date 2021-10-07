@@ -7,6 +7,7 @@ import { expect } from 'chai';
 import sinonjs from 'sinon';
 import setupSessionRestoration from 'ember-simple-auth/initializers/setup-session-restoration';
 import Configuration from 'ember-simple-auth/configuration';
+import { registerDeprecationHandler } from '@ember/debug';
 
 describe('setupSessionRestoration', () => {
   setupTest();
@@ -31,12 +32,15 @@ describe('setupSessionRestoration', () => {
   });
 
   describe('useSessionSetupMethod', function() {
+    let useSessionSetupMethodDefault;
+
     beforeEach(function() {
+      useSessionSetupMethodDefault = Configuration.useSessionSetupMethod;
       Configuration.useSessionSetupMethod = false;
     });
 
     afterEach(function() {
-      Configuration.useSessionSetupMethod = false;
+      Configuration.useSessionSetupMethod = useSessionSetupMethodDefault;
     });
 
     it("doesn't extend application route when is true", function() {
@@ -54,6 +58,34 @@ describe('setupSessionRestoration', () => {
 
       setupSessionRestoration(this.owner);
       expect(reopenStub).to.have.been.called;
+    });
+
+    it("doesn't show deprecation when is true", function() {
+      Configuration.useSessionSetupMethod = true;
+
+      let deprecations = [];
+      registerDeprecationHandler((message, options, next) => {
+        deprecations.push(message);
+
+        next(message, options);
+      });
+
+      setupSessionRestoration(this.owner);
+
+      expect(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:'))).to.have.length(0);
+    });
+
+    it('shows deprecation when is false', function() {
+      let deprecations = [];
+      registerDeprecationHandler((message, options, next) => {
+        deprecations.push(message);
+
+        next(message, options);
+      });
+
+      setupSessionRestoration(this.owner);
+
+      expect(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:'))).to.have.length(1);
     });
   });
 

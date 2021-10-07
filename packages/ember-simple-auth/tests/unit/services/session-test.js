@@ -530,14 +530,14 @@ describe('SessionService', () => {
   });
 
   describe('setup', function() {
-    it('setups handlers', async function() {
+    it('sets up handlers', async function() {
       const setupHandlersStub = sinon.stub(sessionService, '_setupHandlers');
 
       await sessionService.setup();
       expect(setupHandlersStub).to.have.been.calledOnce;
     });
 
-    it("Doesn't raise an error when restore rejects", async function() {
+    it("doesn't raise an error when restore rejects", async function() {
       sinon.stub(sessionService, '_setupHandlers');
       sinon.stub(session, 'restore').throws();
 
@@ -545,12 +545,15 @@ describe('SessionService', () => {
     });
 
     describe('when using session methods', function() {
+      let useSessionSetupMethodDefault;
+
       beforeEach(function() {
+        useSessionSetupMethodDefault = Configuration.useSessionSetupMethod;
         Configuration.useSessionSetupMethod = false;
       });
 
       afterEach(function() {
-        Configuration.useSessionSetupMethod = false;
+        Configuration.useSessionSetupMethod = useSessionSetupMethodDefault;
       });
 
       it('throws assertion when session methods are called before session#setup', async function() {
