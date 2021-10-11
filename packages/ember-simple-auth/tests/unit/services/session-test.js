@@ -1,36 +1,35 @@
 import Ember from 'ember';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import Service from '@ember/service';
 import { next } from '@ember/runloop';
 import EmberObject, { set } from '@ember/object';
 import { registerDeprecationHandler } from '@ember/debug';
-import { describe, beforeEach, it } from 'mocha';
-import { setupTest } from 'ember-mocha';
-import { expect } from 'chai';
 import sinonjs from 'sinon';
 import * as LocationUtil from 'ember-simple-auth/utils/location';
 
-describe('SessionService', () => {
-  setupTest();
+module('SessionService', function(hooks) {
+  setupTest(hooks);
 
   let sinon;
   let sessionService;
   let session;
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
     this.owner.register('authorizer:custom', EmberObject.extend({
-      authorize() {}
+      authorize() { }
     }));
 
     sessionService = this.owner.lookup('service:session');
     session = sessionService.get('session');
   });
 
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
 
-  it('forwards the "authenticationSucceeded" event from the session', function(done) {
+  test('forwards the "authenticationSucceeded" event from the session', async function(assert) {
     let deprecations = [];
     registerDeprecationHandler((message, options, next) => {
       deprecations.push(message);
@@ -42,14 +41,16 @@ describe('SessionService', () => {
     sessionService.one('authenticationSucceeded', () => (triggered = true));
     session.trigger('authenticationSucceeded');
 
-    next(() => {
-      expect(triggered).to.be.true;
-      expect(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:'))).to.have.length(1); // the call to .one above triggers a deprecation but forwarding the event should *not* trigger a deprecation
-      done();
+    await new Promise(resolve => {
+      next(() => {
+        assert.ok(triggered);
+        assert.equal(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:')).length, 1); // the call to .one above triggers a deprecation but forwarding the event should *not* trigger a deprecation
+        resolve();
+      });
     });
   });
 
-  it('forwards the "invalidationSucceeded" event from the session', function(done) {
+  test('forwards the "invalidationSucceeded" event from the session', async function(assert) {
     let deprecations = [];
     registerDeprecationHandler((message, options, next) => {
       deprecations.push(message);
@@ -60,14 +61,16 @@ describe('SessionService', () => {
     sessionService.one('invalidationSucceeded', () => (triggered = true));
     session.trigger('invalidationSucceeded');
 
-    next(() => {
-      expect(triggered).to.be.true;
-      expect(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:'))).to.have.length(1); // the call to .one above triggers a deprecation but forwarding the event should *not* trigger a deprecation
-      done();
+    await new Promise(resolve => {
+      next(() => {
+        assert.ok(triggered);
+        assert.equal(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:')).length, 1); // the call to .one above triggers a deprecation but forwarding the event should *not* trigger a deprecation
+        resolve();
+      });
     });
   });
 
-  it('deprecates using the "Evented" API', function() {
+  test('deprecates using the "Evented" API', function(assert) {
     let deprecations = [];
     registerDeprecationHandler((message, options, next) => {
       deprecations.push(message);
@@ -75,7 +78,7 @@ describe('SessionService', () => {
       next(message, options);
     });
 
-    let handler = () => {};
+    let handler = () => { };
     sessionService.trigger('invalidationSucceeded');
     sessionService.on('invalidationSucceeded', handler);
     sessionService.off('invalidationSucceeded', handler);
@@ -83,82 +86,93 @@ describe('SessionService', () => {
     sessionService.one('invalidationSucceeded', handler);
 
     let emberSimpleAuthDeprecations = deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:'));
-    expect(emberSimpleAuthDeprecations).to.have.length(5);
+    assert.equal(emberSimpleAuthDeprecations.length, 5);
     for (let deprecation of emberSimpleAuthDeprecations) {
-      expect(deprecation).to.eq("Ember Simple Auth: The session service's events API is deprecated; to add custom behavior to the authentication or invalidation handling, override the handleAuthentication or handleInvalidation methods.");
+      assert.equal(deprecation, "Ember Simple Auth: The session service's events API is deprecated; to add custom behavior to the authentication or invalidation handling, override the handleAuthentication or handleInvalidation methods.");
     }
   });
 
-  describe('isAuthenticated', function() {
-    it('is read from the session', function() {
+  module('isAuthenticated', function(hooks) {
+    test('is read from the session', function(assert) {
       session.set('isAuthenticated', true);
 
-      expect(sessionService.get('isAuthenticated')).to.be.true;
+      assert.ok(sessionService.get('isAuthenticated'));
     });
 
-    it('is read-only', function() {
-      expect(() => {
+    test('is read-only', function(assert) {
+      let authSpy = sinon.spy(sessionService, 'isAuthenticated', ['set']);
+      try {
         sessionService.set('isAuthenticated', false);
-      }).to.throw;
+      }
+      catch (e) {
+      }
+      assert.ok(authSpy.set.threw());
     });
   });
 
-  describe('store', function() {
-    it('is read from the session', function() {
+  module('store', function(hooks) {
+    test('is read from the session', function(assert) {
       session.set('store', 'some store');
 
-      expect(sessionService.get('store')).to.eq('some store');
+      assert.equal(sessionService.get('store'), 'some store');
     });
 
-    it('is read-only', function() {
-      expect(() => {
+    test('is read-only', function(assert) {
+      let storeSpy = sinon.spy(sessionService, 'store', ['set']);
+      try {
         sessionService.set('store', 'some other store');
-      }).to.throw;
+      }
+      catch (e) {
+      }
+      assert.ok(storeSpy.set.threw());
     });
   });
 
-  describe('attemptedTransition', function() {
-    it('is read from the session', function() {
+  module('attemptedTransition', function(hooks) {
+    test('is read from the session', function(assert) {
       session.set('attemptedTransition', 'some transition');
 
-      expect(sessionService.get('attemptedTransition')).to.eq('some transition');
+      assert.equal(sessionService.get('attemptedTransition'), 'some transition');
     });
 
-    it('is written back to the session', function() {
+    test('is written back to the session', function(assert) {
       sessionService.set('attemptedTransition', 'some other transition');
 
-      expect(session.get('attemptedTransition')).to.eq('some other transition');
+      assert.equal(session.get('attemptedTransition'), 'some other transition');
     });
   });
 
-  describe('data', function() {
-    it("is read from the session's content", function() {
+  module('data', function(hooks) {
+    test("is read from the session's content", function(assert) {
       session.set('some', 'data');
 
-      expect(sessionService.get('data')).to.eql({ some: 'data', authenticated: {} });
+      assert.deepEqual(sessionService.get('data'), { some: 'data', authenticated: {} });
     });
 
-    it("is written back to the session's content", function() {
+    test("is written back to the session's content", function(assert) {
       sessionService.set('data.some', { other: 'data' });
 
-      expect(session.content).to.eql({ some: { other: 'data' }, authenticated: {} });
+      assert.deepEqual(session.content, { some: { other: 'data' }, authenticated: {} });
     });
 
-    it('can be set with Ember.set', function() {
+    test('can be set with Ember.set', function(assert) {
       set(sessionService, 'data.emberSet', 'ember-set-data');
 
-      expect(session.content).to.eql({ emberSet: 'ember-set-data', authenticated: {} });
+      assert.deepEqual(session.content, { emberSet: 'ember-set-data', authenticated: {} });
     });
 
-    it('is read-only', function() {
-      expect(() => {
+    test('is read-only', function(assert) {
+      let dataSpy = sinon.spy(sessionService, 'data', ['set']);
+      try {
         sessionService.set('data', false);
-      }).to.throw;
+      }
+      catch (e) { }
+      assert.ok(dataSpy.set.threw());
     });
   });
 
-  describe('authenticate', function() {
-    beforeEach(function() {
+  module('authenticate', function(hooks) {
+    hooks.beforeEach(function() {
       session.reopen({
         authenticate() {
           return 'value';
@@ -166,20 +180,20 @@ describe('SessionService', () => {
       });
     });
 
-    it('authenticates the session', function() {
+    test('authenticates the session', function(assert) {
       sinon.spy(session, 'authenticate');
       sessionService.authenticate({ some: 'argument' });
 
-      expect(session.authenticate).to.have.been.calledWith({ some: 'argument' });
+      assert.ok(session.authenticate.calledWith({ some: 'argument' }));
     });
 
-    it("returns the session's authentication return value", function() {
-      expect(sessionService.authenticate()).to.eq('value');
+    test("returns the session's authentication return value", function(assert) {
+      assert.equal(sessionService.authenticate(), 'value');
     });
   });
 
-  describe('invalidate', function() {
-    beforeEach(function() {
+  module('invalidate', function(hooks) {
+    hooks.beforeEach(function() {
       session.reopen({
         invalidate() {
           return 'value';
@@ -187,31 +201,31 @@ describe('SessionService', () => {
       });
     });
 
-    it('invalidates the session', function() {
+    test('invalidates the session', function(assert) {
       sinon.spy(session, 'invalidate');
       sessionService.invalidate({ some: 'argument' });
 
-      expect(session.invalidate).to.have.been.calledWith({ some: 'argument' });
+      assert.ok(session.invalidate.calledWith({ some: 'argument' }));
     });
 
-    it("returns the session's invalidation return value", function() {
-      expect(sessionService.invalidate()).to.eq('value');
+    test("returns the session's invalidation return value", function(assert) {
+      assert.equal(sessionService.invalidate(), 'value');
     });
   });
 
-  describe('requireAuthentication', function() {
+  module('requireAuthentication', function(hooks) {
     let transition;
     let router;
 
-    beforeEach(function() {
+    hooks.beforeEach(function() {
       transition = {
         intent: {
           url: '/transition/target/url'
         },
-        send() {}
+        send() { }
       };
       this.owner.register('service:router', Service.extend({
-        transitionTo() {}
+        transitionTo() { }
       }));
       router = this.owner.lookup('service:router');
 
@@ -219,71 +233,71 @@ describe('SessionService', () => {
       sinon.spy(router, 'transitionTo');
     });
 
-    describe('if the session is authenticated', function() {
-      beforeEach(function() {
+    module('if the session is authenticated', function(hooks) {
+      hooks.beforeEach(function() {
         session.set('isAuthenticated', true);
       });
 
-      it('returns true', function() {
+      test('returns true', function(assert) {
         let result = sessionService.requireAuthentication(transition, 'login');
 
-        expect(result).to.be.true;
+        assert.ok(result);
       });
 
-      describe('if a route name is passed as second argument', function() {
-        it('does not transition to the authentication route', function() {
+      module('if a route name is passed as second argument', function(hooks) {
+        test('does not transition to the authentication route', function(assert) {
           sessionService.requireAuthentication(transition, 'login');
 
-          expect(router.transitionTo).to.not.have.been.calledWith('login');
+          assert.notOk(router.transitionTo.calledWith('login'));
         });
       });
 
-      describe('if a callback function is passed as second argument', function() {
-        it('does not invoke the callback', function() {
+      module('if a callback function is passed as second argument', function(hooks) {
+        test('does not invoke the callback', function(assert) {
           let callback = sinon.spy();
           sessionService.requireAuthentication(transition, callback);
 
-          expect(callback).to.not.have.been.called;
+          assert.notOk(callback.called);
         });
       });
     });
 
-    describe('if the session is not authenticated', function() {
-      beforeEach(function() {
+    module('if the session is not authenticated', function(hooks) {
+      hooks.beforeEach(function() {
         session.set('isAuthenticated', false);
       });
 
-      it('returns false', function() {
+      test('returns false', function(assert) {
         let result = sessionService.requireAuthentication(transition, 'login');
 
-        expect(result).to.be.false;
+        assert.notOk(result);
       });
 
-      describe('if a route name is passed as second argument', function() {
-        it('transitions to the specified route', function() {
+      module('if a route name is passed as second argument', function(hooks) {
+        test('transitions to the specified route', function(assert) {
           sessionService.requireAuthentication(transition, 'login');
 
-          expect(router.transitionTo).to.have.been.calledWith('login');
+          assert.ok(router.transitionTo.calledWith('login'));
         });
       });
 
-      describe('if a callback function is passed as second argument', function() {
-        it('does invokes the callback', function() {
+      module('if a callback function is passed as second argument', function(hooks) {
+        test('does invokes the callback', function(assert) {
           let callback = sinon.spy();
           sessionService.requireAuthentication(transition, callback);
 
-          expect(callback).to.have.been.calledOnce;
+          assert.ok(callback.calledOnce);
         });
       });
 
-      describe('if a transition is passed', function() {
-        it('stores it in the session', function() {
+      module('if a transition is passed', function(hooks) {
+        test('stores it in the session', function(assert) {
           sessionService.requireAuthentication(transition, 'login');
 
-          expect(sessionService.get('attemptedTransition')).to.eq(transition);
+          assert.equal(sessionService.get('attemptedTransition'), transition);
         });
 
-        it('sets the redirectTarget cookie in fastboot', function() {
+        test('sets the redirectTarget cookie in fastboot', function(assert) {
           this.owner.register('service:fastboot', Service.extend({
             isFastBoot: true,
             init() {
@@ -302,21 +316,21 @@ describe('SessionService', () => {
 
           sessionService.requireAuthentication(transition, 'login');
 
-          expect(writeCookieStub).to.have.been.calledWith(cookieName, transition.intent.url, {
+          assert.ok(writeCookieStub.calledWith(cookieName, transition.intent.url, {
             path: '/',
             secure: true
-          });
+          }));
         });
       });
 
-      describe('if no transition is passed', function() {
-        it("does not set the session's 'attemptedTransition' property", function() {
+      module('if no transition is passed', function(hooks) {
+        test("does not set the session's 'attemptedTransition' property", function(assert) {
           sessionService.requireAuthentication(null, 'login');
 
-          expect(sessionService.get('attemptedTransition')).to.be.null;
+          assert.equal(sessionService.get('attemptedTransition'), null);
         });
 
-        it('does not set the redirectTarget cookie in fastboot', function() {
+        test('does not set the redirectTarget cookie in fastboot', function(assert) {
           this.owner.register('service:fastboot', Service.extend({
             isFastBoot: true,
             init() {
@@ -333,123 +347,123 @@ describe('SessionService', () => {
 
           sessionService.requireAuthentication(null, 'login');
 
-          expect(writeCookieStub).to.not.have.been.called;
+          assert.notOk(writeCookieStub.called);
         });
       });
     });
   });
 
-  describe('prohibitAuthentication', function() {
+  module('prohibitAuthentication', function(hooks) {
     let router;
 
-    beforeEach(function() {
+    hooks.beforeEach(function() {
       this.owner.register('service:router', Service.extend({
-        transitionTo() {}
+        transitionTo() { }
       }));
       router = this.owner.lookup('service:router');
 
       sinon.spy(router, 'transitionTo');
     });
 
-    describe('if the session is not authenticated', function() {
-      beforeEach(function() {
+    module('if the session is not authenticated', function(hooks) {
+      hooks.beforeEach(function() {
         session.set('isAuthenticated', false);
       });
 
-      it('returns true', function() {
+      test('returns true', function(assert) {
         let result = sessionService.prohibitAuthentication('index');
 
-        expect(result).to.be.true;
+        assert.ok(result);
       });
 
-      describe('if a route name is passed as first argument', function() {
-        it('does not transition to the route', function() {
+      module('if a route name is passed as first argument', function(hooks) {
+        test('does not transition to the route', function(assert) {
           sessionService.prohibitAuthentication('index');
 
-          expect(router.transitionTo).to.not.have.been.called;
+          assert.notOk(router.transitionTo.called);
         });
       });
 
-      describe('if a callback function is passed as first argument', function() {
-        it('does not invoke the callback', function() {
+      module('if a callback function is passed as first argument', function(hooks) {
+        test('does not invoke the callback', function(assert) {
           let callback = sinon.spy();
           sessionService.prohibitAuthentication(callback);
 
-          expect(callback).to.not.have.been.called;
+          assert.notOk(callback.called);
         });
       });
     });
 
-    describe('if the session is authenticated', function() {
-      beforeEach(function() {
+    module('if the session is authenticated', function(hooks) {
+      hooks.beforeEach(function() {
         session.set('isAuthenticated', true);
       });
 
-      it('returns false', function() {
+      test('returns false', function(assert) {
         let result = sessionService.prohibitAuthentication('login');
 
-        expect(result).to.be.false;
+        assert.notOk(result);
       });
 
-      describe('if a route name is passed as first argument', function() {
-        it('transitions to the specified route', function() {
+      module('if a route name is passed as first argument', function(hooks) {
+        test('transitions to the specified route', function(assert) {
           sessionService.prohibitAuthentication('index');
 
-          expect(router.transitionTo).to.have.been.calledWith('index');
+          assert.ok(router.transitionTo.calledWith('index'));
         });
       });
 
-      describe('if a callback function is passed as first argument', function() {
-        it('invokes the callback', function() {
+      module('if a callback function is passed as first argument', function(hooks) {
+        test('invokes the callback', function(assert) {
           let callback = sinon.spy();
           sessionService.prohibitAuthentication(callback);
 
-          expect(callback).to.have.been.calledOnce;
+          assert.ok(callback.calledOnce);
         });
       });
     });
   });
 
-  describe('handleAuthentication', function() {
+  module('handleAuthentication', function(hooks) {
     let router;
 
-    beforeEach(function() {
+    hooks.beforeEach(function() {
       this.owner.register('service:router', Service.extend({
-        transitionTo() {}
+        transitionTo() { }
       }));
       router = this.owner.lookup('service:router');
       sinon.spy(router, 'transitionTo');
     });
 
-    describe('when an attempted transition is stored in the session', function() {
+    module('when an attempted transition is stored in the session', function(hooks) {
       let attemptedTransition;
 
-      beforeEach(function() {
+      hooks.beforeEach(function() {
         attemptedTransition = {
           retry: sinon.stub()
         };
         session.set('attemptedTransition', attemptedTransition);
       });
 
-      it('retries that transition', function() {
+      test('retries that transition', function(assert) {
         sessionService.handleAuthentication();
 
-        expect(attemptedTransition.retry).to.have.been.calledOnce;
+        assert.ok(attemptedTransition.retry.calledOnce);
       });
 
-      it('removes it from the session', function() {
+      test('removes it from the session', function(assert) {
         sessionService.handleAuthentication();
 
-        expect(session.get('attemptedTransition')).to.be.null;
+        assert.equal(session.get('attemptedTransition'), null);
       });
     });
 
-    describe('when a redirect target is stored in a cookie', function() {
+    module('when a redirect target is stored in a cookie', function(hooks) {
       let cookieName = 'ember_simple_auth-redirectTarget';
       let targetUrl = 'transition/target/url';
       let clearStub;
 
-      beforeEach(function() {
+      hooks.beforeEach(function() {
         clearStub = sinon.stub();
         this.owner.register('service:cookies', Service.extend({
           read() {
@@ -459,71 +473,71 @@ describe('SessionService', () => {
         }));
       });
 
-      it('transitions to the url', function() {
+      test('transitions to the url', function(assert) {
         sessionService.handleAuthentication();
 
-        expect(router.transitionTo).to.have.been.calledWith(targetUrl);
+        assert.ok(router.transitionTo.calledWith(targetUrl));
       });
 
-      it('clears the cookie', function() {
+      test('clears the cookie', function(assert) {
         sessionService.handleAuthentication();
 
-        expect(clearStub).to.have.been.calledWith(cookieName);
+        assert.ok(clearStub.calledWith(cookieName));
       });
     });
 
-    describe('when no attempted transition is stored in the session', function() {
-      it('transitions to "routeAfterAuthentication"', function() {
+    module('when no attempted transition is stored in the session', function(hooks) {
+      test('transitions to "routeAfterAuthentication"', function(assert) {
         let routeAfterAuthentication = 'index';
         sessionService.handleAuthentication(routeAfterAuthentication);
 
-        expect(router.transitionTo).to.have.been.calledWith(routeAfterAuthentication);
+        assert.ok(router.transitionTo.calledWith(routeAfterAuthentication));
       });
     });
   });
 
-  describe('handleInvalidation', function() {
+  module('handleInvalidation', function(hooks) {
     let router;
 
-    describe('when running in FastBoot', function() {
-      beforeEach(function() {
+    module('when running in FastBoot', function(hooks) {
+      hooks.beforeEach(function() {
         this.owner.register('service:fastboot', Service.extend({
           isFastBoot: true
         }));
         this.owner.register('service:router', Service.extend({
-          transitionTo() {}
+          transitionTo() { }
         }));
         router = this.owner.lookup('service:router');
         sinon.spy(router, 'transitionTo');
       });
 
-      it('transitions to the route', function() {
+      test('transitions to the route', function(assert) {
         sessionService.handleInvalidation('index');
 
-        expect(router.transitionTo).to.have.been.calledWith('index');
+        assert.ok(router.transitionTo.calledWith('index'));
       });
     });
 
-    describe('when not running in FastBoot', function() {
-      beforeEach(function() {
+    module('when not running in FastBoot', function(hooks) {
+      hooks.beforeEach(function() {
         this.owner.register('service:fastboot', Service.extend({
           isFastBoot: false
         }));
-        sinon.stub(LocationUtil, 'default').returns({ replace() {} });
+        sinon.stub(LocationUtil, 'default').returns({ replace() { } });
         sinon.spy(LocationUtil.default(), 'replace');
         // eslint-disable-next-line ember/no-ember-testing-in-module-scope
         Ember.testing = false;
       });
 
-      afterEach(function() {
+      hooks.afterEach(function() {
         // eslint-disable-next-line ember/no-ember-testing-in-module-scope
         Ember.testing = true;
       });
 
-      it('replaces the location with the route', function() {
+      test('replaces the location with the route', function(assert) {
         sessionService.handleInvalidation('index');
 
-        expect(LocationUtil.default().replace).to.have.been.calledWith('index');
+        assert.ok(LocationUtil.default().replace.calledWith('index'));
       });
     });
   });
