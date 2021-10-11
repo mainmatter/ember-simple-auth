@@ -1,21 +1,20 @@
 /* eslint-disable ember/no-mixins, ember/no-new-mixins */
 
-import { expect } from 'chai';
-import { it, describe, beforeEach } from 'mocha';
-import { setupTest } from 'ember-mocha';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-describe('ProtectedRoute', function() {
-  setupTest();
+module('ProtectedRoute', function(hooks) {
+  setupTest(hooks);
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     this.owner.register('route:protected', Route.extend(AuthenticatedRouteMixin));
   });
 
-  it('is still testable when using the AuthenticatedRouteMixin', function() {
+  test('is still testable when using the AuthenticatedRouteMixin', function(assert) {
     const route = this.owner.lookup('route:protected');
 
-    expect(route).to.be.ok;
+    assert.ok(route);
   });
 });
