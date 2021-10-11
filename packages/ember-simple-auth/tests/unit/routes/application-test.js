@@ -1,21 +1,20 @@
 /* eslint-disable ember/no-mixins, ember/no-new-mixins */
 
-import { expect } from 'chai';
-import { it, describe, beforeEach } from 'mocha';
-import { setupTest } from 'ember-mocha';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import Route from '@ember/routing/route';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-describe('ApplicationRoute', function() {
-  setupTest();
+module('ApplicationRoute', function(hooks) {
+  setupTest(hooks);
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     this.owner.register('route:application', Route.extend(ApplicationRouteMixin));
   });
 
-  it('is still testable when using the ApplicationRouteMixin', function() {
+  test('is still testable when using the ApplicationRouteMixin', function(assert) {
     const route = this.owner.lookup('route:application');
 
-    expect(route).to.be.ok;
+    assert.ok(route);
   });
 });
