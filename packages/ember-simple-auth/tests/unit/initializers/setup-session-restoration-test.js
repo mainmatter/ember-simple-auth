@@ -1,41 +1,40 @@
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import EmberObject from '@ember/object';
 import Route from '@ember/routing/route';
-import { setupTest } from 'ember-mocha';
 import RSVP from 'rsvp';
-import { describe, beforeEach, it } from 'mocha';
-import { expect } from 'chai';
 import sinonjs from 'sinon';
 import setupSessionRestoration from 'ember-simple-auth/initializers/setup-session-restoration';
 
-describe('setupSessionRestoration', () => {
-  setupTest();
+module('setupSessionRestoration', function(hooks) {
+  setupTest(hooks);
 
   let sinon;
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
 
     this.owner.register('route:application', Route.extend());
   });
 
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
 
-  it('adds a beforeModel method', function() {
+  test('adds a beforeModel method', function(assert) {
     setupSessionRestoration(this.owner);
 
     const route = this.owner.lookup('route:application');
-    expect(route).to.respondTo('beforeModel');
+    assert.equal(typeof route.beforeModel, 'function');
   });
 
-  describe('the beforeModel method', function() {
+  module('the beforeModel method', function(hooks) {
     let session;
     let route;
 
-    beforeEach(function() {
+    hooks.beforeEach(function() {
       this.owner.register('session:main', EmberObject.extend({
-        restore() {}
+        restore() { }
       }));
       session = this.owner.lookup('session:main');
 
@@ -49,27 +48,27 @@ describe('setupSessionRestoration', () => {
       setupSessionRestoration(this.owner);
     });
 
-    describe('when session restoration resolves', function() {
-      beforeEach(function() {
+    module('when session restoration resolves', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(session, 'restore').returns(RSVP.resolve());
       });
 
-      it('returns the return value of the original "beforeModel" method', async function() {
+      test('returns the return value of the original "beforeModel" method', async function(assert) {
         let value = await route.beforeModel();
 
-        expect(value).to.eq('test');
+        assert.equal(value, 'test');
       });
     });
 
-    describe('when session restoration rejects', function() {
-      beforeEach(function() {
+    module('when session restoration rejects', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(session, 'restore').returns(RSVP.reject());
       });
 
-      it('returns the return value of the original "beforeModel" method', async function() {
+      test('returns the return value of the original "beforeModel" method', async function(assert) {
         let value = await route.beforeModel();
 
-        expect(value).to.eq('test');
+        assert.equal(value, 'test');
       });
     });
   });
