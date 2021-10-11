@@ -1,21 +1,20 @@
-import { describe, beforeEach, it } from 'mocha';
-import { expect } from 'chai';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import sinonjs from 'sinon';
-import { setupTest } from 'ember-mocha';
 
-describe('setupSessionService', () => {
-  setupTest();
+module('setupSessionService', function(hooks) {
+  setupTest(hooks);
   let sinon;
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
   });
 
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
 
-  it('injects the session into the session service', function() {
-    expect(this.owner.lookup('service:session').session).eq(this.owner.lookup('session:main'));
+  test('injects the session into the session service', function(assert) {
+    assert.equal(this.owner.lookup('service:session').session, this.owner.lookup('session:main'));
   });
 });
