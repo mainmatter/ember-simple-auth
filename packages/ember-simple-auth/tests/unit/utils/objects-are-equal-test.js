@@ -1,29 +1,29 @@
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import objectsAreEqual from 'ember-simple-auth/utils/objects-are-equal';
 
-describe('objectsAreEqual', () => {
-  it('is true for equal objects', function() {
-    expect(objectsAreEqual({ a: 'b', c: 'd' }, { a: 'b', c: 'd' })).to.be.true;
+module('objectsAreEqual', function(hooks) {
+  test('is true for equal objects', function(assert) {
+    assert.ok(objectsAreEqual({ a: 'b', c: 'd' }, { a: 'b', c: 'd' }));
   });
 
-  it('is true for equal objects regardless of property order', function() {
-    expect(objectsAreEqual({ a: 'b', c: 'd' }, { c: 'd', a: 'b' })).to.be.true;
+  test('is true for equal objects regardless of property order', function(assert) {
+    assert.ok(objectsAreEqual({ a: 'b', c: 'd' }, { c: 'd', a: 'b' }));
   });
 
-  it('is true for equal nested objects regardless of property order', function() {
-    expect(objectsAreEqual({ a: 'b', c: 'd', e: { f: 'g' } }, { e: { f: 'g' }, a: 'b', c: 'd' })).to.be.true;
+  test('is true for equal nested objects regardless of property order', function(assert) {
+    assert.ok(objectsAreEqual({ a: 'b', c: 'd', e: { f: 'g' } }, { e: { f: 'g' }, a: 'b', c: 'd' }));
   });
 
-  it('is true for equal objects that include arrays', function() {
-    expect(objectsAreEqual({ a: ['b', 'c'] }, { a: ['b', 'c'] })).to.be.true;
+  test('is true for equal objects that include arrays', function(assert) {
+    assert.ok(objectsAreEqual({ a: ['b', 'c'] }, { a: ['b', 'c'] }));
   });
 
-  it('is false for equal objects that include differently ordered arrays', function() {
-    expect(objectsAreEqual({ a: ['b', 'c'] }, { a: ['c', 'b'] })).to.be.false;
+  test('is false for equal objects that include differently ordered arrays', function(assert) {
+    assert.notOk(objectsAreEqual({ a: ['b', 'c'] }, { a: ['c', 'b'] }));
   });
 
-  it('is false for unequal objects', function() {
-    expect(objectsAreEqual({ a: 'b' }, { c: 'd' })).to.be.false;
+  test('is false for unequal objects', function(assert) {
+    assert.notOk(objectsAreEqual({ a: 'b' }, { c: 'd' }));
   });
 });

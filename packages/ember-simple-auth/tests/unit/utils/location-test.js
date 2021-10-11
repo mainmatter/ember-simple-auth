@@ -1,5 +1,5 @@
-import { expect } from 'chai';
-import { describe, it, beforeEach, afterEach } from 'mocha';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import * as LocationUtil from 'ember-simple-auth/utils/location';
 import sinonjs from 'sinon';
 
@@ -10,16 +10,16 @@ const foo = {
   }
 };
 
-describe('Unit | Utility | location', function() {
+module('Unit | Utility | location', function(hooks) {
   let sinon;
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
   });
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
-  it('works', function() {
-    expect(LocationUtil.default()).to.be.ok;
-    expect(LocationUtil.default().hash).to.be.a('string');
+  test('works', function(assert) {
+    assert.ok(LocationUtil.default());
+    assert.equal(typeof LocationUtil.default().hash, 'string');
   });
 });
