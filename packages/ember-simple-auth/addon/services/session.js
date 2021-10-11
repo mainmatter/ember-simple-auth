@@ -1,4 +1,4 @@
-import { alias, oneWay } from '@ember/object/computed';
+import { alias, oneWay, readOnly } from '@ember/object/computed';
 import { A } from '@ember/array';
 import Service from '@ember/service';
 import Evented from '@ember/object/evented';
@@ -97,7 +97,7 @@ export default Service.extend(Evented, {
     @default false
     @public
   */
-  isAuthenticated: oneWay('session.isAuthenticated'),
+  isAuthenticated: readOnly('session.isAuthenticated'),
 
   /**
     The current session data as a plain object. The
@@ -114,7 +114,7 @@ export default Service.extend(Evented, {
     @default { authenticated: {} }
     @public
   */
-  data: oneWay('session.content'),
+  data: readOnly('session.content'),
 
   /**
     The session store.
@@ -125,7 +125,7 @@ export default Service.extend(Evented, {
     @default null
     @public
   */
-  store: oneWay('session.store'),
+  store: readOnly('session.store'),
 
   /**
     A previously attempted but intercepted transition (e.g. by the
