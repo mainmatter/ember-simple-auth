@@ -1,34 +1,33 @@
 /* eslint-disable ember/no-mixins, ember/no-new-mixins */
 
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import Mixin from '@ember/object/mixin';
 import { setOwner } from '@ember/application';
 import RSVP from 'rsvp';
 import Route from '@ember/routing/route';
 import Service from '@ember/service';
-import { describe, beforeEach, it } from 'mocha';
-import { setupTest } from 'ember-mocha';
-import { expect } from 'chai';
 import sinonjs from 'sinon';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-describe('AuthenticatedRouteMixin', () => {
-  setupTest();
+module('AuthenticatedRouteMixin', function(hooks) {
+  setupTest(hooks);
 
   let sinon;
   let route;
   let router;
   let transition;
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
   });
 
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
 
-  describe('#beforeModel', function() {
-    beforeEach(function() {
+  module('#beforeModel', function(hooks) {
+    hooks.beforeEach(function() {
       const MixinImplementingBeforeModel = Mixin.create({
         beforeModel() {
           return RSVP.resolve('upstreamReturnValue');
@@ -39,10 +38,10 @@ describe('AuthenticatedRouteMixin', () => {
         intent: {
           url: '/transition/target/url'
         },
-        send() {}
+        send() { }
       };
       this.owner.register('service:router', Service.extend({
-        transitionTo() {}
+        transitionTo() { }
       }));
       router = this.owner.lookup('service:router');
 
@@ -55,44 +54,44 @@ describe('AuthenticatedRouteMixin', () => {
       sinon.spy(router, 'transitionTo');
     });
 
-    describe('if the session is authenticated', function() {
-      beforeEach(function() {
+    module('if the session is authenticated', function(hooks) {
+      hooks.beforeEach(function() {
         let session = this.owner.lookup('service:session');
         session.set('isAuthenticated', true);
       });
 
-      it('returns the upstream promise', async function() {
+      test('returns the upstream promise', async function(assert) {
         let result = await route.beforeModel(transition);
 
-        expect(result).to.equal('upstreamReturnValue');
+        assert.equal(result, 'upstreamReturnValue');
       });
 
-      it('does not transition to the authentication route', function() {
+      test('does not transition to the authentication route', function(assert) {
         route.beforeModel(transition);
 
-        expect(router.transitionTo).to.not.have.been.calledWith('login');
+        assert.notOk(router.transitionTo.calledWith('login'));
       });
     });
 
-    describe('if the session is not authenticated', function() {
-      it('does not return the upstream promise', function() {
-        expect(route.beforeModel(transition)).to.be.undefined;
+    module('if the session is not authenticated', function(hooks) {
+      test('does not return the upstream promise', function(assert) {
+        assert.equal(route.beforeModel(transition), undefined);
       });
 
-      it('transitions to "login" as the default authentication route', function() {
+      test('transitions to "login" as the default authentication route', function(assert) {
         route.beforeModel(transition);
-        expect(router.transitionTo).to.have.been.calledWith('login');
+        assert.ok(router.transitionTo.calledWith('login'));
       });
 
-      it('transitions to the set authentication route', function() {
+      test('transitions to the set authentication route', function(assert) {
         let authenticationRoute = 'path/to/route';
         route.set('authenticationRoute', authenticationRoute);
 
         route.beforeModel(transition);
-        expect(router.transitionTo).to.have.been.calledWith(authenticationRoute);
+        assert.ok(router.transitionTo.calledWith(authenticationRoute));
       });
 
-      it('sets the redirectTarget cookie in fastboot', function() {
+      test('sets the redirectTarget cookie in fastboot', function(assert) {
         this.owner.register('service:fastboot', Service.extend({
           isFastBoot: true,
           init() {
@@ -110,10 +109,10 @@ describe('AuthenticatedRouteMixin', () => {
         let cookieName = 'ember_simple_auth-redirectTarget';
 
         route.beforeModel(transition);
-        expect(writeCookieStub).to.have.been.calledWith(cookieName, transition.intent.url, {
+        assert.ok(writeCookieStub.calledWith(cookieName, transition.intent.url, {
           path: '/',
           secure: true
-        });
+        }));
       });
     });
   });
