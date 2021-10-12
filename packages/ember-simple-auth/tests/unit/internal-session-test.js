@@ -532,7 +532,7 @@ module('InternalSession', function(hooks) {
     });
   });
 
-  describe("when the session's content changes", function() {
+  module("when the session's content changes", function(hooks) {
     module('when a single property is set', function(hooks) {
       module('when the property is private (starts with an "_")', function(hooks) {
         hooks.beforeEach(function() {
@@ -579,8 +579,9 @@ module('InternalSession', function(hooks) {
   module('when the store triggers the "sessionDataUpdated" event', function(hooks) {
     module('when the session is currently busy', function(hooks) {
       hooks.beforeEach(function() {
+        // sinon.stub(authenticator, 'restore').returns(Promise.resolve({}));
         sinon.stub(store, 'restore').returns(new RSVP.Promise((resolve) => {
-          next(() => resolve({ some: 'other property' }));
+          next(() => resolve({ some: 'other property', authenticated: { authenticator: 'authenticator:test' } }));
         }));
       });
 
