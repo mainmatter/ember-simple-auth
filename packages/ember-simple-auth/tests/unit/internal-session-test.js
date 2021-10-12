@@ -1,20 +1,19 @@
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import RSVP from 'rsvp';
 import { next } from '@ember/runloop';
-import { describe, beforeEach, it } from 'mocha';
-import { setupTest } from 'ember-mocha';
-import { expect } from 'chai';
 import sinonjs from 'sinon';
 import Authenticator from 'ember-simple-auth/authenticators/base';
 
-describe('InternalSession', () => {
-  setupTest();
+module('InternalSession', function(hooks) {
+  setupTest(hooks);
 
   let sinon;
   let session;
   let store;
   let authenticator;
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
 
     this.owner.register('authenticator:test', Authenticator);
@@ -23,180 +22,194 @@ describe('InternalSession', () => {
     store = session.get('store');
   });
 
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
 
-  it('does not allow data to be stored for the key "authenticated"', function() {
-    expect(() => {
+  test('does not allow data to be stored for the key "authenticated"', function(assert) {
+    try {
       session.set('authenticated', 'test');
-    }).to.throw(Error);
+      assert.ok(false);
+    }
+    catch (e) {
+      assert.ok(true);
+    }
   });
 
   function itHandlesAuthenticatorEvents(preparation) {
-    describe('when the authenticator triggers the "sessionDataUpdated" event', function() {
-      beforeEach(function() {
+    module('when the authenticator triggers the "sessionDataUpdated" event', function(hooks) {
+      hooks.beforeEach(function() {
         return preparation.call();
       });
 
-      it('stores the data the event is triggered with in its authenticated section', function(done) {
+      test('stores the data the event is triggered with in its authenticated section', async function(assert) {
         authenticator.trigger('sessionDataUpdated', { some: 'property' });
 
-        next(() => {
-          expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator:test' });
-          done();
+        await new Promise(resolve => {
+          next(() => {
+            assert.deepEqual(session.get('authenticated'), { some: 'property', authenticator: 'authenticator:test' });
+            resolve();
+          });
         });
       });
     });
 
-    describe('when the authenticator triggers the "invalidated" event', function() {
-      beforeEach(function() {
+    module('when the authenticator triggers the "invalidated" event', function(hooks) {
+      hooks.beforeEach(function() {
         return preparation.call();
       });
 
-      it('is not authenticated', function(done) {
+      test('is not authenticated', async function(assert) {
         authenticator.trigger('sessionDataInvalidated');
 
-        next(() => {
-          expect(session.get('isAuthenticated')).to.be.false;
-          done();
+        await new Promise(resolve => {
+          next(() => {
+            assert.notOk(session.get('isAuthenticated'));
+            resolve();
+          });
         });
       });
 
-      it('clears its authenticated section', function(done) {
+      test('clears its authenticated section', async function(assert) {
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
         authenticator.trigger('sessionDataInvalidated');
 
-        next(() => {
-          expect(session.get('content')).to.eql({ some: 'property', authenticated: {} });
-          done();
+        await new Promise(resolve => {
+          next(() => {
+            assert.deepEqual(session.get('content'), { some: 'property', authenticated: {} });
+            resolve();
+          });
         });
       });
 
-      it('updates the store', function(done) {
+      test('updates the store', async function(assert) {
         authenticator.trigger('sessionDataInvalidated');
 
-        next(async() => {
-          let properties = await store.restore();
+        await new Promise(resolve => {
+          next(async () => {
+            let properties = await store.restore();
 
-          expect(properties.authenticated).to.eql({});
+            assert.deepEqual(properties.authenticated, {});
 
-          done();
+            resolve();
+          });
         });
       });
 
-      it('triggers the "invalidationSucceeded" event', function(done) {
+      test('triggers the "invalidationSucceeded" event', async function(assert) {
         let triggered = false;
         session.one('invalidationSucceeded', () => {
           triggered = true;
         });
         authenticator.trigger('sessionDataInvalidated');
 
-        next(() => {
-          expect(triggered).to.be.true;
-          done();
+        await new Promise(resolve => {
+          next(() => {
+            assert.ok(triggered);
+            resolve();
+          });
         });
       });
     });
   }
 
-  describe('restore', function() {
+  module('restore', function(hooks) {
     function itDoesNotRestore() {
-      it('returns a rejecting promise', async function() {
+      test('returns a rejecting promise', async function(assert) {
         try {
           await session.restore();
-          expect(false).to.be.true;
+          assert.ok(false);
         } catch (_error) {
-          expect(true).to.be.true;
+          assert.ok(true);
         }
       });
 
-      it('is not authenticated', async function() {
+      test('is not authenticated', async function(assert) {
         try {
           await session.restore();
         } catch (_error) {
-          expect(session.get('isAuthenticated')).to.be.false;
+          assert.notOk(session.get('isAuthenticated'));
         }
       });
 
-      it('clears its authenticated section', async function() {
+      test('clears its authenticated section', async function(assert) {
         store.persist({ some: 'property', authenticated: { some: 'other property' } });
 
         try {
           await session.restore();
         } catch (_error) {
-          expect(session.get('content')).to.eql({ some: 'property', authenticated: {} });
+          assert.deepEqual(session.get('content'), { some: 'property', authenticated: {} });
         }
       });
     }
 
-    describe('when the restored data contains an authenticator factory', function() {
-      beforeEach(function() {
+    module('when the restored data contains an authenticator factory', function(hooks) {
+      hooks.beforeEach(function() {
         store.persist({ authenticated: { authenticator: 'authenticator:test' } });
       });
 
-      describe('when the authenticator resolves restoration', function() {
-        beforeEach(function() {
+      module('when the authenticator resolves restoration', function(hooks) {
+        hooks.beforeEach(function() {
           sinon.stub(authenticator, 'restore').returns(RSVP.resolve({ some: 'property' }));
         });
 
-        it('returns a resolving promise', async function() {
+        test('returns a resolving promise', async function(assert) {
           try {
             await session.restore();
-            expect(true).to.be.true;
+            assert.ok(true);
           } catch (_error) {
-            expect(false).to.be.true;
+            assert.ok(false);
           }
         });
 
-        it('is authenticated', async function() {
+        test('is authenticated', async function(assert) {
           await session.restore();
 
-          expect(session.get('isAuthenticated')).to.be.true;
+          assert.ok(session.get('isAuthenticated'));
         });
 
-        it('stores the data the authenticator resolves with in its authenticated section', async function() {
+        test('stores the data the authenticator resolves with in its authenticated section', async function(assert) {
           await store.persist({ authenticated: { authenticator: 'authenticator:test' } });
           await session.restore();
           let properties = await store.restore();
 
           delete properties.authenticator;
 
-          expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator:test' });
+          assert.deepEqual(session.get('authenticated'), { some: 'property', authenticator: 'authenticator:test' });
         });
 
-        it('persists its content in the store', async function() {
+        test('persists its content in the store', async function(assert) {
           await store.persist({ authenticated: { authenticator: 'authenticator:test' }, someOther: 'property' });
           await session.restore();
           let properties = await store.restore();
 
           delete properties.authenticator;
 
-          expect(properties).to.eql({ authenticated: { some: 'property', authenticator: 'authenticator:test' }, someOther: 'property' });
+          assert.deepEqual(properties, { authenticated: { some: 'property', authenticator: 'authenticator:test' }, someOther: 'property' });
         });
 
-        it('persists the authenticator factory in the store', async function() {
+        test('persists the authenticator factory in the store', async function(assert) {
           await session.restore();
           let properties = await store.restore();
 
-          expect(properties.authenticated.authenticator).to.eql('authenticator:test');
+          assert.equal(properties.authenticated.authenticator, 'authenticator:test');
         });
 
-        it('does not trigger the "authenticationSucceeded" event', async function() {
+        test('does not trigger the "authenticationSucceeded" event', async function(assert) {
           let triggered = false;
           session.one('authenticationSucceeded', () => (triggered = true));
           await session.restore();
 
-          expect(triggered).to.be.false;
+          assert.notOk(triggered);
         });
 
-        itHandlesAuthenticatorEvents(async() => {
+        itHandlesAuthenticatorEvents(async () => {
           await session.restore();
         });
       });
 
-      describe('when the authenticator rejects restoration', function() {
-        beforeEach(function() {
+      module('when the authenticator rejects restoration', function(hooks) {
+        hooks.beforeEach(function() {
           sinon.stub(authenticator, 'restore').returns(RSVP.reject());
         });
 
@@ -204,126 +217,133 @@ describe('InternalSession', () => {
       });
     });
 
-    describe('when the restored data does not contain an authenticator factory', function() {
+    module('when the restored data does not contain an authenticator factory', function(hooks) {
       itDoesNotRestore();
     });
 
-    describe('when the store rejects restoration', function() {
-      beforeEach(function() {
+    module('when the store rejects restoration', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(store, 'restore').returns(RSVP.Promise.reject());
       });
 
-      it('is not authenticated', async function() {
-        await session.restore();
+      test('is not authenticated', async function(assert) {
+        try {
+          await session.restore();
+        }
+        catch (e) {
+        }
 
-        expect(session.get('isAuthenticated')).to.be.false;
+        assert.notOk(session.get('isAuthenticated'));
       });
     });
 
-    describe('when the store rejects persistance', function() {
-      beforeEach(function() {
+    module('when the store rejects persistance', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(store, 'persist').returns(RSVP.reject());
       });
 
-      it('is not authenticated', async function() {
-        await session.restore();
+      test('is not authenticated', async function(assert) {
+        try {
+          await session.restore();
+        }
+        catch (e) { }
 
-        expect(session.get('isAuthenticated')).to.be.false;
+        assert.notOk(session.get('isAuthenticated'));
       });
     });
   });
 
-  describe('authentication', function() {
-    describe('when the authenticator resolves authentication', function() {
-      beforeEach(function() {
+  module('authentication', function(hooks) {
+    module('when the authenticator resolves authentication', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.resolve({ some: 'property' }));
       });
 
-      it('is authenticated', async function() {
+      test('is authenticated', async function(assert) {
         await session.authenticate('authenticator:test');
 
-        expect(session.get('isAuthenticated')).to.be.true;
+        assert.ok(session.get('isAuthenticated'));
       });
 
-      it('returns a resolving promise', async function() {
+      test('returns a resolving promise', async function(assert) {
         try {
           await session.authenticate('authenticator:test');
-          expect(true).to.be.true;
+          assert.ok(true);
         } catch (_error) {
-          expect(false).to.be.true;
+          assert.ok(false);
         }
       });
 
-      it('stores the data the authenticator resolves with in its authenticated section', async function() {
+      test('stores the data the authenticator resolves with in its authenticated section', async function(assert) {
         await session.authenticate('authenticator:test');
 
-        expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator:test' });
+        assert.deepEqual(session.get('authenticated'), { some: 'property', authenticator: 'authenticator:test' });
       });
 
-      it('persists its content in the store', async function() {
+      test('persists its content in the store', async function(assert) {
         await session.authenticate('authenticator:test');
         let properties = await store.restore();
 
         delete properties.authenticator;
 
-        expect(properties).to.eql({ authenticated: { some: 'property', authenticator: 'authenticator:test' } });
+        assert.deepEqual(properties, { authenticated: { some: 'property', authenticator: 'authenticator:test' } });
       });
 
-      it('persists the authenticator factory in the store', async function() {
+      test('persists the authenticator factory in the store', async function(assert) {
         await session.authenticate('authenticator:test');
         let properties = await store.restore();
 
-        expect(properties.authenticated.authenticator).to.eql('authenticator:test');
+        assert.equal(properties.authenticated.authenticator, 'authenticator:test');
       });
 
-      it('triggers the "authenticationSucceeded" event', async function() {
+      test('triggers the "authenticationSucceeded" event', async function(assert) {
         let triggered = false;
         session.one('authenticationSucceeded', () => (triggered = true));
 
         await session.authenticate('authenticator:test');
 
-        expect(triggered).to.be.true;
+        assert.ok(triggered);
       });
 
-      itHandlesAuthenticatorEvents(async() => {
+      itHandlesAuthenticatorEvents(async () => {
         await session.authenticate('authenticator:test');
       });
     });
 
-    describe('when the authenticator rejects authentication', function() {
-      it('is not authenticated', async function() {
+    module('when the authenticator rejects authentication', function(hooks) {
+      test('is not authenticated', async function(assert) {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
 
         try {
           await session.authenticate('authenticator:test');
         } catch (_error) {
-          expect(session.get('isAuthenticated')).to.be.false;
+          assert.notOk(session.get('isAuthenticated'));
         }
       });
 
-      it('returns a rejecting promise', async function() {
+      test('returns a rejecting promise', async function(assert) {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
 
         try {
           await session.authenticate('authenticator:test');
-          expect(false).to.be.true;
+          assert.ok(false);
         } catch (_error) {
-          expect(true).to.be.true;
+          assert.ok(true);
         }
       });
 
-      it('clears its authenticated section', async function() {
+      test('clears its authenticated section', async function(assert) {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
         try {
           await session.authenticate('authenticator:test');
         } catch (_error) {
-          expect(session.get('content')).to.eql({ some: 'property', authenticated: {} });
+          assert.deepEqual(session.get('content'), { some: 'property', authenticated: {} });
         }
       });
 
-      it('updates the store', async function() {
+      test('updates the store', async function(assert) {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
@@ -332,11 +352,11 @@ describe('InternalSession', () => {
         } catch (_error) {
           let properties = await store.restore();
 
-          expect(properties).to.eql({ some: 'property', authenticated: {} });
+          assert.deepEqual(properties, { some: 'property', authenticated: {} });
         }
       });
 
-      it('does not trigger the "authenticationSucceeded" event', async function() {
+      test('does not trigger the "authenticationSucceeded" event', async function(assert) {
         let triggered = false;
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
         session.one('authenticationSucceeded', () => (triggered = true));
@@ -344,130 +364,133 @@ describe('InternalSession', () => {
         try {
           await session.authenticate('authenticator:test');
         } catch (_error) {
-          expect(triggered).to.be.false;
+          assert.notOk(triggered);
         }
       });
     });
 
-    describe('when the store rejects persistance', function() {
-      beforeEach(function() {
+    module('when the store rejects persistance', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(store, 'persist').returns(RSVP.reject());
       });
 
-      it('is not authenticated', async function() {
-        await session.authenticate('authenticator:test');
+      test('is not authenticated', async function(assert) {
+        try {
+          await session.authenticate('authenticator:test');
+        }
+        catch (e) { }
 
-        expect(session.get('isAuthenticated')).to.be.false;
+        assert.notOk(session.get('isAuthenticated'));
       });
     });
   });
 
-  describe('invalidation', function() {
-    beforeEach(async function() {
+  module('invalidation', function(hooks) {
+    hooks.beforeEach(async function() {
       sinon.stub(authenticator, 'authenticate').returns(RSVP.resolve({ some: 'property' }));
       await session.authenticate('authenticator:test');
     });
 
-    it('unsets the attemptedTransition', function() {
+    test('unsets the attemptedTransition', function(assert) {
       session.set('attemptedTransition', { some: 'transition' });
       session.invalidate();
 
-      expect(session.get('attemptedTransition')).to.be.null;
+      assert.equal(session.get('attemptedTransition'), null);
     });
 
 
-    describe('when invalidate gets called with additional params', function() {
-      beforeEach(function() {
+    module('when invalidate gets called with additional params', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.spy(authenticator, 'invalidate');
       });
 
-      it('passes the params on to the authenticators invalidate method', function() {
+      test('passes the params on to the authenticators invalidate method', function(assert) {
         let param = { some: 'random data' };
         session.invalidate(param);
-        expect(authenticator.invalidate).to.have.been.calledWith(session.get('authenticated'), param);
+        assert.ok(authenticator.invalidate.calledWith(session.get('authenticated'), param));
       });
     });
 
-    describe('when the authenticator resolves invalidation', function() {
-      beforeEach(function() {
+    module('when the authenticator resolves invalidation', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.resolve());
       });
 
-      it('is not authenticated', async function() {
+      test('is not authenticated', async function(assert) {
         await session.invalidate();
 
-        expect(session.get('isAuthenticated')).to.be.false;
+        assert.notOk(session.get('isAuthenticated'));
       });
 
-      it('returns a resolving promise', async function() {
+      test('returns a resolving promise', async function(assert) {
         try {
           await session.invalidate();
-          expect(true).to.be.true;
+          assert.ok(true);
         } catch (_error) {
-          expect(false).to.be.true;
+          assert.ok(false);
         }
       });
 
-      it('clears its authenticated section', async function() {
+      test('clears its authenticated section', async function(assert) {
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
         await session.invalidate();
 
-        expect(session.get('content')).to.eql({ some: 'property', authenticated: {} });
+        assert.deepEqual(session.get('content'), { some: 'property', authenticated: {} });
       });
 
-      it('updates the store', async function() {
+      test('updates the store', async function(assert) {
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
         await session.invalidate();
         let properties = await store.restore();
 
-        expect(properties).to.eql({ some: 'property', authenticated: {} });
+        assert.deepEqual(properties, { some: 'property', authenticated: {} });
       });
 
-      it('triggers the "invalidationSucceeded" event', async function() {
+      test('triggers the "invalidationSucceeded" event', async function(assert) {
         let triggered = false;
         session.one('invalidationSucceeded', () => (triggered = true));
 
         await session.invalidate();
 
-        expect(triggered).to.be.true;
+        assert.ok(triggered);
       });
     });
 
-    describe('when the authenticator rejects invalidation', function() {
-      it('stays authenticated', async function() {
+    module('when the authenticator rejects invalidation', function(hooks) {
+      test('stays authenticated', async function(assert) {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
         try {
           await session.invalidate();
         } catch (_error) {
-          expect(session.get('isAuthenticated')).to.be.true;
+          assert.ok(session.get('isAuthenticated'));
         }
       });
 
-      it('returns a rejecting promise', async function() {
+      test('returns a rejecting promise', async function(assert) {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
         try {
           await session.invalidate();
-          expect(false).to.be.true;
+          assert.ok(false);
         } catch (_error) {
-          expect(true).to.be.true;
+          assert.ok(true);
         }
       });
 
-      it('keeps its content', async function() {
+      test('keeps its content', async function(assert) {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
         try {
           await session.invalidate();
         } catch (_error) {
-          expect(session.get('authenticated')).to.eql({ some: 'property', authenticator: 'authenticator:test' });
+          assert.deepEqual(session.get('authenticated'), { some: 'property', authenticator: 'authenticator:test' });
         }
       });
 
-      it('does not update the store', async function() {
+      test('does not update the store', async function(assert) {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
         try {
@@ -475,11 +498,11 @@ describe('InternalSession', () => {
         } catch (_error) {
           let properties = await store.restore();
 
-          expect(properties).to.eql({ authenticated: { some: 'property', authenticator: 'authenticator:test' } });
+          assert.deepEqual(properties, { authenticated: { some: 'property', authenticator: 'authenticator:test' } });
         }
       });
 
-      it('does not trigger the "invalidationSucceeded" event', async function() {
+      test('does not trigger the "invalidationSucceeded" event', async function(assert) {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
         let triggered = false;
         session.one('invalidationSucceeded', () => (triggered = true));
@@ -487,316 +510,346 @@ describe('InternalSession', () => {
         try {
           await session.invalidate();
         } catch (_error) {
-          expect(triggered).to.be.false;
+          assert.notOk(triggered);
         }
       });
 
-      itHandlesAuthenticatorEvents(function() {});
+      itHandlesAuthenticatorEvents(function() { });
     });
 
-    describe('when the store rejects persistance', function() {
-      beforeEach(function() {
+    module('when the store rejects persistance', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(store, 'persist').returns(RSVP.reject());
       });
 
-      it('rejects but is not authenticated', async function() {
+      test('rejects but is not authenticated', async function(assert) {
         try {
           await session.invalidate();
         } catch (_error) {
-          expect(session.get('isAuthenticated')).to.be.false;
+          assert.notOk(session.get('isAuthenticated'));
         }
       });
     });
   });
 
   describe("when the session's content changes", function() {
-    describe('when a single property is set', function() {
-      describe('when the property is private (starts with an "_")', function() {
-        beforeEach(function() {
+    module('when a single property is set', function(hooks) {
+      module('when the property is private (starts with an "_")', function(hooks) {
+        hooks.beforeEach(function() {
           session.set('_some', 'property');
         });
 
-        it('does not persist its content in the store', async function() {
+        test('does not persist its content in the store', async function(assert) {
           let properties = await store.restore();
           delete properties.authenticator;
 
-          expect(properties).to.eql({});
+          assert.deepEqual(properties, {});
         });
       });
 
-      describe('when the property is not private (does not start with an "_")', function() {
-        beforeEach(function() {
+      module('when the property is not private (does not start with an "_")', function(hooks) {
+        hooks.beforeEach(function() {
           session.set('some', 'property');
         });
 
-        it('persists its content in the store', async function() {
+        test('persists its content in the store', async function(assert) {
           let properties = await store.restore();
           delete properties.authenticator;
 
-          expect(properties).to.eql({ some: 'property', authenticated: {} });
+          assert.deepEqual(properties, { some: 'property', authenticated: {} });
         });
       });
     });
 
-    describe('when multiple properties are set at once', function() {
-      beforeEach(function() {
+    module('when multiple properties are set at once', function(hooks) {
+      hooks.beforeEach(function() {
         session.set('some', 'property');
         session.setProperties({ another: 'property', multiple: 'properties' });
       });
 
-      it('persists its content in the store', async function() {
+      test('persists its content in the store', async function(assert) {
         let properties = await store.restore();
         delete properties.authenticator;
 
-        expect(properties).to.eql({ some: 'property', another: 'property', multiple: 'properties', authenticated: {} });
+        assert.deepEqual(properties, { some: 'property', another: 'property', multiple: 'properties', authenticated: {} });
       });
     });
   });
 
-  describe('when the store triggers the "sessionDataUpdated" event', function() {
-    describe('when the session is currently busy', function() {
-      beforeEach(function() {
+  module('when the store triggers the "sessionDataUpdated" event', function(hooks) {
+    module('when the session is currently busy', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(store, 'restore').returns(new RSVP.Promise((resolve) => {
           next(() => resolve({ some: 'other property' }));
         }));
       });
 
-      it('does not process the event', async function() {
+      test('does not process the event', async function(assert) {
         sinon.spy(authenticator, 'restore');
         let restoration = session.restore();
         store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
         await restoration;
 
-        expect(authenticator.restore).to.not.have.been.called;
+        assert.notOk(authenticator.restore.called);
       });
     });
 
-    describe('when the session is not currently busy', function() {
-      describe('when there is an authenticator factory in the event data', function() {
-        describe('when the authenticator resolves restoration', function() {
-          beforeEach(function() {
+    module('when the session is not currently busy', function(hooks) {
+      module('when there is an authenticator factory in the event data', function(hooks) {
+        module('when the authenticator resolves restoration', function(hooks) {
+          hooks.beforeEach(function() {
             sinon.stub(authenticator, 'restore').returns(RSVP.resolve({ some: 'other property' }));
           });
 
-          it('is authenticated', function(done) {
+          test('is authenticated', async function(assert) {
             store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
-            next(() => {
-              expect(session.get('isAuthenticated')).to.be.true;
-              done();
-            });
-          });
-
-          it('stores the data the authenticator resolves with in its authenticated section', function(done) {
-            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator:test' } });
-
-            next(() => {
-              expect(session.get('authenticated')).to.eql({ some: 'other property', authenticator: 'authenticator:test' });
-              done();
-            });
-          });
-
-          it('persists its content in the store', function(done) {
-            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator:test' } });
-
-            next(async() => {
-              let properties = await store.restore();
-
-              expect(properties).to.eql({ some: 'property', authenticated: { some: 'other property', authenticator: 'authenticator:test' } });
-
-              done();
-            });
-          });
-
-          describe('when the session is already authenticated', function() {
-            beforeEach(function() {
-              session.set('isAuthenticated', true);
-            });
-
-            it('does not trigger the "authenticationSucceeded" event', function(done) {
-              let triggered = false;
-              session.one('authenticationSucceeded', () => (triggered = true));
-              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
-
+            await new Promise(resolve => {
               next(() => {
-                expect(triggered).to.be.false;
-                done();
+                assert.ok(session.get('isAuthenticated'));
+                resolve();
               });
             });
           });
 
-          describe('when the session is not already authenticated', function() {
-            beforeEach(function() {
-              session.set('isAuthenticated', false);
+          test('stores the data the authenticator resolves with in its authenticated section', async function(assert) {
+            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator:test' } });
+
+            await new Promise(resolve => {
+              next(() => {
+                assert.deepEqual(session.get('authenticated'), { some: 'other property', authenticator: 'authenticator:test' });
+                resolve();
+              });
+            });
+          });
+
+          test('persists its content in the store', async function(assert) {
+            store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator:test' } });
+
+            await new Promise(resolve => {
+              next(async () => {
+                let properties = await store.restore();
+
+                assert.deepEqual(properties, { some: 'property', authenticated: { some: 'other property', authenticator: 'authenticator:test' } });
+
+                resolve();
+              });
+            });
+          });
+
+          module('when the session is already authenticated', function(hooks) {
+            hooks.beforeEach(function() {
+              session.set('isAuthenticated', true);
             });
 
-            it('triggers the "authenticationSucceeded" event', function(done) {
+            test('does not trigger the "authenticationSucceeded" event', async function(assert) {
               let triggered = false;
               session.one('authenticationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
-              next(() => {
-                expect(triggered).to.be.true;
-                done();
+              await new Promise(resolve => {
+                next(() => {
+                  assert.notOk(triggered);
+                  resolve();
+                });
+              });
+            });
+          });
+
+          module('when the session is not already authenticated', function(hooks) {
+            hooks.beforeEach(function() {
+              session.set('isAuthenticated', false);
+            });
+
+            test('triggers the "authenticationSucceeded" event', async function(assert) {
+              let triggered = false;
+              session.one('authenticationSucceeded', () => (triggered = true));
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
+
+              await new Promise(resolve => {
+                next(() => {
+                  assert.ok(triggered);
+                  resolve();
+                });
               });
             });
           });
         });
 
-        describe('when the authenticator rejects restoration', function() {
-          beforeEach(function() {
+        module('when the authenticator rejects restoration', function(hooks) {
+          hooks.beforeEach(function() {
             sinon.stub(authenticator, 'restore').returns(RSVP.reject());
           });
 
-          it('is not authenticated', function(done) {
+          test('is not authenticated', async function(assert) {
             store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
-            next(() => {
-              expect(session.get('isAuthenticated')).to.be.false;
-              done();
-            });
-          });
-
-          it('clears its authenticated section', function(done) {
-            session.set('content', { some: 'property', authenticated: { some: 'other property' } });
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
-
-            next(() => {
-              expect(session.get('content')).to.eql({ some: 'other property', authenticated: {} });
-              done();
-            });
-          });
-
-          it('updates the store', function(done) {
-            session.set('content', { some: 'property', authenticated: { some: 'other property' } });
-            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
-
-            next(async() => {
-              let properties = await store.restore();
-
-              expect(properties).to.eql({ some: 'other property', authenticated: {} });
-
-              done();
-            });
-          });
-
-          describe('when the session is authenticated', function() {
-            beforeEach(function() {
-              session.set('isAuthenticated', true);
-            });
-
-            it('triggers the "invalidationSucceeded" event', function(done) {
-              let triggered = false;
-              session.one('invalidationSucceeded', () => (triggered = true));
-              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
-
+            await new Promise(resolve => {
               next(() => {
-                expect(triggered).to.be.true;
-                done();
+                assert.notOk(session.get('isAuthenticated'));
+                resolve();
               });
             });
           });
 
-          describe('when the session is not authenticated', function() {
-            beforeEach(function() {
-              session.set('isAuthenticated', false);
+          test('clears its authenticated section', async function(assert) {
+            session.set('content', { some: 'property', authenticated: { some: 'other property' } });
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
+
+            await new Promise(resolve => {
+              next(() => {
+                assert.deepEqual(session.get('content'), { some: 'other property', authenticated: {} });
+                resolve();
+              });
+            });
+          });
+
+          test('updates the store', async function(assert) {
+            session.set('content', { some: 'property', authenticated: { some: 'other property' } });
+            store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
+
+            await new Promise(resolve => {
+              next(async () => {
+                let properties = await store.restore();
+
+                assert.deepEqual(properties, { some: 'other property', authenticated: {} });
+
+                resolve();
+              });
+            });
+          });
+
+          module('when the session is authenticated', function(hooks) {
+            hooks.beforeEach(function() {
+              session.set('isAuthenticated', true);
             });
 
-            it('does not trigger the "invalidationSucceeded" event', function(done) {
+            test('triggers the "invalidationSucceeded" event', async function(assert) {
               let triggered = false;
               session.one('invalidationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
-              next(() => {
-                expect(triggered).to.be.false;
-                done();
+              await new Promise(resolve => {
+                next(() => {
+                  assert.ok(triggered);
+                  resolve();
+                });
+              });
+            });
+          });
+
+          module('when the session is not authenticated', function(hooks) {
+            hooks.beforeEach(function() {
+              session.set('isAuthenticated', false);
+            });
+
+            test('does not trigger the "invalidationSucceeded" event', async function(assert) {
+              let triggered = false;
+              session.one('invalidationSucceeded', () => (triggered = true));
+              store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
+
+              await new Promise(resolve => {
+                next(() => {
+                  assert.notOk(triggered);
+                  resolve();
+                });
               });
             });
           });
         });
       });
 
-      describe('when there is no authenticator factory in the store', function() {
-        it('is not authenticated', function(done) {
+      module('when there is no authenticator factory in the store', function(hooks) {
+        test('is not authenticated', async function(assert) {
           store.trigger('sessionDataUpdated', { some: 'other property' });
 
-          next(() => {
-            expect(session.get('isAuthenticated')).to.be.false;
-            done();
+          await new Promise(resolve => {
+            next(() => {
+              assert.notOk(session.get('isAuthenticated'));
+              resolve();
+            });
           });
         });
 
-        it('clears its authenticated section', function(done) {
+        test('clears its authenticated section', async function(assert) {
           session.set('content', { some: 'property', authenticated: { some: 'other property' } });
           store.trigger('sessionDataUpdated', { some: 'other property' });
 
-          next(() => {
-            expect(session.get('content')).to.eql({ some: 'other property', authenticated: {} });
-            done();
+          await new Promise(resolve => {
+            next(() => {
+              assert.deepEqual(session.get('content'), { some: 'other property', authenticated: {} });
+              resolve();
+            });
           });
         });
 
-        it('updates the store', function(done) {
+        test('updates the store', async function(assert) {
           session.set('content', { some: 'property', authenticated: { some: 'other property' } });
           store.trigger('sessionDataUpdated', { some: 'other property' });
 
-          next(async() => {
-            let properties = await store.restore();
+          await new Promise(resolve => {
+            next(async () => {
+              let properties = await store.restore();
 
-            expect(properties).to.eql({ some: 'other property', authenticated: {} });
+              assert.deepEqual(properties, { some: 'other property', authenticated: {} });
 
-            done();
+              resolve();
+            });
           });
         });
 
-        describe('when the session is authenticated', function() {
-          beforeEach(function() {
+        module('when the session is authenticated', function(hooks) {
+          hooks.beforeEach(function() {
             session.set('isAuthenticated', true);
           });
 
-          it('triggers the "invalidationSucceeded" event', function(done) {
+          test('triggers the "invalidationSucceeded" event', async function(assert) {
             let triggered = false;
             session.one('invalidationSucceeded', () => (triggered = true));
             store.trigger('sessionDataUpdated', { some: 'other property' });
 
-            next(() => {
-              expect(triggered).to.be.true;
-              done();
+            await new Promise(resolve => {
+              next(() => {
+                assert.ok(triggered);
+                resolve();
+              });
             });
           });
         });
 
-        describe('when the session is not authenticated', function() {
-          beforeEach(function() {
+        module('when the session is not authenticated', function(hooks) {
+          hooks.beforeEach(function() {
             session.set('isAuthenticated', false);
           });
 
-          it('does not trigger the "invalidationSucceeded" event', function(done) {
+          test('does not trigger the "invalidationSucceeded" event', async function(assert) {
             let triggered = false;
             session.one('invalidationSucceeded', () => (triggered = true));
             store.trigger('sessionDataUpdated', { some: 'other property' });
 
-            next(() => {
-              expect(triggered).to.be.false;
-              done();
+            await new Promise(resolve => {
+              next(() => {
+                assert.notOk(triggered);
+                resolve();
+              });
             });
           });
 
-          it('it does not trigger the "sessionInvalidationFailed" event', async function() {
+          test('it does not trigger the "sessionInvalidationFailed" event', async function(assert) {
             let triggered = false;
             session.one('sessionInvalidationFailed', () => (triggered = true));
 
             await session.invalidate();
 
-            expect(triggered).to.be.false;
+            assert.notOk(triggered);
           });
 
-          it('it returns with a resolved Promise', async function() {
+          test('it returns with a resolved Promise', async function(assert) {
             try {
               await session.invalidate();
-              expect(true).to.be.true;
+              assert.ok(true);
             } catch (_error) {
-              expect(false).to.be.true;
+              assert.ok(false);
             }
           });
         });
