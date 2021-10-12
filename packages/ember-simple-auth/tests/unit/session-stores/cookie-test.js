@@ -1,15 +1,16 @@
-import { describe } from 'mocha';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
 import CookieStore from 'ember-simple-auth/session-stores/cookie';
-import { setupTest } from 'ember-mocha';
 
-describe('CookieStore', () => {
-  setupTest();
+module('CookieStore', function(hooks) {
+  setupTest(hooks);
 
-  describe('StoreBehavior', function() {
+  module('StoreBehavior', function(hooks) {
     itBehavesLikeAStore({
+      hooks,
       store(sinon, owner) {
         let store;
         let cookieService;
@@ -29,8 +30,9 @@ describe('CookieStore', () => {
     });
   });
 
-  describe('CookieStoreBehavior', function() {
+  module('CookieStoreBehavior', function(hooks) {
     itBehavesLikeACookieStore({
+      hooks,
       store(sinon, owner, storeOptions) {
         owner.register('service:cookies', FakeCookieService);
         let cookieService = owner.lookup('service:cookies');
