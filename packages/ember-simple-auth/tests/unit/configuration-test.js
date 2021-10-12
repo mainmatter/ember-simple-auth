@@ -1,39 +1,39 @@
-import { describe, afterEach, it } from 'mocha';
-import { expect } from 'chai';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import Configuration from 'ember-simple-auth/configuration';
 
-describe('Configuration', () => {
-  afterEach(function() {
+module('Configuration', function(hooks) {
+  hooks.afterEach(function() {
     Configuration.load({});
   });
 
-  describe('rootURL', function() {
-    it('defaults to ""', function() {
+  module('rootURL', function(hooks) {
+    test('defaults to ""', function(assert) {
       Configuration.load({});
 
-      expect(Configuration.rootURL).to.eql('');
+      assert.equal(Configuration.rootURL, '');
     });
   });
 
-  describe('routeAfterAuthentication', function() {
-    it('defaults to "index"', function() {
+  module('routeAfterAuthentication', function(hooks) {
+    test('defaults to "index"', function(assert) {
       Configuration.load({});
 
-      expect(Configuration.routeAfterAuthentication).to.eql('index');
+      assert.equal(Configuration.routeAfterAuthentication, 'index');
     });
   });
 
-  describe('.load', function() {
-    it('sets rootURL correctly', function() {
+  module('.load', function(hooks) {
+    test('sets rootURL correctly', function(assert) {
       Configuration.load({ rootURL: '/rootURL' });
 
-      expect(Configuration.rootURL).to.eql('/rootURL');
+      assert.equal(Configuration.rootURL, '/rootURL');
     });
 
-    it('sets routeAfterAuthentication correctly', function() {
+    test('sets routeAfterAuthentication correctly', function(assert) {
       Configuration.load({ routeAfterAuthentication: '/some-route' });
 
-      expect(Configuration.routeAfterAuthentication).to.eql('/some-route');
+      assert.equal(Configuration.routeAfterAuthentication, '/some-route');
     });
   });
 });
