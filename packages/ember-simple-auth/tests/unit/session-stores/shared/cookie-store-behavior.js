@@ -173,7 +173,7 @@ export default function(options) {
       });
     });
 
-    task('is triggered when the cookie changed', async function(assert) {
+    test('is triggered when the cookie changed', async function(assert) {
       const cookiesService = store.get('_cookies') || store.get('_store._cookies');
       cookiesService._content['ember_simple_auth-session'] = '%7B%22key%22%3A%22other%20value%22%7D';
       sync(store);
@@ -188,7 +188,7 @@ export default function(options) {
       });
     });
 
-    task('is not triggered when the cookie expiration was renewed', async function(assert) {
+    test('is not triggered when the cookie expiration was renewed', async function(assert) {
       renew(store, { key: 'value' });
       sync(store);
 

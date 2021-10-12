@@ -391,16 +391,18 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
         server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!" }']);
       });
 
-      it('triggers the "sessionDataUpdated" event', function(done) {
-        authenticator.one('sessionDataUpdated', (data) => {
-          assert.true(data['expires_at'] > new Date().getTime());
-          delete data['expires_at'];
-          assert.deepEqual(data, { 'access_token': 'secret token 2!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
+      test('triggers the "sessionDataUpdated" event', async function(assert) {
+        await new Promise(resolve => {
+          authenticator.one('sessionDataUpdated', (data) => {
+            assert.true(data['expires_at'] > new Date().getTime());
+            delete data['expires_at'];
+            assert.deepEqual(data, { 'access_token': 'secret token 2!', 'expires_in': 12345, 'refresh_token': 'refresh token!' });
 
-          done();
+            resolve();
+          });
+
+          authenticator._refreshAccessToken(12345, 'refresh token!');
         });
-
-        authenticator._refreshAccessToken(12345, 'refresh token!');
       });
 
       module('when the server response includes updated expiration data', function(hooks) {
@@ -408,15 +410,17 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
           server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!" }']);
         });
 
-        it('triggers the "sessionDataUpdated" event with the correct data', function(done) {
-          authenticator.one('sessionDataUpdated', (data) => {
-            assert.true(data['expires_at'] > new Date().getTime());
-            delete data['expires_at'];
-            assert.deepEqual(data, { 'access_token': 'secret token 2!', 'expires_in': 67890, 'refresh_token': 'refresh token 2!' });
-            done();
-          });
+        test('triggers the "sessionDataUpdated" event with the correct data', async function(assert) {
+          await new Promise(resolve => {
+            authenticator.one('sessionDataUpdated', (data) => {
+              assert.true(data['expires_at'] > new Date().getTime());
+              delete data['expires_at'];
+              assert.deepEqual(data, { 'access_token': 'secret token 2!', 'expires_in': 67890, 'refresh_token': 'refresh token 2!' });
+              resolve();
+            });
 
-          authenticator._refreshAccessToken(12345, 'refresh token!');
+            authenticator._refreshAccessToken(12345, 'refresh token!');
+          });
         });
       });
     });
