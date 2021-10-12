@@ -579,9 +579,8 @@ module('InternalSession', function(hooks) {
   module('when the store triggers the "sessionDataUpdated" event', function(hooks) {
     module('when the session is currently busy', function(hooks) {
       hooks.beforeEach(function() {
-        // sinon.stub(authenticator, 'restore').returns(Promise.resolve({}));
         sinon.stub(store, 'restore').returns(new RSVP.Promise((resolve) => {
-          next(() => resolve({ some: 'other property', authenticated: { authenticator: 'authenticator:test' } }));
+          next(() => resolve({ some: 'other property' }));
         }));
       });
 
@@ -589,7 +588,10 @@ module('InternalSession', function(hooks) {
         sinon.spy(authenticator, 'restore');
         let restoration = session.restore();
         store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
-        await restoration;
+        try {
+          await restoration;
+        }
+        catch (e) { }
 
         assert.notOk(authenticator.restore.called);
       });
