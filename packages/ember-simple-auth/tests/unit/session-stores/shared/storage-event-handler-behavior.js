@@ -1,41 +1,42 @@
+
+import { module, test } from 'qunit';
 import { run } from '@ember/runloop';
-import { describe, beforeEach, it } from 'mocha';
-import { expect } from 'chai';
 import sinonjs from 'sinon';
 
 export default function(options) {
   let sinon;
   let store;
+  let hooks = options.hooks;
 
   // eslint-disable-next-line mocha/no-top-level-hooks
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
     store = options.store();
   });
 
   // eslint-disable-next-line mocha/no-top-level-hooks
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
 
-  describe('storage events', function() {
-    beforeEach(function() {
+  module('storage events', function(hooks) {
+    hooks.beforeEach(function() {
       sinon.spy(window, 'addEventListener');
       sinon.spy(window, 'removeEventListener');
     });
 
-    afterEach(function() {
+    hooks.afterEach(function() {
       window.addEventListener.restore();
       window.removeEventListener.restore();
     });
 
-    it('binds to "storage" events on the window when created', function() {
+    test('binds to "storage" events on the window when created', function(assert) {
       store = options.store();
 
-      expect(window.addEventListener).to.have.been.calledOnce;
+      assert.ok(window.addEventListener.calledOnce);
     });
 
-    it('triggers the "sessionDataUpdated" event when the data in the browser storage has changed', function() {
+    test('triggers the "sessionDataUpdated" event when the data in the browser storage has changed', function(assert) {
       let triggered = false;
       store.on('sessionDataUpdated', () => {
         triggered = true;
@@ -43,10 +44,10 @@ export default function(options) {
 
       window.dispatchEvent(new StorageEvent('storage', { key: store.get('key') }));
 
-      expect(triggered).to.be.true;
+      assert.ok(triggered);
     });
 
-    it('does not trigger the "sessionDataUpdated" event when the data in the browser storage has not changed', function() {
+    test('does not trigger the "sessionDataUpdated" event when the data in the browser storage has not changed', function(assert) {
       let triggered = false;
       store.on('sessionDataUpdated', () => {
         triggered = true;
@@ -55,10 +56,10 @@ export default function(options) {
       store.persist({ key: 'value' }); // this data will be read again when the event is handled so that no change will be detected
       window.dispatchEvent(new StorageEvent('storage', { key: store.get('key') }));
 
-      expect(triggered).to.be.false;
+      assert.notOk(triggered);
     });
 
-    it('does not trigger the "sessionDataUpdated" event when the data in the browser storage has changed for a different key', function() {
+    test('does not trigger the "sessionDataUpdated" event when the data in the browser storage has changed for a different key', function(assert) {
       let triggered = false;
       store.on('sessionDataUpdated', () => {
         triggered = true;
@@ -66,13 +67,13 @@ export default function(options) {
 
       window.dispatchEvent(new StorageEvent('storage', { key: 'another key' }));
 
-      expect(triggered).to.be.false;
+      assert.notOk(triggered);
     });
 
-    it('unbinds from "storage" events on the window when destroyed', function() {
+    test('unbinds from "storage" events on the window when destroyed', function(assert) {
       run(() => store.destroy());
 
-      expect(window.removeEventListener).to.have.been.calledOnce;
+      assert.ok(window.removeEventListener.calledOnce);
     });
   });
 }
