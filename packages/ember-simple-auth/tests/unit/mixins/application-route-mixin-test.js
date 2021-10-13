@@ -53,7 +53,7 @@ module('Unit | mixins | application-route-mixin', function(hooks) {
       sinon.restore();
     });
 
-    test("maps the servicess authenticationSucceeded event into a method call", async function(assert) {
+    test('maps the servicess authenticationSucceeded event into a method call', async function(assert) {
       sessionService.trigger('authenticationSucceeded');
 
       await new Promise(resolve => {
@@ -88,7 +88,7 @@ module('Unit | mixins | application-route-mixin', function(hooks) {
     });
   });
 
-  module('sessionAuthenticated', function(hooks) {
+  module('sessionAuthenticated', function() {
     module('when an attempted transition is stored in the session', function(hooks) {
       let attemptedTransition;
 
@@ -140,7 +140,7 @@ module('Unit | mixins | application-route-mixin', function(hooks) {
       });
     });
 
-    module('when no attempted transition is stored in the session', function(hooks) {
+    module('when no attempted transition is stored in the session', function() {
       test('transitions to "index" by default', function(assert) {
         route.sessionAuthenticated();
 

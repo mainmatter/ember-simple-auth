@@ -1,6 +1,5 @@
 import { module, test } from 'qunit';
 import OAuth2ImplicitGrant, { parseResponse } from 'ember-simple-auth/authenticators/oauth2-implicit-grant';
-import { assert } from 'chai';
 
 module('Unit | authenticators | oauth2-implicit-grant', function(hooks) {
   let authenticator;

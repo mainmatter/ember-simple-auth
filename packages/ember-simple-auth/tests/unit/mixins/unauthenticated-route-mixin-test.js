@@ -71,7 +71,7 @@ module('UnauthenticatedRouteMixin', function(hooks) {
       });
     });
 
-    module('if the session is not authenticated', function(hooks) {
+    module('if the session is not authenticated', function() {
       test('does not transition', function(assert) {
         route.beforeModel();
 

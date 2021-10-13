@@ -73,7 +73,7 @@ module('AuthenticatedRouteMixin', function(hooks) {
       });
     });
 
-    module('if the session is not authenticated', function(hooks) {
+    module('if the session is not authenticated', function() {
       test('does not return the upstream promise', function(assert) {
         assert.equal(route.beforeModel(transition), undefined);
       });

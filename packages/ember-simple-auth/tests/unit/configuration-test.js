@@ -1,5 +1,4 @@
 import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
 import Configuration from 'ember-simple-auth/configuration';
 
 module('Configuration', function(hooks) {
@@ -7,7 +6,7 @@ module('Configuration', function(hooks) {
     Configuration.load({});
   });
 
-  module('rootURL', function(hooks) {
+  module('rootURL', function() {
     test('defaults to ""', function(assert) {
       Configuration.load({});
 
@@ -15,7 +14,7 @@ module('Configuration', function(hooks) {
     });
   });
 
-  module('routeAfterAuthentication', function(hooks) {
+  module('routeAfterAuthentication', function() {
     test('defaults to "index"', function(assert) {
       Configuration.load({});
 
@@ -23,7 +22,7 @@ module('Configuration', function(hooks) {
     });
   });
 
-  module('.load', function(hooks) {
+  module('.load', function() {
     test('sets rootURL correctly', function(assert) {
       Configuration.load({ rootURL: '/rootURL' });
 

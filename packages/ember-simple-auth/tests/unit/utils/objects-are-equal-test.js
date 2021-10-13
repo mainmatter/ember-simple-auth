@@ -1,8 +1,7 @@
 import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
 import objectsAreEqual from 'ember-simple-auth/utils/objects-are-equal';
 
-module('objectsAreEqual', function(hooks) {
+module('objectsAreEqual', function() {
   test('is true for equal objects', function(assert) {
     assert.ok(objectsAreEqual({ a: 'b', c: 'd' }, { a: 'b', c: 'd' }));
   });

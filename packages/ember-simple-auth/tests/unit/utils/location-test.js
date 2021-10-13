@@ -1,5 +1,4 @@
 import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
 import * as LocationUtil from 'ember-simple-auth/utils/location';
 import sinonjs from 'sinon';
 

@@ -22,7 +22,7 @@ module('ToriiAuthenticator', function(hooks) {
     sinon.restore();
   });
 
-  module('#restore', function(hooks) {
+  module('#restore', function() {
     function itDoesNotRestore(data) {
       test('returns a rejecting promise', async function(assert) {
         try {
@@ -45,7 +45,7 @@ module('ToriiAuthenticator', function(hooks) {
       }
     });
 
-    module('when there is a torii provider in the session data', function(hooks) {
+    module('when there is a torii provider in the session data', function() {
       module('when torii fetches successfully', function(hooks) {
         hooks.beforeEach(function() {
           sinon.stub(torii, 'fetch').returns(RSVP.resolve({ some: 'other data' }));
@@ -67,12 +67,12 @@ module('ToriiAuthenticator', function(hooks) {
       });
     });
 
-    module('when there is no torii provider in the session data', function(hooks) {
+    module('when there is no torii provider in the session data', function() {
       itDoesNotRestore();
     });
   });
 
-  module('#authenticate', function(hooks) {
+  module('#authenticate', function() {
     test('throws if torii is not installed', async function(assert) {
       authenticator.set('torii', null);
 
@@ -112,7 +112,7 @@ module('ToriiAuthenticator', function(hooks) {
     });
   });
 
-  module('#invalidate', function(hooks) {
+  module('#invalidate', function() {
     module('when torii closes successfully', function(hooks) {
       hooks.beforeEach(function() {
         sinon.stub(torii, 'close').returns(RSVP.resolve());

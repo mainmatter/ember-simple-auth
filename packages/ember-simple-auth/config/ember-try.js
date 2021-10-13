@@ -2,7 +2,7 @@
 
 const getChannelURL = require('ember-source-channel-url');
 
-module.exports = function () {
+module.exports = function() {
   return Promise.all([
     getChannelURL('release'),
     getChannelURL('beta'),
@@ -147,9 +147,6 @@ module.exports = function () {
             devDependencies: {
               'ember-data': 'beta',
               'ember-source': betaUrl,
-              '@ember/jquery': '^2.0.0',
-              'ember-auto-import': '^2.0.0',
-              'webpack': '^5.58.1',
             },
           },
         },
@@ -164,9 +161,6 @@ module.exports = function () {
             devDependencies: {
               'ember-data': 'canary',
               'ember-source': canaryUrl,
-              '@ember/jquery': '^2.0.0',
-              'ember-auto-import': '^2.0.0',
-              'webpack': '^5.58.1',
             },
           },
         },
