@@ -4,7 +4,7 @@ import Mixin from '@ember/object/mixin';
 import { A } from '@ember/array';
 import { getOwner } from '@ember/application';
 import { inject } from '@ember/service';
-import Ember from 'ember';
+import ENV from 'ember-get-config';
 import { deprecate } from '@ember/debug';
 import Configuration from './../configuration';
 
@@ -127,7 +127,7 @@ export default Mixin.create({
     @public
   */
   sessionInvalidated() {
-    if (!Ember.testing) {
+    if (ENV.environment !== 'test') {
       this.get('session').handleInvalidation(Configuration.rootURL);
     }
   }

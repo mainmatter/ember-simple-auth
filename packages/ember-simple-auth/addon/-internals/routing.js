@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import ENV from 'ember-get-config';
 import isFastBoot from '../utils/is-fastboot';
 import location from '../utils/location';
 
@@ -54,7 +54,7 @@ export function handleSessionInvalidated(owner, routeAfterInvalidation) {
     let routerService = owner.lookup('service:router');
     routerService.transitionTo(routeAfterInvalidation);
   } else {
-    if (!Ember.testing) {
+    if (ENV.environment !== 'test') {
       location().replace(routeAfterInvalidation);
     }
   }
