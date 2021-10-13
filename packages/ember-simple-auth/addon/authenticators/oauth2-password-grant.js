@@ -9,7 +9,7 @@ import {
   merge,
   assign as emberAssign
 } from '@ember/polyfills';
-import Ember from 'ember';
+import ENV from 'ember-get-config';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
@@ -340,7 +340,7 @@ export default BaseAuthenticator.extend({
       if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now - offset) {
         cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
-        if (!Ember.testing) {
+        if (ENV.environment !== 'test') {
           this._refreshTokenTimeout = later(this, this._refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
         }
       }

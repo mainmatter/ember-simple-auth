@@ -6,11 +6,11 @@ import { isPresent, typeOf, isEmpty, isNone } from '@ember/utils';
 import { A } from '@ember/array';
 import { getOwner } from '@ember/application';
 import { warn } from '@ember/debug';
-import Ember from 'ember';
+import ENV from 'ember-get-config';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const persistingProperty = function(beforeSet = function() {}) {
+const persistingProperty = function (beforeSet = function () { }) {
   return computed({
     get(key) {
       return this.get(`_${key}`);
@@ -112,7 +112,7 @@ export default BaseStore.extend({
     @public
   */
   _cookieName: 'ember_simple_auth-session',
-  cookieName: persistingProperty(function() {
+  cookieName: persistingProperty(function () {
     this._oldCookieName = this._cookieName;
   }),
 
@@ -142,7 +142,7 @@ export default BaseStore.extend({
     @public
   */
   _cookieExpirationTime: null,
-  cookieExpirationTime: persistingProperty(function(key, value) {
+  cookieExpirationTime: persistingProperty(function (key, value) {
     // When nulling expiry time on purpose, we need to clear the cached value.
     // Otherwise, `_calculateExpirationTime` will reuse it.
     if (isNone(value)) {
@@ -287,7 +287,7 @@ export default BaseStore.extend({
         this._lastData = data;
         this.trigger('sessionDataUpdated', data);
       }
-      if (!Ember.testing) {
+      if (ENV.environment !== 'test') {
         cancel(this._syncDataTimeout);
         this._syncDataTimeout = later(this, this._syncData, 500);
       }
@@ -305,7 +305,7 @@ export default BaseStore.extend({
   },
 
   _renewExpiration() {
-    if (!Ember.testing) {
+    if (ENV.environment !== 'test') {
       cancel(this._renewExpirationTimeout);
       this._renewExpirationTimeout = later(this, this._renewExpiration, 60000);
     }
