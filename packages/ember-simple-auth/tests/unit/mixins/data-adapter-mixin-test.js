@@ -1,7 +1,6 @@
 /* eslint-disable ember/no-mixins, ember/no-new-mixins */
 
 import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
 import EmberObject from '@ember/object';
 import sinonjs from 'sinon';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
@@ -37,7 +36,7 @@ module('DataAdapterMixin', function(hooks) {
       sinon.spy(sessionService, 'invalidate');
     });
 
-    module('when the response status is 401', function(hooks) {
+    module('when the response status is 401', function() {
       module('when the session is authenticated', function(hooks) {
         hooks.beforeEach(function() {
           sessionService.set('isAuthenticated', true);
@@ -63,7 +62,7 @@ module('DataAdapterMixin', function(hooks) {
       });
     });
 
-    module('when the response status is not 401', function(hooks) {
+    module('when the response status is not 401', function() {
       test('does not invalidate the session', function(assert) {
         adapter.handleResponse(200);
 

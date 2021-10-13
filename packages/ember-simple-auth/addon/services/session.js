@@ -1,4 +1,4 @@
-import { alias, oneWay, readOnly } from '@ember/object/computed';
+import { alias, readOnly } from '@ember/object/computed';
 import { A } from '@ember/array';
 import Service from '@ember/service';
 import Evented from '@ember/object/evented';

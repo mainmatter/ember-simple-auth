@@ -47,7 +47,7 @@ module('AdaptiveStore', function(hooks) {
     });
   });
 
-  module('CookieStore', function(hooks) {
+  module('CookieStore', function() {
     module('Behaviour', function(hooks) {
       itBehavesLikeACookieStore({
         hooks,

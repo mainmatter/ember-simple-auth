@@ -7,12 +7,10 @@ export default function(options) {
   let sinon;
   let hooks = options.hooks;
 
-  // eslint-disable-next-line mocha/no-top-level-hooks
   hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
   });
 
-  // eslint-disable-next-line mocha/no-top-level-hooks
   hooks.afterEach(function() {
     sinon.restore();
   });
@@ -54,8 +52,8 @@ export default function(options) {
     });
   });
 
-  module('#restore', function(hooks) {
-    module('when the store is empty', function(hooks) {
+  module('#restore', function() {
+    module('when the store is empty', function() {
       test('returns an empty object', async function(assert) {
         let store;
         run(() => {
@@ -91,7 +89,7 @@ export default function(options) {
     });
   });
 
-  module('#clear', function(hooks) {
+  module('#clear', function() {
     test('empties the store', async function(assert) {
       let store;
       run(() => {

@@ -8,13 +8,11 @@ export default function(options) {
   let store;
   let hooks = options.hooks;
 
-  // eslint-disable-next-line mocha/no-top-level-hooks
   hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
     store = options.store();
   });
 
-  // eslint-disable-next-line mocha/no-top-level-hooks
   hooks.afterEach(function() {
     sinon.restore();
   });

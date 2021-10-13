@@ -8,7 +8,7 @@ module('TestAuthenticator', function(hooks) {
     authenticator = Test.create();
   });
 
-  module('#restore', function(hooks) {
+  module('#restore', function() {
     test('returns a resolving promise', async function(assert) {
       try {
         await authenticator.restore();
@@ -25,7 +25,7 @@ module('TestAuthenticator', function(hooks) {
     });
   });
 
-  module('#authenticate', function(hooks) {
+  module('#authenticate', function() {
     test('returns a resolving promise', async function(assert) {
       try {
         await authenticator.authenticate();
@@ -42,7 +42,7 @@ module('TestAuthenticator', function(hooks) {
     });
   });
 
-  module('#invalidate', function(hooks) {
+  module('#invalidate', function() {
     test('returns a resolving promise', async function(assert) {
       try {
         await authenticator.invalidate();

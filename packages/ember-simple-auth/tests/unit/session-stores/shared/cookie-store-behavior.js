@@ -1,5 +1,4 @@
 import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
 import { next, run } from '@ember/runloop';
 import { registerWarnHandler } from '@ember/debug';
 import sinonjs from 'sinon';
@@ -21,9 +20,8 @@ export default function(options) {
   let renew;
   let sync;
   let spyRewriteCookieMethod;
-  let hooks = options.hooks
+  let hooks = options.hooks;
 
-  // eslint-disable-next-line mocha/no-top-level-hooks
   hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
     renew = options.renew;
@@ -31,7 +29,6 @@ export default function(options) {
     spyRewriteCookieMethod = options.spyRewriteCookieMethod;
   });
 
-  // eslint-disable-next-line mocha/no-top-level-hooks
   hooks.afterEach(function() {
     sinon.restore();
   });

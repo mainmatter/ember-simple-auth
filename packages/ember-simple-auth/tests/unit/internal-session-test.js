@@ -30,8 +30,7 @@ module('InternalSession', function(hooks) {
     try {
       session.set('authenticated', 'test');
       assert.ok(false);
-    }
-    catch (e) {
+    } catch (e) {
       assert.ok(true);
     }
   });
@@ -86,7 +85,7 @@ module('InternalSession', function(hooks) {
         authenticator.trigger('sessionDataInvalidated');
 
         await new Promise(resolve => {
-          next(async () => {
+          next(async() => {
             let properties = await store.restore();
 
             assert.deepEqual(properties.authenticated, {});
@@ -113,7 +112,7 @@ module('InternalSession', function(hooks) {
     });
   }
 
-  module('restore', function(hooks) {
+  module('restore', function() {
     function itDoesNotRestore() {
       test('returns a rejecting promise', async function(assert) {
         try {
@@ -203,7 +202,7 @@ module('InternalSession', function(hooks) {
           assert.notOk(triggered);
         });
 
-        itHandlesAuthenticatorEvents(async () => {
+        itHandlesAuthenticatorEvents(async() => {
           await session.restore();
         });
       });
@@ -217,7 +216,7 @@ module('InternalSession', function(hooks) {
       });
     });
 
-    module('when the restored data does not contain an authenticator factory', function(hooks) {
+    module('when the restored data does not contain an authenticator factory', function() {
       itDoesNotRestore();
     });
 
@@ -229,8 +228,8 @@ module('InternalSession', function(hooks) {
       test('is not authenticated', async function(assert) {
         try {
           await session.restore();
-        }
-        catch (e) {
+        } catch (e) {
+          // ignore
         }
 
         assert.notOk(session.get('isAuthenticated'));
@@ -245,15 +244,16 @@ module('InternalSession', function(hooks) {
       test('is not authenticated', async function(assert) {
         try {
           await session.restore();
+        } catch (e) {
+          // ignore
         }
-        catch (e) { }
 
         assert.notOk(session.get('isAuthenticated'));
       });
     });
   });
 
-  module('authentication', function(hooks) {
+  module('authentication', function() {
     module('when the authenticator resolves authentication', function(hooks) {
       hooks.beforeEach(function() {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.resolve({ some: 'property' }));
@@ -305,12 +305,12 @@ module('InternalSession', function(hooks) {
         assert.ok(triggered);
       });
 
-      itHandlesAuthenticatorEvents(async () => {
+      itHandlesAuthenticatorEvents(async() => {
         await session.authenticate('authenticator:test');
       });
     });
 
-    module('when the authenticator rejects authentication', function(hooks) {
+    module('when the authenticator rejects authentication', function() {
       test('is not authenticated', async function(assert) {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
 
@@ -377,8 +377,9 @@ module('InternalSession', function(hooks) {
       test('is not authenticated', async function(assert) {
         try {
           await session.authenticate('authenticator:test');
+        } catch (e) {
+          // ignore
         }
-        catch (e) { }
 
         assert.notOk(session.get('isAuthenticated'));
       });
@@ -458,7 +459,7 @@ module('InternalSession', function(hooks) {
       });
     });
 
-    module('when the authenticator rejects invalidation', function(hooks) {
+    module('when the authenticator rejects invalidation', function() {
       test('stays authenticated', async function(assert) {
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
@@ -532,8 +533,8 @@ module('InternalSession', function(hooks) {
     });
   });
 
-  module("when the session's content changes", function(hooks) {
-    module('when a single property is set', function(hooks) {
+  module("when the session's content changes", function() {
+    module('when a single property is set', function() {
       module('when the property is private (starts with an "_")', function(hooks) {
         hooks.beforeEach(function() {
           session.set('_some', 'property');
@@ -576,7 +577,7 @@ module('InternalSession', function(hooks) {
     });
   });
 
-  module('when the store triggers the "sessionDataUpdated" event', function(hooks) {
+  module('when the store triggers the "sessionDataUpdated" event', function() {
     module('when the session is currently busy', function(hooks) {
       hooks.beforeEach(function() {
         sinon.stub(store, 'restore').returns(new RSVP.Promise((resolve) => {
@@ -590,15 +591,16 @@ module('InternalSession', function(hooks) {
         store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
         try {
           await restoration;
+        } catch (e) {
+          // ignore
         }
-        catch (e) { }
 
         assert.notOk(authenticator.restore.called);
       });
     });
 
-    module('when the session is not currently busy', function(hooks) {
-      module('when there is an authenticator factory in the event data', function(hooks) {
+    module('when the session is not currently busy', function() {
+      module('when there is an authenticator factory in the event data', function() {
         module('when the authenticator resolves restoration', function(hooks) {
           hooks.beforeEach(function() {
             sinon.stub(authenticator, 'restore').returns(RSVP.resolve({ some: 'other property' }));
@@ -630,7 +632,7 @@ module('InternalSession', function(hooks) {
             store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator:test' } });
 
             await new Promise(resolve => {
-              next(async () => {
+              next(async() => {
                 let properties = await store.restore();
 
                 assert.deepEqual(properties, { some: 'property', authenticated: { some: 'other property', authenticator: 'authenticator:test' } });
@@ -712,7 +714,7 @@ module('InternalSession', function(hooks) {
             store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
             await new Promise(resolve => {
-              next(async () => {
+              next(async() => {
                 let properties = await store.restore();
 
                 assert.deepEqual(properties, { some: 'other property', authenticated: {} });
@@ -762,7 +764,7 @@ module('InternalSession', function(hooks) {
         });
       });
 
-      module('when there is no authenticator factory in the store', function(hooks) {
+      module('when there is no authenticator factory in the store', function() {
         test('is not authenticated', async function(assert) {
           store.trigger('sessionDataUpdated', { some: 'other property' });
 
@@ -791,7 +793,7 @@ module('InternalSession', function(hooks) {
           store.trigger('sessionDataUpdated', { some: 'other property' });
 
           await new Promise(resolve => {
-            next(async () => {
+            next(async() => {
               let properties = await store.restore();
 
               assert.deepEqual(properties, { some: 'other property', authenticated: {} });

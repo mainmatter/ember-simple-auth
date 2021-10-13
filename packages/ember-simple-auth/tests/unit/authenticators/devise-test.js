@@ -1,7 +1,6 @@
 import Pretender from 'pretender';
 import Devise from 'ember-simple-auth/authenticators/devise';
 import { module, test } from 'qunit';
-import { assert } from 'chai';
 
 module('Unit | authenticators | devise', function(hooks) {
   let server;
@@ -13,7 +12,9 @@ module('Unit | authenticators | devise', function(hooks) {
   });
 
   hooks.afterEach(function() {
-    server?.shutdown();
+    if (server) {
+      server.shutdown();
+    }
   });
 
   test('restore when the data contains a token and email resolves with the correct data', async function(assert) {
@@ -67,7 +68,7 @@ module('Unit | authenticators | devise', function(hooks) {
 
     try {
       await authenticator.authenticate('email@address.com', 'password');
-      assert.ok(false)
+      assert.ok(false);
     } catch (error) {
       assert.equal(error, 'Check that server response includes token and email');
     }

@@ -10,7 +10,7 @@ import ENV from 'ember-get-config';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const persistingProperty = function (beforeSet = function () { }) {
+const persistingProperty = function(beforeSet = function() { }) {
   return computed({
     get(key) {
       return this.get(`_${key}`);
@@ -112,7 +112,7 @@ export default BaseStore.extend({
     @public
   */
   _cookieName: 'ember_simple_auth-session',
-  cookieName: persistingProperty(function () {
+  cookieName: persistingProperty(function() {
     this._oldCookieName = this._cookieName;
   }),
 
@@ -142,7 +142,7 @@ export default BaseStore.extend({
     @public
   */
   _cookieExpirationTime: null,
-  cookieExpirationTime: persistingProperty(function (key, value) {
+  cookieExpirationTime: persistingProperty(function(key, value) {
     // When nulling expiry time on purpose, we need to clear the cached value.
     // Otherwise, `_calculateExpirationTime` will reuse it.
     if (isNone(value)) {

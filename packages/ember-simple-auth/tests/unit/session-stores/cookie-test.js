@@ -1,4 +1,4 @@
-import { module, test } from 'qunit';
+import { module } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
