@@ -100,14 +100,12 @@ module('SessionService', function(hooks) {
     });
 
     test('is read-only', function(assert) {
-      let authSpy = sinon.spy(sessionService, 'isAuthenticated', ['set']);
       try {
         sessionService.set('isAuthenticated', false);
+        assert.ok(false);
       } catch (e) {
-        // ignore
+        assert.ok(true);
       }
-
-      assert.ok(authSpy.set.threw());
     });
   });
 
@@ -119,13 +117,12 @@ module('SessionService', function(hooks) {
     });
 
     test('is read-only', function(assert) {
-      let storeSpy = sinon.spy(sessionService, 'store', ['set']);
       try {
         sessionService.set('store', 'some other store');
+        assert.ok(false);
       } catch (e) {
-        // ignore
+        assert.ok(true);
       }
-      assert.ok(storeSpy.set.threw());
     });
   });
 
@@ -163,13 +160,12 @@ module('SessionService', function(hooks) {
     });
 
     test('is read-only', function(assert) {
-      let dataSpy = sinon.spy(sessionService, 'data', ['set']);
       try {
         sessionService.set('data', false);
+        assert.ok(false);
       } catch (e) {
-        // ignore
+        assert.ok(true);
       }
-      assert.ok(dataSpy.set.threw());
     });
   });
 
