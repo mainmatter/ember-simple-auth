@@ -1,7 +1,7 @@
 import RSVP from 'rsvp';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { later, cancel, scheduleOnce, next } from '@ember/runloop';
+import { join, later, cancel, scheduleOnce, next } from '@ember/runloop';
 import { isPresent, typeOf, isEmpty, isNone } from '@ember/utils';
 import { A } from '@ember/array';
 import { getOwner } from '@ember/application';
@@ -18,7 +18,11 @@ const persistingProperty = function(beforeSet = function() { }) {
     set(key, value) {
       beforeSet.apply(this, [key, value]);
       this.set(`_${key}`, value);
-      scheduleOnce('actions', this, this.rewriteCookie);
+
+      // fixes testing mode assertion in ember3.0
+      join(() => {
+        scheduleOnce('actions', this, this.rewriteCookie);
+      });
       return value;
     }
   });
