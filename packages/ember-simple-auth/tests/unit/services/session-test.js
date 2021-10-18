@@ -1,4 +1,4 @@
-import ENV from 'ember-get-config';
+import Ember from 'ember';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import Service from '@ember/service';
@@ -524,12 +524,12 @@ module('SessionService', function(hooks) {
         sinon.stub(LocationUtil, 'default').returns({ replace() { } });
         sinon.spy(LocationUtil.default(), 'replace');
         // eslint-disable-next-line ember/no-ember-testing-in-module-scope
-        ENV.environment = 'development';
+        Ember.testing = false;
       });
 
       hooks.afterEach(function() {
         // eslint-disable-next-line ember/no-ember-testing-in-module-scope
-        ENV.environment = 'test';
+        Ember.testing = true;
       });
 
       test('replaces the location with the route', function(assert) {
