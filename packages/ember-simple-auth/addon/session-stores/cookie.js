@@ -6,7 +6,7 @@ import { isPresent, typeOf, isEmpty, isNone } from '@ember/utils';
 import { A } from '@ember/array';
 import { getOwner } from '@ember/application';
 import { warn } from '@ember/debug';
-import ENV from 'ember-get-config';
+import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
@@ -291,7 +291,7 @@ export default BaseStore.extend({
         this._lastData = data;
         this.trigger('sessionDataUpdated', data);
       }
-      if (ENV.environment !== 'test') {
+      if (!Ember.testing) {
         cancel(this._syncDataTimeout);
         this._syncDataTimeout = later(this, this._syncData, 500);
       }
@@ -309,7 +309,7 @@ export default BaseStore.extend({
   },
 
   _renewExpiration() {
-    if (ENV.environment !== 'test') {
+    if (!Ember.testing) {
       cancel(this._renewExpirationTimeout);
       this._renewExpirationTimeout = later(this, this._renewExpiration, 60000);
     }

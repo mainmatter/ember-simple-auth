@@ -1,4 +1,4 @@
-import ENV from 'ember-get-config';
+import Ember from 'ember';
 
 import RSVP from 'rsvp';
 import { isEmpty, isNone } from '@ember/utils';
@@ -20,7 +20,7 @@ export default ObjectProxy.extend(Evented, {
     this._super(...arguments);
     this.set('content', { authenticated: {} });
     let storeFactory = 'session-store:application';
-    if (ENV.environment === 'test') {
+    if (Ember.testing) {
       storeFactory = 'session-store:test';
     }
 

@@ -1,9 +1,9 @@
 'use strict';
 
-var EOL                = require('os').EOL;
-var BlueprintHelpers   = require('ember-cli-blueprint-test-helpers/helpers');
-var setupTestHooks     = BlueprintHelpers.setupTestHooks;
-var emberNew           = BlueprintHelpers.emberNew;
+var EOL = require('os').EOL;
+var BlueprintHelpers = require('ember-cli-blueprint-test-helpers/helpers');
+var setupTestHooks = BlueprintHelpers.setupTestHooks;
+var emberNew = BlueprintHelpers.emberNew;
 var generateAndDestroy = BlueprintHelpers.emberGenerateDestroy;
 
 var expect = require('ember-cli-blueprint-test-helpers/chai').expect;
@@ -14,11 +14,11 @@ describe('Acceptance: ember generate and destroy authenticator', function() {
   it('generates a torii authenticator', function() {
     return emberNew().then(() => generateAndDestroy(['authenticator', 'application', '--base-class=torii'], (file) => {
       expect(file('app/authenticators/application.js')).to.contain('\
-import Ember from \'ember\';' + EOL +
-'import Torii from \'ember-simple-auth/authenticators/torii\';' + EOL + '\
+import {inject as service} from \'@ember/service\';' + EOL +
+        'import Torii from \'ember-simple-auth/authenticators/torii\';' + EOL + '\
 ' + EOL + '\
 export default Torii.extend({' + EOL + '\
-  torii: Ember.inject.service(\'torii\')' + EOL + '\
+  torii: service(\'torii\')' + EOL + '\
 });' + EOL + '\
 ');
     }));
