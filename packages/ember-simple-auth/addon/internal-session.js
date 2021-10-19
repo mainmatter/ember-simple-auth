@@ -1,5 +1,4 @@
 import Ember from 'ember';
-
 import RSVP from 'rsvp';
 import { isEmpty, isNone } from '@ember/utils';
 import ObjectProxy from '@ember/object/proxy';
@@ -11,9 +10,9 @@ import { getOwner, setOwner } from '@ember/application';
 const assign = emberAssign || merge;
 
 export default ObjectProxy.extend(Evented, {
-  authenticator: null,
-  store: null,
-  isAuthenticated: false,
+  authenticator:       null,
+  store:               null,
+  isAuthenticated:     false,
   attemptedTransition: null,
 
   init() {
@@ -126,7 +125,7 @@ export default ObjectProxy.extend(Evented, {
     trigger = Boolean(trigger) && this.get('isAuthenticated');
     this.setProperties({
       isAuthenticated: false,
-      authenticator: null,
+      authenticator:   null,
       'content.authenticated': {}
     });
 
