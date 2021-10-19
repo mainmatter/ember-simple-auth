@@ -316,13 +316,18 @@ export default function(options) {
       });
     });
 
-    test('only rewrites the cookie once per run loop when multiple properties are changed', function(assert) {
+    test('only rewrites the cookie once per run loop when multiple properties are changed', async function(assert) {
       run(() => {
         store.set('cookieName', 'session-bar');
         store.set('cookieExpirationTime', 10000);
       });
 
-      assert.ok(cookieSpy.calledOnce);
+      await new Promise(resolve => {
+        next(() => {
+          assert.ok(cookieSpy.calledOnce);
+          resolve();
+        });
+      });
     });
   });
 
