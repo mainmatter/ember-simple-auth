@@ -71,8 +71,7 @@
     "handlebars": "~4.7.1",
     "loader.js": "^4.7.0",
     "marked": "^1.0.0",
-    "qunit-dom": "^1.6.0",
-    "torii": "^0.10.0"
+    "qunit-dom": "^1.6.0"
   },
   "engines": {
     "node": ">= 12"

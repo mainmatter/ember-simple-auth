@@ -62,8 +62,7 @@
     "loader.js": "^4.7.0",
     "mocha": "^7.0.1",
     "my-engine": "./packages/test-app/lib/my-engine",
-    "sinon-chai": "~3.5.0",
-    "torii": "^0.10.0"
+    "sinon-chai": "~3.5.0"
   },
   "fastbootDependencies": [
     "node-fetch"
