@@ -27,6 +27,7 @@ module('InternalSession', function(hooks) {
   });
 
   test('does not allow data to be stored for the key "authenticated"', function(assert) {
+    assert.expect(1);
     try {
       session.set('authenticated', 'test');
       assert.ok(false);
@@ -42,6 +43,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('stores the data the event is triggered with in its authenticated section', async function(assert) {
+        assert.expect(1);
         authenticator.trigger('sessionDataUpdated', { some: 'property' });
 
         await new Promise(resolve => {
@@ -59,6 +61,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('is not authenticated', async function(assert) {
+        assert.expect(1);
         authenticator.trigger('sessionDataInvalidated');
 
         await new Promise(resolve => {
@@ -70,6 +73,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('clears its authenticated section', async function(assert) {
+        assert.expect(1);
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
         authenticator.trigger('sessionDataInvalidated');
 
@@ -82,10 +86,11 @@ module('InternalSession', function(hooks) {
       });
 
       test('updates the store', async function(assert) {
+        assert.expect(1);
         authenticator.trigger('sessionDataInvalidated');
 
         await new Promise(resolve => {
-          next(async() => {
+          next(async function() {
             let properties = await store.restore();
 
             assert.deepEqual(properties.authenticated, {});
@@ -96,6 +101,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('triggers the "invalidationSucceeded" event', async function(assert) {
+        assert.expect(1);
         let triggered = false;
         session.one('invalidationSucceeded', () => {
           triggered = true;
@@ -115,6 +121,7 @@ module('InternalSession', function(hooks) {
   module('restore', function() {
     function itDoesNotRestore() {
       test('returns a rejecting promise', async function(assert) {
+        assert.expect(1);
         try {
           await session.restore();
           assert.ok(false);
@@ -124,6 +131,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('is not authenticated', async function(assert) {
+        assert.expect(1);
         try {
           await session.restore();
         } catch (_error) {
@@ -132,6 +140,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('clears its authenticated section', async function(assert) {
+        assert.expect(1);
         store.persist({ some: 'property', authenticated: { some: 'other property' } });
 
         try {
@@ -153,6 +162,7 @@ module('InternalSession', function(hooks) {
         });
 
         test('returns a resolving promise', async function(assert) {
+          assert.expect(1);
           try {
             await session.restore();
             assert.ok(true);
@@ -202,7 +212,7 @@ module('InternalSession', function(hooks) {
           assert.notOk(triggered);
         });
 
-        itHandlesAuthenticatorEvents(async() => {
+        itHandlesAuthenticatorEvents(async function() {
           await session.restore();
         });
       });
@@ -266,6 +276,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('returns a resolving promise', async function(assert) {
+        assert.expect(1);
         try {
           await session.authenticate('authenticator:test');
           assert.ok(true);
@@ -305,13 +316,14 @@ module('InternalSession', function(hooks) {
         assert.ok(triggered);
       });
 
-      itHandlesAuthenticatorEvents(async() => {
+      itHandlesAuthenticatorEvents(async function() {
         await session.authenticate('authenticator:test');
       });
     });
 
     module('when the authenticator rejects authentication', function() {
       test('is not authenticated', async function(assert) {
+        assert.expect(1);
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
 
         try {
@@ -322,6 +334,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('returns a rejecting promise', async function(assert) {
+        assert.expect(1);
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
 
         try {
@@ -333,6 +346,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('clears its authenticated section', async function(assert) {
+        assert.expect(1);
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
@@ -344,6 +358,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('updates the store', async function(assert) {
+        assert.expect(1);
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
@@ -357,6 +372,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('does not trigger the "authenticationSucceeded" event', async function(assert) {
+        assert.expect(1);
         let triggered = false;
         sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
         session.one('authenticationSucceeded', () => (triggered = true));
@@ -424,6 +440,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('returns a resolving promise', async function(assert) {
+        assert.expect(1);
         try {
           await session.invalidate();
           assert.ok(true);
@@ -461,6 +478,7 @@ module('InternalSession', function(hooks) {
 
     module('when the authenticator rejects invalidation', function() {
       test('stays authenticated', async function(assert) {
+        assert.expect(1);
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
         try {
@@ -471,6 +489,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('returns a rejecting promise', async function(assert) {
+        assert.expect(1);
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
         try {
@@ -482,6 +501,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('keeps its content', async function(assert) {
+        assert.expect(1);
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
         try {
@@ -492,6 +512,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('does not update the store', async function(assert) {
+        assert.expect(1);
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
 
         try {
@@ -504,6 +525,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('does not trigger the "invalidationSucceeded" event', async function(assert) {
+        assert.expect(1);
         sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
         let triggered = false;
         session.one('invalidationSucceeded', () => (triggered = true));
@@ -524,6 +546,7 @@ module('InternalSession', function(hooks) {
       });
 
       test('rejects but is not authenticated', async function(assert) {
+        assert.expect(1);
         try {
           await session.invalidate();
         } catch (_error) {
@@ -607,6 +630,7 @@ module('InternalSession', function(hooks) {
           });
 
           test('is authenticated', async function(assert) {
+            assert.expect(1);
             store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
             await new Promise(resolve => {
@@ -618,6 +642,7 @@ module('InternalSession', function(hooks) {
           });
 
           test('stores the data the authenticator resolves with in its authenticated section', async function(assert) {
+            assert.expect(1);
             store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator:test' } });
 
             await new Promise(resolve => {
@@ -629,10 +654,11 @@ module('InternalSession', function(hooks) {
           });
 
           test('persists its content in the store', async function(assert) {
+            assert.expect(1);
             store.trigger('sessionDataUpdated', { some: 'property', authenticated: { authenticator: 'authenticator:test' } });
 
             await new Promise(resolve => {
-              next(async() => {
+              next(async function() {
                 let properties = await store.restore();
 
                 assert.deepEqual(properties, { some: 'property', authenticated: { some: 'other property', authenticator: 'authenticator:test' } });
@@ -648,6 +674,7 @@ module('InternalSession', function(hooks) {
             });
 
             test('does not trigger the "authenticationSucceeded" event', async function(assert) {
+              assert.expect(1);
               let triggered = false;
               session.one('authenticationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
@@ -667,6 +694,7 @@ module('InternalSession', function(hooks) {
             });
 
             test('triggers the "authenticationSucceeded" event', async function(assert) {
+              assert.expect(1);
               let triggered = false;
               session.one('authenticationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
@@ -687,6 +715,7 @@ module('InternalSession', function(hooks) {
           });
 
           test('is not authenticated', async function(assert) {
+            assert.expect(1);
             store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
             await new Promise(resolve => {
@@ -698,6 +727,7 @@ module('InternalSession', function(hooks) {
           });
 
           test('clears its authenticated section', async function(assert) {
+            assert.expect(1);
             session.set('content', { some: 'property', authenticated: { some: 'other property' } });
             store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
@@ -710,11 +740,12 @@ module('InternalSession', function(hooks) {
           });
 
           test('updates the store', async function(assert) {
+            assert.expect(1);
             session.set('content', { some: 'property', authenticated: { some: 'other property' } });
             store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
 
             await new Promise(resolve => {
-              next(async() => {
+              next(async function() {
                 let properties = await store.restore();
 
                 assert.deepEqual(properties, { some: 'other property', authenticated: {} });
@@ -730,6 +761,7 @@ module('InternalSession', function(hooks) {
             });
 
             test('triggers the "invalidationSucceeded" event', async function(assert) {
+              assert.expect(1);
               let triggered = false;
               session.one('invalidationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
@@ -749,6 +781,7 @@ module('InternalSession', function(hooks) {
             });
 
             test('does not trigger the "invalidationSucceeded" event', async function(assert) {
+              assert.expect(1);
               let triggered = false;
               session.one('invalidationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
@@ -766,6 +799,7 @@ module('InternalSession', function(hooks) {
 
       module('when there is no authenticator factory in the store', function() {
         test('is not authenticated', async function(assert) {
+          assert.expect(1);
           store.trigger('sessionDataUpdated', { some: 'other property' });
 
           await new Promise(resolve => {
@@ -777,6 +811,7 @@ module('InternalSession', function(hooks) {
         });
 
         test('clears its authenticated section', async function(assert) {
+          assert.expect(1);
           session.set('content', { some: 'property', authenticated: { some: 'other property' } });
           store.trigger('sessionDataUpdated', { some: 'other property' });
 
@@ -789,11 +824,12 @@ module('InternalSession', function(hooks) {
         });
 
         test('updates the store', async function(assert) {
+          assert.expect(1);
           session.set('content', { some: 'property', authenticated: { some: 'other property' } });
           store.trigger('sessionDataUpdated', { some: 'other property' });
 
           await new Promise(resolve => {
-            next(async() => {
+            next(async function() {
               let properties = await store.restore();
 
               assert.deepEqual(properties, { some: 'other property', authenticated: {} });
@@ -809,6 +845,7 @@ module('InternalSession', function(hooks) {
           });
 
           test('triggers the "invalidationSucceeded" event', async function(assert) {
+            assert.expect(1);
             let triggered = false;
             session.one('invalidationSucceeded', () => (triggered = true));
             store.trigger('sessionDataUpdated', { some: 'other property' });
@@ -828,6 +865,7 @@ module('InternalSession', function(hooks) {
           });
 
           test('does not trigger the "invalidationSucceeded" event', async function(assert) {
+            assert.expect(1);
             let triggered = false;
             session.one('invalidationSucceeded', () => (triggered = true));
             store.trigger('sessionDataUpdated', { some: 'other property' });
@@ -850,6 +888,7 @@ module('InternalSession', function(hooks) {
           });
 
           test('it returns with a resolved Promise', async function(assert) {
+            assert.expect(1);
             try {
               await session.invalidate();
               assert.ok(true);

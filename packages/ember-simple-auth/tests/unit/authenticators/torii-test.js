@@ -25,6 +25,7 @@ module('ToriiAuthenticator', function(hooks) {
   module('#restore', function() {
     function itDoesNotRestore(data) {
       test('returns a rejecting promise', async function(assert) {
+        assert.expect(1);
         try {
           await authenticator.restore(data);
           assert.ok(false);
@@ -35,6 +36,7 @@ module('ToriiAuthenticator', function(hooks) {
     }
 
     test('throws if torii is not installed', async function(assert) {
+      assert.expect(1);
       authenticator.set('torii', null);
 
       try {
@@ -74,6 +76,7 @@ module('ToriiAuthenticator', function(hooks) {
 
   module('#authenticate', function() {
     test('throws if torii is not installed', async function(assert) {
+      assert.expect(1);
       authenticator.set('torii', null);
 
       try {
@@ -102,6 +105,7 @@ module('ToriiAuthenticator', function(hooks) {
       });
 
       test('returns a rejecting promise', async function(assert) {
+        assert.expect(1);
         try {
           await authenticator.authenticate('provider');
           assert.ok(false);
@@ -119,6 +123,7 @@ module('ToriiAuthenticator', function(hooks) {
       });
 
       test('returns a resolving promise', async function(assert) {
+        assert.expect(1);
         try {
           await authenticator.invalidate({ some: 'data' });
           assert.ok(true);
@@ -134,6 +139,7 @@ module('ToriiAuthenticator', function(hooks) {
       });
 
       test('returns a rejecting promise', async function(assert) {
+        assert.expect(1);
         try {
           await authenticator.invalidate({ some: 'data' });
           assert.ok(false);

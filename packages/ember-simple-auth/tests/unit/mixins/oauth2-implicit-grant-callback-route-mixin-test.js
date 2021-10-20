@@ -50,6 +50,7 @@ module('OAuth2ImplicitGrantCallbackRouteMixin', function(hooks) {
     });
 
     test('correctly passes the auth parameters if authentication succeeds', async function(assert) {
+      assert.expect(1);
       // it isn't possible to stub window.location.hash so we stub a wrapper function instead
       sinon.stub(LocationUtil, 'default').returns({ hash: '#/routepath#access_token=secret-token' });
 
@@ -63,6 +64,7 @@ module('OAuth2ImplicitGrantCallbackRouteMixin', function(hooks) {
     });
 
     test('saves the error and transition if authentication fails', async function(assert) {
+      assert.expect(2);
       route.activate();
       await new Promise(resolve => {
         setTimeout(() => {

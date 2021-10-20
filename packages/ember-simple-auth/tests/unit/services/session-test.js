@@ -31,6 +31,7 @@ module('SessionService', function(hooks) {
   });
 
   test('forwards the "authenticationSucceeded" event from the session', async function(assert) {
+    assert.expect(2);
     let deprecations = [];
     registerDeprecationHandler((message, options, next) => {
       deprecations.push(message);
@@ -52,6 +53,7 @@ module('SessionService', function(hooks) {
   });
 
   test('forwards the "invalidationSucceeded" event from the session', async function(assert) {
+    assert.expect(2);
     let deprecations = [];
     registerDeprecationHandler((message, options, next) => {
       deprecations.push(message);
@@ -72,6 +74,7 @@ module('SessionService', function(hooks) {
   });
 
   test('deprecates using the "Evented" API', function(assert) {
+    assert.expect(6);
     let deprecations = [];
     registerDeprecationHandler((message, options, next) => {
       deprecations.push(message);
@@ -101,6 +104,7 @@ module('SessionService', function(hooks) {
     });
 
     test('is read-only', function(assert) {
+      assert.expect(1);
       try {
         sessionService.set('isAuthenticated', false);
         assert.ok(false);
@@ -118,6 +122,7 @@ module('SessionService', function(hooks) {
     });
 
     test('is read-only', function(assert) {
+      assert.expect(1);
       try {
         sessionService.set('store', 'some other store');
         assert.ok(false);
@@ -161,6 +166,7 @@ module('SessionService', function(hooks) {
     });
 
     test('is read-only', function(assert) {
+      assert.expect(1);
       try {
         sessionService.set('data', false);
         assert.ok(false);

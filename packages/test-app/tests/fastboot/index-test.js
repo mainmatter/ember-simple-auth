@@ -1,14 +1,14 @@
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import { module, test } from 'qunit';
 import { visit } from 'ember-cli-fastboot-testing/test-support';
 import { setupFastbootTest } from '../helpers/fastboot';
 
-describe('FastBoot: /', function() {
-  setupFastbootTest();
+module('FastBoot: /', function(hooks) {
+  setupFastbootTest(hooks);
 
-  it('sets a session cookie on first visit', async function() {
+  test('sets a session cookie on first visit', async function(assert) {
+
     let { headers } = await visit('/');
 
-    expect(headers['set-cookie']).to.deep.equal(['ember_simple_auth-session=%7B%22authenticated%22%3A%7B%7D%7D; path=/']);
+    assert.deepEqual(headers['set-cookie'], ['ember_simple_auth-session=%7B%22authenticated%22%3A%7B%7D%7D; path=/']);
   });
 });

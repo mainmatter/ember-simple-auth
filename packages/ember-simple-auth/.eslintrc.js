@@ -2,31 +2,42 @@
 
 module.exports = {
   root: true,
+  parser: 'babel-eslint',
   extends: [
     'simplabs',
     'simplabs/plugins/ember',
-    'plugin:ember/recommended',
+    'eslint:recommended',
   ],
+  env: {
+    browser: true,
+  },
+  plugins: ['ember'],
   rules: {
     'ember/local-modules': 'off',
     'ember/no-get': 'off',
     'ember/avoid-leaking-state-in-components': 'off',
+    'no-prototype-builtins': 'off',
   },
   parserOptions: {
-    ecmaVersion: 2017,
-    sourceType: 'module'
+    ecmaVersion: 2018,
+    sourceType: 'module',
+    ecmaFeatures: {
+      legacyDecorators: true,
+    },
   },
   overrides: [
     // node files
     {
       files: [
-        'ember-cli-build.js',
-        'index.js',
-        'testem.js',
-        'blueprints/utils.js',
-        'blueprints/*/index.js',
-        'config/**/*.js',
-        'tests/dummy/config/**/*.js'
+        './.eslintrc.js',
+        './.prettierrc.js',
+        './.template-lintrc.js',
+        './ember-cli-build.js',
+        './index.js',
+        './testem.js',
+        './blueprints/*/index.js',
+        './config/**/*.js',
+        './tests/dummy/config/**/*.js',
       ],
       excludedFiles: [
         'addon/**',
@@ -37,26 +48,18 @@ module.exports = {
       ],
       parserOptions: {
         sourceType: 'script',
-        ecmaVersion: 2015
       },
       env: {
         browser: false,
         node: true
       },
       plugins: ['node'],
-      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        "node/no-extraneous-require": "off",
-        "node/no-unpublished-require": "off"
-        // add your custom rules and overrides for node files here
-      })
-    }, {
-      files: [
-        "node-tests/blueprints/**/*.js"
-      ],
-      env: {
-        node: true,
-        mocha: true
-      }
-    }
+      extends: ['plugin:node/recommended'],
+    },
+    {
+      // test files
+      files: ['tests/**/*-test.{js,ts}'],
+      extends: ['plugin:qunit/recommended'],
+    },
   ]
 };

@@ -9,6 +9,7 @@ module('Unit | authenticators | base', function(hooks) {
   });
 
   test('restore returns a rejecting promise', async function(assert) {
+    assert.expect(1);
     try {
       await authenticator.restore();
       assert.ok(false);
@@ -18,6 +19,7 @@ module('Unit | authenticators | base', function(hooks) {
   });
 
   test('authenticate returns a rejecting promise', async function(assert) {
+    assert.expect(1);
     try {
       await authenticator.authenticate();
       assert.ok(false);
@@ -27,6 +29,7 @@ module('Unit | authenticators | base', function(hooks) {
   });
 
   test('returns a resolving promise', async function(assert) {
+    assert.expect(1);
     try {
       await authenticator.invalidate();
       assert.ok(true);

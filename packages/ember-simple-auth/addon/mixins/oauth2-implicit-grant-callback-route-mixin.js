@@ -10,7 +10,9 @@ import { parseResponse } from '../authenticators/oauth2-implicit-grant';
 
 deprecate("Ember Simple Auth: The OAuth2ImplicitGrantCallbackRouteMixin is now deprecated; call the session service's authenticate method with the appropriate authenticator in the respective route's activate method instead.", false, {
   id: 'ember-simple-auth.mixins.oauth2-implicit-grant-callback-route-mixin',
-  until: '4.0.0'
+  until: '4.0.0',
+  since: '3.0.0',
+  for: 'ember-source'
 });
 
 /**

@@ -10,6 +10,7 @@ module('TestAuthenticator', function(hooks) {
 
   module('#restore', function() {
     test('returns a resolving promise', async function(assert) {
+      assert.expect(1);
       try {
         await authenticator.restore();
         assert.ok(true);
@@ -27,6 +28,7 @@ module('TestAuthenticator', function(hooks) {
 
   module('#authenticate', function() {
     test('returns a resolving promise', async function(assert) {
+      assert.expect(1);
       try {
         await authenticator.authenticate();
         assert.ok(true);
@@ -44,6 +46,7 @@ module('TestAuthenticator', function(hooks) {
 
   module('#invalidate', function() {
     test('returns a resolving promise', async function(assert) {
+      assert.expect(1);
       try {
         await authenticator.invalidate();
         assert.ok(true);

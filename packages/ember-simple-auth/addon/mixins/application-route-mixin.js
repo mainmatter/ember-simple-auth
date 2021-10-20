@@ -12,7 +12,9 @@ import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 
 deprecate('Ember Simple Auth: The ApplicationRouteMixin is now deprecated; it can be safely removed.', false, {
   id: 'ember-simple-auth.mixins.application-route-mixin',
-  until: '4.0.0'
+  until: '4.0.0',
+  since: '3.0.0',
+  for: 'ember-source'
 });
 
 /**

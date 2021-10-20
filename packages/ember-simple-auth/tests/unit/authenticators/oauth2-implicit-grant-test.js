@@ -31,6 +31,7 @@ module('Unit | authenticators | oauth2-implicit-grant', function(hooks) {
   });
 
   test('#restore - when the data contains an access_token - when the data does not contain an access_token - returns a rejecting promise', async function(assert) {
+    assert.expect(1);
     try {
       await authenticator.restore();
       assert.ok(false);
@@ -46,6 +47,7 @@ module('Unit | authenticators | oauth2-implicit-grant', function(hooks) {
   });
 
   test('#authenticate - when the data does not contain an access_token - rejects with an error', async function(assert) {
+    assert.expect(1);
     try {
       await authenticator.authenticate({ foo: 'bar' });
       assert.ok(false);
@@ -55,6 +57,7 @@ module('Unit | authenticators | oauth2-implicit-grant', function(hooks) {
   });
 
   test('#authenticate - when the data contains an error - rejects with that error', async function(assert) {
+    assert.expect(1);
     try {
       await authenticator.authenticate({ error: 'access_denied' });
       assert.ok(false);
@@ -64,6 +67,7 @@ module('Unit | authenticators | oauth2-implicit-grant', function(hooks) {
   });
 
   test('#invalidate - returns a resolving promise', async function(assert) {
+    assert.expect(1);
     try {
       await authenticator.invalidate();
       assert.ok(true);

@@ -6,7 +6,9 @@ import { deprecate } from '@ember/debug';
 
 deprecate("Ember Simple Auth: The DataAdapterMixin is now deprecated; call the session service's invalidate method in the adapter's handleResponse method instead in case of a 401 response.", false, {
   id: 'ember-simple-auth.mixins.data-adapter-mixin',
-  until: '4.0.0'
+  until: '4.0.0',
+  since: '3.0.0',
+  for: 'ember-source'
 });
 
 /**

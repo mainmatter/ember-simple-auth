@@ -57,6 +57,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
 
           module('when the access token is not refreshed successfully', function() {
             test('returns a rejecting promise', async function(assert) {
+              assert.expect(1);
               try {
                 await authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 });
                 assert.ok(false);
@@ -73,6 +74,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
           });
 
           test('returns a rejecting promise', async function(assert) {
+            assert.expect(1);
             try {
               await authenticator.restore({ 'access_token': 'secret token!', 'expires_at': 1 });
               assert.ok(false);
@@ -95,6 +97,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
 
       module('when the data does not contain an access_token', function() {
         test('returns a rejecting promise', async function(assert) {
+          assert.expect(1);
           try {
             await authenticator.restore();
             assert.ok(false);
@@ -108,6 +111,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
 
   module('#authenticate', function() {
     test('sends an AJAX request to the token endpoint1', async function(assert) {
+      assert.expect(1);
       server.post('/token', (request) => {
         let body = parsePostData(request.requestBody);
 
@@ -124,6 +128,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
     });
 
     test('sends an AJAX request to the token endpoint with client_id as parameter in the body', async function(assert) {
+      assert.expect(1);
       server.post('/token', (request) => {
         let body = parsePostData(request.requestBody);
 
@@ -142,6 +147,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
     });
 
     test('sends an AJAX request to the token endpoint with customized headers', async function(assert) {
+      assert.expect(1);
       server.post('/token', (request) => {
         assert.equal(request.requestHeaders['X-Custom-Context'], 'foobar');
 
@@ -152,6 +158,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
     });
 
     test('sends a single OAuth scope to the token endpoint', async function(assert) {
+      assert.expect(1);
       server.post('/token', (request) => {
         let { requestBody } = request;
         let { scope } = parsePostData(requestBody);
@@ -165,6 +172,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
     });
 
     test('sends multiple OAuth scopes to the token endpoint', async function(assert) {
+      assert.expect(1);
       server.post('/token', (request) => {
         let { requestBody } = request;
         let { scope } = parsePostData(requestBody);
@@ -205,6 +213,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
 
       module('when the server response is missing access_token', function() {
         test('fails with a string describing the issue', async function(assert) {
+          assert.expect(1);
           server.post('/token', () => [200, { 'Content-Type': 'application/json' }, '{}']);
 
           try {
@@ -218,6 +227,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
 
       module('but the response is not valid JSON', function() {
         test('fails with the string of the response', async function(assert) {
+          assert.expect(1);
           server.post('/token', () => [200, { 'Content-Type': 'text/plain' }, 'Something went wrong']);
 
           try {
@@ -236,6 +246,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
       });
 
       test('rejects with response object containing responseJSON', async function(assert) {
+        assert.expect(1);
         try {
           await authenticator.authenticate('username', 'password');
           assert.ok(false);
@@ -245,6 +256,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
       });
 
       test('provides access to custom headers', async function(assert) {
+        assert.expect(1);
         try {
           await authenticator.authenticate('username', 'password');
           assert.ok(false);
@@ -260,6 +272,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
       });
 
       test('rejects with response object containing responseText', async function(assert) {
+        assert.expect(2);
         try {
           await authenticator.authenticate('username', 'password');
           assert.ok(false);
@@ -270,6 +283,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
       });
 
       test('provides access to custom headers', async function(assert) {
+        assert.expect(1);
         try {
           await authenticator.authenticate('username', 'password');
           assert.ok(false);
@@ -283,6 +297,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
   module('#invalidate', function() {
     function itSuccessfullyInvalidatesTheSession() {
       test('returns a resolving promise', async function(assert) {
+        assert.expect(1);
         try {
           await authenticator.invalidate({ 'access_token': 'access token!' });
           assert.ok(true);
@@ -298,6 +313,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
       });
 
       test('sends an AJAX request to the revokation endpoint', async function(assert) {
+        assert.expect(1);
         server.post('/revoke', (request) => {
           let { requestBody } = request;
           let body = parsePostData(requestBody);
@@ -329,11 +345,13 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
 
       module('when a refresh token is set', function() {
         test('sends an AJAX request to invalidate the refresh token', async function(assert) {
+          assert.expect(1);
           server.post('/revoke', (request) => {
             let { requestBody } = request;
             let body = parsePostData(requestBody);
 
             if (body.token_type_hint === 'refresh_token') {
+              // eslint-disable-next-line qunit/no-conditional-assertions
               assert.deepEqual(body, {
                 'token_type_hint': 'refresh_token',
                 'token': 'refresh token!'
@@ -371,11 +389,13 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
   // testing private API here ;(
   module('#_refreshAccessToken', function() {
     test('sends an AJAX request to the token endpoint2', async function(assert) {
+      assert.expect(1);
       server.post('/token', (request) => {
         let { requestBody } = request;
         let body = parsePostData(requestBody);
 
         if (body.grant_type === 'refresh_token') {
+          // eslint-disable-next-line qunit/no-conditional-assertions
           assert.deepEqual(body, {
             'grant_type': 'refresh_token',
             'refresh_token': 'refresh token!'
@@ -393,6 +413,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
       });
 
       test('triggers the "sessionDataUpdated" event', async function(assert) {
+        assert.expect(2);
         await new Promise(resolve => {
           authenticator.one('sessionDataUpdated', (data) => {
             assert.true(data['expires_at'] > new Date().getTime());
@@ -412,6 +433,7 @@ module('OAuth2PasswordGrantAuthenticator', function(hooks) {
         });
 
         test('triggers the "sessionDataUpdated" event with the correct data', async function(assert) {
+          assert.expect(2);
           await new Promise(resolve => {
             authenticator.one('sessionDataUpdated', (data) => {
               assert.true(data['expires_at'] > new Date().getTime());

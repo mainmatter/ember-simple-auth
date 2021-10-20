@@ -54,6 +54,7 @@ module('Unit | mixins | application-route-mixin', function(hooks) {
     });
 
     test('maps the servicess authenticationSucceeded event into a method call', async function(assert) {
+      assert.expect(1);
       sessionService.trigger('authenticationSucceeded');
 
       await new Promise(resolve => {
@@ -65,6 +66,7 @@ module('Unit | mixins | application-route-mixin', function(hooks) {
     });
 
     test("maps the services's 'invalidationSucceeded' event into a method call", async function(assert) {
+      assert.expect(1);
       sessionService.trigger('invalidationSucceeded');
 
       await new Promise(resolve => {
@@ -76,6 +78,7 @@ module('Unit | mixins | application-route-mixin', function(hooks) {
     });
 
     test('does not attach the event listeners twice', async function(assert) {
+      assert.expect(1);
       route.beforeModel();
       sessionService.trigger('authenticationSucceeded');
 

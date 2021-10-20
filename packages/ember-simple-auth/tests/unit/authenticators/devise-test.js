@@ -52,6 +52,7 @@ module('Unit | authenticators | devise', function(hooks) {
 
 
   test('when the server returns incomplete data - fails when token is missing', async function(assert) {
+    assert.expect(1);
     server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "email": "email@address.com" }']);
 
     try {
@@ -64,6 +65,7 @@ module('Unit | authenticators | devise', function(hooks) {
 
 
   test('fails when identification is missing', async function(assert) {
+    assert.expect(1);
     server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!" }']);
 
     try {
@@ -75,6 +77,7 @@ module('Unit | authenticators | devise', function(hooks) {
   });
 
   test('when the authentication request fails - rejects with the response', async function(assert) {
+    assert.expect(1);
     server.post('/users/sign_in', () => [400, { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' }, '{ "error": "invalid_grant" }']);
     try {
       await authenticator.authenticate('username', 'password');
@@ -111,6 +114,7 @@ module('Unit | authenticators | devise', function(hooks) {
   });
 
   test('#invalidate returns a resolving promise', async function(assert) {
+    assert.expect(1);
     try {
       await authenticator.invalidate();
       assert.ok(true);

@@ -8,7 +8,9 @@ import { requireAuthentication, triggerAuthentication } from '../-internals/rout
 
 deprecate("Ember Simple Auth: The AuthenticatedRouteMixin is now deprecated; call the session service's requireAuthentication method in the respective route's beforeModel method instead.", false, {
   id: 'ember-simple-auth.mixins.authenticated-route-mixin',
-  until: '4.0.0'
+  until: '4.0.0',
+  since: '3.0.0',
+  for: 'ember-source'
 });
 
 /**
