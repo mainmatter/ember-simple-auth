@@ -62,26 +62,9 @@ jobs:
           - test:one ember-lts-3.20
           - test:one ember-lts-3.24
           - test:one ember-beta
+          - test:one ember-canary
+          - test:one ember-release
         allow-failure: [false]
-        include:
-          - workspace: ember-simple-auth
-            test-suite: "test:one ember-release"
-            allow-failure: false
-          - workspace: test-app
-            test-suite: "test:one ember-release"
-            allow-failure: false
-          - workspace: classic-test-app
-            test-suite: "test:one ember-release"
-            allow-failure: false
-          - workspace: ember-simple-auth
-            test-suite: "test:one ember-canary"
-            allow-failure: true
-          - workspace: classic-test-app
-            test-suite: "test:one ember-canary"
-            allow-failure: true
-          - workspace: test-app
-            test-suite: "test:one ember-canary"
-            allow-failure: true
 
     steps:
       - uses: actions/checkout@v1
