@@ -32,6 +32,7 @@
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
+    "mocha": "^7.0.1",
     "@ember/string": "^3.0.0",
     "ember-resolver": "^8.0.3",
     "ember-cli-blueprint-test-helpers": "^0.19.2",
