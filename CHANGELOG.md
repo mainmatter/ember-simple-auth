@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.1.0 (2021-10-29)
+
+#### :rocket: Enhancement
+* `ember-simple-auth`, `test-app`
+  * [#2314](https://github.com/simplabs/ember-simple-auth/pull/2314) Add setup method for session service ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 1
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+
 ## 4.0.2 (2021-10-06)
 
 #### :house: Internal
