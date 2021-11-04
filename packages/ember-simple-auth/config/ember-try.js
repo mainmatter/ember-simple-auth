@@ -26,6 +26,7 @@ module.exports = function() {
             devDependencies: {
               'ember-data': '~3.8.0',
               'ember-source': '~3.8.0',
+              'najax': '^1.0.7',
             },
           },
         },
