@@ -2,7 +2,6 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import EmberObject from '@ember/object';
 import Route from '@ember/routing/route';
-import { setupTest } from 'ember-mocha';
 import RSVP from 'rsvp';
 import sinonjs from 'sinon';
 import setupSessionRestoration from 'ember-simple-auth/initializers/setup-session-restoration';
@@ -28,7 +27,7 @@ module('setupSessionRestoration', function(hooks) {
     setupSessionRestoration(this.owner);
 
     const route = this.owner.lookup('route:application');
-    assert.ok(route.respondTo('beforeModel'));
+    assert.equal(typeof route.beforeModel, 'function');
   });
 
   module('useSessionSetupMethod', function(hooks) {
@@ -77,6 +76,7 @@ module('setupSessionRestoration', function(hooks) {
 
     test('shows deprecation when is false', function(assert) {
       let deprecations = [];
+
       registerDeprecationHandler((message, options, next) => {
         deprecations.push(message);
 

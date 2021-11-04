@@ -547,34 +547,40 @@ module('SessionService', function(hooks) {
     });
   });
 
-  describe('setup', function() {
-    it('sets up handlers', async function() {
+  module('setup', function() {
+    test('sets up handlers', async function(assert) {
       const setupHandlersStub = sinon.stub(sessionService, '_setupHandlers');
 
       await sessionService.setup();
-      expect(setupHandlersStub).to.have.been.calledOnce;
+      assert.ok(setupHandlersStub.calledOnce);
     });
 
-    it("doesn't raise an error when restore rejects", async function() {
+    test("doesn't raise an error when restore rejects", async function(assert) {
+      assert.expect(1);
       sinon.stub(sessionService, '_setupHandlers');
-      sinon.stub(session, 'restore').throws();
+      sinon.stub(session, 'restore').throws(new Error());
 
-      await sessionService.setup();
+      try {
+        await sessionService.setup();
+        assert.ok(true);
+      } catch {
+        assert.ok(false);
+      }
     });
 
-    describe('when using session methods', function() {
+    module('when using session methods', function(hooks) {
       let useSessionSetupMethodDefault;
 
-      beforeEach(function() {
+      hooks.beforeEach(function() {
         useSessionSetupMethodDefault = Configuration.useSessionSetupMethod;
         Configuration.useSessionSetupMethod = false;
       });
 
-      afterEach(function() {
+      hooks.afterEach(function() {
         Configuration.useSessionSetupMethod = useSessionSetupMethodDefault;
       });
 
-      it('throws assertion when session methods are called before session#setup', async function() {
+      test('throws assertion when session methods are called before session#setup', async function(assert) {
         Configuration.useSessionSetupMethod = true;
         let error;
         try {
@@ -582,10 +588,10 @@ module('SessionService', function(hooks) {
         } catch (assertion) {
           error = assertion;
         }
-        expect(error.message).to.eq("Assertion Failed: Ember Simple Auth: session#setup wasn't called. Make sure to call session#setup in your application route's beforeModel hook.");
+        assert.equal(error.message, "Assertion Failed: Ember Simple Auth: session#setup wasn't called. Make sure to call session#setup in your application route's beforeModel hook.");
       });
 
-      it("doesn't throw assertion when session methods are called after session#setup", async function() {
+      test("doesn't throw assertion when session methods are called after session#setup", async function(assert) {
         Configuration.useSessionSetupMethod = true;
         let error;
 
@@ -596,7 +602,7 @@ module('SessionService', function(hooks) {
           error = assertion;
         }
 
-        expect(error).to.be.undefined;
+        assert.equal(error, undefined);
       });
     });
   });
