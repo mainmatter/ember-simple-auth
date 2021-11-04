@@ -27,7 +27,7 @@
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-engines": "^0.8.5",
     "ember-maybe-import-regenerator": "^1.0.0",
-    "ember-simple-auth": "4.0.2",
+    "ember-simple-auth": "4.1.0",
     "ember-source-channel-url": "^1.1.0",
     "ember-try": "^1.1.0",
     "eslint-config-simplabs": "^0.4.0",
