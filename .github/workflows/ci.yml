@@ -63,9 +63,17 @@ jobs:
           - test:one ember-lts-3.16
           - test:one ember-lts-3.20
           - test:one ember-lts-3.24
-          - test:one ember-beta
         allow-failure: [false]
         include:
+          - workspace: ember-simple-auth
+            test-suite: "test:one ember-beta"
+            allow-failure: true
+          - workspace: test-app
+            test-suite: "test:one ember-beta"
+            allow-failure: true
+          - workspace: classic-test-app
+            test-suite: "test:one ember-beta"
+            allow-failure: true
           - workspace: ember-simple-auth
             test-suite: "test:one ember-release"
             allow-failure: false
