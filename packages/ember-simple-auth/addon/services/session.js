@@ -63,10 +63,6 @@ export default Service.extend(Evented, {
     via the store (see
     {{#crossLink "BaseStore/sessionDataUpdated:event"}}{{/crossLink}}).
 
-    When using the {{#crossLink "ApplicationRouteMixin"}}{{/crossLink}} this
-    event will automatically get handled (see
-    {{#crossLink "ApplicationRouteMixin/sessionAuthenticated:method"}}{{/crossLink}}).
-
     @event authenticationSucceeded
     @public
   */
@@ -79,10 +75,6 @@ export default Service.extend(Evented, {
     application and the session state gets synchronized across tabs or windows
     via the store (see
     {{#crossLink "BaseStore/sessionDataUpdated:event"}}{{/crossLink}}).
-
-    When using the {{#crossLink "ApplicationRouteMixin"}}{{/crossLink}} this
-    event will automatically get handled (see
-    {{#crossLink "ApplicationRouteMixin/sessionInvalidated:method"}}{{/crossLink}}).
 
     @event invalidationSucceeded
     @public
@@ -128,12 +120,9 @@ export default Service.extend(Evented, {
   store: oneWay('session.store'),
 
   /**
-    A previously attempted but intercepted transition (e.g. by the
-    {{#crossLink "AuthenticatedRouteMixin"}}{{/crossLink}}). If an attempted
-    transition is present, the
-    {{#crossLink "ApplicationRouteMixin"}}{{/crossLink}} will retry it when the
-    session becomes authenticated (see
-    {{#crossLink "ApplicationRouteMixin/sessionAuthenticated:method"}}{{/crossLink}}).
+    A previously attempted but intercepted transition. If an attempted
+    transition is present, you can retry it when the
+    session becomes authenticated.
 
     @property attemptedTransition
     @type Transition
