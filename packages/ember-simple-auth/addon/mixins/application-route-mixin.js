@@ -32,8 +32,8 @@ deprecate('Ember Simple Auth: The ApplicationRouteMixin is now deprecated; it ca
   ```js
   // app/instance-initializers/session-events.js
   export function initialize(instance) {
-    const applicationRoute = instance.container.lookup('route:application');
-    const session          = instance.container.lookup('service:session');
+    const applicationRoute = instance.lookup('route:application');
+    const session          = instance.lookup('service:session');
     session.on('authenticationSucceeded', function() {
       applicationRoute.transitionTo('index');
     });
