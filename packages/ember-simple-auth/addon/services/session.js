@@ -21,7 +21,11 @@ function deprecateSessionEvents() {
   if (enableEventsDeprecation) {
     deprecate("Ember Simple Auth: The session service's events API is deprecated; to add custom behavior to the authentication or invalidation handling, override the handleAuthentication or handleInvalidation methods.", false, {
       id: 'ember-simple-auth.events.session-service',
-      until: '4.0.0'
+      until: '4.0.0',
+      for: 'ember-simple-auth',
+      since: {
+        enabled: '3.1.0'
+      }
     });
   }
 }

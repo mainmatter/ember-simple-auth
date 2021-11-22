@@ -8,7 +8,11 @@ import { prohibitAuthentication } from '../-internals/routing';
 
 deprecate("Ember Simple Auth: The UnauthenticatedRouteMixin is now deprecated; call the session service's prohibitAuthentication method in the respective route's beforeModel method instead.", false, {
   id: 'ember-simple-auth.mixins.unauthenticated-route-mixin',
-  until: '4.0.0'
+  until: '4.0.0',
+  for: 'ember-simple-auth',
+  since: {
+    enabled: '3.1.0'
+  }
 });
 
 /**
