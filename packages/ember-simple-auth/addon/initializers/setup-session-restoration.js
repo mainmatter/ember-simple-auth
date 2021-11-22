@@ -1,6 +1,6 @@
 import { getOwner } from '@ember/application';
 import Configuration from '../configuration';
-import { deprecate } from '@ember/application/deprecations';
+import { deprecate } from '@ember/debug';
 
 export default function setupSessionRestoration(registry) {
   if (Configuration.useSessionSetupMethod) {
