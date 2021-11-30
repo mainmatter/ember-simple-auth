@@ -214,9 +214,11 @@ describe('InternalSession', () => {
       });
 
       it('is not authenticated', async function() {
-        await session.restore();
-
-        expect(session.get('isAuthenticated')).to.be.false;
+        try {
+          await session.restore();
+        } catch (_error) {
+          expect(session.get('isAuthenticated')).to.be.false;
+        }
       });
     });
 
@@ -226,9 +228,11 @@ describe('InternalSession', () => {
       });
 
       it('is not authenticated', async function() {
-        await session.restore();
-
-        expect(session.get('isAuthenticated')).to.be.false;
+        try {
+          await session.restore();
+        } catch (_error) {
+          expect(session.get('isAuthenticated')).to.be.false;
+        }
       });
     });
   });
@@ -355,9 +359,11 @@ describe('InternalSession', () => {
       });
 
       it('is not authenticated', async function() {
-        await session.authenticate('authenticator:test');
-
-        expect(session.get('isAuthenticated')).to.be.false;
+        try {
+          await session.authenticate('authenticator:test');
+        } catch (_error) {
+          expect(session.get('isAuthenticated')).to.be.false;
+        }
       });
     });
   });
@@ -565,9 +571,11 @@ describe('InternalSession', () => {
         sinon.spy(authenticator, 'restore');
         let restoration = session.restore();
         store.trigger('sessionDataUpdated', { some: 'other property', authenticated: { authenticator: 'authenticator:test' } });
-        await restoration;
-
-        expect(authenticator.restore).to.not.have.been.called;
+        try {
+          await restoration;
+        } catch (_error) {
+          expect(authenticator.restore).to.not.have.been.called;
+        }
       });
     });
 
