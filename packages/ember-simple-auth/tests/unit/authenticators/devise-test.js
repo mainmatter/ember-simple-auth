@@ -32,7 +32,7 @@ describe('DeviseAuthenticator', () => {
 
     describe('when the data contains a custom token and email attribute', function() {
       beforeEach(function() {
-        authenticator = Devise.extend({ tokenAttributeName: 'employee.token', identificationAttributeName: 'employee.email' }).create();
+        authenticator = Devise.extend({ resourceName: 'employee', tokenAttributeName: 'token', identificationAttributeName: 'email' }).create();
       });
 
       it('resolves with the correct data', async function() {
