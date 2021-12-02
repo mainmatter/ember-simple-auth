@@ -1,93 +1,95 @@
-import { it } from 'ember-mocha';
-import { describe, beforeEach } from 'mocha';
-import { expect } from 'chai';
+import { module, test } from 'qunit';
 import OAuth2ImplicitGrant, { parseResponse } from 'ember-simple-auth/authenticators/oauth2-implicit-grant';
 
-describe('OAuth2ImplicitGrantAuthenticator', () => {
+module('OAuth2ImplicitGrantAuthenticator', function(hooks) {
   let authenticator;
 
   let data = {
     'access_token': 'secret-token'
   };
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     authenticator = OAuth2ImplicitGrant.create();
   });
 
-  describe('parseResponse', function() {
-    it('parses a URL into a data hash', function() {
+  module('parseResponse', function() {
+    test('parses a URL into a data hash', function(assert) {
       let result = parseResponse('/routepath#access_token=secret-token&scope=something');
 
-      expect(result).to.deep.equal({ access_token: 'secret-token', scope: 'something' });
+      assert.deepEqual(result, { access_token: 'secret-token', scope: 'something' });
     });
 
-    it('parses a URL into a data hash when the app uses hash routing', function() {
+    test('parses a URL into a data hash when the app uses hash routing', function(assert) {
       let result = parseResponse('#/routepath#access_token=secret-token&scope=something');
 
-      expect(result).to.deep.equal({ access_token: 'secret-token', scope: 'something' });
+      assert.deepEqual(result, { access_token: 'secret-token', scope: 'something' });
     });
   });
 
-  describe('#restore', function() {
-    describe('when the data contains an access_token', function() {
-      it('resolves with the correct data', async function() {
+  module('#restore', function() {
+    module('when the data contains an access_token', function() {
+      test('resolves with the correct data', async function(assert) {
         let _data = await authenticator.restore(data);
 
-        expect(_data).to.eql(data);
+        assert.equal(_data, data);
       });
 
-      describe('when the data does not contain an access_token', function() {
-        it('returns a rejecting promise', async function() {
+      module('when the data does not contain an access_token', function() {
+        test('returns a rejecting promise', async function(assert) {
+          assert.expect(1);
           try {
             await authenticator.restore();
-            expect(false).to.be.true;
+            assert.ok(false);
           } catch (error) {
-            expect(error).to.eql('Could not restore session - "access_token" missing.');
+            assert.equal(error, 'Could not restore session - "access_token" missing.');
           }
         });
       });
     });
   });
 
-  describe('#authenticate', function() {
-    describe('when the data contains an access_token', function() {
-      it('resolves with the correct data', async function() {
+  module('#authenticate', function() {
+    module('when the data contains an access_token', function() {
+      test('resolves with the correct data', async function(assert) {
         let _data = await authenticator.authenticate(data);
 
-        expect(_data).to.eql(data);
+        assert.equal(_data, data);
       });
     });
 
-    describe('when the data does not contain an access_token', function() {
-      it('rejects with an error', async function() {
+    module('when the data does not contain an access_token', function() {
+      test('rejects with an error', async function(assert) {
+        assert.expect(1);
         try {
           await authenticator.authenticate({ foo: 'bar' });
-          expect(false).to.be.true;
+          assert.ok(false);
         } catch (error) {
-          expect(error).to.eql('Invalid auth params - "access_token" missing.');
+          assert.equal(error, 'Invalid auth params - "access_token" missing.');
         }
       });
     });
 
-    describe('when the data contains an error', function() {
-      it('rejects with that error', async function() {
+    module('when the data contains an error', function() {
+      test('rejects with that error', async function(assert) {
+        assert.expect(1);
         try {
           await authenticator.authenticate({ error: 'access_denied' });
-          expect(false).to.be.true;
+          assert.ok(false);
         } catch (error) {
-          expect(error).to.eql('access_denied');
+          assert.equal(error, 'access_denied');
         }
       });
     });
   });
 
-  describe('#invalidate', function() {
-    it('returns a resolving promise', async function() {
+  module('#invalidate', function() {
+    test('returns a resolving promise', async function(assert) {
+      assert.expect(1);
       try {
         await authenticator.invalidate();
-        expect(true).to.be.true;
+        assert.ok(true);
       } catch (_error) {
-        expect(false).to.be.true;
+        assert.ok(false);
       }
     });
   });

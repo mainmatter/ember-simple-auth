@@ -1,9 +1,10 @@
-import { describe } from 'mocha';
+import { module } from 'qunit';
 import Ephemeral from 'ember-simple-auth/session-stores/ephemeral';
 import itBehavesLikeAStore from './shared/store-behavior';
 
-describe('EphemeralStore', function() {
+module('EphemeralStore', function(hooks) {
   itBehavesLikeAStore({
+    hooks,
     store() {
       return Ephemeral.create();
     }

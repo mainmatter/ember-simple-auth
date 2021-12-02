@@ -1,66 +1,65 @@
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import EmberObject from '@ember/object';
 import Route from '@ember/routing/route';
-import { setupTest } from 'ember-mocha';
 import RSVP from 'rsvp';
-import { describe, beforeEach, it } from 'mocha';
-import { expect } from 'chai';
 import sinonjs from 'sinon';
 import setupSessionRestoration from 'ember-simple-auth/initializers/setup-session-restoration';
 import Configuration from 'ember-simple-auth/configuration';
 import { registerDeprecationHandler } from '@ember/debug';
 
-describe('setupSessionRestoration', () => {
-  setupTest();
+module('setupSessionRestoration', function(hooks) {
+  setupTest(hooks);
 
   let sinon;
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
 
     this.owner.register('route:application', Route.extend());
   });
 
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
 
-  it('adds a beforeModel method', function() {
+  test('adds a beforeModel method', function(assert) {
     setupSessionRestoration(this.owner);
 
     const route = this.owner.lookup('route:application');
-    expect(route).to.respondTo('beforeModel');
+    assert.equal(typeof route.beforeModel, 'function');
   });
 
-  describe('useSessionSetupMethod', function() {
+  module('useSessionSetupMethod', function(hooks) {
     let useSessionSetupMethodDefault;
 
-    beforeEach(function() {
+    hooks.beforeEach(function() {
       useSessionSetupMethodDefault = Configuration.useSessionSetupMethod;
       Configuration.useSessionSetupMethod = false;
     });
 
-    afterEach(function() {
+    hooks.afterEach(function() {
       Configuration.useSessionSetupMethod = useSessionSetupMethodDefault;
     });
 
-    it("doesn't extend application route when is true", function() {
+    test("doesn't extend application route when is true", function(assert) {
       Configuration.useSessionSetupMethod = true;
       const route = this.owner.resolveRegistration('route:application');
       const reopenStub = sinon.stub(route, 'reopen');
 
       setupSessionRestoration(this.owner);
-      expect(reopenStub).to.not.have.been.called;
+      assert.notOk(reopenStub.called);
     });
 
-    it('extends application route when is false', function() {
+    test('extends application route when is false', function(assert) {
       const route = this.owner.resolveRegistration('route:application');
       const reopenStub = sinon.stub(route, 'reopen');
 
       setupSessionRestoration(this.owner);
-      expect(reopenStub).to.have.been.called;
+      assert.ok(reopenStub.called);
     });
 
-    it("doesn't show deprecation when is true", function() {
+    test("doesn't show deprecation when is true", function(assert) {
       Configuration.useSessionSetupMethod = true;
 
       let deprecations = [];
@@ -72,10 +71,10 @@ describe('setupSessionRestoration', () => {
 
       setupSessionRestoration(this.owner);
 
-      expect(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:'))).to.have.length(0);
+      assert.equal(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:')), 0);
     });
 
-    it('shows deprecation when is false', function() {
+    test('shows deprecation when is false', function(assert) {
       let deprecations = [];
       registerDeprecationHandler((message, options, next) => {
         deprecations.push(message);
@@ -85,15 +84,15 @@ describe('setupSessionRestoration', () => {
 
       setupSessionRestoration(this.owner);
 
-      expect(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:'))).to.have.length(1);
+      assert.equal(deprecations.filter(deprecation => deprecation.includes('Ember Simple Auth:')).length, 1);
     });
   });
 
-  describe('the beforeModel method', function() {
+  module('the beforeModel method', function(hooks) {
     let session;
     let route;
 
-    beforeEach(function() {
+    hooks.beforeEach(function() {
       this.owner.register('session:main', EmberObject.extend({
         restore() {}
       }));
@@ -109,27 +108,27 @@ describe('setupSessionRestoration', () => {
       setupSessionRestoration(this.owner);
     });
 
-    describe('when session restoration resolves', function() {
-      beforeEach(function() {
+    module('when session restoration resolves', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(session, 'restore').returns(RSVP.resolve());
       });
 
-      it('returns the return value of the original "beforeModel" method', async function() {
+      test('returns the return value of the original "beforeModel" method', async function(assert) {
         let value = await route.beforeModel();
 
-        expect(value).to.eq('test');
+        assert.equal(value, 'test');
       });
     });
 
-    describe('when session restoration rejects', function() {
-      beforeEach(function() {
+    module('when session restoration rejects', function(hooks) {
+      hooks.beforeEach(function() {
         sinon.stub(session, 'restore').returns(RSVP.reject());
       });
 
-      it('returns the return value of the original "beforeModel" method', async function() {
+      test('returns the return value of the original "beforeModel" method', async function(assert) {
         let value = await route.beforeModel();
 
-        expect(value).to.eq('test');
+        assert.equal(value, 'test');
       });
     });
   });

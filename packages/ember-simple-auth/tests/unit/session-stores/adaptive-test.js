@@ -1,18 +1,18 @@
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import { run } from '@ember/runloop';
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
 import sinonjs from 'sinon';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
 import createAdaptiveStore from '../../helpers/create-adaptive-store';
-import { setupTest } from 'ember-mocha';
 
-describe('AdaptiveStore', () => {
-  setupTest();
+module('AdaptiveStore', function(hooks) {
+  setupTest(hooks);
 
-  describe('when localStorage is available', function() {
+  module('when localStorage is available', function(hooks) {
     itBehavesLikeAStore({
+      hooks,
       store(sinon, owner) {
         let store;
         let cookieService;
@@ -28,8 +28,9 @@ describe('AdaptiveStore', () => {
     });
   });
 
-  describe('when localStorage is not available', function() {
+  module('when localStorage is not available', function(hooks) {
     itBehavesLikeAStore({
+      hooks,
       store(sinon, owner) {
         let store;
         let cookieService;
@@ -46,9 +47,10 @@ describe('AdaptiveStore', () => {
     });
   });
 
-  describe('CookieStore', function() {
-    describe('Behaviour', function() {
+  module('CookieStore', function() {
+    module('Behaviour', function(hooks) {
       itBehavesLikeACookieStore({
+        hooks,
         store(sinon, owner, storeOptions) {
           owner.register('service:cookies', FakeCookieService);
           let cookieService = owner.lookup('service:cookies');
@@ -73,7 +75,7 @@ describe('AdaptiveStore', () => {
       });
     });
 
-    it('persists to cookie when cookie attributes change', async function() {
+    test('persists to cookie when cookie attributes change', async function(assert) {
       let sinon = sinonjs.createSandbox();
       let store;
       let cookieService;
@@ -97,7 +99,7 @@ describe('AdaptiveStore', () => {
       });
       await store.persist({ key: 'value' });
 
-      expect(cookieService.write).to.have.been.calledWith(
+      assert.ok(cookieService.write.calledWith(
         'test:session-expiration_time',
         60,
         sinon.match(function({ domain, expires, path, secure }) {
@@ -105,7 +107,7 @@ describe('AdaptiveStore', () => {
             path === '/' &&
             secure === false && expires >= new Date(now.getTime() + 60 * 1000);
         })
-      );
+      ));
     });
   });
 });
