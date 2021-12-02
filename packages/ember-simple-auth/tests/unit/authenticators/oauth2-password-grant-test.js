@@ -381,6 +381,8 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
           'grant_type': 'refresh_token',
           'refresh_token': 'refresh token!'
         });
+
+        return [200, { 'Content-Type': 'application/json' }, '{}'];
       });
 
       await authenticator._refreshAccessToken(12345, 'refresh token!');
