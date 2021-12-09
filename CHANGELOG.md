@@ -1,5 +1,31 @@
 # Changelog
 
+
+## 4.1.1 (2021-12-09)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2341](https://github.com/simplabs/ember-simple-auth/pull/2341) add annotation to deprecations so Ember deprecate fn does not complain ([@BryanCrotaz](https://github.com/BryanCrotaz))
+
+#### :memo: Documentation
+* `ember-simple-auth`
+  * [#2338](https://github.com/simplabs/ember-simple-auth/pull/2338) doc: fix lookup in instance-initializer ([@Sweet-Bob](https://github.com/Sweet-Bob))
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2345](https://github.com/simplabs/ember-simple-auth/pull/2345) Fixed failing unit test - ember/object get function was removed from source code so I have changed unit test accordingly ([@candunaj](https://github.com/candunaj))
+  * [#2348](https://github.com/simplabs/ember-simple-auth/pull/2348) Fixed quietly failing unit test because server returned nothing ([@candunaj](https://github.com/candunaj))
+  * [#2344](https://github.com/simplabs/ember-simple-auth/pull/2344) In some tests was thrown undefined. ([@candunaj](https://github.com/candunaj))
+  * [#2342](https://github.com/simplabs/ember-simple-auth/pull/2342) Fixed 3 readonly tests. ([@candunaj](https://github.com/candunaj))
+* Other
+  * [#2343](https://github.com/simplabs/ember-simple-auth/pull/2343) Allow ember-release to fail ([@candunaj](https://github.com/candunaj))
+  * [#2333](https://github.com/simplabs/ember-simple-auth/pull/2333) Allow CI for ember-beta to fail ([@candunaj](https://github.com/candunaj))
+
+#### Committers: 3
+- Stanislav Dunajcan ([@candunaj](https://github.com/candunaj))
+- Robert ([@Sweet-Bob](https://github.com/Sweet-Bob))
+- Bryan ([@BryanCrotaz](https://github.com/BryanCrotaz))
+
 ## 4.1.0 (2021-10-29)
 
 #### :rocket: Enhancement
