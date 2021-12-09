@@ -15,21 +15,6 @@ module.exports = function() {
       useYarn: true,
       scenarios: [
         {
-          name: 'ember-3.0',
-          bower: {
-            dependencies: {
-              ember: null,
-              'ember-data': null,
-            },
-          },
-          npm: {
-            devDependencies: {
-              'ember-data': '~3.0.0',
-              'ember-source': '~3.0.0',
-            },
-          },
-        },
-        {
           name: 'ember-lts-3.4',
           bower: {
             dependencies: {
