@@ -100,7 +100,7 @@ describe('SessionService', () => {
     it('is read-only', function() {
       expect(() => {
         sessionService.set('isAuthenticated', false);
-      }).to.throw;
+      }).to.throw();
     });
   });
 
@@ -114,7 +114,7 @@ describe('SessionService', () => {
     it('is read-only', function() {
       expect(() => {
         sessionService.set('store', 'some other store');
-      }).to.throw;
+      }).to.throw();
     });
   });
 
@@ -154,7 +154,7 @@ describe('SessionService', () => {
     it('is read-only', function() {
       expect(() => {
         sessionService.set('data', false);
-      }).to.throw;
+      }).to.throw();
     });
   });
 
