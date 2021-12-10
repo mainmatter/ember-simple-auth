@@ -6,7 +6,6 @@ import {
   fillIn,
   click
 } from '@ember/test-helpers';
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import Pretender from 'pretender';
 import {
   invalidateSession,
@@ -56,11 +55,6 @@ module('Acceptance: Authentication', function(hooks) {
   });
 
   module('the protected route', function() {
-    if (!hasEmberVersion(2, 4)) {
-      // guard against running test module on unsupported version (before 2.4)
-      return;
-    }
-
     test('cannot be visited when the session is not authenticated', async function(assert) {
       await invalidateSession();
       await visit('/protected');
@@ -156,11 +150,6 @@ module('Acceptance: Authentication', function(hooks) {
   });
 
   module('the login route', function() {
-    if (!hasEmberVersion(2, 4)) {
-      // guard against running test module on unsupported version (before 2.4)
-      return;
-    }
-
     test('can be visited when the session is not authenticated', async function(assert) {
       await invalidateSession();
       await visit('/login');
