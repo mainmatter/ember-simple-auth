@@ -66,15 +66,6 @@ jobs:
             test-suite: "test:one ember-beta"
             allow-failure: true
           - workspace: ember-simple-auth
-            test-suite: "test:one ember-release"
-            allow-failure: true
-          - workspace: test-app
-            test-suite: "test:one ember-release"
-            allow-failure: true
-          - workspace: classic-test-app
-            test-suite: "test:one ember-release"
-            allow-failure: true
-          - workspace: ember-simple-auth
             test-suite: "test:one ember-canary"
             allow-failure: true
           - workspace: classic-test-app
