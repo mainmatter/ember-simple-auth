@@ -333,17 +333,23 @@ describe('OAuth2PasswordGrantAuthenticator', () => {
 
       describe('when a refresh token is set', function() {
         it('sends an AJAX request to invalidate the refresh token', async function() {
+          let refreshTokenValidated = false;
           server.post('/revoke', (request) => {
             let { requestBody } = request;
             let body = parsePostData(requestBody);
 
-            expect(body).to.eql({
-              'token_type_hint': 'refresh_token',
-              'token': 'refresh token!'
-            });
+            if (body.token_type_hint === 'refresh_token') {
+              expect(body).to.eql({
+                'token_type_hint': 'refresh_token',
+                'token': 'refresh token!'
+              });
+              refreshTokenValidated = true;
+            }
           });
 
           await authenticator.invalidate({ 'access_token': 'access token!', 'refresh_token': 'refresh token!' });
+
+          expect(refreshTokenValidated).to.equal(true);
         });
       });
     });
