@@ -104,6 +104,8 @@ module.exports = function() {
             devDependencies: {
               'ember-data': 'latest',
               'ember-source': releaseUrl,
+              'ember-auto-import': '^2.2.3',
+              webpack: '^5.0.0',
             },
           },
         },
@@ -118,6 +120,8 @@ module.exports = function() {
             devDependencies: {
               'ember-data': 'beta',
               'ember-source': betaUrl,
+              'ember-auto-import': '^2.2.3',
+              webpack: '^5.0.0',
             },
           },
         },
@@ -132,6 +136,8 @@ module.exports = function() {
             devDependencies: {
               'ember-data': 'canary',
               'ember-source': canaryUrl,
+              'ember-auto-import': '^2.2.3',
+              webpack: '^5.0.0',
             },
           },
         },
