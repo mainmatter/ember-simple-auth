@@ -78,6 +78,22 @@ module.exports = function() {
           },
         },
         {
+          name: 'ember-lts-3.28',
+          bower: {
+            dependencies: {
+              ember: null,
+              'ember-cli-shims': null,
+              'ember-data': null,
+            },
+          },
+          npm: {
+            devDependencies: {
+              'ember-data': '~3.28.0',
+              'ember-source': '~3.28.0',
+            },
+          },
+        },
+        {
           name: 'ember-release',
           bower: {
             dependencies: {
