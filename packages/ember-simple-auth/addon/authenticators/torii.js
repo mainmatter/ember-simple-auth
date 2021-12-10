@@ -1,8 +1,17 @@
 import RSVP from 'rsvp';
-import { assert } from '@ember/debug';
+import { assert, deprecate } from '@ember/debug';
 import { isPresent, isEmpty } from '@ember/utils';
 import { assign as emberAssign } from '@ember/polyfills';
 import BaseAuthenticator from './base';
+
+deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
+  id: 'ember-simple-auth.authenticators.torii',
+  until: '5.0.0',
+  for: 'ember-simple-auth',
+  since: {
+    enabled: '4.2.0'
+  }
+});
 
 /**
   Authenticator that wraps the
@@ -24,6 +33,7 @@ import BaseAuthenticator from './base';
   ```
 
   @class ToriiAuthenticator
+  @deprecated Implement an authenticator that wraps Torii in application code instead
   @module ember-simple-auth/authenticators/torii
   @extends BaseAuthenticator
   @public
