@@ -1,33 +1,32 @@
 /* eslint-disable ember/no-mixins, ember/no-new-mixins */
 
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import Mixin from '@ember/object/mixin';
 import { setOwner } from '@ember/application';
 import RSVP from 'rsvp';
 import Route from '@ember/routing/route';
 import Service from '@ember/service';
-import { describe, beforeEach, it } from 'mocha';
-import { setupTest } from 'ember-mocha';
-import { expect } from 'chai';
 import sinonjs from 'sinon';
 import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 
-describe('UnauthenticatedRouteMixin', () => {
-  setupTest();
+module('UnauthenticatedRouteMixin', function(hooks) {
+  setupTest(hooks);
 
   let sinon;
   let route;
   let router;
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
   });
 
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
 
-  describe('#beforeModel', function() {
-    beforeEach(function() {
+  module('#beforeModel', function(hooks) {
+    hooks.beforeEach(function() {
       const MixinImplementingBeforeModel = Mixin.create({
         beforeModel() {
           return RSVP.resolve('upstreamReturnValue');
@@ -47,42 +46,42 @@ describe('UnauthenticatedRouteMixin', () => {
       sinon.spy(router, 'transitionTo');
     });
 
-    describe('if the session is authenticated', function() {
-      beforeEach(function() {
+    module('if the session is authenticated', function(hooks) {
+      hooks.beforeEach(function() {
         let session = this.owner.lookup('service:session');
         session.set('isAuthenticated', true);
       });
 
-      it('transitions to "index" by default', function() {
+      test('transitions to "index" by default', function(assert) {
         route.beforeModel();
 
-        expect(router.transitionTo).to.have.been.calledWith('index');
+        assert.ok(router.transitionTo.calledWith('index'));
       });
 
-      it('transitions to set routeIfAlreadyAuthenticated', function() {
+      test('transitions to set routeIfAlreadyAuthenticated', function(assert) {
         let routeIfAlreadyAuthenticated = 'path/to/route';
         route.set('routeIfAlreadyAuthenticated', routeIfAlreadyAuthenticated);
 
         route.beforeModel();
-        expect(router.transitionTo).to.have.been.calledWith(routeIfAlreadyAuthenticated);
+        assert.ok(router.transitionTo.calledWith(routeIfAlreadyAuthenticated));
       });
 
-      it('does not return the upstream promise', function() {
-        expect(route.beforeModel()).to.be.undefined;
+      test('does not return the upstream promise', function(assert) {
+        assert.equal(route.beforeModel(), undefined);
       });
     });
 
-    describe('if the session is not authenticated', function() {
-      it('does not transition', function() {
+    module('if the session is not authenticated', function() {
+      test('does not transition', function(assert) {
         route.beforeModel();
 
-        expect(router.transitionTo).to.not.have.been.called;
+        assert.notOk(router.transitionTo.called);
       });
 
-      it('returns the upstream promise', async function() {
+      test('returns the upstream promise', async function(assert) {
         let result = await route.beforeModel();
 
-        expect(result).to.equal('upstreamReturnValue');
+        assert.equal(result, 'upstreamReturnValue');
       });
     });
   });

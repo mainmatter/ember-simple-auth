@@ -2,8 +2,7 @@
 
 module.exports = {
   extends: [
-    'simplabs/configs/ember-mocha',
-    'simplabs/plugins/mocha',
+    'plugin:qunit/recommended',
   ],
   parserOptions: {
     ecmaVersion: 2017,

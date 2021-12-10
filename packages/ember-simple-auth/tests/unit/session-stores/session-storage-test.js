@@ -1,10 +1,11 @@
-import { describe } from 'mocha';
+import { module } from 'qunit';
 import SessionStorage from 'ember-simple-auth/session-stores/session-storage';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeAStorageEventHandler from './shared/storage-event-handler-behavior';
 
-describe('SessionStorageStore', function() {
+module('SessionStorageStore', function(hooks) {
   itBehavesLikeAStore({
+    hooks,
     store() {
       return SessionStorage.create({
         _isFastBoot: false
@@ -13,6 +14,7 @@ describe('SessionStorageStore', function() {
   });
 
   itBehavesLikeAStorageEventHandler({
+    hooks,
     store() {
       return SessionStorage.create({
         _isFastBoot: false

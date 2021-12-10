@@ -1,40 +1,39 @@
+import { module, test } from 'qunit';
 import Ember from 'ember';
-import { describe, beforeEach, it } from 'mocha';
-import { setupApplicationTest } from 'ember-mocha';
-import { expect } from 'chai';
+import { setupApplicationTest } from 'ember-qunit';
 import sinonjs from 'sinon';
 
-describe('InternalSession store injection', () => {
-  setupApplicationTest();
+module('InternalSession store injection', function(hooks) {
+  setupApplicationTest(hooks);
 
   let sinon;
   let session;
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
   });
 
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
 
-  describe('session store injection', function() {
-    afterEach(function() {
+  module('session store injection', function(hooks) {
+    hooks.afterEach(function() {
       Ember.testing = true; // eslint-disable-line ember/no-ember-testing-in-module-scope
     });
 
-    it('looks up the test session store when Ember.testing true', function() {
+    test('looks up the test session store when Ember.testing true', function(assert) {
       Ember.testing = true; // eslint-disable-line ember/no-ember-testing-in-module-scope
 
       session = this.owner.lookup('session:main');
-      expect(session.get('store')).to.eql(this.owner.lookup('session-store:test'));
+      assert.equal(session.get('store'), this.owner.lookup('session-store:test'));
     });
 
-    it('looks up the application session store when Ember.testing false', function() {
+    test('looks up the application session store when Ember.testing false', function(assert) {
       Ember.testing = false; // eslint-disable-line ember/no-ember-testing-in-module-scope
 
       session = this.owner.lookup('session:main');
-      expect(session.get('store')).to.eql(this.owner.lookup('session-store:application'));
+      assert.equal(session.get('store'), this.owner.lookup('session-store:application'));
     });
   });
 });
