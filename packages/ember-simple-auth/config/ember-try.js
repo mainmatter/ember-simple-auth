@@ -88,6 +88,7 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
+              'ember-cli': '~3.28.0',
               'ember-data': '~3.28.0',
               'ember-source': '~3.28.0',
             },
@@ -102,6 +103,7 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
+              'ember-cli': 'latest',
               'ember-data': 'latest',
               'ember-source': releaseUrl,
               'ember-auto-import': '^2.2.3',
@@ -121,6 +123,7 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
+              'ember-cli': 'beta',
               'ember-data': 'beta',
               'ember-source': betaUrl,
               'ember-auto-import': '^2.2.3',
@@ -140,6 +143,7 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
+              'ember-cli': 'beta',
               'ember-data': 'canary',
               'ember-source': canaryUrl,
               'ember-auto-import': '^2.2.3',
