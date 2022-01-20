@@ -1,11 +1,11 @@
 import { Promise } from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
-import { merge, assign as emberAssign } from '@ember/polyfills';
+import { merge } from '@ember/polyfills';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
 
-const assign = emberAssign || merge;
+const assign = Object.assign || merge;
 
 const JSON_CONTENT_TYPE = 'application/json';
 
