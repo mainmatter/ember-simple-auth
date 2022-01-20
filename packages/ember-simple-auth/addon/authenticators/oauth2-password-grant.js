@@ -4,16 +4,11 @@ import { run, later, cancel } from '@ember/runloop';
 import { A, makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
 import { getOwner } from '@ember/application';
-import {
-  merge,
-  assign as emberAssign
-} from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
-
-const assign = emberAssign || merge;
 
 /**
   Authenticator that conforms to OAuth 2
