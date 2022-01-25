@@ -1,7 +1,7 @@
 import { Promise } from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
-import { assign } from '@ember/polyfills';
+import assign from 'ember-simple-auth/utils/assign';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
 

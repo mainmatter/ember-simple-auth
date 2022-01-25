@@ -4,7 +4,7 @@ import { run, later, cancel } from '@ember/runloop';
 import { A, makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
 import { getOwner } from '@ember/application';
-import { assign } from '@ember/polyfills';
+import assign from 'ember-simple-auth/utils/assign';
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';

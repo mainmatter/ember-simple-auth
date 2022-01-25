@@ -9,6 +9,7 @@ import { warn } from '@ember/debug';
 import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
+import assign from 'ember-simple-auth/utils/assign';
 
 const persistingProperty = function(beforeSet = function() {}) {
   return computed({
@@ -180,7 +181,7 @@ export default BaseStore.extend({
   },
 
   _initialize(options) {
-    const clonedOptions = Object.assign({}, options);
+    const clonedOptions = assign({}, options);
     if (clonedOptions.cookieName) {
       this.set('_cookieName', clonedOptions.cookieName);
     }
