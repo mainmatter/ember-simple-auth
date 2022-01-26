@@ -31,7 +31,6 @@ export default ObjectProxy.extend(Evented, {
     this._busy = true;
     assert(`Session#authenticate requires the authenticator to be specified, was "${authenticatorFactory}"!`, !isEmpty(authenticatorFactory));
     const authenticator = this._lookupAuthenticator(authenticatorFactory);
-    assert(`No authenticator for factory "${authenticatorFactory}" could be found!`, !isNone(authenticator));
 
     return authenticator.authenticate(...args).then((content) => {
       this._busy = false;
@@ -202,6 +201,7 @@ export default ObjectProxy.extend(Evented, {
   _lookupAuthenticator(authenticatorName) {
     let owner = getOwner(this);
     let authenticator = owner.lookup(authenticatorName);
+    assert(`No authenticator for factory "${authenticatorName}" could be found!`, !isNone(authenticator));
     setOwner(authenticator, owner);
     return authenticator;
   }
