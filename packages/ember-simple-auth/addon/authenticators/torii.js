@@ -1,7 +1,7 @@
 import RSVP from 'rsvp';
 import { assert, deprecate } from '@ember/debug';
 import { isPresent, isEmpty } from '@ember/utils';
-import { assign as emberAssign } from '@ember/polyfills';
+import assign from 'ember-simple-auth/utils/assign';
 import BaseAuthenticator from './base';
 
 deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
@@ -73,7 +73,7 @@ export default BaseAuthenticator.extend({
       return this.get('torii').fetch(data.provider, data).then(
         (fetchedData) => {
           this._authenticateWithProvider(provider, fetchedData);
-          return emberAssign(data, fetchedData);
+          return assign(data, fetchedData);
         },
         (err) => {
           delete this._provider;

@@ -3,11 +3,10 @@ import RSVP from 'rsvp';
 import { isEmpty, isNone } from '@ember/utils';
 import ObjectProxy from '@ember/object/proxy';
 import Evented from '@ember/object/evented';
-import { merge, assign as emberAssign } from '@ember/polyfills';
+import assign from 'ember-simple-auth/utils/assign';
 import { set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
 import { getOwner, setOwner } from '@ember/application';
-const assign = emberAssign || merge;
 
 export default ObjectProxy.extend(Evented, {
   authenticator:       null,
