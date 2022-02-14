@@ -1,6 +1,21 @@
 # Changelog
 
 
+## 4.2.0 (2022-02-14)
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2355](https://github.com/simplabs/ember-simple-auth/pull/2355) Remove use of `keys` and `merge` utils coming from `@ember/polyfills` ([@bertdeblock](https://github.com/bertdeblock))
+  * [#2352](https://github.com/simplabs/ember-simple-auth/pull/2352) Deprecate Torii authenticator ([@marcoow](https://github.com/marcoow))
+  * [#2349](https://github.com/simplabs/ember-simple-auth/pull/2349) Fixed failing unit test - invalidate call revoke endpoint twice. Unit test did not validate it correctly. ([@candunaj](https://github.com/candunaj))
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2330](https://github.com/simplabs/ember-simple-auth/pull/2330) 2316 refactor mocha tests to qunit ([@candunaj](https://github.com/candunaj))
+
+#### Committers: 3
+- Bert De Block ([@bertdeblock](https://github.com/bertdeblock))
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- Stanislav Dunajcan ([@candunaj](https://github.com/candunaj))
+
 ## 4.1.1 (2021-12-09)
 
 #### :bug: Bug Fix
