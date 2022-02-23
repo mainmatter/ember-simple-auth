@@ -391,13 +391,12 @@ export default Service.extend(Evented, {
     @method setup
     @public
   */
-  async setup() {
+  setup() {
     this._setupIsCalled = true;
-    try {
-      this._setupHandlers();
-      await this.session.restore();
-    } catch (error) {
+    this._setupHandlers();
+
+    return this.session.restore().catch(() => {
       // If it raises an error then it means that restore didn't find any restorable state.
-    }
+    });
   },
 });
