@@ -8,6 +8,7 @@ import { registerDeprecationHandler } from '@ember/debug';
 import sinonjs from 'sinon';
 import * as LocationUtil from 'ember-simple-auth/utils/location';
 import Configuration from 'ember-simple-auth/configuration';
+import RSVP from 'rsvp';
 
 module('SessionService', function(hooks) {
   setupTest(hooks);
@@ -558,7 +559,7 @@ module('SessionService', function(hooks) {
     test("doesn't raise an error when restore rejects", async function(assert) {
       assert.expect(1);
       sinon.stub(sessionService, '_setupHandlers');
-      sinon.stub(session, 'restore').throws(new Error());
+      sinon.stub(session, 'restore').returns(RSVP.reject());
 
       try {
         await sessionService.setup();
