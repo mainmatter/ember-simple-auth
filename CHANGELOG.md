@@ -1,6 +1,15 @@
 # Changelog
 
 
+## 4.2.1 (2022-03-15)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2363](https://github.com/simplabs/ember-simple-auth/pull/2363) Prevent UnhandledPromiseError when restoring the session ([@swelham](https://github.com/swelham))
+
+#### Committers: 1
+- Stuart Welham ([@swelham](https://github.com/swelham))
+
 ## 4.2.0 (2022-02-14)
 
 #### :house: Internal
