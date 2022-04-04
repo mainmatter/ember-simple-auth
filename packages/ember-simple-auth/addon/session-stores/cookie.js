@@ -9,7 +9,6 @@ import { warn } from '@ember/debug';
 import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
-import assign from 'ember-simple-auth/utils/assign';
 
 const persistingProperty = function(beforeSet = function() {}) {
   return computed({
@@ -178,16 +177,6 @@ export default BaseStore.extend({
     if (owner && !this.hasOwnProperty('_fastboot')) {
       this._fastboot = owner.lookup('service:fastboot');
     }
-  },
-
-  _initialize(options) {
-    const clonedOptions = assign({}, options);
-    if (clonedOptions.cookieName) {
-      this.set('_cookieName', clonedOptions.cookieName);
-    }
-
-    delete clonedOptions.cookieName;
-    this.setProperties(clonedOptions);
 
     let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
     if (cachedExpirationTime) {
