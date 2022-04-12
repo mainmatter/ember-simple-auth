@@ -1,6 +1,15 @@
 # Changelog
 
 
+## 4.2.2 (2022-04-12)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2366](https://github.com/simplabs/ember-simple-auth/pull/2366) Remove initialize method ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 1
+- Bartłomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+
 ## 4.2.1 (2022-03-15)
 
 #### :bug: Bug Fix
