@@ -47,7 +47,7 @@
     "ember-try": "^1.1.0",
     "eslint": "^6.8.0",
     "eslint-config-simplabs": "^0.4.0",
-    "eslint-plugin-ember": "^8.1.1",
+    "eslint-plugin-ember": "^10.0.0",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-qunit": "^6.2.0",
     "express": "^4.17.1",
