@@ -63,7 +63,7 @@
   ],
   "resolutions": {
     "@babel/plugin-transform-typescript": "~7.16.0",
-    "cssstyle": "~1.2.2",
+    "cssstyle": "~1.4.0",
     "jsdom": "^11.10.0"
   }
 }
