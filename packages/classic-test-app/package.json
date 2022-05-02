@@ -62,7 +62,7 @@
     "node-fetch"
   ],
   "resolutions": {
-    "@babel/plugin-transform-typescript": "~7.4.5",
+    "@babel/plugin-transform-typescript": "~7.16.0",
     "cssstyle": "~1.2.2",
     "jsdom": "^11.10.0"
   }
