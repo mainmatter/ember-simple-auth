@@ -22,7 +22,7 @@ jobs:
           - test-app
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
         with:
           node-version: 12.x
@@ -84,7 +84,7 @@ jobs:
             allow-failure: true
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
         with:
           node-version: 12.x
@@ -109,7 +109,7 @@ jobs:
           - test-app
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
         with:
           node-version: 12.x
@@ -127,7 +127,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
         with:
           node-version: 12.x
