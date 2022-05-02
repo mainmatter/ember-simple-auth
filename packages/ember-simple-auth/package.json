@@ -22,7 +22,7 @@
     "test:node": "mocha node-tests --recursive"
   },
   "dependencies": {
-    "base-64": "^0.1.0",
+    "base-64": "^1.0.0",
     "broccoli-file-creator": "^2.1.1",
     "broccoli-merge-trees": "^4.0.0",
     "broccoli-funnel": "^1.2.0 || ^2.0.0",
