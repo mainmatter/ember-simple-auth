@@ -66,7 +66,7 @@
     "eslint-plugin-ember": "^8.4.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-qunit": "^6.2.0",
-    "glob": "^7.1.6",
+    "glob": "^8.0.0",
     "handlebars": "~4.7.1",
     "loader.js": "^4.7.0",
     "marked": "^1.0.0",
