@@ -43,7 +43,7 @@
     "ember-simple-auth": "4.2.2",
     "ember-qunit": "^4.6.0",
     "ember-source": "~3.17.0",
-    "ember-source-channel-url": "^1.1.0",
+    "ember-source-channel-url": "^3.0.0",
     "ember-try": "^1.1.0",
     "eslint": "^6.8.0",
     "eslint-config-simplabs": "^0.4.0",
