@@ -10,9 +10,11 @@ export default Route.extend({
     if (!this.fastboot.isFastBoot) {
       let hash = parseResponse(window.location.hash);
 
-      this.get('session').authenticate('authenticator:oauth2-implicit-grant', hash).catch((error) => {
-        this.set('error', error);
-      });
+      this.get('session')
+        .authenticate('authenticator:oauth2-implicit-grant', hash)
+        .catch((error) => {
+          this.set('error', error);
+        });
     }
   },
 });

@@ -10,5 +10,5 @@ export default Service.extend({
       let account = await this.get('store').find('account', accountId);
       this.set('account', account);
     }
-  }
+  },
 });

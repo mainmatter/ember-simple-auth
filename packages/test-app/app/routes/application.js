@@ -7,6 +7,8 @@ export default Route.extend({
 
   async beforeModel() {
     await this.get('session').setup();
-    return this.get('sessionAccount').loadCurrentUser().catch(() => this.get('session').invalidate());
-  }
+    return this.get('sessionAccount')
+      .loadCurrentUser()
+      .catch(() => this.get('session').invalidate());
+  },
 });

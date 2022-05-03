@@ -10,5 +10,5 @@ export default Route.extend({
 
   model() {
     return this.get('store').find('post', 3);
-  }
+  },
 });

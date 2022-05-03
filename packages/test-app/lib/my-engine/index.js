@@ -7,10 +7,10 @@ module.exports = EngineAddon.extend({
   name: 'my-engine',
 
   lazyLoading: Object.freeze({
-    enabled: false
+    enabled: false,
   }),
 
   isDevelopingAddon() {
     return true;
-  }
+  },
 });

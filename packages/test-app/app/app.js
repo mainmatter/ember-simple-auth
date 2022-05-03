@@ -13,14 +13,12 @@ const App = Application.extend({
       dependencies: {
         externalRoutes: {
           login: 'login',
-          index: 'index'
+          index: 'index',
         },
-        services: [
-          'session'
-        ]
-      }
-    }
-  })
+        services: ['session'],
+      },
+    },
+  }),
 });
 
 loadInitializers(App, config.modulePrefix);

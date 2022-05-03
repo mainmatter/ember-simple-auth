@@ -6,5 +6,5 @@ export default Route.extend({
 
   beforeModel(transition) {
     this.get('session').requireAuthentication(transition, () => this.transitionToExternal('login'));
-  }
+  },
 });
