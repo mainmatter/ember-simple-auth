@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'classic-test-app',
     environment,
@@ -13,8 +13,8 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     APP: {
@@ -23,20 +23,20 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'style-src': "'self' 'unsafe-inline'"
+      'style-src': "'self' 'unsafe-inline'",
     },
 
     browserify: {
-      tests: true
+      tests: true,
     },
 
     torii: {
       allowUnsafeRedirects: true,
       providers: {
         'facebook-oauth2': {
-          apiKey: '631252926924840'
-        }
-      }
+          apiKey: '631252926924840',
+        },
+      },
     },
 
     apiHost: 'http://localhost:4200',
@@ -44,7 +44,7 @@ module.exports = function(environment) {
     googleClientID: '694766332436-1g5bakjoo5flkfpv3t2mfsch9ghg7ggd.apps.googleusercontent.com',
 
     fastboot: {
-      hostWhitelist: [/^localhost:\d+$/]
+      hostWhitelist: [/^localhost:\d+$/],
     },
   };
 
@@ -71,7 +71,7 @@ module.exports = function(environment) {
   if (environment === 'production') {
     // put production settings here
     ENV.fastboot = {
-      hostWhitelist: ['demo.ember-simple-auth.com', 'esa-demo.herokuapp.com']
+      hostWhitelist: ['demo.ember-simple-auth.com', 'esa-demo.herokuapp.com'],
     };
     ENV.apiHost = 'https://demo-api.ember-simple-auth.com';
   }
