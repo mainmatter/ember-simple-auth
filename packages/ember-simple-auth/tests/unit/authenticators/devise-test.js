@@ -2,36 +2,40 @@ import Pretender from 'pretender';
 import Devise from 'ember-simple-auth/authenticators/devise';
 import { module, test } from 'qunit';
 
-module('DeviseAuthenticator', function(hooks) {
+module('DeviseAuthenticator', function (hooks) {
   let server;
   let authenticator;
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     server = new Pretender();
     authenticator = Devise.create();
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     if (server) {
       server.shutdown();
     }
   });
 
-  module('#restore', function() {
-    module('when the data contains a token and email', function() {
-      test('resolves with the correct data', async function(assert) {
+  module('#restore', function () {
+    module('when the data contains a token and email', function () {
+      test('resolves with the correct data', async function (assert) {
         let content = await authenticator.restore({ token: 'secret token!', email: 'user@email.com' });
 
         assert.deepEqual(content, { token: 'secret token!', email: 'user@email.com' });
       });
     });
 
-    module('when the data contains a custom token and email attribute', function(hooks) {
-      hooks.beforeEach(function() {
-        authenticator = Devise.extend({ resourceName: 'employee', tokenAttributeName: 'token', identificationAttributeName: 'email' }).create();
+    module('when the data contains a custom token and email attribute', function (hooks) {
+      hooks.beforeEach(function () {
+        authenticator = Devise.extend({
+          resourceName: 'employee',
+          tokenAttributeName: 'token',
+          identificationAttributeName: 'email',
+        }).create();
       });
 
-      test('resolves with the correct data', async function(assert) {
+      test('resolves with the correct data', async function (assert) {
         let content = await authenticator.restore({ employee: { token: 'secret token!', email: 'user@email.com' } });
 
         assert.deepEqual(content, { employee: { token: 'secret token!', email: 'user@email.com' } });
@@ -39,12 +43,16 @@ module('DeviseAuthenticator', function(hooks) {
     });
   });
 
-  module('#authenticate', function(hooks) {
-    hooks.beforeEach(function() {
-      server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!", "email": "email@address.com" }']);
+  module('#authenticate', function (hooks) {
+    hooks.beforeEach(function () {
+      server.post('/users/sign_in', () => [
+        201,
+        { 'Content-Type': 'application/json' },
+        '{ "token": "secret token!", "email": "email@address.com" }',
+      ]);
     });
 
-    test('sends an AJAX request to the sign in endpoint', async function(assert) {
+    test('sends an AJAX request to the sign in endpoint', async function (assert) {
       await authenticator.authenticate('identification', 'password');
       let [request] = server.handledRequests;
 
@@ -55,21 +63,29 @@ module('DeviseAuthenticator', function(hooks) {
       assert.equal(request.requestHeaders.accept, 'application/json');
     });
 
-    module('when the authentication request is successful', function(hooks) {
-      hooks.beforeEach(function() {
-        server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!", "email": "email@address.com" }']);
+    module('when the authentication request is successful', function (hooks) {
+      hooks.beforeEach(function () {
+        server.post('/users/sign_in', () => [
+          201,
+          { 'Content-Type': 'application/json' },
+          '{ "token": "secret token!", "email": "email@address.com" }',
+        ]);
       });
 
-      test('resolves with the correct data', async function(assert) {
+      test('resolves with the correct data', async function (assert) {
         let data = await authenticator.authenticate('email@address.com', 'password');
 
         assert.deepEqual(data, { token: 'secret token!', email: 'email@address.com' });
       });
 
-      module('when the server returns incomplete data', function() {
-        test('fails when token is missing', async function(assert) {
+      module('when the server returns incomplete data', function () {
+        test('fails when token is missing', async function (assert) {
           assert.expect(1);
-          server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "email": "email@address.com" }']);
+          server.post('/users/sign_in', () => [
+            201,
+            { 'Content-Type': 'application/json' },
+            '{ "email": "email@address.com" }',
+          ]);
 
           try {
             await authenticator.authenticate('email@address.com', 'password');
@@ -79,9 +95,13 @@ module('DeviseAuthenticator', function(hooks) {
           }
         });
 
-        test('fails when identification is missing', async function(assert) {
+        test('fails when identification is missing', async function (assert) {
           assert.expect(1);
-          server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!" }']);
+          server.post('/users/sign_in', () => [
+            201,
+            { 'Content-Type': 'application/json' },
+            '{ "token": "secret token!" }',
+          ]);
 
           try {
             await authenticator.authenticate('email@address.com', 'password');
@@ -93,12 +113,16 @@ module('DeviseAuthenticator', function(hooks) {
       });
     });
 
-    module('when the authentication request fails', function(hooks) {
-      hooks.beforeEach(function() {
-        server.post('/users/sign_in', () => [400, { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' }, '{ "error": "invalid_grant" }']);
+    module('when the authentication request fails', function (hooks) {
+      hooks.beforeEach(function () {
+        server.post('/users/sign_in', () => [
+          400,
+          { 'Content-Type': 'application/json', 'X-Custom-Context': 'foobar' },
+          '{ "error": "invalid_grant" }',
+        ]);
       });
 
-      test('when the authentication request fails - rejects with the response', async function(assert) {
+      test('when the authentication request fails - rejects with the response', async function (assert) {
         assert.expect(1);
         try {
           await authenticator.authenticate('username', 'password');
@@ -109,13 +133,17 @@ module('DeviseAuthenticator', function(hooks) {
       });
     });
 
-    test('can customize the ajax request', async function(assert) {
-      server.put('/login', () => [201, { 'Content-Type': 'application/json' }, '{ "token": "secret token!", "email": "email@address.com" }']);
+    test('can customize the ajax request', async function (assert) {
+      server.put('/login', () => [
+        201,
+        { 'Content-Type': 'application/json' },
+        '{ "token": "secret token!", "email": "email@address.com" }',
+      ]);
 
       authenticator = Devise.extend({
         makeRequest(config) {
           return this._super(config, { method: 'PUT', url: '/login' });
-        }
+        },
       }).create();
 
       await authenticator.authenticate('identification', 'password');
@@ -126,16 +154,20 @@ module('DeviseAuthenticator', function(hooks) {
       assert.equal(request.method, 'PUT');
     });
 
-    test('can handle a resp with the namespace of the resource name', async function(assert) {
-      server.post('/users/sign_in', () => [201, { 'Content-Type': 'application/json' }, '{ "user": { "token": "secret token!", "email": "email@address.com" } }']);
+    test('can handle a resp with the namespace of the resource name', async function (assert) {
+      server.post('/users/sign_in', () => [
+        201,
+        { 'Content-Type': 'application/json' },
+        '{ "user": { "token": "secret token!", "email": "email@address.com" } }',
+      ]);
 
       let data = await authenticator.authenticate('email@address.com', 'password');
 
       assert.deepEqual(data, { token: 'secret token!', email: 'email@address.com' });
     });
 
-    module('#invalidate', function() {
-      test('returns a resolving promise', async function(assert) {
+    module('#invalidate', function () {
+      test('returns a resolving promise', async function (assert) {
         assert.expect(1);
         try {
           await authenticator.invalidate();

@@ -8,14 +8,18 @@ export default function setupSessionRestoration(registry) {
     return;
   }
 
-  deprecate('Ember Simple Auth: The automatic session initialization is deprecated. Please inject session service in your application route and call the setup method manually.', false, {
-    id: 'ember-simple-auth.initializer.setup-session-restoration',
-    until: '5.0.0',
-    for: 'ember-simple-auth',
-    since: {
-      enabled: '4.1.0'
+  deprecate(
+    'Ember Simple Auth: The automatic session initialization is deprecated. Please inject session service in your application route and call the setup method manually.',
+    false,
+    {
+      id: 'ember-simple-auth.initializer.setup-session-restoration',
+      until: '5.0.0',
+      for: 'ember-simple-auth',
+      since: {
+        enabled: '4.1.0',
+      },
     }
-  });
+  );
 
   const ApplicationRoute = registry.resolveRegistration
     ? registry.resolveRegistration('route:application')
@@ -26,7 +30,7 @@ export default function setupSessionRestoration(registry) {
       this._super(...arguments);
 
       const originalBeforeModel = this.beforeModel;
-      this.beforeModel = function() {
+      this.beforeModel = function () {
         if (!this.__usesApplicationRouteMixn__) {
           const sessionService = getOwner(this).lookup('service:session');
           sessionService._setupHandlers();

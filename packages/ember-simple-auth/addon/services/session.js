@@ -11,7 +11,7 @@ import {
   triggerAuthentication,
   prohibitAuthentication,
   handleSessionAuthenticated,
-  handleSessionInvalidated
+  handleSessionInvalidated,
 } from '../-internals/routing';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
@@ -19,20 +19,27 @@ const SESSION_DATA_KEY_PREFIX = /^data\./;
 let enableEventsDeprecation = true;
 function deprecateSessionEvents() {
   if (enableEventsDeprecation) {
-    deprecate("Ember Simple Auth: The session service's events API is deprecated; to add custom behavior to the authentication or invalidation handling, override the handleAuthentication or handleInvalidation methods.", false, {
-      id: 'ember-simple-auth.events.session-service',
-      until: '4.0.0',
-      for: 'ember-simple-auth',
-      since: {
-        enabled: '3.1.0'
+    deprecate(
+      "Ember Simple Auth: The session service's events API is deprecated; to add custom behavior to the authentication or invalidation handling, override the handleAuthentication or handleInvalidation methods.",
+      false,
+      {
+        id: 'ember-simple-auth.events.session-service',
+        until: '4.0.0',
+        for: 'ember-simple-auth',
+        since: {
+          enabled: '3.1.0',
+        },
       }
-    });
+    );
   }
 }
 
 function assertSetupHasBeenCalled(isSetupCalled) {
   if (!isSetupCalled && Configuration.useSessionSetupMethod) {
-    assert("Ember Simple Auth: session#setup wasn't called. Make sure to call session#setup in your application route's beforeModel hook.", false);
+    assert(
+      "Ember Simple Auth: session#setup wasn't called. Make sure to call session#setup in your application route's beforeModel hook.",
+      false
+    );
   }
 }
 
@@ -165,10 +172,7 @@ export default Service.extend(Evented, {
   },
 
   _forwardSessionEvents() {
-    A([
-      'authenticationSucceeded',
-      'invalidationSucceeded'
-    ]).forEach((event) => {
+    A(['authenticationSucceeded', 'invalidationSucceeded']).forEach((event) => {
       const session = this.get('session');
       // the internal session won't be available in route unit tests
       if (session) {
@@ -212,7 +216,9 @@ export default Service.extend(Evented, {
   },
 
   _setupHandlers() {
-    this.get('session').on('authenticationSucceeded', () => this.handleAuthentication(Configuration.routeAfterAuthentication));
+    this.get('session').on('authenticationSucceeded', () =>
+      this.handleAuthentication(Configuration.routeAfterAuthentication)
+    );
     this.get('session').on('invalidationSucceeded', () => this.handleInvalidation(Configuration.rootURL));
   },
 

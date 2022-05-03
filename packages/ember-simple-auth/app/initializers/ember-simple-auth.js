@@ -20,5 +20,5 @@ export default {
 
     setupSession(registry);
     setupSessionRestoration(registry);
-  }
+  },
 };

@@ -6,19 +6,19 @@ var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 var sourceTrees = [];
 
-module.exports = function(defaults) {
+module.exports = function (defaults) {
   var app = new EmberAddon(defaults, {
     storeConfigInMeta: true,
     fingerprint: {
-      generateAssetMap: EmberAddon.env() === 'production'
+      generateAssetMap: EmberAddon.env() === 'production',
     },
     sourcemaps: {
       enabled: true,
-      extensions: ['js']
+      extensions: ['js'],
     },
     'ember-cli-babel': {
-      includePolyfill: true
-    }
+      includePolyfill: true,
+    },
   });
 
   return app.toTree(sourceTrees);

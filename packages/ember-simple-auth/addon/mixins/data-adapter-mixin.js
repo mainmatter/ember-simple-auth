@@ -4,14 +4,18 @@ import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { deprecate } from '@ember/debug';
 
-deprecate("Ember Simple Auth: The DataAdapterMixin is now deprecated; call the session service's invalidate method in the adapter's handleResponse method instead in case of a 401 response.", false, {
-  id: 'ember-simple-auth.mixins.data-adapter-mixin',
-  until: '4.0.0',
-  for: 'ember-simple-auth',
-  since: {
-    enabled: '3.1.0'
+deprecate(
+  "Ember Simple Auth: The DataAdapterMixin is now deprecated; call the session service's invalidate method in the adapter's handleResponse method instead in case of a 401 response.",
+  false,
+  {
+    id: 'ember-simple-auth.mixins.data-adapter-mixin',
+    until: '4.0.0',
+    for: 'ember-simple-auth',
+    since: {
+      enabled: '3.1.0',
+    },
   }
-});
+);
 
 /**
   __This mixin can be used to make Ember Data adapters authorize all outgoing
@@ -90,9 +94,9 @@ export default Mixin.create({
    @param {Any} payload The response body as received from the API
    @param {Object} requestData the original request information
   */
-  ensureResponseAuthorized(status/* ,headers, payload, requestData */) {
+  ensureResponseAuthorized(status /* ,headers, payload, requestData */) {
     if (status === 401 && this.get('session.isAuthenticated')) {
       this.get('session').invalidate();
     }
-  }
+  },
 });

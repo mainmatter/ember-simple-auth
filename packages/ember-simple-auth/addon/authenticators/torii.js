@@ -9,8 +9,8 @@ deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
   until: '5.0.0',
   for: 'ember-simple-auth',
   since: {
-    enabled: '4.2.0'
-  }
+    enabled: '4.2.0',
+  },
 });
 
 /**
@@ -70,16 +70,18 @@ export default BaseAuthenticator.extend({
     if (!isEmpty(data.provider)) {
       const { provider } = data;
 
-      return this.get('torii').fetch(data.provider, data).then(
-        (fetchedData) => {
-          this._authenticateWithProvider(provider, fetchedData);
-          return assign(data, fetchedData);
-        },
-        (err) => {
-          delete this._provider;
-          throw err;
-        }
-      );
+      return this.get('torii')
+        .fetch(data.provider, data)
+        .then(
+          (fetchedData) => {
+            this._authenticateWithProvider(provider, fetchedData);
+            return assign(data, fetchedData);
+          },
+          (err) => {
+            delete this._provider;
+            throw err;
+          }
+        );
     } else {
       delete this._provider;
       return RSVP.reject();
@@ -102,10 +104,12 @@ export default BaseAuthenticator.extend({
   authenticate(provider, options) {
     this._assertToriiIsPresent();
 
-    return this.get('torii').open(provider, options || {}).then((data) => {
-      this._authenticateWithProvider(provider, data);
-      return data;
-    });
+    return this.get('torii')
+      .open(provider, options || {})
+      .then((data) => {
+        this._authenticateWithProvider(provider, data);
+        return data;
+      });
   },
 
   /**
@@ -118,9 +122,11 @@ export default BaseAuthenticator.extend({
     @public
   */
   invalidate(data) {
-    return this.get('torii').close(this._provider, data).then(() => {
-      delete this._provider;
-    });
+    return this.get('torii')
+      .close(this._provider, data)
+      .then(() => {
+        delete this._provider;
+      });
   },
 
   _authenticateWithProvider(provider, data) {
@@ -130,6 +136,9 @@ export default BaseAuthenticator.extend({
 
   _assertToriiIsPresent() {
     const torii = this.get('torii');
-    assert('You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with "torii: Ember.inject.service()".', isPresent(torii));
-  }
+    assert(
+      'You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with "torii: Ember.inject.service()".',
+      isPresent(torii)
+    );
+  },
 });

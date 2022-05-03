@@ -106,5 +106,5 @@ export default BaseStore.extend({
         }
       });
     }
-  }
+  },
 });

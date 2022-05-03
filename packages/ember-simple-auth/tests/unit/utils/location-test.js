@@ -6,18 +6,18 @@ import sinonjs from 'sinon';
 const foo = {
   get hash() {
     return LocationUtil.default().hash;
-  }
+  },
 };
 
-module('Unit | Utility | location', function(hooks) {
+module('Unit | Utility | location', function (hooks) {
   let sinon;
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     sinon = sinonjs.createSandbox();
   });
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     sinon.restore();
   });
-  test('works', function(assert) {
+  test('works', function (assert) {
     assert.ok(LocationUtil.default());
     assert.equal(typeof LocationUtil.default().hash, 'string');
   });

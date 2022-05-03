@@ -8,10 +8,10 @@ import FakeCookieService from '../../helpers/fake-cookie-service';
 import createAdaptiveStore from '../../helpers/create-adaptive-store';
 import assign from 'ember-simple-auth/utils/assign';
 
-module('AdaptiveStore', function(hooks) {
+module('AdaptiveStore', function (hooks) {
   setupTest(hooks);
 
-  module('when localStorage is available', function(hooks) {
+  module('when localStorage is available', function (hooks) {
     itBehavesLikeAStore({
       hooks,
       store(sinon, owner) {
@@ -21,15 +21,19 @@ module('AdaptiveStore', function(hooks) {
         cookieService = owner.lookup('service:cookies');
         sinon.spy(cookieService, 'read');
         sinon.spy(cookieService, 'write');
-        store = createAdaptiveStore(cookieService, {
-          _isLocalStorageAvailable: true,
-        }, owner);
+        store = createAdaptiveStore(
+          cookieService,
+          {
+            _isLocalStorageAvailable: true,
+          },
+          owner
+        );
         return store;
-      }
+      },
     });
   });
 
-  module('when localStorage is not available', function(hooks) {
+  module('when localStorage is not available', function (hooks) {
     itBehavesLikeAStore({
       hooks,
       store(sinon, owner) {
@@ -39,17 +43,21 @@ module('AdaptiveStore', function(hooks) {
         cookieService = owner.lookup('service:cookies');
         sinon.spy(cookieService, 'read');
         sinon.spy(cookieService, 'write');
-        store = createAdaptiveStore(cookieService, {
-          _isLocalStorageAvailable: false,
-          _cookieName: 'test:session',
-        }, owner);
+        store = createAdaptiveStore(
+          cookieService,
+          {
+            _isLocalStorageAvailable: false,
+            _cookieName: 'test:session',
+          },
+          owner
+        );
         return store;
-      }
+      },
     });
   });
 
-  module('CookieStore', function() {
-    module('Behaviour', function(hooks) {
+  module('CookieStore', function () {
+    module('Behaviour', function (hooks) {
       itBehavesLikeACookieStore({
         hooks,
         store(sinon, owner, storeOptions) {
@@ -57,10 +65,17 @@ module('AdaptiveStore', function(hooks) {
           let cookieService = owner.lookup('service:cookies');
           sinon.spy(cookieService, 'read');
           sinon.spy(cookieService, 'write');
-          let store = createAdaptiveStore(cookieService, assign({
-            _isLocalStorageAvailable: false,
-            _cookieName: 'test:session',
-          }, storeOptions), owner);
+          let store = createAdaptiveStore(
+            cookieService,
+            assign(
+              {
+                _isLocalStorageAvailable: false,
+                _cookieName: 'test:session',
+              },
+              storeOptions
+            ),
+            owner
+          );
           return store;
         },
         renew(store, data) {
@@ -72,11 +87,11 @@ module('AdaptiveStore', function(hooks) {
         spyRewriteCookieMethod(sinon, store) {
           sinon.spy(store.get('_store'), 'rewriteCookie');
           return store.get('_store').rewriteCookie;
-        }
+        },
       });
     });
 
-    test('persists to cookie when cookie attributes change', async function(assert) {
+    test('persists to cookie when cookie attributes change', async function (assert) {
       let sinon = sinonjs.createSandbox();
       let store;
       let cookieService;
@@ -88,27 +103,33 @@ module('AdaptiveStore', function(hooks) {
       sinon.spy(cookieService, 'write');
       run(() => {
         now = new Date();
-        store = createAdaptiveStore(cookieService, {
-          _isLocalStorageAvailable: false,
-          _cookieName: 'test:session',
-        }, this.owner);
+        store = createAdaptiveStore(
+          cookieService,
+          {
+            _isLocalStorageAvailable: false,
+            _cookieName: 'test:session',
+          },
+          this.owner
+        );
 
         store.setProperties({
-          cookieName:           'test:session',
-          cookieExpirationTime: 60
+          cookieName: 'test:session',
+          cookieExpirationTime: 60,
         });
       });
       await store.persist({ key: 'value' });
 
-      assert.ok(cookieService.write.calledWith(
-        'test:session-expiration_time',
-        60,
-        sinon.match(function({ domain, expires, path, secure }) {
-          return domain === null &&
-            path === '/' &&
-            secure === false && expires >= new Date(now.getTime() + 60 * 1000);
-        })
-      ));
+      assert.ok(
+        cookieService.write.calledWith(
+          'test:session-expiration_time',
+          60,
+          sinon.match(function ({ domain, expires, path, secure }) {
+            return (
+              domain === null && path === '/' && secure === false && expires >= new Date(now.getTime() + 60 * 1000)
+            );
+          })
+        )
+      );
     });
   });
 });

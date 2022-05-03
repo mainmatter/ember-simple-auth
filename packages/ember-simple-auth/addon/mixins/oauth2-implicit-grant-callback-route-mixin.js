@@ -8,14 +8,18 @@ import location from '../utils/location';
 import isFastBoot from '../utils/is-fastboot';
 import { parseResponse } from '../authenticators/oauth2-implicit-grant';
 
-deprecate("Ember Simple Auth: The OAuth2ImplicitGrantCallbackRouteMixin is now deprecated; call the session service's authenticate method with the appropriate authenticator in the respective route's activate method instead.", false, {
-  id: 'ember-simple-auth.mixins.oauth2-implicit-grant-callback-route-mixin',
-  until: '4.0.0',
-  for: 'ember-simple-auth',
-  since: {
-    enabled: '3.1.0'
+deprecate(
+  "Ember Simple Auth: The OAuth2ImplicitGrantCallbackRouteMixin is now deprecated; call the session service's authenticate method with the appropriate authenticator in the respective route's activate method instead.",
+  false,
+  {
+    id: 'ember-simple-auth.mixins.oauth2-implicit-grant-callback-route-mixin',
+    until: '4.0.0',
+    for: 'ember-simple-auth',
+    since: {
+      enabled: '3.1.0',
+    },
   }
-});
+);
 
 /**
   __This mixin is used in the callback route when using OAuth 2.0 Implicit
@@ -87,8 +91,10 @@ export default Mixin.create({
 
     let hash = parseResponse(location().hash);
 
-    this.get('session').authenticate(authenticator, hash).catch((err) => {
-      this.set('error', err);
-    });
+    this.get('session')
+      .authenticate(authenticator, hash)
+      .catch((err) => {
+        this.set('error', err);
+      });
   },
 });

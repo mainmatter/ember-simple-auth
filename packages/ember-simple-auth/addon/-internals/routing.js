@@ -11,7 +11,7 @@ export function requireAuthentication(owner, transition) {
       const cookiesService = owner.lookup('service:cookies');
       cookiesService.write('ember_simple_auth-redirectTarget', transition.intent.url, {
         path: '/',
-        secure: fastbootService.get('request.protocol') === 'https'
+        secure: fastbootService.get('request.protocol') === 'https',
       });
     } else if (transition) {
       sessionService.set('attemptedTransition', transition);

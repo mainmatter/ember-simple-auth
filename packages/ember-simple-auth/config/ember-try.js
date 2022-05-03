@@ -2,12 +2,8 @@
 
 const getChannelURL = require('ember-source-channel-url');
 
-module.exports = function() {
-  return Promise.all([
-    getChannelURL('release'),
-    getChannelURL('beta'),
-    getChannelURL('canary')
-  ]).then(urls => {
+module.exports = function () {
+  return Promise.all([getChannelURL('release'), getChannelURL('beta'), getChannelURL('canary')]).then((urls) => {
     const releaseUrl = urls[0];
     const betaUrl = urls[1];
     const canaryUrl = urls[2];
@@ -127,7 +123,7 @@ module.exports = function() {
           bower: {
             dependencies: {
               'ember-data': null,
-            }
+            },
           },
           npm: {
             devDependencies: {
@@ -167,10 +163,10 @@ module.exports = function() {
         {
           name: 'ember-default',
           npm: {
-            devDependencies: {}
-          }
-        }
-      ]
+            devDependencies: {},
+          },
+        },
+      ],
     };
   });
 };

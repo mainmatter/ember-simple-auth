@@ -6,14 +6,18 @@ import { getOwner } from '@ember/application';
 
 import { prohibitAuthentication } from '../-internals/routing';
 
-deprecate("Ember Simple Auth: The UnauthenticatedRouteMixin is now deprecated; call the session service's prohibitAuthentication method in the respective route's beforeModel method instead.", false, {
-  id: 'ember-simple-auth.mixins.unauthenticated-route-mixin',
-  until: '4.0.0',
-  for: 'ember-simple-auth',
-  since: {
-    enabled: '3.1.0'
+deprecate(
+  "Ember Simple Auth: The UnauthenticatedRouteMixin is now deprecated; call the session service's prohibitAuthentication method in the respective route's beforeModel method instead.",
+  false,
+  {
+    id: 'ember-simple-auth.mixins.unauthenticated-route-mixin',
+    until: '4.0.0',
+    for: 'ember-simple-auth',
+    since: {
+      enabled: '3.1.0',
+    },
   }
-});
+);
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -74,7 +78,10 @@ export default Mixin.create({
   */
   beforeModel() {
     let routeIfAlreadyAuthenticated = this.get('routeIfAlreadyAuthenticated');
-    assert('The route configured as UnauthenticatedRouteMixin.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== routeIfAlreadyAuthenticated);
+    assert(
+      'The route configured as UnauthenticatedRouteMixin.routeIfAlreadyAuthenticated cannot implement the UnauthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!',
+      this.get('routeName') !== routeIfAlreadyAuthenticated
+    );
 
     let owner = getOwner(this);
     let sessionService = owner.lookup('service:session');
@@ -83,5 +90,5 @@ export default Mixin.create({
     } else {
       return this._super(...arguments);
     }
-  }
+  },
 });

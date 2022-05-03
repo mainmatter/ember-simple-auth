@@ -102,26 +102,36 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password) {
     return new Promise((resolve, reject) => {
-      const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties('resourceName', 'identificationAttributeName', 'tokenAttributeName');
+      const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties(
+        'resourceName',
+        'identificationAttributeName',
+        'tokenAttributeName'
+      );
       const data = {};
       data[resourceName] = { password };
       data[resourceName][identificationAttributeName] = identification;
 
-      this.makeRequest(data).then((response) => {
-        if (response.ok) {
-          response.json().then((json) => {
-            if (this._validate(json)) {
-              const resourceName = this.get('resourceName');
-              const _json = json[resourceName] ? json[resourceName] : json;
-              run(null, resolve, _json);
-            } else {
-              run(null, reject, `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`);
-            }
-          });
-        } else {
-          run(null, reject, response);
-        }
-      }).catch((error) => run(null, reject, error));
+      this.makeRequest(data)
+        .then((response) => {
+          if (response.ok) {
+            response.json().then((json) => {
+              if (this._validate(json)) {
+                const resourceName = this.get('resourceName');
+                const _json = json[resourceName] ? json[resourceName] : json;
+                run(null, resolve, _json);
+              } else {
+                run(
+                  null,
+                  reject,
+                  `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`
+                );
+              }
+            });
+          } else {
+            run(null, reject, response);
+          }
+        })
+        .catch((error) => run(null, reject, error));
     });
   },
 
@@ -152,11 +162,11 @@ export default BaseAuthenticator.extend({
     let body = JSON.stringify(data);
     assign(requestOptions, {
       body,
-      method:   'POST',
-      headers:  {
-        'accept':       JSON_CONTENT_TYPE,
-        'content-type': JSON_CONTENT_TYPE
-      }
+      method: 'POST',
+      headers: {
+        accept: JSON_CONTENT_TYPE,
+        'content-type': JSON_CONTENT_TYPE,
+      },
     });
     assign(requestOptions, options || {});
 
@@ -170,5 +180,5 @@ export default BaseAuthenticator.extend({
     const _data = data[resourceName] ? data[resourceName] : data;
 
     return !isEmpty(_data[tokenAttributeName]) && !isEmpty(_data[identificationAttributeName]);
-  }
+  },
 });

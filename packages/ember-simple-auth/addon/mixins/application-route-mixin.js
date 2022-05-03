@@ -15,8 +15,8 @@ deprecate('Ember Simple Auth: The ApplicationRouteMixin is now deprecated; it ca
   until: '4.0.0',
   for: 'ember-simple-auth',
   since: {
-    enabled: '3.1.0'
-  }
+    enabled: '3.1.0',
+  },
 });
 
 /**
@@ -90,7 +90,7 @@ export default Mixin.create({
   _subscribeToSessionEvents() {
     A([
       ['authenticationSucceeded', 'sessionAuthenticated'],
-      ['invalidationSucceeded', 'sessionInvalidated']
+      ['invalidationSucceeded', 'sessionInvalidated'],
     ]).forEach(([event, method]) => {
       this.get('session').on(event, (...args) => this[method](...args));
     });
@@ -134,5 +134,5 @@ export default Mixin.create({
     if (!Ember.testing) {
       this.get('session').handleInvalidation(Configuration.rootURL);
     }
-  }
+  },
 });

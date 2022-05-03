@@ -4,5 +4,5 @@
 export default {
   name: 'ember-simple-auth',
 
-  initialize() {}
+  initialize() {},
 };

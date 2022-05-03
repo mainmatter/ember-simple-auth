@@ -6,14 +6,18 @@ import { assert, deprecate } from '@ember/debug';
 import { getOwner } from '@ember/application';
 import { requireAuthentication, triggerAuthentication } from '../-internals/routing';
 
-deprecate("Ember Simple Auth: The AuthenticatedRouteMixin is now deprecated; call the session service's requireAuthentication method in the respective route's beforeModel method instead.", false, {
-  id: 'ember-simple-auth.mixins.authenticated-route-mixin',
-  until: '4.0.0',
-  for: 'ember-simple-auth',
-  since: {
-    enabled: '3.1.0'
+deprecate(
+  "Ember Simple Auth: The AuthenticatedRouteMixin is now deprecated; call the session service's requireAuthentication method in the respective route's beforeModel method instead.",
+  false,
+  {
+    id: 'ember-simple-auth.mixins.authenticated-route-mixin',
+    until: '4.0.0',
+    for: 'ember-simple-auth',
+    since: {
+      enabled: '3.1.0',
+    },
   }
-});
+);
 
 /**
   __This mixin is used to make routes accessible only if the session is
@@ -101,7 +105,10 @@ export default Mixin.create({
   */
   triggerAuthentication() {
     let authenticationRoute = this.get('authenticationRoute');
-    assert('The route configured as AuthenticatedRouteMixin.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!', this.get('routeName') !== authenticationRoute);
+    assert(
+      'The route configured as AuthenticatedRouteMixin.authenticationRoute cannot implement the AuthenticatedRouteMixin mixin as that leads to an infinite transitioning loop!',
+      this.get('routeName') !== authenticationRoute
+    );
 
     triggerAuthentication(getOwner(this), authenticationRoute);
   },

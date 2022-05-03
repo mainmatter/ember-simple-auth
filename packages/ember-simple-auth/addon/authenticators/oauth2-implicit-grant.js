@@ -104,5 +104,5 @@ export default BaseAuthenticator.extend({
     // see https://tools.ietf.org/html/rfc6749#section-4.2.2
 
     return !isEmpty(data) && !isEmpty(data.access_token);
-  }
+  },
 });

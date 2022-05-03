@@ -12,5 +12,5 @@ export default BaseAuthenticator.extend({
 
   invalidate() {
     return RSVP.resolve();
-  }
+  },
 });

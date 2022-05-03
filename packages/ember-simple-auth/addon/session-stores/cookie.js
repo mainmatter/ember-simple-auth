@@ -10,7 +10,7 @@ import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 
-const persistingProperty = function(beforeSet = function() {}) {
+const persistingProperty = function (beforeSet = function () {}) {
   return computed({
     get(key) {
       return this.get(`_${key}`);
@@ -20,7 +20,7 @@ const persistingProperty = function(beforeSet = function() {}) {
       this.set(`_${key}`, value);
       scheduleOnce('actions', this, this.rewriteCookie);
       return value;
-    }
+    },
   });
 };
 
@@ -112,7 +112,7 @@ export default BaseStore.extend({
     @public
   */
   _cookieName: 'ember_simple_auth-session',
-  cookieName: persistingProperty(function() {
+  cookieName: persistingProperty(function () {
     this._oldCookieName = this._cookieName;
   }),
 
@@ -142,13 +142,17 @@ export default BaseStore.extend({
     @public
   */
   _cookieExpirationTime: null,
-  cookieExpirationTime: persistingProperty(function(key, value) {
+  cookieExpirationTime: persistingProperty(function (key, value) {
     // When nulling expiry time on purpose, we need to clear the cached value.
     // Otherwise, `_calculateExpirationTime` will reuse it.
     if (isNone(value)) {
       this.get('_cookies').clear(`${this.get('cookieName')}-expiration_time`);
     } else if (value < 90) {
-      warn('The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).', false, { id: 'ember-simple-auth.cookieExpirationTime' });
+      warn(
+        'The recommended minimum value for `cookieExpirationTime` is 90 seconds. If your value is less than that, the cookie may expire before its expiration time is extended (expiration time is extended every 60 seconds).',
+        false,
+        { id: 'ember-simple-auth.cookieExpirationTime' }
+      );
     }
   }),
 
@@ -246,7 +250,9 @@ export default BaseStore.extend({
   _calculateExpirationTime() {
     let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
     cachedExpirationTime = cachedExpirationTime ? new Date().getTime() + cachedExpirationTime * 1000 : null;
-    return this.get('cookieExpirationTime') ? new Date().getTime() + this.get('cookieExpirationTime') * 1000 : cachedExpirationTime;
+    return this.get('cookieExpirationTime')
+      ? new Date().getTime() + this.get('cookieExpirationTime') * 1000
+      : cachedExpirationTime;
   },
 
   _write(value, expiration) {
@@ -255,7 +261,7 @@ export default BaseStore.extend({
       expires: isEmpty(expiration) ? null : new Date(expiration),
       path: this.get('cookiePath'),
       secure: this._secureCookies(),
-      sameSite: this.get('sameSite')
+      sameSite: this.get('sameSite'),
     };
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach((oldCookie) => {
@@ -267,7 +273,11 @@ export default BaseStore.extend({
     if (!isEmpty(expiration)) {
       let expirationCookieName = `${this.get('cookieName')}-expiration_time`;
       let cachedExpirationTime = this.get('_cookies').read(expirationCookieName);
-      this.get('_cookies').write(expirationCookieName, this.get('cookieExpirationTime') || cachedExpirationTime, cookieOptions);
+      this.get('_cookies').write(
+        expirationCookieName,
+        this.get('cookieExpirationTime') || cachedExpirationTime,
+        cookieOptions
+      );
     }
   },
 

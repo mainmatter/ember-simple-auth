@@ -24,7 +24,7 @@ module.exports = {
 
   treeForVendor() {
     return new Funnel(path.dirname(require.resolve('base-64')), {
-      files: ['base64.js']
+      files: ['base64.js'],
     });
   },
 
@@ -40,14 +40,14 @@ module.exports = {
   treeForApp(tree) {
     if (this.addonConfig.useSessionSetupMethod) {
       return new Funnel(tree, {
-        exclude: ['routes/application.js']
+        exclude: ['routes/application.js'],
       });
     }
 
     return this._super.treeForApp.apply(this, arguments);
   },
 
-  _ensureThisImport: function() {
+  _ensureThisImport: function () {
     if (!this.import) {
       this._findHost = function findHostShim() {
         var current = this;
@@ -62,6 +62,5 @@ module.exports = {
         app.import(asset, options);
       };
     }
-  }
+  },
 };
-
