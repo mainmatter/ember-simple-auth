@@ -7115,13 +7115,13 @@ ember-auto-import@^1.2.15:
     walk-sync "^0.3.3"
     webpack "^4.43.0"
 
-ember-cli-app-version@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-app-version/-/ember-cli-app-version-3.2.0.tgz#7b9ad0e1b63ae0518648356ee24c703e922bc26e"
-  integrity sha512-fHWOJElSw8JL03FNCHrT0RdWhGpWEQ4VQ10unEwwhVZ+OANNcOLz8O2dA3D5iuB4bb0fMLwjEwYZGM62+TBs1Q==
+ember-cli-app-version@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-app-version/-/ember-cli-app-version-5.0.0.tgz#adad17c6f706f419b223707eec66dd1cd28530c3"
+  integrity sha512-afhx/CXDOMNXzoe4NDPy5WUfxWmYYHUzMCiTyvPBxCDBXYcMrtxNWxvgaSaeqcoHVEmqzeyBj8V82tzmT1dcyw==
   dependencies:
-    ember-cli-babel "^6.12.0"
-    git-repo-version "^1.0.2"
+    ember-cli-babel "^7.23.1"
+    git-repo-info "^2.1.1"
 
 ember-cli-babel-plugin-helpers@^1.0.0, ember-cli-babel-plugin-helpers@^1.1.1:
   version "1.1.1"
@@ -7161,7 +7161,7 @@ ember-cli-babel@*, ember-cli-babel@^7.0.0, ember-cli-babel@^7.1.0, ember-cli-bab
     rimraf "^3.0.1"
     semver "^5.5.0"
 
-ember-cli-babel@^6.11.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.8.1:
+ember-cli-babel@^6.11.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.8.1:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.18.0.tgz#3f6435fd275172edeff2b634ee7b29ce74318957"
   integrity sha512-7ceC8joNYxY2wES16iIBlbPSxwKDBhYwC8drU3ZEvuPDMwVv1KzxCNu1fvxyFEBWhwaRNTUxSCsEVoTd9nosGA==
@@ -7213,7 +7213,7 @@ ember-cli-babel@^7.11.0, ember-cli-babel@^7.12.0, ember-cli-babel@^7.26.2, ember
     rimraf "^3.0.1"
     semver "^5.5.0"
 
-ember-cli-babel@^7.26.6:
+ember-cli-babel@^7.23.1, ember-cli-babel@^7.26.6:
   version "7.26.11"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-7.26.11.tgz#50da0fe4dcd99aada499843940fec75076249a9f"
   integrity sha512-JJYeYjiz/JTn34q7F5DSOjkkZqy8qwFOOxXfE6pe9yEJqWGu4qErKxlz8I22JoVEQ/aBUO+OcKTpmctvykM9YA==
@@ -9695,7 +9695,7 @@ git-read-pkt-line@0.0.8:
     bops "0.0.3"
     through "~2.2.7"
 
-git-repo-info@^1.0.4, git-repo-info@^1.4.1:
+git-repo-info@^1.0.4:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/git-repo-info/-/git-repo-info-1.4.1.tgz#2a072823254aaf62fcf0766007d7b6651bd41943"
   integrity sha1-KgcoIyVKr2L88HZgB9e2ZRvUGUM=
@@ -9711,13 +9711,6 @@ git-repo-version@0.2.0:
   integrity sha1-mh0AGaUPyeYjxD0cD8xDc5EgfQ0=
   dependencies:
     git-repo-info "^1.0.4"
-
-git-repo-version@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/git-repo-version/-/git-repo-version-1.0.2.tgz#2c8e9bee5d970cafc0dd58480f9dc56d9afe8e4f"
-  integrity sha512-OPtwtHx9E8/rTMcWT+BU6GNj6Kq/O40bHJZaZAGy+pN2RXGmeKcfr0ix4M+SQuFY8vl5L/wfPSGOAtvUT/e3Qg==
-  dependencies:
-    git-repo-info "^1.4.1"
 
 git-transport-protocol@^0.1.0:
   version "0.1.0"
