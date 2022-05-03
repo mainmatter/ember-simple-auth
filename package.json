@@ -12,7 +12,7 @@
   ],
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^9.0.0",
-    "lerna-changelog": "^1.0.1",
+    "lerna-changelog": "^2.0.0",
     "release-it": "^14.2.0",
     "release-it-lerna-changelog": "^3.1.0",
     "release-it-yarn-workspaces": "^2.0.0"
