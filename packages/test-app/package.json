@@ -53,7 +53,7 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-qunit": "^6.2.0",
     "express": "^4.17.1",
-    "fastboot-app-server": "^2.0.0",
+    "fastboot-app-server": "^3.0.0",
     "glob": "^8.0.0",
     "handlebars": "~4.7.1",
     "loader.js": "^4.7.0",
