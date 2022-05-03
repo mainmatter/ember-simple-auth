@@ -1,13 +1,10 @@
 module.exports = {
   root: true,
-  extends: [
-    'simplabs',
-    'simplabs/plugins/ember',
-    'plugin:ember/recommended',
-  ],
+  plugins: ['prettier'],
+  extends: ['simplabs', 'simplabs/plugins/ember', 'plugin:ember/recommended', 'plugin:prettier/recommended'],
   parserOptions: {
     ecmaVersion: 2017,
-    sourceType: 'module'
+    sourceType: 'module',
   },
   rules: {
     'ember/local-modules': 'off',
@@ -29,36 +26,28 @@ module.exports = {
     'no-unused-vars': 'off',
     'no-var': 'off',
     'prefer-template': 'off',
-    'quotes': 'off',
-    'semi': 'off'
+    quotes: 'off',
+    semi: 'off',
   },
   overrides: [
     // node files
     {
-      files: [
-        'ember-cli-build.js',
-        'fastboot-server.js',
-        'testem.js',
-        'config/**/*.js',
-        '.eslintrc.js',
-      ],
-      excludedFiles: [
-        'app/**',
-      ],
+      files: ['ember-cli-build.js', 'fastboot-server.js', 'testem.js', 'config/**/*.js', '.eslintrc.js'],
+      excludedFiles: ['app/**'],
       parserOptions: {
         sourceType: 'script',
-        ecmaVersion: 2015
+        ecmaVersion: 2015,
       },
       env: {
         browser: false,
-        node: true
+        node: true,
       },
       plugins: ['node'],
       rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        "node/no-extraneous-require": "off",
-        "node/no-unpublished-require": "off"
+        'node/no-extraneous-require': 'off',
+        'node/no-unpublished-require': 'off',
         // add your custom rules and overrides for node files here
-      })
+      }),
     },
     // Tests
     {
@@ -70,7 +59,7 @@ module.exports = {
       },
       rules: {
         'qunit/no-assert-equal': 'off',
-      }
-    }
-  ]
+      },
+    },
+  ],
 };
