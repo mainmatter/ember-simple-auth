@@ -46,9 +46,6 @@ jobs:
           - classic-test-app
           - test-app
         test-suite:
-          - test:one ember-3.0
-          - test:one ember-lts-3.4
-          - test:one ember-lts-3.8
           - test:one ember-lts-3.12
           - test:one ember-lts-3.16
           - test:one ember-lts-3.20
