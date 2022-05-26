@@ -23,9 +23,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 14.x
+      - uses: volta-cli/action@v1
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -96,9 +94,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 14.x
+      - uses: volta-cli/action@v1
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -132,9 +128,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 14.x
+      - uses: volta-cli/action@v1
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -161,9 +155,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 14.x
+      - uses: volta-cli/action@v1
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
