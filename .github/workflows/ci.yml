@@ -53,9 +53,35 @@ jobs:
           - test:one ember-lts-3.28
           - test:one ember-4.0
           - test:one ember-lts-4.4
-          - test:one ember-release
-          - test:one ember-beta
-          - test:one ember-canary
+        allow-failure: [false]
+        include:
+          - workspace: ember-simple-auth
+            test-suite: "test:one ember-beta"
+            allow-failure: true
+          - workspace: test-app
+            test-suite: "test:one ember-beta"
+            allow-failure: true
+          - workspace: classic-test-app
+            test-suite: "test:one ember-beta"
+            allow-failure: true
+          - workspace: ember-simple-auth
+            test-suite: "test:one ember-release"
+            allow-failure: true
+          - workspace: test-app
+            test-suite: "test:one ember-release"
+            allow-failure: true
+          - workspace: classic-test-app
+            test-suite: "test:one ember-release"
+            allow-failure: true
+          - workspace: ember-simple-auth
+            test-suite: "test:one ember-canary"
+            allow-failure: true
+          - workspace: classic-test-app
+            test-suite: "test:one ember-canary"
+            allow-failure: true
+          - workspace: test-app
+            test-suite: "test:one ember-canary"
+            allow-failure: true
 
     steps:
       - uses: actions/checkout@v3
@@ -69,6 +95,7 @@ jobs:
 
       - name: tests
         run: yarn workspace ${{ matrix.workspace }} ${{ matrix.test-suite }}
+        continue-on-error: ${{ matrix.allow-failure }}
 
   extra-tests:
     name: Tests (Floating Dependenies)
