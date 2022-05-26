@@ -51,6 +51,7 @@ jobs:
           - test:one ember-lts-3.20
           - test:one ember-lts-3.24
           - test:one ember-lts-3.28
+          - test:one ember-4.0
           - test:one ember-lts-4.4
           # - test:one ember-release
           # - test:one ember-beta
