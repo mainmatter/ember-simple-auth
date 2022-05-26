@@ -37,7 +37,7 @@
     "ember-cli-uglify": "^3.0.0",
     "ember-data": "~3.17.0",
     "ember-disable-prototype-extensions": "^1.1.2",
-    "ember-engines": "^0.8.5",
+    "ember-engines": "^0.8.22",
     "ember-export-application-global": "^2.0.1",
     "ember-fetch": "^8.0.1",
     "ember-load-initializers": "^2.1.1",
@@ -45,7 +45,7 @@
     "ember-resolver": "^8.0.0",
     "ember-simple-auth": "4.2.2",
     "ember-qunit": "^4.6.0",
-    "ember-source": "~3.17.0",
+    "ember-source": "~3.24.0",
     "ember-source-channel-url": "^3.0.0",
     "ember-try": "^1.1.0",
     "eslint": "^8.14.0",
@@ -69,5 +69,8 @@
     "@babel/plugin-transform-typescript": "~7.17.0",
     "cssstyle": "~2.3.0",
     "jsdom": "^19.0.0"
+  },
+  "ember": {
+    "edition": "octane"
   }
 }

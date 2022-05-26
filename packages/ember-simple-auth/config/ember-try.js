@@ -78,6 +78,74 @@ module.exports = function() {
           },
         },
         {
+          name: 'ember-lts-3.28',
+          bower: {
+            dependencies: {
+              ember: null,
+              'ember-cli-shims': null,
+              'ember-data': null,
+            },
+          },
+          npm: {
+            devDependencies: {
+              'ember-cli': '~3.28.0',
+              'ember-data': '~3.28.0',
+              'ember-source': '~3.28.0',
+              torii: null,
+            },
+          },
+        },
+        {
+          name: 'ember-4.0',
+          bower: {
+            dependencies: {
+              ember: null,
+              'ember-cli-shims': null,
+              'ember-data': null,
+            },
+          },
+          npm: {
+            devDependencies: {
+              'ember-cli': '~3.28.0',
+              'ember-data': '~4.0.0',
+              'ember-source': '~4.0.0',
+              'ember-auto-import': '^2.2.3',
+              webpack: '^5.0.0',
+              '@ember/test-helpers': '^2.4.2',
+              'ember-qunit': '^5.1.4',
+              qunit: '^2.17.2',
+              torii: null,
+              'ember-cli-app-version': '~5.0.0',
+              '@ember/legacy-built-in-components': "~0.4.0",
+            },
+          },
+        },
+        {
+          name: 'ember-lts-4.4',
+          bower: {
+            dependencies: {
+              ember: null,
+              'ember-cli-shims': null,
+              'ember-data': null,
+            },
+          },
+          npm: {
+            devDependencies: {
+              'ember-cli': '~3.28.0',
+              'ember-data': '~4.4.0',
+              'ember-source': '~4.4.0',
+              'ember-auto-import': '^2.2.3',
+              webpack: '^5.0.0',
+              '@ember/test-helpers': '^2.4.2',
+              'ember-qunit': '^5.1.4',
+              qunit: '^2.17.2',
+              torii: null,
+              'ember-cli-app-version': '~5.0.0',
+              '@ember/legacy-built-in-components': "~0.4.0",
+            },
+          },
+        },
+        {
           name: 'ember-release',
           bower: {
             dependencies: {
@@ -86,8 +154,17 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
+              'ember-cli': 'latest',
               'ember-data': 'latest',
               'ember-source': releaseUrl,
+              'ember-auto-import': '^2.2.3',
+              webpack: '^5.0.0',
+              '@ember/test-helpers': '^2.4.2',
+              'ember-qunit': '^5.1.4',
+              qunit: '^2.17.2',
+              'ember-cli-app-version': '~5.0.0',
+              '@ember/legacy-built-in-components': "~0.4.0",
+              torii: null,
             },
           },
         },
@@ -100,8 +177,17 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
+              'ember-cli': 'beta',
               'ember-data': 'beta',
               'ember-source': betaUrl,
+              'ember-auto-import': '^2.2.3',
+              webpack: '^5.0.0',
+              '@ember/test-helpers': '^2.4.2',
+              'ember-qunit': '^5.1.4',
+              qunit: '^2.17.2',
+              'ember-cli-app-version': '~5.0.0',
+              '@ember/legacy-built-in-components': "~0.4.0",
+              torii: null,
             },
           },
         },
@@ -114,8 +200,17 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
+              'ember-cli': 'beta',
               'ember-data': 'canary',
               'ember-source': canaryUrl,
+              'ember-auto-import': '^2.2.3',
+              webpack: '^5.0.0',
+              '@ember/test-helpers': '^2.4.2',
+              'ember-qunit': '^5.1.4',
+              qunit: '^2.17.2',
+              'ember-cli-app-version': '~5.0.0',
+              '@ember/legacy-built-in-components': "~0.4.0",
+              torii: null,
             },
           },
         },
