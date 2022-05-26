@@ -132,7 +132,7 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-cli': '~3.28.0',
-              'ember-data': '~4.0.0',
+              'ember-data': '~4.4.0',
               'ember-source': '~4.4.0',
               'ember-auto-import': '^2.2.3',
               webpack: '^5.0.0',
