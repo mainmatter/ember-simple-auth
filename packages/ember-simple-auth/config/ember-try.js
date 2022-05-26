@@ -96,7 +96,7 @@ module.exports = function() {
           },
         },
         {
-          name: 'ember-4.0',
+          name: 'ember-lts-4.4',
           bower: {
             dependencies: {
               ember: null,
@@ -108,7 +108,7 @@ module.exports = function() {
             devDependencies: {
               'ember-cli': '~3.28.0',
               'ember-data': '~4.0.0',
-              'ember-source': '~4.0.0',
+              'ember-source': '~4.4.0',
               'ember-auto-import': '^2.2.3',
               webpack: '^5.0.0',
               '@ember/test-helpers': '^2.4.2',
