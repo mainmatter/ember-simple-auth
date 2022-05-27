@@ -45,7 +45,7 @@
     "ember-resolver": "^8.0.0",
     "ember-simple-auth": "4.2.2",
     "ember-qunit": "^4.6.0",
-    "ember-source": "~3.24.0",
+    "ember-source": "~4.4.0",
     "ember-source-channel-url": "^3.0.0",
     "ember-try": "^1.1.0",
     "eslint": "^8.14.0",
