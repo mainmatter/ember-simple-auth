@@ -89,7 +89,7 @@
   "resolutions": {
     "@babel/plugin-transform-typescript": "~7.17.0",
     "cssstyle": "~2.3.0",
-    "jsdom": "^19.0.0"
+    "jsdom": "^20.0.0"
   },
   "peerDependencies": {
     "ember-fetch": "^8.0.1"
