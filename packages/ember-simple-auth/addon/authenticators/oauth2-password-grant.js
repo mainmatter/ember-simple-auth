@@ -46,6 +46,19 @@ export default BaseAuthenticator.extend({
     @public
   */
   clientId: null,
+  
+    /**
+    The client_secret to be sent to the authentication server (see
+    https://tools.ietf.org/html/rfc6749#appendix-A.2). __This should only be
+    used for statistics or logging etc. as it cannot actually be trusted since
+    it could have been manipulated on the client!__
+
+    @property clientSecret
+    @type String
+    @default null
+    @public
+  */
+  clientSecret: null,
 
   /**
     The endpoint on the server that authentication and token refresh requests
@@ -290,6 +303,11 @@ export default BaseAuthenticator.extend({
     const clientId = this.get('clientId');
     if (!isEmpty(clientId)) {
       data['client_id'] = this.get('clientId');
+    }
+    
+    const clientSecret = this.get('clientSecret');
+    if (!isEmpty(clientSecret)) {
+      data['client_secret'] = this.get('clientSecret');
     }
 
     const body = Object.keys(data).map((key) => {
