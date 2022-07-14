@@ -1,12 +1,12 @@
+import Ember from 'ember';
 import RSVP from 'rsvp';
 import { isEmpty, isNone } from '@ember/utils';
 import ObjectProxy from '@ember/object/proxy';
 import Evented from '@ember/object/evented';
-import { merge, assign as emberAssign } from '@ember/polyfills';
+import assign from 'ember-simple-auth/utils/assign';
 import { set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
 import { getOwner, setOwner } from '@ember/application';
-const assign = emberAssign || merge;
 
 export default ObjectProxy.extend(Evented, {
   authenticator:       null,
@@ -17,6 +17,12 @@ export default ObjectProxy.extend(Evented, {
   init() {
     this._super(...arguments);
     this.set('content', { authenticated: {} });
+    let storeFactory = 'session-store:application';
+    if (Ember.testing) {
+      storeFactory = 'session-store:test';
+    }
+
+    this.set('store', getOwner(this).lookup(storeFactory));
     this._busy = false;
     this._bindToStoreEvents();
   },
@@ -25,7 +31,6 @@ export default ObjectProxy.extend(Evented, {
     this._busy = true;
     assert(`Session#authenticate requires the authenticator to be specified, was "${authenticatorFactory}"!`, !isEmpty(authenticatorFactory));
     const authenticator = this._lookupAuthenticator(authenticatorFactory);
-    assert(`No authenticator for factory "${authenticatorFactory}" could be found!`, !isNone(authenticator));
 
     return authenticator.authenticate(...args).then((content) => {
       this._busy = false;
@@ -196,6 +201,7 @@ export default ObjectProxy.extend(Evented, {
   _lookupAuthenticator(authenticatorName) {
     let owner = getOwner(this);
     let authenticator = owner.lookup(authenticatorName);
+    assert(`No authenticator for factory "${authenticatorName}" could be found!`, !isNone(authenticator));
     setOwner(authenticator, owner);
     return authenticator;
   }

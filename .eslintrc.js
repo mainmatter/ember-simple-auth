@@ -1,28 +1,49 @@
-/* eslint-env node */
-
 module.exports = {
   root: true,
   extends: [
-    '../../.eslintrc.js',
+    'simplabs',
+    'simplabs/plugins/ember',
+    'plugin:ember/recommended',
   ],
+  parserOptions: {
+    ecmaVersion: 2017,
+    sourceType: 'module'
+  },
+  rules: {
+    'ember/local-modules': 'off',
+    'ember/no-get': 'off',
+    'ember/avoid-leaking-state-in-components': 'off',
+
+    // Legacy Ember features
+    'ember/no-actions-hash': 'off',
+    'ember/no-classic-classes': 'off',
+    'ember/no-classic-components': 'off',
+    'ember/no-private-routing-service': 'off',
+    'ember/require-tagless-components': 'off',
+
+    // TODO: REMOVE
+    'no-implicit-coercion': 'off',
+    'no-multi-spaces': 'off',
+    'no-multi-str': 'off',
+    'no-trailing-spaces': 'off',
+    'no-unused-vars': 'off',
+    'no-var': 'off',
+    'prefer-template': 'off',
+    'quotes': 'off',
+    'semi': 'off'
+  },
   overrides: [
     // node files
     {
       files: [
         'ember-cli-build.js',
-        'index.js',
+        'fastboot-server.js',
         'testem.js',
-        'blueprints/utils.js',
-        'blueprints/*/index.js',
         'config/**/*.js',
-        'tests/dummy/config/**/*.js'
+        '.eslintrc.js',
       ],
       excludedFiles: [
-        'addon/**',
-        'addon-test-support/**',
         'app/**',
-        'tests/dummy/app/**',
-        'tests/dummy/lib/my-engine/**'
       ],
       parserOptions: {
         sourceType: 'script',
@@ -38,15 +59,9 @@ module.exports = {
         "node/no-unpublished-require": "off"
         // add your custom rules and overrides for node files here
       })
-    }, {
-      files: [
-        "node-tests/blueprints/**/*.js"
-      ],
-      env: {
-        node: true,
-        mocha: true
-      }
-    }, {
+    },
+    // Tests
+    {
       files: ['tests/**/*.js'],
       extends: ['plugin:qunit/recommended'],
       parserOptions: {

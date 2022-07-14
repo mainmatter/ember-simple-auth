@@ -3,34 +3,48 @@
 /* eslint-env node */
 /* eslint-disable no-var, object-shorthand, prefer-template */
 
-var writeFile = require('broccoli-file-creator');
-var version = require('./package.json').version;
 var path = require('path');
 var Funnel = require('broccoli-funnel');
+var writeFile = require('broccoli-file-creator');
 var MergeTrees = require('broccoli-merge-trees');
 
 module.exports = {
   name: 'ember-simple-auth',
 
-  included: function() {
+  included() {
     this._super.included.apply(this, arguments);
     this._ensureThisImport();
 
-    this.import('vendor/ember-simple-auth/register-version.js');
+    const app = this._findHost();
+    const config = app.options['ember-simple-auth'] || {};
+    this.addonConfig = config;
+
     this.import('vendor/base64.js');
   },
 
   treeForVendor() {
-    var content = "Ember.libraries.register('Ember Simple Auth', '" + version + "');";
-    var registerVersionTree = writeFile(
-      'ember-simple-auth/register-version.js',
-      content
-    );
-    var base64Tree = new Funnel(path.dirname(require.resolve('base-64')), {
+    return new Funnel(path.dirname(require.resolve('base-64')), {
       files: ['base64.js']
     });
+  },
 
-    return MergeTrees([registerVersionTree, base64Tree]);
+  treeForAddon(tree) {
+    let useSessionSetupMethodConfig = writeFile(
+      'use-session-setup-method.js',
+      `export default ${Boolean(this.addonConfig.useSessionSetupMethod)};`
+    );
+
+    return this._super.treeForAddon.call(this, MergeTrees([tree, useSessionSetupMethodConfig]));
+  },
+
+  treeForApp(tree) {
+    if (this.addonConfig.useSessionSetupMethod) {
+      return new Funnel(tree, {
+        exclude: ['routes/application.js']
+      });
+    }
+
+    return this._super.treeForApp.apply(this, arguments);
   },
 
   _ensureThisImport: function() {
@@ -50,3 +64,4 @@ module.exports = {
     }
   }
 };
+

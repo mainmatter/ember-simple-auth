@@ -1,10 +1,9 @@
-import { alias, oneWay } from '@ember/object/computed';
+import { alias, readOnly } from '@ember/object/computed';
 import { A } from '@ember/array';
 import Service from '@ember/service';
 import Evented from '@ember/object/evented';
 import { getOwner } from '@ember/application';
-import { assert } from '@ember/debug';
-import { deprecate } from '@ember/application/deprecations';
+import { assert, deprecate } from '@ember/debug';
 import Configuration from '../configuration';
 
 import {
@@ -22,8 +21,18 @@ function deprecateSessionEvents() {
   if (enableEventsDeprecation) {
     deprecate("Ember Simple Auth: The session service's events API is deprecated; to add custom behavior to the authentication or invalidation handling, override the handleAuthentication or handleInvalidation methods.", false, {
       id: 'ember-simple-auth.events.session-service',
-      until: '4.0.0'
+      until: '4.0.0',
+      for: 'ember-simple-auth',
+      since: {
+        enabled: '3.1.0'
+      }
     });
+  }
+}
+
+function assertSetupHasBeenCalled(isSetupCalled) {
+  if (!isSetupCalled && Configuration.useSessionSetupMethod) {
+    assert("Ember Simple Auth: session#setup wasn't called. Make sure to call session#setup in your application route's beforeModel hook.", false);
   }
 }
 
@@ -92,7 +101,7 @@ export default Service.extend(Evented, {
     @default false
     @public
   */
-  isAuthenticated: oneWay('session.isAuthenticated'),
+  isAuthenticated: readOnly('session.isAuthenticated'),
 
   /**
     The current session data as a plain object. The
@@ -109,7 +118,7 @@ export default Service.extend(Evented, {
     @default { authenticated: {} }
     @public
   */
-  data: oneWay('session.content'),
+  data: readOnly('session.content'),
 
   /**
     The session store.
@@ -120,7 +129,7 @@ export default Service.extend(Evented, {
     @default null
     @public
   */
-  store: oneWay('session.store'),
+  store: readOnly('session.store'),
 
   /**
     A previously attempted but intercepted transition (e.g. by the
@@ -137,8 +146,11 @@ export default Service.extend(Evented, {
   */
   attemptedTransition: alias('session.attemptedTransition'),
 
+  session: null,
+
   init() {
     this._super(...arguments);
+    this.set('session', getOwner(this).lookup('session:main'));
     this._forwardSessionEvents();
   },
 
@@ -291,6 +303,7 @@ export default Service.extend(Evented, {
     @public
   */
   requireAuthentication(transition, routeOrCallback) {
+    assertSetupHasBeenCalled(this._setupIsCalled);
     let isAuthenticated = requireAuthentication(getOwner(this), transition);
     if (!isAuthenticated) {
       let argType = typeof routeOrCallback;
@@ -315,6 +328,7 @@ export default Service.extend(Evented, {
     @public
   */
   prohibitAuthentication(routeOrCallback) {
+    assertSetupHasBeenCalled(this._setupIsCalled);
     let isAuthenticated = this.get('isAuthenticated');
     if (isAuthenticated) {
       let argType = typeof routeOrCallback;
@@ -365,5 +379,24 @@ export default Service.extend(Evented, {
   */
   handleInvalidation(routeAfterInvalidation) {
     handleSessionInvalidated(getOwner(this), routeAfterInvalidation);
-  }
+  },
+
+  /**
+    Sets up the session service.
+
+    This method must be called when the application starts up,
+    usually as the first thing in the `application` route's `beforeModel`
+    method.
+
+    @method setup
+    @public
+  */
+  setup() {
+    this._setupIsCalled = true;
+    this._setupHandlers();
+
+    return this.session.restore().catch(() => {
+      // If it raises an error then it means that restore didn't find any restorable state.
+    });
+  },
 });

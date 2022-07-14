@@ -1,3 +1,5 @@
+import useSessionSetupMethod from 'ember-simple-auth/use-session-setup-method';
+
 const DEFAULTS = {
   rootURL: '',
   routeAfterAuthentication: 'index',
@@ -35,6 +37,18 @@ export default {
     @public
   */
   routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
+
+  /**
+    Flag used to determine whether users have decided to setup session service themselves.
+    This lets us to return early from initializer which would setup the service automatically.
+
+    This will be the default behavior in the future.
+
+    @property useSessionSetupMethod
+    @default false
+    @private
+  */
+  useSessionSetupMethod,
 
   load(config) {
     this.rootURL = config.rootURL !== undefined ? config.rootURL : DEFAULTS.rootURL;

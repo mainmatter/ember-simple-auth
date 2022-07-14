@@ -5,14 +5,18 @@ import { A } from '@ember/array';
 import { getOwner } from '@ember/application';
 import { inject } from '@ember/service';
 import Ember from 'ember';
-import { deprecate } from '@ember/application/deprecations';
+import { deprecate } from '@ember/debug';
 import Configuration from './../configuration';
 
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 
 deprecate('Ember Simple Auth: The ApplicationRouteMixin is now deprecated; it can be safely removed.', false, {
   id: 'ember-simple-auth.mixins.application-route-mixin',
-  until: '4.0.0'
+  until: '4.0.0',
+  for: 'ember-simple-auth',
+  since: {
+    enabled: '3.1.0'
+  }
 });
 
 /**
@@ -28,8 +32,8 @@ deprecate('Ember Simple Auth: The ApplicationRouteMixin is now deprecated; it ca
   ```js
   // app/instance-initializers/session-events.js
   export function initialize(instance) {
-    const applicationRoute = instance.container.lookup('route:application');
-    const session          = instance.container.lookup('service:session');
+    const applicationRoute = instance.lookup('route:application');
+    const session          = instance.lookup('service:session');
     session.on('authenticationSucceeded', function() {
       applicationRoute.transitionTo('index');
     });

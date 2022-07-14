@@ -1,20 +1,20 @@
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import { module, test } from 'qunit';
 import { mockServer, visit } from 'ember-cli-fastboot-testing/test-support';
 import { setupFastbootTest } from '../helpers/fastboot';
 import config from '../../config/environment';
 
-describe('FastBoot: /protected', function() {
-  setupFastbootTest();
+module('FastBoot: /protected', function(hooks) {
+  setupFastbootTest(hooks);
 
-  it('redirects to login page when the session is not authenticated', async function() {
+  test('redirects to login page when the session is not authenticated', async function(assert) {
     let { headers, statusCode } = await visit('/protected');
 
-    expect(statusCode).to.eq(307);
-    expect(headers.location).to.match(/\/login$/);
+    assert.equal(statusCode, 307);
+    let match = headers.location[0].match(/\/login$/);
+    assert.ok(match);
   });
 
-  it('can be accessed when the session is authenticated', async function() {
+  test('can be accessed when the session is authenticated', async function(assert) {
     await mockServer.get(`${config.apiHost}/accounts/1`, {
       data: {
         type: 'accounts',
@@ -35,7 +35,7 @@ describe('FastBoot: /protected', function() {
       }
     });
 
-    expect(statusCode).to.eq(200);
-    expect(url).to.eq('/protected');
+    assert.equal(statusCode, 200);
+    assert.equal(url, '/protected');
   });
 });

@@ -1,6 +1,22 @@
 import { getOwner } from '@ember/application';
+import Configuration from '../configuration';
+import { deprecate } from '@ember/debug';
 
 export default function setupSessionRestoration(registry) {
+  if (Configuration.useSessionSetupMethod) {
+    // return early in case users chose to opt out of initializer behavior.
+    return;
+  }
+
+  deprecate('Ember Simple Auth: The automatic session initialization is deprecated. Please inject session service in your application route and call the setup method manually.', false, {
+    id: 'ember-simple-auth.initializer.setup-session-restoration',
+    until: '5.0.0',
+    for: 'ember-simple-auth',
+    since: {
+      enabled: '4.1.0'
+    }
+  });
+
   const ApplicationRoute = registry.resolveRegistration
     ? registry.resolveRegistration('route:application')
     : registry.resolve('route:application');

@@ -1,5 +1,132 @@
 # Changelog
 
+
+## 4.2.2 (2022-04-12)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2366](https://github.com/simplabs/ember-simple-auth/pull/2366) Remove initialize method ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 1
+- Bartłomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+
+## 4.2.1 (2022-03-15)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2363](https://github.com/simplabs/ember-simple-auth/pull/2363) Prevent UnhandledPromiseError when restoring the session ([@swelham](https://github.com/swelham))
+
+#### Committers: 1
+- Stuart Welham ([@swelham](https://github.com/swelham))
+
+## 4.2.0 (2022-02-14)
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2355](https://github.com/simplabs/ember-simple-auth/pull/2355) Remove use of `keys` and `merge` utils coming from `@ember/polyfills` ([@bertdeblock](https://github.com/bertdeblock))
+  * [#2352](https://github.com/simplabs/ember-simple-auth/pull/2352) Deprecate Torii authenticator ([@marcoow](https://github.com/marcoow))
+  * [#2349](https://github.com/simplabs/ember-simple-auth/pull/2349) Fixed failing unit test - invalidate call revoke endpoint twice. Unit test did not validate it correctly. ([@candunaj](https://github.com/candunaj))
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2330](https://github.com/simplabs/ember-simple-auth/pull/2330) 2316 refactor mocha tests to qunit ([@candunaj](https://github.com/candunaj))
+
+#### Committers: 3
+- Bert De Block ([@bertdeblock](https://github.com/bertdeblock))
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- Stanislav Dunajcan ([@candunaj](https://github.com/candunaj))
+
+## 4.1.1 (2021-12-09)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2341](https://github.com/simplabs/ember-simple-auth/pull/2341) add annotation to deprecations so Ember deprecate fn does not complain ([@BryanCrotaz](https://github.com/BryanCrotaz))
+
+#### :memo: Documentation
+* `ember-simple-auth`
+  * [#2338](https://github.com/simplabs/ember-simple-auth/pull/2338) doc: fix lookup in instance-initializer ([@Sweet-Bob](https://github.com/Sweet-Bob))
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2345](https://github.com/simplabs/ember-simple-auth/pull/2345) Fixed failing unit test - ember/object get function was removed from source code so I have changed unit test accordingly ([@candunaj](https://github.com/candunaj))
+  * [#2348](https://github.com/simplabs/ember-simple-auth/pull/2348) Fixed quietly failing unit test because server returned nothing ([@candunaj](https://github.com/candunaj))
+  * [#2344](https://github.com/simplabs/ember-simple-auth/pull/2344) In some tests was thrown undefined. ([@candunaj](https://github.com/candunaj))
+  * [#2342](https://github.com/simplabs/ember-simple-auth/pull/2342) Fixed 3 readonly tests. ([@candunaj](https://github.com/candunaj))
+* Other
+  * [#2343](https://github.com/simplabs/ember-simple-auth/pull/2343) Allow ember-release to fail ([@candunaj](https://github.com/candunaj))
+  * [#2333](https://github.com/simplabs/ember-simple-auth/pull/2333) Allow CI for ember-beta to fail ([@candunaj](https://github.com/candunaj))
+
+#### Committers: 3
+- Stanislav Dunajcan ([@candunaj](https://github.com/candunaj))
+- Robert ([@Sweet-Bob](https://github.com/Sweet-Bob))
+- Bryan ([@BryanCrotaz](https://github.com/BryanCrotaz))
+
+## 4.1.0 (2021-10-29)
+
+#### :rocket: Enhancement
+* `ember-simple-auth`, `test-app`
+  * [#2314](https://github.com/simplabs/ember-simple-auth/pull/2314) Add setup method for session service ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 1
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+
+## 4.0.2 (2021-10-06)
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2326](https://github.com/simplabs/ember-simple-auth/pull/2326) Bump ember-test-selectors to latest ([@snewcomer](https://github.com/snewcomer))
+  * [#2317](https://github.com/simplabs/ember-simple-auth/pull/2317) Update "deprecate" to import from @ember/debug ([@snewcomer](https://github.com/snewcomer))
+  * [#2320](https://github.com/simplabs/ember-simple-auth/pull/2320) chore: Fix deprecation warnings for run.cancel, run.later ([@josemarluedke](https://github.com/josemarluedke))
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2325](https://github.com/simplabs/ember-simple-auth/pull/2325) Remove ember-cli-htmlbars-inline-precompile ([@snewcomer](https://github.com/snewcomer))
+
+#### Committers: 2
+- Josemar Luedke ([@josemarluedke](https://github.com/josemarluedke))
+- Scott Newcomer ([@snewcomer](https://github.com/snewcomer))
+
+## 4.0.1 (2021-09-24)
+
+#### :memo: Documentation
+* `ember-simple-auth`
+  * [#2323](https://github.com/simplabs/ember-simple-auth/pull/2323) Add repository to package ([@rwwagner90](https://github.com/rwwagner90))
+
+#### :house: Internal
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2321](https://github.com/simplabs/ember-simple-auth/pull/2321) Remove ESA version from ember inspector ([@brunoocasali](https://github.com/brunoocasali))
+
+#### Committers: 2
+- Bruno Casali ([@brunoocasali](https://github.com/brunoocasali))
+- Robert Wagner ([@rwwagner90](https://github.com/rwwagner90))
+
+## 4.0.0 (2021-09-08)
+
+#### :boom: Breaking Change
+* `ember-simple-auth`
+  * [#2313](https://github.com/simplabs/ember-simple-auth/pull/2313) Drop node 10 in favor of 12 ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :memo: Documentation
+* [#2291](https://github.com/simplabs/ember-simple-auth/pull/2291) add missing dependent key in README ([@marcoow](https://github.com/marcoow))
+* [#2274](https://github.com/simplabs/ember-simple-auth/pull/2274) Update super call in "managing-current-user" guide ([@bertdeblock](https://github.com/bertdeblock))
+* [#2265](https://github.com/simplabs/ember-simple-auth/pull/2265) Prepare README for 3.1.0 release ([@sdebarros](https://github.com/sdebarros))
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2315](https://github.com/simplabs/ember-simple-auth/pull/2315) [2302]  put internal-session into DI system ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2312](https://github.com/simplabs/ember-simple-auth/pull/2312) [2308] Refactor Adaptive store to use DI ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2296](https://github.com/simplabs/ember-simple-auth/pull/2296) fix computed import deprecation ([@knownasilya](https://github.com/knownasilya))
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2300](https://github.com/simplabs/ember-simple-auth/pull/2300) Remove extra resolver files ([@marcoow](https://github.com/marcoow))
+  * [#2301](https://github.com/simplabs/ember-simple-auth/pull/2301) Drop `ember-cli-shims` dependency ([@marcoow](https://github.com/marcoow))
+  * [#2294](https://github.com/simplabs/ember-simple-auth/pull/2294) Fix tests ([@marcoow](https://github.com/marcoow))
+
+#### Committers: 8
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Bert De Block ([@bertdeblock](https://github.com/bertdeblock))
+- Ilya Radchenko ([@knownasilya](https://github.com/knownasilya))
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- Samanta de Barros ([@sdebarros](https://github.com/sdebarros))
+- Tony Miller ([@mcfiredrill](https://github.com/mcfiredrill))
+- [@bekzod](https://github.com/bekzod)
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## 3.1.0 (2021-01-29)
 
 #### :bug: Bug Fix

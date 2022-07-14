@@ -2,8 +2,6 @@ import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { getOwner } from '@ember/application';
 import Base from 'ember-simple-auth/session-stores/base';
-import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
-import Cookie from 'ember-simple-auth/session-stores/cookie';
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 
@@ -102,7 +100,20 @@ export default Base.extend({
   _cookieExpirationTime: null,
   cookieExpirationTime: proxyToInternalStore(),
 
+  _sameSite: null,
+  sameSite: proxyToInternalStore(),
+
   _cookies: service('cookies'),
+
+  _isLocalStorageAvailable: computed({
+    get() {
+      return testLocalStorageAvailable();
+    },
+
+    set(key, value) {
+      return value;
+    }
+  }),
 
   init() {
     this._super(...arguments);
@@ -112,28 +123,30 @@ export default Base.extend({
       this._fastboot = owner.lookup('service:fastboot');
     }
 
-    this._isLocalStorageAvailable = this.hasOwnProperty('_isLocalStorageAvailable') ? this._isLocalStorageAvailable : testLocalStorageAvailable();
-
     let store;
     if (this.get('_isLocalStorageAvailable')) {
+      const localStorage = owner.lookup('session-store:local-storage');
       const options = { key: this.get('localStorageKey') };
-      options._isFastBoot = false;
-      store = this._createStore(LocalStorage, options);
-    } else {
-      const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath');
-      options._fastboot = this.get('_fastboot');
-      options._cookies = this.get('_cookies');
 
-      store = this._createStore(Cookie, options);
-      this.set('cookieExpirationTime', store.get('cookieExpirationTime'));
+      options._isFastBoot = false;
+      localStorage.setProperties(options);
+
+      store = localStorage;
+    } else {
+      const cookieStorage = owner.lookup('session-store:cookie');
+      const options = this.getProperties('sameSite', 'cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath');
+
+      cookieStorage.setProperties(options);
+      this.set('cookieExpirationTime', cookieStorage.get('cookieExpirationTime'));
+
+      store = cookieStorage;
     }
+
     this.set('_store', store);
+    this._setupStoreEvents(store);
   },
 
-  _createStore(storeType, options) {
-    let owner = getOwner(this);
-    const store = storeType.create(owner.ownerInjection(), options);
-
+  _setupStoreEvents(store) {
     store.on('sessionDataUpdated', (data) => {
       this.trigger('sessionDataUpdated', data);
     });

@@ -3,14 +3,18 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import { getOwner } from '@ember/application';
-import { deprecate } from '@ember/application/deprecations';
+import { deprecate } from '@ember/debug';
 import location from '../utils/location';
 import isFastBoot from '../utils/is-fastboot';
 import { parseResponse } from '../authenticators/oauth2-implicit-grant';
 
 deprecate("Ember Simple Auth: The OAuth2ImplicitGrantCallbackRouteMixin is now deprecated; call the session service's authenticate method with the appropriate authenticator in the respective route's activate method instead.", false, {
   id: 'ember-simple-auth.mixins.oauth2-implicit-grant-callback-route-mixin',
-  until: '4.0.0'
+  until: '4.0.0',
+  for: 'ember-simple-auth',
+  since: {
+    enabled: '3.1.0'
+  }
 });
 
 /**

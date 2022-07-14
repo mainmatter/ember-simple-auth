@@ -1,27 +1,20 @@
-import { describe, beforeEach, it } from 'mocha';
-import { expect } from 'chai';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import sinonjs from 'sinon';
-import setupSessionService from 'ember-simple-auth/initializers/setup-session-service';
 
-describe('setupSessionService', () => {
+module('setupSessionService', function(hooks) {
+  setupTest(hooks);
   let sinon;
-  let registry;
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     sinon = sinonjs.createSandbox();
-    registry = {
-      injection() {}
-    };
   });
 
-  afterEach(function() {
+  hooks.afterEach(function() {
     sinon.restore();
   });
 
-  it('injects the session into the session service', function() {
-    sinon.spy(registry, 'injection');
-    setupSessionService(registry);
-
-    expect(registry.injection).to.have.been.calledWith('service:session', 'session', 'session:main');
+  test('injects the session into the session service', function(assert) {
+    assert.equal(this.owner.lookup('service:session').session, this.owner.lookup('session:main'));
   });
 });

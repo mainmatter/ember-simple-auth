@@ -156,7 +156,7 @@ export default BaseStore.extend({
 
   _secureCookies() {
     if (this.get('_fastboot.isFastBoot')) {
-      return this.get('_fastboot.request.protocol') === 'https';
+      return this.get('_fastboot.request.protocol') === 'https:';
     }
 
     return window.location.protocol === 'https:';
@@ -173,7 +173,6 @@ export default BaseStore.extend({
 
   init() {
     this._super(...arguments);
-
     let owner = getOwner(this);
     if (owner && !this.hasOwnProperty('_fastboot')) {
       this._fastboot = owner.lookup('service:fastboot');

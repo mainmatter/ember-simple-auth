@@ -2,14 +2,17 @@
 
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
-import { assert } from '@ember/debug';
+import { assert, deprecate } from '@ember/debug';
 import { getOwner } from '@ember/application';
-import { deprecate } from '@ember/application/deprecations';
 import { requireAuthentication, triggerAuthentication } from '../-internals/routing';
 
 deprecate("Ember Simple Auth: The AuthenticatedRouteMixin is now deprecated; call the session service's requireAuthentication method in the respective route's beforeModel method instead.", false, {
   id: 'ember-simple-auth.mixins.authenticated-route-mixin',
-  until: '4.0.0'
+  until: '4.0.0',
+  for: 'ember-simple-auth',
+  since: {
+    enabled: '3.1.0'
+  }
 });
 
 /**

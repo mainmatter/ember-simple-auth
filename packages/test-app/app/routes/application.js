@@ -5,7 +5,8 @@ export default Route.extend({
   session: service(),
   sessionAccount: service(),
 
-  beforeModel() {
+  async beforeModel() {
+    await this.get('session').setup();
     return this.get('sessionAccount').loadCurrentUser().catch(() => this.get('session').invalidate());
   }
 });

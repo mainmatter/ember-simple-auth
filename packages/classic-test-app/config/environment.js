@@ -46,8 +46,6 @@ module.exports = function(environment) {
     fastboot: {
       hostWhitelist: [/^localhost:\d+$/]
     },
-
-    esaVersion: require('../../../package.json').version,
   };
 
   if (environment === 'development') {

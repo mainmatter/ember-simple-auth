@@ -1,17 +1,11 @@
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
 import {
   currentURL,
   visit,
   fillIn,
   click
 } from '@ember/test-helpers';
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
-import {
-  describe,
-  it,
-  afterEach
-} from 'mocha';
-import { setupApplicationTest } from 'ember-mocha';
-import { expect } from 'chai';
 import Pretender from 'pretender';
 import {
   invalidateSession,
@@ -20,15 +14,17 @@ import {
 } from 'ember-simple-auth/test-support';
 import config from '../../config/environment';
 
-describe('Acceptance: Authentication', function() {
-  setupApplicationTest();
+module('Acceptance: Authentication', function(hooks) {
+  setupApplicationTest(hooks);
   let server;
 
-  afterEach(function() {
-    server && server.shutdown();
+  hooks.afterEach(function() {
+    if (server) {
+      server.shutdown();
+    }
   });
 
-  it('logging in with correct credentials works', async function() {
+  test('logging in with correct credentials works', async function(assert) {
     server = new Pretender(function() {
       this.post(`${config.apiHost}/token`, () => [200, { 'Content-Type': 'application/json' }, '{ "access_token": "secret token!", "account_id": 1 }']);
       this.get(`${config.apiHost}/accounts/1`, () => [200, { 'Content-Type': 'application/json' }, '{ "data": { "type": "accounts", "id": "1", "attributes": { "login": "letme", "name": "Some person" } } }']);
@@ -40,10 +36,10 @@ describe('Acceptance: Authentication', function() {
     await fillIn('[data-test-password]', 'password');
     await click('button[type="submit"]');
 
-    expect(currentURL()).to.eq('/');
+    assert.equal(currentURL(), '/');
   });
 
-  it('logging in with incorrect credentials shows an error', async function() {
+  test('logging in with incorrect credentials shows an error', async function(assert) {
     server = new Pretender(function() {
       this.post(`${config.apiHost}/token`, () => [400, { 'Content-Type': 'application/json' }, '{ "error": "invalid_grant" }']);
     });
@@ -54,24 +50,19 @@ describe('Acceptance: Authentication', function() {
     await fillIn('[data-test-password]', 'wrong-password!');
     await click('button[type="submit"]');
 
-    expect(currentURL()).to.eq('/login');
-    expect(document.querySelector('[data-test-error-message]')).to.exist;
+    assert.equal(currentURL(), '/login');
+    assert.ok(document.querySelector('[data-test-error-message]'));
   });
 
-  describe('the protected route', function() {
-    if (!hasEmberVersion(2, 4)) {
-      // guard against running test module on unsupported version (before 2.4)
-      return;
-    }
-
-    it('cannot be visited when the session is not authenticated', async function() {
+  module('the protected route', function() {
+    test('cannot be visited when the session is not authenticated', async function(assert) {
       await invalidateSession();
       await visit('/protected');
 
-      expect(currentURL()).to.eq('/login');
+      assert.equal(currentURL(), '/login');
     });
 
-    it('can be visited when the session is authenticated', async function() {
+    test('can be visited when the session is authenticated', async function(assert) {
       server = new Pretender(function() {
         this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
@@ -80,34 +71,34 @@ describe('Acceptance: Authentication', function() {
       await visit('/protected');
 
       let session = currentSession();
-      expect(currentURL()).to.eq('/protected');
-      expect(session.get('data.authenticated.userId')).to.eql(1);
-      expect(session.get('data.authenticated.otherData')).to.eql('some-data');
+      assert.equal(currentURL(), '/protected');
+      assert.equal(session.get('data.authenticated.userId'), 1);
+      assert.equal(session.get('data.authenticated.otherData'), 'some-data');
     });
   });
 
-  describe('the protected route in the engine', function() {
-    it('cannot be visited when the session is not authenticated', async function() {
+  module('the protected route in the engine', function() {
+    test('cannot be visited when the session is not authenticated', async function(assert) {
       await invalidateSession();
       await visit('/engine');
 
-      expect(currentURL()).to.eq('/login');
+      assert.equal(currentURL(), '/login');
     });
 
-    it('can be visited when the session is authenticated', async function() {
+    test('can be visited when the session is authenticated', async function(assert) {
       server = new Pretender(function() {
         this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
       await authenticateSession({ userId: 1, otherData: 'some-data' });
       await visit('/engine');
 
-      expect(currentURL()).to.eq('/engine');
+      assert.equal(currentURL(), '/engine');
       let session = currentSession();
-      expect(session.get('data.authenticated.userId')).to.eql(1);
-      expect(session.get('data.authenticated.otherData')).to.eql('some-data');
+      assert.equal(session.get('data.authenticated.userId'), 1);
+      assert.equal(session.get('data.authenticated.otherData'), 'some-data');
     });
 
-    it('can invalidate the session', async function() {
+    test('can invalidate the session', async function(assert) {
       server = new Pretender(function() {
         this.get(`${config.apiHost}/posts`, () => [200, { 'Content-Type': 'application/json' }, '{"data":[]}']);
       });
@@ -116,28 +107,23 @@ describe('Acceptance: Authentication', function() {
       await click('[data-test-logout-button]');
 
       let session = currentSession();
-      expect(session.get('isAuthenticated')).to.be.false;
+      assert.notOk(session.get('isAuthenticated'));
     });
   });
 
-  describe('the login route', function() {
-    if (!hasEmberVersion(2, 4)) {
-      // guard against running test module on unsupported version (before 2.4)
-      return;
-    }
-
-    it('can be visited when the session is not authenticated', async function() {
+  module('the login route', function() {
+    test('can be visited when the session is not authenticated', async function(assert) {
       await invalidateSession();
       await visit('/login');
 
-      expect(currentURL()).to.eq('/login');
+      assert.equal(currentURL(), '/login');
     });
 
-    it('cannot be visited when the session is authenticated', async function() {
+    test('cannot be visited when the session is authenticated', async function(assert) {
       await authenticateSession();
       await visit('/login');
 
-      expect(currentURL()).to.eq('/');
+      assert.equal(currentURL(), '/');
     });
   });
 });

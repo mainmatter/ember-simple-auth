@@ -1,55 +1,57 @@
-import { describe, beforeEach, it } from 'mocha';
-import { expect } from 'chai';
+import { module, test } from 'qunit';
 import Test from 'ember-simple-auth/authenticators/test';
 
-describe('TestAuthenticator', () => {
+module('TestAuthenticator', function(hooks) {
   let authenticator;
 
-  beforeEach(function() {
+  hooks.beforeEach(function() {
     authenticator = Test.create();
   });
 
-  describe('#restore', function() {
-    it('returns a resolving promise', async function() {
+  module('#restore', function() {
+    test('returns a resolving promise', async function(assert) {
+      assert.expect(1);
       try {
         await authenticator.restore();
-        expect(true).to.be.true;
+        assert.ok(true);
       } catch (_error) {
-        expect(false).to.be.true;
+        assert.ok(false);
       }
     });
 
-    it('resolves with session data', async function() {
+    test('resolves with session data', async function(assert) {
       let data = await authenticator.restore({ userId: 1, otherData: 'some-data' });
 
-      expect(data).to.eql({ userId: 1, otherData: 'some-data' });
+      assert.deepEqual(data, { userId: 1, otherData: 'some-data' });
     });
   });
 
-  describe('#authenticate', function() {
-    it('returns a resolving promise', async function() {
+  module('#authenticate', function() {
+    test('returns a resolving promise', async function(assert) {
+      assert.expect(1);
       try {
         await authenticator.authenticate();
-        expect(true).to.be.true;
+        assert.ok(true);
       } catch (_error) {
-        expect(false).to.be.true;
+        assert.ok(false);
       }
     });
 
-    it('resolves with session data', async function() {
+    test('resolves with session data', async function(assert) {
       let data = await authenticator.authenticate({ userId: 1, otherData: 'some-data' });
 
-      expect(data).to.eql({ userId: 1, otherData: 'some-data' });
+      assert.deepEqual(data, { userId: 1, otherData: 'some-data' });
     });
   });
 
-  describe('#invalidate', function() {
-    it('returns a resolving promise', async function() {
+  module('#invalidate', function() {
+    test('returns a resolving promise', async function(assert) {
+      assert.expect(1);
       try {
         await authenticator.invalidate();
-        expect(true).to.be.true;
+        assert.ok(true);
       } catch (_error) {
-        expect(false).to.be.true;
+        assert.ok(false);
       }
     });
   });

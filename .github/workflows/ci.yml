@@ -22,19 +22,18 @@ jobs:
           - test-app
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 10.x
+      - uses: actions/checkout@v3
+      - uses: volta-cli/action@v1
 
-      - name: get yarn cache dir
-        id: yarn-cache
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v1
+      
+      - uses: actions/cache@v3
+        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-lint-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
@@ -56,25 +55,33 @@ jobs:
           - classic-test-app
           - test-app
         test-suite:
-          - test:one ember-3.0
-          - test:one ember-lts-3.4
-          - test:one ember-lts-3.8
           - test:one ember-lts-3.12
           - test:one ember-lts-3.16
           - test:one ember-lts-3.20
           - test:one ember-lts-3.24
-          - test:one ember-beta
+          - test:one ember-lts-3.28
+          - test:one ember-4.0
+          - test:one ember-lts-4.4
         allow-failure: [false]
         include:
           - workspace: ember-simple-auth
+            test-suite: "test:one ember-beta"
+            allow-failure: true
+          - workspace: test-app
+            test-suite: "test:one ember-beta"
+            allow-failure: true
+          - workspace: classic-test-app
+            test-suite: "test:one ember-beta"
+            allow-failure: true
+          - workspace: ember-simple-auth
             test-suite: "test:one ember-release"
-            allow-failure: false
+            allow-failure: true
           - workspace: test-app
             test-suite: "test:one ember-release"
-            allow-failure: false
+            allow-failure: true
           - workspace: classic-test-app
             test-suite: "test:one ember-release"
-            allow-failure: false
+            allow-failure: true
           - workspace: ember-simple-auth
             test-suite: "test:one ember-canary"
             allow-failure: true
@@ -86,19 +93,18 @@ jobs:
             allow-failure: true
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 10.x
+      - uses: actions/checkout@v3
+      - uses: volta-cli/action@v1
 
-      - name: get yarn cache dir
-        id: yarn-cache
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v1
+      
+      - uses: actions/cache@v3
+        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-test-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
@@ -121,19 +127,18 @@ jobs:
           - test-app
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 10.x
+      - uses: actions/checkout@v3
+      - uses: volta-cli/action@v1
 
-      - name: get yarn cache dir
-        id: yarn-cache
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v1
+      
+      - uses: actions/cache@v3
+        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-test-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
@@ -149,19 +154,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 10.x
+      - uses: actions/checkout@v3
+      - uses: volta-cli/action@v1
 
-      - name: get yarn cache dir
-        id: yarn-cache
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v1
+      
+      - uses: actions/cache@v3
+        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-test-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
