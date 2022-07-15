@@ -5,7 +5,7 @@ __[Ember Simple Auth API docs](http://ember-simple-auth.com/api/)__
 __[![Discord](https://img.shields.io/discord/480462759797063690.svg?logo=discord)](https://discord.gg/zT3asNS)__
 
 Ember Simple Auth __supports all Ember.js versions starting with 3.12.__
-Node __12 is required__  
+Node __12 is required__
 
 #  Ember Simple Auth
 
@@ -321,6 +321,7 @@ redirect to a default route or possibly load the current user.
 ```
 import SimpleAuthSessionService from 'ember-simple-auth/services/session';
 import { inject as service } from '@ember/service';
+import { getOwner } from '@ember/application';
 
 export default class SessionService extends SimpleAuthSessionService {
     /**
@@ -343,7 +344,8 @@ export default class SessionService extends SimpleAuthSessionService {
      * @var {Service}
      */
     handleAuthentication() {
-        this.router.transitionTo('dashboard.boards');
+        let owner = getOwner(this);
+        super.handleAuthentication(owner, 'dashboard.boards')
         this.loadCurrentUser();
     }
 
