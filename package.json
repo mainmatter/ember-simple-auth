@@ -14,7 +14,7 @@
     "@mermaid-js/mermaid-cli": "^9.0.0",
     "lerna-changelog": "^2.0.0",
     "release-it": "^15.0.0",
-    "release-it-lerna-changelog": "^4.0.0",
+    "release-it-lerna-changelog": "^5.0.0",
     "release-it-yarn-workspaces": "^2.0.0"
   },
   "version": "4.2.2",
