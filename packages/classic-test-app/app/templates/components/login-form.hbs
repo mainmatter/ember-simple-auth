@@ -21,10 +21,10 @@
   </div>
   <button type="submit" class="btn btn-primary">Login</button>
 </form>
-{{#if errorMessage}}
+{{#if this.errorMessage}}
   <div class="alert alert-danger" data-test-error-message>
     <p>
-      <strong>Login failed:</strong> <code>{{errorMessage}}</code>
+      <strong>Login failed:</strong> <code>{{this.errorMessage}}</code>
     </p>
     <p>
       Documentation of the error codes can be found in the <a href="http://tools.ietf.org/html/rfc6749#section-5.2" title="RFC 6749 - Error Response">Error Response section of RFC 6749</a>.

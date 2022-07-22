@@ -136,7 +136,7 @@ export default Base.extend({
       const cookieStorage = owner.lookup('session-store:cookie');
       const options = this.getProperties('sameSite', 'cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath');
 
-      cookieStorage._initialize(options);
+      cookieStorage.setProperties(options);
       this.set('cookieExpirationTime', cookieStorage.get('cookieExpirationTime'));
 
       store = cookieStorage;

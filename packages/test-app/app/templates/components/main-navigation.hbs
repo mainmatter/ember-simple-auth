@@ -1,30 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-  {{#link-to 'index' classNames='navbar-brand'}}
+  {{#link-to route='index' classNames='navbar-brand'}}
     Home
   {{/link-to}}
   <ul class="navbar-nav mr-auto">
-    {{#link-to 'protected' tagName='li' class='nav-item'}}
+    {{#link-to route='protected' tagName='li' class='nav-item'}}
       <a class="nav-link" href="#">Protected Page</a>
     {{/link-to}}
-    {{#link-to 'engine.protected' tagName='li'}}
+    {{#link-to route='engine.protected' tagName='li'}}
       <a class="nav-link" href="#">Protected Engine Page</a>
     {{/link-to}}
-    {{#link-to 'engine.open-only' tagName='li'}}
+    {{#link-to route='engine.open-only' tagName='li'}}
       <a class="nav-link" href="#">Open-only Engine Page</a>
     {{/link-to}}
-    {{#link-to 'auth-error' tagName='li' class='nav-item'}}
+    {{#link-to route='auth-error' tagName='li' class='nav-item'}}
       <a class="nav-link" href="#">Auth Error Page</a>
     {{/link-to}}
   </ul>
   <form class="form-inline">
     {{! display logout button when the session is authenticated, login button otherwise }}
-    {{#if session.isAuthenticated}}
-      {{#if sessionAccount.account}}
-        <span class="navbar-text mr-3">Signed in as {{sessionAccount.account.name}}</span>
+    {{#if this.session.isAuthenticated}}
+      {{#if this.sessionAccount.account}}
+        <span class="navbar-text mr-3">Signed in as {{this.sessionAccount.account.name}}</span>
       {{/if}}
       <a {{action 'logout'}} class="btn btn-danger" href="#" role="button">Logout</a>
     {{else}}
-      <a {{action onLogin}} class="btn btn-success" href="#" role="button">Login</a>
+      <a {{action this.onLogin}} class="btn btn-success" href="#" role="button">Login</a>
     {{/if}}
   </form>
 </nav>

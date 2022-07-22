@@ -6,6 +6,7 @@ import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
 import createAdaptiveStore from '../../helpers/create-adaptive-store';
+import assign from 'ember-simple-auth/utils/assign';
 
 module('AdaptiveStore', function(hooks) {
   setupTest(hooks);
@@ -56,7 +57,7 @@ module('AdaptiveStore', function(hooks) {
           let cookieService = owner.lookup('service:cookies');
           sinon.spy(cookieService, 'read');
           sinon.spy(cookieService, 'write');
-          let store = createAdaptiveStore(cookieService, Object.assign({
+          let store = createAdaptiveStore(cookieService, assign({
             _isLocalStorageAvailable: false,
             _cookieName: 'test:session',
           }, storeOptions), owner);
