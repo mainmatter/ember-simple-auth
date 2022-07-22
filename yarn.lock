@@ -13130,10 +13130,10 @@ release-it-lerna-changelog@^5.0.0:
     validate-peer-dependencies "^2.0.0"
     which "^2.0.2"
 
-release-it-yarn-workspaces@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/release-it-yarn-workspaces/-/release-it-yarn-workspaces-2.0.1.tgz#5edef8d499099a7cb3a83d48f090e32ba306e925"
-  integrity sha512-dLX/mnvKpwDNvfbRm+ji3NWxVIEFlSac+29y2KkhPORKYgxFPKawhRm9/ESZOdnLIy7bIwtB17MILGhwohzVgw==
+release-it-yarn-workspaces@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/release-it-yarn-workspaces/-/release-it-yarn-workspaces-3.0.0.tgz#6f254b7e97e1f303f6cf9d109e53d17c46082218"
+  integrity sha512-OwrnvDSBEp/L4dLL3JMTiD1Qi1poEK2a6E7o1iqygywSCwM6hMTVN4RNV6MsC5Sjqx7T+RZ5o/lAN54oguDkAA==
   dependencies:
     detect-indent "^6.0.0"
     detect-newline "^3.1.0"
