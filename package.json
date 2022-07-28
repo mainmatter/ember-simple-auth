@@ -11,11 +11,15 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@mermaid-js/mermaid-cli": "^8.4.8",
-    "lerna-changelog": "^1.0.1",
-    "release-it": "^14.2.0",
-    "release-it-lerna-changelog": "^3.1.0",
-    "release-it-yarn-workspaces": "^2.0.0"
+    "@mermaid-js/mermaid-cli": "^9.0.0",
+    "lerna-changelog": "^2.0.0",
+    "release-it": "^15.0.0",
+    "release-it-lerna-changelog": "^5.0.0",
+    "release-it-yarn-workspaces": "^3.0.0"
   },
-  "version": "4.1.1"
+  "version": "4.2.2",
+  "volta": {
+    "node": "14.20.0",
+    "yarn": "1.22.19"
+  }
 }

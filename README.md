@@ -4,7 +4,7 @@ __[Ember Simple Auth API docs](http://ember-simple-auth.com/api/)__
 
 __[![Discord](https://img.shields.io/discord/480462759797063690.svg?logo=discord)](https://discord.gg/zT3asNS)__
 
-Ember Simple Auth __supports all Ember.js versions starting with 3.0.__
+Ember Simple Auth __supports all Ember.js versions starting with 3.12.__
 Node __12 is required__  
 
 #  Ember Simple Auth
@@ -47,6 +47,8 @@ authorization mechanisms__.
 
 * [Managing a current User](guides/managing-current-user.md)
 * [GitHub authorization with torii](guides/auth-torii-with-github.md)
+* [Upgrading to v4](guides/upgrade-to-v4.md)
+* [Upgrading to v3](guides/upgrade-to-v3.md)
 
 **Other Resources**
 
@@ -106,9 +108,17 @@ ember install ember-simple-auth
 ```
 
 ### Upgrading from a pre-3.0 release?
+
 The 3.0 release of ember-simple-auth removes previously deprecated code,
 introducing some breaking changes, but thankfully there is an
-[upgrade guide](guides/upgrade-to-v3.md).
+[v3 upgrade guide](guides/upgrade-to-v3.md).
+
+### Upgrading to 4.0 release?
+
+The 4.1 release introduced a `session#setup` that fixes build issues for `typescript` and `embroider` users,
+due to ESA using initializers. Consult with the guide in order to fix them
+as well as prepare yourself for v5 release which will make it **required**.
+[v4 upgrade guide](guides/upgrade-to-v4.md).
 
 ## Walkthrough
 
@@ -686,6 +696,8 @@ If you're an `ember-mocha` user, we can recommend to check out this
 ## Other guides
 
 * [Managing current User](guides/managing-current-user.md)
+* [Upgrading to v4](guides/upgrade-to-v4.md)
+* [Upgrading to v3](guides/upgrade-to-v3.md)
 
 ## License
 

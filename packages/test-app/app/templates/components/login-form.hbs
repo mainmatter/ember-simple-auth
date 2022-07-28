@@ -21,7 +21,7 @@
   </div>
   <button type="submit" class="btn btn-primary">Login</button>
 </form>
-{{#if errorMessage}}
+{{#if this.errorMessage}}
   <div class="alert alert-danger" data-test-error-message>
     <p>
       <strong>Login failed:</strong> <code>{{errorMessage}}</code>

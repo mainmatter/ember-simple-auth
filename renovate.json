@@ -1,0 +1,3 @@
+{
+  "extends": ["github>simplabs/renovate-config:default.json5"]
+}

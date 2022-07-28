@@ -4,18 +4,11 @@ import { run, later, cancel } from '@ember/runloop';
 import { A, makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
 import { getOwner } from '@ember/application';
-import {
-  keys as emberKeys,
-  merge,
-  assign as emberAssign
-} from '@ember/polyfills';
+import assign from 'ember-simple-auth/utils/assign';
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
-
-const assign = emberAssign || merge;
-const keys = Object.keys || emberKeys; // Ember.keys deprecated in 1.13
 
 /**
   Authenticator that conforms to OAuth 2
@@ -299,7 +292,7 @@ export default BaseAuthenticator.extend({
       data['client_id'] = this.get('clientId');
     }
 
-    const body = keys(data).map((key) => {
+    const body = Object.keys(data).map((key) => {
       return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`;
     }).join('&');
 

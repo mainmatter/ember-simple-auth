@@ -1,6 +1,6 @@
 {
   "name": "ember-simple-auth",
-  "version": "4.1.1",
+  "version": "4.2.2",
   "description": "A lightweight library for implementing authentication/authorization with Ember.js applications.",
   "keywords": [
     "ember-addon"
@@ -14,7 +14,10 @@
   },
   "scripts": {
     "build": "ember build",
-    "lint": "eslint app addon blueprints config tests *.js",
+    "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
+    "lint:fix": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:*:fix\"",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
@@ -22,56 +25,56 @@
     "test:node": "mocha node-tests --recursive"
   },
   "dependencies": {
-    "base-64": "^0.1.0",
+    "base-64": "^1.0.0",
     "broccoli-file-creator": "^2.1.1",
+    "broccoli-funnel": "^3.0.0",
     "broccoli-merge-trees": "^4.0.0",
-    "broccoli-funnel": "^1.2.0 || ^2.0.0",
     "ember-cli-babel": "^7.20.5",
     "ember-cli-is-package-missing": "^1.0.0",
     "ember-cookies": "^0.5.0",
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
-    "@ember/optional-features": "^1.3.0",
+    "@ember/optional-features": "^2.0.0",
+    "@ember/test-helpers": "^2.4.2",
     "@glimmer/component": "^1.0.0",
     "@glimmer/tracking": "^1.0.0",
-    "@ember/test-helpers": "^2.4.2",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
-    "ember-cli": "~3.18.0",
+    "ember-cli": "~4.3.0",
     "ember-cli-blueprint-test-helpers": "^0.19.2",
     "ember-cli-content-security-policy": "~1.1.1",
     "ember-cli-dependency-checker": "^3.2.0",
-    "ember-cli-htmlbars": "^5.0.0",
+    "ember-cli-htmlbars": "^6.0.0",
     "ember-cli-inject-live-reload": "^2.0.1",
-    "ember-cli-pretender": "^3.0.0",
+    "ember-cli-pretender": "^4.0.0",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-uglify": "^3.0.0",
     "ember-cli-yuidoc": "^0.9.1",
     "ember-data": "~3.18.0",
-    "ember-debug-handlers-polyfill": "^1.1.0",
     "ember-disable-prototype-extensions": "^1.1.3",
     "ember-export-application-global": "^2.0.1",
     "ember-fetch": "^8.0.1",
     "ember-load-initializers": "^2.1.1",
-    "ember-maybe-import-regenerator": "^0.1.6",
+    "ember-maybe-import-regenerator": "^1.0.0",
+    "ember-qunit": "^5.1.5",
     "ember-resolver": "^8.0.0",
     "ember-sinon": "~5.0.0",
-    "ember-qunit": "^5.1.4",
-    "ember-source": "~3.18.0",
-    "ember-source-channel-url": "^2.0.1",
+    "ember-source": "~4.4.0",
+    "ember-source-channel-url": "^3.0.0",
     "ember-test-selectors": "^6.0.0",
     "ember-try": "^1.4.0",
-    "eslint": "^6.8.0",
+    "eslint": "^8.14.0",
     "eslint-config-simplabs": "^0.4.0",
-    "eslint-plugin-ember": "^8.4.1",
+    "eslint-plugin-ember": "^10.6.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-qunit": "^6.2.0",
-    "glob": "^7.1.6",
+    "eslint-plugin-qunit": "^7.2.0",
+    "glob": "^8.0.0",
     "handlebars": "~4.7.1",
     "loader.js": "^4.7.0",
-    "marked": "^1.0.0",
-    "mocha": "^7.0.1",
+    "marked": "^4.0.0",
+    "mocha": "^10.0.0",
+    "npm-run-all": "^4.1.5",
     "qunit": "^2.17.2",
     "qunit-dom": "^2.0.0",
     "torii": "^0.10.0"
@@ -82,15 +85,18 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "versionCompatibility": {
-      "ember": ">=3.0"
+      "ember": ">=3.12"
     }
   },
   "resolutions": {
-    "@babel/plugin-transform-typescript": "~7.4.5",
-    "cssstyle": "~1.2.2",
-    "jsdom": "^11.10.0"
+    "@babel/plugin-transform-typescript": "~7.17.0",
+    "cssstyle": "~2.3.0",
+    "jsdom": "^20.0.0"
   },
   "peerDependencies": {
     "ember-fetch": "^8.0.1"
+  },
+  "ember": {
+    "edition": "octane"
   }
 }

@@ -156,7 +156,7 @@ export default BaseStore.extend({
 
   _secureCookies() {
     if (this.get('_fastboot.isFastBoot')) {
-      return this.get('_fastboot.request.protocol') === 'https';
+      return this.get('_fastboot.request.protocol') === 'https:';
     }
 
     return window.location.protocol === 'https:';
@@ -177,16 +177,6 @@ export default BaseStore.extend({
     if (owner && !this.hasOwnProperty('_fastboot')) {
       this._fastboot = owner.lookup('service:fastboot');
     }
-  },
-
-  _initialize(options) {
-    const clonedOptions = Object.assign({}, options);
-    if (clonedOptions.cookieName) {
-      this.set('_cookieName', clonedOptions.cookieName);
-    }
-
-    delete clonedOptions.cookieName;
-    this.setProperties(clonedOptions);
 
     let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
     if (cachedExpirationTime) {

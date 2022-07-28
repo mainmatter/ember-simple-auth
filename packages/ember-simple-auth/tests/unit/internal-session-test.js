@@ -267,6 +267,12 @@ module('InternalSession', function(hooks) {
         sinon.stub(authenticator, 'authenticate').returns(RSVP.resolve({ some: 'property' }));
       });
 
+      test('it throws when the provided authenticator could not be found', function(assert) {
+        assert.throws(() => {
+          session.authenticate('authenticator:foo');
+        }, /No authenticator for factory "authenticator:foo" could be found!/);
+      });
+
       test('is authenticated', async function(assert) {
         await session.authenticate('authenticator:test');
 
