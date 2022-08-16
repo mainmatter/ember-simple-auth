@@ -41,6 +41,7 @@
     "@glimmer/tracking": "^1.0.0",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
+    "ember-auto-import": "^2.4.2",
     "ember-cli": "~4.3.0",
     "ember-cli-blueprint-test-helpers": "^0.19.2",
     "ember-cli-content-security-policy": "~1.1.1",
@@ -76,7 +77,8 @@
     "mocha": "^10.0.0",
     "npm-run-all": "^4.1.5",
     "qunit-dom": "^2.0.0",
-    "torii": "^0.10.0"
+    "torii": "^0.10.0",
+    "webpack": "^5.74.0"
   },
   "engines": {
     "node": ">= 12"
