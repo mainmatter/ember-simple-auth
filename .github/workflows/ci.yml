@@ -23,13 +23,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
-      - uses: volta-cli/action@76620aa011ba56028bb0bae35caa5f9b6118c8c7 # tag=v1
+      - uses: volta-cli/action@e0544e5b69cd3bf2eb7c155b07ce5ae66ce397ac # tag=v2
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       
-      - uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129 # tag=v3
+      - uses: actions/cache@a7c34adf76222e77931dedbf4a45b2e4648ced19 # tag=v3
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -94,13 +94,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
-      - uses: volta-cli/action@76620aa011ba56028bb0bae35caa5f9b6118c8c7 # tag=v1
+      - uses: volta-cli/action@e0544e5b69cd3bf2eb7c155b07ce5ae66ce397ac # tag=v2
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       
-      - uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129 # tag=v3
+      - uses: actions/cache@a7c34adf76222e77931dedbf4a45b2e4648ced19 # tag=v3
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -128,13 +128,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
-      - uses: volta-cli/action@76620aa011ba56028bb0bae35caa5f9b6118c8c7 # tag=v1
+      - uses: volta-cli/action@e0544e5b69cd3bf2eb7c155b07ce5ae66ce397ac # tag=v2
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       
-      - uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129 # tag=v3
+      - uses: actions/cache@a7c34adf76222e77931dedbf4a45b2e4648ced19 # tag=v3
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -155,13 +155,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
-      - uses: volta-cli/action@76620aa011ba56028bb0bae35caa5f9b6118c8c7 # tag=v1
+      - uses: volta-cli/action@e0544e5b69cd3bf2eb7c155b07ce5ae66ce397ac # tag=v2
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       
-      - uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129 # tag=v3
+      - uses: actions/cache@a7c34adf76222e77931dedbf4a45b2e4648ced19 # tag=v3
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
