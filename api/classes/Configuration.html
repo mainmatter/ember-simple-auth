@@ -19,8 +19,8 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/3.1.0-beta.0"><span class="label label-primary">3.1.0-beta.0</span></a></p></li>
+            <li><a href="https://github.com/mainmatter/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/mainmatter/ember-simple-auth/releases/tag/4.2.2.2b557517"><span class="label label-primary">4.2.2.2b557517</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -84,7 +84,7 @@
                           <a name="property_rootURL" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/3.1.0-beta.0/packages/ember-simple-auth/addon/configuration.js#L17">
+                              <a class="pull-right" href="https://github.com/mainmatter/ember-simple-auth/blob/4.2.2.2b557517/addon/configuration.js#L17">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-info pull-right">static</span>
@@ -107,7 +107,7 @@
                           <a name="property_routeAfterAuthentication" class="symbol-anchor"></a>
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <a class="pull-right" href="https://github.com/simplabs/ember-simple-auth/blob/3.1.0-beta.0/packages/ember-simple-auth/addon/configuration.js#L29">
+                              <a class="pull-right" href="https://github.com/mainmatter/ember-simple-auth/blob/4.2.2.2b557517/addon/configuration.js#L29">
                                 <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
                               </a>
                                 <span class="label label-info pull-right">static</span>
@@ -120,6 +120,29 @@
                             <div class="panel-body">
                                 <p><span class="label label-default">Default:</span> <code>&#x27;index&#x27;</code></p>
                               <p>The route to transition to after successful authentication.</p>
+                          
+                            </div>
+                          </div>
+                                            </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <a name="property_useSessionSetupMethod" class="symbol-anchor"></a>
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <a class="pull-right" href="https://github.com/mainmatter/ember-simple-auth/blob/4.2.2.2b557517/addon/configuration.js#L41">
+                                <span class="label label-default pull-right"><i class="fa fa-github"></i> source</span>
+                              </a>
+                                <span class="label label-access-private pull-right">private</span>
+                              <h3 class="panel-title signature">
+                                <strong class="name"><code>useSessionSetupMethod</code></strong>: <code>Unknown</code>
+                              </h3>
+                            </div>
+                            <div class="panel-body">
+                                <p><span class="label label-default">Default:</span> <code>false</code></p>
+                              <p>Flag used to determine whether users have decided to setup session service themselves.
+                          This lets us to return early from initializer which would setup the service automatically.</p>
+                          <p>This will be the default behavior in the future.</p>
                           
                             </div>
                           </div>
@@ -139,6 +162,7 @@
                         <ul class="list-unstyled">
                             <li><a href="#property_rootURL">rootURL</a></li>
                             <li><a href="#property_routeAfterAuthentication">routeAfterAuthentication</a></li>
+                            <li><a href="#property_useSessionSetupMethod">useSessionSetupMethod</a></li>
                         </ul>
                       </div>
                     </div>

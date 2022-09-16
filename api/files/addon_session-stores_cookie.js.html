@@ -19,8 +19,8 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/3.1.0-beta.0"><span class="label label-primary">3.1.0-beta.0</span></a></p></li>
+            <li><a href="https://github.com/mainmatter/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/mainmatter/ember-simple-auth/releases/tag/4.2.2.2b557517"><span class="label label-primary">4.2.2.2b557517</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -217,7 +217,7 @@
           
             _secureCookies() {
               if (this.get(&#x27;_fastboot.isFastBoot&#x27;)) {
-                return this.get(&#x27;_fastboot.request.protocol&#x27;) === &#x27;https&#x27;;
+                return this.get(&#x27;_fastboot.request.protocol&#x27;) === &#x27;https:&#x27;;
               }
           
               return window.location.protocol === &#x27;https:&#x27;;
@@ -234,7 +234,6 @@
           
             init() {
               this._super(...arguments);
-          
               let owner = getOwner(this);
               if (owner &amp;&amp; !this.hasOwnProperty(&#x27;_fastboot&#x27;)) {
                 this._fastboot = owner.lookup(&#x27;service:fastboot&#x27;);
@@ -348,7 +347,7 @@
           
             _renew() {
               return this.restore().then((data) =&gt; {
-                if (!isEmpty(data) &amp;&amp; data !== {}) {
+                if (!isEmpty(data) &amp;&amp; !(data.constructor === Object &amp;&amp; Object.keys(data).length === 0)) {
                   data = typeOf(data) === &#x27;string&#x27; ? data : JSON.stringify(data || {});
                   let expiration = this._calculateExpirationTime();
                   this._write(data, expiration);
