@@ -5,7 +5,7 @@
 
 #### :bug: Bug Fix
 * `ember-simple-auth`
-  * [#2366](https://github.com/simplabs/ember-simple-auth/pull/2366) Remove initialize method ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2366](https://github.com/mainmatter/ember-simple-auth/pull/2366) Remove initialize method ([@BobrImperator](https://github.com/BobrImperator))
 
 #### Committers: 1
 - Bartłomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
@@ -14,7 +14,7 @@
 
 #### :bug: Bug Fix
 * `ember-simple-auth`
-  * [#2363](https://github.com/simplabs/ember-simple-auth/pull/2363) Prevent UnhandledPromiseError when restoring the session ([@swelham](https://github.com/swelham))
+  * [#2363](https://github.com/mainmatter/ember-simple-auth/pull/2363) Prevent UnhandledPromiseError when restoring the session ([@swelham](https://github.com/swelham))
 
 #### Committers: 1
 - Stuart Welham ([@swelham](https://github.com/swelham))
@@ -23,11 +23,11 @@
 
 #### :house: Internal
 * `ember-simple-auth`
-  * [#2355](https://github.com/simplabs/ember-simple-auth/pull/2355) Remove use of `keys` and `merge` utils coming from `@ember/polyfills` ([@bertdeblock](https://github.com/bertdeblock))
-  * [#2352](https://github.com/simplabs/ember-simple-auth/pull/2352) Deprecate Torii authenticator ([@marcoow](https://github.com/marcoow))
-  * [#2349](https://github.com/simplabs/ember-simple-auth/pull/2349) Fixed failing unit test - invalidate call revoke endpoint twice. Unit test did not validate it correctly. ([@candunaj](https://github.com/candunaj))
+  * [#2355](https://github.com/mainmatter/ember-simple-auth/pull/2355) Remove use of `keys` and `merge` utils coming from `@ember/polyfills` ([@bertdeblock](https://github.com/bertdeblock))
+  * [#2352](https://github.com/mainmatter/ember-simple-auth/pull/2352) Deprecate Torii authenticator ([@marcoow](https://github.com/marcoow))
+  * [#2349](https://github.com/mainmatter/ember-simple-auth/pull/2349) Fixed failing unit test - invalidate call revoke endpoint twice. Unit test did not validate it correctly. ([@candunaj](https://github.com/candunaj))
 * `classic-test-app`, `ember-simple-auth`, `test-app`
-  * [#2330](https://github.com/simplabs/ember-simple-auth/pull/2330) 2316 refactor mocha tests to qunit ([@candunaj](https://github.com/candunaj))
+  * [#2330](https://github.com/mainmatter/ember-simple-auth/pull/2330) 2316 refactor mocha tests to qunit ([@candunaj](https://github.com/candunaj))
 
 #### Committers: 3
 - Bert De Block ([@bertdeblock](https://github.com/bertdeblock))
@@ -38,21 +38,21 @@
 
 #### :bug: Bug Fix
 * `ember-simple-auth`
-  * [#2341](https://github.com/simplabs/ember-simple-auth/pull/2341) add annotation to deprecations so Ember deprecate fn does not complain ([@BryanCrotaz](https://github.com/BryanCrotaz))
+  * [#2341](https://github.com/mainmatter/ember-simple-auth/pull/2341) add annotation to deprecations so Ember deprecate fn does not complain ([@BryanCrotaz](https://github.com/BryanCrotaz))
 
 #### :memo: Documentation
 * `ember-simple-auth`
-  * [#2338](https://github.com/simplabs/ember-simple-auth/pull/2338) doc: fix lookup in instance-initializer ([@Sweet-Bob](https://github.com/Sweet-Bob))
+  * [#2338](https://github.com/mainmatter/ember-simple-auth/pull/2338) doc: fix lookup in instance-initializer ([@Sweet-Bob](https://github.com/Sweet-Bob))
 
 #### :house: Internal
 * `ember-simple-auth`
-  * [#2345](https://github.com/simplabs/ember-simple-auth/pull/2345) Fixed failing unit test - ember/object get function was removed from source code so I have changed unit test accordingly ([@candunaj](https://github.com/candunaj))
-  * [#2348](https://github.com/simplabs/ember-simple-auth/pull/2348) Fixed quietly failing unit test because server returned nothing ([@candunaj](https://github.com/candunaj))
-  * [#2344](https://github.com/simplabs/ember-simple-auth/pull/2344) In some tests was thrown undefined. ([@candunaj](https://github.com/candunaj))
-  * [#2342](https://github.com/simplabs/ember-simple-auth/pull/2342) Fixed 3 readonly tests. ([@candunaj](https://github.com/candunaj))
+  * [#2345](https://github.com/mainmatter/ember-simple-auth/pull/2345) Fixed failing unit test - ember/object get function was removed from source code so I have changed unit test accordingly ([@candunaj](https://github.com/candunaj))
+  * [#2348](https://github.com/mainmatter/ember-simple-auth/pull/2348) Fixed quietly failing unit test because server returned nothing ([@candunaj](https://github.com/candunaj))
+  * [#2344](https://github.com/mainmatter/ember-simple-auth/pull/2344) In some tests was thrown undefined. ([@candunaj](https://github.com/candunaj))
+  * [#2342](https://github.com/mainmatter/ember-simple-auth/pull/2342) Fixed 3 readonly tests. ([@candunaj](https://github.com/candunaj))
 * Other
-  * [#2343](https://github.com/simplabs/ember-simple-auth/pull/2343) Allow ember-release to fail ([@candunaj](https://github.com/candunaj))
-  * [#2333](https://github.com/simplabs/ember-simple-auth/pull/2333) Allow CI for ember-beta to fail ([@candunaj](https://github.com/candunaj))
+  * [#2343](https://github.com/mainmatter/ember-simple-auth/pull/2343) Allow ember-release to fail ([@candunaj](https://github.com/candunaj))
+  * [#2333](https://github.com/mainmatter/ember-simple-auth/pull/2333) Allow CI for ember-beta to fail ([@candunaj](https://github.com/candunaj))
 
 #### Committers: 3
 - Stanislav Dunajcan ([@candunaj](https://github.com/candunaj))
@@ -63,7 +63,7 @@
 
 #### :rocket: Enhancement
 * `ember-simple-auth`, `test-app`
-  * [#2314](https://github.com/simplabs/ember-simple-auth/pull/2314) Add setup method for session service ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2314](https://github.com/mainmatter/ember-simple-auth/pull/2314) Add setup method for session service ([@BobrImperator](https://github.com/BobrImperator))
 
 #### Committers: 1
 - Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
@@ -72,11 +72,11 @@
 
 #### :house: Internal
 * `ember-simple-auth`
-  * [#2326](https://github.com/simplabs/ember-simple-auth/pull/2326) Bump ember-test-selectors to latest ([@snewcomer](https://github.com/snewcomer))
-  * [#2317](https://github.com/simplabs/ember-simple-auth/pull/2317) Update "deprecate" to import from @ember/debug ([@snewcomer](https://github.com/snewcomer))
-  * [#2320](https://github.com/simplabs/ember-simple-auth/pull/2320) chore: Fix deprecation warnings for run.cancel, run.later ([@josemarluedke](https://github.com/josemarluedke))
+  * [#2326](https://github.com/mainmatter/ember-simple-auth/pull/2326) Bump ember-test-selectors to latest ([@snewcomer](https://github.com/snewcomer))
+  * [#2317](https://github.com/mainmatter/ember-simple-auth/pull/2317) Update "deprecate" to import from @ember/debug ([@snewcomer](https://github.com/snewcomer))
+  * [#2320](https://github.com/mainmatter/ember-simple-auth/pull/2320) chore: Fix deprecation warnings for run.cancel, run.later ([@josemarluedke](https://github.com/josemarluedke))
 * `classic-test-app`, `ember-simple-auth`, `test-app`
-  * [#2325](https://github.com/simplabs/ember-simple-auth/pull/2325) Remove ember-cli-htmlbars-inline-precompile ([@snewcomer](https://github.com/snewcomer))
+  * [#2325](https://github.com/mainmatter/ember-simple-auth/pull/2325) Remove ember-cli-htmlbars-inline-precompile ([@snewcomer](https://github.com/snewcomer))
 
 #### Committers: 2
 - Josemar Luedke ([@josemarluedke](https://github.com/josemarluedke))
@@ -86,11 +86,11 @@
 
 #### :memo: Documentation
 * `ember-simple-auth`
-  * [#2323](https://github.com/simplabs/ember-simple-auth/pull/2323) Add repository to package ([@rwwagner90](https://github.com/rwwagner90))
+  * [#2323](https://github.com/mainmatter/ember-simple-auth/pull/2323) Add repository to package ([@rwwagner90](https://github.com/rwwagner90))
 
 #### :house: Internal
 * `classic-test-app`, `ember-simple-auth`, `test-app`
-  * [#2321](https://github.com/simplabs/ember-simple-auth/pull/2321) Remove ESA version from ember inspector ([@brunoocasali](https://github.com/brunoocasali))
+  * [#2321](https://github.com/mainmatter/ember-simple-auth/pull/2321) Remove ESA version from ember inspector ([@brunoocasali](https://github.com/brunoocasali))
 
 #### Committers: 2
 - Bruno Casali ([@brunoocasali](https://github.com/brunoocasali))
@@ -100,22 +100,22 @@
 
 #### :boom: Breaking Change
 * `ember-simple-auth`
-  * [#2313](https://github.com/simplabs/ember-simple-auth/pull/2313) Drop node 10 in favor of 12 ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2313](https://github.com/mainmatter/ember-simple-auth/pull/2313) Drop node 10 in favor of 12 ([@BobrImperator](https://github.com/BobrImperator))
 
 #### :memo: Documentation
-* [#2291](https://github.com/simplabs/ember-simple-auth/pull/2291) add missing dependent key in README ([@marcoow](https://github.com/marcoow))
-* [#2274](https://github.com/simplabs/ember-simple-auth/pull/2274) Update super call in "managing-current-user" guide ([@bertdeblock](https://github.com/bertdeblock))
-* [#2265](https://github.com/simplabs/ember-simple-auth/pull/2265) Prepare README for 3.1.0 release ([@sdebarros](https://github.com/sdebarros))
+* [#2291](https://github.com/mainmatter/ember-simple-auth/pull/2291) add missing dependent key in README ([@marcoow](https://github.com/marcoow))
+* [#2274](https://github.com/mainmatter/ember-simple-auth/pull/2274) Update super call in "managing-current-user" guide ([@bertdeblock](https://github.com/bertdeblock))
+* [#2265](https://github.com/mainmatter/ember-simple-auth/pull/2265) Prepare README for 3.1.0 release ([@sdebarros](https://github.com/sdebarros))
 
 #### :house: Internal
 * `ember-simple-auth`
-  * [#2315](https://github.com/simplabs/ember-simple-auth/pull/2315) [2302]  put internal-session into DI system ([@BobrImperator](https://github.com/BobrImperator))
-  * [#2312](https://github.com/simplabs/ember-simple-auth/pull/2312) [2308] Refactor Adaptive store to use DI ([@BobrImperator](https://github.com/BobrImperator))
-  * [#2296](https://github.com/simplabs/ember-simple-auth/pull/2296) fix computed import deprecation ([@knownasilya](https://github.com/knownasilya))
+  * [#2315](https://github.com/mainmatter/ember-simple-auth/pull/2315) [2302]  put internal-session into DI system ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2312](https://github.com/mainmatter/ember-simple-auth/pull/2312) [2308] Refactor Adaptive store to use DI ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2296](https://github.com/mainmatter/ember-simple-auth/pull/2296) fix computed import deprecation ([@knownasilya](https://github.com/knownasilya))
 * `classic-test-app`, `ember-simple-auth`, `test-app`
-  * [#2300](https://github.com/simplabs/ember-simple-auth/pull/2300) Remove extra resolver files ([@marcoow](https://github.com/marcoow))
-  * [#2301](https://github.com/simplabs/ember-simple-auth/pull/2301) Drop `ember-cli-shims` dependency ([@marcoow](https://github.com/marcoow))
-  * [#2294](https://github.com/simplabs/ember-simple-auth/pull/2294) Fix tests ([@marcoow](https://github.com/marcoow))
+  * [#2300](https://github.com/mainmatter/ember-simple-auth/pull/2300) Remove extra resolver files ([@marcoow](https://github.com/marcoow))
+  * [#2301](https://github.com/mainmatter/ember-simple-auth/pull/2301) Drop `ember-cli-shims` dependency ([@marcoow](https://github.com/marcoow))
+  * [#2294](https://github.com/mainmatter/ember-simple-auth/pull/2294) Fix tests ([@marcoow](https://github.com/marcoow))
 
 #### Committers: 8
 - Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
@@ -131,18 +131,18 @@
 
 #### :bug: Bug Fix
 * `ember-simple-auth`
-  * [#2263](https://github.com/simplabs/ember-simple-auth/pull/2263) Fix empty object check in `_renew()` cookie session store ([@reidab](https://github.com/reidab))
+  * [#2263](https://github.com/mainmatter/ember-simple-auth/pull/2263) Fix empty object check in `_renew()` cookie session store ([@reidab](https://github.com/reidab))
 
 #### :memo: Documentation
-* [#2254](https://github.com/simplabs/ember-simple-auth/pull/2254) Update README.md ([@ErvinSabic](https://github.com/ErvinSabic))
-* [#2252](https://github.com/simplabs/ember-simple-auth/pull/2252) Fix location of test app in example ([@sdebarros](https://github.com/sdebarros))
+* [#2254](https://github.com/mainmatter/ember-simple-auth/pull/2254) Update README.md ([@ErvinSabic](https://github.com/ErvinSabic))
+* [#2252](https://github.com/mainmatter/ember-simple-auth/pull/2252) Fix location of test app in example ([@sdebarros](https://github.com/sdebarros))
 
 #### :house: Internal
 * Other
-  * [#2264](https://github.com/simplabs/ember-simple-auth/pull/2264) Copy README to ember-simple-auth package before NPM release ([@sdebarros](https://github.com/sdebarros))
-  * [#2251](https://github.com/simplabs/ember-simple-auth/pull/2251) Add release-it to simplify the release process ([@sdebarros](https://github.com/sdebarros))
+  * [#2264](https://github.com/mainmatter/ember-simple-auth/pull/2264) Copy README to ember-simple-auth package before NPM release ([@sdebarros](https://github.com/sdebarros))
+  * [#2251](https://github.com/mainmatter/ember-simple-auth/pull/2251) Add release-it to simplify the release process ([@sdebarros](https://github.com/sdebarros))
 * `ember-simple-auth`, `test-app`
-  * [#2262](https://github.com/simplabs/ember-simple-auth/pull/2262) Fix tests failing in master ([@sdebarros](https://github.com/sdebarros))
+  * [#2262](https://github.com/mainmatter/ember-simple-auth/pull/2262) Fix tests failing in master ([@sdebarros](https://github.com/sdebarros))
 
 #### Committers: 3
 - Ervin Sabic ([@ErvinSabic](https://github.com/ErvinSabic))
@@ -153,30 +153,30 @@
 
 #### :rocket: Enhancement
 * `ember-simple-auth`
-  * [#2237](https://github.com/simplabs/ember-simple-auth/pull/2237) Remove use of the deprecated getWithDefault API ([@richard-viney](https://github.com/richard-viney))
-  * [#2219](https://github.com/simplabs/ember-simple-auth/pull/2219) Fix assertion message of prohibitAuthentication() ([@ursm](https://github.com/ursm))
+  * [#2237](https://github.com/mainmatter/ember-simple-auth/pull/2237) Remove use of the deprecated getWithDefault API ([@richard-viney](https://github.com/richard-viney))
+  * [#2219](https://github.com/mainmatter/ember-simple-auth/pull/2219) Fix assertion message of prohibitAuthentication() ([@ursm](https://github.com/ursm))
 
 #### :bug: Bug Fix
 * `ember-simple-auth`
-  * [#2234](https://github.com/simplabs/ember-simple-auth/pull/2234) Unset attemptedTransition on invalidation ([@marcoow](https://github.com/marcoow))
-  * [#2215](https://github.com/simplabs/ember-simple-auth/pull/2215) fix: Incorrect path to fetch the routeAfterAuthentication property in the config object ([@LuisAverhoff](https://github.com/LuisAverhoff))
+  * [#2234](https://github.com/mainmatter/ember-simple-auth/pull/2234) Unset attemptedTransition on invalidation ([@marcoow](https://github.com/marcoow))
+  * [#2215](https://github.com/mainmatter/ember-simple-auth/pull/2215) fix: Incorrect path to fetch the routeAfterAuthentication property in the config object ([@LuisAverhoff](https://github.com/LuisAverhoff))
 
 #### :memo: Documentation
-* [#2233](https://github.com/simplabs/ember-simple-auth/pull/2233) prevent form submission in README example ([@marcoow](https://github.com/marcoow))
-* [#2232](https://github.com/simplabs/ember-simple-auth/pull/2232) Add missing actions for login controller to readme ([@marcoow](https://github.com/marcoow))
-* [#2226](https://github.com/simplabs/ember-simple-auth/pull/2226) Fix Readme ([@ngouy](https://github.com/ngouy))
-* [#2218](https://github.com/simplabs/ember-simple-auth/pull/2218) Add CI badge ([@marcoow](https://github.com/marcoow))
-* [#2212](https://github.com/simplabs/ember-simple-auth/pull/2212) Fix code example in guide ([@marcoow](https://github.com/marcoow))
-* [#2210](https://github.com/simplabs/ember-simple-auth/pull/2210) Fix code example in the "Managing Current User" guide ([@marcoow](https://github.com/marcoow))
+* [#2233](https://github.com/mainmatter/ember-simple-auth/pull/2233) prevent form submission in README example ([@marcoow](https://github.com/marcoow))
+* [#2232](https://github.com/mainmatter/ember-simple-auth/pull/2232) Add missing actions for login controller to readme ([@marcoow](https://github.com/marcoow))
+* [#2226](https://github.com/mainmatter/ember-simple-auth/pull/2226) Fix Readme ([@ngouy](https://github.com/ngouy))
+* [#2218](https://github.com/mainmatter/ember-simple-auth/pull/2218) Add CI badge ([@marcoow](https://github.com/marcoow))
+* [#2212](https://github.com/mainmatter/ember-simple-auth/pull/2212) Fix code example in guide ([@marcoow](https://github.com/marcoow))
+* [#2210](https://github.com/mainmatter/ember-simple-auth/pull/2210) Fix code example in the "Managing Current User" guide ([@marcoow](https://github.com/marcoow))
 
 #### :house: Internal
 * `ember-simple-auth`
-  * [#2235](https://github.com/simplabs/ember-simple-auth/pull/2235) Update versionCompatibility to >=3.0 ([@marcoow](https://github.com/marcoow))
-  * [#2229](https://github.com/simplabs/ember-simple-auth/pull/2229) Fix CI config ([@marcoow](https://github.com/marcoow))
+  * [#2235](https://github.com/mainmatter/ember-simple-auth/pull/2235) Update versionCompatibility to >=3.0 ([@marcoow](https://github.com/marcoow))
+  * [#2229](https://github.com/mainmatter/ember-simple-auth/pull/2229) Fix CI config ([@marcoow](https://github.com/marcoow))
 * `ember-simple-auth`, `test-app`
-  * [#2224](https://github.com/simplabs/ember-simple-auth/pull/2224) Remove duplicated scenarios in ember-try config ([@sdebarros](https://github.com/sdebarros))
+  * [#2224](https://github.com/mainmatter/ember-simple-auth/pull/2224) Remove duplicated scenarios in ember-try config ([@sdebarros](https://github.com/sdebarros))
 * `classic-test-app`, `ember-simple-auth`, `test-app`
-  * [#2209](https://github.com/simplabs/ember-simple-auth/pull/2209) Re-enable FastBoot tests ([@marcoow](https://github.com/marcoow))
+  * [#2209](https://github.com/mainmatter/ember-simple-auth/pull/2209) Re-enable FastBoot tests ([@marcoow](https://github.com/marcoow))
 
 #### Committers: 6
 - Keita Urashima ([@ursm](https://github.com/ursm))
@@ -189,23 +189,23 @@
 ## v3.1.0-beta.0 (2020-06-05)
 
 #### :rocket: Enhancement
-* [#2198](https://github.com/simplabs/ember-simple-auth/pull/2198) Deprecate mixins ([@marcoow](https://github.com/marcoow))
+* [#2198](https://github.com/mainmatter/ember-simple-auth/pull/2198) Deprecate mixins ([@marcoow](https://github.com/marcoow))
 
 #### :memo: Documentation
-* [#2208](https://github.com/simplabs/ember-simple-auth/pull/2208) Update /guides/auth-torii-with-github.md ([@sutharmonil](https://github.com/sutharmonil))
-* [#2205](https://github.com/simplabs/ember-simple-auth/pull/2205) upgrade-to-v3 devise syntax ([@MichalBryxi](https://github.com/MichalBryxi))
-* [#2201](https://github.com/simplabs/ember-simple-auth/pull/2201) Devise example also needed computed import ([@chrism](https://github.com/chrism))
-* [#2138](https://github.com/simplabs/ember-simple-auth/pull/2138) Fix handling of login errors in the dummy app ([@marcoow](https://github.com/marcoow))
-* [#1764](https://github.com/simplabs/ember-simple-auth/pull/1764) Engine Support ([@marcoow](https://github.com/marcoow))
-* [#2136](https://github.com/simplabs/ember-simple-auth/pull/2136) Modernize docs ([@marcoow](https://github.com/marcoow))
-* [#2143](https://github.com/simplabs/ember-simple-auth/pull/2143) add FastBoot to TOC in README ([@marcoow](https://github.com/marcoow))
-* [#2135](https://github.com/simplabs/ember-simple-auth/pull/2135) Modernize dummy app ([@marcoow](https://github.com/marcoow))
+* [#2208](https://github.com/mainmatter/ember-simple-auth/pull/2208) Update /guides/auth-torii-with-github.md ([@sutharmonil](https://github.com/sutharmonil))
+* [#2205](https://github.com/mainmatter/ember-simple-auth/pull/2205) upgrade-to-v3 devise syntax ([@MichalBryxi](https://github.com/MichalBryxi))
+* [#2201](https://github.com/mainmatter/ember-simple-auth/pull/2201) Devise example also needed computed import ([@chrism](https://github.com/chrism))
+* [#2138](https://github.com/mainmatter/ember-simple-auth/pull/2138) Fix handling of login errors in the dummy app ([@marcoow](https://github.com/marcoow))
+* [#1764](https://github.com/mainmatter/ember-simple-auth/pull/1764) Engine Support ([@marcoow](https://github.com/marcoow))
+* [#2136](https://github.com/mainmatter/ember-simple-auth/pull/2136) Modernize docs ([@marcoow](https://github.com/marcoow))
+* [#2143](https://github.com/mainmatter/ember-simple-auth/pull/2143) add FastBoot to TOC in README ([@marcoow](https://github.com/marcoow))
+* [#2135](https://github.com/mainmatter/ember-simple-auth/pull/2135) Modernize dummy app ([@marcoow](https://github.com/marcoow))
 
 #### :house: Internal
-* [#2197](https://github.com/simplabs/ember-simple-auth/pull/2197) Fix Heroku Deployment ([@marcoow](https://github.com/marcoow))
-* [#2145](https://github.com/simplabs/ember-simple-auth/pull/2145) Remove old Chrome option on CI ([@marcoow](https://github.com/marcoow))
-* [#2137](https://github.com/simplabs/ember-simple-auth/pull/2137) Generate docs with ember-cli-yuidoc ([@marcoow](https://github.com/marcoow))
-* [#2106](https://github.com/simplabs/ember-simple-auth/pull/2106) Fix Github Action for releasing new versions ([@marcoow](https://github.com/marcoow))
+* [#2197](https://github.com/mainmatter/ember-simple-auth/pull/2197) Fix Heroku Deployment ([@marcoow](https://github.com/marcoow))
+* [#2145](https://github.com/mainmatter/ember-simple-auth/pull/2145) Remove old Chrome option on CI ([@marcoow](https://github.com/marcoow))
+* [#2137](https://github.com/mainmatter/ember-simple-auth/pull/2137) Generate docs with ember-cli-yuidoc ([@marcoow](https://github.com/marcoow))
+* [#2106](https://github.com/mainmatter/ember-simple-auth/pull/2106) Fix Github Action for releasing new versions ([@marcoow](https://github.com/marcoow))
 
 #### Committers: 5
 - Chris Masters ([@chrism](https://github.com/chrism))
@@ -217,27 +217,27 @@
 ## v3.0.0 (2020-02-10)
 
 #### :boom: Breaking Change
-* [#1933](https://github.com/simplabs/ember-simple-auth/pull/1933) Remove deprecations and drop support for Ember < 3.0 ([@sdebarros](https://github.com/sdebarros))
-* [#2005](https://github.com/simplabs/ember-simple-auth/pull/2005) upgrade ember-cli-babel dependency to latest ([@marcoow](https://github.com/marcoow))
-* [#2004](https://github.com/simplabs/ember-simple-auth/pull/2004) make ember-fetch a peer dependency ([@marcoow](https://github.com/marcoow))
-* [#1993](https://github.com/simplabs/ember-simple-auth/pull/1993) require Node 10+ ([@marcoow](https://github.com/marcoow))
+* [#1933](https://github.com/mainmatter/ember-simple-auth/pull/1933) Remove deprecations and drop support for Ember < 3.0 ([@sdebarros](https://github.com/sdebarros))
+* [#2005](https://github.com/mainmatter/ember-simple-auth/pull/2005) upgrade ember-cli-babel dependency to latest ([@marcoow](https://github.com/marcoow))
+* [#2004](https://github.com/mainmatter/ember-simple-auth/pull/2004) make ember-fetch a peer dependency ([@marcoow](https://github.com/marcoow))
+* [#1993](https://github.com/mainmatter/ember-simple-auth/pull/1993) require Node 10+ ([@marcoow](https://github.com/marcoow))
 
 #### :rocket: Enhancement
-* [#2076](https://github.com/simplabs/ember-simple-auth/pull/2076) Fix deprecations regarding Computed Property Overrides ([@marcoow](https://github.com/marcoow))
-* [#1848](https://github.com/simplabs/ember-simple-auth/pull/1848) Add SameSite cookie attribute support ([@Exelord](https://github.com/Exelord))
-* [#1941](https://github.com/simplabs/ember-simple-auth/pull/1941) Update with async/await example ([@geekygrappler](https://github.com/geekygrappler))
+* [#2076](https://github.com/mainmatter/ember-simple-auth/pull/2076) Fix deprecations regarding Computed Property Overrides ([@marcoow](https://github.com/marcoow))
+* [#1848](https://github.com/mainmatter/ember-simple-auth/pull/1848) Add SameSite cookie attribute support ([@Exelord](https://github.com/Exelord))
+* [#1941](https://github.com/mainmatter/ember-simple-auth/pull/1941) Update with async/await example ([@geekygrappler](https://github.com/geekygrappler))
 
 #### :memo: Documentation
-* [#2032](https://github.com/simplabs/ember-simple-auth/pull/2032) Use `on` modifier rather in octane examples ([@kategengler](https://github.com/kategengler))
-* [#2023](https://github.com/simplabs/ember-simple-auth/pull/2023) Fixes to code Indentation ([@AddisonG](https://github.com/AddisonG))
-* [#2020](https://github.com/simplabs/ember-simple-auth/pull/2020) fix configuration options use ([@sly7-7](https://github.com/sly7-7))
-* [#2014](https://github.com/simplabs/ember-simple-auth/pull/2014) Fixed Typo in file title, and other spelling ([@AddisonG](https://github.com/AddisonG))
-* [#1941](https://github.com/simplabs/ember-simple-auth/pull/1941) Update with async/await example ([@geekygrappler](https://github.com/geekygrappler))
+* [#2032](https://github.com/mainmatter/ember-simple-auth/pull/2032) Use `on` modifier rather in octane examples ([@kategengler](https://github.com/kategengler))
+* [#2023](https://github.com/mainmatter/ember-simple-auth/pull/2023) Fixes to code Indentation ([@AddisonG](https://github.com/AddisonG))
+* [#2020](https://github.com/mainmatter/ember-simple-auth/pull/2020) fix configuration options use ([@sly7-7](https://github.com/sly7-7))
+* [#2014](https://github.com/mainmatter/ember-simple-auth/pull/2014) Fixed Typo in file title, and other spelling ([@AddisonG](https://github.com/AddisonG))
+* [#1941](https://github.com/mainmatter/ember-simple-auth/pull/1941) Update with async/await example ([@geekygrappler](https://github.com/geekygrappler))
 
 #### :house: Internal
-* [#2043](https://github.com/simplabs/ember-simple-auth/pull/2043) disable FastBoot tests for now ([@marcoow](https://github.com/marcoow))
-* [#2034](https://github.com/simplabs/ember-simple-auth/pull/2034) switch to github actions ([@marcoow](https://github.com/marcoow))
-* [#2013](https://github.com/simplabs/ember-simple-auth/pull/2013) Modernize tests ([@marcoow](https://github.com/marcoow))
+* [#2043](https://github.com/mainmatter/ember-simple-auth/pull/2043) disable FastBoot tests for now ([@marcoow](https://github.com/marcoow))
+* [#2034](https://github.com/mainmatter/ember-simple-auth/pull/2034) switch to github actions ([@marcoow](https://github.com/marcoow))
+* [#2013](https://github.com/mainmatter/ember-simple-auth/pull/2013) Modernize tests ([@marcoow](https://github.com/marcoow))
 
 #### Committers: 8
 - Addison G ([@AddisonG](https://github.com/AddisonG))
@@ -252,11 +252,11 @@
 ## v2.1.0 (2019-10-31)
 
 #### :rocket: Enhancement
-* [#1996](https://github.com/simplabs/ember-simple-auth/pull/1996) Deprecate the old testing API ([@marcoow](https://github.com/marcoow))
-* [#1994](https://github.com/simplabs/ember-simple-auth/pull/1994) Deprecate authorize method ([@marcoow](https://github.com/marcoow))
+* [#1996](https://github.com/mainmatter/ember-simple-auth/pull/1996) Deprecate the old testing API ([@marcoow](https://github.com/marcoow))
+* [#1994](https://github.com/mainmatter/ember-simple-auth/pull/1994) Deprecate authorize method ([@marcoow](https://github.com/marcoow))
 
 #### :bug: Bug Fix
-* [#1995](https://github.com/simplabs/ember-simple-auth/pull/1995) Fix deprecation until versions ([@marcoow](https://github.com/marcoow))
+* [#1995](https://github.com/mainmatter/ember-simple-auth/pull/1995) Fix deprecation until versions ([@marcoow](https://github.com/marcoow))
 
 #### Committers: 2
 - Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
@@ -265,23 +265,23 @@
 ## v2.0.0 (2019-10-29)
 
 #### :boom: Breaking Change
-* [#1956](https://github.com/simplabs/ember-simple-auth/pull/1956) Drop support for Node 6 ([@marcoow](https://github.com/marcoow))
+* [#1956](https://github.com/mainmatter/ember-simple-auth/pull/1956) Drop support for Node 6 ([@marcoow](https://github.com/marcoow))
 
 #### :rocket: Enhancement
-* [#1985](https://github.com/simplabs/ember-simple-auth/pull/1985) deprecate rejectWithResponse=false ([@marcoow](https://github.com/marcoow))
-* [#1986](https://github.com/simplabs/ember-simple-auth/pull/1986) Deprecate data adapter mixin elements ([@marcoow](https://github.com/marcoow))
+* [#1985](https://github.com/mainmatter/ember-simple-auth/pull/1985) deprecate rejectWithResponse=false ([@marcoow](https://github.com/marcoow))
+* [#1986](https://github.com/mainmatter/ember-simple-auth/pull/1986) Deprecate data adapter mixin elements ([@marcoow](https://github.com/marcoow))
 
 #### :bug: Bug Fix
-* [#1919](https://github.com/simplabs/ember-simple-auth/pull/1919) Don't schedule token refresh checks in FastBoot ([@trek](https://github.com/trek))
+* [#1919](https://github.com/mainmatter/ember-simple-auth/pull/1919) Don't schedule token refresh checks in FastBoot ([@trek](https://github.com/trek))
 
 #### :memo: Documentation
-* [#1963](https://github.com/simplabs/ember-simple-auth/pull/1963) update current user guide ([@mcfiredrill](https://github.com/mcfiredrill))
-* [#1924](https://github.com/simplabs/ember-simple-auth/pull/1924) Fix outdated guide. ([@ExpDev07](https://github.com/ExpDev07))
-* [#1832](https://github.com/simplabs/ember-simple-auth/pull/1832) Add Octane GitHub guide. ([@muziejus](https://github.com/muziejus))
+* [#1963](https://github.com/mainmatter/ember-simple-auth/pull/1963) update current user guide ([@mcfiredrill](https://github.com/mcfiredrill))
+* [#1924](https://github.com/mainmatter/ember-simple-auth/pull/1924) Fix outdated guide. ([@ExpDev07](https://github.com/ExpDev07))
+* [#1832](https://github.com/mainmatter/ember-simple-auth/pull/1832) Add Octane GitHub guide. ([@muziejus](https://github.com/muziejus))
 
 #### :house: Internal
-* [#1989](https://github.com/simplabs/ember-simple-auth/pull/1989) add missing test environments ([@marcoow](https://github.com/marcoow))
-* [#1917](https://github.com/simplabs/ember-simple-auth/pull/1917) Fix computed property override deprecations ([@josemarluedke](https://github.com/josemarluedke))
+* [#1989](https://github.com/mainmatter/ember-simple-auth/pull/1989) add missing test environments ([@marcoow](https://github.com/marcoow))
+* [#1917](https://github.com/mainmatter/ember-simple-auth/pull/1917) Fix computed property override deprecations ([@josemarluedke](https://github.com/josemarluedke))
 
 #### Committers: 7
 - ExpDev ([@ExpDev07](https://github.com/ExpDev07))
@@ -296,10 +296,10 @@
 ## v1.9.2 (2019-07-18)
 
 #### :rocket: Enhancement
-* [#1900](https://github.com/simplabs/ember-simple-auth/pull/1900) Rename `_router` property to `_authRouter` to avoid conflicts ([@backspace](https://github.com/backspace))
+* [#1900](https://github.com/mainmatter/ember-simple-auth/pull/1900) Rename `_router` property to `_authRouter` to avoid conflicts ([@backspace](https://github.com/backspace))
 
 #### :house: Internal
-* [#1902](https://github.com/simplabs/ember-simple-auth/pull/1902) CI: Update npm API key ([@Turbo87](https://github.com/Turbo87))
+* [#1902](https://github.com/mainmatter/ember-simple-auth/pull/1902) CI: Update npm API key ([@Turbo87](https://github.com/Turbo87))
 
 #### Committers: 2
 - Buck Doyle ([@backspace](https://github.com/backspace))
@@ -309,7 +309,7 @@
 ## v1.9.1 (2019-07-12)
 
 #### :house: Internal
-* [#1895](https://github.com/simplabs/ember-simple-auth/pull/1895) CI: Remove `v` prefix from version tag constraint ([@Turbo87](https://github.com/Turbo87))
+* [#1895](https://github.com/mainmatter/ember-simple-auth/pull/1895) CI: Remove `v` prefix from version tag constraint ([@Turbo87](https://github.com/Turbo87))
 
 #### Committers: 1
 - Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
@@ -318,32 +318,32 @@
 ## v1.9.0 (2019-07-12)
 
 #### :rocket: Enhancement
-* [#1885](https://github.com/simplabs/ember-simple-auth/pull/1885) oauth2-password-grant: Convert `tokenRefreshOffset` to a native getter  ([@Turbo87](https://github.com/Turbo87))
-* [#1886](https://github.com/simplabs/ember-simple-auth/pull/1886) session-stores/cookie: Convert private volatile properties to methods ([@Turbo87](https://github.com/Turbo87))
+* [#1885](https://github.com/mainmatter/ember-simple-auth/pull/1885) oauth2-password-grant: Convert `tokenRefreshOffset` to a native getter  ([@Turbo87](https://github.com/Turbo87))
+* [#1886](https://github.com/mainmatter/ember-simple-auth/pull/1886) session-stores/cookie: Convert private volatile properties to methods ([@Turbo87](https://github.com/Turbo87))
 
 #### :bug: Bug Fix
-* [#1817](https://github.com/simplabs/ember-simple-auth/pull/1817) Fix "Use of `merge`" deprecation warning in oauth2-password-grant when... ([@arnebit](https://github.com/arnebit))
+* [#1817](https://github.com/mainmatter/ember-simple-auth/pull/1817) Fix "Use of `merge`" deprecation warning in oauth2-password-grant when... ([@arnebit](https://github.com/arnebit))
 
 #### :memo: Documentation
-* [#1894](https://github.com/simplabs/ember-simple-auth/pull/1894) Update Changelog and introduce lerna-changelog ([@Turbo87](https://github.com/Turbo87))
-* [#1887](https://github.com/simplabs/ember-simple-auth/pull/1887) Use async/await when loading current user ([@nbenz](https://github.com/nbenz))
-* [#1870](https://github.com/simplabs/ember-simple-auth/pull/1870) Fix wrong deprecation URL ([@bartocc](https://github.com/bartocc))
-* [#1861](https://github.com/simplabs/ember-simple-auth/pull/1861) Update broken syntax in readme's routes examples ([@kamilogorek](https://github.com/kamilogorek))
-* [#1698](https://github.com/simplabs/ember-simple-auth/pull/1698) Add documentation how to use it with ember-fetch ([@marcoow](https://github.com/marcoow))
+* [#1894](https://github.com/mainmatter/ember-simple-auth/pull/1894) Update Changelog and introduce lerna-changelog ([@Turbo87](https://github.com/Turbo87))
+* [#1887](https://github.com/mainmatter/ember-simple-auth/pull/1887) Use async/await when loading current user ([@nbenz](https://github.com/nbenz))
+* [#1870](https://github.com/mainmatter/ember-simple-auth/pull/1870) Fix wrong deprecation URL ([@bartocc](https://github.com/bartocc))
+* [#1861](https://github.com/mainmatter/ember-simple-auth/pull/1861) Update broken syntax in readme's routes examples ([@kamilogorek](https://github.com/kamilogorek))
+* [#1698](https://github.com/mainmatter/ember-simple-auth/pull/1698) Add documentation how to use it with ember-fetch ([@marcoow](https://github.com/marcoow))
 
 #### :house: Internal
-* [#1893](https://github.com/simplabs/ember-simple-auth/pull/1893) yarn: Deduplicate transitive dependencies ([@Turbo87](https://github.com/Turbo87))
-* [#1884](https://github.com/simplabs/ember-simple-auth/pull/1884) Remove unused `mocha-only-detector` dev dependency ([@Turbo87](https://github.com/Turbo87))
-* [#1883](https://github.com/simplabs/ember-simple-auth/pull/1883) Update `ember-data` to v3.10.0 ([@Turbo87](https://github.com/Turbo87))
-* [#1879](https://github.com/simplabs/ember-simple-auth/pull/1879) CI: Use `--no-lockfile` only in "floating dependencies" job ([@Turbo87](https://github.com/Turbo87))
-* [#1878](https://github.com/simplabs/ember-simple-auth/pull/1878) CI: Run deployment job only when a tag is present ([@Turbo87](https://github.com/Turbo87))
-* [#1877](https://github.com/simplabs/ember-simple-auth/pull/1877) Replace `ember-cli-eslint` with regular ESLint ([@Turbo87](https://github.com/Turbo87))
-* [#1876](https://github.com/simplabs/ember-simple-auth/pull/1876) CI: Only run for `master` branch, version tags and PRs ([@Turbo87](https://github.com/Turbo87))
-* [#1875](https://github.com/simplabs/ember-simple-auth/pull/1875) Fix TravisCI builds ([@Turbo87](https://github.com/Turbo87))
-* [#1850](https://github.com/simplabs/ember-simple-auth/pull/1850) Fix CI ([@marcoow](https://github.com/marcoow))
-* [#1787](https://github.com/simplabs/ember-simple-auth/pull/1787) lock jsdom to ^11.10.0 ([@marcoow](https://github.com/marcoow))
-* [#1751](https://github.com/simplabs/ember-simple-auth/pull/1751) Revert "build(travis): fix failing ember-release build step" ([@marcoow](https://github.com/marcoow))
-* [#1752](https://github.com/simplabs/ember-simple-auth/pull/1752) Use Sinon sandbox ([@marcoow](https://github.com/marcoow))
+* [#1893](https://github.com/mainmatter/ember-simple-auth/pull/1893) yarn: Deduplicate transitive dependencies ([@Turbo87](https://github.com/Turbo87))
+* [#1884](https://github.com/mainmatter/ember-simple-auth/pull/1884) Remove unused `mocha-only-detector` dev dependency ([@Turbo87](https://github.com/Turbo87))
+* [#1883](https://github.com/mainmatter/ember-simple-auth/pull/1883) Update `ember-data` to v3.10.0 ([@Turbo87](https://github.com/Turbo87))
+* [#1879](https://github.com/mainmatter/ember-simple-auth/pull/1879) CI: Use `--no-lockfile` only in "floating dependencies" job ([@Turbo87](https://github.com/Turbo87))
+* [#1878](https://github.com/mainmatter/ember-simple-auth/pull/1878) CI: Run deployment job only when a tag is present ([@Turbo87](https://github.com/Turbo87))
+* [#1877](https://github.com/mainmatter/ember-simple-auth/pull/1877) Replace `ember-cli-eslint` with regular ESLint ([@Turbo87](https://github.com/Turbo87))
+* [#1876](https://github.com/mainmatter/ember-simple-auth/pull/1876) CI: Only run for `master` branch, version tags and PRs ([@Turbo87](https://github.com/Turbo87))
+* [#1875](https://github.com/mainmatter/ember-simple-auth/pull/1875) Fix TravisCI builds ([@Turbo87](https://github.com/Turbo87))
+* [#1850](https://github.com/mainmatter/ember-simple-auth/pull/1850) Fix CI ([@marcoow](https://github.com/marcoow))
+* [#1787](https://github.com/mainmatter/ember-simple-auth/pull/1787) lock jsdom to ^11.10.0 ([@marcoow](https://github.com/marcoow))
+* [#1751](https://github.com/mainmatter/ember-simple-auth/pull/1751) Revert "build(travis): fix failing ember-release build step" ([@marcoow](https://github.com/marcoow))
+* [#1752](https://github.com/mainmatter/ember-simple-auth/pull/1752) Use Sinon sandbox ([@marcoow](https://github.com/marcoow))
 
 #### Committers: 9
 - Andy Brown ([@geekygrappler](https://github.com/geekygrappler))
@@ -359,7 +359,7 @@
 
 ## v1.8.2
 
-* Support for [ember-cookies](https://github.com/simplabs/ember-cookies) 0.4.0
+* Support for [ember-cookies](https://github.com/mainmatter/ember-cookies) 0.4.0
   which clears a deprecation, see #1746.
 
 This release would not have been possible without the contributions by
@@ -383,7 +383,7 @@ Thanks a lot!
 * Support for [ember-fetch](https://github.com/ember-cli/ember-fetch) 6.0+, see #1713
 * Fixes error handling for the Torii authenticator, making errors throw as expected
   if a Promise is rejected, see #1696
-* Updates ember-try test scenarios with Ember 3.0, see [this commit](https://github.com/simplabs/ember-simple-auth/commit/285d36ab2f4e0ae02b677549cec731a5cbaa5cf2)
+* Updates ember-try test scenarios with Ember 3.0, see [this commit](https://github.com/mainmatter/ember-simple-auth/commit/285d36ab2f4e0ae02b677549cec731a5cbaa5cf2)
 
 This release would not have been possible without the contributions by
 [@marcoow](https://github.com/marcoow), [@mike-north](https://github.com/mike-north),
@@ -414,7 +414,7 @@ Thanks a lot! ✨
 
 * Authorizers are now deprecated, see #1532. For more information on the
   deprecation, refer to the
-  [deprecation guide](https://github.com/simplabs/ember-simple-auth#deprecation-of-authorizers).
+  [deprecation guide](https://github.com/mainmatter/ember-simple-auth#deprecation-of-authorizers).
 * The
   [session service's `invalidate` method](https://ember-simple-auth.com/api/classes/SessionService.html#method_invalidate)
   can now be called when the session is already invalidated, and would simply
@@ -789,7 +789,7 @@ has changed.
 
 * The Ember CLI Addons will now use the project's configuration as defined in
   `config/environment.js` and do not depend on `window.ENV` anymore, see
-  [simplabs/ember-cli-simple-auth#21]https://github.com/simplabs/ember-cli-simple-auth/issues/21.
+  [mainmatter/ember-cli-simple-auth#21]https://github.com/mainmatter/ember-cli-simple-auth/issues/21.
 * All configuration data is now held in configuration objects for the
   OAuth 2.0, cookie store and devise extension libraries as well.
 
@@ -909,7 +909,7 @@ incorrectly to npm...
 ## v0.6.3
 
 * added new extension library
-  [Ember Simple Auth Torii](https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-torii)
+  [Ember Simple Auth Torii](https://github.com/mainmatter/ember-simple-auth/tree/master/packages/ember-simple-auth-torii)
 * Added support for
   [OAuth 2.0 token revocation](https://tools.ietf.org/html/rfc7009)
   in the Ember Simple Auth OAuth 2.0 extension library, see #228
@@ -1105,8 +1105,8 @@ incorrectly to npm...
 ## v0.1.0
 
 The Big Rewrite™, see the
-[README](https://github.com/simplabs/ember-simple-auth#readme) and the
-[release notes](https://github.com/simplabs/ember-simple-auth/releases/tag/0.1.0).
+[README](https://github.com/mainmatter/ember-simple-auth#readme) and the
+[release notes](https://github.com/mainmatter/ember-simple-auth/releases/tag/0.1.0).
 
 The main changes are:
 

@@ -5,9 +5,9 @@
   "keywords": [
     "ember-addon"
   ],
-  "repository": "https://github.com/simplabs/ember-simple-auth",
+  "repository": "https://github.com/mainmatter/ember-simple-auth",
   "license": "MIT",
-  "author": "simplabs GmbH",
+  "author": "Mainmatter GmbH",
   "directories": {
     "doc": "doc",
     "test": "tests"
