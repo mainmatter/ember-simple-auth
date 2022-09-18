@@ -19,8 +19,8 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/3.1.0-beta.0"><span class="label label-primary">3.1.0-beta.0</span></a></p></li>
+            <li><a href="https://github.com/mainmatter/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/mainmatter/ember-simple-auth/releases/tag/4.2.2.2b557517"><span class="label label-primary">4.2.2.2b557517</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -62,11 +62,9 @@
           import { Promise } from &#x27;rsvp&#x27;;
           import { isEmpty } from &#x27;@ember/utils&#x27;;
           import { run } from &#x27;@ember/runloop&#x27;;
-          import { merge, assign as emberAssign } from &#x27;@ember/polyfills&#x27;;
+          import assign from &#x27;ember-simple-auth/utils/assign&#x27;;
           import BaseAuthenticator from &#x27;./base&#x27;;
           import fetch from &#x27;fetch&#x27;;
-          
-          const assign = emberAssign || merge;
           
           const JSON_CONTENT_TYPE = &#x27;application/json&#x27;;
           

@@ -19,8 +19,8 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/3.1.0-beta.0"><span class="label label-primary">3.1.0-beta.0</span></a></p></li>
+            <li><a href="https://github.com/mainmatter/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/mainmatter/ember-simple-auth/releases/tag/4.2.2.2b557517"><span class="label label-primary">4.2.2.2b557517</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -66,14 +66,18 @@
           import { getOwner } from &#x27;@ember/application&#x27;;
           import { inject } from &#x27;@ember/service&#x27;;
           import Ember from &#x27;ember&#x27;;
-          import { deprecate } from &#x27;@ember/application/deprecations&#x27;;
+          import { deprecate } from &#x27;@ember/debug&#x27;;
           import Configuration from &#x27;./../configuration&#x27;;
           
           import isFastBoot from &#x27;ember-simple-auth/utils/is-fastboot&#x27;;
           
           deprecate(&#x27;Ember Simple Auth: The ApplicationRouteMixin is now deprecated; it can be safely removed.&#x27;, false, {
             id: &#x27;ember-simple-auth.mixins.application-route-mixin&#x27;,
-            until: &#x27;4.0.0&#x27;
+            until: &#x27;4.0.0&#x27;,
+            for: &#x27;ember-simple-auth&#x27;,
+            since: {
+              enabled: &#x27;3.1.0&#x27;
+            }
           });
           
           /**
@@ -89,8 +93,8 @@
             &#x60;&#x60;&#x60;js
             // app/instance-initializers/session-events.js
             export function initialize(instance) {
-              const applicationRoute = instance.container.lookup(&#x27;route:application&#x27;);
-              const session          = instance.container.lookup(&#x27;service:session&#x27;);
+              const applicationRoute = instance.lookup(&#x27;route:application&#x27;);
+              const session          = instance.lookup(&#x27;service:session&#x27;);
               session.on(&#x27;authenticationSucceeded&#x27;, function() {
                 applicationRoute.transitionTo(&#x27;index&#x27;);
               });

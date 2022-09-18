@@ -19,8 +19,8 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/3.1.0-beta.0"><span class="label label-primary">3.1.0-beta.0</span></a></p></li>
+            <li><a href="https://github.com/mainmatter/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/mainmatter/ember-simple-auth/releases/tag/4.2.2.2b557517"><span class="label label-primary">4.2.2.2b557517</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -59,13 +59,12 @@
           
           <div class="file">
               <pre class="code prettyprint linenums">
-          import { computed } from &#x27;@ember/object&#x27;;
+          import { alias, readOnly } from &#x27;@ember/object/computed&#x27;;
           import { A } from &#x27;@ember/array&#x27;;
           import Service from &#x27;@ember/service&#x27;;
           import Evented from &#x27;@ember/object/evented&#x27;;
           import { getOwner } from &#x27;@ember/application&#x27;;
-          import { assert } from &#x27;@ember/debug&#x27;;
-          import { deprecate } from &#x27;@ember/application/deprecations&#x27;;
+          import { assert, deprecate } from &#x27;@ember/debug&#x27;;
           import Configuration from &#x27;../configuration&#x27;;
           
           import {
@@ -83,8 +82,18 @@
             if (enableEventsDeprecation) {
               deprecate(&quot;Ember Simple Auth: The session service&#x27;s events API is deprecated; to add custom behavior to the authentication or invalidation handling, override the handleAuthentication or handleInvalidation methods.&quot;, false, {
                 id: &#x27;ember-simple-auth.events.session-service&#x27;,
-                until: &#x27;4.0.0&#x27;
+                until: &#x27;4.0.0&#x27;,
+                for: &#x27;ember-simple-auth&#x27;,
+                since: {
+                  enabled: &#x27;3.1.0&#x27;
+                }
               });
+            }
+          }
+          
+          function assertSetupHasBeenCalled(isSetupCalled) {
+            if (!isSetupCalled &amp;&amp; Configuration.useSessionSetupMethod) {
+              assert(&quot;Ember Simple Auth: session#setup wasn&#x27;t called. Make sure to call session#setup in your application route&#x27;s beforeModel hook.&quot;, false);
             }
           }
           
@@ -153,7 +162,7 @@
               @default false
               @public
             */
-            isAuthenticated: computed.oneWay(&#x27;session.isAuthenticated&#x27;),
+            isAuthenticated: readOnly(&#x27;session.isAuthenticated&#x27;),
           
             /**
               The current session data as a plain object. The
@@ -170,7 +179,7 @@
               @default { authenticated: {} }
               @public
             */
-            data: computed.oneWay(&#x27;session.content&#x27;),
+            data: readOnly(&#x27;session.content&#x27;),
           
             /**
               The session store.
@@ -181,7 +190,7 @@
               @default null
               @public
             */
-            store: computed.oneWay(&#x27;session.store&#x27;),
+            store: readOnly(&#x27;session.store&#x27;),
           
             /**
               A previously attempted but intercepted transition (e.g. by the
@@ -196,10 +205,13 @@
               @default null
               @public
             */
-            attemptedTransition: computed.alias(&#x27;session.attemptedTransition&#x27;),
+            attemptedTransition: alias(&#x27;session.attemptedTransition&#x27;),
+          
+            session: null,
           
             init() {
               this._super(...arguments);
+              this.set(&#x27;session&#x27;, getOwner(this).lookup(&#x27;session:main&#x27;));
               this._forwardSessionEvents();
             },
           
@@ -352,6 +364,7 @@
               @public
             */
             requireAuthentication(transition, routeOrCallback) {
+              assertSetupHasBeenCalled(this._setupIsCalled);
               let isAuthenticated = requireAuthentication(getOwner(this), transition);
               if (!isAuthenticated) {
                 let argType = typeof routeOrCallback;
@@ -376,6 +389,7 @@
               @public
             */
             prohibitAuthentication(routeOrCallback) {
+              assertSetupHasBeenCalled(this._setupIsCalled);
               let isAuthenticated = this.get(&#x27;isAuthenticated&#x27;);
               if (isAuthenticated) {
                 let argType = typeof routeOrCallback;
@@ -384,7 +398,7 @@
                 } else if (argType === &#x27;function&#x27;) {
                   routeOrCallback();
                 } else {
-                  assert(&#x60;The second argument to prohibitAuthentication must be a String or Function, got &quot;${argType}&quot;!&#x60;, false);
+                  assert(&#x60;The first argument to prohibitAuthentication must be a String or Function, got &quot;${argType}&quot;!&#x60;, false);
                 }
               }
               return !isAuthenticated;
@@ -426,7 +440,26 @@
             */
             handleInvalidation(routeAfterInvalidation) {
               handleSessionInvalidated(getOwner(this), routeAfterInvalidation);
-            }
+            },
+          
+            /**
+              Sets up the session service.
+          
+              This method must be called when the application starts up,
+              usually as the first thing in the &#x60;application&#x60; route&#x27;s &#x60;beforeModel&#x60;
+              method.
+          
+              @method setup
+              @public
+            */
+            setup() {
+              this._setupIsCalled = true;
+              this._setupHandlers();
+          
+              return this.session.restore().catch(() =&gt; {
+                // If it raises an error then it means that restore didn&#x27;t find any restorable state.
+              });
+            },
           });
           
               </pre>

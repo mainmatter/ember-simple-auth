@@ -19,8 +19,8 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/3.1.0-beta.0"><span class="label label-primary">3.1.0-beta.0</span></a></p></li>
+            <li><a href="https://github.com/mainmatter/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/mainmatter/ember-simple-auth/releases/tag/4.2.2.2b557517"><span class="label label-primary">4.2.2.2b557517</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -63,14 +63,17 @@
           
           import { inject as service } from &#x27;@ember/service&#x27;;
           import Mixin from &#x27;@ember/object/mixin&#x27;;
-          import { assert } from &#x27;@ember/debug&#x27;;
+          import { assert, deprecate } from &#x27;@ember/debug&#x27;;
           import { getOwner } from &#x27;@ember/application&#x27;;
-          import { deprecate } from &#x27;@ember/application/deprecations&#x27;;
           import { requireAuthentication, triggerAuthentication } from &#x27;../-internals/routing&#x27;;
           
           deprecate(&quot;Ember Simple Auth: The AuthenticatedRouteMixin is now deprecated; call the session service&#x27;s requireAuthentication method in the respective route&#x27;s beforeModel method instead.&quot;, false, {
             id: &#x27;ember-simple-auth.mixins.authenticated-route-mixin&#x27;,
-            until: &#x27;4.0.0&#x27;
+            until: &#x27;4.0.0&#x27;,
+            for: &#x27;ember-simple-auth&#x27;,
+            since: {
+              enabled: &#x27;3.1.0&#x27;
+            }
           });
           
           /**

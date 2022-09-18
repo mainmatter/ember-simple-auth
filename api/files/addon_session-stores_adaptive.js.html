@@ -19,8 +19,8 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/3.1.0-beta.0"><span class="label label-primary">3.1.0-beta.0</span></a></p></li>
+            <li><a href="https://github.com/mainmatter/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/mainmatter/ember-simple-auth/releases/tag/4.2.2.2b557517"><span class="label label-primary">4.2.2.2b557517</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -59,13 +59,10 @@
           
           <div class="file">
               <pre class="code prettyprint linenums">
-          /* global localStorage */
           import { computed } from &#x27;@ember/object&#x27;;
           import { inject as service } from &#x27;@ember/service&#x27;;
           import { getOwner } from &#x27;@ember/application&#x27;;
           import Base from &#x27;ember-simple-auth/session-stores/base&#x27;;
-          import LocalStorage from &#x27;ember-simple-auth/session-stores/local-storage&#x27;;
-          import Cookie from &#x27;ember-simple-auth/session-stores/cookie&#x27;;
           
           const LOCAL_STORAGE_TEST_KEY = &#x27;_ember_simple_auth_test_key&#x27;;
           
@@ -130,6 +127,23 @@
             cookieDomain: proxyToInternalStore(),
           
             /**
+              Allows servers to assert that a cookie ought not to be sent along with
+              cross-site requests, which provides some protection against cross-site
+              request forgery attacks (CSRF).
+          
+              Available options:
+              - &quot;Strict&quot;
+              - &quot;Lax&quot;
+          
+              @property sameSite
+              @type String
+              @default null
+              @public
+            */
+            _sameSite: null,
+            sameSite: proxyToInternalStore(),
+          
+            /**
               The name of the cookie to use if &#x60;localStorage&#x60; is not available.
           
               @property cookieName
@@ -166,6 +180,16 @@
           
             _cookies: service(&#x27;cookies&#x27;),
           
+            _isLocalStorageAvailable: computed({
+              get() {
+                return testLocalStorageAvailable();
+              },
+          
+              set(key, value) {
+                return value;
+              }
+            }),
+          
             init() {
               this._super(...arguments);
           
@@ -174,28 +198,30 @@
                 this._fastboot = owner.lookup(&#x27;service:fastboot&#x27;);
               }
           
-              this._isLocalStorageAvailable = this.hasOwnProperty(&#x27;_isLocalStorageAvailable&#x27;) ? this._isLocalStorageAvailable : testLocalStorageAvailable();
-          
               let store;
               if (this.get(&#x27;_isLocalStorageAvailable&#x27;)) {
+                const localStorage = owner.lookup(&#x27;session-store:local-storage&#x27;);
                 const options = { key: this.get(&#x27;localStorageKey&#x27;) };
-                options._isFastBoot = false;
-                store = this._createStore(LocalStorage, options);
-              } else {
-                const options = this.getProperties(&#x27;cookieDomain&#x27;, &#x27;cookieName&#x27;, &#x27;cookieExpirationTime&#x27;, &#x27;cookiePath&#x27;);
-                options._fastboot = this.get(&#x27;_fastboot&#x27;);
-                options._cookies = this.get(&#x27;_cookies&#x27;);
           
-                store = this._createStore(Cookie, options);
-                this.set(&#x27;cookieExpirationTime&#x27;, store.get(&#x27;cookieExpirationTime&#x27;));
+                options._isFastBoot = false;
+                localStorage.setProperties(options);
+          
+                store = localStorage;
+              } else {
+                const cookieStorage = owner.lookup(&#x27;session-store:cookie&#x27;);
+                const options = this.getProperties(&#x27;cookieDomain&#x27;, &#x27;cookieName&#x27;, &#x27;cookieExpirationTime&#x27;, &#x27;cookiePath&#x27;, &#x27;sameSite&#x27;);
+          
+                cookieStorage.setProperties(options);
+                this.set(&#x27;cookieExpirationTime&#x27;, cookieStorage.get(&#x27;cookieExpirationTime&#x27;));
+          
+                store = cookieStorage;
               }
+          
               this.set(&#x27;_store&#x27;, store);
+              this._setupStoreEvents(store);
             },
           
-            _createStore(storeType, options) {
-              let owner = getOwner(this);
-              const store = storeType.create(owner.ownerInjection(), options);
-          
+            _setupStoreEvents(store) {
               store.on(&#x27;sessionDataUpdated&#x27;, (data) =&gt; {
                 this.trigger(&#x27;sessionDataUpdated&#x27;, data);
               });

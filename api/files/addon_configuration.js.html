@@ -19,8 +19,8 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/simplabs/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
-            <li><p class="navbar-text project-version"><a href="https://github.com/simplabs/ember-simple-auth/releases/tag/3.1.0-beta.0"><span class="label label-primary">3.1.0-beta.0</span></a></p></li>
+            <li><a href="https://github.com/mainmatter/ember-simple-auth"><i class="fa fa-github"></i> Source Code</a></li>
+            <li><p class="navbar-text project-version"><a href="https://github.com/mainmatter/ember-simple-auth/releases/tag/4.2.2.2b557517"><span class="label label-primary">4.2.2.2b557517</span></a></p></li>
           </ul>
         </div>
       </div>
@@ -59,7 +59,7 @@
           
           <div class="file">
               <pre class="code prettyprint linenums">
-          import { getWithDefault } from &#x27;@ember/object&#x27;;
+          import useSessionSetupMethod from &#x27;ember-simple-auth/use-session-setup-method&#x27;;
           
           const DEFAULTS = {
             rootURL: &#x27;&#x27;,
@@ -99,10 +99,25 @@
             */
             routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
           
+            /**
+              Flag used to determine whether users have decided to setup session service themselves.
+              This lets us to return early from initializer which would setup the service automatically.
+          
+              This will be the default behavior in the future.
+          
+              @property useSessionSetupMethod
+              @default false
+              @private
+            */
+            useSessionSetupMethod,
+          
             load(config) {
-              this.rootURL = getWithDefault(config, &#x27;rootURL&#x27;, DEFAULTS.rootURL);
-              this.routeAfterAuthentication = getWithDefault(config, &#x27;ember-simple-auth.routeAfterAuthentication&#x27;, DEFAULTS.routeAfterAuthentication);
-            }
+              this.rootURL = config.rootURL !== undefined ? config.rootURL : DEFAULTS.rootURL;
+              this.routeAfterAuthentication =
+                config.routeAfterAuthentication !== undefined
+                  ? config.routeAfterAuthentication
+                  : DEFAULTS.routeAfterAuthentication;
+            },
           };
           
               </pre>
