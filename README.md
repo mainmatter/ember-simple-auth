@@ -1,6 +1,6 @@
 __[Ember Simple Auth API docs](http://ember-simple-auth.com/api/)__
 
-![CI](https://github.com/simplabs/ember-simple-auth/workflows/CI/badge.svg)
+![CI](https://github.com/mainmatter/ember-simple-auth/workflows/CI/badge.svg)
 
 __[![Discord](https://img.shields.io/discord/480462759797063690.svg?logo=discord)](https://discord.gg/zT3asNS)__
 
@@ -52,7 +52,7 @@ authorization mechanisms__.
 
 **Other Resources**
 
-* [Upgrading from Pre-1.0 versions](https://simplabs.com/blog/2015/11/27/updating-to-ember-simple-auth-1.0.html)
+* [Upgrading from Pre-1.0 versions](https://mainmatter.com/blog/2015/11/27/updating-to-ember-simple-auth-1.0.html)
 * [API Documentation](http://ember-simple-auth.com/api/)
 
 ## What does it do?
@@ -92,7 +92,7 @@ requests and error handling. __Check out that test app for reference.__ To
 start it, run
 
 ```
-git clone https://github.com/simplabs/ember-simple-auth.git
+git clone https://github.com/mainmatter/ember-simple-auth.git
 cd ember-simple-auth/packages/test-app
 yarn install && ember serve
 ```
@@ -691,7 +691,7 @@ module('Acceptance | app test', function(hooks) {
 ```
 
 If you're an `ember-mocha` user, we can recommend to check out this
-[example from the test suite of ember-simple-auth itself](https://github.com/simplabs/ember-simple-auth/blob/master/tests/acceptance/authentication-test.js).
+[example from the test suite of ember-simple-auth itself](https://github.com/mainmatter/ember-simple-auth/blob/master/tests/acceptance/authentication-test.js).
 
 ## Other guides
 

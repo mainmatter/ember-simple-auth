@@ -14,7 +14,7 @@ when submitting issues:
   can be asked (and usually will be answered) on
   [stackoverflow](http://stackoverflow.com).
 2. Update to the latest release of Ember Simple Auth if possible (see the
-  [releases page](https://github.com/simplabs/ember-simple-auth/releases)).
+  [releases page](https://github.com/mainmatter/ember-simple-auth/releases)).
 3. Update to the latest releases of Ember.js, jQuery, Ember Data if possible
 4. Include as much information as possible - this includes full stack traces
   etc.
