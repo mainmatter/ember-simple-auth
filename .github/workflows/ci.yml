@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
-      - uses: volta-cli/action@2216ae11125a9cb3f3c7066ead9881844082dd8e # tag=v3
+      - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -94,7 +94,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
-      - uses: volta-cli/action@2216ae11125a9cb3f3c7066ead9881844082dd8e # tag=v3
+      - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -128,7 +128,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
-      - uses: volta-cli/action@2216ae11125a9cb3f3c7066ead9881844082dd8e # tag=v3
+      - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -155,7 +155,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
-      - uses: volta-cli/action@2216ae11125a9cb3f3c7066ead9881844082dd8e # tag=v3
+      - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
