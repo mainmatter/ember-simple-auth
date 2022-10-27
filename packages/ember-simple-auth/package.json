@@ -91,7 +91,7 @@
     }
   },
   "resolutions": {
-    "@babel/plugin-transform-typescript": "~7.17.0",
+    "@babel/plugin-transform-typescript": "~7.20.0",
     "cssstyle": "~2.3.0",
     "jsdom": "^20.0.0"
   },
