@@ -1,7 +1,17 @@
-/* eslint-disable ember/no-mixins */
 import Route from '@ember/routing/route';
-import OAuth2ImplicitGrantCallbackRouteMixin from 'ember-simple-auth/mixins/oauth2-implicit-grant-callback-route-mixin';
+import { inject as service } from '@ember/service';
+import { parseResponse } from 'ember-simple-auth/authenticators/oauth2-implicit-grant';
 
-export default Route.extend(OAuth2ImplicitGrantCallbackRouteMixin, {
-  authenticator: 'authenticator:oauth2-implicit-grant'
+export default Route.extend({
+  session: service(),
+
+  activate() {
+    if (!this.fastboot.isFastBoot) {
+      let hash = parseResponse(window.location.hash);
+
+      this.get('session').authenticate('authenticator:oauth2-implicit-grant', hash).catch((error) => {
+        this.set('error', error);
+      });
+    }
+  },
 });
