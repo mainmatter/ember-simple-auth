@@ -17,12 +17,6 @@ module.exports = function() {
       scenarios: [
         {
           name: 'ember-lts-3.12',
-          bower: {
-            dependencies: {
-              ember: null,
-              'ember-data': null,
-            },
-          },
           npm: {
             devDependencies: {
               'ember-data': '~3.12.0',
@@ -32,13 +26,6 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-3.16',
-          bower: {
-            dependencies: {
-              ember: null,
-              'ember-cli-shims': null,
-              'ember-data': null,
-            },
-          },
           npm: {
             devDependencies: {
               'ember-data': '~3.16.0',
@@ -48,13 +35,6 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-3.20',
-          bower: {
-            dependencies: {
-              ember: null,
-              'ember-cli-shims': null,
-              'ember-data': null,
-            },
-          },
           npm: {
             devDependencies: {
               'ember-data': '~3.20.0',
@@ -64,13 +44,6 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-3.24',
-          bower: {
-            dependencies: {
-              ember: null,
-              'ember-cli-shims': null,
-              'ember-data': null,
-            },
-          },
           npm: {
             devDependencies: {
               'ember-data': '~3.24.0',
@@ -80,13 +53,6 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-3.28',
-          bower: {
-            dependencies: {
-              ember: null,
-              'ember-cli-shims': null,
-              'ember-data': null,
-            },
-          },
           npm: {
             devDependencies: {
               'ember-cli': '~3.28.0',
@@ -98,13 +64,6 @@ module.exports = function() {
         },
         {
           name: 'ember-4.0',
-          bower: {
-            dependencies: {
-              ember: null,
-              'ember-cli-shims': null,
-              'ember-data': null,
-            },
-          },
           npm: {
             devDependencies: {
               'ember-cli': '~3.28.0',
@@ -123,13 +82,6 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-4.4',
-          bower: {
-            dependencies: {
-              ember: null,
-              'ember-cli-shims': null,
-              'ember-data': null,
-            },
-          },
           npm: {
             devDependencies: {
               'ember-cli': '~3.28.0',
@@ -148,11 +100,6 @@ module.exports = function() {
         },
         {
           name: 'ember-release',
-          bower: {
-            dependencies: {
-              'ember-data': null,
-            }
-          },
           npm: {
             devDependencies: {
               'ember-cli': 'latest',
@@ -171,11 +118,6 @@ module.exports = function() {
         },
         {
           name: 'ember-beta',
-          bower: {
-            dependencies: {
-              'ember-data': null,
-            },
-          },
           npm: {
             devDependencies: {
               'ember-cli': 'beta',
@@ -194,11 +136,6 @@ module.exports = function() {
         },
         {
           name: 'ember-canary',
-          bower: {
-            dependencies: {
-              'ember-data': null,
-            },
-          },
           npm: {
             devDependencies: {
               'ember-cli': 'beta',
