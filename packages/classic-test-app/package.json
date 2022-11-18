@@ -34,7 +34,7 @@
     "ember-cli-fastboot": "^3.0.0",
     "ember-cli-htmlbars": "^6.0.0",
     "ember-cli-inject-live-reload": "^2.0.1",
-    "ember-cli-pretender": "^4.0.0",
+    "pretender": "3.4.7",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-terser": "4.0.2",
     "ember-data": "~3.17.0",
