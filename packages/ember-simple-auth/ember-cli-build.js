@@ -18,6 +18,16 @@ module.exports = function(defaults) {
     },
     'ember-cli-babel': {
       includePolyfill: true
+    },
+    autoImport: {
+      webpack: {
+        resolve: {
+          fallback: {
+            util: false,
+            process: false,
+          }
+        }
+      }
     }
   });
 
