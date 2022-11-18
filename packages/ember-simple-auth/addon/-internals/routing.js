@@ -55,7 +55,7 @@ export function handleSessionInvalidated(owner, routeAfterInvalidation) {
     routerService.transitionTo(routeAfterInvalidation);
   } else {
     if (!Ember.testing) {
-      location().replace(routeAfterInvalidation);
+      location.replace(routeAfterInvalidation);
     }
   }
 }
