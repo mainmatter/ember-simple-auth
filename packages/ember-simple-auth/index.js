@@ -5,8 +5,6 @@
 
 var path = require('path');
 var Funnel = require('broccoli-funnel');
-var writeFile = require('broccoli-file-creator');
-var MergeTrees = require('broccoli-merge-trees');
 
 module.exports = {
   name: 'ember-simple-auth',
