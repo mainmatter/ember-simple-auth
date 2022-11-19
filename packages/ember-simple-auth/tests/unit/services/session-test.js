@@ -6,7 +6,7 @@ import { next } from '@ember/runloop';
 import EmberObject, { set } from '@ember/object';
 import { registerDeprecationHandler } from '@ember/debug';
 import sinonjs from 'sinon';
-import * as LocationUtil from 'ember-simple-auth/utils/location';
+import LocationUtil from 'ember-simple-auth/utils/location';
 import Configuration from 'ember-simple-auth/configuration';
 import RSVP from 'rsvp';
 
@@ -529,8 +529,7 @@ module('SessionService', function(hooks) {
         this.owner.register('service:fastboot', Service.extend({
           isFastBoot: false
         }));
-        sinon.stub(LocationUtil, 'default').returns({ replace() {} });
-        sinon.spy(LocationUtil.default(), 'replace');
+        sinon.stub(LocationUtil, 'replace').returns(function() {});
         // eslint-disable-next-line ember/no-ember-testing-in-module-scope
         Ember.testing = false;
       });
@@ -543,7 +542,7 @@ module('SessionService', function(hooks) {
       test('replaces the location with the route', function(assert) {
         sessionService.handleInvalidation('index');
 
-        assert.ok(LocationUtil.default().replace.calledWith('index'));
+        assert.ok(LocationUtil.replace.calledWith('index'));
       });
     });
   });

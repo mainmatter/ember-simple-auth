@@ -91,6 +91,10 @@ jobs:
           - workspace: test-app
             test-suite: "test:one ember-canary"
             allow-failure: true
+          - workspace: ember-simple-auth
+            test-suite: "test:one embroider-safe"
+          - workspace: ember-simple-auth
+            test-suite: "test:one embroider-optimized"
 
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3

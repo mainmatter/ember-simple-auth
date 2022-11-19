@@ -6,7 +6,7 @@ module.exports = {
     'plugin:ember/recommended',
   ],
   parserOptions: {
-    ecmaVersion: 2017,
+    ecmaVersion: 2022,
     sourceType: 'module'
   },
   rules: {

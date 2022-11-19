@@ -1,8 +1,8 @@
 'use strict';
 
 /* eslint-disable no-var, object-shorthand */
-
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+const { maybeEmbroider } = require('@embroider/test-setup');
 
 var sourceTrees = [];
 
@@ -21,5 +21,5 @@ module.exports = function(defaults) {
     }
   });
 
-  return app.toTree(sourceTrees);
+  return maybeEmbroider(app);
 };
