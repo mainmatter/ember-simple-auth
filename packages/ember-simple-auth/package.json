@@ -45,7 +45,6 @@
     "@babel/plugin-syntax-decorators": "7.19.0",
     "@babel/plugin-proposal-decorators": "7.20.2",
     "@embroider/addon-dev": "2.0.0",
-    "@nullvoxpopuli/eslint-configs": "2.3.5",
     "concurrently": "7.5.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-decorator-position": "5.0.1",
