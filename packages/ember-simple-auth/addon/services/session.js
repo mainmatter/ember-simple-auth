@@ -31,7 +31,7 @@ function deprecateSessionEvents() {
 }
 
 function assertSetupHasBeenCalled(isSetupCalled) {
-  if (!isSetupCalled && Configuration.useSessionSetupMethod) {
+  if (!isSetupCalled) {
     assert("Ember Simple Auth: session#setup wasn't called. Make sure to call session#setup in your application route's beforeModel hook.", false);
   }
 }

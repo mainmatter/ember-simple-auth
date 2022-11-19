@@ -223,7 +223,8 @@ module('SessionService', function(hooks) {
     let transition;
     let router;
 
-    hooks.beforeEach(function() {
+    hooks.beforeEach(async function() {
+      await sessionService.setup();
       transition = {
         intent: {
           url: '/transition/target/url'
@@ -237,6 +238,7 @@ module('SessionService', function(hooks) {
 
       sinon.spy(transition, 'send');
       sinon.spy(router, 'transitionTo');
+
     });
 
     module('if the session is authenticated', function(hooks) {
@@ -362,7 +364,8 @@ module('SessionService', function(hooks) {
   module('prohibitAuthentication', function(hooks) {
     let router;
 
-    hooks.beforeEach(function() {
+    hooks.beforeEach(async function() {
+      await sessionService.setup();
       this.owner.register('service:router', Service.extend({
         transitionTo() {}
       }));
@@ -569,19 +572,7 @@ module('SessionService', function(hooks) {
     });
 
     module('when using session methods', function(hooks) {
-      let useSessionSetupMethodDefault;
-
-      hooks.beforeEach(function() {
-        useSessionSetupMethodDefault = Configuration.useSessionSetupMethod;
-        Configuration.useSessionSetupMethod = false;
-      });
-
-      hooks.afterEach(function() {
-        Configuration.useSessionSetupMethod = useSessionSetupMethodDefault;
-      });
-
       test('throws assertion when session methods are called before session#setup', async function(assert) {
-        Configuration.useSessionSetupMethod = true;
         let error;
         try {
           await sessionService.prohibitAuthentication();
@@ -592,7 +583,6 @@ module('SessionService', function(hooks) {
       });
 
       test("doesn't throw assertion when session methods are called after session#setup", async function(assert) {
-        Configuration.useSessionSetupMethod = true;
         let error;
 
         await sessionService.setup();
