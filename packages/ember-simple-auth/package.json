@@ -61,7 +61,6 @@
     "ember-maybe-import-regenerator": "^1.0.0",
     "ember-qunit": "^6.0.0",
     "ember-resolver": "^8.0.0",
-    "ember-sinon": "~5.0.0",
     "ember-source": "~4.4.0",
     "ember-source-channel-url": "^3.0.0",
     "ember-test-selectors": "^6.0.0",
@@ -79,6 +78,7 @@
     "npm-run-all": "^4.1.5",
     "qunit": "^2.17.2",
     "qunit-dom": "^2.0.0",
+    "sinon": "14.0.2",
     "torii": "^0.10.0",
     "webpack": "^5.74.0"
   },
