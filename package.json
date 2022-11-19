@@ -8,7 +8,8 @@
     "release": "release-it"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "test-packages/*"
   ],
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^9.0.0",

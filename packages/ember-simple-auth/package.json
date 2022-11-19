@@ -18,8 +18,8 @@
   "scripts": {
     "start": "concurrently 'npm:watch:*'",
     "build": "concurrently 'npm:build:*'",
-    "build:js": "rollup -c ./rollup.config.js",
-    "build:docs": "cp ../README.md ./README.md",
+    "build:js": "rollup -c ./rollup.config.mjs",
+    "build:docs": "cp ../../README.md ./README.md",
     "watch:js": "rollup -c --watch --no-watch.clearScreen",
     "lint": "concurrently 'npm:lint:js'",
     "lint:fix": "concurrently 'npm:lint:js:fix'",
@@ -70,7 +70,11 @@
     "version": 2,
     "type": "addon",
     "main": "./addon-main.cjs",
-    "app-js": {}
+    "app-js": {
+      "./initializers/setup-session-restoration.js": "./dist/_app_/initializers/setup-session-restoration.js",
+      "./initializers/setup-session.js": "./dist/_app_/initializers/setup-session.js",
+      "./services/session.js": "./dist/_app_/services/session.js"
+    }
   },
   "engines": {
     "node": ">= 12"
