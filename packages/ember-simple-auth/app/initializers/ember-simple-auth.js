@@ -1,7 +1,6 @@
 import ENV from '../config/environment';
 import Configuration from 'ember-simple-auth/configuration';
 import setupSession from 'ember-simple-auth/initializers/setup-session';
-import setupSessionRestoration from 'ember-simple-auth/initializers/setup-session-restoration';
 import Adaptive from 'ember-simple-auth/session-stores/adaptive';
 import LocalStorage from 'ember-simple-auth/session-stores/local-storage';
 import Cookie from 'ember-simple-auth/session-stores/cookie';
@@ -19,6 +18,5 @@ export default {
     registry.register('session-store:local-storage', LocalStorage);
 
     setupSession(registry);
-    setupSessionRestoration(registry);
   }
 };
