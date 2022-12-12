@@ -13,6 +13,7 @@ jobs:
   lint:
     name: Linting
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     strategy:
       matrix:
@@ -46,6 +47,7 @@ jobs:
   tests:
     name: Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     strategy:
       fail-fast: false
@@ -124,6 +126,7 @@ jobs:
   extra-tests:
     name: Tests (Floating Dependenies)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     strategy:
       matrix:
@@ -158,6 +161,7 @@ jobs:
   node-tests:
     name: Node Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
