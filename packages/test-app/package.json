@@ -70,7 +70,8 @@
     "webpack": "^5.74.0"
   },
   "fastbootDependencies": [
-    "node-fetch"
+    "node-fetch",
+    "crypto"
   ],
   "resolutions": {
     "@babel/plugin-transform-typescript": "~7.20.0",
