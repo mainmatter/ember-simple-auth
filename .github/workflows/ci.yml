@@ -25,6 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
       - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
+        with:
+          node-version: 14.21.0
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -103,6 +105,8 @@ jobs:
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
       - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
+        with:
+          node-version: 14.21.0
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -138,6 +142,8 @@ jobs:
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
       - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
+        with:
+          node-version: 14.21.0
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -166,6 +172,8 @@ jobs:
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
       - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
+        with:
+          node-version: 14.21.0
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
