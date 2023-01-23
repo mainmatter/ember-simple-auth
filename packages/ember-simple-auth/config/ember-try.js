@@ -158,21 +158,8 @@ module.exports = function() {
             devDependencies: {}
           }
         },
-        embroiderSafe({
-          npm: {
-            devDependencies: {
-              torii: null,
-              'ember-data': '~4.4.0',
-            }
-          }
-        }),
-        embroiderOptimized({
-          npm: {
-            devDependencies: {
-              'ember-data': '~4.4.0',
-            }
-          }
-        })
+        embroiderSafe(),
+        embroiderOptimized()
       ]
     };
   });
