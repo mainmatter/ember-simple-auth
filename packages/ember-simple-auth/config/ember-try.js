@@ -20,7 +20,11 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-data': '~3.12.0',
+              'ember-engines': '^0.8.22',
+              'ember-inflector': '^3.0.1',
               'ember-source': '~3.12.0',
+              'torii': '^0.10.0',
+              '@ember/legacy-built-in-components': null,
             },
           },
         },
@@ -29,7 +33,11 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-data': '~3.16.0',
+              'ember-engines': '^0.8.22',
+              'ember-inflector': '^3.0.1',
               'ember-source': '~3.16.0',
+              'torii': '^0.10.0',
+              '@ember/legacy-built-in-components': null,
             },
           },
         },
@@ -38,7 +46,11 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-data': '~3.20.0',
+              'ember-engines': '^0.8.22',
+              'ember-inflector': '^3.0.1',
               'ember-source': '~3.20.0',
+              'torii': '^0.10.0',
+              '@ember/legacy-built-in-components': null,
             },
           },
         },
@@ -47,6 +59,7 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-data': '~3.24.0',
+              'ember-engines': '^0.8.22',
               'ember-source': '~3.24.0',
             },
           },
