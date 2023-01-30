@@ -24,7 +24,9 @@ module.exports = function() {
               'ember-source': '~3.12.0',
               'ember-inflector': '~3.0.1',
               '@ember/string': '~3.0.1',
-              "torii": "^0.10.0"
+              "torii": "^0.10.0",
+              "ember-engines": "0.8.21",
+              "@ember/legacy-built-in-components": null,
             },
           },
         },
@@ -37,7 +39,9 @@ module.exports = function() {
               'ember-source': '~3.16.0',
               'ember-inflector': '~3.0.1',
               '@ember/string': '~3.0.1',
-              "torii": "^0.10.0"
+              "torii": "^0.10.0",
+              "ember-engines": "0.8.21",
+              "@ember/legacy-built-in-components": null,
             },
           },
         },
@@ -50,7 +54,9 @@ module.exports = function() {
               'ember-source': '~3.20.0',
               'ember-inflector': '~3.0.1',
               '@ember/string': '~3.0.1',
-              "torii": "^0.10.0"
+              "torii": "^0.10.0",
+              "ember-engines": "0.8.21",
+              "@ember/legacy-built-in-components": null,
             },
           },
         },
@@ -61,6 +67,8 @@ module.exports = function() {
               'ember-cli': '~3.28.0',
               'ember-data': '~3.24.0',
               'ember-source': '~3.24.0',
+              "ember-engines": "0.8.21",
+              "@ember/legacy-built-in-components": null,
             },
           },
         },
@@ -87,7 +95,6 @@ module.exports = function() {
               'ember-qunit': '^5.1.4',
               qunit: '^2.17.2',
               'ember-cli-app-version': '~5.0.0',
-              '@ember/legacy-built-in-components': "~0.4.0",
             },
           },
         },
@@ -104,7 +111,6 @@ module.exports = function() {
               'ember-qunit': '^5.1.4',
               qunit: '^2.17.2',
               'ember-cli-app-version': '~5.0.0',
-              '@ember/legacy-built-in-components': "~0.4.0",
             },
           },
         },
@@ -121,7 +127,6 @@ module.exports = function() {
               'ember-qunit': '^5.1.4',
               qunit: '^2.17.2',
               'ember-cli-app-version': '~5.0.0',
-              '@ember/legacy-built-in-components': "~0.4.0",
             },
           },
         },
@@ -138,7 +143,6 @@ module.exports = function() {
               'ember-qunit': '^5.1.4',
               qunit: '^2.17.2',
               'ember-cli-app-version': '~5.0.0',
-              '@ember/legacy-built-in-components': "~0.4.0",
             },
           },
         },
@@ -155,7 +159,6 @@ module.exports = function() {
               'ember-qunit': '^5.1.4',
               qunit: '^2.17.2',
               'ember-cli-app-version': '~5.0.0',
-              '@ember/legacy-built-in-components': "~0.4.0",
             },
           },
         },
@@ -172,7 +175,6 @@ module.exports = function() {
               'ember-qunit': '^5.1.4',
               qunit: '^2.17.2',
               'ember-cli-app-version': '~5.0.0',
-              '@ember/legacy-built-in-components': "~0.4.0",
             },
           },
         },
@@ -182,16 +184,8 @@ module.exports = function() {
             devDependencies: {}
           }
         },
-        embroiderSafe({
-          npm: {
-            devDependencies: {}
-          }
-        }),
-        embroiderOptimized({
-          npm: {
-            devDependencies: {}
-          }
-        })
+        embroiderSafe(),
+        embroiderOptimized()
       ]
     };
   });

@@ -17,6 +17,7 @@
     "test:fastboot": "ember fastboot:test"
   },
   "devDependencies": {
+    "@ember/legacy-built-in-components": "^0.4.1",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "~2.7.0",
     "@glimmer/component": "^1.0.0",
@@ -40,7 +41,7 @@
     "ember-cli-terser": "4.0.2",
     "ember-data": "~4.4.0",
     "ember-disable-prototype-extensions": "^1.1.2",
-    "ember-engines": "^0.8.22",
+    "ember-engines": "^0.9.0",
     "ember-export-application-global": "^2.0.1",
     "ember-fetch": "^8.0.1",
     "ember-load-initializers": "^2.1.1",
