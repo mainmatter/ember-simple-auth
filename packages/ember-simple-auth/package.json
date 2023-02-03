@@ -49,7 +49,6 @@
     "ember-cli-sri": "^2.1.1",
     "ember-cli-terser": "4.0.2",
     "ember-cli-yuidoc": "^0.9.1",
-    "ember-data": "~3.18.0",
     "ember-disable-prototype-extensions": "^1.1.3",
     "ember-export-application-global": "^2.0.1",
     "ember-fetch": "^8.0.1",
