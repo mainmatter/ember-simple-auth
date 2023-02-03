@@ -38,7 +38,7 @@
     "pretender": "3.4.7",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-terser": "4.0.2",
-    "ember-data": "~3.17.0",
+    "ember-data": "~4.9.0",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-engines": "^0.8.22",
     "ember-export-application-global": "^2.0.1",
