@@ -74,7 +74,7 @@
     "qunit": "^2.17.2",
     "qunit-dom": "^2.0.0",
     "sinon": "15.0.0",
-    "torii": "^0.10.0",
+    "torii": "^1.0.0-beta.1",
     "webpack": "^5.74.0"
   },
   "engines": {
