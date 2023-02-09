@@ -65,6 +65,7 @@ jobs:
           - test:one ember-4.0
           - test:one ember-lts-4.4
           - test:one ember-lts-4.8
+          - test:one ember-default
         allow-failure: [false]
         include:
           - workspace: ember-simple-auth
