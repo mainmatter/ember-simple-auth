@@ -1,14 +1,14 @@
 import { inject as service } from '@ember/service';
 import Torii from 'ember-simple-auth/authenticators/torii';
 
-export default Torii.extend({
-  torii: service(),
-  ajax: service(),
+export default class ToriiAuthenticator extends Torii {
+  @service torii;
+  @service ajax;
 
   authenticate() {
-    const ajax = this.get('ajax');
+    const ajax = this.ajax;
 
-    return this._super(...arguments).then((data) => {
+    return super.authenticate(...arguments).then((data) => {
       return ajax.request('/token', {
         type:     'POST',
         dataType: 'json',
@@ -21,4 +21,4 @@ export default Torii.extend({
       });
     });
   }
-});
+}

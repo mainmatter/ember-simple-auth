@@ -1,10 +1,10 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default Route.extend({
-  session: service(),
+export default class OpenOnlyRoute extends Route {
+  @service session;
 
-  beforeModel(transition) {
-    this.get('session').prohibitAuthentication(() => this.transitionToExternal('index'));
+  beforeModel() {
+    this.session.prohibitAuthentication(() => this.transitionToExternal('index'));
   }
-});
+}

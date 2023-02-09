@@ -1,15 +1,15 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default Route.extend({
-  session: service(),
-  store: service(),
+export default class AuthErrorRoute extends Route {
+  @service session;
+  @service store;
 
   beforeModel(transition) {
-    this.get('session').requireAuthentication(transition, 'login');
-  },
+    this.session.requireAuthentication(transition, 'login');
+  }
 
   model() {
-    return this.get('store').find('post', 3);
+    return this.store.find('post', 3);
   }
-});
+}
