@@ -88,7 +88,7 @@
   },
   "resolutions": {
     "@babel/plugin-transform-typescript": "~7.20.0",
-    "cssstyle": "~2.3.0",
+    "cssstyle": "~3.0.0",
     "jsdom": "^20.0.0"
   },
   "peerDependencies": {
