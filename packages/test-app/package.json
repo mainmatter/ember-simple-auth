@@ -75,7 +75,7 @@
     "crypto"
   ],
   "resolutions": {
-    "@babel/plugin-transform-typescript": "~7.20.0",
+    "@babel/plugin-transform-typescript": "~7.21.0",
     "cssstyle": "~3.0.0",
     "jsdom": "^20.0.0"
   },
