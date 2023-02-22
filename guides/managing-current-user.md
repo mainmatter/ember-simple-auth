@@ -76,7 +76,7 @@ export default class CurrentUserService extends Service {
       this.set('user', user);
     }
   }
-});
+}
 
 // app/adapters/user.js
 
@@ -149,7 +149,7 @@ export default class ApplicationRoute extends Route {
       await this.session.invalidate();
     }
   }
-});
+}
 ```
 
 In the latter case Ember Simple Auth will call the session service's
