@@ -65,7 +65,7 @@
     "eslint-plugin-ember": "^10.6.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-qunit": "^7.2.0",
-    "glob": "^8.0.0",
+    "glob": "^9.0.0",
     "handlebars": "~4.7.1",
     "loader.js": "^4.7.0",
     "marked": "^4.0.0",
@@ -87,8 +87,8 @@
     }
   },
   "resolutions": {
-    "@babel/plugin-transform-typescript": "~7.20.0",
-    "cssstyle": "~2.3.0",
+    "@babel/plugin-transform-typescript": "~7.21.0",
+    "cssstyle": "~3.0.0",
     "jsdom": "^20.0.0"
   },
   "peerDependencies": {

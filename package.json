@@ -11,7 +11,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@mermaid-js/mermaid-cli": "^9.0.0",
+    "@mermaid-js/mermaid-cli": "^10.0.0",
     "lerna-changelog": "^2.0.0",
     "release-it": "^15.0.0",
     "release-it-lerna-changelog": "^5.0.0",
