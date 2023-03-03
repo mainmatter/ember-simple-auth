@@ -3,12 +3,12 @@ import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
 
-const App = Application.extend({
-  modulePrefix: config.modulePrefix,
-  podModulePrefix: config.podModulePrefix,
-  Resolver,
+class App extends Application {
+  modulePrefix = config.modulePrefix;
+  podModulePrefix = config.podModulePrefix;
+  Resolver = Resolver;
 
-  engines: Object.freeze({
+  engines = Object.freeze({
     'my-engine': {
       dependencies: {
         externalRoutes: {
@@ -20,8 +20,8 @@ const App = Application.extend({
         ]
       }
     }
-  })
-});
+  });
+}
 
 loadInitializers(App, config.modulePrefix);
 

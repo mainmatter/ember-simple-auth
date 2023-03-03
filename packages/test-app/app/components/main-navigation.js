@@ -1,13 +1,16 @@
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
+import { action } from '@ember/object';
+import Component from '@glimmer/component';
 
-export default Component.extend({
-  session:        service('session'),
-  sessionAccount: service('session-account'),
+export default class MainNavigationComponent extends Component {
+  @service session;
+  @service sessionAccount;
 
-  actions: {
-    logout() {
-      this.get('session').invalidate();
-    }
+  @action
+  logout() {
+    this.session.invalidate();
   }
-});
+
+  @action
+  onLogin() {}
+}
