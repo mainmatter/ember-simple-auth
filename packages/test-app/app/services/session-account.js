@@ -1,14 +1,17 @@
 import Service, { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
-export default Service.extend({
-  session: service('session'),
-  store: service(),
+export default class SessionAccountService extends Service {
+  @service session;
+  @service store;
+
+  @tracked account;
 
   async loadCurrentUser() {
-    let accountId = this.get('session.data.authenticated.account_id');
+    let accountId = this.session.data.authenticated.account_id;
     if (accountId) {
-      let account = await this.get('store').find('account', accountId);
-      this.set('account', account);
+      let account = await this.store.find('account', accountId);
+      this.account = account;
     }
   }
-});
+}

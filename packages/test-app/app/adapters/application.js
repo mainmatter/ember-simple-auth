@@ -1,26 +1,24 @@
-/* eslint-disable ember/no-mixins */
 import JSONAPIAdapter from '@ember-data/adapter/json-api';
 import config from '../config/environment';
-import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 
-export default JSONAPIAdapter.extend({
-  host: config.apiHost,
-  session: service(),
+export default class ApplicationAdapter extends JSONAPIAdapter {
+  host = config.apiHost;
+  @service session;
 
-  headers: computed('session.{data.authenticated.access_token,isAuthenticated}', function() {
+  get headers() {
     let headers = {};
-    if (this.get('session.isAuthenticated')) {
-      headers['Authorization'] = `Bearer ${this.get('session.data.authenticated.access_token')}`;
+    if (this.session.get('isAuthenticated')) {
+      headers['Authorization'] = `Bearer ${this.session.data.authenticated.access_token}`;
     }
 
     return headers;
-  }),
+  }
 
   handleResponse(status) {
-    if (status === 401 && this.get('session.isAuthenticated')) {
-      this.get('session').invalidate();
+    if (status === 401 && this.session.get('isAuthenticated')) {
+      this.session.invalidate();
     }
-    return this._super(...arguments);
-  },
-});
+    return super.handleResponse(...arguments);
+  }
+}

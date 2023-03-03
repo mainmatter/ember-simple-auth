@@ -1,52 +1,63 @@
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import config from '../config/environment';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
-export default Component.extend({
-  session: service('session'),
+export default class LoginFormComponent extends Component {
+  @service session;
 
-  actions: {
-    async authenticateWithOAuth2() {
-      try {
-        let { identification, password } = this;
-        await this.get('session').authenticate('authenticator:oauth2', identification, password);
+  @tracked errorMessage;
+  @tracked identification;
+  @tracked password;
+  @tracked rememberMe;
 
-        if (this.rememberMe) {
-          this.get('session').set('store.cookieExpirationTime', 60 * 60 * 24 * 14);
-        }
-      } catch (response) {
-        let responseBody = await response.clone().json();
-        this.set('errorMessage', responseBody);
+  @action
+  async authenticateWithOAuth2() {
+    try {
+      let { identification, password } = this;
+      await this.session.authenticate('authenticator:oauth2', identification, password);
+
+      if (this.rememberMe) {
+        this.session.set('store.cookieExpirationTime', 60 * 60 * 24 * 14);
       }
-    },
-
-    authenticateWithFacebook() {
-      this.get('session').authenticate('authenticator:torii', 'facebook');
-    },
-
-    authenticateWithGoogleImplicitGrant() {
-      let clientId = config.googleClientID;
-      let redirectURI = `${window.location.origin}/callback`;
-      let responseType = `token`;
-      let scope = `email`;
-      window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?`
-                            + `client_id=${clientId}`
-                            + `&redirect_uri=${redirectURI}`
-                            + `&response_type=${responseType}`
-                            + `&scope=${scope}`
-      );
-    },
-
-    updateIdentification(e) {
-      this.set('identification', e.target.value);
-    },
-
-    updatePassword(e) {
-      this.set('password', e.target.value);
-    },
-
-    updateRememberMe(e) {
-      this.set('rememberMe', e.target.checked);
-    },
+    } catch (response) {
+      let responseBody = await response.clone().json();
+      this.errorMessage = responseBody;
+    }
   }
-});
+
+  @action
+  authenticateWithFacebook() {
+    this.session.authenticate('authenticator:torii', 'facebook');
+  }
+
+  @action
+  authenticateWithGoogleImplicitGrant() {
+    let clientId = config.googleClientID;
+    let redirectURI = `${window.location.origin}/callback`;
+    let responseType = `token`;
+    let scope = `email`;
+    window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?`
+                          + `client_id=${clientId}`
+                          + `&redirect_uri=${redirectURI}`
+                          + `&response_type=${responseType}`
+                          + `&scope=${scope}`
+    );
+  }
+
+  @action
+  updateIdentification(e) {
+    this.identification = e.target.value;
+  }
+
+  @action
+  updatePassword(e) {
+    this.password = e.target.value;
+  }
+
+  @action
+  updateRememberMe(e) {
+    this.rememberMe = e.target.checked;
+  }
+}

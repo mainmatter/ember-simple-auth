@@ -1,13 +1,13 @@
 import { inject as service } from '@ember/service';
 
-import SessionService from 'ember-simple-auth/services/session';
+import Session from 'ember-simple-auth/services/session';
 
-export default SessionService.extend({
-  sessionAccount: service(),
+export default class SessionService extends Session {
+  @service sessionAccount;
 
   handleAuthentication() {
-    this._super(...arguments);
+    super.handleAuthentication(...arguments);
 
-    this.get('sessionAccount').loadCurrentUser().catch(() => this.invalidate());
+    this.sessionAccount.loadCurrentUser().catch(() => this.invalidate());
   }
-});
+}

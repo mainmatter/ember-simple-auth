@@ -1,12 +1,12 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 
-export default Route.extend({
-  session: service(),
-  sessionAccount: service(),
+export default class ApplicationRoute extends Route {
+  @service session;
+  @service sessionAccount;
 
   async beforeModel() {
-    await this.get('session').setup();
-    return this.get('sessionAccount').loadCurrentUser().catch(() => this.get('session').invalidate());
+    await this.session.setup();
+    return this.sessionAccount.loadCurrentUser().catch(() => this.session.invalidate());
   }
-});
+}

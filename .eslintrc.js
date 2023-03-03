@@ -1,5 +1,8 @@
+/* eslint-env node */
+
 module.exports = {
   root: true,
+  parser: '@babel/eslint-parser',
   extends: [
     'simplabs',
     'simplabs/plugins/ember',
@@ -7,7 +10,16 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 2022,
-    sourceType: 'module'
+    sourceType: 'module',
+    requireConfigFile: false,
+    babelOptions: {
+      babelrc: false,
+      configFile: false,
+      presets: ["@babel/preset-env"],
+      plugins: [
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+      ]
+    },
   },
   rules: {
     'ember/local-modules': 'off',
