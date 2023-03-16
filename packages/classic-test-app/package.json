@@ -22,7 +22,7 @@
     "@ember/legacy-built-in-components": "^0.4.1",
     "@glimmer/component": "^1.0.0",
     "@glimmer/tracking": "^1.0.0",
-    "babel-eslint": "^10.1.0",
+    "@babel/eslint-parser": "^7.11.0",
     "body-parser": "^1.19.0",
     "bootstrap": "^5.0.0",
     "broccoli-asset-rev": "^3.0.0",
