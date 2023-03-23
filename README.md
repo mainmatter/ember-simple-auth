@@ -5,7 +5,7 @@ __[Ember Simple Auth API docs](http://ember-simple-auth.com/api/)__
 __[![Discord](https://img.shields.io/discord/480462759797063690.svg?logo=discord)](https://discord.gg/zT3asNS)__
 
 Ember Simple Auth __supports all Ember.js versions starting with 3.12.__
-Node __12 is required__  
+Node __12 is required__
 
 #  Ember Simple Auth
 
@@ -325,6 +325,56 @@ reload the page to clear all potentially sensitive data from memory. In order
 to customize those behaviours, these methods can be overridden when the
 application defines its own session service that extends the one provided by
 Ember Simple Auth.
+
+You can create your own session service that extends SimpleAuthSessionService in order to customize the `handleAuthentication` method to
+redirect to a default route or possibly load the current user.
+```
+import SimpleAuthSessionService from 'ember-simple-auth/services/session';
+import { inject as service } from '@ember/service';
+import { getOwner } from '@ember/application';
+
+export default class SessionService extends SimpleAuthSessionService {
+    /**
+     * Inject the router service
+     *
+     * @var {Service}
+     */
+    @service router;
+
+    /**
+     * Inject the current user service
+     *
+     * @var {Service}
+     */
+    @service currentUser;
+
+    /**
+     * Overwrite the handle authentication method
+     *
+     * @var {Service}
+     */
+    handleAuthentication() {
+        let owner = getOwner(this);
+        super.handleAuthentication(owner, 'dashboard.boards')
+        this.loadCurrentUser();
+    }
+
+    /**
+     * Loads the current authenticated user
+     *
+     * @void
+     */
+    async loadCurrentUser() {
+        try {
+            const user = await this.currentUser.load();
+            return user;
+        } catch (err) {
+            await this.session.invalidate();
+        }
+    }
+}
+
+```
 
 To add authorization information to requests, you can use the session service
 to check if the session is authenticated and access
