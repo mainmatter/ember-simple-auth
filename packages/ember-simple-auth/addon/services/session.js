@@ -1,9 +1,7 @@
 import { alias, readOnly } from '@ember/object/computed';
-import { A } from '@ember/array';
 import Service from '@ember/service';
-import Evented from '@ember/object/evented';
 import { getOwner } from '@ember/application';
-import { assert, deprecate } from '@ember/debug';
+import { assert } from '@ember/debug';
 import Configuration from '../configuration';
 
 import {
@@ -15,20 +13,6 @@ import {
 } from '../-internals/routing';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
-
-let enableEventsDeprecation = true;
-function deprecateSessionEvents() {
-  if (enableEventsDeprecation) {
-    deprecate("Ember Simple Auth: The session service's events API is deprecated; to add custom behavior to the authentication or invalidation handling, override the handleAuthentication or handleInvalidation methods.", false, {
-      id: 'ember-simple-auth.events.session-service',
-      until: '4.0.0',
-      for: 'ember-simple-auth',
-      since: {
-        enabled: '3.1.0'
-      }
-    });
-  }
-}
 
 function assertSetupHasBeenCalled(isSetupCalled) {
   if (!isSetupCalled) {
@@ -54,10 +38,9 @@ function assertSetupHasBeenCalled(isSetupCalled) {
   @class SessionService
   @module ember-simple-auth/services/session
   @extends Ember.Service
-  @uses Ember.Evented
   @public
 */
-export default Service.extend(Evented, {
+export default Service.extend({
   /**
     Triggered whenever the session is successfully authenticated. This happens
     when the session gets authenticated via
@@ -140,7 +123,6 @@ export default Service.extend(Evented, {
   init() {
     this._super(...arguments);
     this.set('session', getOwner(this).lookup('session:main'));
-    this._forwardSessionEvents();
   },
 
   set(key, value) {
@@ -151,53 +133,6 @@ export default Service.extend(Evented, {
     } else {
       return this._super(...arguments);
     }
-  },
-
-  _forwardSessionEvents() {
-    A([
-      'authenticationSucceeded',
-      'invalidationSucceeded'
-    ]).forEach((event) => {
-      const session = this.get('session');
-      // the internal session won't be available in route unit tests
-      if (session) {
-        session.on(event, () => {
-          enableEventsDeprecation = false;
-          this.trigger(event, ...arguments);
-          enableEventsDeprecation = true;
-        });
-      }
-    });
-  },
-
-  on() {
-    deprecateSessionEvents();
-
-    return this._super(...arguments);
-  },
-
-  one() {
-    deprecateSessionEvents();
-
-    return this._super(...arguments);
-  },
-
-  off() {
-    deprecateSessionEvents();
-
-    return this._super(...arguments);
-  },
-
-  has() {
-    deprecateSessionEvents();
-
-    return this._super(...arguments);
-  },
-
-  trigger() {
-    deprecateSessionEvents();
-
-    return this._super(...arguments);
   },
 
   _setupHandlers() {
