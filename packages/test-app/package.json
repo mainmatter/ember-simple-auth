@@ -74,9 +74,6 @@
     "node-fetch",
     "crypto"
   ],
-  "resolutions": {
-    "@babel/plugin-transform-typescript": "~7.21.0"
-  },
   "ember": {
     "edition": "octane"
   }
