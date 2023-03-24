@@ -86,9 +86,6 @@
       "ember": ">=3.12"
     }
   },
-  "resolutions": {
-    "@babel/plugin-transform-typescript": "~7.21.0"
-  },
   "peerDependencies": {
     "ember-fetch": "^8.0.1"
   },
