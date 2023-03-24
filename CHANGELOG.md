@@ -1,6 +1,55 @@
 # Changelog
 
 
+
+## 5.0.0 (2023-03-24)
+
+#### :boom: Breaking Change
+* `ember-simple-auth`
+  * [#2525](https://github.com/mainmatter/ember-simple-auth/pull/2525) chore: Drop node - set minimal node version to >=16 ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2526](https://github.com/mainmatter/ember-simple-auth/pull/2526) feat: remove deprecated Evented API usage from the public session service ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2420](https://github.com/mainmatter/ember-simple-auth/pull/2420) Drop support for Ember <= 3.12 ([@marcoow](https://github.com/marcoow))
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2491](https://github.com/mainmatter/ember-simple-auth/pull/2491) Remove useSessionSetupMethod configuration ([@BobrImperator](https://github.com/BobrImperator))
+* `classic-test-app`, `ember-simple-auth`
+  * [#2480](https://github.com/mainmatter/ember-simple-auth/pull/2480) Remove deprecated mixins in favor of session service ([@BobrImperator](https://github.com/BobrImperator))
+* Other
+  * [#2419](https://github.com/mainmatter/ember-simple-auth/pull/2419) Run CI on Node 14 ([@marcoow](https://github.com/marcoow))
+
+#### :memo: Documentation
+* Other
+  * [#2520](https://github.com/mainmatter/ember-simple-auth/pull/2520) Update managing-current-user.md ([@Qadra42](https://github.com/Qadra42))
+  * [#2440](https://github.com/mainmatter/ember-simple-auth/pull/2440) docs: add information about v4 release for embroider and typescript users ([@BobrImperator](https://github.com/BobrImperator))
+* `ember-simple-auth`
+  * [#2239](https://github.com/mainmatter/ember-simple-auth/pull/2239) add docs and test for `sameSite` attribute in AdaptiveStorage ([@makepanic](https://github.com/makepanic))
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2527](https://github.com/mainmatter/ember-simple-auth/pull/2527) chore: prolong Torri authenticator deprecation period until v6 ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2513](https://github.com/mainmatter/ember-simple-auth/pull/2513) refactor(cleanup): remove ember-data from ESA addon ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2492](https://github.com/mainmatter/ember-simple-auth/pull/2492) Remove unused base64 dependency ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2484](https://github.com/mainmatter/ember-simple-auth/pull/2484) Add embroider tests ([@BobrImperator](https://github.com/BobrImperator))
+* `ember-simple-auth`, `test-app`
+  * [#2517](https://github.com/mainmatter/ember-simple-auth/pull/2517) Update test-app js files to use modern syntax ([@Gaurav0](https://github.com/Gaurav0))
+  * [#2488](https://github.com/mainmatter/ember-simple-auth/pull/2488) chore: remove dangling bower config ([@BobrImperator](https://github.com/BobrImperator))
+* Other
+  * [#2507](https://github.com/mainmatter/ember-simple-auth/pull/2507) chore: remove ember-canary from CI ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2489](https://github.com/mainmatter/ember-simple-auth/pull/2489) chore: disallow failure for ember-simple-auth embroider tests ([@BobrImperator](https://github.com/BobrImperator))
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2353](https://github.com/mainmatter/ember-simple-auth/pull/2353) Fix ember-release + ember-beta build ([@marcoow](https://github.com/marcoow))
+  * [#2368](https://github.com/mainmatter/ember-simple-auth/pull/2368) Upgrade ESLint configuration ([@pichfl](https://github.com/pichfl))
+
+#### Committers: 9
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Christian ([@makepanic](https://github.com/makepanic))
+- Daniel Cortés ([@dacoho](https://github.com/dacoho))
+- Florian Pichler ([@pichfl](https://github.com/pichfl))
+- Francisco Cuadra ([@Qadra42](https://github.com/Qadra42))
+- Gaurav Munjal ([@Gaurav0](https://github.com/Gaurav0))
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- Oscar Dominguez ([@oscard0m](https://github.com/oscard0m))
+- Stanislav Dunajcan ([@candunaj](https://github.com/candunaj))
+
 ## 4.2.2 (2022-04-12)
 
 #### :bug: Bug Fix
