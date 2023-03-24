@@ -23,7 +23,7 @@ jobs:
           - test-app
 
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
+      - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3
       - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
 
       - name: Get yarn cache directory path
@@ -94,7 +94,7 @@ jobs:
             allow-failure: false
 
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
+      - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3
       - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
 
       - name: Get yarn cache directory path
@@ -129,7 +129,7 @@ jobs:
           - test-app
 
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
+      - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3
       - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
 
       - name: Get yarn cache directory path
@@ -157,7 +157,7 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
+      - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3
       - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
 
       - name: Get yarn cache directory path
