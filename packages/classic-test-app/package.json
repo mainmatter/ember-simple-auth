@@ -41,7 +41,6 @@
     "ember-data": "~4.4.0",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-engines": "^0.9.0",
-    "ember-export-application-global": "^2.0.1",
     "ember-fetch": "^8.0.1",
     "ember-load-initializers": "^2.1.1",
     "ember-maybe-import-regenerator": "^1.0.0",
