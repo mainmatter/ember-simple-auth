@@ -1,9 +1,12 @@
-import { macroCondition, dependencySatisfies, importSync } from '@embroider/macros';
+import { importSync } from '@embroider/macros';
 
 let assign;
 
-if (macroCondition(dependencySatisfies('ember-source', '<5.x'))) {
+try {
   assign = importSync('@ember/polyfills').assign;
+} catch (error) {
+  // Couldn't import @ember/polyfills
+  // Doesn't exist in v5
 }
 
 export default Object.assign || assign;
