@@ -4,7 +4,6 @@ import { run, later, cancel } from '@ember/runloop';
 import { A, makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
 import { getOwner } from '@ember/application';
-import assign from 'ember-simple-auth/utils/assign';
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
@@ -221,7 +220,7 @@ export default BaseAuthenticator.extend({
           const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
           this._scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
           if (!isEmpty(expiresAt)) {
-            response = assign(response, { 'expires_at': expiresAt });
+            response = Object.assign(response, { 'expires_at': expiresAt });
           }
 
           resolve(response);
@@ -349,7 +348,7 @@ export default BaseAuthenticator.extend({
           expiresIn = response['expires_in'] || expiresIn;
           refreshToken = response['refresh_token'] || refreshToken;
           const expiresAt = this._absolutizeExpirationTime(expiresIn);
-          const data = assign(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
+          const data = Object.assign(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
           this._scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
           this.trigger('sessionDataUpdated', data);
           resolve(data);

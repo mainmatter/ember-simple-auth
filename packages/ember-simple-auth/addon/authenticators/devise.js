@@ -1,7 +1,6 @@
 import { Promise } from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
-import assign from 'ember-simple-auth/utils/assign';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
 
@@ -150,7 +149,7 @@ export default BaseAuthenticator.extend({
     let url = options.url || this.get('serverTokenEndpoint');
     let requestOptions = {};
     let body = JSON.stringify(data);
-    assign(requestOptions, {
+    Object.assign(requestOptions, {
       body,
       method:   'POST',
       headers:  {
@@ -158,7 +157,7 @@ export default BaseAuthenticator.extend({
         'content-type': JSON_CONTENT_TYPE
       }
     });
-    assign(requestOptions, options || {});
+    Object.assign(requestOptions, options || {});
 
     return fetch(url, requestOptions);
   },
