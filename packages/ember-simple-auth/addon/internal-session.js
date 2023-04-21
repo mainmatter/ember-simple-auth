@@ -3,7 +3,6 @@ import RSVP from 'rsvp';
 import { isEmpty, isNone } from '@ember/utils';
 import ObjectProxy from '@ember/object/proxy';
 import Evented from '@ember/object/evented';
-import assign from 'ember-simple-auth/utils/assign';
 import { set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
 import { getOwner, setOwner } from '@ember/application';
@@ -151,7 +150,7 @@ export default ObjectProxy.extend(Evented, {
   _updateStore() {
     let data = this.content;
     if (!isEmpty(this.authenticator)) {
-      set(data, 'authenticated', assign({ authenticator: this.authenticator }, data.authenticated || {}));
+      set(data, 'authenticated', Object.assign({ authenticator: this.authenticator }, data.authenticated || {}));
     }
     return this.store.persist(data);
   },

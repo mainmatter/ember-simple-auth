@@ -4,7 +4,6 @@ import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
 import CookieStore from 'ember-simple-auth/session-stores/cookie';
-import assign from 'ember-simple-auth/utils/assign';
 
 module('CookieStore', function(hooks) {
   setupTest(hooks);
@@ -39,7 +38,7 @@ module('CookieStore', function(hooks) {
         let cookieService = owner.lookup('service:cookies');
         sinon.spy(cookieService, 'read');
         sinon.spy(cookieService, 'write');
-        owner.register('session-store:cookie', CookieStore.extend(assign({
+        owner.register('session-store:cookie', CookieStore.extend(Object.assign({
           _cookieName: 'test:session',
         }, storeOptions)));
         let store = owner.lookup('session-store:cookie');
