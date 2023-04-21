@@ -10,6 +10,6 @@ export default class AuthErrorRoute extends Route {
   }
 
   model() {
-    return this.store.find('post', 3);
+    return this.store.findRecord('post', 3);
   }
 }
