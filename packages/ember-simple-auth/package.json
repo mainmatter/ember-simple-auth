@@ -27,7 +27,7 @@
   "dependencies": {
     "ember-cli-babel": "^7.20.5",
     "ember-cli-is-package-missing": "^1.0.0",
-    "ember-cookies": "^0.5.0",
+    "ember-cookies": "^1.0.0",
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
