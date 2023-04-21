@@ -60,8 +60,9 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-cli': '~4.12.0',
-              'ember-data': '~4.12.0',
               'ember-source': '~4.12.0',
+              // ember-data >=4.12 breaks under fastboot
+              // 'ember-data': '~4.12.0',
             },
           },
         },
@@ -70,8 +71,10 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-cli': 'latest',
-              'ember-data': 'latest',
+              // ember-data >=4.12 breaks under fastboot
+              // 'ember-data': 'latest',
               'ember-source': releaseUrl,
+              torii: null,
             },
           },
         },
@@ -80,8 +83,10 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-cli': 'beta',
-              'ember-data': 'beta',
+              // ember-data >=4.12 breaks under fastboot
+              // 'ember-data': 'beta',
               'ember-source': betaUrl,
+              torii: null,
             },
           },
         },
@@ -90,8 +95,10 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-cli': 'beta',
-              'ember-data': 'canary',
+              // ember-data >=4.12 breaks under fastboot
+              // 'ember-data': 'canary',
               'ember-source': canaryUrl,
+              torii: null,
             },
           },
         },
