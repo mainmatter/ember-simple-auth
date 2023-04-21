@@ -20,6 +20,7 @@
     "@babel/eslint-parser": "^7.19.1",
     "@ember/legacy-built-in-components": "^0.4.1",
     "@ember/optional-features": "^2.0.0",
+    "@ember/string": "^3.0.1",
     "@ember/test-helpers": "~2.7.0",
     "@glimmer/component": "^1.0.0",
     "@glimmer/tracking": "^1.0.0",

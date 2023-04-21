@@ -1170,7 +1170,7 @@
     mkdirp "^1.0.4"
     silent-error "^1.1.1"
 
-"@ember/string@^3.0.0":
+"@ember/string@^3.0.0", "@ember/string@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@ember/string/-/string-3.0.1.tgz#42cf032031a4432c2dd69c327ae1876d2c13df9c"
   integrity sha512-ntnmXS+upOWVXE+rVw2l03DjdMnaGdWbYVUxUBuPJqnIGZu2XFRsoXc7E6mOw62s8i1Xh1RgTuFHN41QGIolEQ==
