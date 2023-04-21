@@ -10,6 +10,6 @@ export default Route.extend({
   },
 
   model() {
-    return this.get('store').find('post', 3);
+    return this.get('store').findRecord('post', 3);
   }
 });

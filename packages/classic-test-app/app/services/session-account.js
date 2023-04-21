@@ -7,7 +7,7 @@ export default Service.extend({
   async loadCurrentUser() {
     let accountId = this.get('session.data.authenticated.account_id');
     if (accountId) {
-      let account = await this.get('store').find('account', accountId);
+      let account = await this.get('store').findRecord('account', accountId);
       this.set('account', account);
     }
   }
