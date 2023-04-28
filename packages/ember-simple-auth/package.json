@@ -83,7 +83,7 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "versionCompatibility": {
-      "ember": ">=3.12"
+      "ember": ">=3.28"
     }
   },
   "peerDependencies": {
