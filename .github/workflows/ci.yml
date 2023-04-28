@@ -66,26 +66,9 @@ jobs:
           - test:one ember-lts-4.4
           - test:one ember-lts-4.8
           - test:one ember-default
+          - test:one ember-release
         allow-failure: [false]
         include:
-          - workspace: ember-simple-auth
-            test-suite: "test:one ember-beta"
-            allow-failure: true
-          - workspace: test-app
-            test-suite: "test:one ember-beta"
-            allow-failure: true
-          - workspace: classic-test-app
-            test-suite: "test:one ember-beta"
-            allow-failure: true
-          - workspace: ember-simple-auth
-            test-suite: "test:one ember-release"
-            allow-failure: true
-          - workspace: test-app
-            test-suite: "test:one ember-release"
-            allow-failure: true
-          - workspace: classic-test-app
-            test-suite: "test:one ember-release"
-            allow-failure: true
           - workspace: ember-simple-auth
             test-suite: "test:one embroider-safe"
             allow-failure: false
@@ -112,9 +95,54 @@ jobs:
       - name: install dependencies
         run: yarn install
 
+
+  allow-fail-try-scenarios:
+    name: ${{ matrix.workspace }} ${{ matrix.test-suite }} - Allowed to fail
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pull-requests: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        workspace:
+          - ember-simple-auth
+          - classic-test-app
+          - test-app
+        test-suite:
+          - test:one ember-beta
+          - test:one ember-canary
+
+    steps:
+      - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3
+      - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: install dependencies
+        run: yarn install
+
       - name: tests
+        id: tests
         run: yarn workspace ${{ matrix.workspace }} ${{ matrix.test-suite }}
-        continue-on-error: ${{ matrix.allow-failure }}
+        continue-on-error: true
+
+      - uses: mainmatter/continue-on-error-comment@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          outcome: ${{ steps.tests.outcome }}
+          test-id: ${{ matrix.workspace }} ${{ matrix.test-suite }}
 
   extra-tests:
     name: Tests (Floating Dependenies)
