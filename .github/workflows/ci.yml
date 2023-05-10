@@ -129,15 +129,15 @@ jobs:
       - name: install dependencies
         run: yarn install
 
-      - name: tests
-        id: tests
+      - name: Allowed to fail tests
+        id: allowed_to_fail_tests
         run: yarn workspace ${{ matrix.workspace }} ${{ matrix.test-suite }}
         continue-on-error: true
 
       - uses: mainmatter/continue-on-error-comment@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          outcome: ${{ steps.tests.outcome }}
+          outcome: ${{ steps.allowed_to_fail_tests.outcome }}
           test-id: ${{ matrix.workspace }} ${{ matrix.test-suite }}
 
   extra-tests:
