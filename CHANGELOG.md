@@ -2,6 +2,24 @@
 
 
 
+
+## 6.0.0-rc.1 (2023-05-10)
+
+#### :boom: Breaking Change
+* `ember-simple-auth`
+  * [#2544](https://github.com/mainmatter/ember-simple-auth/pull/2544) feat(breaking): drop ember < v3.28 and IE11 support ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2542](https://github.com/mainmatter/ember-simple-auth/pull/2542) Use Object.assign and drop Ember.assign ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### :house: Internal
+* Other
+  * [#2556](https://github.com/mainmatter/ember-simple-auth/pull/2556) chore(ci): fix removed tests step from workflow ([@BobrImperator](https://github.com/BobrImperator))
+* `classic-test-app`, `test-app`
+  * [#2548](https://github.com/mainmatter/ember-simple-auth/pull/2548) refactor(deprecation): use findRecord instead of find ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 2
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
 ## 5.0.0 (2023-03-24)
 
 #### :boom: Breaking Change

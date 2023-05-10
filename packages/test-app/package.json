@@ -1,6 +1,6 @@
 {
   "name": "test-app",
-  "version": "5.0.0",
+  "version": "6.0.0-rc.1",
   "private": true,
   "scripts": {
     "build": "ember build",
@@ -47,7 +47,7 @@
     "ember-maybe-import-regenerator": "^1.0.0",
     "ember-qunit": "6.0.0",
     "ember-resolver": "^10.0.0",
-    "ember-simple-auth": "5.0.0",
+    "ember-simple-auth": "6.0.0-rc.1",
     "ember-source": "~4.4.0",
     "ember-source-channel-url": "^3.0.0",
     "ember-try": "^2.0.0",

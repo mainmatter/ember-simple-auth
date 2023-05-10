@@ -17,7 +17,7 @@
     "release-it-lerna-changelog": "^5.0.0",
     "release-it-yarn-workspaces": "^3.0.0"
   },
-  "version": "5.0.0",
+  "version": "6.0.0-rc.1",
   "volta": {
     "node": "16.20.0",
     "yarn": "1.22.19"
