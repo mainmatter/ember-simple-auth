@@ -91,6 +91,9 @@ jobs:
       - name: install dependencies
         run: yarn install
 
+      - name: tests
+        run: yarn workspace ${{ matrix.workspace }} ${{ matrix.test-suite }}
+        continue-on-error: ${{ matrix.allow-failure }}
 
   allow-fail-try-scenarios:
     name: ${{ matrix.workspace }} ${{ matrix.test-suite }} - Allowed to fail
