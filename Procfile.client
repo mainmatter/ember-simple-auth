@@ -1,1 +1,1 @@
-web: yarn workspace test-app start:fastboot
+web: pnpm --filter test-app start:fastboot

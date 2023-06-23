@@ -1,10 +1,7 @@
 {
   "plugins": {
-    "release-it-lerna-changelog": {
+    "@release-it-plugins/lerna-changelog": {
       "infile": "CHANGELOG.md"
-    },
-    "release-it-yarn-workspaces": {
-      "publish": false
     }
   },
   "git": {
