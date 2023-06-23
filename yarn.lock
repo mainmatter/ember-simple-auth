@@ -5365,7 +5365,7 @@ ember-engines@^0.9.0:
     ember-cli-version-checker "^5.1.2"
     lodash "^4.17.11"
 
-ember-fetch@^8.0.1:
+ember-fetch@^8.1.2:
   version "8.1.2"
   resolved "https://registry.yarnpkg.com/ember-fetch/-/ember-fetch-8.1.2.tgz#651839780519319309127054786bf35cd4b84543"
   integrity sha512-TVx24/jrvDIuPL296DV0hBwp7BWLcSMf0I8464KGz01sPytAB+ZAePbc9ooBTJDkKZEGFgatJa4nj3yF1S9Bpw==
