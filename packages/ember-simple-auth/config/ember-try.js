@@ -50,7 +50,7 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-cli': '~4.8.0',
-              'ember-data': '~4.8.0',
+              'ember-data': '~4.8.2',
               'ember-source': '~4.8.0',
             },
           },
