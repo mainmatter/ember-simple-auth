@@ -153,8 +153,8 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0
       my-engine:
-        specifier: ./packages/classic-test-app/lib/my-engine
-        version: link:packages/classic-test-app/lib/my-engine
+        specifier: workspace:../classic-test-app/lib/my-engine
+        version: link:lib/my-engine
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
@@ -463,8 +463,8 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0
       my-engine:
-        specifier: ./packages/test-app/lib/my-engine
-        version: link:packages/test-app/lib/my-engine
+        specifier: workspace:../test-app/lib/my-engine
+        version: link:lib/my-engine
       najax:
         specifier: ^1.0.7
         version: 1.0.7
