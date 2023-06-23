@@ -5505,10 +5505,10 @@ ember-try-config@^4.0.0:
     remote-git-tags "^3.0.0"
     semver "^7.3.2"
 
-ember-try@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ember-try/-/ember-try-2.0.0.tgz#2671c221f5a0335fa2c189d00db7146e2e72a1dd"
-  integrity sha512-2N7Vic45sbAegA5fhdfDjVbEVS4r+ze+tTQs2/wkY+8fC5yAGHfCM5ocyoTfBN5m7EhznC3AyMsOy4hLPzHFSQ==
+ember-try@3.0.0-beta.1:
+  version "3.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/ember-try/-/ember-try-3.0.0-beta.1.tgz#2809d95ac48f72d989516e20ea589b6ca856ea91"
+  integrity sha512-L8Nuy1iJZQmaEvxycTXCKe67K85f44DLRvwZL5ow8WtPdaZQuAHs9fJmYEGI1uyymf4MJChu6wwyh3tLSHiCag==
   dependencies:
     chalk "^4.1.2"
     cli-table3 "^0.6.0"
@@ -5516,7 +5516,7 @@ ember-try@^2.0.0:
     debug "^4.3.2"
     ember-try-config "^4.0.0"
     execa "^4.1.0"
-    fs-extra "^9.0.1"
+    fs-extra "^6.0.1"
     resolve "^1.20.0"
     rimraf "^3.0.2"
     walk-sync "^2.2.0"
@@ -6711,6 +6711,15 @@ fs-extra@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-5.0.0.tgz#414d0110cdd06705734d055652c5411260c31abd"
   integrity sha512-66Pm4RYbjzdyeuqudYqhFiNBbCIuI9kgRqLPSHIlXHidW8NIQtVdkM1yeZ4lXwuhbTETv3EUGMNHAAw6hiundQ==
+  dependencies:
+    graceful-fs "^4.1.2"
+    jsonfile "^4.0.0"
+    universalify "^0.1.0"
+
+fs-extra@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-6.0.1.tgz#8abc128f7946e310135ddc93b98bddb410e7a34b"
+  integrity sha512-GnyIkKhhzXZUWFCaJzvyDLEEgDkPfb4/TPvJCJVuS8MWZgoSsErf++QpiAlDnKFcqhRlm+tIOcencCjyJE6ZCA==
   dependencies:
     graceful-fs "^4.1.2"
     jsonfile "^4.0.0"
