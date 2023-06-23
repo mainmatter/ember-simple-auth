@@ -49,7 +49,7 @@
     "ember-simple-auth": "6.0.0-rc.1",
     "ember-source": "~4.4.0",
     "ember-source-channel-url": "^3.0.0",
-    "ember-try": "^2.0.0",
+    "ember-try": "3.0.0-beta.1",
     "eslint": "^8.14.0",
     "eslint-config-simplabs": "^0.4.0",
     "eslint-plugin-ember": "^10.6.0",
