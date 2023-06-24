@@ -56,7 +56,7 @@ module.exports = function() {
           },
         },
         {
-          name: 'ember-4.12',
+          name: 'ember-lts-4.12',
           npm: {
             devDependencies: {
               'ember-cli': '~4.12.0',
