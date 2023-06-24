@@ -1,1 +1,1 @@
-web: pnpm --filter test-app start:fastboot
+web: pnpm run --filter test-app start:fastboot
