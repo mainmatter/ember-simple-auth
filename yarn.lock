@@ -2835,7 +2835,7 @@ body-parser@1.20.1:
     type-is "~1.6.18"
     unpipe "1.0.0"
 
-body-parser@^1.17.0, body-parser@^1.18.3, body-parser@^1.19.0:
+body-parser@^1.17.0, body-parser@^1.19.0, body-parser@^1.20.0:
   version "1.20.2"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.20.2.tgz#6feb0e21c4724d06de7ff38da36dad4f57a747fd"
   integrity sha512-ml9pReCu3M61kGlqoTm2umSXTlRTuGTx0bfYj+uIUKKYycG5NtSbeetV3faSU6R7ajOPw0g/J1PvK4qNy7s5bA==
@@ -4764,7 +4764,7 @@ ember-asset-loader@^1.0.0:
     fs-extra "^10.1.0"
     walk-sync "^3.0.0"
 
-ember-auto-import@^2.2.3, ember-auto-import@^2.2.4, ember-auto-import@^2.4.0, ember-auto-import@^2.4.2:
+ember-auto-import@^2.2.4, ember-auto-import@^2.4.0, ember-auto-import@^2.4.2, ember-auto-import@^2.6.1:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/ember-auto-import/-/ember-auto-import-2.6.3.tgz#f18d1b93dd10b08ba5496518436f9d56dd4e000a"
   integrity sha512-uLhrRDJYWCRvQ4JQ1e64XlSrqAKSd6PXaJ9ZsZI6Tlms9T4DtQFxNXasqji2ZRJBVrxEoLCRYX3RTldsQ0vNGQ==
@@ -4895,22 +4895,22 @@ ember-cli-dependency-checker@^3.3.1:
     resolve "^1.22.0"
     semver "^5.7.1"
 
-ember-cli-fastboot-testing@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-fastboot-testing/-/ember-cli-fastboot-testing-0.6.0.tgz#69cceecf05a64d79508e0de63166790d4539b46f"
-  integrity sha512-ppZyrb4qKjaF+JqsHgDtSic04V5Ut4i1z3FkT2n0IizzL1duQN3rqQgE0sKa8wR7B4tBd7Fc+JQL3VIkVwzBow==
+ember-cli-fastboot-testing@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/ember-cli-fastboot-testing/-/ember-cli-fastboot-testing-0.6.1.tgz#6ecfcd6ee96817d90d14c3e72ccb6064d23412f5"
+  integrity sha512-nevPv77Wjk0Mslb0AF0wgHfbjki6Fi3/dapTrFz17WLX6n5maLr/MTL1hZcZdbT+69DHdgckCza8Z1WyxiUbBA==
   dependencies:
-    body-parser "^1.18.3"
-    ember-auto-import "^2.2.3"
-    ember-cli-babel "^7.26.6"
-    fastboot "^3.0.3"
+    body-parser "^1.20.0"
+    ember-auto-import "^2.6.1"
+    ember-cli-babel "^7.26.11"
+    fastboot "^3.0.3 || ^4.1.1"
     json-fn "^1.1.1"
-    minimist "^1.2.0"
-    nock "^13.1.4"
-    resolve "^1.10.0"
+    minimist "^1.2.6"
+    nock "^13.2.4"
+    resolve "^1.22.0"
     whatwg-fetch "^3.0.0"
 
-ember-cli-fastboot@^4.0.0:
+ember-cli-fastboot@^4.0.0, ember-cli-fastboot@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/ember-cli-fastboot/-/ember-cli-fastboot-4.1.1.tgz#a16db66c7dce32c5450d7a4c34e3e96792c3ae31"
   integrity sha512-9B/qJUfDVqRmZlXxP23V2AZ3hiez99DKT2cPJ0MWkjwRom/kmVJHvv5X4fxvT7MCokjOVFvzas79D5toV4GLIA==
@@ -6251,7 +6251,7 @@ fast-sourcemap-concat@^2.1.0:
     source-map-url "^0.3.0"
     sourcemap-validator "^1.1.0"
 
-fastboot-app-server@^4.0.0:
+fastboot-app-server@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/fastboot-app-server/-/fastboot-app-server-4.1.1.tgz#b4dfe0dd7087a6f5547fc6b23489f6a3a442aaec"
   integrity sha512-v7esODTxtPCZYXdW3B7at2otKHg7q5bR2YjkBISShqR5O2Ua4TrNslGQlI0VQIdSHG979g9g6bwr5EBCL2wtKw==
@@ -6279,23 +6279,10 @@ fastboot-transform@^0.1.3:
     broccoli-stew "^1.5.0"
     convert-source-map "^1.5.1"
 
-fastboot@4.1.1:
+fastboot@4.1.1, "fastboot@^3.0.3 || ^4.1.1":
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/fastboot/-/fastboot-4.1.1.tgz#b686dc522ef805557ff76ded23328c486991cbaa"
   integrity sha512-XG7YprsAuAGZrUDhmJ0NFuEP0gpWg9LZwGWSS1I5+f0ETHKPWqb4x59sN2rU1nvCEETBK70z68tLsWsl9daomg==
-  dependencies:
-    chalk "^4.1.2"
-    cookie "^0.4.1"
-    debug "^4.3.3"
-    jsdom "^19.0.0"
-    resolve "^1.22.0"
-    simple-dom "^1.4.0"
-    source-map-support "^0.5.21"
-
-fastboot@^3.0.3:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/fastboot/-/fastboot-3.3.2.tgz#bf1ac7b01937846b63423a88138e13eb50406d2e"
-  integrity sha512-2NKTW32GvEsDyBrdw1trW1JsbS+9/7sAQuKwkht12mNitimRrSKVLP2AxsM/HSXQE+aiET4XCfKdyeIy0kQbKQ==
   dependencies:
     chalk "^4.1.2"
     cookie "^0.4.1"
@@ -9730,7 +9717,7 @@ no-case@^3.0.4:
     lower-case "^2.0.2"
     tslib "^2.0.3"
 
-nock@^13.1.4:
+nock@^13.2.4:
   version "13.3.1"
   resolved "https://registry.yarnpkg.com/nock/-/nock-13.3.1.tgz#f22d4d661f7a05ebd9368edae1b5dc0a62d758fc"
   integrity sha512-vHnopocZuI93p2ccivFyGuUfzjq2fxNyNurp7816mlT5V5HF4SzXu8lvLrVzBbNqzs+ODooZ6OksuSUNM7Njkw==
