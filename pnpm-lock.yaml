@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -108,8 +108,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       ember-qunit:
-        specifier: 6.0.0
-        version: 6.0.0(@ember/test-helpers@2.7.0)(qunit@2.19.4)(webpack@5.82.1)
+        specifier: 7.0.0
+        version: 7.0.0(@ember/test-helpers@2.7.0)(ember-source@4.4.5)(qunit@2.19.4)(webpack@5.82.1)
       ember-resolver:
         specifier: ^10.0.0
         version: 10.1.0(@ember/string@3.0.1)(ember-source@4.4.5)
@@ -256,8 +256,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       ember-qunit:
-        specifier: 6.0.0
-        version: 6.0.0(@ember/test-helpers@2.7.0)(qunit@2.19.4)(webpack@5.82.1)
+        specifier: 7.0.0
+        version: 7.0.0(@ember/test-helpers@2.7.0)(ember-source@4.4.5)(qunit@2.19.4)(webpack@5.82.1)
       ember-resolver:
         specifier: ^10.0.0
         version: 10.1.0(@ember/string@3.0.1)(ember-source@4.4.5)
@@ -415,8 +415,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       ember-qunit:
-        specifier: 6.0.0
-        version: 6.0.0(@ember/test-helpers@2.7.0)(qunit@2.19.4)(webpack@5.82.1)
+        specifier: 7.0.0
+        version: 7.0.0(@ember/test-helpers@2.7.0)(ember-source@4.4.5)(qunit@2.19.4)(webpack@5.82.1)
       ember-resolver:
         specifier: ^10.0.0
         version: 10.1.0(@ember/string@3.0.1)(ember-source@4.4.5)
@@ -6374,11 +6374,12 @@ packages:
       - supports-color
     dev: true
 
-  /ember-qunit@6.0.0(@ember/test-helpers@2.7.0)(qunit@2.19.4)(webpack@5.82.1):
-    resolution: {integrity: sha512-idNWh9Ap2HN9e3Xozh5Jrciu5tDhn0okM/bgwDjdks3dwuMhEox45iiRTx469FWQ9+ixjZ40AsXsRTDkfCmvmw==}
-    engines: {node: 14.* || 16.* || >= 17}
+  /ember-qunit@7.0.0(@ember/test-helpers@2.7.0)(ember-source@4.4.5)(qunit@2.19.4)(webpack@5.82.1):
+    resolution: {integrity: sha512-KhrndHYEXsHnXvmsGyJLJQ6VCudXaRs5dzPZBsdttZJIhsB6PmYAvq2Q+mh3GRDT/59T/sRDrB3FD3/lATS8aA==}
+    engines: {node: 16.* || >= 18}
     peerDependencies:
-      '@ember/test-helpers': ^2.4.0
+      '@ember/test-helpers': '>=3.0.3'
+      ember-source: '>=4.0.0'
       qunit: ^2.13.0
     dependencies:
       '@ember/test-helpers': 2.7.0(@babel/core@7.21.8)
@@ -6388,6 +6389,7 @@ packages:
       ember-auto-import: 2.6.3(webpack@5.82.1)
       ember-cli-babel: 7.26.11
       ember-cli-test-loader: 3.0.0
+      ember-source: 4.4.5(@babel/core@7.21.8)(webpack@5.82.1)
       qunit: 2.19.4
       resolve-package-path: 4.0.3
       silent-error: 1.1.1
