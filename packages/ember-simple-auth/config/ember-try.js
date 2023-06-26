@@ -13,7 +13,7 @@ module.exports = function() {
     const betaUrl = urls[1];
     const canaryUrl = urls[2];
     return {
-      useYarn: true,
+      usePnpm: true,
       scenarios: [
         {
           name: 'ember-lts-3.28',
@@ -50,7 +50,7 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-cli': '~4.8.0',
-              'ember-data': '~4.8.0',
+              'ember-data': '~4.8.2',
               'ember-source': '~4.8.0',
             },
           },

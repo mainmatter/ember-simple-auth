@@ -1,5 +1,8 @@
 name: CI
 
+env:
+  VOLTA_FEATURE_PNPM: 1
+
 on:
   push:
     branches:
@@ -24,25 +27,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3
-      - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
+      - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
       - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3
-        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: "**/node_modules"
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
 
       - name: install dependencies
-        run: yarn install
+        run: pnpm install
 
       - name: lint
-        run: yarn workspace ${{ matrix.workspace }} lint
+        run: pnpm run --filter ${{ matrix.workspace }} lint
 
   tests:
     name: Tests
@@ -75,25 +72,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3
-      - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
+      - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
       - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3
-        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: "**/node_modules"
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
 
       - name: install dependencies
-        run: yarn install
+        run: pnpm install
 
       - name: tests
-        run: yarn workspace ${{ matrix.workspace }} ${{ matrix.test-suite }}
+        run: pnpm run --filter ${{ matrix.workspace }} ${{ matrix.test-suite }}
         continue-on-error: ${{ matrix.allow-failure }}
 
   allow-fail-try-scenarios:
@@ -116,26 +107,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3
-      - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
+      - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
       - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3
-        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: "**/node_modules"
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
 
       - name: install dependencies
-        run: yarn install
+        run: pnpm install
 
       - name: Allowed to fail tests
         id: allowed_to_fail_tests
-        run: yarn workspace ${{ matrix.workspace }} ${{ matrix.test-suite }}
+        run: pnpm run --filter ${{ matrix.workspace }} ${{ matrix.test-suite }}
         continue-on-error: true
 
       - uses: mainmatter/continue-on-error-comment@v1
@@ -158,25 +143,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3
-      - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
+      - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
       - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3
-        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: "**/node_modules"
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
 
       - name: install dependencies
-        run: yarn install --no-lockfile
+        run: pnpm install --no-lockfile
 
       - name: tests
-        run: yarn workspace ${{ matrix.workspace }} test
+        run: pnpm run --filter ${{ matrix.workspace }} test
         continue-on-error: true
 
   node-tests:
@@ -186,22 +165,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3
-      - uses: volta-cli/action@25888009cd70dbe17a140f1c56d93f8c09f7bcef # tag=v4
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
+      - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
       - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3
-        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: "**/node_modules"
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
 
       - name: install dependencies
-        run: yarn install
+        run: pnpm install
 
       - name: tests
-        run: yarn workspace ember-simple-auth test:node
+        run: pnpm run --filter ember-simple-auth test:node

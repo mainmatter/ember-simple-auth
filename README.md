@@ -95,7 +95,7 @@ start it, run
 ```
 git clone https://github.com/mainmatter/ember-simple-auth.git
 cd ember-simple-auth/packages/test-app
-yarn install && ember serve
+pnpm install && ember serve
 ```
 
 and go to [http://localhost:4200](http://localhost:4200).
