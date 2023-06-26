@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -39,8 +39,8 @@ importers:
         specifier: ~2.7.0
         version: 2.7.0(@babel/core@7.21.8)
       '@embroider/test-setup':
-        specifier: ^2.1.1
-        version: 2.1.1
+        specifier: ^3.0.0
+        version: 3.0.0
       '@glimmer/component':
         specifier: ^1.0.0
         version: 1.1.2(@babel/core@7.21.8)
@@ -205,8 +205,8 @@ importers:
         specifier: ~2.7.0
         version: 2.7.0(@babel/core@7.21.8)
       '@embroider/test-setup':
-        specifier: ^2.1.1
-        version: 2.1.1
+        specifier: ^3.0.0
+        version: 3.0.0
       '@glimmer/component':
         specifier: ^1.0.0
         version: 1.1.2(@babel/core@7.21.8)
@@ -343,8 +343,8 @@ importers:
         specifier: ~2.7.0
         version: 2.7.0(@babel/core@7.21.8)
       '@embroider/test-setup':
-        specifier: ^2.1.1
-        version: 2.1.1
+        specifier: ^3.0.0
+        version: 3.0.0
       '@glimmer/component':
         specifier: ^1.0.0
         version: 1.1.2(@babel/core@7.21.8)
@@ -1939,9 +1939,20 @@ packages:
       semver: 7.5.1
       typescript-memoize: 1.1.1
 
-  /@embroider/test-setup@2.1.1:
-    resolution: {integrity: sha512-t81a2z2OEFAOZVbV7wkgiDuCyZ3ajD7J7J+keaTfNSRiXoQgeFFASEECYq1TCsH8m/R+xHMRiY59apF2FIeFhw==}
+  /@embroider/test-setup@3.0.0:
+    resolution: {integrity: sha512-JnbcYs2xPDPayfYCMjG5M8t1i3j2sTXt2YT2JeoZ266RtnK6TM50gV6Q15v9wJUhyT4DjjEShKUd0k8v1lBquA==}
     engines: {node: 12.* || 14.* || >= 16}
+    peerDependencies:
+      '@embroider/compat': ^3.0.0
+      '@embroider/core': ^3.0.0
+      '@embroider/webpack': ^3.0.0
+    peerDependenciesMeta:
+      '@embroider/compat':
+        optional: true
+      '@embroider/core':
+        optional: true
+      '@embroider/webpack':
+        optional: true
     dependencies:
       lodash: 4.17.21
       resolve: 1.22.2
