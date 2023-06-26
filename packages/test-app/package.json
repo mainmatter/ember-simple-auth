@@ -22,7 +22,7 @@
     "@ember/optional-features": "^2.0.0",
     "@ember/string": "^3.0.1",
     "@ember/test-helpers": "~2.7.0",
-    "@embroider/test-setup": "^2.1.1",
+    "@embroider/test-setup": "^3.0.1",
     "@glimmer/component": "^1.0.0",
     "@glimmer/tracking": "^1.0.0",
     "body-parser": "^1.19.0",
