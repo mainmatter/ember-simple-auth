@@ -22,7 +22,10 @@
       "matchPackagePatterns": [
         "*"
       ],
-      "rangeStrategy": "bump"
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "rangeStrategy": "update-lockfile"
     }
   ]
 }
