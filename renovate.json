@@ -22,7 +22,7 @@
       "matchPackagePatterns": [
         "*"
       ],
-      "rangeStrategy": "replace"
+      "rangeStrategy": "bump"
     }
   ]
 }
