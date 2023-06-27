@@ -177,7 +177,7 @@ importers:
   packages/ember-simple-auth:
     dependencies:
       ember-auto-import:
-        specifier: ^2.4.2
+        specifier: ^2.6.3
         version: 2.6.3(webpack@5.82.1)
       ember-cli-babel:
         specifier: ^7.20.5
