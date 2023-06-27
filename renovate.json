@@ -17,6 +17,12 @@
         "ember-cli-fastboot",
         "ember-cli-fastboot-testing",
       ],
+    },
+    {
+      "matchPackagePatterns": [
+        "*"
+      ],
+      "rangeStrategy": "replace"
     }
   ]
 }
