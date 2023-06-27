@@ -1,5 +1,8 @@
 {
-  "extends": ["github>mainmatter/renovate-config:default.json5"],
+  "extends": [
+    "github>mainmatter/renovate-config:default.json5",
+    ":pinOnlyDevDependencies"
+  ],
   "packageRules": [
     {
       "groupName": "Ember Testing",
@@ -17,15 +20,6 @@
         "ember-cli-fastboot",
         "ember-cli-fastboot-testing",
       ],
-    },
-    {
-      "matchPackagePatterns": [
-        "*"
-      ],
-      "matchDepTypes": [
-        "devDependencies"
-      ],
-      "rangeStrategy": "update-lockfile"
     }
   ]
 }
