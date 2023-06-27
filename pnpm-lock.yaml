@@ -36,7 +36,7 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       '@ember/test-helpers':
-        specifier: ~3.1.0
+        specifier: 3.1.0
         version: 3.1.0(ember-source@4.12.0)(webpack@5.82.1)
       '@embroider/test-setup':
         specifier: ^3.0.1
@@ -162,10 +162,10 @@ importers:
         specifier: 3.4.7
         version: 3.4.7
       qunit:
-        specifier: ^2.17.2
+        specifier: 2.19.4
         version: 2.19.4
       qunit-dom:
-        specifier: ^2.0.0
+        specifier: 2.0.0
         version: 2.0.0
       torii:
         specifier: ^1.0.0-beta.1
@@ -202,7 +202,7 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       '@ember/test-helpers':
-        specifier: ~3.1.0
+        specifier: 3.1.0
         version: 3.1.0(ember-source@4.12.0)(webpack@5.82.1)
       '@embroider/test-setup':
         specifier: ^3.0.1
@@ -310,10 +310,10 @@ importers:
         specifier: 3.4.7
         version: 3.4.7
       qunit:
-        specifier: ^2.17.2
+        specifier: 2.19.4
         version: 2.19.4
       qunit-dom:
-        specifier: ^2.0.0
+        specifier: 2.0.0
         version: 2.0.0
       sinon:
         specifier: 15.2.0
@@ -340,7 +340,7 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       '@ember/test-helpers':
-        specifier: ~3.1.0
+        specifier: 3.1.0
         version: 3.1.0(ember-source@4.12.0)(webpack@5.82.1)
       '@embroider/test-setup':
         specifier: ^3.0.1
@@ -475,10 +475,10 @@ importers:
         specifier: 3.4.7
         version: 3.4.7
       qunit:
-        specifier: ^2.17.2
+        specifier: 2.19.4
         version: 2.19.4
       qunit-dom:
-        specifier: ^2.0.0
+        specifier: 2.0.0
         version: 2.0.0
       torii:
         specifier: ^1.0.0-beta.1
