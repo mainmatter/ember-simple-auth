@@ -87,7 +87,7 @@
     }
   },
   "peerDependencies": {
-    "ember-fetch": "^8"
+    "ember-fetch": "^8.1.2"
   },
   "ember": {
     "edition": "octane"
