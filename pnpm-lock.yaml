@@ -42,10 +42,10 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       '@glimmer/component':
-        specifier: ^1.0.0
+        specifier: 1.1.2
         version: 1.1.2(@babel/core@7.21.8)
       '@glimmer/tracking':
-        specifier: ^1.0.0
+        specifier: 1.1.2
         version: 1.1.2
       body-parser:
         specifier: ^1.19.0
@@ -208,10 +208,10 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       '@glimmer/component':
-        specifier: ^1.0.0
+        specifier: 1.1.2
         version: 1.1.2(@babel/core@7.21.8)
       '@glimmer/tracking':
-        specifier: ^1.0.0
+        specifier: 1.1.2
         version: 1.1.2
       broccoli-asset-rev:
         specifier: ^3.0.0
@@ -346,10 +346,10 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       '@glimmer/component':
-        specifier: ^1.0.0
+        specifier: 1.1.2
         version: 1.1.2(@babel/core@7.21.8)
       '@glimmer/tracking':
-        specifier: ^1.0.0
+        specifier: 1.1.2
         version: 1.1.2
       body-parser:
         specifier: ^1.19.0
