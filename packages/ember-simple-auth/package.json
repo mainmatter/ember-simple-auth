@@ -78,7 +78,7 @@
     "webpack": "^5.74.0"
   },
   "engines": {
-    "node": ">= 16"
+    "node": ">= v16.20.1"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
