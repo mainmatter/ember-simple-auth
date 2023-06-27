@@ -180,7 +180,7 @@ importers:
         specifier: ^2.4.2
         version: 2.6.3(webpack@5.82.1)
       ember-cli-babel:
-        specifier: ^7.20.5
+        specifier: ^7.26.11
         version: 7.26.11
       ember-cli-is-package-missing:
         specifier: ^1.0.0
