@@ -9,37 +9,37 @@ importers:
   .:
     devDependencies:
       '@mermaid-js/mermaid-cli':
-        specifier: ^10.0.0
+        specifier: 10.1.0
         version: 10.1.0(typescript@5.1.3)
       '@release-it-plugins/lerna-changelog':
-        specifier: ^5.0.0
+        specifier: 5.0.0
         version: 5.0.0(release-it@15.10.3)
       lerna-changelog:
-        specifier: ^2.0.0
+        specifier: 2.2.0
         version: 2.2.0
       release-it:
-        specifier: ^15.0.0
+        specifier: 15.10.3
         version: 15.10.3(typescript@5.1.3)
 
   packages/classic-test-app:
     devDependencies:
       '@babel/eslint-parser':
-        specifier: ^7.11.0
+        specifier: 7.21.8
         version: 7.21.8(@babel/core@7.21.8)(eslint@8.40.0)
       '@ember/legacy-built-in-components':
-        specifier: ^0.4.1
+        specifier: 0.4.2
         version: 0.4.2(ember-source@4.12.0)
       '@ember/optional-features':
-        specifier: ^2.0.0
+        specifier: 2.0.0
         version: 2.0.0
       '@ember/string':
-        specifier: ^3.0.1
+        specifier: 3.0.1
         version: 3.0.1
       '@ember/test-helpers':
         specifier: 3.1.0
         version: 3.1.0(ember-source@4.12.0)(webpack@5.82.1)
       '@embroider/test-setup':
-        specifier: ^3.0.1
+        specifier: 3.0.1
         version: 3.0.1
       '@glimmer/component':
         specifier: 1.1.2
@@ -48,115 +48,115 @@ importers:
         specifier: 1.1.2
         version: 1.1.2
       body-parser:
-        specifier: ^1.19.0
+        specifier: 1.20.1
         version: 1.20.1
       bootstrap:
-        specifier: ^5.0.0
+        specifier: 5.2.3
         version: 5.2.3(@popperjs/core@2.11.8)
       broccoli-asset-rev:
-        specifier: ^3.0.0
+        specifier: 3.0.0
         version: 3.0.0
       cors:
-        specifier: ^2.8.5
+        specifier: 2.8.5
         version: 2.8.5
       ember-auto-import:
-        specifier: ^2.4.2
+        specifier: 2.6.3
         version: 2.6.3(webpack@5.82.1)
       ember-cli:
-        specifier: ~4.12.0
+        specifier: 4.12.0
         version: 4.12.0(handlebars@4.7.7)
       ember-cli-babel:
-        specifier: ^7.20.1
+        specifier: 7.26.11
         version: 7.26.11
       ember-cli-content-security-policy:
-        specifier: ~1.1.1
+        specifier: 1.1.1
         version: 1.1.1
       ember-cli-dependency-checker:
-        specifier: ^3.3.1
+        specifier: 3.3.2
         version: 3.3.2(ember-cli@4.12.0)
       ember-cli-fastboot:
         specifier: 4.1.1
         version: 4.1.1
       ember-cli-htmlbars:
-        specifier: ^6.0.0
+        specifier: 6.2.0
         version: 6.2.0
       ember-cli-inject-live-reload:
-        specifier: ^2.0.1
+        specifier: 2.1.0
         version: 2.1.0
       ember-cli-sri:
-        specifier: ^2.1.1
+        specifier: 2.1.1
         version: 2.1.1
       ember-cli-terser:
         specifier: 4.0.2
         version: 4.0.2
       ember-data:
-        specifier: ~4.12.0
+        specifier: 4.12.0
         version: 4.12.0(@babel/core@7.21.8)(@ember/string@3.0.1)(@glimmer/tracking@1.1.2)(ember-source@4.12.0)(webpack@5.82.1)
       ember-disable-prototype-extensions:
-        specifier: ^1.1.2
+        specifier: 1.1.3
         version: 1.1.3
       ember-engines:
-        specifier: ^0.9.0
+        specifier: 0.9.0
         version: 0.9.0(@ember/legacy-built-in-components@0.4.2)(ember-source@4.12.0)
       ember-fetch:
-        specifier: ^8.1.2
+        specifier: 8.1.2
         version: 8.1.2
       ember-load-initializers:
-        specifier: ^2.1.1
+        specifier: 2.1.2
         version: 2.1.2(@babel/core@7.21.8)
       ember-maybe-import-regenerator:
-        specifier: ^1.0.0
+        specifier: 1.0.0
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
         version: 7.0.0(@ember/test-helpers@3.1.0)(ember-source@4.12.0)(qunit@2.19.4)(webpack@5.82.1)
       ember-resolver:
-        specifier: ^10.0.0
+        specifier: 10.1.0
         version: 10.1.0(@ember/string@3.0.1)(ember-source@4.12.0)
       ember-simple-auth:
         specifier: 6.0.0-rc.1
         version: link:../ember-simple-auth
       ember-source:
-        specifier: ~4.12.0
+        specifier: 4.12.0
         version: 4.12.0(@babel/core@7.21.8)(@glimmer/component@1.1.2)(webpack@5.82.1)
       ember-source-channel-url:
-        specifier: ^3.0.0
+        specifier: 3.0.0
         version: 3.0.0
       ember-try:
         specifier: 3.0.0-beta.1
         version: 3.0.0-beta.1
       eslint:
-        specifier: ^8.14.0
+        specifier: 8.40.0
         version: 8.40.0
       eslint-config-simplabs:
-        specifier: ^0.4.0
+        specifier: 0.4.0
         version: 0.4.0(eslint@8.40.0)
       eslint-plugin-ember:
-        specifier: ^10.6.0
+        specifier: 10.6.1
         version: 10.6.1(eslint@8.40.0)
       eslint-plugin-node:
-        specifier: ^11.0.0
+        specifier: 11.1.0
         version: 11.1.0(eslint@8.40.0)
       eslint-plugin-qunit:
-        specifier: ^7.2.0
+        specifier: 7.3.4
         version: 7.3.4(eslint@8.40.0)
       express:
-        specifier: ^4.17.1
+        specifier: 4.18.2
         version: 4.18.2
       glob:
-        specifier: ^10.0.0
+        specifier: 10.2.3
         version: 10.2.3
       handlebars:
-        specifier: ~4.7.1
+        specifier: 4.7.7
         version: 4.7.7
       loader.js:
-        specifier: ^4.7.0
+        specifier: 4.7.0
         version: 4.7.0
       my-engine:
         specifier: workspace:../classic-test-app/lib/my-engine
         version: link:lib/my-engine
       npm-run-all:
-        specifier: ^4.1.5
+        specifier: 4.1.5
         version: 4.1.5
       pretender:
         specifier: 3.4.7
@@ -168,10 +168,10 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       torii:
-        specifier: ^1.0.0-beta.1
+        specifier: 1.0.0-beta.1
         version: 1.0.0-beta.1
       webpack:
-        specifier: ^5.74.0
+        specifier: 5.82.1
         version: 5.82.1
 
   packages/ember-simple-auth:
@@ -193,19 +193,19 @@ importers:
         version: 1.1.1
     devDependencies:
       '@babel/eslint-parser':
-        specifier: ^7.11.0
+        specifier: 7.21.8
         version: 7.21.8(@babel/core@7.21.8)(eslint@8.40.0)
       '@ember/optional-features':
-        specifier: ^2.0.0
+        specifier: 2.0.0
         version: 2.0.0
       '@ember/string':
-        specifier: ^3.0.1
+        specifier: 3.0.1
         version: 3.0.1
       '@ember/test-helpers':
         specifier: 3.1.0
         version: 3.1.0(ember-source@4.12.0)(webpack@5.82.1)
       '@embroider/test-setup':
-        specifier: ^3.0.1
+        specifier: 3.0.1
         version: 3.0.1
       '@glimmer/component':
         specifier: 1.1.2
@@ -214,97 +214,97 @@ importers:
         specifier: 1.1.2
         version: 1.1.2
       broccoli-asset-rev:
-        specifier: ^3.0.0
+        specifier: 3.0.0
         version: 3.0.0
       ember-cli:
-        specifier: ~4.12.0
+        specifier: 4.12.0
         version: 4.12.0(handlebars@4.7.7)
       ember-cli-blueprint-test-helpers:
-        specifier: ^0.19.2
+        specifier: 0.19.2
         version: 0.19.2
       ember-cli-content-security-policy:
-        specifier: ~1.1.1
+        specifier: 1.1.1
         version: 1.1.1
       ember-cli-dependency-checker:
-        specifier: ^3.3.1
+        specifier: 3.3.2
         version: 3.3.2(ember-cli@4.12.0)
       ember-cli-htmlbars:
-        specifier: ^6.0.0
+        specifier: 6.2.0
         version: 6.2.0
       ember-cli-inject-live-reload:
-        specifier: ^2.0.1
+        specifier: 2.1.0
         version: 2.1.0
       ember-cli-sri:
-        specifier: ^2.1.1
+        specifier: 2.1.1
         version: 2.1.1
       ember-cli-terser:
         specifier: 4.0.2
         version: 4.0.2
       ember-cli-yuidoc:
-        specifier: ^0.9.1
+        specifier: 0.9.1
         version: 0.9.1
       ember-disable-prototype-extensions:
-        specifier: ^1.1.3
+        specifier: 1.1.3
         version: 1.1.3
       ember-fetch:
-        specifier: ^8.1.2
+        specifier: 8.1.2
         version: 8.1.2
       ember-load-initializers:
-        specifier: ^2.1.1
+        specifier: 2.1.2
         version: 2.1.2(@babel/core@7.21.8)
       ember-maybe-import-regenerator:
-        specifier: ^1.0.0
+        specifier: 1.0.0
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
         version: 7.0.0(@ember/test-helpers@3.1.0)(ember-source@4.12.0)(qunit@2.19.4)(webpack@5.82.1)
       ember-resolver:
-        specifier: ^10.0.0
+        specifier: 10.1.0
         version: 10.1.0(@ember/string@3.0.1)(ember-source@4.12.0)
       ember-source:
-        specifier: ~4.12.0
+        specifier: 4.12.0
         version: 4.12.0(@babel/core@7.21.8)(@glimmer/component@1.1.2)(webpack@5.82.1)
       ember-source-channel-url:
-        specifier: ^3.0.0
+        specifier: 3.0.0
         version: 3.0.0
       ember-test-selectors:
-        specifier: ^6.0.0
+        specifier: 6.0.0
         version: 6.0.0
       ember-try:
         specifier: 3.0.0-beta.1
         version: 3.0.0-beta.1
       eslint:
-        specifier: ^8.14.0
+        specifier: 8.40.0
         version: 8.40.0
       eslint-config-simplabs:
-        specifier: ^0.4.0
+        specifier: 0.4.0
         version: 0.4.0(eslint@8.40.0)
       eslint-plugin-ember:
-        specifier: ^10.6.0
+        specifier: 10.6.1
         version: 10.6.1(eslint@8.40.0)
       eslint-plugin-node:
-        specifier: ^11.1.0
+        specifier: 11.1.0
         version: 11.1.0(eslint@8.40.0)
       eslint-plugin-qunit:
-        specifier: ^7.2.0
+        specifier: 7.3.4
         version: 7.3.4(eslint@8.40.0)
       glob:
-        specifier: ^10.0.0
+        specifier: 10.2.3
         version: 10.2.3
       handlebars:
-        specifier: ~4.7.1
+        specifier: 4.7.7
         version: 4.7.7
       loader.js:
-        specifier: ^4.7.0
+        specifier: 4.7.0
         version: 4.7.0
       marked:
-        specifier: ^4.0.0
+        specifier: 4.3.0
         version: 4.3.0
       mocha:
-        specifier: ^10.0.0
+        specifier: 10.2.0
         version: 10.2.0
       npm-run-all:
-        specifier: ^4.1.5
+        specifier: 4.1.5
         version: 4.1.5
       pretender:
         specifier: 3.4.7
@@ -319,31 +319,31 @@ importers:
         specifier: 15.2.0
         version: 15.2.0
       torii:
-        specifier: ^1.0.0-beta.1
+        specifier: 1.0.0-beta.1
         version: 1.0.0-beta.1
       webpack:
-        specifier: ^5.74.0
+        specifier: 5.82.1
         version: 5.82.1
 
   packages/test-app:
     devDependencies:
       '@babel/eslint-parser':
-        specifier: ^7.19.1
+        specifier: 7.21.8
         version: 7.21.8(@babel/core@7.21.8)(eslint@8.40.0)
       '@ember/legacy-built-in-components':
-        specifier: ^0.4.1
+        specifier: 0.4.2
         version: 0.4.2(ember-source@4.12.0)
       '@ember/optional-features':
-        specifier: ^2.0.0
+        specifier: 2.0.0
         version: 2.0.0
       '@ember/string':
-        specifier: ^3.0.1
+        specifier: 3.0.1
         version: 3.0.1
       '@ember/test-helpers':
         specifier: 3.1.0
         version: 3.1.0(ember-source@4.12.0)(webpack@5.82.1)
       '@embroider/test-setup':
-        specifier: ^3.0.1
+        specifier: 3.0.1
         version: 3.0.1
       '@glimmer/component':
         specifier: 1.1.2
@@ -352,31 +352,31 @@ importers:
         specifier: 1.1.2
         version: 1.1.2
       body-parser:
-        specifier: ^1.19.0
+        specifier: 1.20.1
         version: 1.20.1
       bootstrap:
-        specifier: ^5.0.0
+        specifier: 5.2.3
         version: 5.2.3(@popperjs/core@2.11.8)
       broccoli-asset-rev:
-        specifier: ^3.0.0
+        specifier: 3.0.0
         version: 3.0.0
       cors:
-        specifier: ^2.8.5
+        specifier: 2.8.5
         version: 2.8.5
       ember-auto-import:
-        specifier: ^2.4.2
+        specifier: 2.6.3
         version: 2.6.3(webpack@5.82.1)
       ember-cli:
-        specifier: ~4.12.0
+        specifier: 4.12.0
         version: 4.12.0(handlebars@4.7.7)
       ember-cli-babel:
-        specifier: ^7.20.1
+        specifier: 7.26.11
         version: 7.26.11
       ember-cli-content-security-policy:
-        specifier: ~1.1.1
+        specifier: 1.1.1
         version: 1.1.1
       ember-cli-dependency-checker:
-        specifier: ^3.3.1
+        specifier: 3.3.2
         version: 3.3.2(ember-cli@4.12.0)
       ember-cli-fastboot:
         specifier: 4.1.1
@@ -385,91 +385,91 @@ importers:
         specifier: 0.6.1
         version: 0.6.1(ember-source@4.12.0)(webpack@5.82.1)
       ember-cli-htmlbars:
-        specifier: ^6.0.0
+        specifier: 6.2.0
         version: 6.2.0
       ember-cli-inject-live-reload:
-        specifier: ^2.0.2
+        specifier: 2.1.0
         version: 2.1.0
       ember-cli-sri:
-        specifier: ^2.1.1
+        specifier: 2.1.1
         version: 2.1.1
       ember-cli-terser:
         specifier: 4.0.2
         version: 4.0.2
       ember-data:
-        specifier: ~4.12.0
+        specifier: 4.12.0
         version: 4.12.0(@babel/core@7.21.8)(@ember/string@3.0.1)(@glimmer/tracking@1.1.2)(ember-source@4.12.0)(webpack@5.82.1)
       ember-disable-prototype-extensions:
-        specifier: ^1.1.2
+        specifier: 1.1.3
         version: 1.1.3
       ember-engines:
-        specifier: ^0.9.0
+        specifier: 0.9.0
         version: 0.9.0(@ember/legacy-built-in-components@0.4.2)(ember-source@4.12.0)
       ember-fetch:
-        specifier: ^8.1.2
+        specifier: 8.1.2
         version: 8.1.2
       ember-load-initializers:
-        specifier: ^2.1.1
+        specifier: 2.1.2
         version: 2.1.2(@babel/core@7.21.8)
       ember-maybe-import-regenerator:
-        specifier: ^1.0.0
+        specifier: 1.0.0
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
         version: 7.0.0(@ember/test-helpers@3.1.0)(ember-source@4.12.0)(qunit@2.19.4)(webpack@5.82.1)
       ember-resolver:
-        specifier: ^10.0.0
+        specifier: 10.1.0
         version: 10.1.0(@ember/string@3.0.1)(ember-source@4.12.0)
       ember-simple-auth:
         specifier: 6.0.0-rc.1
         version: link:../ember-simple-auth
       ember-source:
-        specifier: ~4.12.0
+        specifier: 4.12.0
         version: 4.12.0(@babel/core@7.21.8)(@glimmer/component@1.1.2)(webpack@5.82.1)
       ember-source-channel-url:
-        specifier: ^3.0.0
+        specifier: 3.0.0
         version: 3.0.0
       ember-try:
         specifier: 3.0.0-beta.1
         version: 3.0.0-beta.1
       eslint:
-        specifier: ^8.14.0
+        specifier: 8.40.0
         version: 8.40.0
       eslint-config-simplabs:
-        specifier: ^0.4.0
+        specifier: 0.4.0
         version: 0.4.0(eslint@8.40.0)
       eslint-plugin-ember:
-        specifier: ^10.6.0
+        specifier: 10.6.1
         version: 10.6.1(eslint@8.40.0)
       eslint-plugin-node:
-        specifier: ^11.0.0
+        specifier: 11.1.0
         version: 11.1.0(eslint@8.40.0)
       eslint-plugin-qunit:
-        specifier: ^7.2.0
+        specifier: 7.3.4
         version: 7.3.4(eslint@8.40.0)
       express:
-        specifier: ^4.17.1
+        specifier: 4.18.2
         version: 4.18.2
       fastboot-app-server:
-        specifier: ^4.1.1
+        specifier: 4.1.1
         version: 4.1.1
       glob:
-        specifier: ^10.0.0
+        specifier: 10.2.3
         version: 10.2.3
       handlebars:
-        specifier: ~4.7.1
+        specifier: 4.7.7
         version: 4.7.7
       loader.js:
-        specifier: ^4.7.0
+        specifier: 4.7.0
         version: 4.7.0
       my-engine:
         specifier: workspace:../test-app/lib/my-engine
         version: link:lib/my-engine
       najax:
-        specifier: ^1.0.7
+        specifier: 1.0.7
         version: 1.0.7
       npm-run-all:
-        specifier: ^4.1.5
+        specifier: 4.1.5
         version: 4.1.5
       pretender:
         specifier: 3.4.7
@@ -481,10 +481,10 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       torii:
-        specifier: ^1.0.0-beta.1
+        specifier: 1.0.0-beta.1
         version: 1.0.0-beta.1
       webpack:
-        specifier: ^5.74.0
+        specifier: 5.82.1
         version: 5.82.1
 
 packages:
@@ -3585,26 +3585,6 @@ packages:
       - supports-color
     dev: true
 
-  /body-parser@1.20.2:
-    resolution: {integrity: sha512-ml9pReCu3M61kGlqoTm2umSXTlRTuGTx0bfYj+uIUKKYycG5NtSbeetV3faSU6R7ajOPw0g/J1PvK4qNy7s5bA==}
-    engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
-    dependencies:
-      bytes: 3.1.2
-      content-type: 1.0.5
-      debug: 2.6.9
-      depd: 2.0.0
-      destroy: 1.2.0
-      http-errors: 2.0.0
-      iconv-lite: 0.4.24
-      on-finished: 2.4.1
-      qs: 6.11.0
-      raw-body: 2.5.2
-      type-is: 1.6.18
-      unpipe: 1.0.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /body@5.1.0:
     resolution: {integrity: sha512-chUsBxGRtuElD6fmw1gHLpvnKdVLK302peeFa9ZqAEk8TyzZ3fygLyUEDDPTJvL9+Bor0dIwn6ePOsRM2y0zQQ==}
     dependencies:
@@ -5806,7 +5786,7 @@ packages:
     resolution: {integrity: sha512-QgGAFt1nmsb0qF2YXI5iSM7jJVb09R2hrfX7uR+kkXMb5VyNQXdo2ZlX/DuIbePQVY4q9THpRh8Yf0UHJNbvDQ==}
     engines: {node: ^4.5 || 6.* || >= 7.*}
     dependencies:
-      body-parser: 1.20.2
+      body-parser: 1.20.1
       chalk: 2.4.2
     transitivePeerDependencies:
       - supports-color
@@ -5834,7 +5814,7 @@ packages:
     peerDependencies:
       ember-source: ^3.28.0 || ^4.0.0 || ^5.0.0
     dependencies:
-      body-parser: 1.20.2
+      body-parser: 1.20.1
       ember-auto-import: 2.6.3(webpack@5.82.1)
       ember-cli-babel: 7.26.11
       ember-source: 4.12.0(@babel/core@7.21.8)(@glimmer/component@1.1.2)(webpack@5.82.1)
