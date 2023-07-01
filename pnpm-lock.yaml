@@ -298,8 +298,8 @@ importers:
         specifier: 4.7.0
         version: 4.7.0
       marked:
-        specifier: 4.3.0
-        version: 4.3.0
+        specifier: 5.1.0
+        version: 5.1.0
       mocha:
         specifier: 10.2.0
         version: 10.2.0
@@ -10200,9 +10200,9 @@ packages:
       uc.micro: 1.0.6
     dev: true
 
-  /marked@4.3.0:
-    resolution: {integrity: sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==}
-    engines: {node: '>= 12'}
+  /marked@5.1.0:
+    resolution: {integrity: sha512-z3/nBe7aTI8JDszlYLk7dDVNpngjw0o1ZJtrA9kIfkkHcIF+xH7mO23aISl4WxP83elU+MFROgahqdpd05lMEQ==}
+    engines: {node: '>= 18'}
     hasBin: true
     dev: true
 
