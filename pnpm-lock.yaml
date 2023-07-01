@@ -132,8 +132,8 @@ importers:
         specifier: 0.4.0
         version: 0.4.0(eslint@8.40.0)
       eslint-plugin-ember:
-        specifier: 10.6.1
-        version: 10.6.1(eslint@8.40.0)
+        specifier: 11.9.0
+        version: 11.9.0(eslint@8.40.0)
       eslint-plugin-node:
         specifier: 11.1.0
         version: 11.1.0(eslint@8.40.0)
@@ -280,8 +280,8 @@ importers:
         specifier: 0.4.0
         version: 0.4.0(eslint@8.40.0)
       eslint-plugin-ember:
-        specifier: 10.6.1
-        version: 10.6.1(eslint@8.40.0)
+        specifier: 11.9.0
+        version: 11.9.0(eslint@8.40.0)
       eslint-plugin-node:
         specifier: 11.1.0
         version: 11.1.0(eslint@8.40.0)
@@ -439,8 +439,8 @@ importers:
         specifier: 0.4.0
         version: 0.4.0(eslint@8.40.0)
       eslint-plugin-ember:
-        specifier: 10.6.1
-        version: 10.6.1(eslint@8.40.0)
+        specifier: 11.9.0
+        version: 11.9.0(eslint@8.40.0)
       eslint-plugin-node:
         specifier: 11.1.0
         version: 11.1.0(eslint@8.40.0)
@@ -2234,6 +2234,37 @@ packages:
     resolution: {integrity: sha512-JKF/a9I9jw6fGoz8kA7LEQslrwJ5jms5CXhu/aqkBWk+PmZ6pTl8mlb/eJ/5ujBGTiQzBhy5AIWF712iA+4/mw==}
     dev: true
 
+  /@glimmer/global-context@0.84.3:
+    resolution: {integrity: sha512-8Oy9Wg5IZxMEeAnVmzD2NkObf89BeHoFSzJgJROE/deutd3rxg83mvlOez4zBBGYwnTb+VGU2LYRpet92egJjA==}
+    dependencies:
+      '@glimmer/env': 0.1.7
+    dev: true
+
+  /@glimmer/interfaces@0.84.3:
+    resolution: {integrity: sha512-dk32ykoNojt0mvEaIW6Vli5MGTbQo58uy3Epj7ahCgTHmWOKuw/0G83f2UmFprRwFx689YTXG38I/vbpltEjzg==}
+    dependencies:
+      '@simple-dom/interface': 1.4.0
+    dev: true
+
+  /@glimmer/reference@0.84.3:
+    resolution: {integrity: sha512-lV+p/aWPVC8vUjmlvYVU7WQJsLh319SdXuAWoX/SE3pq340BJlAJiEcAc6q52y9JNhT57gMwtjMX96W5Xcx/qw==}
+    dependencies:
+      '@glimmer/env': 0.1.7
+      '@glimmer/global-context': 0.84.3
+      '@glimmer/interfaces': 0.84.3
+      '@glimmer/util': 0.84.3
+      '@glimmer/validator': 0.84.3
+    dev: true
+
+  /@glimmer/syntax@0.84.3:
+    resolution: {integrity: sha512-ioVbTic6ZisLxqTgRBL2PCjYZTFIwobifCustrozRU2xGDiYvVIL0vt25h2c1ioDsX59UgVlDkIK4YTAQQSd2A==}
+    dependencies:
+      '@glimmer/interfaces': 0.84.3
+      '@glimmer/util': 0.84.3
+      '@handlebars/parser': 2.0.0
+      simple-html-tokenizer: 0.5.11
+    dev: true
+
   /@glimmer/tracking@1.1.2:
     resolution: {integrity: sha512-cyV32zsHh+CnftuRX84ALZpd2rpbDrhLhJnTXn9W//QpqdRZ5rdMsxSY9fOsj0CKEc706tmEU299oNnDc0d7tA==}
     dependencies:
@@ -2245,8 +2276,23 @@ packages:
     resolution: {integrity: sha512-duAsm30uVK9jSysElCbLyU6QQYO2X9iLDLBIBUcCqck9qN1o3tK2qWiHbGK5d6g8E2AJ4H88UrfElkyaJlGrwg==}
     dev: true
 
+  /@glimmer/util@0.84.3:
+    resolution: {integrity: sha512-qFkh6s16ZSRuu2rfz3T4Wp0fylFj3HBsONGXQcrAdZjdUaIS6v3pNj6mecJ71qRgcym9Hbaq/7/fefIwECUiKw==}
+    dependencies:
+      '@glimmer/env': 0.1.7
+      '@glimmer/interfaces': 0.84.3
+      '@simple-dom/interface': 1.4.0
+    dev: true
+
   /@glimmer/validator@0.44.0:
     resolution: {integrity: sha512-i01plR0EgFVz69GDrEuFgq1NheIjZcyTy3c7q+w7d096ddPVeVcRzU3LKaqCfovvLJ+6lJx40j45ecycASUUyw==}
+    dev: true
+
+  /@glimmer/validator@0.84.3:
+    resolution: {integrity: sha512-RTBV4TokUB0vI31UC7ikpV7lOYpWUlyqaKV//pRC4pexYMlmqnVhkFrdiimB/R1XyNdUOQUmnIAcdic39NkbhQ==}
+    dependencies:
+      '@glimmer/env': 0.1.7
+      '@glimmer/global-context': 0.84.3
     dev: true
 
   /@glimmer/vm-babel-plugins@0.84.2(@babel/core@7.22.5):
@@ -2255,6 +2301,10 @@ packages:
       babel-plugin-debug-macros: 0.3.4(@babel/core@7.22.5)
     transitivePeerDependencies:
       - '@babel/core'
+    dev: true
+
+  /@handlebars/parser@2.0.0:
+    resolution: {integrity: sha512-EP9uEDZv/L5Qh9IWuMUGJRfwhXJ4h1dqKTT4/3+tY0eu7sPis7xh23j61SYUnNF4vqCQvvUXpDo9Bh/+q1zASA==}
     dev: true
 
   /@humanwhocodes/config-array@0.11.10:
@@ -3462,6 +3512,11 @@ packages:
     dev: true
     optional: true
 
+  /babel-import-util@0.2.0:
+    resolution: {integrity: sha512-CtWYYHU/MgK88rxMrLfkD356dApswtR/kWZ/c6JifG1m10e7tBBrs/366dFzWMAoqYmG5/JSh+94tUSpIwh+ag==}
+    engines: {node: '>= 12.*'}
+    dev: true
+
   /babel-import-util@1.3.0:
     resolution: {integrity: sha512-PPzUT17eAI18zn6ek1R3sB4Krc/MbnmT1MkZQFmyhjoaEGBVwNABhfVU9+EKcDSKrrOm9OIpGhjxukx1GCiy1g==}
     engines: {node: '>= 12.*'}
@@ -3727,7 +3782,7 @@ packages:
     dependencies:
       ansi-align: 3.0.1
       camelcase: 7.0.1
-      chalk: 5.2.0
+      chalk: 5.3.0
       cli-boxes: 3.0.0
       string-width: 5.1.2
       type-fest: 2.19.0
@@ -4903,6 +4958,11 @@ packages:
     engines: {node: '>=0.1.90'}
     dev: true
 
+  /colors@1.4.0:
+    resolution: {integrity: sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==}
+    engines: {node: '>=0.1.90'}
+    dev: true
+
   /combined-stream@0.0.7:
     resolution: {integrity: sha512-qfexlmLp9MyrkajQVyjEDb0Vj+KhRgR/rxLiVhaihlT+ZkX0lReqtH6Ack40CvMDERR4b5eFp3CreskpBs1Pig==}
     engines: {node: '>= 0.8'}
@@ -4941,6 +5001,11 @@ packages:
   /commander@7.2.0:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
+    dev: true
+
+  /commander@8.3.0:
+    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
+    engines: {node: '>= 12'}
     dev: true
 
   /common-tags@1.8.2:
@@ -6677,6 +6742,43 @@ packages:
       - webpack
     dev: true
 
+  /ember-template-imports@3.4.2:
+    resolution: {integrity: sha512-OS8TUVG2kQYYwP3netunLVfeijPoOKIs1SvPQRTNOQX4Pu8xGGBEZmrv0U1YTnQn12Eg+p6w/0UdGbUnITjyzw==}
+    engines: {node: 12.* || >= 14}
+    dependencies:
+      babel-import-util: 0.2.0
+      broccoli-stew: 3.0.0
+      ember-cli-babel-plugin-helpers: 1.1.1
+      ember-cli-version-checker: 5.1.2
+      line-column: 1.0.2
+      magic-string: 0.25.9
+      parse-static-imports: 1.1.0
+      string.prototype.matchall: 4.0.8
+      validate-peer-dependencies: 1.2.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /ember-template-recast@6.1.4:
+    resolution: {integrity: sha512-fCh+rOK6z+/tsdkTbOE+e7f84P6ObnIRQrCCrnu21E4X05hPeradikIkRMhJdxn4NWrxitfZskQDd37TR/lsNQ==}
+    engines: {node: 12.* || 14.* || >= 16.*}
+    hasBin: true
+    dependencies:
+      '@glimmer/reference': 0.84.3
+      '@glimmer/syntax': 0.84.3
+      '@glimmer/validator': 0.84.3
+      async-promise-queue: 1.0.5
+      colors: 1.4.0
+      commander: 8.3.0
+      globby: 11.1.0
+      ora: 5.4.1
+      slash: 3.0.0
+      tmp: 0.2.1
+      workerpool: 6.4.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /ember-test-selectors@6.0.0:
     resolution: {integrity: sha512-PgYcI9PeNvtKaF0QncxfbS68olMYM1idwuI8v/WxsjOGqUx5bmsu6V17vy/d9hX4mwmjgsBhEghrVasGSuaIgw==}
     engines: {node: 12.* || 14.* || >= 16.*}
@@ -6961,21 +7063,28 @@ packages:
       supports-color: 3.2.3
     dev: true
 
-  /eslint-plugin-ember@10.6.1(eslint@8.40.0):
-    resolution: {integrity: sha512-R+TN3jwhYQ2ytZCA1VkfJDZSGgHFOHjsHU1DrBlRXYRepThe56PpuGxywAyDvQ7inhoAz3e6G6M60PzpvjzmNg==}
-    engines: {node: 10.* || 12.* || >= 14}
+  /eslint-plugin-ember@11.9.0(eslint@8.40.0):
+    resolution: {integrity: sha512-kpsvbdQOFw9ikzwmhxR8mmsAXtwwj+DPMGn1NOHAHJOnhTkyioKEiNO6tQK/b33VtQy1VpJP6zFu+Bt6m/cYxA==}
+    engines: {node: 14.* || 16.* || >= 18}
     peerDependencies:
-      eslint: '>= 6'
+      eslint: '>= 7'
     dependencies:
       '@ember-data/rfc395-data': 0.0.4
+      '@glimmer/syntax': 0.84.3
       css-tree: 2.3.1
       ember-rfc176-data: 0.3.18
+      ember-template-imports: 3.4.2
+      ember-template-recast: 6.1.4
       eslint: 8.40.0
       eslint-utils: 3.0.0(eslint@8.40.0)
       estraverse: 5.3.0
+      lodash.camelcase: 4.3.0
       lodash.kebabcase: 4.1.1
+      magic-string: 0.30.0
       requireindex: 1.2.0
       snake-case: 3.0.4
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /eslint-plugin-es@3.0.1(eslint@8.40.0):
@@ -8288,6 +8397,18 @@ packages:
       slash: 3.0.0
     dev: true
 
+  /globby@11.1.0:
+    resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==}
+    engines: {node: '>=10'}
+    dependencies:
+      array-union: 2.1.0
+      dir-glob: 3.0.1
+      fast-glob: 3.3.0
+      ignore: 5.2.4
+      merge2: 1.4.1
+      slash: 3.0.0
+    dev: true
+
   /globby@13.1.4:
     resolution: {integrity: sha512-iui/IiiW+QrJ1X1hKH5qwlMQyv34wJAYwH1vrf8b9kBA4sNiif3gKsMHa+BrdnOpEudWjpotfa7LrTzB1ERS/g==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
@@ -8833,7 +8954,7 @@ packages:
     engines: {node: '>=14.18.0'}
     dependencies:
       ansi-escapes: 6.2.0
-      chalk: 5.2.0
+      chalk: 5.3.0
       cli-cursor: 4.0.0
       cli-width: 4.0.0
       external-editor: 3.1.0
@@ -9768,6 +9889,10 @@ packages:
     resolution: {integrity: sha512-yX/rx6d/UTVh7sSVWVSIMjfnz95evAgDFdb1ZozC35I9mSFCkmzptOzevxjgbQUsc78NR44LVHWjsoMQXy9FDg==}
     dev: true
 
+  /lodash.camelcase@4.3.0:
+    resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
+    dev: true
+
   /lodash.capitalize@4.2.1:
     resolution: {integrity: sha512-kZzYOKspf8XVX5AvmQF94gQW0lejFVgb80G85bU4ZWzoJ6C03PQg3coYAUpSTpQWelrZELd3XWgHzw4Ck5kaIw==}
     dev: true
@@ -9903,7 +10028,7 @@ packages:
     resolution: {integrity: sha512-l0x2DvrW294C9uDCoQe1VSU4gf529FkSZ6leBl4TiqZH/e+0R7hSfHQBNut2mNygDgHwvYHfFLn6Oxb3VWj2rA==}
     engines: {node: '>=12'}
     dependencies:
-      chalk: 5.2.0
+      chalk: 5.3.0
       is-unicode-supported: 1.3.0
     dev: true
 
@@ -9977,6 +10102,13 @@ packages:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
     dependencies:
       sourcemap-codec: 1.4.8
+
+  /magic-string@0.30.0:
+    resolution: {integrity: sha512-LA+31JYDJLs82r2ScLrlz1GjSgu66ZV518eyWT+S8VhyQn/JL0u9MeBOvQMGYiPk1DBiSN9DDMOcXvigJZaViQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.4.15
+    dev: true
 
   /make-dir@3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
@@ -11126,7 +11258,7 @@ packages:
     resolution: {integrity: sha512-1/D8uRFY0ay2kgBpmAwmSA404w4OoPVhHMqRqtjvrcK/dnzcEZxMJ+V4DUbyICu8IIVRclHcOf5wlD1tMY4GUQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
-      chalk: 5.2.0
+      chalk: 5.3.0
       cli-cursor: 4.0.0
       cli-spinners: 2.9.0
       is-interactive: 2.0.0
@@ -11306,7 +11438,7 @@ packages:
       got: 12.6.0
       registry-auth-token: 5.0.2
       registry-url: 6.0.1
-      semver: 7.5.0
+      semver: 7.5.3
     dev: true
 
   /parent-module@1.0.1:
@@ -12523,7 +12655,7 @@ packages:
     resolution: {integrity: sha512-0Ju4+6A8iOnpL/Thra7dZsSlOHYAHIeMxfhWQRI1/VLcT3WDBZKKtQt/QkBOsiIN9ZpuvHE6cGZ0x4glCMmfiA==}
     engines: {node: '>=12'}
     dependencies:
-      semver: 7.5.0
+      semver: 7.5.3
     dev: true
 
   /semver@5.7.1:
@@ -12695,6 +12827,10 @@ packages:
       '@simple-dom/parser': 1.4.0
       '@simple-dom/serializer': 1.4.0
       '@simple-dom/void-map': 1.4.0
+    dev: true
+
+  /simple-html-tokenizer@0.5.11:
+    resolution: {integrity: sha512-C2WEK/Z3HoSFbYq8tI7ni3eOo/NneSPRoPpcM7WdLjFOArFuyXEjAoCdOC3DgMfRyziZQ1hCNR4mrNdWEvD0og==}
     dev: true
 
   /sinon@15.2.0:
@@ -13903,7 +14039,7 @@ packages:
     engines: {node: '>=14.16'}
     dependencies:
       boxen: 7.1.0
-      chalk: 5.2.0
+      chalk: 5.3.0
       configstore: 6.0.0
       has-yarn: 3.0.0
       import-lazy: 4.0.0
@@ -13913,7 +14049,7 @@ packages:
       is-yarn-global: 0.4.1
       latest-version: 7.0.0
       pupa: 3.1.0
-      semver: 7.5.0
+      semver: 7.5.3
       semver-diff: 4.0.0
       xdg-basedir: 5.1.0
     dev: true
@@ -13996,6 +14132,13 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     dependencies:
       builtins: 5.0.1
+    dev: true
+
+  /validate-peer-dependencies@1.2.0:
+    resolution: {integrity: sha512-nd2HUpKc6RWblPZQ2GDuI65sxJ2n/UqZwSBVtj64xlWjMx0m7ZB2m9b2JS3v1f+n9VWH/dd1CMhkHfP6pIdckA==}
+    dependencies:
+      resolve-package-path: 3.1.0
+      semver: 7.5.3
     dev: true
 
   /validate-peer-dependencies@2.2.0:
