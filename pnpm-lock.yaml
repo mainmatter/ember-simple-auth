@@ -36,8 +36,8 @@ importers:
         specifier: 3.1.1
         version: 3.1.1
       '@ember/test-helpers':
-        specifier: 3.1.0
-        version: 3.1.0(ember-source@4.12.3)(webpack@5.88.1)
+        specifier: 3.2.0
+        version: 3.2.0(ember-source@4.12.3)(webpack@5.88.1)
       '@embroider/test-setup':
         specifier: 3.0.1
         version: 3.0.1
@@ -109,7 +109,7 @@ importers:
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.1.0)(ember-source@4.12.3)(qunit@2.19.4)(webpack@5.88.1)
+        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@4.12.3)(qunit@2.19.4)(webpack@5.88.1)
       ember-resolver:
         specifier: 10.1.1
         version: 10.1.1(@ember/string@3.1.1)(ember-source@4.12.3)
@@ -202,8 +202,8 @@ importers:
         specifier: 3.1.1
         version: 3.1.1
       '@ember/test-helpers':
-        specifier: 3.1.0
-        version: 3.1.0(ember-source@4.12.3)(webpack@5.88.1)
+        specifier: 3.2.0
+        version: 3.2.0(ember-source@4.12.3)(webpack@5.88.1)
       '@embroider/test-setup':
         specifier: 3.0.1
         version: 3.0.1
@@ -257,7 +257,7 @@ importers:
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.1.0)(ember-source@4.12.3)(qunit@2.19.4)(webpack@5.88.1)
+        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@4.12.3)(qunit@2.19.4)(webpack@5.88.1)
       ember-resolver:
         specifier: 10.1.1
         version: 10.1.1(@ember/string@3.1.1)(ember-source@4.12.3)
@@ -340,8 +340,8 @@ importers:
         specifier: 3.1.1
         version: 3.1.1
       '@ember/test-helpers':
-        specifier: 3.1.0
-        version: 3.1.0(ember-source@4.12.3)(webpack@5.88.1)
+        specifier: 3.2.0
+        version: 3.2.0(ember-source@4.12.3)(webpack@5.88.1)
       '@embroider/test-setup':
         specifier: 3.0.1
         version: 3.0.1
@@ -416,7 +416,7 @@ importers:
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.1.0)(ember-source@4.12.3)(qunit@2.19.4)(webpack@5.88.1)
+        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@4.12.3)(qunit@2.19.4)(webpack@5.88.1)
       ember-resolver:
         specifier: 10.1.1
         version: 10.1.1(@ember/string@3.1.1)(ember-source@4.12.3)
@@ -2067,14 +2067,15 @@ packages:
       - supports-color
     dev: true
 
-  /@ember/test-helpers@3.1.0(ember-source@4.12.3)(webpack@5.88.1):
-    resolution: {integrity: sha512-7T4sKM/8oML7tBvBPIAlugtz8p+Vm0x0PcQsPW8sg83/tIQY8EUElhclMbYcAoYeij+KJ4HKGI+fCUBBfKAImg==}
+  /@ember/test-helpers@3.2.0(ember-source@4.12.3)(webpack@5.88.1):
+    resolution: {integrity: sha512-3yWpPsK5O77tUdCwW3HayrAcdlRitIRYMvLIG69Pkal1JMIGdNYVTvJ2R1lenhQh2syd/WFmGM07vQuDAtotQw==}
     engines: {node: 16.* || >= 18}
     peerDependencies:
       ember-source: ^4.0.0 || ^5.0.0
     dependencies:
       '@ember/test-waiters': 3.0.2
       '@embroider/macros': 1.12.2
+      '@simple-dom/interface': 1.4.0
       broccoli-debug: 0.6.5
       broccoli-funnel: 3.0.8
       ember-auto-import: 2.6.3(webpack@5.88.1)
@@ -6662,7 +6663,7 @@ packages:
       - supports-color
     dev: true
 
-  /ember-qunit@7.0.0(@ember/test-helpers@3.1.0)(ember-source@4.12.3)(qunit@2.19.4)(webpack@5.88.1):
+  /ember-qunit@7.0.0(@ember/test-helpers@3.2.0)(ember-source@4.12.3)(qunit@2.19.4)(webpack@5.88.1):
     resolution: {integrity: sha512-KhrndHYEXsHnXvmsGyJLJQ6VCudXaRs5dzPZBsdttZJIhsB6PmYAvq2Q+mh3GRDT/59T/sRDrB3FD3/lATS8aA==}
     engines: {node: 16.* || >= 18}
     peerDependencies:
@@ -6670,7 +6671,7 @@ packages:
       ember-source: '>=4.0.0'
       qunit: ^2.13.0
     dependencies:
-      '@ember/test-helpers': 3.1.0(ember-source@4.12.3)(webpack@5.88.1)
+      '@ember/test-helpers': 3.2.0(ember-source@4.12.3)(webpack@5.88.1)
       broccoli-funnel: 3.0.8
       broccoli-merge-trees: 3.0.2
       common-tags: 1.8.2
@@ -11469,7 +11470,7 @@ packages:
       got: 12.6.1
       registry-auth-token: 5.0.2
       registry-url: 6.0.1
-      semver: 7.5.1
+      semver: 7.5.3
     dev: true
 
   /parent-module@1.0.1:
@@ -12677,7 +12678,7 @@ packages:
     resolution: {integrity: sha512-0Ju4+6A8iOnpL/Thra7dZsSlOHYAHIeMxfhWQRI1/VLcT3WDBZKKtQt/QkBOsiIN9ZpuvHE6cGZ0x4glCMmfiA==}
     engines: {node: '>=12'}
     dependencies:
-      semver: 7.5.1
+      semver: 7.5.3
     dev: true
 
   /semver@5.7.1:
@@ -14066,7 +14067,7 @@ packages:
       is-yarn-global: 0.4.1
       latest-version: 7.0.0
       pupa: 3.1.0
-      semver: 7.5.1
+      semver: 7.5.3
       semver-diff: 4.0.0
       xdg-basedir: 5.1.0
     dev: true
