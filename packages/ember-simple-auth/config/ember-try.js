@@ -103,11 +103,25 @@ module.exports = function() {
         {
           name: 'ember-default',
           npm: {
-            devDependencies: {}
+            devDependencies: {
+              torii: null,
+            }
           }
         },
-        embroiderSafe(),
-        embroiderOptimized()
+        embroiderSafe({
+          npm: {
+            devDependencies: {
+              torii: null,
+            }
+          }
+        }),
+        embroiderOptimized({
+          npm: {
+            devDependencies: {
+              torii: null,
+            }
+          }
+        })
       ]
     };
   });
