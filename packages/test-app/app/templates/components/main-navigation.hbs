@@ -1,30 +1,49 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-  {{#link-to route='index' classNames='navbar-brand'}}
+  <LinkTo @route="index" class="navbar-brand">
     Home
-  {{/link-to}}
+  </LinkTo>
   <ul class="navbar-nav mr-auto">
-    {{#link-to route='protected' tagName='li' class='nav-item'}}
-      <a class="nav-link" href="#">Protected Page</a>
-    {{/link-to}}
-    {{#link-to route='engine.protected' tagName='li'}}
-      <a class="nav-link" href="#">Protected Engine Page</a>
-    {{/link-to}}
-    {{#link-to route='engine.open-only' tagName='li'}}
-      <a class="nav-link" href="#">Open-only Engine Page</a>
-    {{/link-to}}
-    {{#link-to route='auth-error' tagName='li' class='nav-item'}}
-      <a class="nav-link" href="#">Auth Error Page</a>
-    {{/link-to}}
+    <li class="nav-item">
+      <LinkTo @route="protected" class="nav-link">
+        Protected Page
+      </LinkTo>
+    </li>
+    <li class="nav-item">
+      <LinkTo @route="engine.protected" class="nav-link">
+        Protected Engine Page
+      </LinkTo>
+    </li>
+    <li class="nav-item">
+      <LinkTo @route="engine.open-only" class="nav-link">
+        Open-only Engine Page
+      </LinkTo>
+    </li>
+    <li class="nav-item">
+      <LinkTo @route="auth-error" class="nav-link">
+        Auth Error Page
+      </LinkTo>
+    </li>
   </ul>
   <form class="form-inline">
     {{! display logout button when the session is authenticated, login button otherwise }}
     {{#if this.session.isAuthenticated}}
       {{#if this.sessionAccount.account}}
-        <span class="navbar-text mr-3">Signed in as {{this.sessionAccount.account.name}}</span>
+        <span class="navbar-text mr-3">Signed in as
+          {{this.sessionAccount.account.name}}</span>
       {{/if}}
-      <a {{action 'logout'}} class="btn btn-danger" href="#" role="button">Logout</a>
+      <a
+        {{on "click" this.logout}}
+        class="btn btn-danger"
+        href="#"
+        role="button"
+      >Logout</a>
     {{else}}
-      <a {{action this.onLogin}} class="btn btn-success" href="#" role="button">Login</a>
+      <a
+        {{on "click" @onLogin}}
+        class="btn btn-success"
+        href="#"
+        role="button"
+      >Login</a>
     {{/if}}
   </form>
 </nav>
