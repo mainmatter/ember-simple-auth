@@ -10,7 +10,4 @@ export default class MainNavigationComponent extends Component {
   logout() {
     this.session.invalidate();
   }
-
-  @action
-  onLogin() {}
 }
