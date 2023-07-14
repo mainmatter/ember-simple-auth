@@ -25,13 +25,14 @@ export default {
       'utils/**/*.js',
       'authenticators/**/*.js',
       'test-support/**/*.js',
-      'configuration.js'
+      'configuration.js',
+      'initializers/**/*.js'
     ]),
 
     // These are the modules that should get reexported into the traditional
     // "app" tree. Things in here should also be in publicEntrypoints above, but
     // not everything in publicEntrypoints necessarily needs to go here.
-    addon.appReexports(['services/session.js', 'utils/**/*.js', 'session-stores/adaptive.js']),
+    addon.appReexports(['services/session.js', 'utils/**/*.js', 'session-stores/application.js', 'initializers/ember-simple-auth.js']),
 
     // Follow the V2 Addon rules about dependencies. Your code can import from
     // `dependencies` and `peerDependencies` as well as standard Ember-provided

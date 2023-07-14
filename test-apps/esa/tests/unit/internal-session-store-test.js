@@ -25,7 +25,6 @@ module('InternalSession store injection', function(hooks) {
     test('looks up the test session store when Ember.testing true', function(assert) {
       Ember.testing = true; // eslint-disable-line ember/no-ember-testing-in-module-scope
 
-      // debugger;
       session = this.owner.lookup('session:main');
       assert.equal(session.get('store'), this.owner.lookup('session-store:test'));
     });

@@ -128,12 +128,6 @@ export default Service.extend({
 
   init() {
     this._super(...arguments);
-    const registry = getOwner(this);
-    registry.register('session:main', InternalSession);
-
-    if (Ember.testing) {
-      registry.register('session-store:test', Ephemeral);
-    }
 
     this.set('session', getOwner(this).lookup('session:main'));
   },
@@ -152,7 +146,6 @@ export default Service.extend({
   },
 
   _setupHandlers() {
-    debugger;
     this.get('session').on('authenticationSucceeded', () =>
       this.handleAuthentication(Configuration.routeAfterAuthentication)
     );
