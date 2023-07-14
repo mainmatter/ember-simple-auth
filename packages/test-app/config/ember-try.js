@@ -1,1 +1,1 @@
-../../ember-simple-auth/config/ember-try.js
+../../../test-apps/esa/config/ember-try.js

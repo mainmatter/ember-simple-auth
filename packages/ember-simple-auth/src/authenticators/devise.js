@@ -2,6 +2,7 @@ import { Promise } from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
 import BaseAuthenticator from './base';
+import fetch from "fetch";
 
 const JSON_CONTENT_TYPE = 'application/json';
 

@@ -7,6 +7,7 @@ import { getOwner } from '@ember/application';
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 import isFastBoot from '../utils/is-fastboot';
+import fetch from "fetch";
 
 /**
   Authenticator that conforms to OAuth 2

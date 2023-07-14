@@ -1,7 +1,6 @@
 import RSVP from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import BaseAuthenticator from './base';
-
 /**
   Parses the location hash (as received from `window.location.hash`) into an
   object, e.g.:
