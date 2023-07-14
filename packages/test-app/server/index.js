@@ -1,9 +1,9 @@
 module.exports = function(app) {
   var cors = require('cors');
 
-  require("./mocks/accounts")(app);
-  require("./mocks/posts")(app);
-  require("./mocks/token")(app);
+  require('./mocks/accounts')(app);
+  require('./mocks/posts')(app);
+  require('./mocks/token')(app);
 
   // Log proxy requests
   var morgan = require('morgan');
