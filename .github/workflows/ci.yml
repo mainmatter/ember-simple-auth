@@ -2,7 +2,7 @@ name: CI
 
 env:
   VOLTA_FEATURE_PNPM: 1
-  dist: ember-simple-auth/dist
+  dist: packages/ember-simple-auth/dist
 
 on:
   push:
@@ -60,6 +60,7 @@ jobs:
     name: Tests
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs: build
 
     strategy:
       fail-fast: false
@@ -107,6 +108,7 @@ jobs:
     name: ${{ matrix.workspace }} ${{ matrix.test-suite }} - Allowed to fail
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs: build
     permissions:
       pull-requests: write
 
@@ -150,6 +152,7 @@ jobs:
     name: Tests (Floating Dependenies)
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs: build
 
     strategy:
       matrix:
