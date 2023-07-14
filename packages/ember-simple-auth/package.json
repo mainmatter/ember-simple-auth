@@ -83,6 +83,7 @@
     "./addon-main.js": "./addon-main.cjs"
   },
   "peerDependencies": {
-    "ember-fetch": "^8"
+    "ember-fetch": "^8",
+    "@ember/test-waiters": "^3"
   }
 }

@@ -2,6 +2,7 @@ import { Promise } from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
 import BaseAuthenticator from './base';
+import { waitFor } from '@ember/test-waiters';
 
 const JSON_CONTENT_TYPE = 'application/json';
 
@@ -144,7 +145,7 @@ export default BaseAuthenticator.extend({
     @return {Promise} The promise returned by `fetch`
     @protected
   */
-  makeRequest(data, options = {}) {
+  makeRequest: waitFor(function (data, options = {}) {
     let url = options.url || this.get('serverTokenEndpoint');
     let requestOptions = {};
     let body = JSON.stringify(data);
@@ -159,7 +160,7 @@ export default BaseAuthenticator.extend({
     Object.assign(requestOptions, options || {});
 
     return fetch(url, requestOptions);
-  },
+  }),
 
   _validate(data) {
     const tokenAttributeName = this.get('tokenAttributeName');

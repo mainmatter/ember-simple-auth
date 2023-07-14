@@ -176,6 +176,9 @@ importers:
 
   packages/ember-simple-auth:
     dependencies:
+      '@ember/test-waiters':
+        specifier: ^3
+        version: 3.0.2
       '@embroider/addon-shim':
         specifier: ^1.0.0
         version: 1.8.5
@@ -2493,7 +2496,6 @@ packages:
       semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@embroider/addon-dev@3.0.0(rollup@3.21.8):
     resolution: {integrity: sha512-h3ISDdp8LASA6583WC3IU3ECZ5fHlW3V3EkgpEeeH7KhxTerHjDjNf+S6+ZvPH+ZHi3WOCYPvUA5OfNICyMbtA==}
