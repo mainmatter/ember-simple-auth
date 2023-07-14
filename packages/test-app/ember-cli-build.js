@@ -1,7 +1,6 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
-const { Webpack } = require('@embroider/webpack');
 
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {});
@@ -21,14 +20,19 @@ module.exports = function(defaults) {
 
   app.import('node_modules/bootstrap/dist/css/bootstrap.css');
 
-  return require('@embroider/compat').compatBuild(app, Webpack, {
-    staticAddonTestSupportTrees: true,
-    staticAddonTrees: true,
-    staticHelpers: true,
-    staticModifiers: true,
-    staticComponents: true,
-    packagerOptions: {
-      webpackConfig: {},
-    },
-  });
+  if (process.env.ESA_TEST_EMBROIDER) {
+    const { Webpack } = require('@embroider/webpack');
+    return require('@embroider/compat').compatBuild(app, Webpack, {
+      staticAddonTestSupportTrees: true,
+      staticAddonTrees: true,
+      staticHelpers: true,
+      staticModifiers: true,
+      staticComponents: true,
+      packagerOptions: {
+        webpackConfig: {},
+      },
+    });
+  } else {
+    return app.toTree();
+  }
 };
