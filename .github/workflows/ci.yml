@@ -2,6 +2,7 @@ name: CI
 
 env:
   VOLTA_FEATURE_PNPM: 1
+  dist: ember-simple-auth/dist
 
 on:
   push:
@@ -41,6 +42,20 @@ jobs:
       - name: lint
         run: pnpm run --filter ${{ matrix.workspace }} lint
 
+  build:
+    name: Build Ember Simple Auth
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Build dist
+        run: pnpm run --filter ember-simple-auth build
+      - name: Upload dist
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: ${{ env.dist }}
+
+
   tests:
     name: Tests
     runs-on: ubuntu-latest
@@ -79,6 +94,7 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
+      - uses: ./.github/actions/download-built-package
 
       - name: install dependencies
         run: pnpm install
@@ -114,6 +130,7 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
+      - uses: ./.github/actions/download-built-package
 
       - name: install dependencies
         run: pnpm install
@@ -150,6 +167,7 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
+      - uses: ./.github/actions/download-built-package
 
       - name: install dependencies
         run: pnpm install --no-lockfile
