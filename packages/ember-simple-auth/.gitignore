@@ -3,7 +3,7 @@
 # compiled output
 dist/
 declarations/
-README.md
+*.md
 LICENSE
 
 # npm/pnpm/yarn pack output
