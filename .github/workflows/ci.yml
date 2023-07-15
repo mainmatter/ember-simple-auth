@@ -93,6 +93,12 @@ jobs:
           - workspace: test-esa
             test-suite: "test:one embroider-optimized"
             allow-failure: false
+          - workspace: test-app
+            test-suite: "test:one embroider-ember-5"
+            allow-failure: false
+          - workspace: test-app
+            test-suite: "test:one embroider-lts-4.12"
+            allow-failure: false
 
     steps:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3

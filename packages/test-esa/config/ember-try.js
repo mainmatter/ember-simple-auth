@@ -68,6 +68,34 @@ module.exports = function() {
           },
         },
         {
+          name: 'embroider-lts-4.12',
+          env: {
+            ESA_TEST_EMBROIDER: true,
+          },
+          npm: {
+            devDependencies: {
+              'ember-cli': '~4.12.0',
+              'ember-source': '~4.12.0',
+              'ember-data': '~4.12.1',
+              torii: null
+            },
+          }
+        },
+        {
+          name: 'embroider-ember-5',
+          env: {
+            ESA_TEST_EMBROIDER: true,
+          },
+          npm: {
+            devDependencies: {
+              'ember-cli': '~5.0.0',
+              'ember-data': '~5.0.0',
+              'ember-source': '~5.0.0',
+              torii: null,
+            },
+          }
+        },
+        {
           name: 'ember-release',
           npm: {
             devDependencies: {
