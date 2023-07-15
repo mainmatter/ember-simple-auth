@@ -30,7 +30,8 @@
     "ember-cli-is-package-missing": "^1.0.0",
     "ember-cookies": "^1.0.0",
     "ember-get-config": "^2.1.1",
-    "silent-error": "^1.0.0"
+    "silent-error": "^1.0.0",
+    "@ember/test-helpers": "3.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.0",
@@ -38,7 +39,6 @@
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-decorators": "^7.20.13",
     "@babel/runtime": "^7.17.0",
-    "@ember/test-helpers": "3.2.0",
     "@embroider/addon-dev": "^3.0.0",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-node-resolve": "^15.1.0",
