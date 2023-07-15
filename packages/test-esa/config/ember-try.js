@@ -96,6 +96,17 @@ module.exports = function() {
           }
         },
         {
+          name: 'embroider-default',
+          env: {
+            ESA_TEST_EMBROIDER: true,
+          },
+          npm: {
+            devDependencies: {
+              torii: null,
+            },
+          }
+        },
+        {
           name: 'ember-release',
           npm: {
             devDependencies: {
