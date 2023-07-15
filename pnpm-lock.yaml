@@ -424,11 +424,11 @@ importers:
         specifier: 5.88.1
         version: 5.88.1
 
-  test-apps/esa:
+  packages/test-esa:
     dependencies:
       ember-simple-auth:
         specifier: workspace:*
-        version: link:../../packages/ember-simple-auth
+        version: link:../ember-simple-auth
     devDependencies:
       '@babel/eslint-parser':
         specifier: ^7.22.6

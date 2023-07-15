@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         workspace:
-          - esa
+          - test-esa
           - classic-test-app
           - test-app
 
@@ -74,7 +74,7 @@ jobs:
       fail-fast: false
       matrix:
         workspace:
-          - esa
+          - test-esa
           - classic-test-app
           - test-app
         test-suite:
@@ -87,10 +87,10 @@ jobs:
           - test:one ember-release
         allow-failure: [false]
         include:
-          - workspace: esa
+          - workspace: test-esa
             test-suite: "test:one embroider-safe"
             allow-failure: false
-          - workspace: esa
+          - workspace: test-esa
             test-suite: "test:one embroider-optimized"
             allow-failure: false
 
@@ -124,7 +124,7 @@ jobs:
       fail-fast: false
       matrix:
         workspace:
-          - esa
+          - test-esa
           - classic-test-app
           - test-app
         test-suite:
@@ -165,7 +165,7 @@ jobs:
     strategy:
       matrix:
         workspace:
-          - esa
+          - test-esa
           - classic-test-app
           - test-app
 
@@ -206,4 +206,4 @@ jobs:
         run: pnpm install
 
       - name: tests
-        run: pnpm run --filter esa test:node
+        run: pnpm run --filter test-esa test:node

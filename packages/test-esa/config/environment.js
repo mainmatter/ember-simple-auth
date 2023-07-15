@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   const ENV = {
-    modulePrefix: 'esa',
+    modulePrefix: 'test-esa',
     environment,
     rootURL: '/',
     locationType: 'history',

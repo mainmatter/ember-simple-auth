@@ -1,5 +1,5 @@
 {
-  "name": "esa",
+  "name": "test-esa",
   "version": "0.0.0",
   "private": true,
   "description": "Test app for ember-simple-auth addon",

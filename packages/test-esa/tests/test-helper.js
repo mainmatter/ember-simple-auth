@@ -1,5 +1,5 @@
-import Application from 'esa/app';
-import config from 'esa/config/environment';
+import Application from 'test-esa/app';
+import config from 'test-esa/config/environment';
 import * as QUnit from 'qunit';
 import { setApplication } from '@ember/test-helpers';
 import { setup } from 'qunit-dom';
