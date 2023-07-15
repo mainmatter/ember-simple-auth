@@ -92,7 +92,6 @@ module.exports = function() {
               'ember-data': '~5.0.0',
               'ember-source': '~5.0.0',
               torii: null,
-              '@ember/legacy-built-in-components': null,
             },
           }
         },

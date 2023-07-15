@@ -30,8 +30,7 @@
     "ember-cli-is-package-missing": "^1.0.0",
     "ember-cookies": "^1.0.0",
     "ember-get-config": "^2.1.1",
-    "silent-error": "^1.0.0",
-    "@ember/test-helpers": "3.2.0"
+    "silent-error": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.0",
@@ -84,7 +83,7 @@
     "./addon-main.js": "./addon-main.cjs"
   },
   "peerDependencies": {
-    "@ember/test-helpers": "^3 || ^2",
+    "@ember/test-helpers": "^3",
     "@ember/test-waiters": "^3",
     "ember-source": "^3.28 || ^4.0.0 || ^5.0.0"
   }
