@@ -86,6 +86,6 @@
   "peerDependencies": {
     "@ember/test-helpers": "^3 || ^2",
     "@ember/test-waiters": "^3",
-    "ember-fetch": "^8"
+    "ember-source": "^3.28 || ^4.0.0 || ^5.0.0"
   }
 }
