@@ -3,6 +3,8 @@
 # compiled output
 dist/
 declarations/
+README.md
+LICENSE
 
 # npm/pnpm/yarn pack output
 *.tgz
