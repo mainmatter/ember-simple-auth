@@ -84,6 +84,7 @@
   },
   "peerDependencies": {
     "ember-fetch": "^8",
-    "@ember/test-waiters": "^3"
+    "@ember/test-waiters": "^3",
+    "@ember/test-helpers": "^3 || ^2"
   }
 }
