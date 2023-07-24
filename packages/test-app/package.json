@@ -17,7 +17,7 @@
     "test:fastboot": "ember fastboot:test"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "7.22.7",
+    "@babel/eslint-parser": "7.22.9",
     "@ember/legacy-built-in-components": "0.4.2",
     "@ember/optional-features": "2.0.0",
     "@ember/string": "3.1.1",
@@ -55,7 +55,7 @@
     "ember-source": "5.1.2",
     "ember-source-channel-url": "3.0.0",
     "ember-try": "3.0.0-beta.1",
-    "eslint": "8.44.0",
+    "eslint": "8.45.0",
     "eslint-config-simplabs": "0.4.0",
     "eslint-plugin-ember": "11.10.0",
     "eslint-plugin-node": "11.1.0",
