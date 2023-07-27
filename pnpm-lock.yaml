@@ -177,10 +177,10 @@ importers:
   packages/ember-simple-auth:
     dependencies:
       '@ember/test-helpers':
-        specifier: ^3
+        specifier: '>= 3'
         version: 3.2.0(ember-source@5.1.2)(webpack@5.88.1)
       '@ember/test-waiters':
-        specifier: ^3
+        specifier: '>= 3'
         version: 3.0.0
       '@embroider/addon-shim':
         specifier: ^1.0.0
@@ -195,7 +195,7 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       ember-source:
-        specifier: ^3.28 || ^4.0.0 || ^5.0.0
+        specifier: '>= 3.28 || >= 4.0.0 || >= 5.0.0'
         version: 5.1.2(@babel/core@7.17.0)(@glimmer/component@1.1.2)(rsvp@4.8.5)(webpack@5.88.1)
       silent-error:
         specifier: ^1.0.0
