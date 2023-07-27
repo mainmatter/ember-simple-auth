@@ -1,6 +1,5 @@
 import { inject as service } from '@ember/service';
 import Torii from 'ember-simple-auth/authenticators/torii';
-import fetch from "fetch";
 
 export default Torii.extend({
   torii: service(),
