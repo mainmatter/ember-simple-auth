@@ -180,7 +180,7 @@ importers:
         specifier: '>= 3'
         version: 3.2.0(ember-source@5.1.2)(webpack@5.88.1)
       '@ember/test-waiters':
-        specifier: '>= 3'
+        specifier: ^3.0.0
         version: 3.0.0
       '@embroider/addon-shim':
         specifier: ^1.0.0
