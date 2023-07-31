@@ -28,6 +28,7 @@ module.exports = function(defaults) {
       staticHelpers: true,
       staticModifiers: true,
       staticComponents: true,
+      staticEmberSource: true,
       packagerOptions: {
         webpackConfig: {},
       },
