@@ -14,6 +14,7 @@
     "dist"
   ],
   "scripts": {
+    "prepare": "pnpm run build",
     "build": "rollup --config",
     "lint": "concurrently 'npm:lint:*(!fix)' --names 'lint:'",
     "lint:fix": "concurrently 'npm:lint:*:fix' --names 'fix:'",
