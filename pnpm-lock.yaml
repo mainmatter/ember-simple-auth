@@ -274,16 +274,16 @@ importers:
         specifier: 3.2.0
         version: 3.2.0(ember-source@5.1.2)(webpack@5.88.1)
       '@embroider/compat':
-        specifier: 3.2.0
+        specifier: ^3.2.0
         version: 3.2.0(@embroider/core@3.2.0)
       '@embroider/core':
-        specifier: 3.2.0
+        specifier: ^3.2.0
         version: 3.2.0
       '@embroider/test-setup':
         specifier: 3.0.1
         version: 3.0.1(@embroider/compat@3.2.0)(@embroider/core@3.2.0)(@embroider/webpack@3.1.4)
       '@embroider/webpack':
-        specifier: 3.1.4
+        specifier: ^3.1.4
         version: 3.1.4(@embroider/core@3.2.0)(webpack@5.88.1)
       '@glimmer/component':
         specifier: 1.1.2
@@ -694,7 +694,7 @@ packages:
       '@babel/core': ^7.0.0
     dependencies:
       '@babel/compat-data': 7.22.9
-      '@babel/core': 7.22.9(supports-color@8.1.1)
+      '@babel/core': 7.22.9
       '@babel/helper-validator-option': 7.22.5
       browserslist: 4.21.9
       lru-cache: 5.1.1
@@ -777,7 +777,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0
     dependencies:
-      '@babel/core': 7.22.9(supports-color@8.1.1)
+      '@babel/core': 7.22.9
       '@babel/helper-environment-visitor': 7.22.5
       '@babel/helper-module-imports': 7.22.5
       '@babel/helper-simple-access': 7.22.5

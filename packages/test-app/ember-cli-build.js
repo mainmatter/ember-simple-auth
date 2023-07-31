@@ -20,20 +20,6 @@ module.exports = function(defaults) {
 
   app.import('node_modules/bootstrap/dist/css/bootstrap.css');
 
-  if (process.env.ESA_TEST_EMBROIDER) {
-    const { Webpack } = require('@embroider/webpack');
-    return require('@embroider/compat').compatBuild(app, Webpack, {
-      staticAddonTestSupportTrees: true,
-      staticAddonTrees: true,
-      staticHelpers: true,
-      staticModifiers: true,
-      staticComponents: true,
-      staticEmberSource: true,
-      packagerOptions: {
-        webpackConfig: {},
-      },
-    });
-  } else {
-    return app.toTree();
-  }
+  const { maybeEmbroider } = require('@embroider/test-setup');
+  return maybeEmbroider(app);
 };

@@ -94,13 +94,10 @@ jobs:
             test-suite: "test:one embroider-optimized"
             allow-failure: false
           - workspace: test-app
-            test-suite: "test:one embroider-lts-4.12"
+            test-suite: "test:one embroider-safe"
             allow-failure: false
           - workspace: test-app
-            test-suite: "test:one embroider-default"
-            allow-failure: false
-          - workspace: test-app
-            test-suite: "test:one embroider-ember-5"
+            test-suite: "test:one embroider-optimized"
             allow-failure: false
 
     steps:
