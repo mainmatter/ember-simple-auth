@@ -112,6 +112,9 @@ module.exports = function() {
           npm: {
             devDependencies: {
               torii: null,
+              '@embroider/core': '~3.0.0',
+              '@embroider/compat': '~3.0.0',
+              '@embroider/webpack': '~3.0.0',
             },
           },
         }),
@@ -119,6 +122,9 @@ module.exports = function() {
           npm: {
             devDependencies: {
               torii: null,
+              '@embroider/core': '~3.0.0',
+              '@embroider/compat': '~3.0.0',
+              '@embroider/webpack': '~3.0.0',
             },
           },
         }),
