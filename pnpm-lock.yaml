@@ -176,6 +176,9 @@ importers:
 
   packages/ember-simple-auth:
     dependencies:
+      '@ember/test-waiters':
+        specifier: ^3
+        version: 3.0.2
       ember-auto-import:
         specifier: ^2.4.2
         version: 2.6.3(webpack@5.88.1)
@@ -2058,7 +2061,6 @@ packages:
       semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@embroider/addon-shim@1.8.6:
     resolution: {integrity: sha512-siC9kP78uucEbpDcVyxjkwa76pcs5rVzDVpWO4PDc9EAXRX+pzmUuSTLAK3GztUwx7/PWhz1BenAivqdSvSgfg==}
@@ -7223,7 +7225,6 @@ packages:
       silent-error: 1.1.1
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /ember-cli-yuidoc@0.9.1:
     resolution: {integrity: sha512-4pb3OKXhHCeUux6a7SDKziLDWdDciJwzmUld3Fumt60RLcH/nIk5lPdI0o+UXJ9NfP+WcSvvpWWroFmWqWAWWA==}
