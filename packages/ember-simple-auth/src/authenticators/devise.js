@@ -145,7 +145,7 @@ export default BaseAuthenticator.extend({
     @return {Promise} The promise returned by `fetch`
     @protected
   */
-  makeRequest: waitFor(function (data, options = {}) {
+  makeRequest: waitFor(function(data, options = {}) {
     let url = options.url || this.get('serverTokenEndpoint');
     let requestOptions = {};
     let body = JSON.stringify(data);

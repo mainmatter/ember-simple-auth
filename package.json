@@ -8,7 +8,7 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "@mermaid-js/mermaid-cli": "10.2.4",
+    "@mermaid-js/mermaid-cli": "10.3.0",
     "lerna-changelog": "2.2.0",
     "release-it": "15.11.0",
     "@release-it-plugins/lerna-changelog": "5.0.0"
@@ -16,6 +16,11 @@
   "version": "6.0.0-rc.1",
   "volta": {
     "node": "16.20.1",
-    "pnpm": "8.6.3"
+    "pnpm": "8.6.11"
+  },
+  "pnpm": {
+    "overrides": {
+      "@embroider/addon-shim": "1.8.6"
+    }
   }
 }

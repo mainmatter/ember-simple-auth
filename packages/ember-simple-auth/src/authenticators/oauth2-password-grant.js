@@ -8,6 +8,7 @@ import Ember from 'ember';
 import BaseAuthenticator from './base';
 import isFastBoot from '../utils/is-fastboot';
 import { waitFor } from '@ember/test-waiters';
+
 /**
   Authenticator that conforms to OAuth 2
   ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Resource
@@ -282,7 +283,7 @@ export default BaseAuthenticator.extend({
     @return {Promise} A promise that resolves with the response object
     @protected
   */
-  makeRequest: waitFor(function (url, data, headers = {}) {
+  makeRequest: waitFor(function(url, data, headers = {}) {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
     const clientId = this.get('clientId');
