@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@embroider/addon-shim': 1.8.6
-
 importers:
 
   .:
@@ -186,7 +183,7 @@ importers:
         specifier: ^3
         version: 3.0.0
       '@embroider/addon-shim':
-        specifier: 1.8.6
+        specifier: ^1.0.0
         version: 1.8.6
       ember-cli-is-package-missing:
         specifier: ^1.0.0

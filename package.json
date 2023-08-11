@@ -17,10 +17,5 @@
   "volta": {
     "node": "16.20.1",
     "pnpm": "8.6.11"
-  },
-  "pnpm": {
-    "overrides": {
-      "@embroider/addon-shim": "1.8.6"
-    }
   }
 }
