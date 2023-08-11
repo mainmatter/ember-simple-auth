@@ -85,7 +85,7 @@
     "./addon-main.js": "./addon-main.cjs"
   },
   "peerDependencies": {
-    "@ember/test-helpers": ">= 3"
+    "@ember/test-helpers": ">= 3 || > 2.7"
   },
   "peerDependenciesMeta": {
     "@ember/test-helpers": {

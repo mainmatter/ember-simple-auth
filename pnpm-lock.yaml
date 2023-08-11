@@ -180,7 +180,7 @@ importers:
   packages/ember-simple-auth:
     dependencies:
       '@ember/test-helpers':
-        specifier: '>= 3'
+        specifier: '>= 3 || > 2.7'
         version: 3.2.0(ember-source@5.1.2)(webpack@5.88.2)
       '@ember/test-waiters':
         specifier: ^3
@@ -6974,7 +6974,7 @@ packages:
       lodash: 4.17.21
       mini-css-extract-plugin: 2.7.6(webpack@5.88.2)
       parse5: 6.0.1
-      resolve: 1.22.2
+      resolve: 1.22.3
       resolve-package-path: 4.0.3
       semver: 7.5.4
       style-loader: 2.0.0(webpack@5.88.2)
@@ -13788,7 +13788,6 @@ packages:
       is-core-module: 2.12.1
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
-    dev: true
 
   /responselike@1.0.2:
     resolution: {integrity: sha512-/Fpe5guzJk1gPqdJLJR5u7eG/gNY4nImjbRDaVWVMRhne55TCmj2i9Q+54PBRfatRC8v/rIiv9BN0pMd9OV5EQ==}
