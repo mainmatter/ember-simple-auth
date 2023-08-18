@@ -1,0 +1,10 @@
+name: Download built package from cache
+description: Download built package from cache
+runs:
+  using: "composite"
+  steps:
+  - name: Download built package from cache
+    uses: actions/download-artifact@v3
+    with:
+      name: dist
+      path: ${{ env.dist }}

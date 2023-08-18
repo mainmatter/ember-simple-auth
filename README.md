@@ -4,10 +4,10 @@ __[Ember Simple Auth API docs](http://ember-simple-auth.com/api/)__
 
 __[![Discord](https://img.shields.io/discord/480462759797063690.svg?logo=discord)](https://discord.gg/zT3asNS)__
 
-Ember Simple Auth __supports all Ember.js versions starting with 3.28.__
-__Doesn't support IE11__
-Node __>=16 is required__  
-
+- Ember Simple Auth __supports all Ember.js versions starting with 3.28.__
+- __Doesn't support IE11__
+- Node __>=16 is required__  
+- Supports __Embroider__ see our [ember-try scenario](https://github.com/mainmatter/ember-simple-auth/blob/master/packages/test-esa/config/ember-try.js) and [test app](https://github.com/mainmatter/ember-simple-auth/blob/master/packages/test-app/ember-cli-build.js) for guidance.
 #  Ember Simple Auth
 
 ![Logo](http://ember-simple-auth.com/images/logo.png)

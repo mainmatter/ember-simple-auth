@@ -1,6 +1,11 @@
 module.exports = function(app) {
   var express = require('express');
+  var bodyParser = require('body-parser');
   var tokenRouter = express.Router();
+  app.use(bodyParser.json({ type: 'application/*+json' }));
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }));
 
   tokenRouter.post('/token', function(req, res) {
     if (req.body.grant_type === 'password') {

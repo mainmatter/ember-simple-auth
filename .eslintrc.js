@@ -53,6 +53,9 @@ module.exports = {
         'testem.js',
         'config/**/*.js',
         '.eslintrc.js',
+        '.template-lintrc.js',
+        '.prettierc.js',
+        'addon-main.cjs'
       ],
       excludedFiles: [
         'app/**',

@@ -1,4 +1,4 @@
-/* global ReadableStream, WritableStream, TransformStream */
+/* eslint-disable no-redeclare */
 module.exports = function() {
   return {
     buildSandboxGlobals(defaultGlobals) {
