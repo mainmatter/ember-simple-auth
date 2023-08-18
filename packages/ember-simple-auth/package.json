@@ -49,7 +49,7 @@
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-ember": "11.10.0",
     "eslint-plugin-n": "16.0.0",
-    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-prettier": "5.0.0",
     "prettier": "3.0.2",
     "rollup": "3.21.8",
     "rollup-plugin-copy": "3.4.0"
