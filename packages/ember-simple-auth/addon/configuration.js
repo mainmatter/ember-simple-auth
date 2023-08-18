@@ -1,5 +1,6 @@
 const DEFAULTS = {
   rootURL: '',
+  routeAfterInvalidation: '',
   routeAfterAuthentication: 'index',
 };
 
@@ -23,6 +24,20 @@ export default {
     @public
   */
   rootURL: DEFAULTS.rootURL,
+  
+
+  /**
+    The route to transition to after successful invalidation.
+
+    @property routeAfterInvalidation
+    @readOnly
+    @static
+    @type String
+    @default ''
+    @public
+  */
+  routeAfterInvalidation: DEFAULTS.routeAfterInvalidation,
+
 
   /**
     The route to transition to after successful authentication.
@@ -38,6 +53,12 @@ export default {
 
   load(config) {
     this.rootURL = config.rootURL !== undefined ? config.rootURL : DEFAULTS.rootURL;
+    
+    this.routeAfterInvalidation =
+      config.routeAfterInvalidation !== undefined
+        ? config.routeAfterInvalidation
+        : DEFAULTS.routeAfterInvalidation;
+    
     this.routeAfterAuthentication =
       config.routeAfterAuthentication !== undefined
         ? config.routeAfterAuthentication

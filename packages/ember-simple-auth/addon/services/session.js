@@ -137,7 +137,7 @@ export default Service.extend({
 
   _setupHandlers() {
     this.get('session').on('authenticationSucceeded', () => this.handleAuthentication(Configuration.routeAfterAuthentication));
-    this.get('session').on('invalidationSucceeded', () => this.handleInvalidation(Configuration.rootURL));
+    this.get('session').on('invalidationSucceeded', () => this.handleInvalidation(Configuration.routeAfterInvalidation || Configuration.rootURL));
   },
 
   /**

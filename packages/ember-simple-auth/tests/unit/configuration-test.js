@@ -14,6 +14,14 @@ module('Configuration', function(hooks) {
     });
   });
 
+  module('routeAfterInvalidation', function() {
+    test('defaults to ""', function(assert) {
+      Configuration.load({});
+
+      assert.equal(Configuration.routeAfterInvalidation, '');
+    });
+  });
+
   module('routeAfterAuthentication', function() {
     test('defaults to "index"', function(assert) {
       Configuration.load({});
@@ -27,6 +35,12 @@ module('Configuration', function(hooks) {
       Configuration.load({ rootURL: '/rootURL' });
 
       assert.equal(Configuration.rootURL, '/rootURL');
+    });
+
+    test('sets routeAfterInvalidation correctly', function(assert) {
+      Configuration.load({ routeAfterInvalidation: '/some-route' });
+
+      assert.equal(Configuration.routeAfterInvalidation, '/some-route');
     });
 
     test('sets routeAfterAuthentication correctly', function(assert) {
