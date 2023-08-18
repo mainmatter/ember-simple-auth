@@ -46,7 +46,7 @@
     "concurrently": "8.0.1",
     "ember-template-lint": "5.7.3",
     "eslint": "8.46.0",
-    "eslint-config-prettier": "8.3.0",
+    "eslint-config-prettier": "9.0.0",
     "eslint-plugin-ember": "11.10.0",
     "eslint-plugin-n": "16.0.0",
     "eslint-plugin-prettier": "5.0.0",
