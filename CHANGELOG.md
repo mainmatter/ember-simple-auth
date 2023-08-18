@@ -3,6 +3,28 @@
 
 
 
+
+## 6.0.0-rc.2 (2023-08-18)
+
+#### :rocket: Enhancement
+* `classic-test-app`, `ember-simple-auth`, `test-app`, `test-esa`
+  * [#2604](https://github.com/mainmatter/ember-simple-auth/pull/2604) V2 addon ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :house: Internal
+* Other
+  * [#2632](https://github.com/mainmatter/ember-simple-auth/pull/2632) chore(ci): remove build artifact uploading ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2633](https://github.com/mainmatter/ember-simple-auth/pull/2633) test(embroider): allow test-app embroider-optimizied to fail (should work for regular apps just fine, but not fastboot) ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2631](https://github.com/mainmatter/ember-simple-auth/pull/2631) chore(ci): install dependencies before building ([@BobrImperator](https://github.com/BobrImperator))
+* `ember-simple-auth`
+  * [#2580](https://github.com/mainmatter/ember-simple-auth/pull/2580) chore: specify ember-qunit, @ember/test-helpers for ember-try scenario ([@BobrImperator](https://github.com/BobrImperator))
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2570](https://github.com/mainmatter/ember-simple-auth/pull/2570) Move to pnpm ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2565](https://github.com/mainmatter/ember-simple-auth/pull/2565) Remove IE 11 from browser targets ([@gilest](https://github.com/gilest))
+
+#### Committers: 2
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Giles Thompson ([@gilest](https://github.com/gilest))
+
 ## 6.0.0-rc.1 (2023-05-10)
 
 #### :boom: Breaking Change
