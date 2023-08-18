@@ -6,7 +6,36 @@
 
 
 
-## 6.0.0-rc.4 (2023-08-18)
+## 6.0.0 (2023-08-18)
+
+#### :boom: Breaking Change
+* `ember-simple-auth`
+  * [#2544](https://github.com/mainmatter/ember-simple-auth/pull/2544) feat(breaking): drop ember < v3.28 and IE11 support ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2542](https://github.com/mainmatter/ember-simple-auth/pull/2542) Use Object.assign and drop Ember.assign ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### :rocket: Enhancement
+* `classic-test-app`, `ember-simple-auth`, `test-app`, `test-esa`
+  * [#2604](https://github.com/mainmatter/ember-simple-auth/pull/2604) V2 addon ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :house: Internal
+* Other
+  * [#2632](https://github.com/mainmatter/ember-simple-auth/pull/2632) chore(ci): remove build artifact uploading ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2633](https://github.com/mainmatter/ember-simple-auth/pull/2633) test(embroider): allow test-app embroider-optimizied to fail (should work for regular apps just fine, but not fastboot) ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2631](https://github.com/mainmatter/ember-simple-auth/pull/2631) chore(ci): install dependencies before building ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2556](https://github.com/mainmatter/ember-simple-auth/pull/2556) chore(ci): fix removed tests step from workflow ([@BobrImperator](https://github.com/BobrImperator))
+* `ember-simple-auth`
+  * [#2580](https://github.com/mainmatter/ember-simple-auth/pull/2580) chore: specify ember-qunit, @ember/test-helpers for ember-try scenario ([@BobrImperator](https://github.com/BobrImperator))
+* `classic-test-app`, `ember-simple-auth`, `test-app`
+  * [#2570](https://github.com/mainmatter/ember-simple-auth/pull/2570) Move to pnpm ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2565](https://github.com/mainmatter/ember-simple-auth/pull/2565) Remove IE 11 from browser targets ([@gilest](https://github.com/gilest))
+* `classic-test-app`, `test-app`
+  * [#2548](https://github.com/mainmatter/ember-simple-auth/pull/2548) refactor(deprecation): use findRecord instead of find ([@BobrImperator](https://github.com/BobrImperator))
+
+
+#### Committers: 3
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Giles Thompson ([@gilest](https://github.com/gilest))
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
 
 ## 6.0.0-rc.2 (2023-08-18)
 
