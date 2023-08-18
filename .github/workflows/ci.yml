@@ -55,6 +55,8 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
+      - name: install dependencies
+        run: pnpm install
       - name: Build dist
         run: pnpm run --filter ember-simple-auth build
       - name: Upload dist
