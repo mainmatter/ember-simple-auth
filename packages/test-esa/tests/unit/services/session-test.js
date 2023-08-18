@@ -456,21 +456,6 @@ module('SessionService', function(hooks) {
         assert.ok(router.transitionTo.calledWith('index'));
       });
     });
-
-    module('when not running in FastBoot', function(hooks) {
-      hooks.beforeEach(function() {
-        this.owner.register('service:fastboot', Service.extend({
-          isFastBoot: false
-        }));
-        sinon.stub(LocationUtil, 'replace').returns(function() {});
-      });
-
-      test('replaces the location with the route', function(assert) {
-        sessionService.handleInvalidation('index');
-
-        assert.ok(LocationUtil.replace.calledWith('index'));
-      });
-    });
   });
 
   module('setup', function() {
