@@ -24,7 +24,8 @@
     "lint:js:fix": "eslint . --fix",
     "start": "rollup --config --watch",
     "test": "echo 'A v2 addon does not have tests, run tests in test-app'",
-    "prepack": "pnpm run build"
+    "prepack": "pnpm run build",
+    "publish": "npm publish"
   },
   "dependencies": {
     "@ember/test-waiters": "^3",
