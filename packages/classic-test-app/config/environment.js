@@ -42,10 +42,6 @@ module.exports = function(environment) {
     apiHost: 'http://localhost:4200',
 
     googleClientID: '694766332436-1g5bakjoo5flkfpv3t2mfsch9ghg7ggd.apps.googleusercontent.com',
-
-    fastboot: {
-      hostWhitelist: [/^localhost:\d+$/]
-    },
   };
 
   if (environment === 'development') {
@@ -70,9 +66,6 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     // put production settings here
-    ENV.fastboot = {
-      hostWhitelist: ['demo.ember-simple-auth.com', 'esa-demo.herokuapp.com']
-    };
     ENV.apiHost = 'https://demo-api.ember-simple-auth.com';
   }
 
