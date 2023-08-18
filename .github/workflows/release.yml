@@ -26,7 +26,10 @@ jobs:
       - name: install dependencies
         run: pnpm install
 
+      - name: prepack 
+        run: pnpm run --filter ember-simple-auth prepack
+
       - name: publish to npm
-        run: cd packages/ember-simple-auth && pnpm prepack && pnpm publish
+        run: pnpm run --filter ember-simple-auth publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
