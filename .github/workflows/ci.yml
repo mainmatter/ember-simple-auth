@@ -98,9 +98,6 @@ jobs:
           - workspace: test-app
             test-suite: "test:one embroider-safe"
             allow-failure: false
-          - workspace: test-app
-            test-suite: "test:one embroider-optimized"
-            allow-failure: false
 
     steps:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
@@ -138,6 +135,9 @@ jobs:
         test-suite:
           - test:one ember-beta
           - test:one ember-canary
+        include:
+          - workspace: test-app
+            test-suite: "test:one embroider-optimized"
 
     steps:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
