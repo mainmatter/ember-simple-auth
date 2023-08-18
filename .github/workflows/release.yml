@@ -29,7 +29,10 @@ jobs:
       - name: prepack 
         run: pnpm run --filter ember-simple-auth prepack
 
+      - name: Set publishing config
+        run: pnpm config set '//registry.npmjs.org/:_authToken' "${NODE_AUTH_TOKEN}"
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
       - name: publish to npm
         run: pnpm run --filter ember-simple-auth publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
