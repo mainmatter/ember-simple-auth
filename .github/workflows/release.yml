@@ -17,9 +17,7 @@ jobs:
           node-version: 16.x
           registry-url: 'https://registry.npmjs.org'
 
-      - name: copy readme to package folder
-        run: cp README.md packages/ember-simple-auth
       - name: publish to npm
-        run: cd packages/ember-simple-auth && npm publish
+        run: cd packages/ember-simple-auth && pnpm prepack && pnpm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
