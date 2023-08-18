@@ -1,13 +1,9 @@
-import Ember from 'ember';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import Service from '@ember/service';
-import { next } from '@ember/runloop';
 import EmberObject, { set } from '@ember/object';
-import { registerDeprecationHandler } from '@ember/debug';
 import sinonjs from 'sinon';
 import LocationUtil from 'ember-simple-auth/utils/location';
-import Configuration from 'ember-simple-auth/configuration';
 import RSVP from 'rsvp';
 
 module('SessionService', function(hooks) {

@@ -1,11 +1,8 @@
 import { alias, readOnly } from '@ember/object/computed';
-import Ember from 'ember';
 import Service from '@ember/service';
 import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
 import Configuration from '../configuration';
-import InternalSession from '../internal-session';
-import Ephemeral from '../session-stores/ephemeral';
 
 import {
   requireAuthentication,
@@ -43,7 +40,7 @@ function assertSetupHasBeenCalled(isSetupCalled) {
 
   @class SessionService
   @module ember-simple-auth/services/session
-  @extends Ember.Service
+  @extends Service
   @public
 */
 export default Service.extend({
@@ -180,7 +177,7 @@ export default Service.extend({
     @method authenticate
     @param {String} authenticator The authenticator to use to authenticate the session
     @param {Any} [...args] The arguments to pass to the authenticator; depending on the type of authenticator these might be a set of credentials, a Facebook OAuth Token, etc.
-    @return {Ember.RSVP.Promise} A promise that resolves when the session was authenticated successfully and rejects otherwise
+    @return {RSVP.Promise} A promise that resolves when the session was authenticated successfully and rejects otherwise
     @public
   */
   authenticate() {
@@ -213,7 +210,7 @@ export default Service.extend({
 
     @method invalidate
     @param {Array} ...args arguments that will be passed to the authenticator
-    @return {Ember.RSVP.Promise} A promise that resolves when the session was invalidated successfully and rejects otherwise
+    @return {RSVP.Promise} A promise that resolves when the session was invalidated successfully and rejects otherwise
     @public
   */
   invalidate() {

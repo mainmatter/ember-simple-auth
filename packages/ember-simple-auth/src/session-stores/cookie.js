@@ -6,7 +6,6 @@ import { isPresent, typeOf, isEmpty, isNone } from '@ember/utils';
 import { A } from '@ember/array';
 import { getOwner } from '@ember/application';
 import { warn } from '@ember/debug';
-import Ember from 'ember';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import { isTesting } from '@embroider/macros';
@@ -209,7 +208,7 @@ export default BaseStore.extend({
 
     @method persist
     @param {Object} data The data to persist
-    @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
+    @return {RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
   persist(data) {
@@ -224,7 +223,7 @@ export default BaseStore.extend({
     Returns all data currently stored in the cookie as a plain object.
 
     @method restore
-    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
+    @return {RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
   */
   restore() {
@@ -240,7 +239,7 @@ export default BaseStore.extend({
     Clears the store by deleting the cookie.
 
     @method clear
-    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
+    @return {RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public
   */
   clear() {
