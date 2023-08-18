@@ -17,5 +17,10 @@
   "volta": {
     "node": "16.20.1",
     "pnpm": "8.6.11"
+  },
+  "pnpm": {
+    "overrides": {
+      "ember-cli-fastboot@4.1.1": "BobrImperator/ember-cli-fastboot/packages/ember-cli-fastboot"
+    }
   }
 }
