@@ -1,4 +1,3 @@
-import ENV from 'ember-get-config';
 import Configuration from '../configuration';
 import setupSession from './setup-session';
 import Adaptive from '../session-stores/adaptive';
@@ -9,6 +8,7 @@ export default {
   name: 'ember-simple-auth',
 
   initialize(registry) {
+    const ENV = registry.resolveRegistration('config:environment');
     const config = ENV['ember-simple-auth'] || {};
     config.rootURL = ENV.rootURL || ENV.baseURL;
     Configuration.load(config);
