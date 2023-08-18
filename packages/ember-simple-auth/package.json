@@ -27,11 +27,12 @@
     "prepack": "pnpm run build"
   },
   "dependencies": {
+    "@ember/test-waiters": "^3",
     "@embroider/addon-shim": "^1.0.0",
+    "@embroider/macros": "^1.0.0",
     "ember-cli-is-package-missing": "^1.0.0",
     "ember-cookies": "^1.0.0",
-    "silent-error": "^1.0.0",
-    "@ember/test-waiters": "^3"
+    "silent-error": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.22.9",

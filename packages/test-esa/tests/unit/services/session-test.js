@@ -467,13 +467,6 @@ module('SessionService', function(hooks) {
           isFastBoot: false
         }));
         sinon.stub(LocationUtil, 'replace').returns(function() {});
-        // eslint-disable-next-line ember/no-ember-testing-in-module-scope
-        Ember.testing = false;
-      });
-
-      hooks.afterEach(function() {
-        // eslint-disable-next-line ember/no-ember-testing-in-module-scope
-        Ember.testing = true;
       });
 
       test('replaces the location with the route', function(assert) {

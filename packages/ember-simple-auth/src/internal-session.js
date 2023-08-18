@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import RSVP from 'rsvp';
 import { isEmpty, isNone } from '@ember/utils';
 import ObjectProxy from '@ember/object/proxy';
@@ -6,6 +5,7 @@ import Evented from '@ember/object/evented';
 import { set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
 import { getOwner, setOwner } from '@ember/application';
+import { isTesting } from '@embroider/macros';
 
 export default ObjectProxy.extend(Evented, {
   authenticator:       null,
@@ -17,7 +17,7 @@ export default ObjectProxy.extend(Evented, {
     this._super(...arguments);
     this.set('content', { authenticated: {} });
     let storeFactory = 'session-store:application';
-    if (Ember.testing) {
+    if (isTesting()) {
       storeFactory = 'session-store:test';
     }
 

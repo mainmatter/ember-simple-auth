@@ -4,10 +4,10 @@ import { run, later, cancel } from '@ember/runloop';
 import { A, makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
 import { getOwner } from '@ember/application';
-import Ember from 'ember';
 import BaseAuthenticator from './base';
 import isFastBoot from '../utils/is-fastboot';
 import { waitFor } from '@ember/test-waiters';
+import { isTesting } from '@embroider/macros';
 
 /**
   Authenticator that conforms to OAuth 2
@@ -332,7 +332,7 @@ export default BaseAuthenticator.extend({
       if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now - offset) {
         cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
-        if (!Ember.testing) {
+        if (!isTesting()) {
           this._refreshTokenTimeout = later(this, this._refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
         }
       }

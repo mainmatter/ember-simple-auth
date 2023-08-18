@@ -1,6 +1,6 @@
-import Ember from 'ember';
 import isFastBoot from '../utils/is-fastboot';
 import location from '../utils/location';
+import { isTesting } from '@embroider/macros';
 
 export function requireAuthentication(owner, transition) {
   let sessionService = owner.lookup('service:session');
@@ -54,7 +54,7 @@ export function handleSessionInvalidated(owner, routeAfterInvalidation) {
     let routerService = owner.lookup('service:router');
     routerService.transitionTo(routeAfterInvalidation);
   } else {
-    if (!Ember.testing) {
+    if (!isTesting()) {
       location.replace(routeAfterInvalidation);
     }
   }

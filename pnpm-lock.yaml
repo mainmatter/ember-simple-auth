@@ -185,6 +185,9 @@ importers:
       '@embroider/addon-shim':
         specifier: ^1.0.0
         version: 1.8.6
+      '@embroider/macros':
+        specifier: ^1.0.0
+        version: 1.13.1
       ember-cli-is-package-missing:
         specifier: ^1.0.0
         version: 1.0.0
@@ -12109,7 +12112,7 @@ packages:
       got: 12.6.1
       registry-auth-token: 5.0.2
       registry-url: 6.0.1
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /parent-module@1.0.1:
@@ -13336,7 +13339,7 @@ packages:
     resolution: {integrity: sha512-0Ju4+6A8iOnpL/Thra7dZsSlOHYAHIeMxfhWQRI1/VLcT3WDBZKKtQt/QkBOsiIN9ZpuvHE6cGZ0x4glCMmfiA==}
     engines: {node: '>=12'}
     dependencies:
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /semver@5.7.2:
@@ -14783,7 +14786,7 @@ packages:
       is-yarn-global: 0.4.1
       latest-version: 7.0.0
       pupa: 3.1.0
-      semver: 7.5.1
+      semver: 7.5.4
       semver-diff: 4.0.0
       xdg-basedir: 5.1.0
     dev: true
