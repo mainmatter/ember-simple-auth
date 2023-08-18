@@ -2,7 +2,6 @@ name: CI
 
 env:
   VOLTA_FEATURE_PNPM: 1
-  dist: packages/ember-simple-auth/dist
 
 on:
   push:
@@ -42,35 +41,10 @@ jobs:
       - name: lint
         run: pnpm run --filter ${{ matrix.workspace }} lint
 
-  build:
-    name: Build Ember Simple Auth
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
-      - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
-      - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-      - name: install dependencies
-        run: pnpm install
-      - name: Build dist
-        run: pnpm run --filter ember-simple-auth build
-      - name: Upload dist
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: ${{ env.dist }}
-
-
   tests:
     name: Tests
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: build
 
     strategy:
       fail-fast: false
@@ -108,7 +82,6 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
-      - uses: ./.github/actions/download-built-package
 
       - name: install dependencies
         run: pnpm install
@@ -121,7 +94,6 @@ jobs:
     name: ${{ matrix.workspace }} ${{ matrix.test-suite }} - Allowed to fail
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: build
     permissions:
       pull-requests: write
 
@@ -148,7 +120,6 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
-      - uses: ./.github/actions/download-built-package
 
       - name: install dependencies
         run: pnpm install
@@ -168,7 +139,6 @@ jobs:
     name: Tests (Floating Dependenies)
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: build
 
     strategy:
       matrix:
@@ -186,7 +156,6 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
-      - uses: ./.github/actions/download-built-package
 
       - name: install dependencies
         run: pnpm install --no-lockfile
