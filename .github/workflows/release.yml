@@ -35,4 +35,4 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: publish to npm
-        run: pnpm run --filter ember-simple-auth publish
+        run: pnpm run --filter ember-simple-auth release
