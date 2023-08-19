@@ -1,25 +1,3 @@
 {
-  "extends": [
-    "github>mainmatter/renovate-config:default.json5",
-    ":pinOnlyDevDependencies"
-  ],
-  "packageRules": [
-    {
-      "groupName": "Ember Testing",
-      "matchPackageNames": [
-        "@ember/test-helpers",
-        "ember-qunit",
-        "qunit",
-        "qunit-dom",
-        "ember-try",
-      ],
-    },
-    {
-      "groupName": "Ember Fastboot",
-      "matchPackageNames": [
-        "ember-cli-fastboot",
-        "ember-cli-fastboot-testing",
-      ],
-    }
-  ]
+  "extends": ["github>mainmatter/renovate-config:ember-addon.json5"]
 }
