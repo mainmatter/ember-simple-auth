@@ -106,7 +106,7 @@ importers:
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.2.0)(qunit@2.19.4)(webpack@5.88.2)
+        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.2.0)(qunit@2.20.0)(webpack@5.88.2)
       ember-resolver:
         specifier: 11.0.1
         version: 11.0.1(ember-source@5.2.0)
@@ -159,8 +159,8 @@ importers:
         specifier: 3.4.7
         version: 3.4.7
       qunit:
-        specifier: 2.19.4
-        version: 2.19.4
+        specifier: 2.20.0
+        version: 2.20.0
       qunit-dom:
         specifier: 2.0.0
         version: 2.0.0
@@ -341,7 +341,7 @@ importers:
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.2.0)(qunit@2.19.4)(webpack@5.88.2)
+        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.2.0)(qunit@2.20.0)(webpack@5.88.2)
       ember-resolver:
         specifier: 11.0.1
         version: 11.0.1(ember-source@5.2.0)
@@ -400,8 +400,8 @@ importers:
         specifier: 3.4.7
         version: 3.4.7
       qunit:
-        specifier: 2.19.4
-        version: 2.19.4
+        specifier: 2.20.0
+        version: 2.20.0
       qunit-dom:
         specifier: 2.0.0
         version: 2.0.0
@@ -501,7 +501,7 @@ importers:
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.2.0)(qunit@2.19.4)(webpack@5.88.2)
+        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.2.0)(qunit@2.20.0)(webpack@5.88.2)
       ember-resolver:
         specifier: 11.0.1
         version: 11.0.1(ember-source@5.2.0)
@@ -554,8 +554,8 @@ importers:
         specifier: 3.4.7
         version: 3.4.7
       qunit:
-        specifier: 2.19.4
-        version: 2.19.4
+        specifier: 2.20.0
+        version: 2.20.0
       qunit-dom:
         specifier: 2.0.0
         version: 2.0.0
@@ -6890,7 +6890,7 @@ packages:
       - supports-color
     dev: true
 
-  /ember-qunit@7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.2.0)(qunit@2.19.4)(webpack@5.88.2):
+  /ember-qunit@7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.2.0)(qunit@2.20.0)(webpack@5.88.2):
     resolution: {integrity: sha512-KhrndHYEXsHnXvmsGyJLJQ6VCudXaRs5dzPZBsdttZJIhsB6PmYAvq2Q+mh3GRDT/59T/sRDrB3FD3/lATS8aA==}
     engines: {node: 16.* || >= 18}
     peerDependencies:
@@ -6906,7 +6906,7 @@ packages:
       ember-cli-babel: 7.26.11
       ember-cli-test-loader: 3.1.0
       ember-source: 5.2.0(@babel/core@7.22.20)(@glimmer/component@1.1.2)(rsvp@4.8.5)(webpack@5.88.2)
-      qunit: 2.19.4
+      qunit: 2.20.0
       resolve-package-path: 4.0.3
       silent-error: 1.1.1
       validate-peer-dependencies: 2.2.0
@@ -12284,8 +12284,8 @@ packages:
       - supports-color
     dev: true
 
-  /qunit@2.19.4:
-    resolution: {integrity: sha512-aqUzzUeCqlleWYKlpgfdHHw9C6KxkB9H3wNfiBg5yHqQMzy0xw/pbCRHYFkjl8MsP/t8qkTQE+JTYL71azgiew==}
+  /qunit@2.20.0:
+    resolution: {integrity: sha512-N8Fp1J55waE+QG1KwX2LOyqulZUToRrrPBqDOfYfuAMkEglFL15uwvmH1P4Tq/omQ/mGbBI8PEB3PhIfvUb+jg==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
