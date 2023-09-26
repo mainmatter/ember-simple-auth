@@ -42,7 +42,8 @@ module.exports = {
     'no-var': 'off',
     'prefer-template': 'off',
     'quotes': 'off',
-    'semi': 'off'
+    'semi': 'off',
+    'qunit/require-expect': ['error', 'except-simple'],
   },
   overrides: [
     // node files
