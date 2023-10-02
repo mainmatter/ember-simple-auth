@@ -41,7 +41,7 @@
     "@babel/plugin-proposal-class-properties": "7.18.6",
     "@babel/plugin-proposal-decorators": "7.23.0",
     "@babel/runtime": "7.23.1",
-    "@embroider/addon-dev": "4.1.0",
+    "@embroider/addon-dev": "4.1.1",
     "@rollup/plugin-babel": "6.0.3",
     "@rollup/plugin-node-resolve": "15.2.1",
     "concurrently": "8.2.1",
@@ -52,7 +52,7 @@
     "eslint-plugin-n": "16.1.0",
     "eslint-plugin-prettier": "5.0.0",
     "prettier": "3.0.3",
-    "rollup": "3.29.3",
+    "rollup": "3.29.4",
     "rollup-plugin-copy": "3.5.0"
   },
   "publishConfig": {
