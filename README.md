@@ -8,6 +8,11 @@ __[![Discord](https://img.shields.io/discord/480462759797063690.svg?logo=discord
 - __Doesn't support IE11__
 - Node __>=16 is required__  
 - Supports __Embroider__ see our [ember-try scenario](https://github.com/mainmatter/ember-simple-auth/blob/master/packages/test-esa/config/ember-try.js) and [test app](https://github.com/mainmatter/ember-simple-auth/blob/master/packages/test-app/ember-cli-build.js) for guidance.
+
+> [!NOTE]
+> Ember Simple Auth was written and is maintained by [Mainmatter](https://mainmatter.com) and contributors.
+> We offer consulting, training, and team augmentation for Ember.js – check out our [website](https://mainmatter.com/ember-consulting/) to learn more!
+
 #  Ember Simple Auth
 
 ![Logo](http://ember-simple-auth.com/images/logo.png)
