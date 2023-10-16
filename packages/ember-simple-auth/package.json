@@ -49,10 +49,10 @@
     "eslint": "8.51.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-ember": "11.11.1",
-    "eslint-plugin-n": "16.1.0",
+    "eslint-plugin-n": "16.2.0",
     "eslint-plugin-prettier": "5.0.1",
     "prettier": "3.0.3",
-    "rollup": "4.0.2",
+    "rollup": "4.1.4",
     "rollup-plugin-copy": "3.5.0"
   },
   "publishConfig": {
