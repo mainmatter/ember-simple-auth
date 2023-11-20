@@ -46,13 +46,13 @@
     "@rollup/plugin-node-resolve": "15.2.3",
     "concurrently": "8.2.2",
     "ember-template-lint": "5.12.0",
-    "eslint": "8.53.0",
+    "eslint": "8.54.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-ember": "11.11.1",
     "eslint-plugin-n": "16.3.1",
     "eslint-plugin-prettier": "5.0.1",
     "prettier": "3.1.0",
-    "rollup": "4.4.0",
+    "rollup": "4.5.0",
     "rollup-plugin-copy": "3.5.0"
   },
   "publishConfig": {
