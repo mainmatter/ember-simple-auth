@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@mermaid-js/mermaid-cli':
-        specifier: 10.6.0
-        version: 10.6.0
+        specifier: 10.6.1
+        version: 10.6.1
       '@release-it-plugins/lerna-changelog':
         specifier: 6.0.0
         version: 6.0.0(release-it@17.0.0)
@@ -376,8 +376,8 @@ importers:
         specifier: 4.18.2
         version: 4.18.2
       fastboot-app-server:
-        specifier: 4.1.1
-        version: 4.1.1
+        specifier: 4.1.2
+        version: 4.1.2
       glob:
         specifier: 10.3.10
         version: 10.3.10
@@ -2583,8 +2583,8 @@ packages:
       call-bind: 1.0.5
     dev: true
 
-  /@mermaid-js/mermaid-cli@10.6.0:
-    resolution: {integrity: sha512-BFjvlB4YcZKnGy7AO6cl3eXK+SNRW3caCEThfD+ChJ92lFJZ3c4PLOESA3JP/hJ66y5bO63MNa8OtIJo4iEi8w==}
+  /@mermaid-js/mermaid-cli@10.6.1:
+    resolution: {integrity: sha512-OH2uOXW3/GBaMGagVF7Fzu/9TJrGge+Bu/+Tm8OyIaRBaKa2NN+3SggJOmr5s51oTPaGKu/X1XBDoauvtlXAPg==}
     engines: {node: ^14.13 || >=16.0}
     hasBin: true
     dependencies:
@@ -7937,29 +7937,16 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /fastboot-app-server@4.1.1:
-    resolution: {integrity: sha512-v7esODTxtPCZYXdW3B7at2otKHg7q5bR2YjkBISShqR5O2Ua4TrNslGQlI0VQIdSHG979g9g6bwr5EBCL2wtKw==}
+  /fastboot-app-server@4.1.2:
+    resolution: {integrity: sha512-WQWGJWKYFLxlLAZ2ZLJd2GiigK0Uhsx0DhuzW7lpJoaOC8HKozVKrJ8iojtPJzS6n2haBrf4dhf7xFJVL4bjBw==}
     engines: {node: 12.* || 14.* || >=16}
     dependencies:
       basic-auth: 2.0.1
       chalk: 4.1.2
       compression: 1.7.4
       express: 4.18.2
-      fastboot: 4.1.1
-      fastboot-express-middleware: 4.1.1
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - supports-color
-      - utf-8-validate
-    dev: true
-
-  /fastboot-express-middleware@4.1.1:
-    resolution: {integrity: sha512-RzobJdJXtFLOp+QtQlRSEm4RjepprLDITyYxPzd7M8LTH9jo2COhG0NFz2LFcv9Jtqlp8IzKh/0w2+hOt7JZow==}
-    engines: {node: 12.* || 14.* || >=16}
-    dependencies:
-      chalk: 4.1.2
-      fastboot: 4.1.1
+      fastboot: 4.1.2
+      fastboot-express-middleware: 4.1.2
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -7987,24 +7974,6 @@ packages:
       convert-source-map: 1.9.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /fastboot@4.1.1:
-    resolution: {integrity: sha512-XG7YprsAuAGZrUDhmJ0NFuEP0gpWg9LZwGWSS1I5+f0ETHKPWqb4x59sN2rU1nvCEETBK70z68tLsWsl9daomg==}
-    engines: {node: 12.* || 14.* || >=16}
-    dependencies:
-      chalk: 4.1.2
-      cookie: 0.4.2
-      debug: 4.3.4
-      jsdom: 19.0.0
-      resolve: 1.22.8
-      simple-dom: 1.4.0
-      source-map-support: 0.5.21
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - supports-color
-      - utf-8-validate
     dev: true
 
   /fastboot@4.1.2:
