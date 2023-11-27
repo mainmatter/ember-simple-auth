@@ -63,8 +63,8 @@ importers:
         specifier: 2.6.3
         version: 2.6.3(webpack@5.89.0)
       ember-cli:
-        specifier: 5.4.0
-        version: 5.4.0(handlebars@4.7.8)
+        specifier: 5.4.1
+        version: 5.4.1(handlebars@4.7.8)
       ember-cli-babel:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.23.3)
@@ -73,7 +73,7 @@ importers:
         version: 1.1.1
       ember-cli-dependency-checker:
         specifier: 3.3.2
-        version: 3.3.2(ember-cli@5.4.0)
+        version: 3.3.2(ember-cli@5.4.1)
       ember-cli-htmlbars:
         specifier: 6.3.0
         version: 6.3.0
@@ -208,8 +208,8 @@ importers:
         specifier: 7.23.3
         version: 7.23.3(@babel/core@7.23.3)
       '@babel/runtime':
-        specifier: 7.23.2
-        version: 7.23.2
+        specifier: 7.23.4
+        version: 7.23.4
       '@embroider/addon-dev':
         specifier: 4.1.2
         version: 4.1.2(rollup@4.5.0)
@@ -292,8 +292,8 @@ importers:
         specifier: 2.6.3
         version: 2.6.3(webpack@5.89.0)
       ember-cli:
-        specifier: 5.4.0
-        version: 5.4.0(handlebars@4.7.8)
+        specifier: 5.4.1
+        version: 5.4.1(handlebars@4.7.8)
       ember-cli-babel:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.23.3)
@@ -302,7 +302,7 @@ importers:
         version: 1.1.1
       ember-cli-dependency-checker:
         specifier: 3.3.2
-        version: 3.3.2(ember-cli@5.4.0)
+        version: 3.3.2(ember-cli@5.4.1)
       ember-cli-fastboot:
         specifier: 4.1.2
         version: 4.1.2
@@ -458,8 +458,8 @@ importers:
         specifier: 2.6.3
         version: 2.6.3(webpack@5.89.0)
       ember-cli:
-        specifier: 5.4.0
-        version: 5.4.0(handlebars@4.7.8)
+        specifier: 5.4.1
+        version: 5.4.1(handlebars@4.7.8)
       ember-cli-babel:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.23.3)
@@ -468,7 +468,7 @@ importers:
         version: 1.1.1
       ember-cli-dependency-checker:
         specifier: 3.3.2
-        version: 3.3.2(ember-cli@5.4.0)
+        version: 3.3.2(ember-cli@5.4.1)
       ember-cli-htmlbars:
         specifier: 6.3.0
         version: 6.3.0
@@ -1742,8 +1742,8 @@ packages:
     dependencies:
       regenerator-runtime: 0.13.11
 
-  /@babel/runtime@7.23.2:
-    resolution: {integrity: sha512-mM8eg4yl5D6i3lu2QKPuPH4FArvJ8KhTofbE7jwMUv9KX5mBvwPAqnV3MlyBNqdp9RyRKP6Yck8TrfYrPvX3bg==}
+  /@babel/runtime@7.23.4:
+    resolution: {integrity: sha512-2Yv65nlWnWlSpe3fXEyX5i7fx5kIKo4Qbcj+hMO0odwaneFjfXw5fdum+4yL20O0QiaHpia0cYQ9xpNMqrBwHg==}
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.0
@@ -1957,7 +1957,7 @@ packages:
     dependencies:
       '@babel/core': 7.23.3
       '@babel/plugin-transform-block-scoping': 7.23.3(@babel/core@7.23.3)
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.4
       '@ember/edition-utils': 1.2.0
       '@embroider/macros': 1.13.3
       babel-import-util: 1.4.1
@@ -5809,7 +5809,7 @@ packages:
     resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
     engines: {node: '>=0.11'}
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.4
     dev: true
 
   /date-time@2.1.0:
@@ -6300,14 +6300,14 @@ packages:
       - supports-color
     dev: true
 
-  /ember-cli-dependency-checker@3.3.2(ember-cli@5.4.0):
+  /ember-cli-dependency-checker@3.3.2(ember-cli@5.4.1):
     resolution: {integrity: sha512-PwkrW5oYsdPWwt+0Tojufmv/hxVETTjkrEdK7ANQB2VSnqpA5UcYubwpQM9ONuR2J8wyNDMwEHlqIrk/FYtBsQ==}
     engines: {node: '>= 6'}
     peerDependencies:
       ember-cli: ^3.2.0 || >=4.0.0
     dependencies:
       chalk: 2.4.2
-      ember-cli: 5.4.0(handlebars@4.7.8)
+      ember-cli: 5.4.1(handlebars@4.7.8)
       find-yarn-workspace-root: 1.2.1
       is-git-url: 1.0.0
       resolve: 1.22.8
@@ -6600,8 +6600,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /ember-cli@5.4.0(handlebars@4.7.8):
-    resolution: {integrity: sha512-00RfyeDGTo9OtsmxbIqJIKM0wZvvOGAn1w4A9hFrENcuE7I3HKCb3QYKLHLXywG91fTsWbmXRfCL1kQ5pOva4A==}
+  /ember-cli@5.4.1(handlebars@4.7.8):
+    resolution: {integrity: sha512-+jwp63OPT0zkUnXP563DkIwb1GiI6kGYHg6DyzJKY48BCdevqcgxsMFn8/RENXoF7krg18A5B9cSa8Y1v15tIw==}
     engines: {node: '>= 18'}
     hasBin: true
     dependencies:
@@ -9577,7 +9577,7 @@ packages:
   /is-language-code@3.1.0:
     resolution: {integrity: sha512-zJdQ3QTeLye+iphMeK3wks+vXSRFKh68/Pnlw7aOfApFSEIOhYa8P9vwwa6QrImNNBMJTiL1PpYF0f4BxDuEgA==}
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.4
     dev: true
 
   /is-map@2.0.2:
@@ -12373,7 +12373,7 @@ packages:
   /regenerator-transform@0.15.2:
     resolution: {integrity: sha512-hfMp2BoF0qOk3uc5V20ALGDS2ddjQaLrdl7xrGXvAIow7qeWRM2VA2HuCHkUKk9slq3VwEwLNK3DFBqDfPGYtg==}
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.4
 
   /regex-not@1.0.2:
     resolution: {integrity: sha512-J6SDjUgDxQj5NusnOtdFxDwN/+HWykR8GELwctJ7mdqhcyy1xEc4SRFHUXvxTp661YaVKAjfRLZ9cCqS6tn32A==}
