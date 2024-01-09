@@ -1,3 +1,5 @@
+/**  @module ember-simple-auth/authenticators/devise */
+
 import { Promise } from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
@@ -15,7 +17,6 @@ const JSON_CONTENT_TYPE = 'application/json';
   see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
   @class DeviseAuthenticator
-  @module ember-simple-auth/authenticators/devise
   @extends BaseAuthenticator
   @public
 */

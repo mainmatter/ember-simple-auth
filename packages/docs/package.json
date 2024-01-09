@@ -1,0 +1,16 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate": "jsdoc -c jsdoc.json --readme ./HOME.md"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-docs": "^2.7.3",
+    "jsdoc": "^4.0.2"
+  }
+}

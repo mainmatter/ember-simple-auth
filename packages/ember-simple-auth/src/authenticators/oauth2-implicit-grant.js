@@ -12,6 +12,7 @@ import BaseAuthenticator from './base';
   @function parseResponse
   @param {String} locationHash The location hash (as received from `window.location.hash`)
   @return {Object} An obect with individual properties and values for the data parsed from the location hash
+  @memberof module:ember-simple-auth/authenticators/oauth2-implicit-grant
 */
 export function parseResponse(locationHash) {
   let params = {};

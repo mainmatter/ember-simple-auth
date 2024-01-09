@@ -1,0 +1,20 @@
+{
+  "plugins": [],
+  "recurseDepth": 10,
+  "source": {
+    "include": ["../ember-simple-auth/src"],
+    "exclude": ["../ember-simple-auth/src/test-support"],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "opts": {
+    "template": "node_modules/better-docs",
+    "destination": "./gh-pages/api",
+    "recurse": true
+  },
+  "sourceType": "module",
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  }
+}

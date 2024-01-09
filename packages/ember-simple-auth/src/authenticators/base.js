@@ -1,3 +1,5 @@
+/** @module ember-simple-auth/authenticators/base */
+
 import RSVP from 'rsvp';
 import Evented from '@ember/object/evented';
 import EmberObject from '@ember/object';
@@ -55,7 +57,6 @@ import EmberObject from '@ember/object';
   ```
 
   @class BaseAuthenticator
-  @module ember-simple-auth/authenticators/base
   @extends Ember.Object
   @uses Ember.Evented
   @public
@@ -107,6 +108,7 @@ export default EmberObject.extend(Evented, {
     @method restore
     @param {Object} data The data to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+    @member
     @public
   */
   restore() {
@@ -134,6 +136,7 @@ export default EmberObject.extend(Evented, {
     @method authenticate
     @param {Any} [...args] The arguments that the authenticator requires to authenticate the session
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
+    @member
     @public
   */
   authenticate() {
@@ -159,6 +162,7 @@ export default EmberObject.extend(Evented, {
     @param {Object} data The current authenticated session data
     @param {Array} ...args additional arguments as required by the authenticator
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
+    @member
     @public
   */
   invalidate() {

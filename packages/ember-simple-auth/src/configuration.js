@@ -1,3 +1,5 @@
+/** @module ember-simple-auth/configuration */
+
 const DEFAULTS = {
   rootURL: '',
   routeAfterAuthentication: 'index',
@@ -8,7 +10,6 @@ const DEFAULTS = {
 
   @class Configuration
   @extends Object
-  @module ember-simple-auth/configuration
   @public
 */
 export default {
