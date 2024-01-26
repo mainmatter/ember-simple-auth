@@ -14,7 +14,7 @@ const JSON_CONTENT_TYPE = 'application/json';
   needs to implement some customizations__ to work with this authenticator -
   see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
-  @constructs DeviseAuthenticator
+  @class DeviseAuthenticator
   @extends BaseAuthenticator
   @public
 */

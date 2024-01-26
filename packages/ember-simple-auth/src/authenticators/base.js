@@ -50,7 +50,7 @@ import EmberObject from '@ember/object';
   }
   ```
 
-  @constructs BaseAuthenticator
+  @class BaseAuthenticator
   @extends Ember.Object
   @uses Ember.Evented
   @public

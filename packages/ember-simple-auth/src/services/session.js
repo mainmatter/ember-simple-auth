@@ -38,7 +38,7 @@ function assertSetupHasBeenCalled(isSetupCalled) {
   }
   ```
 
-  @constructs SessionService
+  @class SessionService
   @extends Service
   @public
 */

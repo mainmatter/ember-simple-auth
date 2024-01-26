@@ -39,7 +39,7 @@ export function parseResponse(locationHash) {
  OAuth 2.0 redirect route to parse authentication parameters from location
  hash string into an object.
 
- @constructs OAuth2ImplicitGrantAuthenticator
+ @class OAuth2ImplicitGrantAuthenticator
  @extends BaseAuthenticator
  @public
  */

@@ -31,7 +31,7 @@ deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
   }
   ```
 
-  @constructs ToriiAuthenticator
+  @class ToriiAuthenticator
   @deprecated Implement an authenticator that wraps Torii in application code instead: since 4.2.0
   @extends BaseAuthenticator
   @public

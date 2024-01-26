@@ -18,7 +18,7 @@ import { isTesting } from '@embroider/macros';
   [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)) if the
   server supports it.
 
-  @constructs OAuth2PasswordGrantAuthenticator
+  @class OAuth2PasswordGrantAuthenticator
   @extends BaseAuthenticator
   @public
 */
