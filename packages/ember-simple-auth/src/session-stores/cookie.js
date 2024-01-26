@@ -30,7 +30,7 @@ const persistingProperty = function(beforeSet = function() {}) {
   By default the cookie session store uses a session cookie that expires and is
   deleted when the browser is closed. The cookie expiration period can be
   configured by setting the
-  {{#crossLink "CookieStore/cookieExpirationTime:property"}}{{/crossLink}}
+  {@linkplain CookieStore.cookieExpirationTime}
   property. This can be used to implement "remember me" functionality that will
   either store the session persistently or in a session cookie depending on
   whether the user opted in or not:
@@ -41,7 +41,7 @@ const persistingProperty = function(beforeSet = function() {}) {
   import { inject as service } from '@ember/service';
 
   export default class LoginController extends Controller {
-    @service session;
+    &#64;service session;
     _rememberMe = false;
 
     get rememberMe() {
@@ -67,7 +67,6 @@ const persistingProperty = function(beforeSet = function() {}) {
   ```
 
   @class CookieStore
-  @module ember-simple-auth/session-stores/cookie
   @extends BaseStore
   @public
 */
@@ -81,6 +80,7 @@ export default BaseStore.extend({
     explicitly set, the cookie domain defaults to the domain the session was
     authenticated on.
 
+    @memberof CookieStore
     @property cookieDomain
     @type String
     @default null
@@ -95,6 +95,7 @@ export default BaseStore.extend({
     Available options:
     - "Strict"
     - "Lax"
+    @memberof CookieStore
     @property sameSite
     @type String
     @default null
@@ -106,6 +107,7 @@ export default BaseStore.extend({
   /**
     The name of the cookie.
 
+    @memberof CookieStore
     @property cookieName
     @type String
     @default ember_simple_auth-session
@@ -119,6 +121,7 @@ export default BaseStore.extend({
   /**
     The path to use for the cookie, e.g., "/", "/something".
 
+    @memberof CookieStore
     @property cookiePath
     @type String
     @default '/'
@@ -136,6 +139,7 @@ export default BaseStore.extend({
     that, the cookie may expire before its expiration time is extended
     (expiration time is extended every 60 seconds).
 
+    @memberof CookieStore
     @property cookieExpirationTime
     @default null
     @type Integer
@@ -206,6 +210,7 @@ export default BaseStore.extend({
   /**
     Persists the `data` in the cookie.
 
+    @memberof CookieStore
     @method persist
     @param {Object} data The data to persist
     @return {RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
@@ -222,6 +227,7 @@ export default BaseStore.extend({
   /**
     Returns all data currently stored in the cookie as a plain object.
 
+    @memberof CookieStore
     @method restore
     @return {RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
@@ -238,6 +244,7 @@ export default BaseStore.extend({
   /**
     Clears the store by deleting the cookie.
 
+    @memberof CookieStore
     @method clear
     @return {RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public

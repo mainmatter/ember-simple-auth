@@ -1,5 +1,5 @@
 {
-  "plugins": [],
+  "plugins": ["plugins/markdown"],
   "recurseDepth": 10,
   "source": {
     "include": ["../ember-simple-auth/src"],
@@ -16,5 +16,8 @@
   "tags": {
     "allowUnknownTags": true,
     "dictionaries": ["jsdoc", "closure"]
+  },
+  "templates": {
+    "cleverLinks": true
   }
 }

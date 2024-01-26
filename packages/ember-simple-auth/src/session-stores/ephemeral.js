@@ -8,7 +8,6 @@ import BaseStore from './base';
   useful for testing and will automatically be used when running tests.__
 
   @class EphemeralStore
-  @module ember-simple-auth/session-stores/ephemeral
   @extends BaseStore
   @public
 */
@@ -21,6 +20,7 @@ export default BaseStore.extend({
   /**
     Persists `data`. This replaces all currently stored data.
 
+    @memberof EpemeralStore
     @method persist
     @param {Object} data The data to persist
     @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
@@ -35,6 +35,7 @@ export default BaseStore.extend({
   /**
     Returns all data currently stored as a plain object.
 
+    @memberof EpemeralStore
     @method restore
     @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
@@ -48,6 +49,7 @@ export default BaseStore.extend({
   /**
     Clears the store.
 
+    @memberof EpemeralStore
     @method clear
     @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public

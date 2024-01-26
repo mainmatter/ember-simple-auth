@@ -26,7 +26,7 @@ function assertSetupHasBeenCalled(isSetupCalled) {
 /**
   __The session service provides access to the current session as well as
   methods to authenticate it, invalidate it, etc.__ It is the main interface for
-  the application to Ember Simple Auth's functionality. It can be injected via
+  the application to Ember Simple Auth's functionality.
 
   ```js
   // app/components/login-form.js
@@ -34,12 +34,11 @@ function assertSetupHasBeenCalled(isSetupCalled) {
   import { inject as service } from '@ember/service';
 
   export default class LoginFormComponent extends Component {
-    @service session;
+    &#64;service session;
   }
   ```
 
-  @class SessionService
-  @module ember-simple-auth/services/session
+  @constructs SessionService
   @extends Service
   @public
 */
@@ -47,12 +46,13 @@ export default Service.extend({
   /**
     Triggered whenever the session is successfully authenticated. This happens
     when the session gets authenticated via
-    {{#crossLink "SessionService/authenticate:method"}}{{/crossLink}} but also
+    {@linkplain SessionService.authenticate} but also
     when the session is authenticated in another tab or window of the same
     application and the session state gets synchronized across tabs or windows
     via the store (see
-    {{#crossLink "BaseStore/sessionDataUpdated:event"}}{{/crossLink}}).
+    {@linkplain BaseStore.sessionDataUpdated}).
 
+    @memberof SessionService
     @event authenticationSucceeded
     @public
   */
@@ -60,12 +60,13 @@ export default Service.extend({
   /**
     Triggered whenever the session is successfully invalidated. This happens
     when the session gets invalidated via
-    {{#crossLink "SessionService/invalidate:method"}}{{/crossLink}} but also
+    {@linkplain SessionService.invalidate} but also
     when the session is invalidated in another tab or window of the same
     application and the session state gets synchronized across tabs or windows
     via the store (see
-    {{#crossLink "BaseStore/sessionDataUpdated:event"}}{{/crossLink}}).
+    {@linkplain BaseStore.sessionDataUpdated}.
 
+    @memberof SessionService
     @event invalidationSucceeded
     @public
   */
@@ -73,6 +74,7 @@ export default Service.extend({
   /**
     Returns whether the session is currently authenticated.
 
+    @memberof SessionService
     @property isAuthenticated
     @type Boolean
     @readOnly
@@ -83,13 +85,13 @@ export default Service.extend({
 
   /**
     The current session data as a plain object. The
-    `authenticated` key holds the session data that the authenticator resolved
-    with when the session was authenticated (see
-    {{#crossLink "BaseAuthenticator/authenticate:method"}}{{/crossLink}}) and
+    `authenticated` key inside  {@linkplain SessionService.data} holds the session data that the authenticator resolved
+    with when the session was authenticated (see {@linkplain BaseAuthenticator.authenticate}) and
     that will be cleared when the session is invalidated. This data cannot be
     written. All other session data is writable and will not be cleared when
     the session is invalidated.
 
+    @memberof SessionService
     @property data
     @type Object
     @readOnly
@@ -101,6 +103,7 @@ export default Service.extend({
   /**
     The session store.
 
+    @memberof SessionService
     @property store
     @type BaseStore
     @readOnly
@@ -111,9 +114,10 @@ export default Service.extend({
 
   /**
     A previously attempted but intercepted transition (e.g. by the
-    {{#crossLink "SessionService/requireAuthentication:method"}}{{/crossLink}}
+    {@linkplain SessionService.requireAuthentication}
     If an attempted transition is present it will be retried.
 
+    @memberof SessionService
     @property attemptedTransition
     @type Transition
     @default null
@@ -155,25 +159,25 @@ export default Service.extend({
     __Authenticates the session with an `authenticator`__ and appropriate
     arguments. The authenticator implements the actual steps necessary to
     authenticate the session (see
-    {{#crossLink "BaseAuthenticator/authenticate:method"}}{{/crossLink}}) and
+    {@linkplain BaseAuthenticator.authenticate} and
     returns a promise after doing so. The session handles the returned promise
     and when it resolves becomes authenticated, otherwise remains
     unauthenticated. All data the authenticator resolves with will be
     accessible via the
-    {{#crossLink "SessionService/data:property"}}session data's{{/crossLink}}
+    {@Linkplain SessionService.data} session data's
     `authenticated` property.
 
-    __This method returns a promise. A resolving promise indicates that the
-    session was successfully authenticated__ while a rejecting promise
+    This method returns a promise. A resolving promise indicates that the
+    session was successfully authenticated while a rejecting promise
     indicates that authentication failed and the session remains
     unauthenticated. The promise does not resolve with a value; instead, the
     data returned from the authenticator is available via the
-    {{#crossLink "SessionService/data:property"}}{{/crossLink}} property.
+    {@linkplain SessionService.data} property.
 
     When authentication succeeds this will trigger the
-    {{#crossLink "SessionService/authenticationSucceeded:event"}}{{/crossLink}}
-    event.
+    {@linkplain SessionService.authenticationSucceeded} event.
 
+    @memberof SessionService
     @method authenticate
     @param {String} authenticator The authenticator to use to authenticate the session
     @param {Any} [...args] The arguments to pass to the authenticator; depending on the type of authenticator these might be a set of credentials, a Facebook OAuth Token, etc.
@@ -189,25 +193,26 @@ export default Service.extend({
   /**
     __Invalidates the session with the authenticator it is currently
     authenticated with__ (see
-    {{#crossLink "SessionService/authenticate:method"}}{{/crossLink}}). This
+    {@linkplain SessionService.authenticate}). This
     invokes the authenticator's
-    {{#crossLink "BaseAuthenticator/invalidate:method"}}{{/crossLink}} method
+    {@linkplain BaseAuthenticator.invalidate} method
     and handles the returned promise accordingly.
 
     This method returns a promise. A resolving promise indicates that the
     session was successfully invalidated while a rejecting promise indicates
     that invalidation failed and the session remains authenticated. Once the
     session is successfully invalidated it clears all of its authenticated data
-    (see {{#crossLink "SessionService/data:property"}}{{/crossLink}}).
+    (see {@linkplain SessionService.data}).
 
     When invalidation succeeds this will trigger the
-    {{#crossLink "SessionService/invalidationSucceeded:event"}}{{/crossLink}}
+    {@linkplain SessionService.invalidationSucceeded}
     event.
 
-    When calling the {{#crossLink "BaseAuthenticator/invalidate:method"}}{{/crossLink}}
+    When calling the {@linkplain BaseAuthenticator.invalidate}
     on an already unauthenticated session, the method will return a resolved Promise
     immediately.
 
+    @memberof SessionService
     @method invalidate
     @param {Array} ...args arguments that will be passed to the authenticator
     @return {RSVP.Promise} A promise that resolves when the session was invalidated successfully and rejects otherwise
@@ -225,12 +230,13 @@ export default Service.extend({
 
     If a transition is in progress and is aborted, this method will save it in the
     session service's
-    {{#crossLink "SessionService/attemptedTransition:property"}}{{/crossLink}}
+    {@linkplain SessionService.attemptedTransition}
     property so that  it can be retried after the session is authenticated. If
     the transition is aborted in Fastboot mode, the transition's target URL
     will be saved in a `ember_simple_auth-redirectTarget` cookie for use by the
     browser after authentication is complete.
 
+    @memberof SessionService
     @method requireAuthentication
     @param {Transition} transition A transition that triggered the authentication requirement or null if the requirement originated independently of a transition
     @param {String|Function} routeOrCallback The route to transition to in case that the session is not authenticated or a callback function to invoke in that case
@@ -260,6 +266,7 @@ export default Service.extend({
     Checks whether the session is authenticated and if it is, transitions
     to the specified route or invokes the specified callback.
 
+    @memberof SessionService
     @method prohibitAuthentication
     @param {String|Function} routeOrCallback The route to transition to in case that the session is authenticated or a callback function to invoke in that case
     @return {Boolean} true when the session is not authenticated, false otherwise
@@ -288,13 +295,14 @@ export default Service.extend({
     This method is called whenever the session goes from being unauthenticated
     to being authenticated. If there is a transition that was previously
     intercepted by the
-    {{#crossLink "SessionService/requireAuthentication:method"}}{{/crossLink}},
+    {@linkplain SessionService.requireAuthentication},
     it will retry it. If there is no such transition, the
     `ember_simple_auth-redirectTarget` cookie will be checked for a url that
     represents an attemptedTransition that was aborted in Fastboot mode,
     otherwise this action transitions to the specified
     routeAfterAuthentication.
 
+    @memberof SessionService
     @method handleAuthentication
     @param {String} routeAfterAuthentication The route to transition to
     @public
@@ -314,6 +322,7 @@ export default Service.extend({
     [cordova](http://cordova.apache.org)) this action can be overridden to e.g.
     simply transition to the index route.
 
+    @memberof SessionService
     @method handleInvalidation
     @param {String} routeAfterInvalidation The route to transition to
     @public
@@ -329,6 +338,7 @@ export default Service.extend({
     usually as the first thing in the `application` route's `beforeModel`
     method.
 
+    @memberof SessionService
     @method setup
     @public
   */

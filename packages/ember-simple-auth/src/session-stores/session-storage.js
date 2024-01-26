@@ -13,11 +13,10 @@ import isFastBoot from '../utils/is-fastboot';
 
   __This session store does not work with FastBoot. In order to use Ember
   Simple Auth with FastBoot, configure the
-  {{#crossLink "CookieStore"}}{{/crossLink}} as the application's session
+  {@linkplain CookieStore} as the application's session
   store.__
 
   @class SessionStorageStore
-  @module ember-simple-auth/session-stores/session-storage
   @extends BaseStore
   @public
 */
@@ -25,6 +24,7 @@ export default BaseStore.extend({
   /**
     The `sessionStorage` key the store persists data in.
 
+    @memberof SessionStorageStore
     @property key
     @type String
     @default 'ember_simple_auth-session'
@@ -50,6 +50,7 @@ export default BaseStore.extend({
   /**
     Persists the `data` in the `sessionStorage`.
 
+    @memberof SessionStorageStore
     @method persist
     @param {Object} data The data to persist
     @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
@@ -66,6 +67,7 @@ export default BaseStore.extend({
   /**
     Returns all data currently stored in the `sessionStorage` as a plain object.
 
+    @memberof SessionStorageStore
     @method restore
     @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
@@ -78,9 +80,10 @@ export default BaseStore.extend({
 
   /**
     Clears the store by deleting the
-    {{#crossLink "sessionStorageStore/key:property"}}{{/crossLink}} from
+    {@linkplain sessionStorageStore.key} from
     `sessionStorage`.
 
+    @memberof SessionStorageStore
     @method clear
     @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public

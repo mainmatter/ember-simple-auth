@@ -1,5 +1,3 @@
-/** @module ember-simple-auth/configuration */
-
 const DEFAULTS = {
   rootURL: '',
   routeAfterAuthentication: 'index',
@@ -15,7 +13,7 @@ const DEFAULTS = {
 export default {
   /**
     The root URL of the application as configured in `config/environment.js`.
-
+    @memberof Configuration
     @property rootURL
     @readOnly
     @static
@@ -28,6 +26,7 @@ export default {
   /**
     The route to transition to after successful authentication.
 
+    @memberof Configuration
     @property routeAfterAuthentication
     @readOnly
     @static
