@@ -1,0 +1,24 @@
+{
+  "plugins": ["plugins/markdown"],
+  "recurseDepth": 10,
+  "source": {
+    "include": ["../ember-simple-auth/src", "../ember-simple-auth/package.json"],
+    "exclude": ["../ember-simple-auth/src/test-support"],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "opts": {
+    "template": "node_modules/better-docs",
+    "destination": "./gh-pages/api",
+    "recurse": true
+  },
+  "sourceType": "module",
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  },
+  "templates": {
+    "repository": "https://github.com/mainmatter/ember-simple-auth",
+    "cleverLinks": true
+  }
+}

@@ -11,17 +11,16 @@ import isFastBoot from '../utils/is-fastboot';
 
   __`localStorage` is not available in Safari when running in private mode. In
   general it is better to use the
-  {{#crossLink "AdaptiveStore"}}{{/crossLink}} that automatically falls back to
-  the {{#crossLink "CookieStore"}}{{/crossLink}} when `localStorage` is not
+  {@linkplain AdaptiveStore} that automatically falls back to
+  the {@linkplain CookieStore} when `localStorage` is not
   available.__
 
   __This session store does not work with FastBoot. In order to use Ember
   Simple Auth with FastBoot, configure the
-  {{#crossLink "CookieStore"}}{{/crossLink}} as the application's session
+  {@linkplain CookieStore} as the application's session
   store.__
 
   @class LocalStorageStore
-  @module ember-simple-auth/session-stores/local-storage
   @extends BaseStore
   @public
 */
@@ -29,6 +28,7 @@ export default BaseStore.extend({
   /**
     The `localStorage` key the store persists data in.
 
+    @memberof LocalStorageStore
     @property key
     @type String
     @default 'ember_simple_auth-session'
@@ -55,6 +55,7 @@ export default BaseStore.extend({
   /**
     Persists the `data` in the `localStorage`.
 
+    @memberof LocalStorageStore
     @method persist
     @param {Object} data The data to persist
     @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
@@ -71,6 +72,7 @@ export default BaseStore.extend({
   /**
     Returns all data currently stored in the `localStorage` as a plain object.
 
+    @memberof LocalStorageStore
     @method restore
     @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
@@ -83,9 +85,10 @@ export default BaseStore.extend({
 
   /**
     Clears the store by deleting the
-    {{#crossLink "LocalStorageStore/key:property"}}{{/crossLink}} from
+    {@linkplain LocalStorageStore.key} from
     `localStorage`.
 
+    @memberof LocalStorageStore
     @method clear
     @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public

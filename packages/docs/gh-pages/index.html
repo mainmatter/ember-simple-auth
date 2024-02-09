@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Ember Simple Auth - lightweight authentication/authorization library for Ember.js"/>
+  	<meta name="keywords" content="emberjs, javascript, authentication, session, authorization" />
+		<meta name="language" content="en"/>
+		<meta name="content-language" content="en"/>
+		<meta name="publisher" content="Mainmatter GmbH" />
+    <title>Ember Simple Auth</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+    <link rel="apple-touch-icon" href="images/apple-57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-114.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/apple-144.png">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
+    <link rel="stylesheet" href="https://yandex.st/highlightjs/7.4/styles/github.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,400">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script defer data-domain="ember-simple-auth.com" src="https://plausible.io/js/script.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css" media="screen">
+      body {
+        line-height: 1.7;
+        font-weight: 300;
+        color: #384147;
+      }
+
+      a, a:visited {
+        color: #e53613;
+        text-decoration: none;
+        padding: 2px;
+        transition: all .25s;
+      }
+
+      a:hover {
+        color: #e53613;
+        text-decoration: none;
+      }
+
+      p {
+        text-align: justify;
+      }
+
+      h1 {
+        margin-top: 50px;
+      }
+
+      h1, h2, h3 {
+        font-family: 'Ubuntu', sans-serif;
+        font-weight: lighter;
+      }
+
+      h2 {
+        margin: 60px 0 10px 0;
+        font-size: 24px;
+      }
+
+      strong {
+        padding: 2px;
+      }
+
+      code {
+        background-color: #f6f6f6;
+        color: #000;
+      }
+
+      #main-content ul {
+        display: table;
+        margin-left: 0;
+        padding-left: 0;
+        list-style: none;
+      }
+
+      #main-content ul li {
+        display: table-row;
+      }
+
+      #main-content ul li:before {
+        content: "•";
+        display: table-cell;
+        padding-right: 0.4em;
+      }
+
+      div.code {
+        background-color: #f6f6f6;
+        overflow-x: scroll;
+        line-height: 120%;
+        font-size: 120%;
+        border-radius: 0;
+        margin: 1em 0;
+      }
+
+      div.code pre {
+        margin: 0;
+        border: none;
+        background-color: transparent;
+        word-wrap: normal;
+      }
+
+      div.code pre code {
+        background-color: #f6f6f6;
+        white-space: inherit;
+      }
+
+      div.video {
+        margin: 1em 0;
+        text-align: center;
+      }
+
+      .header {
+        text-align: right;
+        padding: 10px 0;
+      }
+
+      .header a {
+        color: #656565;
+        font-weight: normal;
+        font-size: 12px;
+        letter-spacing: 1px;
+      }
+
+      #header {
+        background-color: #e53613;
+      }
+
+      #header a {
+        color: #fff !important;
+        background-color: #e53613 !important;
+        border: none;
+      }
+
+      #header a.github {
+        padding-left: 0 !important;
+      }
+
+      #intro .row {
+        text-align: center;
+      }
+
+      #intro p {
+        margin-right: 10%;
+        margin-left: 10%;
+      }
+
+      #intro i.main-logo {
+        margin: 130px 0 58px 0;
+      }
+
+      hr {
+        border-bottom: 1px solid #e53613;
+        margin: 60px 0 0 0;
+      }
+
+      #intro p {
+        text-align: center;
+      }
+
+      p.abstract {
+        font-weight: bold;
+      }
+
+      #footer {
+        margin-top: 50px;
+        margin-bottom: 0;
+        background-color: #f6f6f6;
+        font-size: 80%;
+      }
+
+      #footer p {
+        margin: 20px 0;
+        float: none;
+        text-align: right;
+      }
+
+      #footer p.copyright {
+        text-align: left;
+      }
+
+      .cookie-banner {
+        width: 100%;
+        padding: 20px 0;
+        position: fixed;
+        bottom: 0;
+        z-index: 9999;
+        background-color: #e53613;
+        color: #fff;
+      }
+
+      .cookie-banner p {
+        margin: 0;
+      }
+
+      .cookie-banner a {
+        color: #fff;
+        text-decoration: underline;
+      }
+
+      .cookie-button {
+        display: inline-block;
+        border-width: 2px;
+        border-style: solid;
+        padding: 5px 50px;
+        cursor: pointer;
+      }
+
+      .cookie-button:hover {
+        background-color: #fff;
+      }
+
+      .cookie-banner a.cookie-button {
+        text-decoration: none;
+      }
+
+      .cookie-banner a.cookie-button:hover {
+        color: #e53613;
+      }
+
+      .reference-project {
+        padding: 20px 0;
+        text-align: center;
+      }
+
+      i.mainmatter {
+        display: inline-block;
+        width: 69px;
+        height: 12px;
+        background-image: url("images/mainmatter.svg");
+      }
+
+      i.main-logo {
+        display: inline-block;
+        width: 300px;
+        height: 185px;
+        background-image: url("images/logo.png");
+      }
+
+      i.ghost {
+        display: inline-block;
+        width: 125px;
+        height: 40px;
+        background-image: url("images/ghost.png");
+      }
+
+      i.runtastic {
+        display: inline-block;
+        width: 154px;
+        height: 40px;
+        background-image: url("images/runtastic.png");
+      }
+
+      i.foko {
+        display: inline-block;
+        width: 45px;
+        height: 40px;
+        background-image: url("images/foko.png");
+      }
+
+      i.krit {
+        display: inline-block;
+        width: 106px;
+        height: 40px;
+        background-image: url("images/krit.png");
+      }
+
+      i.crowdly {
+        display: inline-block;
+        width: 116px;
+        height: 40px;
+        background-image: url("images/crowdly.png");
+      }
+
+      i.timify {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-image: url("images/timify.png");
+      }
+
+      i.heroku {
+        display: inline-block;
+        width: 115px;
+        height: 40px;
+        background-image: url("images/heroku.png");
+      }
+
+      @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6 / 2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
+        i.mainmatter {
+          background-size: 69px 12px;
+        }
+
+        i.main-logo {
+          background-image: url("images/logo@2x.png");
+          background-size: 250px 154px;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+
+        i.ghost {
+          background-image: url("images/ghost@2x.png");
+          background-size: 125px 40px;
+        }
+
+        i.runtastic {
+          background-image: url("images/runtastic@2x.png");
+          background-size: 154px 40px;
+        }
+
+        i.foko {
+          background-image: url("images/foko@2x.png");
+          background-size: 45px 40px;
+        }
+
+        i.krit {
+          background-image: url("images/krit@2x.png");
+          background-size: 106px 40px;
+        }
+
+        i.crowdly {
+          background-image: url("images/crowdly@2x.png");
+          background-size: 116px 40px;
+        }
+
+        i.timify {
+          background-image: url("images/timify@2x.png");
+          background-size: 40px 40px;
+        }
+
+        i.heroku {
+          background-image: url("images/heroku@2x.png");
+          background-size: 115px 40px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        #header a.github {
+          padding-left: 15px !important;
+        }
+        i.main-logo {
+          margin-top: 160px;
+        }
+        .cookie-banner {
+          text-align: center;
+        }
+        .cookie-banner p {
+          text-align: center;
+        }
+        .cookie-button {
+          float: none!important;
+        }
+      }
+
+      @media (max-width: 992px) {
+        #footer p {
+          text-align: left;
+          margin-bottom: 0;
+        }
+        #footer {
+          padding-bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+	<body>
+    <div class="row header">
+      <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <a href="https://mainmatter.com" target="_blank">
+          <span>Brought to you by </span>
+          <i class="mainmatter"></i>
+        </a>
+      </div>
+    </div>
+    <nav id="header" class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+            <ul class="nav navbar-nav">
+              <li>
+                <a href="https://github.com/mainmatter/ember-simple-auth" class="github"><i class="icon icon-github"></i> mainmatter/ember-simple-auth</a>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li>
+                <a href="https://demo.ember-simple-auth.com">Demo App</a>
+              </li>
+              <li>
+                <a href="api/">API Docs</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid" id="intro">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+          <i class="main-logo"></i>
+        </div>
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+          <p class="abstract"><a href="https://github.com/mainmatter/ember-simple-auth" title="Ember Simple Auth @ github">Ember Simple Auth</a> is a lightweight library for implementing authentication/authorization with <a href="http://emberjs.com" title="Ember.js">Ember.js</a> applications.</p>
+          <p>It has minimal requirements with respect to application structure, routes etc. With its pluggable strategies it can support all kinds of authentication and authorization mechanisms.</p>
+          <hr/>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div id="main-content" class="row">
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+          <h2>What does it do?</h2>
+          <ul>
+            <li>it <strong>maintains a client side session</strong> and synchronizes its state across multiple tabs/windows of the application</li>
+            <li>it <strong>authenticates the session</strong> against the application's own server, external providers like Facebook etc.</li>
+            <li>it <strong>authorizes requests</strong> to backend servers</li>
+            <li>it is <strong>easily customizable and extensible</strong></li>
+          </ul>
+          <h2>Installation</h2>
+          <p>
+            Install Ember Simple Auth as an <a href="https://ember-cli.com">Ember CLI</a> Addon:
+          </p>
+          <div class="code">
+            <pre><code class="bash">ember install ember-simple-auth</code></pre>
+          </div>
+          <h2>How to use it</h2>
+          <div class="video">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/bSWN4_EbTPI?rel=0" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <h2>More information</h2>
+          <p>
+            This is only a very brief overview of Ember Simple Auth's features. More detailed docs can be found in the <a href="https://github.com/mainmatter/ember-simple-auth#readme">README</a> and the <a href="/api">API docs</a>. Checkout a <a href="http://ember-fastboot.com/">FastBoot</a> enabled demo app <a href="https://demo.ember-simple-auth.com">here</a>.
+          </p>
+          <hr/>
+        </div>
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+          <h2>Projects and Companies using Ember Simple Auth</h2>
+        </div>
+        <div class="col-sm-2 col-sm-offset-3 col-xs-6 reference-project">
+          <i class="ghost"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="runtastic"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="heroku"></i>
+        </div>
+        <div class="col-sm-2 col-sm-offset-3 col-xs-6 reference-project">
+          <i class="krit"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="crowdly"></i>
+        </div>
+        <div class="col-sm-2 col-xs-6 reference-project">
+          <i class="timify"></i>
+        </div>
+        <div class="col-sm-2 col-sm-offset-5 col-xs-6 reference-project">
+          <i class="foko"></i>
+        </div>
+      </div>
+    </div>
+    <nav id="footer" class="navbar" role="navigation">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3 col-md-offset-3 col-sm-4 col-sm-offset-2 col-xs-12">
+            <p class="copyright">
+              &copy; 2013-2022 <a href="https://mainmatter.com"><i class="mainmatter"></i></a>
+            </p>
+          </div>
+          <div class="col-md-3 col-sm-4 col-xs-12">
+            <p>
+            	Ember Simple Auth is not an official part of <a href="http://emberjs.com">Ember.js</a> and is not maintained by the Ember.js Core Team.
+            </p>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="cookie-banner" id="cookie-banner">
+      <div class="row">
+        <div class="col-md-3 col-md-offset-3 col-sm-4 col-sm-offset-2 col-xs-12">
+          <p>This website uses cookies. <a href="https://mainmatter.com/privacy/">Learn more</a></p>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-12">
+          <a class="cookie-button pull-right" id="cookie-button">Ok</a>
+          <script>
+            $(function() {
+              var banner = $('#cookie-banner');
+              if (document.cookie.includes('cookiesAccepted=true')) {
+                banner.remove();
+              }
+
+              var button = $('#cookie-button');
+              button.on('click', function() {
+                document.cookie = "cookiesAccepted=true;path=/;expires=Mon, 24 Mar 2319 09:52:10 GMT";
+                banner.remove();
+              });
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+    <script src="https://yandex.st/highlightjs/7.4/highlight.min.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+  </body>
+</html>

@@ -12,15 +12,11 @@ import EmberObject from '@ember/object';
   provider like Facebook, etc. The details depend on the specific authenticator.
   Upon successful authentication, any data that the authenticator receives and
   resolves via the promise returned from the
-  {{#crossLink "BaseAuthenticator/authenticate:method"}}{{/crossLink}}
-  method is stored in the session and can be accessed via the session service
-  to be used by the authorizer (see
-  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) to e.g.,
-  authorize outgoing requests.
+  {@linkplain BaseAuthenticator.authenticate}
+  method is stored in the session's {@linkplain SessionService.data}.
 
   The authenticator also decides whether a set of data that was restored from
-  the session store (see
-  {{#crossLink "BaseStore/restore:method"}}{{/crossLink}}) makes up an
+  the session store (see {@linkplain BaseStore.restore}) makes up an
   authenticated session or not.
 
   __Authenticators for an application are defined in the `app/authenticators`
@@ -45,9 +41,9 @@ import EmberObject from '@ember/object';
   import { action } from '@ember/object';
 
   export default class LoginFormComponent extends Component {
-    @service session;
+    &#64;service session;
 
-    @action
+    &#64;action
     authenticate() {
       this.session.authenticate('authenticator:oauth2');
     }
@@ -55,7 +51,6 @@ import EmberObject from '@ember/object';
   ```
 
   @class BaseAuthenticator
-  @module ember-simple-auth/authenticators/base
   @extends Ember.Object
   @uses Ember.Evented
   @public
@@ -67,9 +62,10 @@ export default EmberObject.extend(Evented, {
     authenticator refreshes an expired token or an event is triggered from an
     external authentication provider that the authenticator uses. The session
     handles that event, passes the updated data back to the authenticator's
-    {{#crossLink "BaseAuthenticator/restore:method"}}{{/crossLink}}
+    {@linkplain BaseAuthenticator.restore}
     method and handles the result of that invocation accordingly.
 
+    @memberof BaseAuthenticator
     @event sessionDataUpdated
     @param {Object} data The updated session data
     @public
@@ -82,6 +78,7 @@ export default EmberObject.extend(Evented, {
     that the authenticator uses. The session handles the event and will
     invalidate itself when it is triggered.
 
+    @memberof BaseAuthenticator
     @event sessionDataInvalidated
     @public
   */
@@ -97,16 +94,18 @@ export default EmberObject.extend(Evented, {
     becoming or remaining authenticated.__ Any data the promise resolves with
     will be saved in and accessible via the session service's
     `data.authenticated` property (see
-    {{#crossLink "SessionService/data:property"}}{{/crossLink}}). A rejecting
+    {@linkplain SessionService.data}. A rejecting
     promise indicates that `data` does not constitute a valid session and will
     result in the session being invalidated or remaining unauthenticated.
 
     The `BaseAuthenticator`'s implementation always returns a rejecting
     promise. __This method must be overridden in subclasses.__
 
+    @memberof BaseAuthenticator
     @method restore
     @param {Object} data The data to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+    @member
     @public
   */
   restore() {
@@ -118,12 +117,12 @@ export default EmberObject.extend(Evented, {
     depending on the actual authentication mechanism the authenticator
     implements (e.g. a set of credentials or a Facebook account id etc.). __The
     session will invoke this method in order to authenticate itself__ (see
-    {{#crossLink "SessionService/authenticate:method"}}{{/crossLink}}).
+    {@linkplain SessionService.authenticate}).
 
     __This method returns a promise. A resolving promise will result in the
     session becoming authenticated.__ Any data the promise resolves with will
     be saved in and accessible via the session service's `data.authenticated`
-    property (see {{#crossLink "SessionService/data:property"}}{{/crossLink}}).
+    property (see {@linkplain SessionService.data}).
     A rejecting promise indicates that authentication failed and will result in
     the session remaining unauthenticated.
 
@@ -131,9 +130,11 @@ export default EmberObject.extend(Evented, {
     and thus never authenticates the session. __This method must be overridden
     in subclasses__.
 
+    @memberof BaseAuthenticator
     @method authenticate
     @param {Any} [...args] The arguments that the authenticator requires to authenticate the session
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
+    @member
     @public
   */
   authenticate() {
@@ -145,20 +146,20 @@ export default EmberObject.extend(Evented, {
     the session will invalidate itself and clear all authenticated session data,
     it might be necessary for some authenticators to perform additional tasks
     (e.g. invalidating an access token on the server side).
-
-    __This method returns a promise. A resolving promise will result in the
+    This method returns a promise. A resolving promise will result in the
     session becoming unauthenticated.__ A rejecting promise will result in
     invalidation being intercepted and the session remaining authenticated.
-
     The `BaseAuthenticator`'s implementation always returns a resolving promise
     and thus never intercepts session invalidation. __This method doesn't have
-    to be overridden in custom authenticators__ if no actions need to be
+    to be overridden in custom authenticators if no actions need to be
     performed on session invalidation.
 
+    @memberof BaseAuthenticator
     @method invalidate
     @param {Object} data The current authenticated session data
     @param {Array} ...args additional arguments as required by the authenticator
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
+    @member
     @public
   */
   invalidate() {

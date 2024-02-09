@@ -14,11 +14,11 @@ deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
 
 /**
   Authenticator that wraps the
-  [Torii library](https://github.com/Vestorly/torii) and thus allows to connect
+  [Torii library](https://github.com/adopted-ember-addons/torii) and thus allows to connect
   any external authentication provider that torii defines a provider for.
 
   In order to use this authenticator, __the application needs to have the
-  [torii addon](https://github.com/Vestorly/torii) installed and must inject
+  [torii addon](https://github.com/adopted-ember-addons/torii) installed and must inject
   the torii service into the authenticator__:
 
   ```js
@@ -27,13 +27,12 @@ deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
   import { inject as service } from '@ember/service';
 
   export default class ToriiAuthenticator extends Torii {
-    @service torii;
+    &#64;service torii;
   }
   ```
 
   @class ToriiAuthenticator
-  @deprecated Implement an authenticator that wraps Torii in application code instead
-  @module ember-simple-auth/authenticators/torii
+  @deprecated Implement an authenticator that wraps Torii in application code instead: since 4.2.0
   @extends BaseAuthenticator
   @public
 */
@@ -57,6 +56,7 @@ export default BaseAuthenticator.extend({
     }
     ```
 
+    @memberof ToriiAuthenticator
     @method restore
     @param {Object} data The data to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
@@ -88,10 +88,11 @@ export default BaseAuthenticator.extend({
   /**
     Authenticates the session by opening the specified torii provider. For more
     documentation on torii and its providers abstraction, see the
-    [project's README](https://github.com/Vestorly/torii#readme), specifically
+    [project's README]( https://github.com/adopted-ember-addons/torii), specifically
     the
-    [section on providers](https://github.com/Vestorly/torii#configuring-a-torii-provider).
+    [section on providers](https://github.com/adopted-ember-addons/torii).
 
+    @memberof ToriiAuthenticator
     @method authenticate
     @param {String} provider The torii provider to authenticate the session with
     @param {Object} options The options to pass to the torii provider
@@ -112,6 +113,7 @@ export default BaseAuthenticator.extend({
     method returns a resolving promise, otherwise it will return a rejecting
     promise, thus intercepting session invalidation.
 
+    @memberof ToriiAuthenticator
     @method invalidate
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
     @public

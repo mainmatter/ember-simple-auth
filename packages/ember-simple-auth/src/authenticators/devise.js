@@ -15,7 +15,6 @@ const JSON_CONTENT_TYPE = 'application/json';
   see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
 
   @class DeviseAuthenticator
-  @module ember-simple-auth/authenticators/devise
   @extends BaseAuthenticator
   @public
 */
@@ -23,6 +22,7 @@ export default BaseAuthenticator.extend({
   /**
     The endpoint on the server that the authentication request is sent to.
 
+    @memberof DeviseAuthenticator
     @property serverTokenEndpoint
     @type String
     @default '/users/sign_in'
@@ -34,6 +34,7 @@ export default BaseAuthenticator.extend({
     The devise resource name. __This will be used in the request and also be
     expected in the server's response.__
 
+    @memberof DeviseAuthenticator
     @property resourceName
     @type String
     @default 'user'
@@ -45,6 +46,7 @@ export default BaseAuthenticator.extend({
     The token attribute name. __This will be used in the request and also be
     expected in the server's response.__
 
+    @memberof DeviseAuthenticator
     @property tokenAttributeName
     @type String
     @default 'token'
@@ -56,6 +58,7 @@ export default BaseAuthenticator.extend({
     The identification attribute name. __This will be used in the request and
     also be expected in the server's response.__
 
+    @memberof DeviseAuthenticator
     @property identificationAttributeName
     @type String
     @default 'email'
@@ -66,11 +69,12 @@ export default BaseAuthenticator.extend({
   /**
     Restores the session from a session data object; __returns a resolving
     promise when there are non-empty
-    {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
+    [token]{@linkplain DeviseAuthenticator.tokenAttributeName}
     and
-    {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}identification{{/crossLink}}
+    [identification]{@linkplain DeviseAuthenticator.identificationAttributeName}
     values in `data`__ and a rejecting promise otherwise.
 
+    @memberof DeviseAuthenticator
     @method restore
     @param {Object} data The data to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
@@ -84,15 +88,16 @@ export default BaseAuthenticator.extend({
   /**
     Authenticates the session with the specified `identification` and
     `password`; the credentials are `POST`ed to the
-    {{#crossLink "DeviseAuthenticator/serverTokenEndpoint:property"}}server{{/crossLink}}.
+    [server]{@linkplain DeviseAuthenticator.serverTokenEndpoint}.
     If the credentials are valid the server will responds with a
-    {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
+    [token]{@linkplain DeviseAuthenticator.tokenAttributeName}
     and
-    {{#crossLink "DeviseAuthenticator/identificationAttributeName:property"}}identification{{/crossLink}}.
+    [identification]{@linkplain DeviseAuthenticator.identificationAttributeName}.
     __If the credentials are valid and authentication succeeds, a promise that
     resolves with the server's response is returned__, otherwise a promise that
     rejects with the server error is returned.
 
+    @memberof DeviseAuthenticator
     @method authenticate
     @param {String} identification The user's identification
     @param {String} password The user's password
@@ -127,6 +132,7 @@ export default BaseAuthenticator.extend({
   /**
     Does nothing
 
+    @memberof DeviseAuthenticator
     @method invalidate
     @return {Ember.RSVP.Promise} A resolving promise
     @public
@@ -139,6 +145,7 @@ export default BaseAuthenticator.extend({
     Makes a request to the Devise server using
     [ember-fetch](https://github.com/stefanpenner/ember-fetch).
 
+    @memberof DeviseAuthenticator
     @method makeRequest
     @param {Object} data The request data
     @param {Object} options request options that are passed to `fetch`

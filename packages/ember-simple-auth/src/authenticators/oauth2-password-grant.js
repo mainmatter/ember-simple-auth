@@ -19,7 +19,6 @@ import { isTesting } from '@embroider/macros';
   server supports it.
 
   @class OAuth2PasswordGrantAuthenticator
-  @module ember-simple-auth/authenticators/oauth2-password-grant
   @extends BaseAuthenticator
   @public
 */
@@ -28,6 +27,7 @@ export default BaseAuthenticator.extend({
     Triggered when the authenticator refreshed the access token (see
     [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
 
+    @memberof OAuth2PasswordGrantAuthenticator
     @event sessionDataUpdated
     @param {Object} data The updated session data
     @public
@@ -35,10 +35,13 @@ export default BaseAuthenticator.extend({
 
   /**
     The client_id to be sent to the authentication server (see
-    https://tools.ietf.org/html/rfc6749#appendix-A.1). __This should only be
-    used for statistics or logging etc. as it cannot actually be trusted since
-    it could have been manipulated on the client!__
+    https://tools.ietf.org/html/rfc6749#appendix-A.1).
 
+    This should only be
+    used for statistics or logging etc. as it cannot actually be trusted since
+    it could have been manipulated on the client!
+
+    @memberof OAuth2PasswordGrantAuthenticator
     @property clientId
     @type String
     @default null
@@ -50,6 +53,7 @@ export default BaseAuthenticator.extend({
     The endpoint on the server that authentication and token refresh requests
     are sent to.
 
+    @memberof OAuth2PasswordGrantAuthenticator
     @property serverTokenEndpoint
     @type String
     @default '/token'
@@ -62,10 +66,11 @@ export default BaseAuthenticator.extend({
     set this if the server actually supports token revocation. If this is
     `null`, the authenticator will not revoke tokens on session invalidation.
 
-    __If token revocation is enabled but fails, session invalidation will be
+    If token revocation is enabled but fails, session invalidation will be
     intercepted and the session will remain authenticated (see
-    {{#crossLink "OAuth2PasswordGrantAuthenticator/invalidate:method"}}{{/crossLink}}).__
+    {@linkplain OAuth2PasswordGrantAuthenticator.invalidate}.
 
+    @memberof OAuth2PasswordGrantAuthenticator
     @property serverTokenRevocationEndpoint
     @type String
     @default null
@@ -77,6 +82,7 @@ export default BaseAuthenticator.extend({
     Sets whether the authenticator automatically refreshes access tokens if the
     server supports it.
 
+    @memberof OAuth2PasswordGrantAuthenticator
     @property refreshAccessTokens
     @type Boolean
     @default true
@@ -90,10 +96,11 @@ export default BaseAuthenticator.extend({
     multiple tabs, we need to prevent the tabs from sending refresh token
     request at the same exact moment.
 
-    __When overriding this property, make sure to mark the overridden property
+    When overriding this property, make sure to mark the overridden property
     as volatile so it will actually have a different value each time it is
-    accessed.__
+    accessed.
 
+    @memberof OAuth2PasswordGrantAuthenticator
     @property tokenRefreshOffset
     @type Integer
     @default a random number between 5 and 10
@@ -112,7 +119,6 @@ export default BaseAuthenticator.extend({
     Restores the session from a session data object; __will return a resolving
     promise when there is a non-empty `access_token` in the session data__ and
     a rejecting promise otherwise.
-
     If the server issues
     [expiring access tokens](https://tools.ietf.org/html/rfc6749#section-5.1)
     and there is an expired access token in the session data along with a
@@ -121,6 +127,7 @@ export default BaseAuthenticator.extend({
     successful. If there is no refresh token or the token refresh is not
     successful, a rejecting promise will be returned.
 
+    @memberof OAuth2PasswordGrantAuthenticator
     @method restore
     @param {Object} data The data to restore the session from
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated. If restoration fails, the promise will reject with the server response (in case the access token had expired and was refreshed using a refresh token); however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
@@ -150,19 +157,19 @@ export default BaseAuthenticator.extend({
   /**
     Authenticates the session with the specified `identification`, `password`
     and optional `scope`; issues a `POST` request to the
-    {{#crossLink "OAuth2PasswordGrantAuthenticator/serverTokenEndpoint:property"}}{{/crossLink}}
+    {@linkplain OAuth2PasswordGrantAuthenticator.serverTokenEndpoint}
     and receives the access token in response (see
-    http://tools.ietf.org/html/rfc6749#section-4.3).
+    {@link https://tools.ietf.org/html/rfc6749#section-4.3}).
 
-    __If the credentials are valid (and the optionally requested scope is
+    If the credentials are valid (and the optionally requested scope is
     granted) and thus authentication succeeds, a promise that resolves with the
-    server's response is returned__, otherwise a promise that rejects with the
+    server's response is returned, otherwise a promise that rejects with the
     error as returned by the server is returned.
 
-    __If the
-    [server supports it](https://tools.ietf.org/html/rfc6749#section-5.1), this
+    If the
+    [server supports it]{@link https://tools.ietf.org/html/rfc6749#section-5.1}, this
     method also schedules refresh requests for the access token before it
-    expires.__
+    expires.
 
     The server responses are expected to look as defined in the spec (see
     http://tools.ietf.org/html/rfc6749#section-5). The response to a successful
@@ -194,6 +201,7 @@ export default BaseAuthenticator.extend({
     A full list of error codes can be found
     [here](https://tools.ietf.org/html/rfc6749#section-5.2).
 
+    @memberof OAuth2PasswordGrantAuthenticator
     @method authenticate
     @param {String} identification The resource owner username
     @param {String} password The resource owner password
@@ -240,6 +248,7 @@ export default BaseAuthenticator.extend({
     If token revocation is not enabled this method simply returns a resolving
     promise.
 
+    @memberof OAuth2PasswordGrantAuthenticator
     @method invalidate
     @param {Object} data The current authenticated session data
     @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated. If invalidation fails, the promise will reject with the server response (in case token revocation is used); however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
@@ -276,6 +285,7 @@ export default BaseAuthenticator.extend({
   /**
     Makes a request to the OAuth 2.0 server.
 
+    @memberof OAuth2PasswordGrantAuthenticator
     @method makeRequest
     @param {String} url The request URL
     @param {Object} data The request data

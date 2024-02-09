@@ -23,19 +23,18 @@ const proxyToInternalStore = function() {
 
 /**
   Session store that persists data in the browser's `localStorage` (see
-  {{#crossLink "LocalStorageStore"}}{{/crossLink}}) if that is available or in
-  a cookie (see {{#crossLink "CookieStore"}}{{/crossLink}}) if it is not.
+  {@linkplain LocalStorageStore}) if that is available or in
+  a cookie (see {@linkplain CookieStore}) if it is not.
 
   __This is the default store that Ember Simple Auth will use when the
   application doesn't define a custom store.__
 
   __This session store does not work with FastBoot. In order to use Ember
   Simple Auth with FastBoot, configure the
-  {{#crossLink "CookieStore"}}{{/crossLink}} as the application's session
+  {@linkplain CookieStore} as the application's session
   store.__
 
   @class AdaptiveStore
-  @module ember-simple-auth/session-stores/adaptive
   @extends BaseStore
   @public
 */
@@ -44,6 +43,7 @@ export default Base.extend({
     The `localStorage` key the store persists data in if `localStorage` is
     available.
 
+    @memberof AdaptiveStore
     @property localStorageKey
     @type String
     @default 'ember_simple_auth-session'
@@ -57,6 +57,7 @@ export default Base.extend({
     "subdomain.example.com". If not explicitly set, the cookie domain defaults
     to the domain the session was authenticated on.
 
+    @memberof AdaptiveStore
     @property cookieDomain
     @type String
     @default null
@@ -74,6 +75,7 @@ export default Base.extend({
     - "Strict"
     - "Lax"
 
+    @memberof AdaptiveStore
     @property sameSite
     @type String
     @default null
@@ -85,6 +87,7 @@ export default Base.extend({
   /**
     The name of the cookie to use if `localStorage` is not available.
 
+    @memberof AdaptiveStore
     @property cookieName
     @type String
     @default ember_simple_auth-session
@@ -96,6 +99,7 @@ export default Base.extend({
   /**
     The path to use for the cookie, e.g., "/", "/something".
 
+    @memberof AdaptiveStore
     @property cookiePath
     @type String
     @default '/'
@@ -109,6 +113,7 @@ export default Base.extend({
     available. A value of `null` will make the cookie a session cookie that
     expires and gets deleted when the browser is closed.
 
+    @memberof AdaptiveStore
     @property cookieExpirationTime
     @default null
     @type Integer
@@ -171,6 +176,7 @@ export default Base.extend({
     Persists the `data` in the `localStorage` if it is available or in a cookie
     if it is not.
 
+    @memberof AdaptiveStore
     @method persist
     @param {Object} data The data to persist
     @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
@@ -184,6 +190,7 @@ export default Base.extend({
     Returns all data currently stored in the `localStorage` if that is
     available - or if it is not, in the cookie - as a plain object.
 
+    @memberof AdaptiveStore
     @method restore
     @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
@@ -194,9 +201,10 @@ export default Base.extend({
 
   /**
     Clears the store by deleting the
-    {{#crossLink "LocalStorageStore/key:property"}}{{/crossLink}} from
+    {@linkplain LocalStorageStore.key} from
     `localStorage` if that is available or by deleting the cookie if it is not.
 
+    @memberof AdaptiveStore
     @method clear
     @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public

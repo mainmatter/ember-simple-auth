@@ -1,3 +1,5 @@
+/** @module ember-simple-auth/authenticators/oauth2-implicit-grant **/
+
 import RSVP from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import BaseAuthenticator from './base';
@@ -12,6 +14,7 @@ import BaseAuthenticator from './base';
   @function parseResponse
   @param {String} locationHash The location hash (as received from `window.location.hash`)
   @return {Object} An obect with individual properties and values for the data parsed from the location hash
+  @memberof module:ember-simple-auth/authenticators/oauth2-implicit-grant
 */
 export function parseResponse(locationHash) {
   let params = {};
@@ -32,12 +35,11 @@ export function parseResponse(locationHash) {
  ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Implicit
  Grant Type"_.
 
- Use {{#crossLink "SessionService/authenticate:method"}}{{/crossLink}} in your
+ Use {@linkplain SessionService.authenticate} in your
  OAuth 2.0 redirect route to parse authentication parameters from location
  hash string into an object.
 
  @class OAuth2ImplicitGrantAuthenticator
- @module ember-simple-auth/authenticators/oauth2-implicit-grant
  @extends BaseAuthenticator
  @public
  */
@@ -47,6 +49,7 @@ export default BaseAuthenticator.extend({
    promise when there is a non-empty `access_token` in the session data__ and
    a rejecting promise otherwise.
 
+   @memberof OAuth2ImplicitGrantAuthenticator
    @method restore
    @param {Object} data The data to restore the session from
    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
@@ -71,6 +74,7 @@ export default BaseAuthenticator.extend({
    with the error code as returned by the server is returned
    (see https://tools.ietf.org/html/rfc6749#section-4.2.2.1).
 
+   @memberof OAuth2ImplicitGrantAuthenticator
    @method authenticate
    @param {Object} hash The location hash
    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
@@ -91,6 +95,7 @@ export default BaseAuthenticator.extend({
   /**
    This method simply returns a resolving promise.
 
+   @memberof OAuth2ImplicitGrantAuthenticator
    @method invalidate
    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
    @public

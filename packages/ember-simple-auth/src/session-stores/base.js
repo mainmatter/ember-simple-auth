@@ -10,7 +10,6 @@ import Evented from '@ember/object/evented';
   and is synchronized across multiple tabs or windows of the same application.
 
   @class BaseStore
-  @module ember-simple-auth/session-stores/base
   @extends Ember.Object
   @uses Ember.Evented
   @public
@@ -20,9 +19,10 @@ export default EmberObject.extend(Evented, {
     Triggered when the session store's data changes due to an external event,
     e.g., from another tab or window of the same application. The session
     handles that event, passes the updated data to its authenticator's
-    {{#crossLink "BaseAuthenticator/restore:method"}}{{/crossLink}} method and
+    {@linkplain BaseAuthenticator.restore} method and
     handles the result of that invocation accordingly.
 
+    @memberof BaseStore
     @event sessionDataUpdated
     @param {Object} data The updated session data
     @public
@@ -34,6 +34,7 @@ export default EmberObject.extend(Evented, {
     `BaseStores`'s implementation always returns a rejecting promise. __This
     method must be overridden in subclasses__.
 
+    @memberof BaseStore
     @method persist
     @param {Object} data The data to persist
     @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
@@ -49,6 +50,7 @@ export default EmberObject.extend(Evented, {
     `BaseStores`'s implementation always returns a rejecting promise. __This
     method must be overridden in subclasses__.
 
+    @memberof BaseStore
     @method restore
     @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
@@ -63,6 +65,7 @@ export default EmberObject.extend(Evented, {
     `BaseStores`'s implementation always returns a rejecting promise. __This
     method must be overridden in subclasses__.
 
+    @memberof BaseStore
     @method clear
     @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public
