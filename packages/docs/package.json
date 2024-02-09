@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate": "jsdoc -c jsdoc.json --readme ./HOME.md"
+    "generate": "jsdoc -c jsdoc.json --readme ./HOME.md",
+    "generate-and-move": "pnpm run generate && ./scripts/move-from-nested-to-api.sh"
   },
   "keywords": [],
   "author": "",
