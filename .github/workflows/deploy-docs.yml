@@ -11,6 +11,9 @@ env:
 
 jobs:
   deploy-docs:
+    name: Deploy docs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
