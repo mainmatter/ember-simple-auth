@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> configuration.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,37 +75,65 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Source</p>
+                    <h1>configuration.js</h1>
                 </header>
                 
 
 
 
     
-
-
-    <h3>ember-simple-auth 6.0.0</h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><p>For a general overview of Ember Simple Auth, see the <a href="https://github.com/mainmatter/ember-simple-auth">README</a></p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>const DEFAULTS = {
+  rootURL: '',
+  routeAfterAuthentication: 'index',
+};
+
+/**
+  Ember Simple Auth's configuration object.
+
+  @class Configuration
+  @extends Object
+  @public
+*/
+export default {
+  /**
+    The root URL of the application as configured in `config/environment.js`.
+    @memberof Configuration
+    @property rootURL
+    @readOnly
+    @static
+    @type String
+    @default ''
+    @public
+  */
+  rootURL: DEFAULTS.rootURL,
+
+  /**
+    The route to transition to after successful authentication.
+
+    @memberof Configuration
+    @property routeAfterAuthentication
+    @readOnly
+    @static
+    @type String
+    @default 'index'
+    @public
+  */
+  routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
+
+  load(config) {
+    this.rootURL = config.rootURL !== undefined ? config.rootURL : DEFAULTS.rootURL;
+    this.routeAfterAuthentication =
+      config.routeAfterAuthentication !== undefined
+        ? config.routeAfterAuthentication
+        : DEFAULTS.routeAfterAuthentication;
+  },
+};
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

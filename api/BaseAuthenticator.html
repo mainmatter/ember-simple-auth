@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> BaseAuthenticator</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="SessionService.html#.event:authenticationSucceeded">authenticationSucceeded</a></li><li><a href="SessionService.html#.event:invalidationSucceeded">invalidationSucceeded</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Class</p>
+                    <h1>BaseAuthenticator</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>BaseAuthenticator<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
+
+
+    
+    <h4 class="name" id="BaseAuthenticator">
+        <a class="href-link" href="#BaseAuthenticator">#</a>
+        
+        <span class="code-name">
+            
+                new BaseAuthenticator<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>The base class for all authenticators. <strong>This serves as a starting point for
+implementing custom authenticators and must not be used directly.</strong></p>
+<p>The authenticator authenticates the session. The actual mechanism used to do
+this might, e.g., post a set of credentials to a server and in exchange
+retrieve an access token, initiating authentication against an external
+provider like Facebook, etc. The details depend on the specific authenticator.
+Upon successful authentication, any data that the authenticator receives and
+resolves via the promise returned from the
+<a href="BaseAuthenticator.html#.authenticate">BaseAuthenticator.authenticate</a>
+method is stored in the session's <a href="SessionService.html#.data">SessionService.data</a>.</p>
+<p>The authenticator also decides whether a set of data that was restored from
+the session store (see <a href="BaseStore.html#.restore">BaseStore.restore</a>) makes up an
+authenticated session or not.</p>
+<p><strong>Authenticators for an application are defined in the <code>app/authenticators</code>
+directory</strong>, e.g.:</p>
+<pre class="prettyprint source lang-js"><code>// app/authenticators/oauth2.js
+import OAuth2PasswordGrantAuthenticator from 'ember-simple-auth/authenticators/oauth2-password-grant';
+
+export default class OAuth2Authenticator extends OAuth2PasswordGrantAuthenticator {
+  ...
+}
+</code></pre>
+<p>and can then be used via the name Ember CLI automatically registers for them
+within the Ember container.</p>
+<pre class="prettyprint source lang-js"><code>// app/components/login-form.js
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
+
+export default class LoginFormComponent extends Component {
+  &#64;service session;
+
+  &#64;action
+  authenticate() {
+    this.session.authenticate('authenticator:oauth2');
+  }
+}
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="authenticators_base.js.html" class="button">View Source</a>
+            <span>
+                <a href="authenticators_base.js.html">authenticators/base.js</a>, <a href="authenticators_base.js.html#line5">line 5</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>Ember.Object</li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id=".authenticate">
+    <a class="href-link" href="#.authenticate">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        authenticate
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Authenticates the session with the specified <code>args</code>. These options vary
+depending on the actual authentication mechanism the authenticator
+implements (e.g. a set of credentials or a Facebook account id etc.). <strong>The
+session will invoke this method in order to authenticate itself</strong> (see
+<a href="SessionService.html#.authenticate">SessionService.authenticate</a>).</p>
+<pre><code>__This method returns a promise. A resolving promise will result in the
+session becoming authenticated.__ Any data the promise resolves with will
+be saved in and accessible via the session service's `data.authenticated`
+property (see <a href="SessionService.html#.data">SessionService.data</a>).
+A rejecting promise indicates that authentication failed and will result in
+the session remaining unauthenticated.
+
+The `BaseAuthenticator`'s implementation always returns a rejecting promise
+and thus never authenticates the session. __This method must be overridden
+in subclasses__.
+</code></pre>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="authenticators_base.js.html" class="button">View Source</a>
+            <span>
+                <a href="authenticators_base.js.html">authenticators/base.js</a>, <a href="authenticators_base.js.html#line115">line 115</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".invalidate">
+    <a class="href-link" href="#.invalidate">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        invalidate
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>This method is invoked as a callback when the session is invalidated. While
+the session will invalidate itself and clear all authenticated session data,
+it might be necessary for some authenticators to perform additional tasks
+(e.g. invalidating an access token on the server side).
+This method returns a promise. A resolving promise will result in the
+session becoming unauthenticated.__ A rejecting promise will result in
+invalidation being intercepted and the session remaining authenticated.
+The <code>BaseAuthenticator</code>'s implementation always returns a resolving promise
+and thus never intercepts session invalidation. __This method doesn't have
+to be overridden in custom authenticators if no actions need to be
+performed on session invalidation.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="authenticators_base.js.html" class="button">View Source</a>
+            <span>
+                <a href="authenticators_base.js.html">authenticators/base.js</a>, <a href="authenticators_base.js.html#line144">line 144</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".restore">
+    <a class="href-link" href="#.restore">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        restore
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Restores the session from a session data object. <strong>This method is invoked
+by the session either on application startup if session data is restored
+from the session store</strong> or when properties in the store change due to
+external events (e.g. in another tab) and the new session data needs to be
+validated for whether it constitutes an authenticated session.</p>
+<pre><code>__This method returns a promise. A resolving promise results in the session
+becoming or remaining authenticated.__ Any data the promise resolves with
+will be saved in and accessible via the session service's
+`data.authenticated` property (see
+<a href="SessionService.html#.data">SessionService.data</a>. A rejecting
+promise indicates that `data` does not constitute a valid session and will
+result in the session being invalidated or remaining unauthenticated.
+
+The `BaseAuthenticator`'s implementation always returns a rejecting
+promise. __This method must be overridden in subclasses.__
+</code></pre>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="authenticators_base.js.html" class="button">View Source</a>
+            <span>
+                <a href="authenticators_base.js.html">authenticators/base.js</a>, <a href="authenticators_base.js.html#line86">line 86</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Events</h1>
+            <div class="members">
+            
+                <div class="member">
+                    
+
+
+    
+    <h4 class="name" id=".event:sessionDataInvalidated">
+        <a class="href-link" href="#.event:sessionDataInvalidated">#</a>
+        
+        <span class="code-name">
+            
+                sessionDataInvalidated
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p><strong>Triggered when the authentication data is invalidated by the authenticator
+due to an external or scheduled event</strong>. This might happen, e.g., if a token
+expires or an event is triggered from an external authentication provider
+that the authenticator uses. The session handles the event and will
+invalidate itself when it is triggered.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="authenticators_base.js.html" class="button">View Source</a>
+            <span>
+                <a href="authenticators_base.js.html">authenticators/base.js</a>, <a href="authenticators_base.js.html#line74">line 74</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            
+                <div class="member">
+                    
+
+
+    
+    <h4 class="name" id=".event:sessionDataUpdated">
+        <a class="href-link" href="#.event:sessionDataUpdated">#</a>
+        
+        <span class="code-name">
+            
+                sessionDataUpdated
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p><strong>Triggered when the authentication data is updated by the authenticator
+due to an external or scheduled event</strong>. This might happen, e.g., if the
+authenticator refreshes an expired token or an event is triggered from an
+external authentication provider that the authenticator uses. The session
+handles that event, passes the updated data back to the authenticator's
+<a href="BaseAuthenticator.html#.restore">BaseAuthenticator.restore</a>
+method and handles the result of that invocation accordingly.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>data</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The updated session data</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="authenticators_base.js.html" class="button">View Source</a>
+            <span>
+                <a href="authenticators_base.js.html">authenticators/base.js</a>, <a href="authenticators_base.js.html#line59">line 59</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            
+            </div>
+        </div>
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

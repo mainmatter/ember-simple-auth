@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> authenticators/oauth2-implicit-grant.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,37 +75,131 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Source</p>
+                    <h1>authenticators/oauth2-implicit-grant.js</h1>
                 </header>
                 
 
 
 
     
-
-
-    <h3>ember-simple-auth 6.0.0</h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><p>For a general overview of Ember Simple Auth, see the <a href="https://github.com/mainmatter/ember-simple-auth">README</a></p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @module ember-simple-auth/authenticators/oauth2-implicit-grant **/
+
+import RSVP from 'rsvp';
+import { isEmpty } from '@ember/utils';
+import BaseAuthenticator from './base';
+/**
+  Parses the location hash (as received from `window.location.hash`) into an
+  object, e.g.:
+
+  ```js
+  parseResponse('/routepath#access_token=secret-token&amp;scope=something'); // => { access_token: 'secret-token', scope: 'something' }
+  ```
+
+  @function parseResponse
+  @param {String} locationHash The location hash (as received from `window.location.hash`)
+  @return {Object} An obect with individual properties and values for the data parsed from the location hash
+  @memberof module:ember-simple-auth/authenticators/oauth2-implicit-grant
+*/
+export function parseResponse(locationHash) {
+  let params = {};
+  const query = locationHash.substring(locationHash.indexOf('?'));
+  const regex = /([^#?&amp;=]+)=([^&amp;]*)/g;
+  let match;
+
+  // decode all parameter pairs
+  while ((match = regex.exec(query)) !== null) {
+    params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
+  }
+
+  return params;
+}
+
+/**
+ Authenticator that conforms to OAuth 2
+ ([RFC 6749](http://tools.ietf.org/html/rfc6749)), specifically the _"Implicit
+ Grant Type"_.
+
+ Use {@linkplain SessionService.authenticate} in your
+ OAuth 2.0 redirect route to parse authentication parameters from location
+ hash string into an object.
+
+ @class OAuth2ImplicitGrantAuthenticator
+ @extends BaseAuthenticator
+ @public
+ */
+export default BaseAuthenticator.extend({
+  /**
+   Restores the session from a session data object; __will return a resolving
+   promise when there is a non-empty `access_token` in the session data__ and
+   a rejecting promise otherwise.
+
+   @memberof OAuth2ImplicitGrantAuthenticator
+   @method restore
+   @param {Object} data The data to restore the session from
+   @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+   @public
+   */
+  restore(data) {
+    return new RSVP.Promise((resolve, reject) => {
+      if (!this._validateData(data)) {
+        return reject('Could not restore session - "access_token" missing.');
+      }
+
+      return resolve(data);
+    });
+  },
+
+  /**
+   Authenticates the session using the specified location `hash`
+   (see https://tools.ietf.org/html/rfc6749#section-4.2.2).
+
+   __If the access token is valid and thus authentication succeeds, a promise that
+   resolves with the access token is returned__, otherwise a promise that rejects
+   with the error code as returned by the server is returned
+   (see https://tools.ietf.org/html/rfc6749#section-4.2.2.1).
+
+   @memberof OAuth2ImplicitGrantAuthenticator
+   @method authenticate
+   @param {Object} hash The location hash
+   @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
+   @public
+   */
+  authenticate(hash) {
+    return new RSVP.Promise((resolve, reject) => {
+      if (hash.error) {
+        reject(hash.error);
+      } else if (!this._validateData(hash)) {
+        reject('Invalid auth params - "access_token" missing.');
+      } else {
+        resolve(hash);
+      }
+    });
+  },
+
+  /**
+   This method simply returns a resolving promise.
+
+   @memberof OAuth2ImplicitGrantAuthenticator
+   @method invalidate
+   @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
+   @public
+   */
+  invalidate() {
+    return RSVP.Promise.resolve();
+  },
+
+  _validateData(data) {
+    // see https://tools.ietf.org/html/rfc6749#section-4.2.2
+
+    return !isEmpty(data) &amp;&amp; !isEmpty(data.access_token);
+  }
+});
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> session-stores/ephemeral.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,37 +75,82 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Source</p>
+                    <h1>session-stores/ephemeral.js</h1>
                 </header>
                 
 
 
 
     
-
-
-    <h3>ember-simple-auth 6.0.0</h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><p>For a general overview of Ember Simple Auth, see the <a href="https://github.com/mainmatter/ember-simple-auth">README</a></p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>import RSVP from 'rsvp';
+import BaseStore from './base';
+
+/**
+  Session store that __persists data in memory and thus is not actually
+  persistent__. It does also not synchronize the session's state across
+  multiple tabs or windows as those cannot share memory. __This store is mainly
+  useful for testing and will automatically be used when running tests.__
+
+  @class EphemeralStore
+  @extends BaseStore
+  @public
+*/
+export default BaseStore.extend({
+  init() {
+    this._super(...arguments);
+    this.clear();
+  },
+
+  /**
+    Persists `data`. This replaces all currently stored data.
+
+    @memberof EpemeralStore
+    @method persist
+    @param {Object} data The data to persist
+    @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
+    @public
+  */
+  persist(data) {
+    this._data = JSON.stringify(data || {});
+
+    return RSVP.resolve();
+  },
+
+  /**
+    Returns all data currently stored as a plain object.
+
+    @memberof EpemeralStore
+    @method restore
+    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
+    @public
+  */
+  restore() {
+    const data = JSON.parse(this._data) || {};
+
+    return RSVP.resolve(data);
+  },
+
+  /**
+    Clears the store.
+
+    @memberof EpemeralStore
+    @method clear
+    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
+    @public
+  */
+  clear() {
+    delete this._data;
+    this._data = '{}';
+
+    return RSVP.resolve();
+  }
+});
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> ember-simple-auth/authenticators/oauth2-implicit-grant</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,17 +73,130 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Module</p>
+                    <h1>ember-simple-auth/authenticators/oauth2-implicit-grant</h1>
                 </header>
                 
 
 
 
+
+<section>
+
+<header>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="authenticators_oauth2-implicit-grant.js.html" class="button">View Source</a>
+            <span>
+                <a href="authenticators_oauth2-implicit-grant.js.html">authenticators/oauth2-implicit-grant.js</a>, <a href="authenticators_oauth2-implicit-grant.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".parseResponse">
+        <a class="href-link" href="#.parseResponse">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                parseResponse<span class="signature">(locationHash)</span><span class="type-signature"> &rarr; {Object}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Parses the location hash (as received from <code>window.location.hash</code>) into an
+object, e.g.:</p>
+<pre class="prettyprint source lang-js"><code>parseResponse('/routepath#access_token=secret-token&scope=something'); // => { access_token: 'secret-token', scope: 'something' }
+</code></pre>
+    </div>
     
 
 
-    <h3>ember-simple-auth 6.0.0</h3>
 
 
 
@@ -91,19 +204,159 @@
 
 
 
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>locationHash</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">String</code>
 
 
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The location hash (as received from <code>window.location.hash</code>)</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
 
     
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="authenticators_oauth2-implicit-grant.js.html" class="button">View Source</a>
+            <span>
+                <a href="authenticators_oauth2-implicit-grant.js.html">authenticators/oauth2-implicit-grant.js</a>, <a href="authenticators_oauth2-implicit-grant.js.html#line6">line 6</a>
+            </span>
+        </p>
+    
+</dl>
 
 
 
-    <section>
-        <article><p>For a general overview of Ember Simple Auth, see the <a href="https://github.com/mainmatter/ember-simple-auth">README</a></p></article>
-    </section>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>An obect with individual properties and values for the data parsed from the location hash</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Object</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

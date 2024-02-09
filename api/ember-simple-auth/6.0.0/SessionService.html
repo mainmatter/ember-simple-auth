@@ -1,0 +1,2308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> SessionService</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="SessionService.html#.event:authenticationSucceeded">authenticationSucceeded</a></li><li><a href="SessionService.html#.event:invalidationSucceeded">invalidationSucceeded</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Class</p>
+                    <h1>SessionService</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>SessionService<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
+
+
+    
+    <h4 class="name" id="SessionService">
+        <a class="href-link" href="#SessionService">#</a>
+        
+        <span class="code-name">
+            
+                new SessionService<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p><strong>The session service provides access to the current session as well as
+methods to authenticate it, invalidate it, etc.</strong> It is the main interface for
+the application to Ember Simple Auth's functionality.</p>
+<pre class="prettyprint source lang-js"><code>// app/components/login-form.js
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
+
+export default class LoginFormComponent extends Component {
+  &#64;service session;
+}
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line26">line 26</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>Service</li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Transition</code>
+
+
+    </span>
+
+<h4 class="name" id=".attemptedTransition">
+    <a class="href-link" href="#.attemptedTransition">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        attemptedTransition
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>A previously attempted but intercepted transition (e.g. by the
+<a href="SessionService.html#.requireAuthentication">SessionService.requireAuthentication</a>
+If an attempted transition is present it will be retried.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>attemptedTransition</code></td>
+    
+
+    <td class="type">
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>null</li>
+        </ul></dd>
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line126">line 126</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Object</code>
+
+
+    </span>
+
+<h4 class="name" id=".data">
+    <a class="href-link" href="#.data">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+            <span class='tag'>readonly</span>
+        
+    
+    <span class="code-name">
+        data
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>The current session data as a plain object. The
+<code>authenticated</code> key inside  <a href="SessionService.html#.data">SessionService.data</a> holds the session data that the authenticator resolved
+with when the session was authenticated (see <a href="BaseAuthenticator.html#.authenticate">BaseAuthenticator.authenticate</a>) and
+that will be cleared when the session is invalidated. This data cannot be
+written. All other session data is writable and will not be cleared when
+the session is invalidated.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>data</code></td>
+    
+
+    <td class="type">
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>{ authenticated: {} }</li>
+        </ul></dd>
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line101">line 101</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Boolean</code>
+
+
+    </span>
+
+<h4 class="name" id=".isAuthenticated">
+    <a class="href-link" href="#.isAuthenticated">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+            <span class='tag'>readonly</span>
+        
+    
+    <span class="code-name">
+        isAuthenticated
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Returns whether the session is currently authenticated.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>isAuthenticated</code></td>
+    
+
+    <td class="type">
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>false</li>
+        </ul></dd>
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line84">line 84</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type"><a href="BaseStore.html">BaseStore</a></code>
+
+
+    </span>
+
+<h4 class="name" id=".store">
+    <a class="href-link" href="#.store">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+            <span class='tag'>readonly</span>
+        
+    
+    <span class="code-name">
+        store
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>The session store.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>store</code></td>
+    
+
+    <td class="type">
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>null</li>
+        </ul></dd>
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line113">line 113</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".authenticate">
+        <a class="href-link" href="#.authenticate">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                authenticate<span class="signature">(authenticator)</span><span class="type-signature"> &rarr; {RSVP.Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p><strong>Authenticates the session with an <code>authenticator</code></strong> and appropriate
+arguments. The authenticator implements the actual steps necessary to
+authenticate the session (see
+<a href="BaseAuthenticator.html#.authenticate">BaseAuthenticator.authenticate</a> and
+returns a promise after doing so. The session handles the returned promise
+and when it resolves becomes authenticated, otherwise remains
+unauthenticated. All data the authenticator resolves with will be
+accessible via the
+<a href="SessionService.html#.data">SessionService.data</a> session data's
+<code>authenticated</code> property.</p>
+<pre><code>This method returns a promise. A resolving promise indicates that the
+session was successfully authenticated while a rejecting promise
+indicates that authentication failed and the session remains
+unauthenticated. The promise does not resolve with a value; instead, the
+data returned from the authenticator is available via the
+<a href="SessionService.html#.data">SessionService.data</a> property.
+
+When authentication succeeds this will trigger the
+SessionService.authenticationSucceeded event.
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>authenticator</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">String</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>The authenticator to use to authenticate the session</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>...args</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Any</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>The arguments to pass to the authenticator; depending on the type of authenticator these might be a set of credentials, a Facebook OAuth Token, etc.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line158">line 158</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A promise that resolves when the session was authenticated successfully and rejects otherwise</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">RSVP.Promise</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".handleAuthentication">
+        <a class="href-link" href="#.handleAuthentication">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                handleAuthentication<span class="signature">(routeAfterAuthentication)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>This method is called whenever the session goes from being unauthenticated
+to being authenticated. If there is a transition that was previously
+intercepted by the
+<a href="SessionService.html#.requireAuthentication">SessionService.requireAuthentication</a>,
+it will retry it. If there is no such transition, the
+<code>ember_simple_auth-redirectTarget</code> cookie will be checked for a url that
+represents an attemptedTransition that was aborted in Fastboot mode,
+otherwise this action transitions to the specified
+routeAfterAuthentication.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>routeAfterAuthentication</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">String</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The route to transition to</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line294">line 294</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".handleInvalidation">
+        <a class="href-link" href="#.handleInvalidation">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                handleInvalidation<span class="signature">(routeAfterInvalidation)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>This method is called whenever the session goes from being authenticated to
+not being authenticated. <strong>It reloads the Ember.js application</strong> by
+redirecting the browser to the specified route so that all in-memory data
+(such as Ember Data stores etc.) gets cleared.</p>
+<pre><code>If the Ember.js application will be used in an environment where the users
+don't have direct access to any data stored on the client (e.g.
+[cordova](http://cordova.apache.org)) this action can be overridden to e.g.
+simply transition to the index route.
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>routeAfterInvalidation</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">String</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The route to transition to</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line314">line 314</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".invalidate">
+        <a class="href-link" href="#.invalidate">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                invalidate<span class="signature">()</span><span class="type-signature"> &rarr; {RSVP.Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p><strong>Invalidates the session with the authenticator it is currently
+authenticated with</strong> (see
+<a href="SessionService.html#.authenticate">SessionService.authenticate</a>). This
+invokes the authenticator's
+<a href="BaseAuthenticator.html#.invalidate">BaseAuthenticator.invalidate</a> method
+and handles the returned promise accordingly.</p>
+<pre><code>This method returns a promise. A resolving promise indicates that the
+session was successfully invalidated while a rejecting promise indicates
+that invalidation failed and the session remains authenticated. Once the
+session is successfully invalidated it clears all of its authenticated data
+(see <a href="SessionService.html#.data">SessionService.data</a>).
+
+When invalidation succeeds this will trigger the
+SessionService.invalidationSucceeded
+event.
+
+When calling the <a href="BaseAuthenticator.html#.invalidate">BaseAuthenticator.invalidate</a>
+on an already unauthenticated session, the method will return a resolved Promise
+immediately.
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>...args</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Array</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>arguments that will be passed to the authenticator</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line193">line 193</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A promise that resolves when the session was invalidated successfully and rejects otherwise</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">RSVP.Promise</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".prohibitAuthentication">
+        <a class="href-link" href="#.prohibitAuthentication">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                prohibitAuthentication<span class="signature">(routeOrCallback)</span><span class="type-signature"> &rarr; {Boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Checks whether the session is authenticated and if it is, transitions
+to the specified route or invokes the specified callback.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>routeOrCallback</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">String</code>
+|
+
+<code class="param-type">function</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The route to transition to in case that the session is authenticated or a callback function to invoke in that case</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line265">line 265</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true when the session is not authenticated, false otherwise</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".requireAuthentication">
+        <a class="href-link" href="#.requireAuthentication">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                requireAuthentication<span class="signature">(transition, routeOrCallback)</span><span class="type-signature"> &rarr; {Boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Checks whether the session is authenticated and if it is not, transitions
+to the specified route or invokes the specified callback.</p>
+<pre><code>If a transition is in progress and is aborted, this method will save it in the
+session service's
+<a href="SessionService.html#.attemptedTransition">SessionService.attemptedTransition</a>
+property so that  it can be retried after the session is authenticated. If
+the transition is aborted in Fastboot mode, the transition's target URL
+will be saved in a `ember_simple_auth-redirectTarget` cookie for use by the
+browser after authentication is complete.
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>transition</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Transition</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>A transition that triggered the authentication requirement or null if the requirement originated independently of a transition</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>routeOrCallback</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">String</code>
+|
+
+<code class="param-type">function</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The route to transition to in case that the session is not authenticated or a callback function to invoke in that case</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line227">line 227</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true when the session is authenticated, false otherwise</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".setup">
+        <a class="href-link" href="#.setup">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                setup<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Sets up the session service.</p>
+<pre><code>This method must be called when the application starts up,
+usually as the first thing in the `application` route's `beforeModel`
+method.
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line334">line 334</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Events</h1>
+            <div class="members">
+            
+                <div class="member">
+                    
+
+
+    
+    <h4 class="name" id=".event:authenticationSucceeded">
+        <a class="href-link" href="#.event:authenticationSucceeded">#</a>
+        
+        <span class="code-name">
+            
+                authenticationSucceeded
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Triggered whenever the session is successfully authenticated. This happens
+when the session gets authenticated via
+<a href="SessionService.html#.authenticate">SessionService.authenticate</a> but also
+when the session is authenticated in another tab or window of the same
+application and the session state gets synchronized across tabs or windows
+via the store (see
+BaseStore.sessionDataUpdated).</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line46">line 46</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            
+                <div class="member">
+                    
+
+
+    
+    <h4 class="name" id=".event:invalidationSucceeded">
+        <a class="href-link" href="#.event:invalidationSucceeded">#</a>
+        
+        <span class="code-name">
+            
+                invalidationSucceeded
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Triggered whenever the session is successfully invalidated. This happens
+when the session gets invalidated via
+<a href="SessionService.html#.invalidate">SessionService.invalidate</a> but also
+when the session is invalidated in another tab or window of the same
+application and the session state gets synchronized across tabs or windows
+via the store (see
+BaseStore.sessionDataUpdated.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.js.html">services/session.js</a>, <a href="services_session.js.html#line60">line 60</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            
+            </div>
+        </div>
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>
