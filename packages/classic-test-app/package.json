@@ -63,7 +63,7 @@
     "qunit": "2.20.1",
     "qunit-dom": "2.0.0",
     "torii": "1.0.0-beta.2",
-    "webpack": "5.90.1"
+    "webpack": "5.90.2"
   },
   "ember": {
     "edition": "octane"
