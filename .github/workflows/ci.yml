@@ -27,7 +27,7 @@ jobs:
           - ember-simple-auth
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4
       - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
       - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
         with:
@@ -75,7 +75,7 @@ jobs:
             allow-failure: false
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4
       - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
       - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
         with:
@@ -113,7 +113,7 @@ jobs:
             test-suite: "test:one embroider-optimized"
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4
       - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
       - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
         with:
@@ -149,7 +149,7 @@ jobs:
           - test-app
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4
       - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
       - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
         with:
@@ -171,7 +171,7 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4
       - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
       - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
         with:
