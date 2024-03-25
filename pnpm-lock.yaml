@@ -36,8 +36,8 @@ importers:
         specifier: 3.1.1
         version: 3.1.1
       '@ember/test-helpers':
-        specifier: 3.2.0
-        version: 3.2.0(ember-source@5.7.0)(webpack@5.91.0)
+        specifier: 3.3.0
+        version: 3.3.0(ember-source@5.7.0)(webpack@5.91.0)
       '@embroider/test-setup':
         specifier: 3.0.3
         version: 3.0.3
@@ -106,7 +106,7 @@ importers:
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0)
+        version: 7.0.0(@ember/test-helpers@3.3.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0)
       ember-resolver:
         specifier: 11.0.1
         version: 11.0.1(ember-source@5.7.0)
@@ -274,8 +274,8 @@ importers:
         specifier: 3.1.1
         version: 3.1.1
       '@ember/test-helpers':
-        specifier: 3.2.0
-        version: 3.2.0(ember-source@5.7.0)(webpack@5.91.0)
+        specifier: 3.3.0
+        version: 3.3.0(ember-source@5.7.0)(webpack@5.91.0)
       '@embroider/test-setup':
         specifier: 3.0.3
         version: 3.0.3
@@ -350,7 +350,7 @@ importers:
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0)
+        version: 7.0.0(@ember/test-helpers@3.3.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0)
       ember-resolver:
         specifier: 11.0.1
         version: 11.0.1(ember-source@5.7.0)
@@ -440,8 +440,8 @@ importers:
         specifier: 3.1.1
         version: 3.1.1
       '@ember/test-helpers':
-        specifier: 3.2.0
-        version: 3.2.0(ember-source@5.7.0)(webpack@5.91.0)
+        specifier: 3.3.0
+        version: 3.3.0(ember-source@5.7.0)(webpack@5.91.0)
       '@embroider/test-setup':
         specifier: 3.0.3
         version: 3.0.3
@@ -510,7 +510,7 @@ importers:
         version: 1.0.0
       ember-qunit:
         specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0)
+        version: 7.0.0(@ember/test-helpers@3.3.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0)
       ember-resolver:
         specifier: 11.0.1
         version: 11.0.1(ember-source@5.7.0)
@@ -2410,6 +2410,29 @@ packages:
       - '@glint/template'
       - supports-color
       - webpack
+    dev: false
+
+  /@ember/test-helpers@3.3.0(ember-source@5.7.0)(webpack@5.91.0):
+    resolution: {integrity: sha512-HEI28wtjnQuEj9+DstHUEEKPtqPAEVN9AAVr4EifVCd3DyEDy0m6hFT4qbap1WxAIktLja2QXGJg50lVWzZc5g==}
+    engines: {node: 16.* || >= 18}
+    peerDependencies:
+      ember-source: ^4.0.0 || ^5.0.0
+    dependencies:
+      '@ember/test-waiters': 3.1.0
+      '@embroider/macros': 1.13.5
+      '@simple-dom/interface': 1.4.0
+      broccoli-debug: 0.6.5
+      broccoli-funnel: 3.0.8
+      dom-element-descriptors: 0.5.0
+      ember-auto-import: 2.7.2(webpack@5.91.0)
+      ember-cli-babel: 7.26.11
+      ember-cli-htmlbars: 6.3.0
+      ember-source: 5.7.0(@babel/core@7.24.3)(@glimmer/component@1.1.2)(rsvp@4.8.5)(webpack@5.91.0)
+    transitivePeerDependencies:
+      - '@glint/template'
+      - supports-color
+      - webpack
+    dev: true
 
   /@ember/test-waiters@3.1.0:
     resolution: {integrity: sha512-bb9h95ktG2wKY9+ja1sdsFBdOms2lB19VWs8wmNpzgHv1NCetonBoV5jHBV4DHt0uS1tg9z66cZqhUVlYs96KQ==}
@@ -7218,6 +7241,10 @@ packages:
     resolution: {integrity: sha512-LLBi6pEqS6Do3EKQ3J0NqHWV5hhb78Pi8vvESYwyOy2c31ZEZVdtitdzsQsKb7878PEERhzUk0ftqGhG6Mz+pQ==}
     dev: false
 
+  /dom-element-descriptors@0.5.0:
+    resolution: {integrity: sha512-CVzntLid1oFVHTKdTp/Qu7Kz+wSm8uO30TSQyAJ6n4Dz09yTzVQn3S1oRhVhUubxdMuKs1DjDqt88pubHagbPw==}
+    dev: true
+
   /domexception@2.0.1:
     resolution: {integrity: sha512-yxJ2mFy/sibVQlu5qHjOkf9J3K6zgmCxgJ94u2EdvDOV09H+32LtRswEcUsmUWN72pVLOEnTSRaIVVzVQgS0dg==}
     engines: {node: '>=8'}
@@ -8063,7 +8090,7 @@ packages:
       - supports-color
     dev: true
 
-  /ember-qunit@7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0):
+  /ember-qunit@7.0.0(@ember/test-helpers@3.3.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0):
     resolution: {integrity: sha512-KhrndHYEXsHnXvmsGyJLJQ6VCudXaRs5dzPZBsdttZJIhsB6PmYAvq2Q+mh3GRDT/59T/sRDrB3FD3/lATS8aA==}
     engines: {node: 16.* || >= 18}
     peerDependencies:
@@ -8071,7 +8098,7 @@ packages:
       ember-source: '>=4.0.0'
       qunit: ^2.13.0
     dependencies:
-      '@ember/test-helpers': 3.2.0(ember-source@5.7.0)(webpack@5.91.0)
+      '@ember/test-helpers': 3.3.0(ember-source@5.7.0)(webpack@5.91.0)
       broccoli-funnel: 3.0.8
       broccoli-merge-trees: 3.0.2
       common-tags: 1.8.2
