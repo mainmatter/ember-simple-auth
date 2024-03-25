@@ -105,8 +105,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       ember-qunit:
-        specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0)
+        specifier: 8.0.2
+        version: 8.0.2(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1)
       ember-resolver:
         specifier: 11.0.1
         version: 11.0.1(ember-source@5.7.0)
@@ -162,8 +162,8 @@ importers:
         specifier: 2.20.1
         version: 2.20.1
       qunit-dom:
-        specifier: 2.0.0
-        version: 2.0.0
+        specifier: 3.0.0
+        version: 3.0.0
       torii:
         specifier: 1.0.0-beta.2
         version: 1.0.0-beta.2
@@ -349,8 +349,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       ember-qunit:
-        specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0)
+        specifier: 8.0.2
+        version: 8.0.2(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1)
       ember-resolver:
         specifier: 11.0.1
         version: 11.0.1(ember-source@5.7.0)
@@ -412,8 +412,8 @@ importers:
         specifier: 2.20.1
         version: 2.20.1
       qunit-dom:
-        specifier: 2.0.0
-        version: 2.0.0
+        specifier: 3.0.0
+        version: 3.0.0
       torii:
         specifier: 1.0.0-beta.2
         version: 1.0.0-beta.2
@@ -509,8 +509,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       ember-qunit:
-        specifier: 7.0.0
-        version: 7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0)
+        specifier: 8.0.2
+        version: 8.0.2(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1)
       ember-resolver:
         specifier: 11.0.1
         version: 11.0.1(ember-source@5.7.0)
@@ -566,8 +566,8 @@ importers:
         specifier: 2.20.1
         version: 2.20.1
       qunit-dom:
-        specifier: 2.0.0
-        version: 2.0.0
+        specifier: 3.0.0
+        version: 3.0.0
       sinon:
         specifier: 17.0.1
         version: 17.0.1
@@ -2454,7 +2454,6 @@ packages:
       semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@embroider/core@3.4.4:
     resolution: {integrity: sha512-JVWCy+l6sX58tPYb8Q8BSK0i8rQzrVI0RFoilSZ9MP4MO/rk90XAXZHN8Ourr9lwJhSLBbc7KSMDh54FNGxnsg==}
@@ -8063,30 +8062,22 @@ packages:
       - supports-color
     dev: true
 
-  /ember-qunit@7.0.0(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1)(webpack@5.91.0):
-    resolution: {integrity: sha512-KhrndHYEXsHnXvmsGyJLJQ6VCudXaRs5dzPZBsdttZJIhsB6PmYAvq2Q+mh3GRDT/59T/sRDrB3FD3/lATS8aA==}
-    engines: {node: 16.* || >= 18}
+  /ember-qunit@8.0.2(@ember/test-helpers@3.2.0)(ember-source@5.7.0)(qunit@2.20.1):
+    resolution: {integrity: sha512-Rf60jeUTWNsF3Imf/FLujW/B/DFmKVXKmXO1lirTXjpertKfwRhp/3MnN8a/U/WyodTIsERkInGT1IqTtphCdQ==}
     peerDependencies:
       '@ember/test-helpers': '>=3.0.3'
       ember-source: '>=4.0.0'
       qunit: ^2.13.0
     dependencies:
       '@ember/test-helpers': 3.2.0(ember-source@5.7.0)(webpack@5.91.0)
-      broccoli-funnel: 3.0.8
-      broccoli-merge-trees: 3.0.2
-      common-tags: 1.8.2
-      ember-auto-import: 2.7.2(webpack@5.91.0)
-      ember-cli-babel: 7.26.11
+      '@embroider/addon-shim': 1.8.7
+      '@embroider/macros': 1.13.5
       ember-cli-test-loader: 3.1.0
       ember-source: 5.7.0(@babel/core@7.24.3)(@glimmer/component@1.1.2)(rsvp@4.8.5)(webpack@5.91.0)
       qunit: 2.20.1
-      resolve-package-path: 4.0.3
-      silent-error: 1.1.1
-      validate-peer-dependencies: 2.2.0
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
-      - webpack
     dev: true
 
   /ember-resolver@11.0.1(ember-source@5.7.0):
@@ -13835,16 +13826,8 @@ packages:
       rimraf: 2.7.1
       underscore.string: 3.3.6
 
-  /qunit-dom@2.0.0:
-    resolution: {integrity: sha512-mElzLN99wYPOGekahqRA+mq7NcThXY9c+/tDkgJmT7W5LeZAFNyITr2rFKNnCbWLIhuLdFw88kCBMrJSfyBYpA==}
-    engines: {node: 12.* || 14.* || >= 16.*}
-    dependencies:
-      broccoli-funnel: 3.0.8
-      broccoli-merge-trees: 4.2.0
-      ember-cli-babel: 7.26.11
-      ember-cli-version-checker: 5.1.2
-    transitivePeerDependencies:
-      - supports-color
+  /qunit-dom@3.0.0:
+    resolution: {integrity: sha512-rqGZ9ZgOvtOY+Ph2ElCJ4pRIHouMZmI3DWK35Xr3x3c17/gIwOHHyKAQk6XetqhqepS6p+oXvK6Bx1uZu5jJuw==}
     dev: true
 
   /qunit@2.20.1:
