@@ -36,11 +36,11 @@
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.24.0",
+    "@babel/core": "7.24.3",
     "@babel/eslint-parser": "7.23.10",
     "@babel/plugin-proposal-class-properties": "7.18.6",
-    "@babel/plugin-proposal-decorators": "7.24.0",
-    "@babel/runtime": "7.24.0",
+    "@babel/plugin-proposal-decorators": "7.24.1",
+    "@babel/runtime": "7.24.1",
     "@embroider/addon-dev": "4.2.1",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-node-resolve": "15.2.3",
