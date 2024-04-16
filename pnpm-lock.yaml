@@ -69,8 +69,8 @@ importers:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.24.4)
       ember-cli-content-security-policy:
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 2.0.3
+        version: 2.0.3
       ember-cli-dependency-checker:
         specifier: 3.3.2
         version: 3.3.2(ember-cli@5.7.0(handlebars@4.7.8)(lodash@4.17.21)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6))
@@ -307,8 +307,8 @@ importers:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.24.4)
       ember-cli-content-security-policy:
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 2.0.3
+        version: 2.0.3
       ember-cli-dependency-checker:
         specifier: 3.3.2
         version: 3.3.2(ember-cli@5.7.0(handlebars@4.7.8)(lodash@4.17.21)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6))
@@ -473,8 +473,8 @@ importers:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.24.4)
       ember-cli-content-security-policy:
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 2.0.3
+        version: 2.0.3
       ember-cli-dependency-checker:
         specifier: 3.3.2
         version: 3.3.2(ember-cli@5.7.0(handlebars@4.7.8)(lodash@4.17.21)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6))
@@ -4078,9 +4078,9 @@ packages:
     peerDependencies:
       '@babel/core': ^7.12.0
 
-  ember-cli-content-security-policy@1.1.1:
-    resolution: {integrity: sha512-QgGAFt1nmsb0qF2YXI5iSM7jJVb09R2hrfX7uR+kkXMb5VyNQXdo2ZlX/DuIbePQVY4q9THpRh8Yf0UHJNbvDQ==}
-    engines: {node: ^4.5 || 6.* || >= 7.*}
+  ember-cli-content-security-policy@2.0.3:
+    resolution: {integrity: sha512-tSGRbR2XiOjHk7oEH7LVF1y5S643rUEjl3mujI6EYPkrQbHaV0WdLyIWJkLvuP1KGnjBfvnLCyiKDFu6z2PjVg==}
+    engines: {node: 12.* || 14.* || >= 16}
 
   ember-cli-dependency-checker@3.3.2:
     resolution: {integrity: sha512-PwkrW5oYsdPWwt+0Tojufmv/hxVETTjkrEdK7ANQB2VSnqpA5UcYubwpQM9ONuR2J8wyNDMwEHlqIrk/FYtBsQ==}
@@ -13446,10 +13446,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-cli-content-security-policy@1.1.1:
+  ember-cli-content-security-policy@2.0.3:
     dependencies:
       body-parser: 1.20.2
-      chalk: 2.4.2
+      chalk: 4.1.2
+      debug: 4.3.4(supports-color@9.4.0)
+      ember-cli-babel: 7.26.11
+      ember-cli-version-checker: 5.1.2
     transitivePeerDependencies:
       - supports-color
 
