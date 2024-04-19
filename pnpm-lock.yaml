@@ -39,8 +39,8 @@ importers:
         specifier: 3.2.0
         version: 3.2.0(ember-source@5.7.0(@babel/core@7.24.4)(@glimmer/component@1.1.2(@babel/core@7.24.4))(rsvp@4.8.5)(webpack@5.91.0))(webpack@5.91.0)
       '@embroider/test-setup':
-        specifier: 3.0.3
-        version: 3.0.3(@embroider/core@3.4.7)
+        specifier: 4.0.0
+        version: 4.0.0(@embroider/core@3.4.7)
       '@glimmer/component':
         specifier: 1.1.2
         version: 1.1.2(@babel/core@7.24.4)
@@ -277,8 +277,8 @@ importers:
         specifier: 3.2.0
         version: 3.2.0(ember-source@5.7.0(@babel/core@7.24.4)(@glimmer/component@1.1.2(@babel/core@7.24.4))(rsvp@4.8.5)(webpack@5.91.0))(webpack@5.91.0)
       '@embroider/test-setup':
-        specifier: 3.0.3
-        version: 3.0.3(@embroider/core@3.4.7)
+        specifier: 4.0.0
+        version: 4.0.0(@embroider/core@3.4.7)
       '@glimmer/component':
         specifier: 1.1.2
         version: 1.1.2(@babel/core@7.24.4)
@@ -443,8 +443,8 @@ importers:
         specifier: 3.2.0
         version: 3.2.0(ember-source@5.7.0(@babel/core@7.24.4)(@glimmer/component@1.1.2(@babel/core@7.24.4))(rsvp@4.8.5)(webpack@5.91.0))(webpack@5.91.0)
       '@embroider/test-setup':
-        specifier: 3.0.3
-        version: 3.0.3(@embroider/core@3.4.7)
+        specifier: 4.0.0
+        version: 4.0.0(@embroider/core@3.4.7)
       '@glimmer/component':
         specifier: 1.1.2
         version: 1.1.2(@babel/core@7.24.4)
@@ -1527,13 +1527,13 @@ packages:
     resolution: {integrity: sha512-A2BYQkhotdKOXuTaxvo9dqOIMbk+2LqFyqvfaaePkZcFJvtCkvTaD31/sSzqvRF6rdeBHjdMwU9Z2baPZ55fEQ==}
     engines: {node: 12.* || 14.* || >= 16}
 
-  '@embroider/test-setup@3.0.3':
-    resolution: {integrity: sha512-3K5KSyTdnxAkZQill6+TdC/XTRr6226LNwZMsrhRbBM0FFZXw2D8qmJSHPvZLheQx3A1jnF9t1lyrAzrKlg6Yw==}
+  '@embroider/test-setup@4.0.0':
+    resolution: {integrity: sha512-1S3Ebk0CEh3XDqD93AWSwQZBCk+oGv03gtkaGgdgyXGIR7jrVyDgEnEuslN/hJ0cuU8TqhiXrzHMw7bJwIGhWw==}
     engines: {node: 12.* || 14.* || >= 16}
     peerDependencies:
-      '@embroider/compat': ^3.3.0
-      '@embroider/core': ^3.4.0
-      '@embroider/webpack': ^3.2.1
+      '@embroider/compat': ^3.4.8
+      '@embroider/core': ^3.4.8
+      '@embroider/webpack': ^4.0.0
     peerDependenciesMeta:
       '@embroider/compat':
         optional: true
@@ -10292,7 +10292,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@embroider/test-setup@3.0.3(@embroider/core@3.4.7)':
+  '@embroider/test-setup@4.0.0(@embroider/core@3.4.7)':
     dependencies:
       lodash: 4.17.21
       resolve: 1.22.8
