@@ -313,8 +313,8 @@ importers:
         specifier: 3.3.2
         version: 3.3.2(ember-cli@5.8.1(handlebars@4.7.8)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6))
       ember-cli-fastboot:
-        specifier: 4.1.2
-        version: 4.1.2
+        specifier: 4.1.4
+        version: 4.1.4(ember-source@5.8.0(@babel/core@7.24.5)(@glimmer/component@1.1.2(@babel/core@7.24.5))(rsvp@4.8.5)(webpack@5.91.0))
       ember-cli-fastboot-testing:
         specifier: 0.6.1
         version: 0.6.1(ember-source@5.8.0(@babel/core@7.24.5)(@glimmer/component@1.1.2(@babel/core@7.24.5))(rsvp@4.8.5)(webpack@5.91.0))(webpack@5.91.0)
@@ -4127,9 +4127,11 @@ packages:
     peerDependencies:
       ember-source: ^3.28.0 || ^4.0.0 || ^5.0.0
 
-  ember-cli-fastboot@4.1.2:
-    resolution: {integrity: sha512-cC2ET8AbRTssA4sg9qF9KLX9N/Xnwa7kS0PKZADMMOUXtuBF4jmgnXsjzlvIE+lgWcwK4tc6udgwpMeNMkOg7w==}
-    engines: {node: 14.* || 16.* || >=18}
+  ember-cli-fastboot@4.1.4:
+    resolution: {integrity: sha512-RYgmY8oiEnPHQ5A8T2jKKB5IbZG8JZuxHCiFoMcOnD+85T3rVulgF7Wt7GFzZ3Ic2pocSFZef45jZG+gT1mJnA==}
+    engines: {node: 14.* || 16.* || >= 18}
+    peerDependencies:
+      ember-source: '>=3.16'
 
   ember-cli-get-component-path-option@1.0.0:
     resolution: {integrity: sha512-k47TDwcJ2zPideBCZE8sCiShSxQSpebY2BHcX2DdipMmBox5gsfyVrbKJWIHeSTTKyEUgmBIvQkqTOozEziCZA==}
@@ -13544,7 +13546,7 @@ snapshots:
       - utf-8-validate
       - webpack
 
-  ember-cli-fastboot@4.1.2:
+  ember-cli-fastboot@4.1.4(ember-source@5.8.0(@babel/core@7.24.5)(@glimmer/component@1.1.2(@babel/core@7.24.5))(rsvp@4.8.5)(webpack@5.91.0)):
     dependencies:
       broccoli-concat: 4.2.5
       broccoli-file-creator: 2.1.1
@@ -13556,7 +13558,8 @@ snapshots:
       ember-cli-lodash-subset: 2.0.1
       ember-cli-preprocess-registry: 3.3.0
       ember-cli-version-checker: 5.1.2
-      fastboot: 4.1.2
+      ember-source: 5.8.0(@babel/core@7.24.5)(@glimmer/component@1.1.2(@babel/core@7.24.5))(rsvp@4.8.5)(webpack@5.91.0)
+      fastboot: 4.1.4
       fastboot-express-middleware: 4.1.2
       fastboot-transform: 0.1.3
       fs-extra: 10.1.0
