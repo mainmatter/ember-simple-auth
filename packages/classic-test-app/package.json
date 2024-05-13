@@ -54,7 +54,7 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-qunit": "8.1.1",
     "express": "4.19.2",
-    "glob": "10.3.12",
+    "glob": "10.3.15",
     "handlebars": "4.7.8",
     "loader.js": "4.7.0",
     "my-engine": "workspace:../classic-test-app/lib/my-engine",

@@ -40,7 +40,7 @@ importers:
         version: 3.2.0(ember-source@5.8.0(@babel/core@7.24.5)(@glimmer/component@1.1.2(@babel/core@7.24.5))(rsvp@4.8.5)(webpack@5.91.0))(webpack@5.91.0)
       '@embroider/test-setup':
         specifier: 4.0.0
-        version: 4.0.0(@embroider/core@3.4.7)
+        version: 4.0.0
       '@glimmer/component':
         specifier: 1.1.2
         version: 1.1.2(@babel/core@7.24.5)
@@ -64,7 +64,7 @@ importers:
         version: 2.7.2(webpack@5.91.0)
       ember-cli:
         specifier: 5.8.1
-        version: 5.8.1(handlebars@4.7.8)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6)
+        version: 5.8.1(handlebars@4.7.8)(underscore@1.13.6)
       ember-cli-babel:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.24.5)
@@ -73,7 +73,7 @@ importers:
         version: 1.1.1
       ember-cli-dependency-checker:
         specifier: 3.3.2
-        version: 3.3.2(ember-cli@5.8.1(handlebars@4.7.8)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6))
+        version: 3.3.2(ember-cli@5.8.1(handlebars@4.7.8)(underscore@1.13.6))
       ember-cli-htmlbars:
         specifier: 6.3.0
         version: 6.3.0
@@ -141,8 +141,8 @@ importers:
         specifier: 4.19.2
         version: 4.19.2
       glob:
-        specifier: 10.3.12
-        version: 10.3.12
+        specifier: 10.3.15
+        version: 10.3.15
       handlebars:
         specifier: 4.7.8
         version: 4.7.8
@@ -278,7 +278,7 @@ importers:
         version: 3.2.0(ember-source@5.8.0(@babel/core@7.24.5)(@glimmer/component@1.1.2(@babel/core@7.24.5))(rsvp@4.8.5)(webpack@5.91.0))(webpack@5.91.0)
       '@embroider/test-setup':
         specifier: 4.0.0
-        version: 4.0.0(@embroider/core@3.4.7)
+        version: 4.0.0
       '@glimmer/component':
         specifier: 1.1.2
         version: 1.1.2(@babel/core@7.24.5)
@@ -302,7 +302,7 @@ importers:
         version: 2.7.2(webpack@5.91.0)
       ember-cli:
         specifier: 5.8.1
-        version: 5.8.1(handlebars@4.7.8)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6)
+        version: 5.8.1(handlebars@4.7.8)(underscore@1.13.6)
       ember-cli-babel:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.24.5)
@@ -311,7 +311,7 @@ importers:
         version: 1.1.1
       ember-cli-dependency-checker:
         specifier: 3.3.2
-        version: 3.3.2(ember-cli@5.8.1(handlebars@4.7.8)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6))
+        version: 3.3.2(ember-cli@5.8.1(handlebars@4.7.8)(underscore@1.13.6))
       ember-cli-fastboot:
         specifier: 4.1.4
         version: 4.1.4(ember-source@5.8.0(@babel/core@7.24.5)(@glimmer/component@1.1.2(@babel/core@7.24.5))(rsvp@4.8.5)(webpack@5.91.0))
@@ -388,8 +388,8 @@ importers:
         specifier: 4.1.3
         version: 4.1.3
       glob:
-        specifier: 10.3.12
-        version: 10.3.12
+        specifier: 10.3.15
+        version: 10.3.15
       handlebars:
         specifier: 4.7.8
         version: 4.7.8
@@ -444,7 +444,7 @@ importers:
         version: 3.2.0(ember-source@5.8.0(@babel/core@7.24.5)(@glimmer/component@1.1.2(@babel/core@7.24.5))(rsvp@4.8.5)(webpack@5.91.0))(webpack@5.91.0)
       '@embroider/test-setup':
         specifier: 4.0.0
-        version: 4.0.0(@embroider/core@3.4.7)
+        version: 4.0.0
       '@glimmer/component':
         specifier: 1.1.2
         version: 1.1.2(@babel/core@7.24.5)
@@ -468,7 +468,7 @@ importers:
         version: 2.7.2(webpack@5.91.0)
       ember-cli:
         specifier: 5.8.1
-        version: 5.8.1(handlebars@4.7.8)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6)
+        version: 5.8.1(handlebars@4.7.8)(underscore@1.13.6)
       ember-cli-babel:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.24.5)
@@ -477,7 +477,7 @@ importers:
         version: 1.1.1
       ember-cli-dependency-checker:
         specifier: 3.3.2
-        version: 3.3.2(ember-cli@5.8.1(handlebars@4.7.8)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6))
+        version: 3.3.2(ember-cli@5.8.1(handlebars@4.7.8)(underscore@1.13.6))
       ember-cli-htmlbars:
         specifier: 6.3.0
         version: 6.3.0
@@ -542,8 +542,8 @@ importers:
         specifier: 4.19.2
         version: 4.19.2
       glob:
-        specifier: 10.3.12
-        version: 10.3.12
+        specifier: 10.3.15
+        version: 10.3.15
       handlebars:
         specifier: 4.7.8
         version: 4.7.8
@@ -569,8 +569,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       sinon:
-        specifier: 17.0.1
-        version: 17.0.1
+        specifier: 17.0.2
+        version: 17.0.2
       torii:
         specifier: 1.0.0-beta.2
         version: 1.0.0-beta.2
@@ -2197,11 +2197,8 @@ packages:
   '@sinonjs/commons@2.0.0':
     resolution: {integrity: sha512-uLa0j859mMrg2slwQYdO/AkrOfmH+X6LTVmNTS9CqexuE2IvVORIkSpJLqePAbEnKJ77aMmCwr1NUZ57120Xcg==}
 
-  '@sinonjs/commons@3.0.0':
-    resolution: {integrity: sha512-jXBtWAF4vmdNmZgD5FoKsVLv3rPgDnLgPbU84LIJ3otV44vJlDRokVng5v8NFJdCf/da9legHcKaRuZs4L7faA==}
-
-  '@sinonjs/fake-timers@10.3.0':
-    resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
+  '@sinonjs/commons@3.0.1':
+    resolution: {integrity: sha512-K3mCHKQ9sVh8o1C9cxkwxaOmXoAMlDxC1mYyHrjqOWEcBjYr76t96zL2zlj5dUGZ3HSw240X1qgH3Mjf1yJWpQ==}
 
   '@sinonjs/fake-timers@11.2.2':
     resolution: {integrity: sha512-G2piCSxQ7oWOxwGSAyFHfPIsyeJGXYtc6mFbnFA+kRXkiEnTl8c/8jul2S329iFBnDI9HGoeWWAZvuvOkZccgw==}
@@ -4027,6 +4024,10 @@ packages:
     resolution: {integrity: sha512-D+mk+qE8VC/PAUrlAU34N+VfXev0ghe5ywmpqrawphmVZc1bEfn56uo9qpyGp1p4xpzOHkSW4ztBd6L7Xx4ACw==}
     engines: {node: '>=0.3.1'}
 
+  diff@5.2.0:
+    resolution: {integrity: sha512-uIFDxqpRZGZ6ThOk84hEfqWoHx2devRFvpTZcTHur85vImfaxUbTW9Ryh4CpCuDnToOP1CEtXKIgytHBPVff5A==}
+    engines: {node: '>=0.3.1'}
+
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
@@ -5086,9 +5087,9 @@ packages:
   glob-to-regexp@0.4.1:
     resolution: {integrity: sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==}
 
-  glob@10.3.12:
-    resolution: {integrity: sha512-TCNv8vJ+xz4QiqTpfOJA7HvYv+tNIRHKfUWw/q+v2jdgN4ebz+KY9tGx5J4rHP0o84mNP+ApH66HRX8us3Khqg==}
-    engines: {node: '>=16 || 14 >=14.17'}
+  glob@10.3.15:
+    resolution: {integrity: sha512-0c6RlJt1TICLyvJYIApxb8GsXoai0KUP7AxKKAtsYXdgJR1mGEUa7DgwShbdk1nly0PYoZj01xd4hzbq3fsjpw==}
+    engines: {node: '>=16 || 14 >=14.18'}
     hasBin: true
 
   glob@5.0.15:
@@ -5923,8 +5924,8 @@ packages:
   jstransformer@1.0.0:
     resolution: {integrity: sha512-C9YK3Rf8q6VAPDCCU9fnqo3mAfOH6vUGnMcP4AQAYIEpWtfGLpwOTmZ+igtdK5y+VvI2n3CyYSzy4Qh34eq24A==}
 
-  just-extend@4.2.1:
-    resolution: {integrity: sha512-g3UB796vUFIY90VIv/WX3L2c8CS2MdWUww3CNrYmqza1Fg0DURc2K/O4YrnklBdQarSJ/y8JnJYDGc+1iumQjg==}
+  just-extend@6.2.0:
+    resolution: {integrity: sha512-cYofQu2Xpom82S6qD778jBDpwvvy39s1l/hrYij2u9AMdQcGRpaBu6kY4mVhuno5kJVi1DAz4aiphA2WI1/OAw==}
 
   keyv@3.1.0:
     resolution: {integrity: sha512-9ykJ/46SN/9KPM/sichzQ7OvXyGDYKGTaDlKMGCAlg2UK8KRy4jb0d8sFc+0Tt0YYnThq8X2RZgCg74RPxgcVA==}
@@ -6587,8 +6588,8 @@ packages:
   nice-try@1.0.5:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
 
-  nise@5.1.5:
-    resolution: {integrity: sha512-VJuPIfUFaXNRzETTQEEItTOP8Y171ijr+JLq42wHes3DiryR8vT+1TXQW/Rx8JNUhyYYWyIvjXTU6dOhJcs9Nw==}
+  nise@5.1.9:
+    resolution: {integrity: sha512-qOnoujW4SV6e40dYxJOb3uvuoPHtmLzIk4TFo+j0jPJoC+5Z9xja5qH5JZobEPsa8+YYphMrOSwnrshEhG2qww==}
 
   no-case@3.0.4:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
@@ -6998,9 +6999,9 @@ packages:
     resolution: {integrity: sha512-QLcPegTHF11axjfojBIoDygmS2E3Lf+8+jI6wOVmNVenrKSo3mFdSGiIgdSHenczw3wPtlVMQaFVwGmM7BJdtg==}
     engines: {node: '>=0.10.0'}
 
-  path-scurry@1.10.2:
-    resolution: {integrity: sha512-7xTavNy5RQXnsjANvVvMkEjvloOinkAjv/Z6Ildz9v2RinZ4SBKTWFOVRbaF8p0vpHnyjV/UwNDdKuUv6M5qcA==}
-    engines: {node: '>=16 || 14 >=14.17'}
+  path-scurry@1.11.1:
+    resolution: {integrity: sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA==}
+    engines: {node: '>=16 || 14 >=14.18'}
 
   path-temp@2.1.0:
     resolution: {integrity: sha512-cMMJTAZlion/RWRRC48UbrDymEIt+/YSD/l8NqjneyDw2rDOBQcP5yRkMB4CYGn47KMhZvbblBP7Z79OsMw72w==}
@@ -7009,8 +7010,8 @@ packages:
   path-to-regexp@0.1.7:
     resolution: {integrity: sha512-5DFkuoqlv1uYQKxy8omFBeJPQcdoE07Kv2sferDCrAq1ohOU+MSDswDIbnx3YAM60qIOnYa53wBhXW0EbMonrQ==}
 
-  path-to-regexp@1.8.0:
-    resolution: {integrity: sha512-n43JRhlUKUAlibEJhPeir1ncUID16QnEjNpwzNdO3Lm4ywrBpBZ5oLD0I6br9evr1Y9JTqwRtAh7JLoOzAQdVA==}
+  path-to-regexp@6.2.2:
+    resolution: {integrity: sha512-GQX3SSMokngb36+whdpRXE+3f9V8UzyAorlYvOGx87ufGHehNTn5lCxrKtLyZ4Yl/wEKnNnr98ZzOwwDZV5ogw==}
 
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
@@ -7859,8 +7860,8 @@ packages:
   simple-html-tokenizer@0.5.11:
     resolution: {integrity: sha512-C2WEK/Z3HoSFbYq8tI7ni3eOo/NneSPRoPpcM7WdLjFOArFuyXEjAoCdOC3DgMfRyziZQ1hCNR4mrNdWEvD0og==}
 
-  sinon@17.0.1:
-    resolution: {integrity: sha512-wmwE19Lie0MLT+ZYNpDymasPHUKTaZHUH/pKEubRXIzySv9Atnlw+BUMGCzWgV7b7wO+Hw6f1TEOr0IUnmU8/g==}
+  sinon@17.0.2:
+    resolution: {integrity: sha512-uihLiaB9FhzesElPDFZA7hDcNABzsVHwr3YfmM9sBllVwab3l0ltGlRV1XhpNfIacNDLGD1QRZNLs5nU5+hTuA==}
 
   slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
@@ -10357,12 +10358,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@embroider/test-setup@4.0.0(@embroider/core@3.4.7)':
+  '@embroider/test-setup@4.0.0':
     dependencies:
       lodash: 4.17.21
       resolve: 1.22.8
-    optionalDependencies:
-      '@embroider/core': 3.4.7
 
   '@eslint-community/eslint-utils@4.4.0(eslint@8.57.0)':
     dependencies:
@@ -11212,17 +11211,13 @@ snapshots:
     dependencies:
       type-detect: 4.0.8
 
-  '@sinonjs/commons@3.0.0':
+  '@sinonjs/commons@3.0.1':
     dependencies:
       type-detect: 4.0.8
 
-  '@sinonjs/fake-timers@10.3.0':
-    dependencies:
-      '@sinonjs/commons': 3.0.0
-
   '@sinonjs/fake-timers@11.2.2':
     dependencies:
-      '@sinonjs/commons': 3.0.0
+      '@sinonjs/commons': 3.0.1
 
   '@sinonjs/samsam@8.0.0':
     dependencies:
@@ -12998,16 +12993,13 @@ snapshots:
       ora: 3.4.0
       through2: 3.0.2
 
-  consolidate@0.16.0(handlebars@4.7.8)(lodash@4.17.21)(mustache@4.2.0)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6):
+  consolidate@0.16.0(handlebars@4.7.8)(lodash@4.17.21)(mustache@4.2.0)(underscore@1.13.6):
     dependencies:
       bluebird: 3.7.2
     optionalDependencies:
       handlebars: 4.7.8
       lodash: 4.17.21
       mustache: 4.2.0
-      pug: 2.0.4
-      react: 17.0.2
-      react-dom: 17.0.2(react@17.0.2)
       underscore: 1.13.6
 
   constantinople@3.1.2:
@@ -13316,6 +13308,8 @@ snapshots:
 
   diff@5.1.0: {}
 
+  diff@5.2.0: {}
+
   dir-glob@3.0.1:
     dependencies:
       path-type: 4.0.0
@@ -13515,10 +13509,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-cli-dependency-checker@3.3.2(ember-cli@5.8.1(handlebars@4.7.8)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6)):
+  ember-cli-dependency-checker@3.3.2(ember-cli@5.8.1(handlebars@4.7.8)(underscore@1.13.6)):
     dependencies:
       chalk: 2.4.2
-      ember-cli: 5.8.1(handlebars@4.7.8)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6)
+      ember-cli: 5.8.1(handlebars@4.7.8)(underscore@1.13.6)
       find-yarn-workspace-root: 1.2.1
       is-git-url: 1.0.0
       resolve: 1.22.8
@@ -13754,7 +13748,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-cli@5.8.1(handlebars@4.7.8)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6):
+  ember-cli@5.8.1(handlebars@4.7.8)(underscore@1.13.6):
     dependencies:
       '@pnpm/find-workspace-dir': 6.0.2
       broccoli: 3.5.2
@@ -13833,7 +13827,7 @@ snapshots:
       sort-package-json: 1.57.0
       symlink-or-copy: 1.3.1
       temp: 0.9.4
-      testem: 3.10.1(handlebars@4.7.8)(lodash@4.17.21)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6)
+      testem: 3.10.1(handlebars@4.7.8)(lodash@4.17.21)(underscore@1.13.6)
       tiny-lr: 2.0.0
       tree-sync: 2.1.0
       walk-sync: 3.0.0
@@ -15311,13 +15305,13 @@ snapshots:
 
   glob-to-regexp@0.4.1: {}
 
-  glob@10.3.12:
+  glob@10.3.15:
     dependencies:
       foreground-child: 3.1.1
       jackspeak: 2.3.6
       minimatch: 9.0.3
       minipass: 7.0.4
-      path-scurry: 1.10.2
+      path-scurry: 1.11.1
 
   glob@5.0.15:
     dependencies:
@@ -16288,7 +16282,7 @@ snapshots:
       is-promise: 2.2.2
       promise: 7.3.1
 
-  just-extend@4.2.1: {}
+  just-extend@6.2.0: {}
 
   keyv@3.1.0:
     dependencies:
@@ -17049,13 +17043,13 @@ snapshots:
 
   nice-try@1.0.5: {}
 
-  nise@5.1.5:
+  nise@5.1.9:
     dependencies:
-      '@sinonjs/commons': 2.0.0
-      '@sinonjs/fake-timers': 10.3.0
+      '@sinonjs/commons': 3.0.1
+      '@sinonjs/fake-timers': 11.2.2
       '@sinonjs/text-encoding': 0.7.2
-      just-extend: 4.2.1
-      path-to-regexp: 1.8.0
+      just-extend: 6.2.0
+      path-to-regexp: 6.2.2
 
   no-case@3.0.4:
     dependencies:
@@ -17465,7 +17459,7 @@ snapshots:
     dependencies:
       path-root-regex: 0.1.2
 
-  path-scurry@1.10.2:
+  path-scurry@1.11.1:
     dependencies:
       lru-cache: 10.2.0
       minipass: 7.0.4
@@ -17476,9 +17470,7 @@ snapshots:
 
   path-to-regexp@0.1.7: {}
 
-  path-to-regexp@1.8.0:
-    dependencies:
-      isarray: 0.0.1
+  path-to-regexp@6.2.2: {}
 
   path-type@4.0.0: {}
 
@@ -18498,13 +18490,13 @@ snapshots:
 
   simple-html-tokenizer@0.5.11: {}
 
-  sinon@17.0.1:
+  sinon@17.0.2:
     dependencies:
-      '@sinonjs/commons': 3.0.0
+      '@sinonjs/commons': 3.0.1
       '@sinonjs/fake-timers': 11.2.2
       '@sinonjs/samsam': 8.0.0
-      diff: 5.1.0
-      nise: 5.1.5
+      diff: 5.2.0
+      nise: 5.1.9
       supports-color: 7.2.0
 
   slash@3.0.0: {}
@@ -18928,7 +18920,7 @@ snapshots:
       glob: 7.2.3
       minimatch: 3.1.2
 
-  testem@3.10.1(handlebars@4.7.8)(lodash@4.17.21)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6):
+  testem@3.10.1(handlebars@4.7.8)(lodash@4.17.21)(underscore@1.13.6):
     dependencies:
       '@xmldom/xmldom': 0.8.10
       backbone: 1.5.0
@@ -18936,7 +18928,7 @@ snapshots:
       charm: 1.0.2
       commander: 2.20.3
       compression: 1.7.4
-      consolidate: 0.16.0(handlebars@4.7.8)(lodash@4.17.21)(mustache@4.2.0)(pug@2.0.4)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(underscore@1.13.6)
+      consolidate: 0.16.0(handlebars@4.7.8)(lodash@4.17.21)(mustache@4.2.0)(underscore@1.13.6)
       execa: 1.0.0
       express: 4.19.2
       fireworm: 0.7.2
