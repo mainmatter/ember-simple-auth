@@ -58,7 +58,7 @@
     "ember-try": "3.0.0",
     "eslint": "8.57.0",
     "eslint-config-simplabs": "0.4.0",
-    "eslint-plugin-ember": "11.12.0",
+    "eslint-plugin-ember": "12.1.1",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-qunit": "8.1.1",
     "express": "4.19.2",
