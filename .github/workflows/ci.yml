@@ -97,7 +97,6 @@ jobs:
     timeout-minutes: 10
     permissions:
       pull-requests: write
-      issues: write
 
     strategy:
       fail-fast: false
