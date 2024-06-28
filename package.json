@@ -8,7 +8,7 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "@mermaid-js/mermaid-cli": "10.9.0",
+    "@mermaid-js/mermaid-cli": "10.9.1",
     "lerna-changelog": "2.2.0",
     "release-it": "17.3.0",
     "@release-it-plugins/lerna-changelog": "7.0.0"
