@@ -387,8 +387,7 @@ session.__ An application can leverage several authenticators for different
 kinds of authentication mechanisms (e.g. the application's own backend server,
 external authentication providers like Facebook etc.) while the session is only
 ever authenticated with one authenticator at a time. The authenticator to use
-is chosen when authentication is triggered via the name it is registered with
-in the Ember container:
+is chosen when authentication is triggered via the name it is registered within the Ember container:
 
 ```js
 this.session.authenticate('authenticator:some');
