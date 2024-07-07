@@ -1,15 +1,15 @@
 import Base from 'ember-simple-auth/authenticators/base';
 import { module, test } from 'qunit';
 
-module('BaseAuthenticator', function(hooks) {
+module('BaseAuthenticator', function (hooks) {
   let authenticator;
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     authenticator = Base.create();
   });
 
-  module('#restore', function() {
-    test('returns a rejecting promise', async function(assert) {
+  module('#restore', function () {
+    test('returns a rejecting promise', async function (assert) {
       assert.expect(1);
       try {
         await authenticator.restore();
@@ -20,8 +20,8 @@ module('BaseAuthenticator', function(hooks) {
     });
   });
 
-  module('#authenticate', function() {
-    test('returns a rejecting promise', async function(assert) {
+  module('#authenticate', function () {
+    test('returns a rejecting promise', async function (assert) {
       assert.expect(1);
       try {
         await authenticator.authenticate();
@@ -32,8 +32,8 @@ module('BaseAuthenticator', function(hooks) {
     });
   });
 
-  module('#invalidate', function() {
-    test('returns a resolving promise', async function(assert) {
+  module('#invalidate', function () {
+    test('returns a resolving promise', async function (assert) {
       assert.expect(1);
       try {
         await authenticator.invalidate();

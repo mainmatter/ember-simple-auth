@@ -79,6 +79,7 @@ export default [
       '**/.babelrc.js',
       '**/.eslintrc.js',
       '**/.eslintrc.js',
+      '**/.template-lintrc.js',
       '**/eslint.config.mjs',
       '**/prettier.config.mjs',
       '**/addon-main.js',
@@ -130,10 +131,9 @@ export default [
         ...globals.browser
       }
     },
-    files: ['**/tests/**/*-test.js'],
+    files: ['**/tests/**/*.js'],
     rules: {
       'qunit/require-expect': ['error', 'except-simple'],
-      quotes: ['error', 'single'],
     },
   },
 ];
