@@ -135,7 +135,7 @@ export default BaseAuthenticator.extend({
   */
   restore(data) {
     return new RSVP.Promise((resolve, reject) => {
-      const now = (new Date()).getTime();
+      const now = new Date().getTime();
       const refreshAccessTokens = this.get('refreshAccessTokens');
       if (!isEmpty(data['expires_at']) && data['expires_at'] < now) {
         if (refreshAccessTokens) {
@@ -147,7 +147,11 @@ export default BaseAuthenticator.extend({
         if (!this._validate(data)) {
           reject();
         } else {
-          this._scheduleAccessTokenRefresh(data['expires_in'], data['expires_at'], data['refresh_token']);
+          this._scheduleAccessTokenRefresh(
+            data['expires_in'],
+            data['expires_at'],
+            data['refresh_token']
+          );
           resolve(data);
         }
       }
@@ -212,30 +216,37 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password, scope = [], headers = {}) {
     return new RSVP.Promise((resolve, reject) => {
-      const data = { 'grant_type': 'password', username: identification, password };
+      const data = { grant_type: 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
 
       const scopesString = makeArray(scope).join(' ');
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
       }
-      this.makeRequest(serverTokenEndpoint, data, headers).then((response) => {
-        run(() => {
-          if (!this._validate(response)) {
-            reject('access_token is missing in server response');
-          }
+      this.makeRequest(serverTokenEndpoint, data, headers).then(
+        response => {
+          run(() => {
+            if (!this._validate(response)) {
+              reject('access_token is missing in server response');
+            }
 
-          const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
-          this._scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
-          if (!isEmpty(expiresAt)) {
-            response = Object.assign(response, { 'expires_at': expiresAt });
-          }
+            const expiresAt = this._absolutizeExpirationTime(response['expires_in']);
+            this._scheduleAccessTokenRefresh(
+              response['expires_in'],
+              expiresAt,
+              response['refresh_token']
+            );
+            if (!isEmpty(expiresAt)) {
+              response = Object.assign(response, { expires_at: expiresAt });
+            }
 
-          resolve(response);
-        });
-      }, (response) => {
-        run(null, reject, response);
-      });
+            resolve(response);
+          });
+        },
+        response => {
+          run(null, reject, response);
+        }
+      );
     });
   },
 
@@ -261,17 +272,20 @@ export default BaseAuthenticator.extend({
       delete this._refreshTokenTimeout;
       resolve();
     }
-    return new RSVP.Promise((resolve) => {
+    return new RSVP.Promise(resolve => {
       if (isEmpty(serverTokenRevocationEndpoint)) {
         success.apply(this, [resolve]);
       } else {
         const requests = [];
-        A(['access_token', 'refresh_token']).forEach((tokenType) => {
+        A(['access_token', 'refresh_token']).forEach(tokenType => {
           const token = data[tokenType];
           if (!isEmpty(token)) {
-            requests.push(this.makeRequest(serverTokenRevocationEndpoint, {
-              'token_type_hint': tokenType, token
-            }));
+            requests.push(
+              this.makeRequest(serverTokenRevocationEndpoint, {
+                token_type_hint: tokenType,
+                token,
+              })
+            );
           }
         });
         const succeed = () => {
@@ -293,7 +307,7 @@ export default BaseAuthenticator.extend({
     @return {Promise} A promise that resolves with the response object
     @protected
   */
-  makeRequest: waitFor(function(url, data, headers = {}) {
+  makeRequest: waitFor(function (url, data, headers = {}) {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
     const clientId = this.get('clientId');
@@ -301,40 +315,44 @@ export default BaseAuthenticator.extend({
       data['client_id'] = this.get('clientId');
     }
 
-    const body = Object.keys(data).map((key) => {
-      return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`;
-    }).join('&');
+    const body = Object.keys(data)
+      .map(key => {
+        return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`;
+      })
+      .join('&');
 
     const options = {
       body,
       headers,
-      method: 'POST'
+      method: 'POST',
     };
 
     return new RSVP.Promise((resolve, reject) => {
-      fetch(url, options).then((response) => {
-        response.text().then((text) => {
-          try {
-            let json = JSON.parse(text);
-            if (!response.ok) {
-              response.responseJSON = json;
+      fetch(url, options)
+        .then(response => {
+          response.text().then(text => {
+            try {
+              let json = JSON.parse(text);
+              if (!response.ok) {
+                response.responseJSON = json;
+                reject(response);
+              } else {
+                resolve(json);
+              }
+            } catch (SyntaxError) {
+              response.responseText = text;
               reject(response);
-            } else {
-              resolve(json);
             }
-          } catch (SyntaxError) {
-            response.responseText = text;
-            reject(response);
-          }
-        });
-      }).catch(reject);
+          });
+        })
+        .catch(reject);
     });
   }),
 
   _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
     const refreshAccessTokens = this.get('refreshAccessTokens') && !isFastBoot(getOwner(this));
     if (refreshAccessTokens) {
-      const now = (new Date()).getTime();
+      const now = new Date().getTime();
       if (isEmpty(expiresAt) && !isEmpty(expiresIn)) {
         expiresAt = new Date(now + expiresIn * 1000).getTime();
       }
@@ -343,40 +361,57 @@ export default BaseAuthenticator.extend({
         cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
         if (!isTesting()) {
-          this._refreshTokenTimeout = later(this, this._refreshAccessToken, expiresIn, refreshToken, expiresAt - now - offset);
+          this._refreshTokenTimeout = later(
+            this,
+            this._refreshAccessToken,
+            expiresIn,
+            refreshToken,
+            expiresAt - now - offset
+          );
         }
       }
     }
   },
 
   _refreshAccessToken(expiresIn, refreshToken) {
-    const data = { 'grant_type': 'refresh_token', 'refresh_token': refreshToken };
+    const data = { grant_type: 'refresh_token', refresh_token: refreshToken };
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return new RSVP.Promise((resolve, reject) => {
-      this.makeRequest(serverTokenEndpoint, data).then((response) => {
-        run(() => {
-          expiresIn = response['expires_in'] || expiresIn;
-          refreshToken = response['refresh_token'] || refreshToken;
-          const expiresAt = this._absolutizeExpirationTime(expiresIn);
-          const data = Object.assign(response, { 'expires_in': expiresIn, 'expires_at': expiresAt, 'refresh_token': refreshToken });
-          this._scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
-          this.trigger('sessionDataUpdated', data);
-          resolve(data);
-        });
-      }, (response) => {
-        warn(`Access token could not be refreshed - server responded with ${response.responseJSON}.`, false, { id: 'ember-simple-auth.failedOAuth2TokenRefresh' });
-        reject();
-      });
+      this.makeRequest(serverTokenEndpoint, data).then(
+        response => {
+          run(() => {
+            expiresIn = response['expires_in'] || expiresIn;
+            refreshToken = response['refresh_token'] || refreshToken;
+            const expiresAt = this._absolutizeExpirationTime(expiresIn);
+            const data = Object.assign(response, {
+              expires_in: expiresIn,
+              expires_at: expiresAt,
+              refresh_token: refreshToken,
+            });
+            this._scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
+            this.trigger('sessionDataUpdated', data);
+            resolve(data);
+          });
+        },
+        response => {
+          warn(
+            `Access token could not be refreshed - server responded with ${response.responseJSON}.`,
+            false,
+            { id: 'ember-simple-auth.failedOAuth2TokenRefresh' }
+          );
+          reject();
+        }
+      );
     });
   },
 
   _absolutizeExpirationTime(expiresIn) {
     if (!isEmpty(expiresIn)) {
-      return new Date((new Date().getTime()) + expiresIn * 1000).getTime();
+      return new Date(new Date().getTime() + expiresIn * 1000).getTime();
     }
   },
 
   _validate(data) {
     return !isEmpty(data['access_token']);
-  }
+  },
 });

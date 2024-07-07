@@ -29,6 +29,7 @@ export default [
   {
     files: [
       '**/app/**/*.js',
+      '**/src/**/*.js',
       '**/lib/**/*.js'
     ],
     plugins: {
@@ -70,6 +71,7 @@ export default [
       'no-unused-vars': 'off',
       'no-var': 'off',
       'prefer-template': 'off',
+      'no-prototype-builtins': 'off',
       quotes: 'off',
       semi: 'off',
     },
@@ -82,7 +84,7 @@ export default [
       '**/.template-lintrc.js',
       '**/eslint.config.mjs',
       '**/prettier.config.mjs',
-      '**/addon-main.js',
+      '**/addon-main.*js',
       '**/fastboot-server.js',
       '**/server/**/*.js',
       '**/server/*.js',

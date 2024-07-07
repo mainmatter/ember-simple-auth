@@ -10,7 +10,7 @@ import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import { isTesting } from '@embroider/macros';
 
-const persistingProperty = function(beforeSet = function() {}) {
+const persistingProperty = function (beforeSet = function () {}) {
   return computed({
     get(key) {
       return this.get(`_${key}`);
@@ -114,7 +114,7 @@ export default BaseStore.extend({
     @public
   */
   _cookieName: 'ember_simple_auth-session',
-  cookieName: persistingProperty(function() {
+  cookieName: persistingProperty(function () {
     this._oldCookieName = this._cookieName;
   }),
 
@@ -146,7 +146,7 @@ export default BaseStore.extend({
     @public
   */
   _cookieExpirationTime: null,
-  cookieExpirationTime: persistingProperty(function(key, value) {
+  cookieExpirationTime: persistingProperty(function (key, value) {
     // When nulling expiry time on purpose, we need to clear the cached value.
     // Otherwise, `_calculateExpirationTime` will reuse it.
     if (isNone(value)) {
@@ -175,9 +175,7 @@ export default BaseStore.extend({
       return false;
     } else {
       const visibilityState =
-        typeof document !== 'undefined'
-          ? document.visibilityState || 'visible'
-          : false;
+        typeof document !== 'undefined' ? document.visibilityState || 'visible' : false;
       return visibilityState === 'visible';
     }
   },
@@ -189,9 +187,7 @@ export default BaseStore.extend({
       this._fastboot = owner.lookup('service:fastboot');
     }
 
-    let cachedExpirationTime = this._read(
-      `${this.get('cookieName')}-expiration_time`
-    );
+    let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
     if (cachedExpirationTime) {
       this.set('cookieExpirationTime', parseInt(cachedExpirationTime, 10));
     }
@@ -260,9 +256,7 @@ export default BaseStore.extend({
   },
 
   _calculateExpirationTime() {
-    let cachedExpirationTime = this._read(
-      `${this.get('cookieName')}-expiration_time`
-    );
+    let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
     cachedExpirationTime = cachedExpirationTime
       ? new Date().getTime() + cachedExpirationTime * 1000
       : null;
@@ -280,10 +274,7 @@ export default BaseStore.extend({
       sameSite: this.get('sameSite'),
     };
     if (this._oldCookieName) {
-      A([
-        this._oldCookieName,
-        `${this._oldCookieName}-expiration_time`,
-      ]).forEach((oldCookie) => {
+      A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach(oldCookie => {
         this.get('_cookies').clear(oldCookie);
       });
       delete this._oldCookieName;
@@ -291,8 +282,7 @@ export default BaseStore.extend({
     this.get('_cookies').write(this.get('cookieName'), value, cookieOptions);
     if (!isEmpty(expiration)) {
       let expirationCookieName = `${this.get('cookieName')}-expiration_time`;
-      let cachedExpirationTime =
-        this.get('_cookies').read(expirationCookieName);
+      let cachedExpirationTime = this.get('_cookies').read(expirationCookieName);
       this.get('_cookies').write(
         expirationCookieName,
         this.get('cookieExpirationTime') || cachedExpirationTime,
@@ -302,7 +292,7 @@ export default BaseStore.extend({
   },
 
   _syncData() {
-    return this.restore().then((data) => {
+    return this.restore().then(data => {
       if (!objectsAreEqual(data, this._lastData)) {
         this._lastData = data;
         this.trigger('sessionDataUpdated', data);
@@ -315,11 +305,8 @@ export default BaseStore.extend({
   },
 
   _renew() {
-    return this.restore().then((data) => {
-      if (
-        !isEmpty(data) &&
-        !(data.constructor === Object && Object.keys(data).length === 0)
-      ) {
+    return this.restore().then(data => {
+      if (!isEmpty(data) && !(data.constructor === Object && Object.keys(data).length === 0)) {
         data = typeOf(data) === 'string' ? data : JSON.stringify(data || {});
         let expiration = this._calculateExpirationTime();
         this._write(data, expiration);

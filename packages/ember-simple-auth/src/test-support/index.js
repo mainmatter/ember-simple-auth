@@ -51,10 +51,11 @@ export function invalidateSession() {
   const { owner } = getContext();
   const session = owner.lookup(SESSION_SERVICE_KEY);
   const isAuthenticated = get(session, 'isAuthenticated');
-  return Promise.resolve().then(() => {
-    if (isAuthenticated) {
-      return session.invalidate();
-    }
-  })
+  return Promise.resolve()
+    .then(() => {
+      if (isAuthenticated) {
+        return session.invalidate();
+      }
+    })
     .then(() => settled());
 }

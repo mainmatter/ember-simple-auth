@@ -28,7 +28,7 @@ export default function objectsAreEqual(a, b) {
         return false;
       }
 
-      switch (typeof (x[property])) {
+      switch (typeof x[property]) {
         case 'object':
           if (!compare(x[property], y[property])) {
             return false;
