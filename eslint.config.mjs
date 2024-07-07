@@ -28,7 +28,8 @@ export default [
   },
   {
     files: [
-      '**/app/**/*.js'
+      '**/app/**/*.js',
+      '**/lib/**/*.js'
     ],
     plugins: {
       ember,
@@ -81,6 +82,7 @@ export default [
       '**/eslint.config.mjs',
       '**/prettier.config.mjs',
       '**/addon-main.js',
+      '**/fastboot-server.js',
       '**/server/**/*.js',
       '**/server/*.js',
       '**/blueprints/*/index.js',
@@ -111,8 +113,22 @@ export default [
     },
   },
   {
+    files: [
+      '**/eslint.config.mjs',
+      '**/prettier.config.mjs',
+    ],
+    languageOptions: {
+      sourceType: 'module'
+    }
+  },
+  {
     plugins: {
       qunit,
+    },
+    languageOptions: {
+      globals: {
+        ...globals.browser
+      }
     },
     files: ['**/tests/**/*-test.js'],
     rules: {
