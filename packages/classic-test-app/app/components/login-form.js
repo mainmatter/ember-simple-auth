@@ -29,11 +29,12 @@ export default Component.extend({
       let redirectURI = `${window.location.origin}/callback`;
       let responseType = `token`;
       let scope = `email`;
-      window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?`
-                            + `client_id=${clientId}`
-                            + `&redirect_uri=${redirectURI}`
-                            + `&response_type=${responseType}`
-                            + `&scope=${scope}`
+      window.location.replace(
+        `https://accounts.google.com/o/oauth2/v2/auth?` +
+          `client_id=${clientId}` +
+          `&redirect_uri=${redirectURI}` +
+          `&response_type=${responseType}` +
+          `&scope=${scope}`
       );
     },
 
@@ -48,5 +49,5 @@ export default Component.extend({
     updateRememberMe(e) {
       this.set('rememberMe', e.target.checked);
     },
-  }
+  },
 });

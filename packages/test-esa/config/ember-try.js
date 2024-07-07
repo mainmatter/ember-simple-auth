@@ -3,12 +3,12 @@
 const getChannelURL = require('ember-source-channel-url');
 const { embroiderSafe, embroiderOptimized } = require('@embroider/test-setup');
 
-module.exports = function() {
+module.exports = function () {
   return Promise.all([
     getChannelURL('release'),
     getChannelURL('beta'),
     getChannelURL('canary'),
-  ]).then((urls) => {
+  ]).then(urls => {
     const releaseUrl = urls[0];
     const betaUrl = urls[1];
     const canaryUrl = urls[2];

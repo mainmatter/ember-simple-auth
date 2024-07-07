@@ -3,5 +3,5 @@ import config from '../config/environment';
 
 export default OAuth2PasswordGrant.extend({
   serverTokenEndpoint: `${config.apiHost}/token`,
-  serverTokenRevocationEndpoint: `${config.apiHost}/revoke`
+  serverTokenRevocationEndpoint: `${config.apiHost}/revoke`,
 });

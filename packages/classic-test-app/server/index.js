@@ -1,4 +1,4 @@
-module.exports = function(app) {
+module.exports = function (app) {
   var cors = require('cors');
 
   require('./mocks/token')(app);

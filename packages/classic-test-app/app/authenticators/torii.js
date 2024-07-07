@@ -5,7 +5,7 @@ export default Torii.extend({
   torii: service(),
 
   authenticate() {
-    return this._super(...arguments).then((data) => {
+    return this._super(...arguments).then(data => {
       return fetch('/token', {
         method: 'POST',
         body: JSON.stringify({
@@ -13,12 +13,12 @@ export default Torii.extend({
           auth_code: data.authorizationCode,
         }),
         headers: { 'Content-Type': 'application/json' },
-      }).then((response) => {
+      }).then(response => {
         return {
           access_token: response.access_token,
-          provider: data.provider
+          provider: data.provider,
         };
       });
     });
-  }
+  },
 });
