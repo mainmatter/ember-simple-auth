@@ -72,5 +72,5 @@ export default EmberObject.extend(Evented, {
   */
   clear() {
     return RSVP.reject();
-  }
+  },
 });

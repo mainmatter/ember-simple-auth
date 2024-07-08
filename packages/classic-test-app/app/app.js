@@ -12,14 +12,12 @@ const App = Application.extend({
     'my-engine': {
       dependencies: {
         externalRoutes: {
-          login: 'login'
+          login: 'login',
         },
-        services: [
-          'session'
-        ]
-      }
-    }
-  })
+        services: ['session'],
+      },
+    },
+  }),
 });
 
 loadInitializers(App, config.modulePrefix);

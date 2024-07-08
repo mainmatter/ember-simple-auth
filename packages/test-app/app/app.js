@@ -13,13 +13,11 @@ class App extends Application {
       dependencies: {
         externalRoutes: {
           login: 'login',
-          index: 'index'
+          index: 'index',
         },
-        services: [
-          'session'
-        ]
-      }
-    }
+        services: ['session'],
+      },
+    },
   });
 }
 

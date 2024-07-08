@@ -164,5 +164,5 @@ export default EmberObject.extend(Evented, {
   */
   invalidate() {
     return RSVP.resolve();
-  }
+  },
 });

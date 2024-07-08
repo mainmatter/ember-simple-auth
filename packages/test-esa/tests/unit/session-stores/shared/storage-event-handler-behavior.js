@@ -2,38 +2,38 @@ import { module, test } from 'qunit';
 import { run } from '@ember/runloop';
 import sinonjs from 'sinon';
 
-export default function(options) {
+export default function (options) {
   let sinon;
   let store;
   let hooks = options.hooks;
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     sinon = sinonjs.createSandbox();
     store = options.store();
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     sinon.restore();
   });
 
-  module('storage events', function(hooks) {
-    hooks.beforeEach(function() {
+  module('storage events', function (hooks) {
+    hooks.beforeEach(function () {
       sinon.spy(window, 'addEventListener');
       sinon.spy(window, 'removeEventListener');
     });
 
-    hooks.afterEach(function() {
+    hooks.afterEach(function () {
       window.addEventListener.restore();
       window.removeEventListener.restore();
     });
 
-    test('binds to "storage" events on the window when created', function(assert) {
+    test('binds to "storage" events on the window when created', function (assert) {
       store = options.store();
 
       assert.ok(window.addEventListener.calledOnce);
     });
 
-    test('triggers the "sessionDataUpdated" event when the data in the browser storage has changed', function(assert) {
+    test('triggers the "sessionDataUpdated" event when the data in the browser storage has changed', function (assert) {
       let triggered = false;
       store.on('sessionDataUpdated', () => {
         triggered = true;
@@ -44,7 +44,7 @@ export default function(options) {
       assert.ok(triggered);
     });
 
-    test('does not trigger the "sessionDataUpdated" event when the data in the browser storage has not changed', function(assert) {
+    test('does not trigger the "sessionDataUpdated" event when the data in the browser storage has not changed', function (assert) {
       let triggered = false;
       store.on('sessionDataUpdated', () => {
         triggered = true;
@@ -56,7 +56,7 @@ export default function(options) {
       assert.notOk(triggered);
     });
 
-    test('does not trigger the "sessionDataUpdated" event when the data in the browser storage has changed for a different key', function(assert) {
+    test('does not trigger the "sessionDataUpdated" event when the data in the browser storage has changed for a different key', function (assert) {
       let triggered = false;
       store.on('sessionDataUpdated', () => {
         triggered = true;
@@ -67,7 +67,7 @@ export default function(options) {
       assert.notOk(triggered);
     });
 
-    test('unbinds from "storage" events on the window when destroyed', function(assert) {
+    test('unbinds from "storage" events on the window when destroyed', function (assert) {
       run(() => store.destroy());
 
       assert.ok(window.removeEventListener.calledOnce);

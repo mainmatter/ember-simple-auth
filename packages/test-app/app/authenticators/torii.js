@@ -5,7 +5,7 @@ export default class ToriiAuthenticator extends Torii {
   @service torii;
 
   authenticate() {
-    return super.authenticate(...arguments).then((data) => {
+    return super.authenticate(...arguments).then(data => {
       return fetch('/token', {
         method: 'POST',
         data: JSON.stringify({
@@ -13,7 +13,7 @@ export default class ToriiAuthenticator extends Torii {
           auth_code: data.authorizationCode,
         }),
         headers: { 'content-type': 'application/json' },
-      }).then((response) => {
+      }).then(response => {
         return {
           access_token: response.access_token,
           provider: data.provider,

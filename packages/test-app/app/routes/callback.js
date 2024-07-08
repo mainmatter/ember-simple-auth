@@ -10,7 +10,7 @@ export default class CallbackRoute extends Route {
     if (!this.fastboot.isFastBoot) {
       let hash = parseResponse(window.location.hash);
 
-      this.session.authenticate('authenticator:oauth2-implicit-grant', hash).catch((error) => {
+      this.session.authenticate('authenticator:oauth2-implicit-grant', hash).catch(error => {
         this.error = error;
       });
     }

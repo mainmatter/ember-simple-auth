@@ -35,7 +35,9 @@ export default BaseStore.extend({
   init() {
     this._super(...arguments);
 
-    this._isFastBoot = this.hasOwnProperty('_isFastBoot') ? this._isFastBoot : isFastBoot(getOwner(this));
+    this._isFastBoot = this.hasOwnProperty('_isFastBoot')
+      ? this._isFastBoot
+      : isFastBoot(getOwner(this));
     if (!this.get('_isFastBoot')) {
       window.addEventListener('storage', bind(this, this._handleStorageEvent));
     }
@@ -97,12 +99,12 @@ export default BaseStore.extend({
 
   _handleStorageEvent(e) {
     if (e.key === this.get('key')) {
-      this.restore().then((data) => {
+      this.restore().then(data => {
         if (!objectsAreEqual(data, this._lastData)) {
           this._lastData = data;
           this.trigger('sessionDataUpdated', data);
         }
       });
     }
-  }
+  },
 });

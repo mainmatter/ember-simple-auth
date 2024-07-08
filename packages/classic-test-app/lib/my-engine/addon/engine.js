@@ -9,13 +9,9 @@ const Eng = Engine.extend({
   modulePrefix,
   Resolver,
   dependencies: Object.freeze({
-    externalRoutes: [
-      'login'
-    ],
-    services: [
-      'session'
-    ]
-  })
+    externalRoutes: ['login'],
+    services: ['session'],
+  }),
 });
 
 loadInitializers(Eng, modulePrefix);

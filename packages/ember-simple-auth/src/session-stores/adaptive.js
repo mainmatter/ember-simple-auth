@@ -5,7 +5,7 @@ import Base from './base';
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 
-const proxyToInternalStore = function() {
+const proxyToInternalStore = function () {
   return computed({
     get(key) {
       return this.get(`_${key}`);
@@ -17,7 +17,7 @@ const proxyToInternalStore = function() {
         _store.set(key, value);
       }
       return value;
-    }
+    },
   });
 };
 
@@ -131,7 +131,7 @@ export default Base.extend({
 
     set(key, value) {
       return value;
-    }
+    },
   }),
 
   init() {
@@ -153,7 +153,13 @@ export default Base.extend({
       store = localStorage;
     } else {
       const cookieStorage = owner.lookup('session-store:cookie');
-      const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath', 'sameSite');
+      const options = this.getProperties(
+        'cookieDomain',
+        'cookieName',
+        'cookieExpirationTime',
+        'cookiePath',
+        'sameSite'
+      );
 
       cookieStorage.setProperties(options);
       this.set('cookieExpirationTime', cookieStorage.get('cookieExpirationTime'));
@@ -166,7 +172,7 @@ export default Base.extend({
   },
 
   _setupStoreEvents(store) {
-    store.on('sessionDataUpdated', (data) => {
+    store.on('sessionDataUpdated', data => {
       this.trigger('sessionDataUpdated', data);
     });
     return store;
@@ -211,7 +217,7 @@ export default Base.extend({
   */
   clear() {
     return this.get('_store').clear();
-  }
+  },
 });
 
 function testLocalStorageAvailable() {

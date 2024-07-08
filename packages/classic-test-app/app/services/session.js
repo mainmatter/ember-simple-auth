@@ -7,6 +7,8 @@ export default SessionService.extend({
   handleAuthentication() {
     this._super(...arguments);
 
-    this.get('sessionAccount').loadCurrentUser().catch(() => this.invalidate());
-  }
+    this.get('sessionAccount')
+      .loadCurrentUser()
+      .catch(() => this.invalidate());
+  },
 });

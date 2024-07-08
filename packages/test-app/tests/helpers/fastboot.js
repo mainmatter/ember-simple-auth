@@ -5,11 +5,11 @@ import { mockServer } from 'ember-cli-fastboot-testing/test-support';
 export function setupFastbootTest(hooks) {
   setupTest(hooks);
 
-  hooks.beforeEach(async function() {
+  hooks.beforeEach(async function () {
     await mockServer.cleanUp();
   });
 
-  hooks.afterEach(async function() {
+  hooks.afterEach(async function () {
     await mockServer.cleanUp();
   });
 }

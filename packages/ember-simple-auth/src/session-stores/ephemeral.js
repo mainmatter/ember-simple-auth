@@ -59,5 +59,5 @@ export default BaseStore.extend({
     this._data = '{}';
 
     return RSVP.resolve();
-  }
+  },
 });

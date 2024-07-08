@@ -1,6 +1,6 @@
 class LocationUtil {
   location = window.location;
-  
+
   replace(...args) {
     this.location.replace(...args);
   }
