@@ -3,7 +3,7 @@ name: Docs
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [Release]
+    workflows: [Publish Stable]
     types:
       - completed
 env:
