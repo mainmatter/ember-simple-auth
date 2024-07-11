@@ -30,8 +30,8 @@ importers:
         specifier: 0.4.0
         version: 0.4.0(eslint@8.57.0)
       eslint-plugin-ember:
-        specifier: 11.12.0
-        version: 11.12.0(eslint@8.57.0)
+        specifier: 12.1.1
+        version: 12.1.1(@babel/core@7.24.5)(eslint@8.57.0)
       eslint-plugin-n:
         specifier: 17.9.0
         version: 17.9.0(eslint@8.57.0)
@@ -600,6 +600,13 @@ packages:
   '@babel/core@7.24.5':
     resolution: {integrity: sha512-tVQRucExLQ02Boi4vdPp49svNGcfL2GhdTCT9aldhXgCJVAI21EtRfBettiuLUwce/7r6bFdgs6JFkcdTiFttA==}
     engines: {node: '>=6.9.0'}
+
+  '@babel/eslint-parser@7.23.10':
+    resolution: {integrity: sha512-3wSYDPZVnhseRnxRJH6ZVTNknBz76AEnyC+AYYhasjP3Yy23qz0ERR7Fcd2SHmYuSFJ2kY9gaaDd3vyqU09eSw==}
+    engines: {node: ^10.13.0 || ^12.13.0 || >=14.0.0}
+    peerDependencies:
+      '@babel/core': ^7.11.0
+      eslint: ^7.5.0 || ^8.0.0
 
   '@babel/eslint-parser@7.24.7':
     resolution: {integrity: sha512-SO5E3bVxDuxyNxM5agFv480YA2HO6ohZbGxbazZdIk3KQOPOGVNw6q78I9/lbviIf95eq6tPozeYnJLbjnC8IA==}
@@ -4941,6 +4948,16 @@ packages:
       ember-engines-router-service:
         optional: true
 
+  ember-eslint-parser@0.4.3:
+    resolution: {integrity: sha512-wMPoaaA+i/F/tPPxURRON9XXJH5MRUOZ5x/9CVJTSpL+0n4EWphyztb20gR+ZJeShnOACQpAdFy6YSS1/JSHKw==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      '@babel/core': ^7.23.6
+      '@typescript-eslint/parser': '*'
+    peerDependenciesMeta:
+      '@typescript-eslint/parser':
+        optional: true
+
   ember-fetch@8.1.2:
     resolution: {integrity: sha512-TVx24/jrvDIuPL296DV0hBwp7BWLcSMf0I8464KGz01sPytAB+ZAePbc9ooBTJDkKZEGFgatJa4nj3yF1S9Bpw==}
     engines: {node: '>= 10'}
@@ -5162,11 +5179,15 @@ packages:
   eslint-formatter-kakoune@1.0.0:
     resolution: {integrity: sha512-Uk/TVLt6Nf6Xoz7C1iYuZjOSdJxe5aaauGRke8JhKeJwD66Y61/pY2FjtLP04Ooq9PwV34bzrkKkU2UZ5FtDRA==}
 
-  eslint-plugin-ember@11.12.0:
-    resolution: {integrity: sha512-7Ow1ky5JnRR0k3cxuvgYi4AWTe9DzGjlLgOJbU5VABLgr7Q0iq3ioC+YwAP79nV48cpw2HOgMgkZ1MynuIg59g==}
-    engines: {node: 14.* || 16.* || >= 18}
+  eslint-plugin-ember@12.1.1:
+    resolution: {integrity: sha512-95YWz2nVWtFHwrNlW8kpBivudieTHkiW3vlG3X1P24IpQLigVtPe14LDcZ/vPtEV92Ccao4xcKPKWWOeG0hSNQ==}
+    engines: {node: 18.* || 20.* || >= 21}
     peerDependencies:
-      eslint: '>= 7'
+      '@typescript-eslint/parser': '*'
+      eslint: '>= 8'
+    peerDependenciesMeta:
+      '@typescript-eslint/parser':
+        optional: true
 
   eslint-plugin-es-x@7.5.0:
     resolution: {integrity: sha512-ODswlDSO0HJDzXU0XvgZ3lF3lS3XAZEossh15Q2UHjwrJggWeBoKqqEsLTZLXl+dh5eOAozG0zRcYtuE35oTuQ==}
@@ -5996,6 +6017,10 @@ packages:
 
   html-escaper@2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
+
+  html-tags@3.3.1:
+    resolution: {integrity: sha512-ztqyC3kLto0e9WbNp0aeP+M3kTt+nbaIveGmUxAtZa+8iFgKLUOD4YKM5j+f3QD89bra7UeumolZHKuOXnTmeQ==}
+    engines: {node: '>=8'}
 
   http-cache-semantics@4.1.1:
     resolution: {integrity: sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==}
@@ -6886,10 +6911,6 @@ packages:
 
   magic-string@0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
-
-  magic-string@0.30.5:
-    resolution: {integrity: sha512-7xlpfBaQaP/T6Vh8MO/EqXSW5En6INHEvEXQiuff7Gku0PWjU3uf6w/j9o7O+SpB5fOAkrI5HeoNgwjEO0pFsA==}
-    engines: {node: '>=12'}
 
   make-dir@3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
@@ -9734,6 +9755,14 @@ snapshots:
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
+
+  '@babel/eslint-parser@7.23.10(@babel/core@7.24.5)(eslint@8.57.0)':
+    dependencies:
+      '@babel/core': 7.24.5
+      '@nicolo-ribaudo/eslint-scope-5-internals': 5.1.1-v1
+      eslint: 8.57.0
+      eslint-visitor-keys: 2.1.0
+      semver: 6.3.1
 
   '@babel/eslint-parser@7.24.7(@babel/core@7.24.5)(eslint@8.57.0)':
     dependencies:
@@ -15646,6 +15675,17 @@ snapshots:
       - '@glint/template'
       - supports-color
 
+  ember-eslint-parser@0.4.3(@babel/core@7.24.5)(eslint@8.57.0):
+    dependencies:
+      '@babel/core': 7.24.5
+      '@babel/eslint-parser': 7.23.10(@babel/core@7.24.5)(eslint@8.57.0)
+      '@glimmer/syntax': 0.92.0
+      content-tag: 1.2.2
+      eslint-scope: 7.2.2
+      html-tags: 3.3.1
+    transitivePeerDependencies:
+      - eslint
+
   ember-fetch@8.1.2(encoding@0.1.13):
     dependencies:
       abortcontroller-polyfill: 1.7.5
@@ -16045,24 +16085,21 @@ snapshots:
 
   eslint-formatter-kakoune@1.0.0: {}
 
-  eslint-plugin-ember@11.12.0(eslint@8.57.0):
+  eslint-plugin-ember@12.1.1(@babel/core@7.24.5)(eslint@8.57.0):
     dependencies:
       '@ember-data/rfc395-data': 0.0.4
-      '@glimmer/syntax': 0.84.3
       css-tree: 2.3.1
+      ember-eslint-parser: 0.4.3(@babel/core@7.24.5)(eslint@8.57.0)
       ember-rfc176-data: 0.3.18
-      ember-template-imports: 3.4.2
-      ember-template-recast: 6.1.4
       eslint: 8.57.0
       eslint-utils: 3.0.0(eslint@8.57.0)
       estraverse: 5.3.0
       lodash.camelcase: 4.3.0
       lodash.kebabcase: 4.1.1
-      magic-string: 0.30.5
       requireindex: 1.2.0
       snake-case: 3.0.4
     transitivePeerDependencies:
-      - supports-color
+      - '@babel/core'
 
   eslint-plugin-es-x@7.5.0(eslint@8.57.0):
     dependencies:
@@ -17278,6 +17315,8 @@ snapshots:
 
   html-escaper@2.0.2: {}
 
+  html-tags@3.3.1: {}
+
   http-cache-semantics@4.1.1: {}
 
   http-errors@1.6.3:
@@ -18196,10 +18235,6 @@ snapshots:
   magic-string@0.25.9:
     dependencies:
       sourcemap-codec: 1.4.8
-
-  magic-string@0.30.5:
-    dependencies:
-      '@jridgewell/sourcemap-codec': 1.4.15
 
   make-dir@3.1.0:
     dependencies:
