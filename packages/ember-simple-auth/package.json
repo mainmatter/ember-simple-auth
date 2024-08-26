@@ -1,6 +1,6 @@
 {
   "name": "ember-simple-auth",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "description": "A lightweight library for implementing authentication/authorization with Ember.js applications.",
   "keywords": [
     "ember-addon"
@@ -32,8 +32,8 @@
     "@ember/test-waiters": "^3",
     "@embroider/addon-shim": "^1.0.0",
     "@embroider/macros": "^1.0.0",
+    "@gaurav9576/ember-cookies": "^1.2.0",
     "ember-cli-is-package-missing": "^1.0.0",
-    "ember-cookies": "^1.0.0",
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
