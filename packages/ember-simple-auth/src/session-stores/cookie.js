@@ -160,6 +160,9 @@ export default BaseStore.extend({
     }
   }),
 
+  _partitioned: null,
+  partitioned: persistingProperty(),
+
   _cookies: service('cookies'),
 
   _secureCookies() {
@@ -272,6 +275,7 @@ export default BaseStore.extend({
       path: this.get('cookiePath'),
       secure: this._secureCookies(),
       sameSite: this.get('sameSite'),
+      partitioned: this.get('partitioned'),
     };
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach(oldCookie => {
