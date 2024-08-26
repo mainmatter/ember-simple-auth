@@ -85,6 +85,24 @@ export default Base.extend({
   sameSite: proxyToInternalStore(),
 
   /**
+    Allows servers to assert that a cookie should opt in to partitioned storage,
+    i.e. use a separate cookie per top level site if the cookie is used in a
+    third party context
+
+    Available options:
+    - null
+    - true
+
+    @memberof AdaptiveStore
+    @property partitioned
+    @type Boolean
+    @default null
+    @public
+  */
+  _partitioned: null,
+  partitioned: proxyToInternalStore(),
+
+  /**
     The name of the cookie to use if `localStorage` is not available.
 
     @memberof AdaptiveStore
@@ -158,7 +176,8 @@ export default Base.extend({
         'cookieName',
         'cookieExpirationTime',
         'cookiePath',
-        'sameSite'
+        'sameSite',
+        'partitioned'
       );
 
       cookieStorage.setProperties(options);
