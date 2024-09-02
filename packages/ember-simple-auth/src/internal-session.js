@@ -7,7 +7,42 @@ import { debug, assert } from '@ember/debug';
 import { getOwner, setOwner } from '@ember/application';
 import { isTesting } from '@embroider/macros';
 
+/**
+  __An internal implementation of Session. Communicates with stores and emits events.__
+
+  @class InternalSession
+  @extends ObjectProxy
+  @private
+*/
+
 export default ObjectProxy.extend(Evented, {
+  /**
+    Triggered whenever the session is successfully authenticated. This happens
+    when the session gets authenticated via
+    {@linkplain SessionService.authenticate} but also
+    when the session is authenticated in another tab or window of the same
+    application and the session state gets synchronized across tabs or windows
+    via the store (see
+    {@linkplain BaseStore.sessionDataUpdated}).
+
+    @memberof InternalSession
+    @event authenticationSucceeded
+    @private
+  */
+
+  /**
+    Triggered whenever the session is successfully invalidated. This happens
+    when the session gets invalidated via
+    {@linkplain SessionService.invalidate} but also
+    when the session is invalidated in another tab or window of the same
+    application and the session state gets synchronized across tabs or windows
+    via the store (see
+    {@linkplain BaseStore.sessionDataUpdated}.
+
+    @memberof InternalSession
+    @event invalidationSucceeded
+    @private
+  */
   authenticator: null,
   store: null,
   isAuthenticated: false,
