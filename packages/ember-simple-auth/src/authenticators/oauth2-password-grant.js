@@ -91,6 +91,18 @@ export default BaseAuthenticator.extend({
   refreshAccessTokens: true,
 
   /**
+    Sets whether the authenticator use the scope when refreshing access tokens
+    if the server supports it.
+
+    @memberof OAuth2PasswordGrantAuthenticator
+    @property refreshAccessTokensWithScope
+    @type Boolean
+    @default false
+    @public
+  */
+  refreshAccessTokensWithScope: false,
+
+  /**
     The offset time in milliseconds to refresh the access token. This must
     return a random number. This randomization is needed because in case of
     multiple tabs, we need to prevent the tabs from sending refresh token
@@ -139,7 +151,10 @@ export default BaseAuthenticator.extend({
       const refreshAccessTokens = this.get('refreshAccessTokens');
       if (!isEmpty(data['expires_at']) && data['expires_at'] < now) {
         if (refreshAccessTokens) {
-          this._refreshAccessToken(data['expires_in'], data['refresh_token']).then(resolve, reject);
+          this._refreshAccessToken(data['expires_in'], data['refresh_token'], data['scope']).then(
+            resolve,
+            reject
+          );
         } else {
           reject();
         }
@@ -373,8 +388,13 @@ export default BaseAuthenticator.extend({
     }
   },
 
-  _refreshAccessToken(expiresIn, refreshToken) {
+  _refreshAccessToken(expiresIn, refreshToken, scope) {
     const data = { grant_type: 'refresh_token', refresh_token: refreshToken };
+    const refreshAccessTokensWithScope = this.get('refreshAccessTokensWithScope');
+    if (refreshAccessTokensWithScope && !isEmpty(scope)) {
+      data.scope = scope;
+    }
+
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
     return new RSVP.Promise((resolve, reject) => {
       this.makeRequest(serverTokenEndpoint, data).then(
@@ -382,12 +402,16 @@ export default BaseAuthenticator.extend({
           run(() => {
             expiresIn = response['expires_in'] || expiresIn;
             refreshToken = response['refresh_token'] || refreshToken;
+            scope = response['scope'] || scope;
             const expiresAt = this._absolutizeExpirationTime(expiresIn);
             const data = Object.assign(response, {
               expires_in: expiresIn,
               expires_at: expiresAt,
               refresh_token: refreshToken,
             });
+            if (refreshAccessTokensWithScope && !isEmpty(scope)) {
+              data.scope = scope;
+            }
             this._scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
             this.trigger('sessionDataUpdated', data);
             resolve(data);

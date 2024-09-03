@@ -126,6 +126,28 @@ module('OAuth2PasswordGrantAuthenticator', function (hooks) {
         });
       });
     });
+
+    module('when refresh access tokens with scope is enabled', function (hooks) {
+      hooks.beforeEach(function () {
+        authenticator.set('refreshAccessTokensWithScope', true);
+      });
+
+      test('resolves with the correct data with a scope', async function (assert) {
+        let data = await authenticator.restore({
+          access_token: 'secret token!',
+          expires_in: 12345,
+          refresh_token: 'refresh token!',
+          scope: 'scope!',
+        });
+
+        assert.deepEqual(data, {
+          access_token: 'secret token!',
+          expires_in: 12345,
+          refresh_token: 'refresh token!',
+          scope: 'scope!',
+        });
+      });
+    });
   });
 
   module('#authenticate', function () {
@@ -509,6 +531,49 @@ module('OAuth2PasswordGrantAuthenticator', function (hooks) {
             });
 
             authenticator._refreshAccessToken(12345, 'refresh token!');
+          });
+        });
+      });
+
+      module('when refresh access tokens with scope is enabled', function (hooks) {
+        hooks.beforeEach(function () {
+          authenticator.set('refreshAccessTokensWithScope', true);
+        });
+
+        test('sends the scope to the token endpoint', async function (assert) {
+          assert.expect(1);
+          server.post('/token', request => {
+            let { requestBody } = request;
+            let body = parsePostData(requestBody);
+
+            assert.deepEqual(body, {
+              grant_type: 'refresh_token',
+              refresh_token: 'refresh token!',
+              scope: 'scope!',
+            });
+
+            return [200, { 'Content-Type': 'application/json' }, '{}'];
+          });
+
+          await authenticator._refreshAccessToken(12345, 'refresh token!', 'scope!');
+        });
+
+        test('triggers the "sessionDataUpdated" event with the scope', async function (assert) {
+          assert.expect(1);
+          server.post('/token', () => [
+            200,
+            { 'Content-Type': 'application/json' },
+            '{ "access_token": "secret token 2!", "expires_in": 67890, "refresh_token": "refresh token 2!", "scope": "scope!" }',
+          ]);
+
+          await new Promise(resolve => {
+            authenticator.one('sessionDataUpdated', data => {
+              assert.equal(data.scope, 'scope!');
+
+              resolve();
+            });
+
+            authenticator._refreshAccessToken(12345, 'refresh token!', 'scope!');
           });
         });
       });
