@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: volta-cli/action@2d68418f32546fd191eb666e232b321d5726484d # v4
+      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
       - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
         with:
           path: "**/node_modules"
@@ -77,7 +77,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: volta-cli/action@2d68418f32546fd191eb666e232b321d5726484d # v4
+      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
       - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
         with:
           path: "**/node_modules"
@@ -115,7 +115,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: volta-cli/action@2d68418f32546fd191eb666e232b321d5726484d # v4
+      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
       - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
         with:
           path: "**/node_modules"
@@ -151,7 +151,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: volta-cli/action@2d68418f32546fd191eb666e232b321d5726484d # v4
+      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
       - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
         with:
           path: "**/node_modules"
@@ -173,7 +173,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: volta-cli/action@2d68418f32546fd191eb666e232b321d5726484d # v4
+      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
       - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
         with:
           path: "**/node_modules"

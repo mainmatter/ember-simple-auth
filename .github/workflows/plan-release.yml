@@ -55,7 +55,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: 'master'
-      - uses: volta-cli/action@2d68418f32546fd191eb666e232b321d5726484d # v4
+      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
       - run: pnpm install --frozen-lockfile
       - name: "Generate Explanation and Prep Changelogs"
         id: explanation
