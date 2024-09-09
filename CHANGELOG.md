@@ -2,6 +2,16 @@
 
 ## Release (2024-09-09)
 
+
+
+#### :house: Internal
+* [#2820](https://github.com/mainmatter/ember-simple-auth/pull/2820) chore(release): fix release ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 1
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+
+## Release (2024-09-09)
+
 ember-simple-auth 6.1.0 (minor)
 
 #### :rocket: Enhancement
