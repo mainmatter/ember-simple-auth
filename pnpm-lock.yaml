@@ -12,13 +12,13 @@ importers:
         specifier: 7.24.1
         version: 7.24.1(@babel/core@7.24.5)
       '@babel/preset-env':
-        specifier: ^7.24.7
+        specifier: 7.25.4
         version: 7.25.4(@babel/core@7.24.5)
       '@eslint/eslintrc':
-        specifier: ^3.1.0
+        specifier: 3.1.0
         version: 3.1.0
       '@eslint/js':
-        specifier: ^9.6.0
+        specifier: 9.10.0
         version: 9.10.0
       '@mermaid-js/mermaid-cli':
         specifier: 10.9.0
@@ -45,7 +45,7 @@ importers:
         specifier: 8.1.1
         version: 8.1.1(eslint@8.57.0)
       globals:
-        specifier: ^15.8.0
+        specifier: 15.9.0
         version: 15.9.0
       lerna-changelog:
         specifier: 2.2.0
@@ -54,7 +54,7 @@ importers:
         specifier: 17.5.0
         version: 17.5.0(typescript@5.5.4)
       release-plan:
-        specifier: ^0.9.0
+        specifier: 0.9.2
         version: 0.9.2(encoding@0.1.13)
 
   packages/classic-test-app:
@@ -172,7 +172,7 @@ importers:
         specifier: 10.4.1
         version: 10.4.1
       globals:
-        specifier: ^15.8.0
+        specifier: 15.9.0
         version: 15.9.0
       handlebars:
         specifier: 4.7.8
@@ -15093,7 +15093,7 @@ snapshots:
 
   extract-zip@2.0.1:
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.7(supports-color@9.4.0)
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:
@@ -17828,7 +17828,7 @@ snapshots:
       got: 12.6.1
       registry-auth-token: 5.0.2
       registry-url: 6.0.1
-      semver: 7.6.2
+      semver: 7.6.3
 
   parent-module@1.0.1:
     dependencies:
@@ -18823,7 +18823,7 @@ snapshots:
 
   semver-diff@4.0.0:
     dependencies:
-      semver: 7.6.2
+      semver: 7.6.3
 
   semver@5.7.2: {}
 
@@ -19782,7 +19782,7 @@ snapshots:
       is-npm: 6.0.0
       latest-version: 7.0.0
       pupa: 3.1.0
-      semver: 7.6.2
+      semver: 7.6.3
       semver-diff: 4.0.0
       xdg-basedir: 5.1.0
 
