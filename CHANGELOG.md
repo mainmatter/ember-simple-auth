@@ -1,5 +1,43 @@
 # Changelog
 
+## Release (2024-09-09)
+
+ember-simple-auth 6.1.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-simple-auth`, `test-esa`
+  * [#2813](https://github.com/mainmatter/ember-simple-auth/pull/2813) feat: Add scope in restore for OAuth2PasswordGrant ([@bpetetot](https://github.com/bpetetot))
+
+#### :memo: Documentation
+* `ember-simple-auth`
+  * [#2812](https://github.com/mainmatter/ember-simple-auth/pull/2812) chore(docs): move events to an internal session ([@BobrImperator](https://github.com/BobrImperator))
+* `docs`, `ember-simple-auth`
+  * [#2712](https://github.com/mainmatter/ember-simple-auth/pull/2712) chore(docs): migrate yuidoc to jsdoc ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :house: Internal
+* `classic-test-app`, `docs`, `test-app`
+  * [#2817](https://github.com/mainmatter/ember-simple-auth/pull/2817) chore(release): make sure every package is private ([@BobrImperator](https://github.com/BobrImperator))
+* Other
+  * [#2815](https://github.com/mainmatter/ember-simple-auth/pull/2815) chore(release): setup embroider-build/release-plan ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2800](https://github.com/mainmatter/ember-simple-auth/pull/2800) Revert "chore(ci): allow mainmatter/continue-on-error-comment to work on forks" ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2797](https://github.com/mainmatter/ember-simple-auth/pull/2797) chore(ci): allow mainmatter/continue-on-error-comment to work on forks ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2640](https://github.com/mainmatter/ember-simple-auth/pull/2640) chore(deps): fix lockfile ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2636](https://github.com/mainmatter/ember-simple-auth/pull/2636) chore(deps): use common Mainmatter config for addons ([@BobrImperator](https://github.com/BobrImperator))
+* `classic-test-app`, `ember-simple-auth`, `test-app`, `test-esa`
+  * [#2804](https://github.com/mainmatter/ember-simple-auth/pull/2804) chore(lint): Migrate eslint config ([@BobrImperator](https://github.com/BobrImperator))
+* `classic-test-app`, `test-app`, `test-esa`
+  * [#2801](https://github.com/mainmatter/ember-simple-auth/pull/2801) feat(deps): update to ember-engines 0.11.0 ([@BobrImperator](https://github.com/BobrImperator))
+* `test-esa`
+  * [#2802](https://github.com/mainmatter/ember-simple-auth/pull/2802) chore(ci): add scenario against ember-lts-5.8 ([@BobrImperator](https://github.com/BobrImperator))
+* `classic-test-app`
+  * [#2798](https://github.com/mainmatter/ember-simple-auth/pull/2798) feat(classic-test-app): change locationType to 'history' ([@BobrImperator](https://github.com/BobrImperator))
+* `ember-simple-auth`
+  * [#2637](https://github.com/mainmatter/ember-simple-auth/pull/2637) chore(release): rename script to release ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 2
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Benjamin Petetot ([@bpetetot](https://github.com/bpetetot))
+
 
 
 
