@@ -50,7 +50,9 @@ jobs:
       - uses: volta-cli/action@2d68418f32546fd191eb666e232b321d5726484d # v4
       - run: pnpm install --frozen-lockfile
       - name: Set publishing config
-        run: pnpm config set registry-url "https://registry.npmjs.org"
+        run: pnpm config set '//registry.npmjs.org/:_authToken' "${NODE_AUTH_TOKEN}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: npm publish
         run: pnpm release-plan publish
         env:
