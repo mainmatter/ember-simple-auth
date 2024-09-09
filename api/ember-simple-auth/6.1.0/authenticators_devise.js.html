@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="SessionService.html#.event:authenticationSucceeded">authenticationSucceeded</a></li><li><a href="SessionService.html#.event:invalidationSucceeded">invalidationSucceeded</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -193,26 +193,36 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password) {
     return new Promise((resolve, reject) => {
-      const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties('resourceName', 'identificationAttributeName', 'tokenAttributeName');
+      const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties(
+        'resourceName',
+        'identificationAttributeName',
+        'tokenAttributeName'
+      );
       const data = {};
       data[resourceName] = { password };
       data[resourceName][identificationAttributeName] = identification;
 
-      this.makeRequest(data).then((response) => {
-        if (response.ok) {
-          response.json().then((json) => {
-            if (this._validate(json)) {
-              const resourceName = this.get('resourceName');
-              const _json = json[resourceName] ? json[resourceName] : json;
-              run(null, resolve, _json);
-            } else {
-              run(null, reject, `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`);
-            }
-          });
-        } else {
-          run(null, reject, response);
-        }
-      }).catch((error) => run(null, reject, error));
+      this.makeRequest(data)
+        .then(response => {
+          if (response.ok) {
+            response.json().then(json => {
+              if (this._validate(json)) {
+                const resourceName = this.get('resourceName');
+                const _json = json[resourceName] ? json[resourceName] : json;
+                run(null, resolve, _json);
+              } else {
+                run(
+                  null,
+                  reject,
+                  `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`
+                );
+              }
+            });
+          } else {
+            run(null, reject, response);
+          }
+        })
+        .catch(error => run(null, reject, error));
     });
   },
 
@@ -239,17 +249,17 @@ export default BaseAuthenticator.extend({
     @return {Promise} The promise returned by `fetch`
     @protected
   */
-  makeRequest: waitFor(function(data, options = {}) {
+  makeRequest: waitFor(function (data, options = {}) {
     let url = options.url || this.get('serverTokenEndpoint');
     let requestOptions = {};
     let body = JSON.stringify(data);
     Object.assign(requestOptions, {
       body,
-      method:   'POST',
-      headers:  {
-        'accept':       JSON_CONTENT_TYPE,
-        'content-type': JSON_CONTENT_TYPE
-      }
+      method: 'POST',
+      headers: {
+        accept: JSON_CONTENT_TYPE,
+        'content-type': JSON_CONTENT_TYPE,
+      },
     });
     Object.assign(requestOptions, options || {});
 
@@ -263,7 +273,7 @@ export default BaseAuthenticator.extend({
     const _data = data[resourceName] ? data[resourceName] : data;
 
     return !isEmpty(_data[tokenAttributeName]) &amp;&amp; !isEmpty(_data[identificationAttributeName]);
-  }
+  },
 });
 </code></pre>
         </article>
@@ -276,7 +286,7 @@ export default BaseAuthenticator.extend({
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

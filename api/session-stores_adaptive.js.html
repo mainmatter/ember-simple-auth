@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="SessionService.html#.event:authenticationSucceeded">authenticationSucceeded</a></li><li><a href="SessionService.html#.event:invalidationSucceeded">invalidationSucceeded</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -92,7 +92,7 @@ import Base from './base';
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 
-const proxyToInternalStore = function() {
+const proxyToInternalStore = function () {
   return computed({
     get(key) {
       return this.get(`_${key}`);
@@ -104,7 +104,7 @@ const proxyToInternalStore = function() {
         _store.set(key, value);
       }
       return value;
-    }
+    },
   });
 };
 
@@ -218,7 +218,7 @@ export default Base.extend({
 
     set(key, value) {
       return value;
-    }
+    },
   }),
 
   init() {
@@ -240,7 +240,13 @@ export default Base.extend({
       store = localStorage;
     } else {
       const cookieStorage = owner.lookup('session-store:cookie');
-      const options = this.getProperties('cookieDomain', 'cookieName', 'cookieExpirationTime', 'cookiePath', 'sameSite');
+      const options = this.getProperties(
+        'cookieDomain',
+        'cookieName',
+        'cookieExpirationTime',
+        'cookiePath',
+        'sameSite'
+      );
 
       cookieStorage.setProperties(options);
       this.set('cookieExpirationTime', cookieStorage.get('cookieExpirationTime'));
@@ -253,7 +259,7 @@ export default Base.extend({
   },
 
   _setupStoreEvents(store) {
-    store.on('sessionDataUpdated', (data) => {
+    store.on('sessionDataUpdated', data => {
       this.trigger('sessionDataUpdated', data);
     });
     return store;
@@ -298,7 +304,7 @@ export default Base.extend({
   */
   clear() {
     return this.get('_store').clear();
-  }
+  },
 });
 
 function testLocalStorageAvailable() {
@@ -321,7 +327,7 @@ function testLocalStorageAvailable() {
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

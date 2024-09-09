@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="SessionService.html#.event:authenticationSucceeded">authenticationSucceeded</a></li><li><a href="SessionService.html#.event:invalidationSucceeded">invalidationSucceeded</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -95,8 +95,8 @@ deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
   until: '7.0.0',
   for: 'ember-simple-auth',
   since: {
-    enabled: '4.2.0'
-  }
+    enabled: '4.2.0',
+  },
 });
 
 /**
@@ -156,16 +156,18 @@ export default BaseAuthenticator.extend({
     if (!isEmpty(data.provider)) {
       const { provider } = data;
 
-      return this.get('torii').fetch(data.provider, data).then(
-        (fetchedData) => {
-          this._authenticateWithProvider(provider, fetchedData);
-          return Object.assign(data, fetchedData);
-        },
-        (err) => {
-          delete this._provider;
-          throw err;
-        }
-      );
+      return this.get('torii')
+        .fetch(data.provider, data)
+        .then(
+          fetchedData => {
+            this._authenticateWithProvider(provider, fetchedData);
+            return Object.assign(data, fetchedData);
+          },
+          err => {
+            delete this._provider;
+            throw err;
+          }
+        );
     } else {
       delete this._provider;
       return RSVP.reject();
@@ -189,10 +191,12 @@ export default BaseAuthenticator.extend({
   authenticate(provider, options) {
     this._assertToriiIsPresent();
 
-    return this.get('torii').open(provider, options || {}).then((data) => {
-      this._authenticateWithProvider(provider, data);
-      return data;
-    });
+    return this.get('torii')
+      .open(provider, options || {})
+      .then(data => {
+        this._authenticateWithProvider(provider, data);
+        return data;
+      });
   },
 
   /**
@@ -206,9 +210,11 @@ export default BaseAuthenticator.extend({
     @public
   */
   invalidate(data) {
-    return this.get('torii').close(this._provider, data).then(() => {
-      delete this._provider;
-    });
+    return this.get('torii')
+      .close(this._provider, data)
+      .then(() => {
+        delete this._provider;
+      });
   },
 
   _authenticateWithProvider(provider, data) {
@@ -218,8 +224,11 @@ export default BaseAuthenticator.extend({
 
   _assertToriiIsPresent() {
     const torii = this.get('torii');
-    assert('You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with "torii: Ember.inject.service()".', isPresent(torii));
-  }
+    assert(
+      'You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with "torii: Ember.inject.service()".',
+      isPresent(torii)
+    );
+  },
 });
 </code></pre>
         </article>
@@ -232,7 +241,7 @@ export default BaseAuthenticator.extend({
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

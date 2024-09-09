@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> LocalStorageStore</title>
+  <title> BaseStore</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -66,7 +66,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="SessionService.html#.event:authenticationSucceeded">authenticationSucceeded</a></li><li><a href="SessionService.html#.event:invalidationSucceeded">invalidationSucceeded</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Class</p>
-                    <h1>LocalStorageStore</h1>
+                    <h1>BaseStore</h1>
                 </header>
                 
 
@@ -85,7 +85,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>LocalStorageStore<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>BaseStore<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -104,12 +104,12 @@
 
 
     
-    <h4 class="name" id="LocalStorageStore">
-        <a class="href-link" href="#LocalStorageStore">#</a>
+    <h4 class="name" id="BaseStore">
+        <a class="href-link" href="#BaseStore">#</a>
         
         <span class="code-name">
             
-                new LocalStorageStore<span class="signature">()</span><span class="type-signature"></span>
+                new BaseStore<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -118,16 +118,10 @@
     
     
     <div class="description">
-        <p>Session store that persists data in the browser's <code>localStorage</code>.</p>
-<p><strong><code>localStorage</code> is not available in Safari when running in private mode. In
-general it is better to use the
-<a href="AdaptiveStore.html">AdaptiveStore</a> that automatically falls back to
-the <a href="CookieStore.html">CookieStore</a> when <code>localStorage</code> is not
-available.</strong></p>
-<p><strong>This session store does not work with FastBoot. In order to use Ember
-Simple Auth with FastBoot, configure the
-<a href="CookieStore.html">CookieStore</a> as the application's session
-store.</strong></p>
+        <p>The base class for all session stores. <strong>This serves as a starting point for
+implementing custom session stores and must not be used directly.</strong></p>
+<p>Session Stores persist the session's state so that it survives a page reload
+and is synchronized across multiple tabs or windows of the same application.</p>
     </div>
     
 
@@ -176,9 +170,9 @@ store.</strong></p>
 
     
         <p class="tag-source">
-            <a href="session-stores_local-storage.js.html" class="button">View Source</a>
+            <a href="session-stores_base.js.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_local-storage.js.html">session-stores/local-storage.js</a>, <a href="session-stores_local-storage.js.html#line9">line 9</a>
+                <a href="session-stores_base.js.html">session-stores/base.js</a>, <a href="session-stores_base.js.html#line5">line 5</a>
             </span>
         </p>
     
@@ -219,7 +213,7 @@ store.</strong></p>
 
 
     <ul>
-        <li><a href="BaseStore.html">BaseStore</a></li>
+        <li>Ember.Object</li>
     </ul>
 
 
@@ -235,146 +229,6 @@ store.</strong></p>
 
     
 
-    
-        <div class='vertical-section'>
-            <h1>Members</h1>
-            <div class="members">
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">String</code>
-
-
-    </span>
-
-<h4 class="name" id=".key">
-    <a class="href-link" href="#.key">#</a>
-    
-        
-            <span class='tag'>static</span>
-        
-    
-    <span class="code-name">
-        key
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>The <code>localStorage</code> key the store persists data in.</p>
-</div>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>key</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>'ember_simple_auth-session'</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="session-stores_local-storage.js.html" class="button">View Source</a>
-            <span>
-                <a href="session-stores_local-storage.js.html">session-stores/local-storage.js</a>, <a href="session-stores_local-storage.js.html#line37">line 37</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-            </div>
-        </div>
     
 
     
@@ -404,9 +258,10 @@ store.</strong></p>
     
     
     <div class="description">
-        <p>Clears the store by deleting the
-<a href="LocalStorageStore.html#.key">LocalStorageStore.key</a> from
-<code>localStorage</code>.</p>
+        <p>Clears the store.</p>
+<pre><code>`BaseStores`'s implementation always returns a rejecting promise. __This
+method must be overridden in subclasses__.
+</code></pre>
     </div>
     
 
@@ -455,9 +310,9 @@ store.</strong></p>
 
     
         <p class="tag-source">
-            <a href="session-stores_local-storage.js.html" class="button">View Source</a>
+            <a href="session-stores_base.js.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_local-storage.js.html">session-stores/local-storage.js</a>, <a href="session-stores_local-storage.js.html#line86">line 86</a>
+                <a href="session-stores_base.js.html">session-stores/base.js</a>, <a href="session-stores_base.js.html#line62">line 62</a>
             </span>
         </p>
     
@@ -532,7 +387,10 @@ store.</strong></p>
     
     
     <div class="description">
-        <p>Persists the <code>data</code> in the <code>localStorage</code>.</p>
+        <p>Persists the <code>data</code>. This replaces all currently stored data.</p>
+<pre><code>`BaseStores`'s implementation always returns a rejecting promise. __This
+method must be overridden in subclasses__.
+</code></pre>
     </div>
     
 
@@ -632,9 +490,9 @@ store.</strong></p>
 
     
         <p class="tag-source">
-            <a href="session-stores_local-storage.js.html" class="button">View Source</a>
+            <a href="session-stores_base.js.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_local-storage.js.html">session-stores/local-storage.js</a>, <a href="session-stores_local-storage.js.html#line55">line 55</a>
+                <a href="session-stores_base.js.html">session-stores/base.js</a>, <a href="session-stores_base.js.html#line31">line 31</a>
             </span>
         </p>
     
@@ -709,7 +567,10 @@ store.</strong></p>
     
     
     <div class="description">
-        <p>Returns all data currently stored in the <code>localStorage</code> as a plain object.</p>
+        <p>Returns all data currently stored as a plain object.</p>
+<pre><code>`BaseStores`'s implementation always returns a rejecting promise. __This
+method must be overridden in subclasses__.
+</code></pre>
     </div>
     
 
@@ -758,9 +619,9 @@ store.</strong></p>
 
     
         <p class="tag-source">
-            <a href="session-stores_local-storage.js.html" class="button">View Source</a>
+            <a href="session-stores_base.js.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_local-storage.js.html">session-stores/local-storage.js</a>, <a href="session-stores_local-storage.js.html#line72">line 72</a>
+                <a href="session-stores_base.js.html">session-stores/base.js</a>, <a href="session-stores_base.js.html#line47">line 47</a>
             </span>
         </p>
     
@@ -820,6 +681,167 @@ store.</strong></p>
     
 
     
+        <div class='vertical-section'>
+            <h1>Events</h1>
+            <div class="members">
+            
+                <div class="member">
+                    
+
+
+    
+    <h4 class="name" id=".event:sessionDataUpdated">
+        <a class="href-link" href="#.event:sessionDataUpdated">#</a>
+        
+        <span class="code-name">
+            
+                sessionDataUpdated
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Triggered when the session store's data changes due to an external event,
+e.g., from another tab or window of the same application. The session
+handles that event, passes the updated data to its authenticator's
+<a href="BaseAuthenticator.html#.restore">BaseAuthenticator.restore</a> method and
+handles the result of that invocation accordingly.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>data</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The updated session data</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="session-stores_base.js.html" class="button">View Source</a>
+            <span>
+                <a href="session-stores_base.js.html">session-stores/base.js</a>, <a href="session-stores_base.js.html#line18">line 18</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            
+            </div>
+        </div>
+    
 </article>
 
 </section>
@@ -831,7 +853,7 @@ store.</strong></p>
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

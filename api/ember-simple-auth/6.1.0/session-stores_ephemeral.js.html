@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> session-stores/base.js</title>
+  <title> session-stores/ephemeral.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="SessionService.html#.event:authenticationSucceeded">authenticationSucceeded</a></li><li><a href="SessionService.html#.event:invalidationSucceeded">invalidationSucceeded</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>session-stores/base.js</h1>
+                    <h1>session-stores/ephemeral.js</h1>
                 </header>
                 
 
@@ -86,80 +86,67 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import RSVP from 'rsvp';
-import EmberObject from '@ember/object';
-import Evented from '@ember/object/evented';
+import BaseStore from './base';
 
 /**
-  The base class for all session stores. __This serves as a starting point for
-  implementing custom session stores and must not be used directly.__
+  Session store that __persists data in memory and thus is not actually
+  persistent__. It does also not synchronize the session's state across
+  multiple tabs or windows as those cannot share memory. __This store is mainly
+  useful for testing and will automatically be used when running tests.__
 
-  Session Stores persist the session's state so that it survives a page reload
-  and is synchronized across multiple tabs or windows of the same application.
-
-  @class BaseStore
-  @extends Ember.Object
-  @uses Ember.Evented
+  @class EphemeralStore
+  @extends BaseStore
   @public
 */
-export default EmberObject.extend(Evented, {
-  /**
-    Triggered when the session store's data changes due to an external event,
-    e.g., from another tab or window of the same application. The session
-    handles that event, passes the updated data to its authenticator's
-    {@linkplain BaseAuthenticator.restore} method and
-    handles the result of that invocation accordingly.
-
-    @memberof BaseStore
-    @event sessionDataUpdated
-    @param {Object} data The updated session data
-    @public
-  */
+export default BaseStore.extend({
+  init() {
+    this._super(...arguments);
+    this.clear();
+  },
 
   /**
-    Persists the `data`. This replaces all currently stored data.
+    Persists `data`. This replaces all currently stored data.
 
-    `BaseStores`'s implementation always returns a rejecting promise. __This
-    method must be overridden in subclasses__.
-
-    @memberof BaseStore
+    @memberof EpemeralStore
     @method persist
     @param {Object} data The data to persist
     @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
-  persist() {
-    return RSVP.reject();
+  persist(data) {
+    this._data = JSON.stringify(data || {});
+
+    return RSVP.resolve();
   },
 
   /**
     Returns all data currently stored as a plain object.
 
-    `BaseStores`'s implementation always returns a rejecting promise. __This
-    method must be overridden in subclasses__.
-
-    @memberof BaseStore
+    @memberof EpemeralStore
     @method restore
     @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
   */
   restore() {
-    return RSVP.reject();
+    const data = JSON.parse(this._data) || {};
+
+    return RSVP.resolve(data);
   },
 
   /**
     Clears the store.
 
-    `BaseStores`'s implementation always returns a rejecting promise. __This
-    method must be overridden in subclasses__.
-
-    @memberof BaseStore
+    @memberof EpemeralStore
     @method clear
     @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public
   */
   clear() {
-    return RSVP.reject();
-  }
+    delete this._data;
+    this._data = '{}';
+
+    return RSVP.resolve();
+  },
 });
 </code></pre>
         </article>
@@ -172,7 +159,7 @@ export default EmberObject.extend(Evented, {
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
