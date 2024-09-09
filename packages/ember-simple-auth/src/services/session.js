@@ -44,34 +44,6 @@ function assertSetupHasBeenCalled(isSetupCalled) {
 */
 export default Service.extend({
   /**
-    Triggered whenever the session is successfully authenticated. This happens
-    when the session gets authenticated via
-    {@linkplain SessionService.authenticate} but also
-    when the session is authenticated in another tab or window of the same
-    application and the session state gets synchronized across tabs or windows
-    via the store (see
-    {@linkplain BaseStore.sessionDataUpdated}).
-
-    @memberof SessionService
-    @event authenticationSucceeded
-    @public
-  */
-
-  /**
-    Triggered whenever the session is successfully invalidated. This happens
-    when the session gets invalidated via
-    {@linkplain SessionService.invalidate} but also
-    when the session is invalidated in another tab or window of the same
-    application and the session state gets synchronized across tabs or windows
-    via the store (see
-    {@linkplain BaseStore.sessionDataUpdated}.
-
-    @memberof SessionService
-    @event invalidationSucceeded
-    @public
-  */
-
-  /**
     Returns whether the session is currently authenticated.
 
     @memberof SessionService
