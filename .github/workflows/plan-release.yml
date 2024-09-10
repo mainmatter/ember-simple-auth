@@ -76,7 +76,7 @@ jobs:
         env:
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: peter-evans/create-pull-request@v6
+      - uses: peter-evans/create-pull-request@v7
         with:
           commit-message: "Prepare Release using 'release-plan'"
           labels: "internal"
