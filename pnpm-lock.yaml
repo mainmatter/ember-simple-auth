@@ -218,7 +218,7 @@ importers:
         version: 7.25.1(@babel/core@7.25.2)(eslint@8.57.0)
       '@ember/test-helpers':
         specifier: '>= 3 || > 2.7'
-        version: 3.2.0(ember-source@5.11.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5))
+        version: 3.3.1(@babel/core@7.25.2)(ember-source@5.11.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0))(webpack@5.94.0)
       '@ember/test-waiters':
         specifier: ^3
         version: 3.1.0
@@ -1414,12 +1414,6 @@ packages:
   '@ember/string@3.1.1':
     resolution: {integrity: sha512-UbXJ+k3QOrYN4SRPHgXCqYIJ+yWWUg1+vr0H4DhdQPTy8LJfyqwZ2tc5uqpSSnEXE+/1KopHBE5J8GDagAg5cg==}
     engines: {node: 12.* || 14.* || >= 16}
-
-  '@ember/test-helpers@3.2.0':
-    resolution: {integrity: sha512-3yWpPsK5O77tUdCwW3HayrAcdlRitIRYMvLIG69Pkal1JMIGdNYVTvJ2R1lenhQh2syd/WFmGM07vQuDAtotQw==}
-    engines: {node: 16.* || >= 18}
-    peerDependencies:
-      ember-source: ^4.0.0 || ^5.0.0
 
   '@ember/test-helpers@3.3.1':
     resolution: {integrity: sha512-h4uFBy4pquBtHsHI+tx9S0wtMmn1L+8dkXiDiyoqG1+3e0Awk6GBujiFM9s4ANq6wC8uIhC3wEFyts10h2OAoQ==}
@@ -10659,22 +10653,6 @@ snapshots:
       ember-cli-babel: 7.26.11
     transitivePeerDependencies:
       - supports-color
-
-  '@ember/test-helpers@3.2.0(ember-source@5.11.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5))':
-    dependencies:
-      '@ember/test-waiters': 3.1.0
-      '@embroider/macros': 1.16.6
-      '@simple-dom/interface': 1.4.0
-      broccoli-debug: 0.6.5
-      broccoli-funnel: 3.0.8
-      ember-auto-import: 2.7.4(webpack@5.94.0)
-      ember-cli-babel: 7.26.11
-      ember-cli-htmlbars: 6.3.0
-      ember-source: 5.11.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0)
-    transitivePeerDependencies:
-      - '@glint/template'
-      - supports-color
-      - webpack
 
   '@ember/test-helpers@3.3.1(@babel/core@7.25.2)(ember-source@5.11.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0))(webpack@5.94.0)':
     dependencies:
