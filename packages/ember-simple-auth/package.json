@@ -44,11 +44,11 @@
     "@embroider/addon-dev": "5.0.0",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-node-resolve": "15.2.3",
-    "concurrently": "9.0.0",
+    "concurrently": "9.0.1",
     "ember-template-lint": "6.0.0",
     "eslint": "8.57.0",
     "prettier": "3.3.3",
-    "rollup": "4.21.2",
+    "rollup": "4.21.3",
     "rollup-plugin-copy": "3.5.0"
   },
   "publishConfig": {
