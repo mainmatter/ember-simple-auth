@@ -55,7 +55,7 @@
     "ember-source": "5.11.0",
     "ember-source-channel-url": "3.0.0",
     "ember-try": "3.0.0",
-    "eslint": "8.57.0",
+    "eslint": "8.57.1",
     "express": "4.21.0",
     "glob": "11.0.0",
     "handlebars": "4.7.8",
