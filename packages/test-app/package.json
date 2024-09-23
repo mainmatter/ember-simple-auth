@@ -28,7 +28,7 @@
     "bootstrap": "5.3.3",
     "broccoli-asset-rev": "3.0.0",
     "cors": "2.8.5",
-    "ember-auto-import": "2.7.4",
+    "ember-auto-import": "2.8.1",
     "ember-cli": "5.11.0",
     "ember-cli-babel": "8.2.0",
     "ember-cli-content-security-policy": "1.1.1",
