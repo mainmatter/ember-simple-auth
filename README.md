@@ -132,7 +132,7 @@ Once the library is installed, __the session service can be injected wherever
 needed in the application__. In order to display login/logout buttons depending
 on the current session state, inject the service into the respective controller
 or component and __query its
-[`isAuthenticated` property](http://ember-simple-auth.com/api/classes/SessionService.html#property_isAuthenticated)
+[`isAuthenticated` property](http://ember-simple-auth.com/api/SessionService.html#property_isAuthenticated)
 in the template__:
 
 ```js
@@ -163,7 +163,7 @@ export default class ApplicationController extends Controller {
 ```
 
 In the `invalidateSession` action __call the
-[session service's `invalidate` method](http://ember-simple-auth.com/api/classes/SessionService.html#method_invalidate)
+[session service's `invalidate` method](http://ember-simple-auth.com/api/SessionService.html#method_invalidate)
 to invalidate the session__ and log the user out:
 
 ```js
@@ -185,7 +185,7 @@ export default class ApplicationController extends Controller {
 ```
 
 For authenticating the session, __the session service provides the
-[`authenticate` method](http://ember-simple-auth.com/api/classes/SessionService.html#method_authenticate)__
+[`authenticate` method](http://ember-simple-auth.com/api/SessionService.html#method_authenticate)__
 that takes the name of the authenticator to use as well as other arguments
 depending on specific authenticator used. __To define an authenticator, add a
 new file in `app/authenticators`__ and extend one of the authenticators the
@@ -215,7 +215,7 @@ With that authenticator and a login form like
 ```
 
 the __session can be authenticated with the
-[session service's `authenticate` method](http://ember-simple-auth.com/api/classes/SessionService.html#method_authenticate)__:
+[session service's `authenticate` method](http://ember-simple-auth.com/api/SessionService.html#method_authenticate)__:
 
 ```js
 // app/controllers/login.js
@@ -257,7 +257,7 @@ export default class LoginController extends Controller {
 
 __To make a route in the application accessible only when the session is
 authenticated__, call the session service's
-[`requireAuthentication`](http://ember-simple-auth.com/api/classes/SessionService.html#method_requireAuthentication)
+[`requireAuthentication`](http://ember-simple-auth.com/api/SessionService.html#method_requireAuthentication)
 method in the respective route's  `beforeModel` method:
 
 ```js
@@ -301,7 +301,7 @@ Router.map(function() {
 To prevent a route from being accessed when the session is authenticated (which
 makes sense for login and registration routes for example), call the session
 service's
-[`prohibitAuthentication`](http://ember-simple-auth.com/api/classes/SessionService.html#method_prohibitAuthentication)
+[`prohibitAuthentication`](http://ember-simple-auth.com/api/SessionService.html#method_prohibitAuthentication)
 method in the respective route's `beforeModel` method:
 
 ```js
@@ -319,9 +319,9 @@ export default class LoginRoute extends Route {
 ```
 
 __The session service also provides the
-[`handleAuthentication`](http://ember-simple-auth.com/api/classes/SessionService.html#method_handleAuthentication)
+[`handleAuthentication`](http://ember-simple-auth.com/api/SessionService.html#method_handleAuthentication)
 and
-[`handleInvalidation`](http://ember-simple-auth.com/api/classes/SessionService.html#method_handleInvalidation)
+[`handleInvalidation`](http://ember-simple-auth.com/api/SessionService.html#method_handleInvalidation)
 methods__ for handling authentication and invalidation of the session (which
 not only happens when the user submits the login form or clicks the logout
 button but also when the session is authenticated or invalidated in another tab
@@ -365,9 +365,9 @@ The session service is the main interface to the library. It defines the
 events as shown above.
 
 It also provides the
-__[`isAuthenticated`](http://ember-simple-auth.com/api/classes/SessionService.html#property_isAuthenticated)
+__[`isAuthenticated`](http://ember-simple-auth.com/api/SessionService.html#property_isAuthenticated)
 as well as the
-[`data`]((http://ember-simple-auth.com/api/classes/SessionService.html#property_data))
+[`data`]((http://ember-simple-auth.com/api/SessionService.html#data))
 properties. The latter can be used to get and set the session data__. While the
 special `authenticated` section in the session data contains the data that was
 acquired by the authenticator when it authenticated the session and is
@@ -396,10 +396,10 @@ this.session.authenticate('authenticator:some');
 
 Ember Simple Auth comes with 4 authenticators:
 
-* [`OAuth2PasswordGrantAuthenticator`](http://ember-simple-auth.com/api/classes/OAuth2PasswordGrantAuthenticator.html): an OAuth 2.0 authenticator that implements the _"Resource Owner Password Credentials Grant Type"_
-* [`OAuth2ImplicitGrantAuthenticator`](http://ember-simple-auth.com/api/classes/OAuth2ImplicitGrantAuthenticator.html): an OAuth 2.0 authenticator that implements the _"Implicit Grant Type"_
-* [`DeviseAuthenticator`](http://ember-simple-auth.com/api/classes/DeviseAuthenticator.html): an authenticator compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
-* [`ToriiAuthenticator`](http://ember-simple-auth.com/api/classes/ToriiAuthenticator.html): an authenticator that wraps the [torii library](https://github.com/Vestorly/torii)
+* [`OAuth2PasswordGrantAuthenticator`](http://ember-simple-auth.com/api/OAuth2PasswordGrantAuthenticator.html): an OAuth 2.0 authenticator that implements the _"Resource Owner Password Credentials Grant Type"_
+* [`OAuth2ImplicitGrantAuthenticator`](https://ember-simple-auth.com/api/module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html): an OAuth 2.0 authenticator that implements the _"Implicit Grant Type"_
+* [`DeviseAuthenticator`](http://ember-simple-auth.com/api/DeviseAuthenticator.html): an authenticator compatible with the popular Ruby on Rails authentication plugin [devise](https://github.com/plataformatec/devise)
+* [`ToriiAuthenticator`](http://ember-simple-auth.com/api/ToriiAuthenticator.html): an authenticator that wraps the [torii library](https://github.com/Vestorly/torii)
 
 To use any of these authenticators in an application, define a new
 authenticator in `app/authenticators`, extend if from the Ember Simple Auth
@@ -437,12 +437,12 @@ export default class OAuth2Authenticator extends OAuth2PasswordGrantAuthenticato
 
 Besides extending one of the predefined authenticators, an application can also
 implement fully custom authenticators. In order to do that, extend the
-[abstract base authenticator](http://ember-simple-auth.com/api/classes/BaseAuthenticator.html)
+[abstract base authenticator](http://ember-simple-auth.com/api/BaseAuthenticator.html)
 that Ember Simple Auth comes with and override the
-[`authenticate`](http://ember-simple-auth.com/api/classes/BaseAuthenticator.html#method_authenticate),
-[`restore`](http://ember-simple-auth.com/api/classes/BaseAuthenticator.html#method_restore)
+[`authenticate`](http://ember-simple-auth.com/api/BaseAuthenticator.html#method_authenticate),
+[`restore`](http://ember-simple-auth.com/api/BaseAuthenticator.html#method_restore)
 and (optionally)
-[`invalidate`](http://ember-simple-auth.com/api/classes/BaseAuthenticator.html#method_invalidate)
+[`invalidate`](http://ember-simple-auth.com/api/BaseAuthenticator.html#method_invalidate)
 methods:
 
 ```js
@@ -489,19 +489,19 @@ Ember Simple Auth comes with 4 stores:
 
 #### Adaptive Store
 
-[The adaptive store](http://ember-simple-auth.com/api/classes/AdaptiveStore.html)
+[The adaptive store](http://ember-simple-auth.com/api/AdaptiveStore.html)
 stores its data in the browser's `localStorage` if that is available or in a
 cookie if it is not; __this is the default store__.
 
 #### `localStorage` Store
 
-[The `localStorage` store](http://ember-simple-auth.com/api/classes/LocalStorageStore.html)
+[The `localStorage` store](http://ember-simple-auth.com/api/LocalStorageStore.html)
 stores its data in the browser's `localStorage`. This is used by the adaptive
 store if `localStorage` is available.
 
 #### Cookie Store
 
-[The Cookie store](http://ember-simple-auth.com/api/classes/CookieStore.html)
+[The Cookie store](http://ember-simple-auth.com/api/CookieStore.html)
 stores its data in a cookie. This is used by the adaptive store if
 `localStorage` is not available. __This store must be used when the
 application uses
@@ -509,7 +509,7 @@ application uses
 
 #### `sessionStorage` Store
 
-[The `sessionStorage` store](http://ember-simple-auth.com/api/classes/SessionStorageStore.html)
+[The `sessionStorage` store](http://ember-simple-auth.com/api/SessionStorageStore.html)
 stores its data in the browser's `sessionStorage`. See [the Web Storage docs](
 https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) for details on
 `sessionStorage` and `localStorage`. [caniuse](http://caniuse.com/#feat=namevalue-storage)
@@ -517,7 +517,7 @@ has up-to-date information on browser support of `sessionStorage` and `localStor
 
 #### Ephemeral Store
 
-[The ephemeral store](http://ember-simple-auth.com/api/classes/EphemeralStore.html)
+[The ephemeral store](http://ember-simple-auth.com/api/EphemeralStore.html)
 stores its data in memory and thus __is not actually persistent. This store is
 mainly useful for testing.__ Also the ephemeral store cannot keep multiple tabs
 or windows in sync as tabs/windows cannot share memory.
@@ -540,12 +540,12 @@ export default class ApplicationSessionStore extends AdaptiveStore {
 
 Besides using one of the predefined session stores, an application can also
 implement fully custom stores. In order to do that, extend the
-[abstract base session store](http://ember-simple-auth.com/api/classes/BaseStore.html)
+[abstract base session store](http://ember-simple-auth.com/api/BaseStore.html)
 that Ember Simple Auth comes with and implement the
-[`persist`](http://ember-simple-auth.com/api/classes/BaseStore.html#method_persist),
-[`restore`](http://ember-simple-auth.com/api/classes/BaseStore.html#method_restore)
+[`persist`](http://ember-simple-auth.com/api/BaseStore.html#.persist),
+[`restore`](http://ember-simple-auth.com/api/BaseStore.html#.restore)
 and
-[`clear`](http://ember-simple-auth.com/api/classes/BaseStore.html#method_clear)
+[`clear`](http://ember-simple-auth.com/api/BaseStore.html#.clear)
 methods:
 
 ```js
@@ -577,9 +577,9 @@ export default class ApplicationSessionStore extends CookieStore {}
 ```
 
 If you are using the
-[`OAuth2PasswordGrantAuthenticator`](http://ember-simple-auth.com/api/classes/OAuth2PasswordGrantAuthenticator.html),
+[`OAuth2PasswordGrantAuthenticator`](http://ember-simple-auth.com/api/OAuth2PasswordGrantAuthenticator.html),
 or
-[`DeviseAuthenticator`](http://ember-simple-auth.com/api/classes/DeviseAuthenticator.html),
+[`DeviseAuthenticator`](http://ember-simple-auth.com/api/DeviseAuthenticator.html),
 you must add `node-fetch` to your list of FastBoot whitelisted dependencies
 in `package.json`:
 
