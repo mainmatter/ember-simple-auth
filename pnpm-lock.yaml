@@ -336,8 +336,8 @@ importers:
         specifier: 4.1.5
         version: 4.1.5(ember-source@5.11.1(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0))
       ember-cli-fastboot-testing:
-        specifier: 0.6.1
-        version: 0.6.1(ember-source@5.11.1(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0))(webpack@5.94.0)
+        specifier: 0.6.2
+        version: 0.6.2(@ember/test-helpers@3.3.1(@babel/core@7.25.2)(ember-source@5.11.1(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0))(webpack@5.94.0))(ember-source@5.11.1(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0))(webpack@5.94.0)
       ember-cli-htmlbars:
         specifier: 6.3.0
         version: 6.3.0
@@ -4017,10 +4017,11 @@ packages:
     peerDependencies:
       ember-cli: ^3.2.0 || >=4.0.0
 
-  ember-cli-fastboot-testing@0.6.1:
-    resolution: {integrity: sha512-nevPv77Wjk0Mslb0AF0wgHfbjki6Fi3/dapTrFz17WLX6n5maLr/MTL1hZcZdbT+69DHdgckCza8Z1WyxiUbBA==}
+  ember-cli-fastboot-testing@0.6.2:
+    resolution: {integrity: sha512-RwOM0Y2fT5PtiMkG7yXWCaCLGFatwKpfPT4Xt6Hxqf2ZAEkbVQWJw/aFaKLLOAo2kfted8nKdkRvZM6Jm647Pg==}
     engines: {node: 12.* || 14.* || 16.* || >= 18}
     peerDependencies:
+      '@ember/test-helpers': '>= 3.0.0'
       ember-source: ^3.28.0 || ^4.0.0 || ^5.0.0
 
   ember-cli-fastboot@4.1.5:
@@ -13208,8 +13209,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-cli-fastboot-testing@0.6.1(ember-source@5.11.1(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0))(webpack@5.94.0):
+  ember-cli-fastboot-testing@0.6.2(@ember/test-helpers@3.3.1(@babel/core@7.25.2)(ember-source@5.11.1(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0))(webpack@5.94.0))(ember-source@5.11.1(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0))(webpack@5.94.0):
     dependencies:
+      '@ember/test-helpers': 3.3.1(@babel/core@7.25.2)(ember-source@5.11.1(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0))(webpack@5.94.0)
       body-parser: 1.20.3
       ember-auto-import: 2.8.1(webpack@5.94.0)
       ember-cli-babel: 7.26.11
