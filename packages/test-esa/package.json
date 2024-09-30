@@ -52,7 +52,7 @@
     "ember-qunit": "7.0.0",
     "ember-resolver": "11.0.1",
     "ember-simple-auth": "6.1.0",
-    "ember-source": "5.11.0",
+    "ember-source": "5.11.1",
     "ember-source-channel-url": "3.0.0",
     "ember-try": "3.0.0",
     "eslint": "8.57.1",
