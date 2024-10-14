@@ -148,8 +148,8 @@ importers:
         specifier: 7.0.0
         version: 7.0.0(@ember/test-helpers@3.3.1(@babel/core@7.25.2)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.95.0))(webpack@5.95.0))(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.95.0))(qunit@2.22.0)(webpack@5.95.0)
       ember-resolver:
-        specifier: 11.0.1
-        version: 11.0.1(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.95.0))
+        specifier: 13.0.2
+        version: 13.0.2(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.95.0))
       ember-simple-auth:
         specifier: 6.1.0
         version: 6.1.0(@babel/core@7.25.2)(@ember/test-helpers@3.3.1(@babel/core@7.25.2)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.95.0))(webpack@5.95.0))(eslint@8.57.1)
@@ -375,8 +375,8 @@ importers:
         specifier: 7.0.0
         version: 7.0.0(@ember/test-helpers@3.3.1(@babel/core@7.25.8)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0))(webpack@5.95.0))(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0))(qunit@2.22.0)(webpack@5.95.0)
       ember-resolver:
-        specifier: 11.0.1
-        version: 11.0.1(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0))
+        specifier: 13.0.2
+        version: 13.0.2(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0))
       ember-simple-auth:
         specifier: 6.1.0
         version: 6.1.0(@babel/core@7.25.8)(@ember/test-helpers@3.3.1(@babel/core@7.25.8)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0))(webpack@5.95.0))(eslint@8.57.1)
@@ -523,8 +523,8 @@ importers:
         specifier: 7.0.0
         version: 7.0.0(@ember/test-helpers@3.3.1(@babel/core@7.25.8)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0))(webpack@5.95.0))(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0))(qunit@2.22.0)(webpack@5.95.0)
       ember-resolver:
-        specifier: 11.0.1
-        version: 11.0.1(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0))
+        specifier: 13.0.2
+        version: 13.0.2(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0))
       ember-source:
         specifier: 5.12.0
         version: 5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0)
@@ -4653,11 +4653,11 @@ packages:
       ember-source: '>=4.0.0'
       qunit: ^2.13.0
 
-  ember-resolver@11.0.1:
-    resolution: {integrity: sha512-ucBk3oM+PR+AfYoSUXeQh8cDQS1sSiEKp4Pcgbew5cFMSqPxJfqd1zyZsfQKNTuyubeGmWxBOyMVSTvX2LeCyg==}
+  ember-resolver@13.0.2:
+    resolution: {integrity: sha512-9G8CVjjI4Q6vx2+FYg8YeLu+/fP4eBL/1+qp5bzwtXQ7G3xkg0YRpcufIdsBjf5K2SUStU83qhNH2O6aanf3nw==}
     engines: {node: 14.* || 16.* || >= 18}
     peerDependencies:
-      ember-source: ^4.8.3 || >= 5.0.0
+      ember-source: ^4.12.0 || >= 5.0.0
     peerDependenciesMeta:
       ember-source:
         optional: true
@@ -15914,7 +15914,7 @@ snapshots:
       - supports-color
       - webpack
 
-  ember-resolver@11.0.1(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.95.0)):
+  ember-resolver@13.0.2(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.95.0)):
     dependencies:
       ember-cli-babel: 7.26.11
     optionalDependencies:
@@ -15922,7 +15922,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-resolver@11.0.1(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0)):
+  ember-resolver@13.0.2(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.8))(rsvp@4.8.5)(webpack@5.95.0)):
     dependencies:
       ember-cli-babel: 7.26.11
     optionalDependencies:
