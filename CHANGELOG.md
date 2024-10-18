@@ -1,5 +1,26 @@
 # Changelog
 
+## Release (2024-10-18)
+
+
+
+#### :memo: Documentation
+* [#2834](https://github.com/mainmatter/ember-simple-auth/pull/2834) Verified and updated links to ember-simple-auth.com/api/ ([@peter-scholtens](https://github.com/peter-scholtens))
+
+#### :house: Internal
+* `test-app`
+  * [#2835](https://github.com/mainmatter/ember-simple-auth/pull/2835) Expire cookie if RememberMe button is off (again) ([@peter-scholtens](https://github.com/peter-scholtens))
+* Other
+  * [#2824](https://github.com/mainmatter/ember-simple-auth/pull/2824) chore(deps): lock maintenance ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2822](https://github.com/mainmatter/ember-simple-auth/pull/2822) chore(deps): install eslint-config-prettier ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2819](https://github.com/mainmatter/ember-simple-auth/pull/2819) Prepare Release ([@github-actions[bot]](https://github.com/apps/github-actions))
+  * [#2820](https://github.com/mainmatter/ember-simple-auth/pull/2820) chore(release): fix release ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 3
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Peter C. S. Scholtens ([@peter-scholtens](https://github.com/peter-scholtens))
+- [@github-actions[bot]](https://github.com/apps/github-actions)
+
 ## Release (2024-09-09)
 
 
