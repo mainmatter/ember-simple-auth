@@ -20,6 +20,8 @@ export default class LoginFormComponent extends Component {
 
       if (this.rememberMe) {
         this.session.set('store.cookieExpirationTime', 60 * 60 * 24 * 14);
+      } else {
+        this.session.set('store.cookieExpirationTime', null);
       }
     } catch (response) {
       let responseBody = await response.clone().json();
