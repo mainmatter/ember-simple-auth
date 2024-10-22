@@ -55,7 +55,7 @@
     "handlebars": "4.7.8",
     "loader.js": "4.7.0",
     "my-engine": "workspace:../classic-test-app/lib/my-engine",
-    "npm-run-all2": "6.2.4",
+    "npm-run-all2": "7.0.0",
     "pretender": "3.4.7",
     "qunit": "2.22.0",
     "qunit-dom": "2.0.0",
