@@ -39,7 +39,7 @@
   "devDependencies": {
     "@babel/core": "7.25.8",
     "@babel/plugin-proposal-class-properties": "7.18.6",
-    "@babel/plugin-proposal-decorators": "7.25.7",
+    "@babel/plugin-proposal-decorators": "7.25.9",
     "@babel/runtime": "7.25.7",
     "@embroider/addon-dev": "5.0.0",
     "@rollup/plugin-babel": "6.0.4",
@@ -48,7 +48,7 @@
     "ember-template-lint": "6.0.0",
     "eslint": "8.57.1",
     "prettier": "3.3.3",
-    "rollup": "4.24.0",
+    "rollup": "4.24.2",
     "rollup-plugin-copy": "3.5.0"
   },
   "publishConfig": {
