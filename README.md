@@ -697,7 +697,7 @@ module('Acceptance | app test', function(hooks) {
 ```
 
 If you're an `ember-mocha` user, we can recommend to check out this
-[example from the test suite of ember-simple-auth itself](https://github.com/mainmatter/ember-simple-auth/blob/master/tests/acceptance/authentication-test.js).
+[example from the test suite of ember-simple-auth itself](https://github.com/mainmatter/ember-simple-auth/blob/master/packages/test-app/tests/acceptance/authentication-test.js).
 
 ## Other guides
 
