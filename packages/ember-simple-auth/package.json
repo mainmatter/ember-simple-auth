@@ -48,7 +48,7 @@
     "ember-template-lint": "6.0.0",
     "eslint": "8.57.1",
     "prettier": "3.3.3",
-    "rollup": "4.24.2",
+    "rollup": "4.24.3",
     "rollup-plugin-copy": "3.5.0"
   },
   "publishConfig": {
