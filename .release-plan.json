@@ -1,8 +1,17 @@
 {
   "solution": {
     "ember-simple-auth": {
-      "oldVersion": "6.1.0"
+      "impact": "minor",
+      "oldVersion": "6.1.0",
+      "newVersion": "6.2.0",
+      "constraints": [
+        {
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
+        }
+      ],
+      "pkgJSONPath": "./packages/ember-simple-auth/package.json"
     }
   },
-  "description": "## Release (2024-09-09)\n\n\n\n#### :house: Internal\n* [#2820](https://github.com/mainmatter/ember-simple-auth/pull/2820) chore(release): fix release ([@BobrImperator](https://github.com/BobrImperator))\n\n#### Committers: 1\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n"
+  "description": "## Release (2024-11-18)\n\nember-simple-auth 6.2.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-simple-auth`, `test-esa`\n  * [#2811](https://github.com/mainmatter/ember-simple-auth/pull/2811) feat: support partitioned cookies ([@Gaurav0](https://github.com/Gaurav0))\n\n#### :memo: Documentation\n* [#2857](https://github.com/mainmatter/ember-simple-auth/pull/2857) fix: update authentication test reference ([@emmanuel-ferdman](https://github.com/emmanuel-ferdman))\n* [#2834](https://github.com/mainmatter/ember-simple-auth/pull/2834) Verified and updated links to ember-simple-auth.com/api/ ([@peter-scholtens](https://github.com/peter-scholtens))\n\n#### :house: Internal\n* `test-app`\n  * [#2854](https://github.com/mainmatter/ember-simple-auth/pull/2854) Create store.js (required in ember-data 6.0) ([@peter-scholtens](https://github.com/peter-scholtens))\n  * [#2835](https://github.com/mainmatter/ember-simple-auth/pull/2835) Expire cookie if RememberMe button is off (again) ([@peter-scholtens](https://github.com/peter-scholtens))\n* Other\n  * [#2824](https://github.com/mainmatter/ember-simple-auth/pull/2824) chore(deps): lock maintenance ([@BobrImperator](https://github.com/BobrImperator))\n  * [#2822](https://github.com/mainmatter/ember-simple-auth/pull/2822) chore(deps): install eslint-config-prettier ([@BobrImperator](https://github.com/BobrImperator))\n  * [#2819](https://github.com/mainmatter/ember-simple-auth/pull/2819) Prepare Release ([@github-actions[bot]](https://github.com/apps/github-actions))\n  * [#2820](https://github.com/mainmatter/ember-simple-auth/pull/2820) chore(release): fix release ([@BobrImperator](https://github.com/BobrImperator))\n\n#### Committers: 5\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n- Emmanuel Ferdman ([@emmanuel-ferdman](https://github.com/emmanuel-ferdman))\n- Gaurav Munjal ([@Gaurav0](https://github.com/Gaurav0))\n- Peter C. S. Scholtens ([@peter-scholtens](https://github.com/peter-scholtens))\n- [@github-actions[bot]](https://github.com/apps/github-actions)\n"
 }
