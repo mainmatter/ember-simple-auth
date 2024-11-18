@@ -160,6 +160,24 @@ export default BaseStore.extend({
     }
   }),
 
+  /**
+    Allows servers to assert that a cookie should opt in to partitioned storage,
+    i.e. use a separate cookie per top level site if the cookie is used in a
+    third party context
+
+    Available options:
+    - null
+    - true
+
+    @memberof CookieStore
+    @property partitioned
+    @type Boolean
+    @default null
+    @public
+  */
+  _partitioned: null,
+  partitioned: persistingProperty(),
+
   _cookies: service('cookies'),
 
   _secureCookies() {
@@ -272,6 +290,7 @@ export default BaseStore.extend({
       path: this.get('cookiePath'),
       secure: this._secureCookies(),
       sameSite: this.get('sameSite'),
+      partitioned: this.get('partitioned'),
     };
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach(oldCookie => {

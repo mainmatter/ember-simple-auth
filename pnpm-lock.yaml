@@ -232,8 +232,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       ember-cookies:
-        specifier: ^1.0.0
-        version: 1.1.2
+        specifier: ^1.2.0
+        version: 1.2.0
       silent-error:
         specifier: ^1.0.0
         version: 1.1.1
@@ -4647,6 +4647,10 @@ packages:
 
   ember-cookies@1.1.2:
     resolution: {integrity: sha512-6GaN0eEDZT9SEUSZBxWzZMlvxjcGKXFTJNjv30LVXTTOxozE5IBmIxiDAEq0udi0UpWUGHLYQBgnANn4jdll7w==}
+    engines: {node: '>= 16.*'}
+
+  ember-cookies@1.2.0:
+    resolution: {integrity: sha512-ZbJbXq7dhjqJfOG/BBVlqO1o4Y6SWENrhiEgI7vokwVeuqHrvfaaFWV1emZUrsvoCAbSq/TiEdncO1EdZcI7Fg==}
     engines: {node: '>= 16.*'}
 
   ember-data@5.3.9:
@@ -15871,6 +15875,12 @@ snapshots:
       - supports-color
 
   ember-cookies@1.1.2:
+    dependencies:
+      '@embroider/addon-shim': 1.8.9
+    transitivePeerDependencies:
+      - supports-color
+
+  ember-cookies@1.2.0:
     dependencies:
       '@embroider/addon-shim': 1.8.9
     transitivePeerDependencies:
