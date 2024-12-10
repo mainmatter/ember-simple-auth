@@ -68,7 +68,7 @@
     "qunit-dom": "2.0.0",
     "sinon": "19.0.2",
     "torii": "1.0.0-beta.2",
-    "webpack": "5.96.1"
+    "webpack": "5.97.1"
   },
   "engines": {
     "node": "16.* || >= 18"
