@@ -257,8 +257,8 @@ importers:
         specifier: 6.0.4
         version: 6.0.4(@babel/core@7.26.0)(rollup@4.25.0)
       '@rollup/plugin-node-resolve':
-        specifier: 15.3.0
-        version: 15.3.0(rollup@4.25.0)
+        specifier: 16.0.0
+        version: 16.0.0(rollup@4.25.0)
       concurrently:
         specifier: 9.1.0
         version: 9.1.0
@@ -2413,8 +2413,8 @@ packages:
       rollup:
         optional: true
 
-  '@rollup/plugin-node-resolve@15.3.0':
-    resolution: {integrity: sha512-9eO5McEICxMzJpDW9OnMYSv4Sta3hmt7VtBFz5zR9273suNOydOyq/FrGeGy+KsTRFm8w0SLVhzig2ILFT63Ag==}
+  '@rollup/plugin-node-resolve@16.0.0':
+    resolution: {integrity: sha512-0FPvAeVUT/zdWoO0jnb/V5BlBsUSNfkIOtFHzMO4H9MOklrmQFY6FduVHKucNb/aTFxvnGhj4MNj/T1oNdDfNg==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^2.78.0||^3.0.0||^4.0.0
@@ -12870,7 +12870,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@rollup/plugin-node-resolve@15.3.0(rollup@4.25.0)':
+  '@rollup/plugin-node-resolve@16.0.0(rollup@4.25.0)':
     dependencies:
       '@rollup/pluginutils': 5.1.1(rollup@4.25.0)
       '@types/resolve': 1.20.2
