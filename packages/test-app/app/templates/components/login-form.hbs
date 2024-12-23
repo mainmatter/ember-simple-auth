@@ -1,20 +1,20 @@
 {{! login form; the fields must be named "identification" and "password"; the controller action is "authenticate" }}
-<a {{action 'authenticateWithFacebook'}} class="btn btn-primary" href="#" role="button">Login with Facebook</a>
+<a {{on 'click' this.authenticateWithFacebook}} class="btn btn-primary" href="#" role="button">Login with Facebook</a>
 <hr/>
-<a {{action 'authenticateWithGoogleImplicitGrant'}} class="btn btn-primary" href="#" role="button">Login with Google (Implicit Grant)</a>
+<a {{on 'click' this.authenticateWithGoogleImplicitGrant}} class="btn btn-primary" href="#" role="button">Login with Google (Implicit Grant)</a>
 <hr/>
 <p>or login with OAuth 2.0 <em>Resource Owner Password Credentials</em>:</p>
 <form {{action 'authenticateWithOAuth2' on='submit'}}>
   <div class="form-group">
     <label for="identification">Login</label>
-    <input type="text" placeholder="Enter Login" class="form-control" onchange={{action 'updateIdentification'}} value={{this.identification}} data-test-identification />
+    <input type="text" placeholder="Enter Login" class="form-control" {{on 'change' this.updateIdentification}} value={{this.identification}} data-test-identification />
   </div>
   <div class="form-group">
     <label for="password">Password</label>
-    <input type="password" placeholder="Enter Password" class="form-control" onchange={{action 'updatePassword'}} value={{this.password}} data-test-password />
+    <input type="password" placeholder="Enter Password" class="form-control" {{on 'change' this.updatePassword}} value={{this.password}} data-test-password />
   </div>
   <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="rememberMe" onchange={{action 'updateRememberMe'}} checked={{this.rememberMe}} />
+    <input type="checkbox" class="form-check-input" id="rememberMe" {{on 'change' this.updateRememberMe}} checked={{this.rememberMe}} />
     <label for="rememberMe" class="form-check-label">
       Remember me
     </label>
