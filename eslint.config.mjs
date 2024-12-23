@@ -2,6 +2,7 @@ import ember from 'eslint-plugin-ember';
 import prettier from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import babelParser from '@babel/eslint-parser';
+import typescriptParser from '@typescript-eslint/parser';
 import qunit from 'eslint-plugin-qunit';
 import simplabsEmber from 'eslint-config-simplabs';
 import n from 'eslint-plugin-n';
@@ -43,6 +44,56 @@ export default [
       },
 
       parser: babelParser,
+      ecmaVersion: 2020,
+      sourceType: 'module',
+
+      parserOptions: {
+        legacyDecorators: true,
+      },
+    },
+
+    rules: {
+      'ember/local-modules': 'off',
+      'ember/no-get': 'off',
+      'ember/avoid-leaking-state-in-components': 'off',
+
+      // Legacy Ember features
+      'ember/no-actions-hash': 'off',
+      'ember/no-classic-classes': 'off',
+      'ember/no-classic-components': 'off',
+      'ember/no-private-routing-service': 'off',
+      'ember/require-tagless-components': 'off',
+
+      // TODO: REMOVE
+      'no-implicit-coercion': 'off',
+      'no-multi-spaces': 'off',
+      'no-multi-str': 'off',
+      'no-trailing-spaces': 'off',
+      'no-unused-vars': 'off',
+      'no-var': 'off',
+      'prefer-template': 'off',
+      'no-prototype-builtins': 'off',
+      quotes: 'off',
+      semi: 'off',
+    },
+  },
+  {
+    files: [
+      '**/app/**/*.ts',
+      '**/src/**/*.ts',
+      '**/lib/**/*.ts'
+    ],
+    plugins: {
+      ember,
+      simplabsEmber,
+    },
+
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+
+      parser: typescriptParser,
       ecmaVersion: 2020,
       sourceType: 'module',
 

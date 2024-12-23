@@ -1,0 +1,48 @@
+{
+  "extends": "@tsconfig/ember/tsconfig.json",
+  "include": ["src/**/*", "unpublished-development-types/**/*"],
+  "glint": {
+    "environment": ["ember-loose", "ember-template-imports"]
+  },
+  "compilerOptions": {
+    "allowJs": true,
+    "declarationDir": "declarations",
+    /**
+      https://www.typescriptlang.org/tsconfig#noEmit
+      We want to emit declarations, so this option must be set to `false`.
+      @tsconfig/ember sets this to `true`, which is incompatible with our need to set `emitDeclarationOnly`.
+      @tsconfig/ember is more optimized for apps, which wouldn't emit anything, only type check.
+    */
+    "noEmit": false,
+    /**
+      https://www.typescriptlang.org/tsconfig#emitDeclarationOnly
+      We want to only emit declarations as we use Rollup to emit JavaScript.
+    */
+    "emitDeclarationOnly": true,
+
+    /**
+      https://www.typescriptlang.org/tsconfig#noEmitOnError
+      Do not block emit on TS errors.
+    */
+    "noEmitOnError": false,
+
+    /**
+      https://www.typescriptlang.org/tsconfig#rootDir
+      "Default: The longest common path of all non-declaration input files."
+      Because we want our declarations' structure to match our rollup output,
+      we need this "rootDir" to match the "srcDir" in the rollup.config.mjs.
+      This way, we can have simpler `package.json#exports` that matches
+      imports to files on disk
+    */
+    "rootDir": "./src",
+
+    /**
+      https://www.typescriptlang.org/tsconfig#allowImportingTsExtensions
+      We want our tooling to know how to resolve our custom files so the appropriate plugins
+      can do the proper transformations on those files.
+    */
+    "allowImportingTsExtensions": true,
+
+    "types": ["ember-source/types"]
+  }
+}
