@@ -46,13 +46,14 @@ export default function (options) {
       let cookieService = store.get('_cookies');
       await store.persist({ key: 'value' });
 
-      assert.ok(
+      assert.true(
         cookieService.write.calledWith('test:session', JSON.stringify({ key: 'value' }), {
           domain: null,
           expires: null,
           path: '/',
           sameSite: null,
           secure: false,
+          partitioned: null,
         })
       );
     });
@@ -65,13 +66,14 @@ export default function (options) {
       });
       await store.persist({ key: 'value' });
 
-      assert.ok(
+      assert.true(
         cookieService.write.calledWith('session-cookie-domain', JSON.stringify({ key: 'value' }), {
           domain: 'example.com',
           expires: null,
           path: '/',
           sameSite: null,
           secure: false,
+          partitioned: null,
         })
       );
     });
@@ -85,13 +87,14 @@ export default function (options) {
       let cookieService = store.get('_cookies');
       await store.persist({ key: 'value' });
 
-      assert.ok(
+      assert.true(
         cookieService.write.calledWith('session-cookie-domain', JSON.stringify({ key: 'value' }), {
           domain: 'example.com',
           expires: null,
           path: '/hello-world',
           sameSite: null,
           secure: false,
+          partitioned: null,
         })
       );
     });
@@ -104,14 +107,39 @@ export default function (options) {
       });
       let cookieService = store.get('_cookies');
       await store.persist({ key: 'value' });
-      assert.ok(
+      assert.true(
         cookieService.write.calledWith('session-cookie-domain', JSON.stringify({ key: 'value' }), {
           domain: 'example.com',
           expires: null,
           path: '/',
           sameSite: 'Strict',
           secure: false,
+          partitioned: null,
         })
+      );
+    });
+
+    test('respects the configured partitioned', async function (assert) {
+      run(() => {
+        store.set('cookieName', 'session-cookie-partitioned');
+        store.set('cookieDomain', 'example.com');
+        store.set('partitioned', true);
+      });
+      let cookieService = store.get('_cookies');
+      await store.persist({ key: 'value' });
+      assert.true(
+        cookieService.write.calledWith(
+          'session-cookie-partitioned',
+          JSON.stringify({ key: 'value' }),
+          {
+            domain: 'example.com',
+            expires: null,
+            path: '/',
+            sameSite: null,
+            secure: false,
+            partitioned: true,
+          }
+        )
       );
     });
 
@@ -155,7 +183,7 @@ export default function (options) {
     });
 
     test('stores the expiration time in a cookie named "test-session-expiration_time"', function (assert) {
-      assert.ok(
+      assert.true(
         cookieService.write.calledWith(
           'test-session-expiration_time',
           60,
@@ -212,7 +240,7 @@ export default function (options) {
       await new Promise(resolve => {
         next(() => {
           next(() => {
-            assert.ok(triggered);
+            assert.true(triggered);
             resolve();
           });
         });
@@ -264,11 +292,11 @@ export default function (options) {
       });
       await store.persist({ key: 'value' });
 
-      assert.ok(cookieService.clear.calledWith('session-foo'));
+      assert.true(cookieService.clear.calledWith('session-foo'));
 
-      assert.ok(cookieService.clear.calledWith('session-foo-expiration_time'));
+      assert.true(cookieService.clear.calledWith('session-foo-expiration_time'));
 
-      assert.ok(
+      assert.true(
         cookieService.write.calledWith(
           'session-bar',
           JSON.stringify({ key: 'value' }),
@@ -283,7 +311,7 @@ export default function (options) {
         )
       );
 
-      assert.ok(
+      assert.true(
         cookieService.write.calledWith(
           'session-bar-expiration_time',
           1000,
@@ -307,11 +335,11 @@ export default function (options) {
       });
       await store.persist({ key: 'value' });
 
-      assert.ok(cookieService.clear.calledWith(defaultName));
+      assert.true(cookieService.clear.calledWith(defaultName));
 
-      assert.ok(cookieService.clear.calledWith(`${defaultName}-expiration_time`));
+      assert.true(cookieService.clear.calledWith(`${defaultName}-expiration_time`));
 
-      assert.ok(
+      assert.true(
         cookieService.write.calledWith(
           'session-bar',
           JSON.stringify({ key: 'value' }),
@@ -336,11 +364,11 @@ export default function (options) {
       });
       await store.persist({ key: 'value' });
 
-      assert.ok(cookieService.clear.calledWith(defaultName));
+      assert.true(cookieService.clear.calledWith(defaultName));
 
-      assert.ok(cookieService.clear.calledWith(`${defaultName}-expiration_time`));
+      assert.true(cookieService.clear.calledWith(`${defaultName}-expiration_time`));
 
-      assert.ok(
+      assert.true(
         cookieService.write.calledWith(
           'session-bar',
           JSON.stringify({ key: 'value' }),
@@ -364,7 +392,7 @@ export default function (options) {
 
       await new Promise(resolve => {
         next(() => {
-          assert.ok(cookieService.clear.calledWith('session-foo-expiration_time'));
+          assert.true(cookieService.clear.calledWith('session-foo-expiration_time'));
           resolve();
         });
       });
@@ -379,7 +407,7 @@ export default function (options) {
 
       await new Promise(resolve => {
         next(() => {
-          assert.ok(cookieSpy.calledOnce);
+          assert.true(cookieSpy.calledOnce);
           resolve();
         });
       });
