@@ -1,4 +1,3 @@
-import RSVP from 'rsvp';
 import { isEmpty, isNone } from '@ember/utils';
 import ObjectProxy from '@ember/object/proxy';
 import Evented from '@ember/object/evented';
@@ -75,7 +74,7 @@ export default ObjectProxy.extend(Evented, {
         return this._setup(authenticatorFactory, content, true);
       },
       error => {
-        const rejectWithError = () => RSVP.Promise.reject(error);
+        const rejectWithError = () => Promise.reject(error);
 
         this._busy = false;
         return this._clear().then(rejectWithError, rejectWithError);
@@ -89,7 +88,7 @@ export default ObjectProxy.extend(Evented, {
 
     if (!this.get('isAuthenticated')) {
       this._busy = false;
-      return RSVP.Promise.resolve();
+      return Promise.resolve();
     }
 
     let authenticator = this._lookupAuthenticator(this.authenticator);
@@ -102,14 +101,14 @@ export default ObjectProxy.extend(Evented, {
       error => {
         this.trigger('sessionInvalidationFailed', error);
         this._busy = false;
-        return RSVP.Promise.reject(error);
+        return Promise.reject(error);
       }
     );
   },
 
   restore() {
     this._busy = true;
-    const reject = () => RSVP.Promise.reject();
+    const reject = () => Promise.reject();
 
     return this.store.restore().then(
       restoredContent => {

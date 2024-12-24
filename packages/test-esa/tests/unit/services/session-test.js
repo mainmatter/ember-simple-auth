@@ -3,7 +3,6 @@ import { setupTest } from 'ember-qunit';
 import Service from '@ember/service';
 import EmberObject, { set } from '@ember/object';
 import sinonjs from 'sinon';
-import RSVP from 'rsvp';
 
 module('SessionService', function (hooks) {
   setupTest(hooks);
@@ -502,7 +501,7 @@ module('SessionService', function (hooks) {
     test("doesn't raise an error when restore rejects", async function (assert) {
       assert.expect(1);
       sinon.stub(sessionService, '_setupHandlers');
-      sinon.stub(session, 'restore').returns(RSVP.reject());
+      sinon.stub(session, 'restore').rejects();
 
       try {
         await sessionService.setup();

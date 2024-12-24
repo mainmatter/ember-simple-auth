@@ -1,4 +1,3 @@
-import RSVP from 'rsvp';
 import { module, test } from 'qunit';
 import sinonjs from 'sinon';
 import Torii from 'ember-simple-auth/authenticators/torii';
@@ -50,7 +49,7 @@ module('ToriiAuthenticator', function (hooks) {
     module('when there is a torii provider in the session data', function () {
       module('when torii fetches successfully', function (hooks) {
         hooks.beforeEach(function () {
-          sinon.stub(torii, 'fetch').returns(RSVP.resolve({ some: 'other data' }));
+          sinon.stub(torii, 'fetch').resolves({ some: 'other data' });
         });
 
         test('returns a promise that resolves with the session data merged with the data fetched from torri', async function (assert) {
@@ -66,7 +65,7 @@ module('ToriiAuthenticator', function (hooks) {
 
       module('when torii does not fetch successfully', function (hooks) {
         hooks.beforeEach(function () {
-          sinon.stub(torii, 'fetch').returns(RSVP.reject());
+          sinon.stub(torii, 'fetch').rejects();
         });
 
         itDoesNotRestore({ some: 'data', provider: 'provider' });
@@ -93,7 +92,7 @@ module('ToriiAuthenticator', function (hooks) {
 
     module('when torii opens successfully', function (hooks) {
       hooks.beforeEach(function () {
-        sinon.stub(torii, 'open').returns(RSVP.resolve({ some: 'data' }));
+        sinon.stub(torii, 'open').resolves({ some: 'data' });
       });
 
       test('returns a promise that resolves with the session data', async function (assert) {
@@ -105,7 +104,7 @@ module('ToriiAuthenticator', function (hooks) {
 
     module('when torii does not open successfully', function (hooks) {
       hooks.beforeEach(function () {
-        sinon.stub(torii, 'open').returns(RSVP.reject());
+        sinon.stub(torii, 'open').rejects();
       });
 
       test('returns a rejecting promise', async function (assert) {
@@ -123,7 +122,7 @@ module('ToriiAuthenticator', function (hooks) {
   module('#invalidate', function () {
     module('when torii closes successfully', function (hooks) {
       hooks.beforeEach(function () {
-        sinon.stub(torii, 'close').returns(RSVP.resolve());
+        sinon.stub(torii, 'close').resolves();
       });
 
       test('returns a resolving promise', async function (assert) {
@@ -139,7 +138,7 @@ module('ToriiAuthenticator', function (hooks) {
 
     module('when torii does not close successfully', function (hooks) {
       hooks.beforeEach(function () {
-        sinon.stub(torii, 'close').returns(RSVP.reject());
+        sinon.stub(torii, 'close').rejects();
       });
 
       test('returns a rejecting promise', async function (assert) {

@@ -1,4 +1,3 @@
-import RSVP from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run, later, cancel } from '@ember/runloop';
 import { A, makeArray } from '@ember/array';
@@ -142,11 +141,11 @@ export default BaseAuthenticator.extend({
     @memberof OAuth2PasswordGrantAuthenticator
     @method restore
     @param {Object} data The data to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated. If restoration fails, the promise will reject with the server response (in case the access token had expired and was refreshed using a refresh token); however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
+    @return {Promise} A promise that when it resolves results in the session becoming or remaining authenticated. If restoration fails, the promise will reject with the server response (in case the access token had expired and was refreshed using a refresh token); however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
     @public
   */
   restore(data) {
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const now = new Date().getTime();
       const refreshAccessTokens = this.get('refreshAccessTokens');
       if (!isEmpty(data['expires_at']) && data['expires_at'] < now) {
@@ -226,11 +225,11 @@ export default BaseAuthenticator.extend({
     @param {String} password The resource owner password
     @param {String|Array} scope The scope of the access request (see [RFC 6749, section 3.3](http://tools.ietf.org/html/rfc6749#section-3.3))
     @param {Object} headers Optional headers that particular backends may require (for example sending 2FA challenge responses)
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated. If authentication fails, the promise will reject with the server response; however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
+    @return {Promise} A promise that when it resolves results in the session becoming authenticated. If authentication fails, the promise will reject with the server response; however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
     @public
   */
   authenticate(identification, password, scope = [], headers = {}) {
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const data = { grant_type: 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
 
@@ -277,7 +276,7 @@ export default BaseAuthenticator.extend({
     @memberof OAuth2PasswordGrantAuthenticator
     @method invalidate
     @param {Object} data The current authenticated session data
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated. If invalidation fails, the promise will reject with the server response (in case token revocation is used); however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
+    @return {Promise} A promise that when it resolves results in the session being invalidated. If invalidation fails, the promise will reject with the server response (in case token revocation is used); however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
     @public
   */
   invalidate(data) {
@@ -287,7 +286,7 @@ export default BaseAuthenticator.extend({
       delete this._refreshTokenTimeout;
       resolve();
     }
-    return new RSVP.Promise(resolve => {
+    return new Promise(resolve => {
       if (isEmpty(serverTokenRevocationEndpoint)) {
         success.apply(this, [resolve]);
       } else {
@@ -306,7 +305,7 @@ export default BaseAuthenticator.extend({
         const succeed = () => {
           success.apply(this, [resolve]);
         };
-        RSVP.all(requests).then(succeed, succeed);
+        Promise.all(requests).then(succeed, succeed);
       }
     });
   },
@@ -342,7 +341,7 @@ export default BaseAuthenticator.extend({
       method: 'POST',
     };
 
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       fetch(url, options)
         .then(response => {
           response.text().then(text => {
@@ -396,7 +395,7 @@ export default BaseAuthenticator.extend({
     }
 
     const serverTokenEndpoint = this.get('serverTokenEndpoint');
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.makeRequest(serverTokenEndpoint, data).then(
         response => {
           run(() => {

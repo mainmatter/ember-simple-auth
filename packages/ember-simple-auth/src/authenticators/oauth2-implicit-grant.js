@@ -1,6 +1,5 @@
 /** @module ember-simple-auth/authenticators/oauth2-implicit-grant **/
 
-import RSVP from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import BaseAuthenticator from './base';
 /**
@@ -52,11 +51,11 @@ export default BaseAuthenticator.extend({
    @memberof OAuth2ImplicitGrantAuthenticator
    @method restore
    @param {Object} data The data to restore the session from
-   @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+   @return {Promise} A promise that when it resolves results in the session becoming or remaining authenticated
    @public
    */
   restore(data) {
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!this._validateData(data)) {
         return reject('Could not restore session - "access_token" missing.');
       }
@@ -77,11 +76,11 @@ export default BaseAuthenticator.extend({
    @memberof OAuth2ImplicitGrantAuthenticator
    @method authenticate
    @param {Object} hash The location hash
-   @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
+   @return {Promise} A promise that when it resolves results in the session becoming authenticated
    @public
    */
   authenticate(hash) {
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (hash.error) {
         reject(hash.error);
       } else if (!this._validateData(hash)) {
@@ -97,11 +96,11 @@ export default BaseAuthenticator.extend({
 
    @memberof OAuth2ImplicitGrantAuthenticator
    @method invalidate
-   @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
+   @return {Promise} A promise that when it resolves results in the session being invalidated
    @public
    */
   invalidate() {
-    return RSVP.Promise.resolve();
+    return Promise.resolve();
   },
 
   _validateData(data) {

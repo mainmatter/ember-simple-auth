@@ -1,6 +1,5 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import RSVP from 'rsvp';
 import { next } from '@ember/runloop';
 import sinonjs from 'sinon';
 import Authenticator from 'ember-simple-auth/authenticators/base';
@@ -161,7 +160,7 @@ module('InternalSession', function (hooks) {
 
       module('when the authenticator resolves restoration', function (hooks) {
         hooks.beforeEach(function () {
-          sinon.stub(authenticator, 'restore').returns(RSVP.resolve({ some: 'property' }));
+          sinon.stub(authenticator, 'restore').returns(Promise.resolve({ some: 'property' }));
         });
 
         test('returns a resolving promise', async function (assert) {
@@ -231,7 +230,7 @@ module('InternalSession', function (hooks) {
 
       module('when the authenticator rejects restoration', function (hooks) {
         hooks.beforeEach(function () {
-          sinon.stub(authenticator, 'restore').returns(RSVP.reject());
+          sinon.stub(authenticator, 'restore').rejects();
         });
 
         itDoesNotRestore();
@@ -244,7 +243,7 @@ module('InternalSession', function (hooks) {
 
     module('when the store rejects restoration', function (hooks) {
       hooks.beforeEach(function () {
-        sinon.stub(store, 'restore').returns(RSVP.Promise.reject());
+        sinon.stub(store, 'restore').rejects();
       });
 
       test('is not authenticated', async function (assert) {
@@ -259,7 +258,7 @@ module('InternalSession', function (hooks) {
 
     module('when the store rejects persistance', function (hooks) {
       hooks.beforeEach(function () {
-        sinon.stub(store, 'persist').returns(RSVP.reject());
+        sinon.stub(store, 'persist').rejects();
       });
 
       test('is not authenticated', async function (assert) {
@@ -276,7 +275,7 @@ module('InternalSession', function (hooks) {
   module('authentication', function () {
     module('when the authenticator resolves authentication', function (hooks) {
       hooks.beforeEach(function () {
-        sinon.stub(authenticator, 'authenticate').returns(RSVP.resolve({ some: 'property' }));
+        sinon.stub(authenticator, 'authenticate').resolves({ some: 'property' });
       });
 
       test('it throws when the provided authenticator could not be found', function (assert) {
@@ -345,7 +344,7 @@ module('InternalSession', function (hooks) {
     module('when the authenticator rejects authentication', function () {
       test('is not authenticated', async function (assert) {
         assert.expect(1);
-        sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
+        sinon.stub(authenticator, 'authenticate').rejects('error auth');
 
         try {
           await session.authenticate('authenticator:test');
@@ -356,7 +355,7 @@ module('InternalSession', function (hooks) {
 
       test('returns a rejecting promise', async function (assert) {
         assert.expect(1);
-        sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
+        sinon.stub(authenticator, 'authenticate').rejects('error auth');
 
         try {
           await session.authenticate('authenticator:test');
@@ -368,7 +367,7 @@ module('InternalSession', function (hooks) {
 
       test('clears its authenticated section', async function (assert) {
         assert.expect(1);
-        sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
+        sinon.stub(authenticator, 'authenticate').rejects('error auth');
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
         try {
@@ -380,7 +379,7 @@ module('InternalSession', function (hooks) {
 
       test('updates the store', async function (assert) {
         assert.expect(1);
-        sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
+        sinon.stub(authenticator, 'authenticate').rejects('error auth');
         session.set('content', { some: 'property', authenticated: { some: 'other property' } });
 
         try {
@@ -395,7 +394,7 @@ module('InternalSession', function (hooks) {
       test('does not trigger the "authenticationSucceeded" event', async function (assert) {
         assert.expect(1);
         let triggered = false;
-        sinon.stub(authenticator, 'authenticate').returns(RSVP.reject('error auth'));
+        sinon.stub(authenticator, 'authenticate').rejects('error auth');
         session.one('authenticationSucceeded', () => (triggered = true));
 
         try {
@@ -408,7 +407,7 @@ module('InternalSession', function (hooks) {
 
     module('when the store rejects persistance', function (hooks) {
       hooks.beforeEach(function () {
-        sinon.stub(store, 'persist').returns(RSVP.reject());
+        sinon.stub(store, 'persist').rejects();
       });
 
       test('is not authenticated', async function (assert) {
@@ -424,7 +423,7 @@ module('InternalSession', function (hooks) {
 
   module('invalidation', function (hooks) {
     hooks.beforeEach(async function () {
-      sinon.stub(authenticator, 'authenticate').returns(RSVP.resolve({ some: 'property' }));
+      sinon.stub(authenticator, 'authenticate').resolves({ some: 'property' });
       await session.authenticate('authenticator:test');
     });
 
@@ -449,7 +448,7 @@ module('InternalSession', function (hooks) {
 
     module('when the authenticator resolves invalidation', function (hooks) {
       hooks.beforeEach(function () {
-        sinon.stub(authenticator, 'invalidate').returns(RSVP.resolve());
+        sinon.stub(authenticator, 'invalidate').resolves();
       });
 
       test('is not authenticated', async function (assert) {
@@ -498,7 +497,7 @@ module('InternalSession', function (hooks) {
     module('when the authenticator rejects invalidation', function () {
       test('stays authenticated', async function (assert) {
         assert.expect(1);
-        sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
+        sinon.stub(authenticator, 'invalidate').rejects('error');
 
         try {
           await session.invalidate();
@@ -509,7 +508,7 @@ module('InternalSession', function (hooks) {
 
       test('returns a rejecting promise', async function (assert) {
         assert.expect(1);
-        sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
+        sinon.stub(authenticator, 'invalidate').rejects('error');
 
         try {
           await session.invalidate();
@@ -521,7 +520,7 @@ module('InternalSession', function (hooks) {
 
       test('keeps its content', async function (assert) {
         assert.expect(1);
-        sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
+        sinon.stub(authenticator, 'invalidate').rejects('error');
 
         try {
           await session.invalidate();
@@ -535,7 +534,7 @@ module('InternalSession', function (hooks) {
 
       test('does not update the store', async function (assert) {
         assert.expect(1);
-        sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
+        sinon.stub(authenticator, 'invalidate').rejects('error');
 
         try {
           await session.invalidate();
@@ -550,7 +549,7 @@ module('InternalSession', function (hooks) {
 
       test('does not trigger the "invalidationSucceeded" event', async function (assert) {
         assert.expect(1);
-        sinon.stub(authenticator, 'invalidate').returns(RSVP.reject('error'));
+        sinon.stub(authenticator, 'invalidate').rejects('error');
         let triggered = false;
         session.one('invalidationSucceeded', () => (triggered = true));
 
@@ -566,7 +565,7 @@ module('InternalSession', function (hooks) {
 
     module('when the store rejects persistance', function (hooks) {
       hooks.beforeEach(function () {
-        sinon.stub(store, 'persist').returns(RSVP.reject());
+        sinon.stub(store, 'persist').rejects();
       });
 
       test('rejects but is not authenticated', async function (assert) {
@@ -633,7 +632,7 @@ module('InternalSession', function (hooks) {
     module('when the session is currently busy', function (hooks) {
       hooks.beforeEach(function () {
         sinon.stub(store, 'restore').returns(
-          new RSVP.Promise(resolve => {
+          new Promise(resolve => {
             next(() => resolve({ some: 'other property' }));
           })
         );
@@ -659,7 +658,7 @@ module('InternalSession', function (hooks) {
       module('when there is an authenticator factory in the event data', function () {
         module('when the authenticator resolves restoration', function (hooks) {
           hooks.beforeEach(function () {
-            sinon.stub(authenticator, 'restore').returns(RSVP.resolve({ some: 'other property' }));
+            sinon.stub(authenticator, 'restore').resolves({ some: 'other property' });
           });
 
           test('is authenticated', async function (assert) {
@@ -765,7 +764,7 @@ module('InternalSession', function (hooks) {
 
         module('when the authenticator rejects restoration', function (hooks) {
           hooks.beforeEach(function () {
-            sinon.stub(authenticator, 'restore').returns(RSVP.reject());
+            sinon.stub(authenticator, 'restore').rejects();
           });
 
           test('is not authenticated', async function (assert) {
