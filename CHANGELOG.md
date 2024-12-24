@@ -1,5 +1,39 @@
 # Changelog
 
+## Release (2024-12-24)
+
+ember-simple-auth 7.0.0 (major)
+
+#### :boom: Breaking Change
+* `ember-simple-auth`, `test-esa`
+  * [#2874](https://github.com/mainmatter/ember-simple-auth/pull/2874) feat: Use native promises, remove RSVP ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :rocket: Enhancement
+* `ember-simple-auth`, `test-esa`
+  * [#2811](https://github.com/mainmatter/ember-simple-auth/pull/2811) feat: support partitioned cookies ([@Gaurav0](https://github.com/Gaurav0))
+
+#### :memo: Documentation
+* [#2857](https://github.com/mainmatter/ember-simple-auth/pull/2857) fix: update authentication test reference ([@emmanuel-ferdman](https://github.com/emmanuel-ferdman))
+* [#2834](https://github.com/mainmatter/ember-simple-auth/pull/2834) Verified and updated links to ember-simple-auth.com/api/ ([@peter-scholtens](https://github.com/peter-scholtens))
+
+#### :house: Internal
+* `test-app`
+  * [#2860](https://github.com/mainmatter/ember-simple-auth/pull/2860) Action helper and modifier are deprecated in login-form.hbs ([@peter-scholtens](https://github.com/peter-scholtens))
+  * [#2854](https://github.com/mainmatter/ember-simple-auth/pull/2854) Create store.js (required in ember-data 6.0) ([@peter-scholtens](https://github.com/peter-scholtens))
+  * [#2835](https://github.com/mainmatter/ember-simple-auth/pull/2835) Expire cookie if RememberMe button is off (again) ([@peter-scholtens](https://github.com/peter-scholtens))
+* Other
+  * [#2824](https://github.com/mainmatter/ember-simple-auth/pull/2824) chore(deps): lock maintenance ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2822](https://github.com/mainmatter/ember-simple-auth/pull/2822) chore(deps): install eslint-config-prettier ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2819](https://github.com/mainmatter/ember-simple-auth/pull/2819) Prepare Release ([@github-actions[bot]](https://github.com/apps/github-actions))
+  * [#2820](https://github.com/mainmatter/ember-simple-auth/pull/2820) chore(release): fix release ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 5
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Emmanuel Ferdman ([@emmanuel-ferdman](https://github.com/emmanuel-ferdman))
+- Gaurav Munjal ([@Gaurav0](https://github.com/Gaurav0))
+- Peter C. S. Scholtens ([@peter-scholtens](https://github.com/peter-scholtens))
+- [@github-actions[bot]](https://github.com/apps/github-actions)
+
 ## Release (2024-09-09)
 
 
