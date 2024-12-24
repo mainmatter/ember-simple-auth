@@ -227,7 +227,7 @@ export default ObjectProxy.extend(Evented, {
   },
 
   _bindToStoreEvents() {
-    this.store.on('sessionDataUpdated', content => {
+    this.store.on('sessionDataUpdated', ({ detail: content }) => {
       if (!this._busy) {
         this._busy = true;
         let { authenticator: authenticatorFactory } = content.authenticated || {};

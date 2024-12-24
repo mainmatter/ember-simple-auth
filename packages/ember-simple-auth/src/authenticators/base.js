@@ -1,6 +1,6 @@
 import EmberObject from '@ember/object';
 
-export class AuthenticatorEventTarget extends EventTarget {}
+class AuthenticatorEventTarget extends EventTarget {}
 
 /**
   The base class for all authenticators. __This serves as a starting point for

@@ -1,5 +1,6 @@
 import EmberObject from '@ember/object';
-import Evented from '@ember/object/evented';
+
+class SessionStoreEventTarget extends EventTarget {}
 
 /**
   The base class for all session stores. __This serves as a starting point for
@@ -10,10 +11,10 @@ import Evented from '@ember/object/evented';
 
   @class BaseStore
   @extends Ember.Object
-  @uses Ember.Evented
   @public
 */
-export default EmberObject.extend(Evented, {
+export default class EsaBaseSessionStore extends EmberObject {
+  sessionStoreEvents = new SessionStoreEventTarget();
   /**
     Triggered when the session store's data changes due to an external event,
     e.g., from another tab or window of the same application. The session
@@ -41,7 +42,7 @@ export default EmberObject.extend(Evented, {
   */
   persist() {
     return Promise.reject();
-  },
+  }
 
   /**
     Returns all data currently stored as a plain object.
@@ -56,7 +57,7 @@ export default EmberObject.extend(Evented, {
   */
   restore() {
     return Promise.reject();
-  },
+  }
 
   /**
     Clears the store.
@@ -71,5 +72,24 @@ export default EmberObject.extend(Evented, {
   */
   clear() {
     return Promise.reject();
-  },
-});
+  }
+
+  on(event, cb) {
+    this.sessionStoreEvents.addEventListener(event, cb);
+  }
+
+  off(event, cb) {
+    this.sessionStoreEvents.removeEventListener(event, cb);
+  }
+
+  trigger(event, value) {
+    let customEvent;
+    if (value) {
+      customEvent = new CustomEvent(event, { detail: value });
+    } else {
+      customEvent = new CustomEvent(event);
+    }
+
+    this.sessionStoreEvents.dispatchEvent(customEvent);
+  }
+}
