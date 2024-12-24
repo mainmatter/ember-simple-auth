@@ -191,7 +191,7 @@ export default Base.extend({
   },
 
   _setupStoreEvents(store) {
-    store.on('sessionDataUpdated', data => {
+    store.on('sessionDataUpdated', ({ detail: data }) => {
       this.trigger('sessionDataUpdated', data);
     });
     return store;

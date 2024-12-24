@@ -210,7 +210,7 @@ export default function (options) {
           cookieName: 'ember_simple_auth-session',
         });
         triggered = false;
-        store.one('sessionDataUpdated', () => {
+        store.on('sessionDataUpdated', () => {
           triggered = true;
         });
       });
