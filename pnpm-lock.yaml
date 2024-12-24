@@ -280,6 +280,21 @@ importers:
       '@tsconfig/ember':
         specifier: ^3.0.8
         version: 3.0.8
+      '@types/ember__application':
+        specifier: ^4.0.11
+        version: 4.0.11(@babel/core@7.26.0)
+      '@types/ember__debug':
+        specifier: ^4.0.8
+        version: 4.0.8(@babel/core@7.26.0)
+      '@types/ember__object':
+        specifier: ^4.0.12
+        version: 4.0.12(@babel/core@7.26.0)
+      '@types/ember__routing':
+        specifier: ^4.0.22
+        version: 4.0.22(@babel/core@7.26.0)
+      '@types/ember__service':
+        specifier: ^4.0.9
+        version: 4.0.9(@babel/core@7.26.0)
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.18.1
         version: 8.18.1(@typescript-eslint/parser@8.18.1(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2)
@@ -13320,27 +13335,6 @@ snapshots:
     dependencies:
       '@types/ms': 0.7.34
 
-  '@types/ember@4.0.11':
-    dependencies:
-      '@types/ember__application': 4.0.11(@babel/core@7.26.0)
-      '@types/ember__array': 4.0.10(@babel/core@7.26.0)
-      '@types/ember__component': 4.0.22(@babel/core@7.26.0)
-      '@types/ember__controller': 4.0.12(@babel/core@7.26.0)
-      '@types/ember__debug': 4.0.8(@babel/core@7.26.0)
-      '@types/ember__engine': 4.0.11(@babel/core@7.26.0)
-      '@types/ember__error': 4.0.6
-      '@types/ember__object': 4.0.12(@babel/core@7.26.0)
-      '@types/ember__polyfills': 4.0.6
-      '@types/ember__routing': 4.0.22(@babel/core@7.26.0)
-      '@types/ember__runloop': 4.0.10
-      '@types/ember__service': 4.0.9(@babel/core@7.26.0)
-      '@types/ember__string': 3.0.15
-      '@types/ember__template': 4.0.7
-      '@types/ember__test': 4.0.6(@babel/core@7.26.0)
-      '@types/ember__utils': 4.0.7
-      '@types/rsvp': 4.0.9
-    optional: true
-
   '@types/ember@4.0.11(@babel/core@7.26.0)':
     dependencies:
       '@types/ember__application': 4.0.11(@babel/core@7.26.0)
@@ -13363,12 +13357,11 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
   '@types/ember__application@4.0.11(@babel/core@7.26.0)':
     dependencies:
       '@glimmer/component': 1.1.2(@babel/core@7.26.0)
-      '@types/ember': 4.0.11
+      '@types/ember': 4.0.11(@babel/core@7.26.0)
       '@types/ember__engine': 4.0.11(@babel/core@7.26.0)
       '@types/ember__object': 4.0.12(@babel/core@7.26.0)
       '@types/ember__owner': 4.0.9
@@ -13376,7 +13369,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
   '@types/ember__array@4.0.10(@babel/core@7.26.0)':
     dependencies:
@@ -13385,7 +13377,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
   '@types/ember__component@4.0.22(@babel/core@7.26.0)':
     dependencies:
@@ -13394,7 +13385,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
   '@types/ember__controller@4.0.12(@babel/core@7.26.0)':
     dependencies:
@@ -13402,7 +13392,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
   '@types/ember__debug@4.0.8(@babel/core@7.26.0)':
     dependencies:
@@ -13411,7 +13400,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
   '@types/ember__engine@4.0.11(@babel/core@7.26.0)':
     dependencies:
@@ -13420,10 +13408,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
-  '@types/ember__error@4.0.6':
-    optional: true
+  '@types/ember__error@4.0.6': {}
 
   '@types/ember__object@4.0.12(@babel/core@7.26.0)':
     dependencies:
@@ -13432,13 +13418,10 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
-  '@types/ember__owner@4.0.9':
-    optional: true
+  '@types/ember__owner@4.0.9': {}
 
-  '@types/ember__polyfills@4.0.6':
-    optional: true
+  '@types/ember__polyfills@4.0.6': {}
 
   '@types/ember__routing@4.0.22(@babel/core@7.26.0)':
     dependencies:
@@ -13449,12 +13432,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
-
-  '@types/ember__runloop@4.0.10':
-    dependencies:
-      '@types/ember': 4.0.11
-    optional: true
 
   '@types/ember__runloop@4.0.10(@babel/core@7.26.0)':
     dependencies:
@@ -13462,7 +13439,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
   '@types/ember__service@4.0.9(@babel/core@7.26.0)':
     dependencies:
@@ -13470,13 +13446,10 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
-  '@types/ember__string@3.0.15':
-    optional: true
+  '@types/ember__string@3.0.15': {}
 
-  '@types/ember__template@4.0.7':
-    optional: true
+  '@types/ember__template@4.0.7': {}
 
   '@types/ember__test@4.0.6(@babel/core@7.26.0)':
     dependencies:
@@ -13484,12 +13457,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
-
-  '@types/ember__utils@4.0.7':
-    dependencies:
-      '@types/ember': 4.0.11
-    optional: true
 
   '@types/ember__utils@4.0.7(@babel/core@7.26.0)':
     dependencies:
@@ -13497,7 +13464,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -13595,8 +13561,7 @@ snapshots:
       '@types/glob': 8.1.0
       '@types/node': 22.5.5
 
-  '@types/rsvp@4.0.9':
-    optional: true
+  '@types/rsvp@4.0.9': {}
 
   '@types/send@0.17.4':
     dependencies:
@@ -16412,12 +16377,6 @@ snapshots:
       - supports-color
 
   ember-cookies@1.1.2:
-    dependencies:
-      '@embroider/addon-shim': 1.8.9
-    transitivePeerDependencies:
-      - supports-color
-
-  ember-cookies@1.2.0:
     dependencies:
       '@embroider/addon-shim': 1.8.9
     transitivePeerDependencies:
