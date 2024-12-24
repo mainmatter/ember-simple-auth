@@ -1,4 +1,3 @@
-import { Promise } from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
 import BaseAuthenticator from './base';
@@ -77,7 +76,7 @@ export default BaseAuthenticator.extend({
     @memberof DeviseAuthenticator
     @method restore
     @param {Object} data The data to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+    @return {Promise} A promise that when it resolves results in the session becoming or remaining authenticated
     @public
   */
   restore(data) {
@@ -101,7 +100,7 @@ export default BaseAuthenticator.extend({
     @method authenticate
     @param {String} identification The user's identification
     @param {String} password The user's password
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated. If authentication fails, the promise will reject with the server response; however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
+    @return {Promise} A promise that when it resolves results in the session becoming authenticated. If authentication fails, the promise will reject with the server response; however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
     @public
   */
   authenticate(identification, password) {
@@ -144,7 +143,7 @@ export default BaseAuthenticator.extend({
 
     @memberof DeviseAuthenticator
     @method invalidate
-    @return {Ember.RSVP.Promise} A resolving promise
+    @return {Promise} A resolving promise
     @public
   */
   invalidate() {

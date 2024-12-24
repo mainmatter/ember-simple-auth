@@ -150,7 +150,7 @@ export default Service.extend({
     @method authenticate
     @param {String} authenticator The authenticator to use to authenticate the session
     @param {Any} [...args] The arguments to pass to the authenticator; depending on the type of authenticator these might be a set of credentials, a Facebook OAuth Token, etc.
-    @return {RSVP.Promise} A promise that resolves when the session was authenticated successfully and rejects otherwise
+    @return {Promise} A promise that resolves when the session was authenticated successfully and rejects otherwise
     @public
   */
   authenticate() {
@@ -184,7 +184,7 @@ export default Service.extend({
     @memberof SessionService
     @method invalidate
     @param {Array} ...args arguments that will be passed to the authenticator
-    @return {RSVP.Promise} A promise that resolves when the session was invalidated successfully and rejects otherwise
+    @return {Promise} A promise that resolves when the session was invalidated successfully and rejects otherwise
     @public
   */
   invalidate() {

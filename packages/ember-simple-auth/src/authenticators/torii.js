@@ -1,4 +1,3 @@
-import RSVP from 'rsvp';
 import { assert, deprecate } from '@ember/debug';
 import { isPresent, isEmpty } from '@ember/utils';
 import BaseAuthenticator from './base';
@@ -59,7 +58,7 @@ export default BaseAuthenticator.extend({
     @memberof ToriiAuthenticator
     @method restore
     @param {Object} data The data to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+    @return {Promise} A promise that when it resolves results in the session becoming or remaining authenticated
     @public
   */
   restore(data) {
@@ -83,7 +82,7 @@ export default BaseAuthenticator.extend({
         );
     } else {
       delete this._provider;
-      return RSVP.reject();
+      return Promise.reject();
     }
   },
 
@@ -98,7 +97,7 @@ export default BaseAuthenticator.extend({
     @method authenticate
     @param {String} provider The torii provider to authenticate the session with
     @param {Object} options The options to pass to the torii provider
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
+    @return {Promise} A promise that when it resolves results in the session becoming authenticated
     @public
   */
   authenticate(provider, options) {
@@ -119,7 +118,7 @@ export default BaseAuthenticator.extend({
 
     @memberof ToriiAuthenticator
     @method invalidate
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
+    @return {Promise} A promise that when it resolves results in the session being invalidated
     @public
   */
   invalidate(data) {

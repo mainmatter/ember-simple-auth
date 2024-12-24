@@ -1,5 +1,3 @@
-import RSVP from 'rsvp';
-
 import { bind } from '@ember/runloop';
 import { getOwner } from '@ember/application';
 import BaseStore from './base';
@@ -60,7 +58,7 @@ export default BaseStore.extend({
     @memberof LocalStorageStore
     @method persist
     @param {Object} data The data to persist
-    @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
+    @return {Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
   persist(data) {
@@ -68,7 +66,7 @@ export default BaseStore.extend({
     data = JSON.stringify(data || {});
     localStorage.setItem(this.key, data);
 
-    return RSVP.resolve();
+    return Promise.resolve();
   },
 
   /**
@@ -76,13 +74,13 @@ export default BaseStore.extend({
 
     @memberof LocalStorageStore
     @method restore
-    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
+    @return {Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
   */
   restore() {
     let data = localStorage.getItem(this.key);
 
-    return RSVP.resolve(JSON.parse(data) || {});
+    return Promise.resolve(JSON.parse(data) || {});
   },
 
   /**
@@ -92,14 +90,14 @@ export default BaseStore.extend({
 
     @memberof LocalStorageStore
     @method clear
-    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
+    @return {Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public
   */
   clear() {
     localStorage.removeItem(this.key);
     this._lastData = {};
 
-    return RSVP.resolve();
+    return Promise.resolve();
   },
 
   _handleStorageEvent(e) {

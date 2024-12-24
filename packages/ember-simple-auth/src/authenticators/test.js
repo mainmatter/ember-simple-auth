@@ -1,16 +1,15 @@
-import RSVP from 'rsvp';
 import BaseAuthenticator from './base';
 
 export default BaseAuthenticator.extend({
   restore(data) {
-    return RSVP.resolve(data);
+    return Promise.resolve(data);
   },
 
   authenticate(data) {
-    return RSVP.resolve(data);
+    return Promise.resolve(data);
   },
 
   invalidate() {
-    return RSVP.resolve();
+    return Promise.resolve();
   },
 });

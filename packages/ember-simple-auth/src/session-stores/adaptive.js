@@ -204,7 +204,7 @@ export default Base.extend({
     @memberof AdaptiveStore
     @method persist
     @param {Object} data The data to persist
-    @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
+    @return {Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
   persist() {
@@ -217,7 +217,7 @@ export default Base.extend({
 
     @memberof AdaptiveStore
     @method restore
-    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
+    @return {Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
   */
   restore() {
@@ -231,7 +231,7 @@ export default Base.extend({
 
     @memberof AdaptiveStore
     @method clear
-    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
+    @return {Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public
   */
   clear() {

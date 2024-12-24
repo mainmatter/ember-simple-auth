@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import { run } from '@ember/runloop';
 import sinonjs from 'sinon';
+import { settled } from '@ember/test-helpers';
 
 export default function (options) {
   let sinon;
@@ -33,18 +34,19 @@ export default function (options) {
       assert.ok(window.addEventListener.calledOnce);
     });
 
-    test('triggers the "sessionDataUpdated" event when the data in the browser storage has changed', function (assert) {
+    test('triggers the "sessionDataUpdated" event when the data in the browser storage has changed', async function (assert) {
       let triggered = false;
       store.on('sessionDataUpdated', () => {
         triggered = true;
       });
 
       window.dispatchEvent(new StorageEvent('storage', { key: store.get('key') }));
+      await settled();
 
       assert.ok(triggered);
     });
 
-    test('does not trigger the "sessionDataUpdated" event when the data in the browser storage has not changed', function (assert) {
+    test('does not trigger the "sessionDataUpdated" event when the data in the browser storage has not changed', async function (assert) {
       let triggered = false;
       store.on('sessionDataUpdated', () => {
         triggered = true;
@@ -52,17 +54,19 @@ export default function (options) {
 
       store.persist({ key: 'value' }); // this data will be read again when the event is handled so that no change will be detected
       window.dispatchEvent(new StorageEvent('storage', { key: store.get('key') }));
+      await settled();
 
       assert.notOk(triggered);
     });
 
-    test('does not trigger the "sessionDataUpdated" event when the data in the browser storage has changed for a different key', function (assert) {
+    test('does not trigger the "sessionDataUpdated" event when the data in the browser storage has changed for a different key', async function (assert) {
       let triggered = false;
       store.on('sessionDataUpdated', () => {
         triggered = true;
       });
 
       window.dispatchEvent(new StorageEvent('storage', { key: 'another key' }));
+      await settled();
 
       assert.notOk(triggered);
     });

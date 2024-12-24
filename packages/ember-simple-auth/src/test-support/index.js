@@ -1,6 +1,5 @@
 import { get } from '@ember/object';
 import { getContext, settled } from '@ember/test-helpers';
-import Promise from 'rsvp';
 import Test from '../authenticators/test';
 
 const SESSION_SERVICE_KEY = 'service:session';

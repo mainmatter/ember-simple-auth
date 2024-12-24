@@ -1,4 +1,3 @@
-import RSVP from 'rsvp';
 import EmberObject from '@ember/object';
 import Evented from '@ember/object/evented';
 
@@ -37,11 +36,11 @@ export default EmberObject.extend(Evented, {
     @memberof BaseStore
     @method persist
     @param {Object} data The data to persist
-    @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
+    @return {Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
   persist() {
-    return RSVP.reject();
+    return Promise.reject();
   },
 
   /**
@@ -52,11 +51,11 @@ export default EmberObject.extend(Evented, {
 
     @memberof BaseStore
     @method restore
-    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
+    @return {Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
   */
   restore() {
-    return RSVP.reject();
+    return Promise.reject();
   },
 
   /**
@@ -67,10 +66,10 @@ export default EmberObject.extend(Evented, {
 
     @memberof BaseStore
     @method clear
-    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
+    @return {Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public
   */
   clear() {
-    return RSVP.reject();
+    return Promise.reject();
   },
 });

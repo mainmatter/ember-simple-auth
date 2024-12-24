@@ -1,4 +1,3 @@
-import RSVP from 'rsvp';
 import Evented from '@ember/object/evented';
 import EmberObject from '@ember/object';
 
@@ -104,12 +103,12 @@ export default EmberObject.extend(Evented, {
     @memberof BaseAuthenticator
     @method restore
     @param {Object} data The data to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+    @return {Promise} A promise that when it resolves results in the session becoming or remaining authenticated
     @member
     @public
   */
   restore() {
-    return RSVP.reject();
+    return Promise.reject();
   },
 
   /**
@@ -133,12 +132,12 @@ export default EmberObject.extend(Evented, {
     @memberof BaseAuthenticator
     @method authenticate
     @param {Any} [...args] The arguments that the authenticator requires to authenticate the session
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
+    @return {Promise} A promise that when it resolves results in the session becoming authenticated
     @member
     @public
   */
   authenticate() {
-    return RSVP.reject();
+    return Promise.reject();
   },
 
   /**
@@ -158,11 +157,11 @@ export default EmberObject.extend(Evented, {
     @method invalidate
     @param {Object} data The current authenticated session data
     @param {Array} ...args additional arguments as required by the authenticator
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
+    @return {Promise} A promise that when it resolves results in the session being invalidated
     @member
     @public
   */
   invalidate() {
-    return RSVP.resolve();
+    return Promise.resolve();
   },
 });

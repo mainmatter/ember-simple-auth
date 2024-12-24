@@ -1,4 +1,3 @@
-import RSVP from 'rsvp';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { later, cancel, scheduleOnce, next } from '@ember/runloop';
@@ -227,7 +226,7 @@ export default BaseStore.extend({
     @memberof CookieStore
     @method persist
     @param {Object} data The data to persist
-    @return {RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
+    @return {Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
   persist(data) {
@@ -235,7 +234,7 @@ export default BaseStore.extend({
     data = JSON.stringify(data || {});
     let expiration = this._calculateExpirationTime();
     this._write(data, expiration);
-    return RSVP.resolve();
+    return Promise.resolve();
   },
 
   /**
@@ -243,15 +242,15 @@ export default BaseStore.extend({
 
     @memberof CookieStore
     @method restore
-    @return {RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
+    @return {Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
   */
   restore() {
     let data = this._read(this.get('cookieName'));
     if (isEmpty(data)) {
-      return RSVP.resolve({});
+      return Promise.resolve({});
     } else {
-      return RSVP.resolve(JSON.parse(data));
+      return Promise.resolve(JSON.parse(data));
     }
   },
 
@@ -260,13 +259,13 @@ export default BaseStore.extend({
 
     @memberof CookieStore
     @method clear
-    @return {RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
+    @return {Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public
   */
   clear() {
     this._write('', 0);
     this._lastData = {};
-    return RSVP.resolve();
+    return Promise.resolve();
   },
 
   _read(name) {
@@ -341,7 +340,7 @@ export default BaseStore.extend({
     if (this._isPageVisible()) {
       return this._renew();
     } else {
-      return RSVP.resolve();
+      return Promise.resolve();
     }
   },
 
