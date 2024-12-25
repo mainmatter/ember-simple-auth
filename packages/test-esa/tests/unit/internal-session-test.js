@@ -105,7 +105,7 @@ module('InternalSession', function (hooks) {
       test('triggers the "invalidationSucceeded" event', async function (assert) {
         assert.expect(1);
         let triggered = false;
-        session.one('invalidationSucceeded', () => {
+        session.on('invalidationSucceeded', () => {
           triggered = true;
         });
         authenticator.trigger('sessionDataInvalidated');
@@ -217,7 +217,7 @@ module('InternalSession', function (hooks) {
 
         test('does not trigger the "authenticationSucceeded" event', async function (assert) {
           let triggered = false;
-          session.one('authenticationSucceeded', () => (triggered = true));
+          session.on('authenticationSucceeded', () => (triggered = true));
           await session.restore();
 
           assert.notOk(triggered);
@@ -329,7 +329,7 @@ module('InternalSession', function (hooks) {
 
       test('triggers the "authenticationSucceeded" event', async function (assert) {
         let triggered = false;
-        session.one('authenticationSucceeded', () => (triggered = true));
+        session.on('authenticationSucceeded', () => (triggered = true));
 
         await session.authenticate('authenticator:test');
 
@@ -395,7 +395,7 @@ module('InternalSession', function (hooks) {
         assert.expect(1);
         let triggered = false;
         sinon.stub(authenticator, 'authenticate').rejects('error auth');
-        session.one('authenticationSucceeded', () => (triggered = true));
+        session.on('authenticationSucceeded', () => (triggered = true));
 
         try {
           await session.authenticate('authenticator:test');
@@ -486,7 +486,7 @@ module('InternalSession', function (hooks) {
 
       test('triggers the "invalidationSucceeded" event', async function (assert) {
         let triggered = false;
-        session.one('invalidationSucceeded', () => (triggered = true));
+        session.on('invalidationSucceeded', () => (triggered = true));
 
         await session.invalidate();
 
@@ -551,7 +551,7 @@ module('InternalSession', function (hooks) {
         assert.expect(1);
         sinon.stub(authenticator, 'invalidate').rejects('error');
         let triggered = false;
-        session.one('invalidationSucceeded', () => (triggered = true));
+        session.on('invalidationSucceeded', () => (triggered = true));
 
         try {
           await session.invalidate();
@@ -723,7 +723,7 @@ module('InternalSession', function (hooks) {
             test('does not trigger the "authenticationSucceeded" event', async function (assert) {
               assert.expect(1);
               let triggered = false;
-              session.one('authenticationSucceeded', () => (triggered = true));
+              session.on('authenticationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', {
                 some: 'other property',
                 authenticated: { authenticator: 'authenticator:test' },
@@ -746,7 +746,7 @@ module('InternalSession', function (hooks) {
             test('triggers the "authenticationSucceeded" event', async function (assert) {
               assert.expect(1);
               let triggered = false;
-              session.one('authenticationSucceeded', () => (triggered = true));
+              session.on('authenticationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', {
                 some: 'other property',
                 authenticated: { authenticator: 'authenticator:test' },
@@ -828,7 +828,7 @@ module('InternalSession', function (hooks) {
             test('triggers the "invalidationSucceeded" event', async function (assert) {
               assert.expect(1);
               let triggered = false;
-              session.one('invalidationSucceeded', () => (triggered = true));
+              session.on('invalidationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', {
                 some: 'other property',
                 authenticated: { authenticator: 'authenticator:test' },
@@ -851,7 +851,7 @@ module('InternalSession', function (hooks) {
             test('does not trigger the "invalidationSucceeded" event', async function (assert) {
               assert.expect(1);
               let triggered = false;
-              session.one('invalidationSucceeded', () => (triggered = true));
+              session.on('invalidationSucceeded', () => (triggered = true));
               store.trigger('sessionDataUpdated', {
                 some: 'other property',
                 authenticated: { authenticator: 'authenticator:test' },
@@ -921,7 +921,7 @@ module('InternalSession', function (hooks) {
           test('triggers the "invalidationSucceeded" event', async function (assert) {
             assert.expect(1);
             let triggered = false;
-            session.one('invalidationSucceeded', () => (triggered = true));
+            session.on('invalidationSucceeded', () => (triggered = true));
             store.trigger('sessionDataUpdated', { some: 'other property' });
 
             await new Promise(resolve => {
@@ -941,7 +941,7 @@ module('InternalSession', function (hooks) {
           test('does not trigger the "invalidationSucceeded" event', async function (assert) {
             assert.expect(1);
             let triggered = false;
-            session.one('invalidationSucceeded', () => (triggered = true));
+            session.on('invalidationSucceeded', () => (triggered = true));
             store.trigger('sessionDataUpdated', { some: 'other property' });
 
             await new Promise(resolve => {
@@ -954,7 +954,7 @@ module('InternalSession', function (hooks) {
 
           test('it does not trigger the "sessionInvalidationFailed" event', async function (assert) {
             let triggered = false;
-            session.one('sessionInvalidationFailed', () => (triggered = true));
+            session.on('sessionInvalidationFailed', () => (triggered = true));
 
             await session.invalidate();
 
