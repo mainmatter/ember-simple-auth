@@ -59,7 +59,7 @@ module('AdaptiveStore', function (hooks) {
     module('Behaviour', function (hooks) {
       itBehavesLikeACookieStore({
         hooks,
-        store(sinon, owner, storeOptions) {
+        store(sinon, owner, { adaptive: storeOptions } = {}) {
           owner.register('service:cookies', FakeCookieService);
           let cookieService = owner.lookup('service:cookies');
           sinon.spy(cookieService, 'read');

@@ -3,6 +3,7 @@ import { next, run } from '@ember/runloop';
 import { registerWarnHandler } from '@ember/debug';
 import sinonjs from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';
+import CookieStore from 'ember-simple-auth/session-stores/cookie';
 
 let warnings;
 registerWarnHandler((message, options, next) => {
@@ -173,8 +174,14 @@ export default function (options) {
     hooks.beforeEach(async function () {
       run(() => {
         store = options.store(sinon, this.owner, {
-          cookieName: 'test-session',
-          cookieExpirationTime: 60,
+          cookie: class TestRenewCookieStore extends CookieStore {
+            cookieName = 'test-session';
+            cookieExpirationTime = 60;
+          },
+          adaptive: {
+            cookieName: 'test-session',
+            cookieExpirationTime: 60,
+          },
         });
         cookieService = store.get('_cookies');
       });
@@ -207,7 +214,12 @@ export default function (options) {
     hooks.beforeEach(async function () {
       run(() => {
         store = options.store(sinon, this.owner, {
-          cookieName: 'ember_simple_auth-session',
+          cookie: class TestRenewCookieStore extends CookieStore {
+            cookieName = 'ember_simple_auth-session';
+          },
+          adaptive: {
+            cookieName: 'ember_simple_auth-session',
+          },
         });
         triggered = false;
         store.on('sessionDataUpdated', () => {
@@ -271,8 +283,14 @@ export default function (options) {
       run(() => {
         cookieService = FakeCookieService.create();
         store = options.store(sinon, this.owner, {
-          _cookieName: 'session-foo',
-          _cookieExpirationTime: 1000,
+          cookie: class TestRenewCookieStore extends CookieStore {
+            _cookieName = 'session-foo';
+            _cookieExpirationTime = 1000;
+          },
+          adaptive: {
+            _cookieName: 'session-foo',
+            _cookieExpirationTime: 1000,
+          },
         });
         cookieService = store.get('_cookies') || store.get('_store._cookies');
         cookieSpy = spyRewriteCookieMethod(sinon, store);
@@ -423,7 +441,12 @@ export default function (options) {
     hooks.beforeEach(async function () {
       run(() => {
         store = options.store(sinon, this.owner, {
-          cookieExpirationTime: expirationTime,
+          cookie: class TestRenewCookieStore extends CookieStore {
+            cookieExpirationTime = expirationTime;
+          },
+          adaptive: {
+            cookieExpirationTime: expirationTime,
+          },
         });
         cookieService = store.get('_cookies');
       });
