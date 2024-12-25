@@ -35,8 +35,8 @@ deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
   @extends BaseAuthenticator
   @public
 */
-export default BaseAuthenticator.extend({
-  _provider: null,
+export default class ToriiAuthenticator extends BaseAuthenticator {
+  _provider = null;
 
   /**
     Restores the session by calling the torii provider's `fetch` method.
@@ -84,7 +84,7 @@ export default BaseAuthenticator.extend({
       delete this._provider;
       return Promise.reject();
     }
-  },
+  }
 
   /**
     Authenticates the session by opening the specified torii provider. For more
@@ -109,7 +109,7 @@ export default BaseAuthenticator.extend({
         this._authenticateWithProvider(provider, data);
         return data;
       });
-  },
+  }
 
   /**
     Closes the torii provider. If the provider is successfully closed, this
@@ -127,12 +127,12 @@ export default BaseAuthenticator.extend({
       .then(() => {
         delete this._provider;
       });
-  },
+  }
 
   _authenticateWithProvider(provider, data) {
     data.provider = provider;
     this._provider = data.provider;
-  },
+  }
 
   _assertToriiIsPresent() {
     const torii = this.get('torii');
@@ -140,5 +140,5 @@ export default BaseAuthenticator.extend({
       'You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with "torii: Ember.inject.service()".',
       isPresent(torii)
     );
-  },
-});
+  }
+}
