@@ -13,7 +13,8 @@ export default class LoginFormComponent extends Component {
   @tracked rememberMe;
 
   @action
-  async authenticateWithOAuth2() {
+  async authenticateWithOAuth2(event) {
+    event.preventDefault();
     try {
       let { identification, password } = this;
       await this.session.authenticate('authenticator:oauth2', identification, password);
