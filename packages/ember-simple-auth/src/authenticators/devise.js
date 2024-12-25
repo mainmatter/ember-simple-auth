@@ -17,7 +17,7 @@ const JSON_CONTENT_TYPE = 'application/json';
   @extends BaseAuthenticator
   @public
 */
-export default BaseAuthenticator.extend({
+export default class DeviseAuthenticator extends BaseAuthenticator {
   /**
     The endpoint on the server that the authentication request is sent to.
 
@@ -27,7 +27,7 @@ export default BaseAuthenticator.extend({
     @default '/users/sign_in'
     @public
   */
-  serverTokenEndpoint: '/users/sign_in',
+  serverTokenEndpoint = '/users/sign_in';
 
   /**
     The devise resource name. __This will be used in the request and also be
@@ -39,7 +39,7 @@ export default BaseAuthenticator.extend({
     @default 'user'
     @public
   */
-  resourceName: 'user',
+  resourceName = 'user';
 
   /**
     The token attribute name. __This will be used in the request and also be
@@ -51,7 +51,7 @@ export default BaseAuthenticator.extend({
     @default 'token'
     @public
   */
-  tokenAttributeName: 'token',
+  tokenAttributeName = 'token';
 
   /**
     The identification attribute name. __This will be used in the request and
@@ -63,7 +63,7 @@ export default BaseAuthenticator.extend({
     @default 'email'
     @public
   */
-  identificationAttributeName: 'email',
+  identificationAttributeName = 'email';
 
   /**
     Restores the session from a session data object; __returns a resolving
@@ -80,9 +80,8 @@ export default BaseAuthenticator.extend({
     @public
   */
   restore(data) {
-    // eslint-disable-next-line prefer-promise-reject-errors
     return this._validate(data) ? Promise.resolve(data) : Promise.reject();
-  },
+  }
 
   /**
     Authenticates the session with the specified `identification` and
@@ -136,7 +135,7 @@ export default BaseAuthenticator.extend({
         })
         .catch(error => run(null, reject, error));
     });
-  },
+  }
 
   /**
     Does nothing
@@ -148,7 +147,7 @@ export default BaseAuthenticator.extend({
   */
   invalidate() {
     return Promise.resolve();
-  },
+  }
 
   /**
     Makes a request to the Devise server using
@@ -161,7 +160,8 @@ export default BaseAuthenticator.extend({
     @return {Promise} The promise returned by `fetch`
     @protected
   */
-  makeRequest: waitFor(function (data, options = {}) {
+  @waitFor
+  makeRequest(data, options = {}) {
     let url = options.url || this.get('serverTokenEndpoint');
     let requestOptions = {};
     let body = JSON.stringify(data);
@@ -176,7 +176,7 @@ export default BaseAuthenticator.extend({
     Object.assign(requestOptions, options || {});
 
     return fetch(url, requestOptions);
-  }),
+  }
 
   _validate(data) {
     const tokenAttributeName = this.get('tokenAttributeName');
@@ -185,5 +185,5 @@ export default BaseAuthenticator.extend({
     const _data = data[resourceName] ? data[resourceName] : data;
 
     return !isEmpty(_data[tokenAttributeName]) && !isEmpty(_data[identificationAttributeName]);
-  },
-});
+  }
+}

@@ -8,7 +8,7 @@ module('DeviseAuthenticator', function (hooks) {
 
   hooks.beforeEach(function () {
     server = new Pretender();
-    authenticator = Devise.create();
+    authenticator = new Devise();
   });
 
   hooks.afterEach(function () {
@@ -31,11 +31,12 @@ module('DeviseAuthenticator', function (hooks) {
 
     module('when the data contains a custom token and email attribute', function (hooks) {
       hooks.beforeEach(function () {
-        authenticator = Devise.extend({
-          resourceName: 'employee',
-          tokenAttributeName: 'token',
-          identificationAttributeName: 'email',
-        }).create();
+        class TestEmployeeDevise extends Devise {
+          resourceName = 'employee';
+          tokenAttributeName = 'token';
+          identificationAttributeName = 'email';
+        }
+        authenticator = new TestEmployeeDevise();
       });
 
       test('resolves with the correct data', async function (assert) {

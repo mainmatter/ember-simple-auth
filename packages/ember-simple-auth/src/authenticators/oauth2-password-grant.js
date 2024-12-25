@@ -21,7 +21,7 @@ import { isTesting } from '@embroider/macros';
   @extends BaseAuthenticator
   @public
 */
-export default BaseAuthenticator.extend({
+export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator {
   /**
     Triggered when the authenticator refreshed the access token (see
     [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).
@@ -46,7 +46,7 @@ export default BaseAuthenticator.extend({
     @default null
     @public
   */
-  clientId: null,
+  clientId = null;
 
   /**
     The endpoint on the server that authentication and token refresh requests
@@ -58,7 +58,7 @@ export default BaseAuthenticator.extend({
     @default '/token'
     @public
   */
-  serverTokenEndpoint: '/token',
+  serverTokenEndpoint = '/token';
 
   /**
     The endpoint on the server that token revocation requests are sent to. Only
@@ -75,7 +75,7 @@ export default BaseAuthenticator.extend({
     @default null
     @public
   */
-  serverTokenRevocationEndpoint: null,
+  serverTokenRevocationEndpoint = null;
 
   /**
     Sets whether the authenticator automatically refreshes access tokens if the
@@ -87,7 +87,7 @@ export default BaseAuthenticator.extend({
     @default true
     @public
   */
-  refreshAccessTokens: true,
+  refreshAccessTokens = true;
 
   /**
     Sets whether the authenticator use the scope when refreshing access tokens
@@ -99,7 +99,7 @@ export default BaseAuthenticator.extend({
     @default false
     @public
   */
-  refreshAccessTokensWithScope: false,
+  refreshAccessTokensWithScope = false;
 
   /**
     The offset time in milliseconds to refresh the access token. This must
@@ -122,9 +122,9 @@ export default BaseAuthenticator.extend({
     const max = 10;
 
     return (Math.floor(Math.random() * (max - min)) + min) * 1000;
-  },
+  }
 
-  _refreshTokenTimeout: null,
+  _refreshTokenTimeout = null;
 
   /**
     Restores the session from a session data object; __will return a resolving
@@ -170,7 +170,7 @@ export default BaseAuthenticator.extend({
         }
       }
     });
-  },
+  }
 
   /**
     Authenticates the session with the specified `identification`, `password`
@@ -262,7 +262,7 @@ export default BaseAuthenticator.extend({
         }
       );
     });
-  },
+  }
 
   /**
     If token revocation is enabled, this will revoke the access token (and the
@@ -308,7 +308,7 @@ export default BaseAuthenticator.extend({
         Promise.all(requests).then(succeed, succeed);
       }
     });
-  },
+  }
 
   /**
     Makes a request to the OAuth 2.0 server.
@@ -321,7 +321,8 @@ export default BaseAuthenticator.extend({
     @return {Promise} A promise that resolves with the response object
     @protected
   */
-  makeRequest: waitFor(function (url, data, headers = {}) {
+  @waitFor
+  makeRequest(url, data, headers = {}) {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
     const clientId = this.get('clientId');
@@ -361,7 +362,7 @@ export default BaseAuthenticator.extend({
         })
         .catch(reject);
     });
-  }),
+  }
 
   _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
     const refreshAccessTokens = this.get('refreshAccessTokens') && !isFastBoot(getOwner(this));
@@ -385,7 +386,7 @@ export default BaseAuthenticator.extend({
         }
       }
     }
-  },
+  }
 
   _refreshAccessToken(expiresIn, refreshToken, scope) {
     const data = { grant_type: 'refresh_token', refresh_token: refreshToken };
@@ -426,15 +427,15 @@ export default BaseAuthenticator.extend({
         }
       );
     });
-  },
+  }
 
   _absolutizeExpirationTime(expiresIn) {
     if (!isEmpty(expiresIn)) {
       return new Date(new Date().getTime() + expiresIn * 1000).getTime();
     }
-  },
+  }
 
   _validate(data) {
     return !isEmpty(data['access_token']);
-  },
-});
+  }
+}

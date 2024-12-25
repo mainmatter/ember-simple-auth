@@ -42,7 +42,7 @@ export function parseResponse(locationHash) {
  @extends BaseAuthenticator
  @public
  */
-export default BaseAuthenticator.extend({
+export default class OAuth2ImplicitGrantAuthenticator extends BaseAuthenticator {
   /**
    Restores the session from a session data object; __will return a resolving
    promise when there is a non-empty `access_token` in the session data__ and
@@ -62,7 +62,7 @@ export default BaseAuthenticator.extend({
 
       return resolve(data);
     });
-  },
+  }
 
   /**
    Authenticates the session using the specified location `hash`
@@ -89,7 +89,7 @@ export default BaseAuthenticator.extend({
         resolve(hash);
       }
     });
-  },
+  }
 
   /**
    This method simply returns a resolving promise.
@@ -101,11 +101,11 @@ export default BaseAuthenticator.extend({
    */
   invalidate() {
     return Promise.resolve();
-  },
+  }
 
   _validateData(data) {
     // see https://tools.ietf.org/html/rfc6749#section-4.2.2
 
     return !isEmpty(data) && !isEmpty(data.access_token);
-  },
-});
+  }
+}
