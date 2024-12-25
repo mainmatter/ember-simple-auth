@@ -1,10 +1,11 @@
 import { isEmpty, isNone } from '@ember/utils';
 import ObjectProxy from '@ember/object/proxy';
-import Evented from '@ember/object/evented';
 import { set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
 import { getOwner, setOwner } from '@ember/application';
 import { isTesting } from '@embroider/macros';
+
+class SessionEventTarget extends EventTarget {}
 
 /**
   __An internal implementation of Session. Communicates with stores and emits events.__
@@ -14,7 +15,7 @@ import { isTesting } from '@embroider/macros';
   @private
 */
 
-export default ObjectProxy.extend(Evented, {
+export default ObjectProxy.extend({
   /**
     Triggered whenever the session is successfully authenticated. This happens
     when the session gets authenticated via
@@ -46,6 +47,7 @@ export default ObjectProxy.extend(Evented, {
   store: null,
   isAuthenticated: false,
   attemptedTransition: null,
+  sessionEvents: null,
 
   init() {
     this._super(...arguments);
@@ -55,6 +57,7 @@ export default ObjectProxy.extend(Evented, {
       storeFactory = 'session-store:test';
     }
 
+    this.sessionEvents = new SessionEventTarget();
     this.set('store', getOwner(this).lookup(storeFactory));
     this._busy = false;
     this._bindToStoreEvents();
@@ -94,7 +97,7 @@ export default ObjectProxy.extend(Evented, {
     let authenticator = this._lookupAuthenticator(this.authenticator);
     return authenticator.invalidate(this.content.authenticated, ...arguments).then(
       () => {
-        authenticator.off('sessionDataUpdated', this, this._onSessionDataUpdated);
+        authenticator.off('sessionDataUpdated', this._onSessionDataUpdated.bind(this));
         this._busy = false;
         return this._clear(true);
       },
@@ -214,11 +217,11 @@ export default ObjectProxy.extend(Evented, {
 
   _bindToAuthenticatorEvents() {
     const authenticator = this._lookupAuthenticator(this.authenticator);
-    authenticator.on('sessionDataUpdated', this, this._onSessionDataUpdated);
-    authenticator.on('sessionDataInvalidated', this, this._onSessionDataInvalidated);
+    authenticator.on('sessionDataUpdated', this._onSessionDataUpdated.bind(this));
+    authenticator.on('sessionDataInvalidated', this._onSessionDataInvalidated.bind(this));
   },
 
-  _onSessionDataUpdated(content) {
+  _onSessionDataUpdated({ detail: content }) {
     this._setup(this.authenticator, content);
   },
 
@@ -227,7 +230,7 @@ export default ObjectProxy.extend(Evented, {
   },
 
   _bindToStoreEvents() {
-    this.store.on('sessionDataUpdated', content => {
+    this.store.on('sessionDataUpdated', ({ detail: content }) => {
       if (!this._busy) {
         this._busy = true;
         let { authenticator: authenticatorFactory } = content.authenticated || {};
@@ -268,5 +271,24 @@ export default ObjectProxy.extend(Evented, {
     );
     setOwner(authenticator, owner);
     return authenticator;
+  },
+
+  on(event, cb) {
+    this.sessionEvents.addEventListener(event, cb);
+  },
+
+  off(event, cb) {
+    this.sessionEvents.removeEventListener(event, cb);
+  },
+
+  trigger(event, value) {
+    let customEvent;
+    if (value) {
+      customEvent = new CustomEvent(event, { detail: value });
+    } else {
+      customEvent = new CustomEvent(event);
+    }
+
+    this.sessionEvents.dispatchEvent(customEvent);
   },
 });

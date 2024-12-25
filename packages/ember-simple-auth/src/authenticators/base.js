@@ -1,5 +1,6 @@
-import Evented from '@ember/object/evented';
 import EmberObject from '@ember/object';
+
+class AuthenticatorEventTarget extends EventTarget {}
 
 /**
   The base class for all authenticators. __This serves as a starting point for
@@ -51,10 +52,11 @@ import EmberObject from '@ember/object';
 
   @class BaseAuthenticator
   @extends Ember.Object
-  @uses Ember.Evented
   @public
 */
-export default EmberObject.extend(Evented, {
+export default class EsaBaseAuthenticator extends EmberObject {
+  authenticatorEvents = new AuthenticatorEventTarget();
+
   /**
     __Triggered when the authentication data is updated by the authenticator
     due to an external or scheduled event__. This might happen, e.g., if the
@@ -109,7 +111,7 @@ export default EmberObject.extend(Evented, {
   */
   restore() {
     return Promise.reject();
-  },
+  }
 
   /**
     Authenticates the session with the specified `args`. These options vary
@@ -138,7 +140,7 @@ export default EmberObject.extend(Evented, {
   */
   authenticate() {
     return Promise.reject();
-  },
+  }
 
   /**
     This method is invoked as a callback when the session is invalidated. While
@@ -163,5 +165,24 @@ export default EmberObject.extend(Evented, {
   */
   invalidate() {
     return Promise.resolve();
-  },
-});
+  }
+
+  on(event, cb) {
+    this.authenticatorEvents.addEventListener(event, cb);
+  }
+
+  off(event, cb) {
+    this.authenticatorEvents.removeEventListener(event, cb);
+  }
+
+  trigger(event, value) {
+    let customEvent;
+    if (value) {
+      customEvent = new CustomEvent(event, { detail: value });
+    } else {
+      customEvent = new CustomEvent(event);
+    }
+
+    this.authenticatorEvents.dispatchEvent(customEvent);
+  }
+}

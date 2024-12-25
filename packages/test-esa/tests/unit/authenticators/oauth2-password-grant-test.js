@@ -491,7 +491,7 @@ module('OAuth2PasswordGrantAuthenticator', function (hooks) {
       test('triggers the "sessionDataUpdated" event', async function (assert) {
         assert.expect(2);
         await new Promise(resolve => {
-          authenticator.one('sessionDataUpdated', data => {
+          authenticator.on('sessionDataUpdated', ({ detail: data }) => {
             assert.true(data['expires_at'] > new Date().getTime());
             delete data['expires_at'];
             assert.deepEqual(data, {
@@ -519,7 +519,7 @@ module('OAuth2PasswordGrantAuthenticator', function (hooks) {
         test('triggers the "sessionDataUpdated" event with the correct data', async function (assert) {
           assert.expect(2);
           await new Promise(resolve => {
-            authenticator.one('sessionDataUpdated', data => {
+            authenticator.on('sessionDataUpdated', ({ detail: data }) => {
               assert.true(data['expires_at'] > new Date().getTime());
               delete data['expires_at'];
               assert.deepEqual(data, {
@@ -567,7 +567,7 @@ module('OAuth2PasswordGrantAuthenticator', function (hooks) {
           ]);
 
           await new Promise(resolve => {
-            authenticator.one('sessionDataUpdated', data => {
+            authenticator.on('sessionDataUpdated', ({ detail: data }) => {
               assert.equal(data.scope, 'scope!');
 
               resolve();
