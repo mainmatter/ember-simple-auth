@@ -4,7 +4,7 @@
 <a {{on 'click' this.authenticateWithGoogleImplicitGrant}} class="btn btn-primary" href="#" role="button">Login with Google (Implicit Grant)</a>
 <hr/>
 <p>or login with OAuth 2.0 <em>Resource Owner Password Credentials</em>:</p>
-<form {{action 'authenticateWithOAuth2' on='submit'}}>
+<form {{on "submit" this.authenticateWithOAuth2}}>
   <div class="form-group">
     <label for="identification">Login</label>
     <input type="text" placeholder="Enter Login" class="form-control" {{on 'change' this.updateIdentification}} value={{this.identification}} data-test-identification />

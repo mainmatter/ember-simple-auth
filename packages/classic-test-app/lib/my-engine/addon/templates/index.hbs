@@ -4,4 +4,4 @@
 <div class="alert alert-warning">
   This is a protected page in an engine only visible to authenticated users!
 </div>
-<button {{action 'logout'}} class="btn btn-danger" data-test-logout-button>Logout</button>
+<button {{on "click" this.logout}} class="btn btn-danger" data-test-logout-button>Logout</button>
