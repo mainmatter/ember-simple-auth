@@ -18,7 +18,7 @@ import isFastBoot from '../utils/is-fastboot';
   @extends BaseStore
   @public
 */
-export default BaseStore.extend({
+export default class SessionStorageStore extends BaseStore {
   /**
     The `sessionStorage` key the store persists data in.
 
@@ -28,7 +28,7 @@ export default BaseStore.extend({
     @default 'ember_simple_auth-session'
     @public
   */
-  key: 'ember_simple_auth-session',
+  key = 'ember_simple_auth-session';
 
   init() {
     this._super(...arguments);
@@ -39,13 +39,13 @@ export default BaseStore.extend({
     if (!this.get('_isFastBoot')) {
       window.addEventListener('storage', bind(this, this._handleStorageEvent));
     }
-  },
+  }
 
   willDestroy() {
     if (!this.get('_isFastBoot')) {
       window.removeEventListener('storage', bind(this, this._handleStorageEvent));
     }
-  },
+  }
 
   /**
     Persists the `data` in the `sessionStorage`.
@@ -62,7 +62,7 @@ export default BaseStore.extend({
     sessionStorage.setItem(this.key, data);
 
     return Promise.resolve();
-  },
+  }
 
   /**
     Returns all data currently stored in the `sessionStorage` as a plain object.
@@ -76,7 +76,7 @@ export default BaseStore.extend({
     let data = sessionStorage.getItem(this.key);
 
     return Promise.resolve(JSON.parse(data) || {});
-  },
+  }
 
   /**
     Clears the store by deleting the
@@ -93,7 +93,7 @@ export default BaseStore.extend({
     this._lastData = {};
 
     return Promise.resolve();
-  },
+  }
 
   _handleStorageEvent(e) {
     if (e.key === this.get('key')) {
@@ -104,5 +104,5 @@ export default BaseStore.extend({
         }
       });
     }
-  },
-});
+  }
+}
