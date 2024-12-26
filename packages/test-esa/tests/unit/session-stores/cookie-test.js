@@ -5,6 +5,14 @@ import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
 import CookieStore from 'ember-simple-auth/session-stores/cookie';
 
+class TestStoreBehavior extends CookieStore {
+  _cookieName = 'test-session';
+}
+
+class TestCookieStoreBehavior extends CookieStore {
+  _cookieName = 'test:session';
+}
+
 module('CookieStore', function (hooks) {
   setupTest(hooks);
 
@@ -18,12 +26,7 @@ module('CookieStore', function (hooks) {
         cookieService = owner.lookup('service:cookies');
         sinon.spy(cookieService, 'read');
         sinon.spy(cookieService, 'write');
-        owner.register(
-          'session-store:cookie',
-          CookieStore.extend({
-            _cookieName: 'test-session',
-          })
-        );
+        owner.register('session-store:cookie', TestStoreBehavior);
         store = owner.lookup('session-store:cookie');
         return store;
       },
@@ -36,22 +39,12 @@ module('CookieStore', function (hooks) {
   module('CookieStoreBehavior', function (hooks) {
     itBehavesLikeACookieStore({
       hooks,
-      store(sinon, owner, storeOptions) {
+      store(sinon, owner, { cookie: klass } = {}) {
         owner.register('service:cookies', FakeCookieService);
         let cookieService = owner.lookup('service:cookies');
         sinon.spy(cookieService, 'read');
         sinon.spy(cookieService, 'write');
-        owner.register(
-          'session-store:cookie',
-          CookieStore.extend(
-            Object.assign(
-              {
-                _cookieName: 'test:session',
-              },
-              storeOptions
-            )
-          )
-        );
+        owner.register('session-store:cookie', klass || TestCookieStoreBehavior);
         let store = owner.lookup('session-store:cookie');
         return store;
       },

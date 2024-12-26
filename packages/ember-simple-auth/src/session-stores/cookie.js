@@ -69,9 +69,9 @@ const persistingProperty = function (beforeSet = function () {}) {
   @extends BaseStore
   @public
 */
-export default BaseStore.extend({
-  _syncDataTimeout: null,
-  _renewExpirationTimeout: null,
+export default class CookieStore extends BaseStore {
+  _syncDataTimeout = null;
+  _renewExpirationTimeout = null;
 
   /**
     The domain to use for the cookie, e.g., "example.com", ".example.com"
@@ -85,8 +85,9 @@ export default BaseStore.extend({
     @default null
     @public
   */
-  _cookieDomain: null,
-  cookieDomain: persistingProperty(),
+  _cookieDomain = null;
+  @persistingProperty()
+  cookieDomain;
 
   /**
     Allows servers to assert that a cookie ought not to be sent along with cross-site requests,
@@ -100,8 +101,9 @@ export default BaseStore.extend({
     @default null
     @public
   */
-  _sameSite: null,
-  sameSite: persistingProperty(),
+  _sameSite = null;
+  @persistingProperty()
+  sameSite;
 
   /**
     The name of the cookie.
@@ -112,10 +114,11 @@ export default BaseStore.extend({
     @default ember_simple_auth-session
     @public
   */
-  _cookieName: 'ember_simple_auth-session',
-  cookieName: persistingProperty(function () {
+  _cookieName = 'ember_simple_auth-session';
+  @persistingProperty(function () {
     this._oldCookieName = this._cookieName;
-  }),
+  })
+  cookieName;
 
   /**
     The path to use for the cookie, e.g., "/", "/something".
@@ -126,8 +129,9 @@ export default BaseStore.extend({
     @default '/'
     @public
   */
-  _cookiePath: '/',
-  cookiePath: persistingProperty(),
+  _cookiePath = '/';
+  @persistingProperty()
+  cookiePath;
 
   /**
     The expiration time for the cookie in seconds. A value of `null` will make
@@ -144,8 +148,8 @@ export default BaseStore.extend({
     @type Integer
     @public
   */
-  _cookieExpirationTime: null,
-  cookieExpirationTime: persistingProperty(function (key, value) {
+  _cookieExpirationTime = null;
+  @persistingProperty(function (key, value) {
     // When nulling expiry time on purpose, we need to clear the cached value.
     // Otherwise, `_calculateExpirationTime` will reuse it.
     if (isNone(value)) {
@@ -157,7 +161,8 @@ export default BaseStore.extend({
         { id: 'ember-simple-auth.cookieExpirationTime' }
       );
     }
-  }),
+  })
+  cookieExpirationTime;
 
   /**
     Allows servers to assert that a cookie should opt in to partitioned storage,
@@ -174,10 +179,11 @@ export default BaseStore.extend({
     @default null
     @public
   */
-  _partitioned: null,
-  partitioned: persistingProperty(),
+  _partitioned = null;
+  @persistingProperty()
+  partitioned;
 
-  _cookies: service('cookies'),
+  @service('cookies') _cookies;
 
   _secureCookies() {
     if (this.get('_fastboot.isFastBoot')) {
@@ -185,7 +191,7 @@ export default BaseStore.extend({
     }
 
     return window.location.protocol === 'https:';
-  },
+  }
 
   _isPageVisible() {
     if (this.get('_fastboot.isFastBoot')) {
@@ -195,7 +201,7 @@ export default BaseStore.extend({
         typeof document !== 'undefined' ? document.visibilityState || 'visible' : false;
       return visibilityState === 'visible';
     }
-  },
+  }
 
   init() {
     this._super(...arguments);
@@ -218,7 +224,7 @@ export default BaseStore.extend({
     } else {
       this._renew();
     }
-  },
+  }
 
   /**
     Persists the `data` in the cookie.
@@ -235,7 +241,7 @@ export default BaseStore.extend({
     let expiration = this._calculateExpirationTime();
     this._write(data, expiration);
     return Promise.resolve();
-  },
+  }
 
   /**
     Returns all data currently stored in the cookie as a plain object.
@@ -252,7 +258,7 @@ export default BaseStore.extend({
     } else {
       return Promise.resolve(JSON.parse(data));
     }
-  },
+  }
 
   /**
     Clears the store by deleting the cookie.
@@ -266,11 +272,11 @@ export default BaseStore.extend({
     this._write('', 0);
     this._lastData = {};
     return Promise.resolve();
-  },
+  }
 
   _read(name) {
     return this.get('_cookies').read(name) || '';
-  },
+  }
 
   _calculateExpirationTime() {
     let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
@@ -280,7 +286,7 @@ export default BaseStore.extend({
     return this.get('cookieExpirationTime')
       ? new Date().getTime() + this.get('cookieExpirationTime') * 1000
       : cachedExpirationTime;
-  },
+  }
 
   _write(value, expiration) {
     let cookieOptions = {
@@ -307,7 +313,7 @@ export default BaseStore.extend({
         cookieOptions
       );
     }
-  },
+  }
 
   _syncData() {
     return this.restore().then(data => {
@@ -320,7 +326,7 @@ export default BaseStore.extend({
         this._syncDataTimeout = later(this, this._syncData, 500);
       }
     });
-  },
+  }
 
   _renew() {
     return this.restore().then(data => {
@@ -330,7 +336,7 @@ export default BaseStore.extend({
         this._write(data, expiration);
       }
     });
-  },
+  }
 
   _renewExpiration() {
     if (!isTesting()) {
@@ -342,7 +348,7 @@ export default BaseStore.extend({
     } else {
       return Promise.resolve();
     }
-  },
+  }
 
   rewriteCookie() {
     // if `cookieName` has not been renamed, `oldCookieName` will be nil
@@ -352,5 +358,5 @@ export default BaseStore.extend({
       const expiration = this._calculateExpirationTime();
       this._write(data, expiration);
     }
-  },
-});
+  }
+}
