@@ -10,7 +10,6 @@ export default function (options) {
 
   hooks.beforeEach(function () {
     sinon = sinonjs.createSandbox();
-    store = options.store();
   });
 
   hooks.afterEach(function () {
@@ -21,6 +20,7 @@ export default function (options) {
     hooks.beforeEach(function () {
       sinon.spy(window, 'addEventListener');
       sinon.spy(window, 'removeEventListener');
+      store = options.store(sinon, this.owner);
     });
 
     hooks.afterEach(function () {
@@ -29,8 +29,6 @@ export default function (options) {
     });
 
     test('binds to "storage" events on the window when created', function (assert) {
-      store = options.store();
-
       assert.ok(window.addEventListener.calledOnce);
     });
 

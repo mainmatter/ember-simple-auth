@@ -6,7 +6,7 @@ module('EphemeralStore', function (hooks) {
   itBehavesLikeAStore({
     hooks,
     store() {
-      return Ephemeral.create();
+      return new Ephemeral();
     },
   });
 });
