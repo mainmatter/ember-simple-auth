@@ -5,7 +5,7 @@ import sinonjs from 'sinon';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
-import createAdaptiveStore from '../../helpers/create-adaptive-store';
+import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
 
 module('AdaptiveStore', function (hooks) {
   setupTest(hooks);
@@ -14,20 +14,19 @@ module('AdaptiveStore', function (hooks) {
     itBehavesLikeAStore({
       hooks,
       store(sinon, owner) {
-        let store;
         let cookieService;
         owner.register('service:cookies', FakeCookieService);
         cookieService = owner.lookup('service:cookies');
         sinon.spy(cookieService, 'read');
         sinon.spy(cookieService, 'write');
-        store = createAdaptiveStore(
-          cookieService,
-          {
-            _isLocalStorageAvailable: true,
-          },
-          owner
+
+        owner.register(
+          'session-store:adaptive',
+          class TestAdaptiveStorage extends AdaptiveStore {
+            __isLocalStorageAvailable = true;
+          }
         );
-        return store;
+        return owner.lookup('session-store:adaptive');
       },
     });
   });
@@ -36,21 +35,19 @@ module('AdaptiveStore', function (hooks) {
     itBehavesLikeAStore({
       hooks,
       store(sinon, owner) {
-        let store;
         let cookieService;
         owner.register('service:cookies', FakeCookieService);
         cookieService = owner.lookup('service:cookies');
         sinon.spy(cookieService, 'read');
         sinon.spy(cookieService, 'write');
-        store = createAdaptiveStore(
-          cookieService,
-          {
-            _isLocalStorageAvailable: false,
-            _cookieName: 'test:session',
-          },
-          owner
+        owner.register(
+          'session-store:adaptive',
+          class TestAdaptiveStorage extends AdaptiveStore {
+            __isLocalStorageAvailable = false;
+            _cookieName = 'test:session';
+          }
         );
-        return store;
+        return owner.lookup('session-store:adaptive');
       },
     });
   });
@@ -59,23 +56,20 @@ module('AdaptiveStore', function (hooks) {
     module('Behaviour', function (hooks) {
       itBehavesLikeACookieStore({
         hooks,
-        store(sinon, owner, { adaptive: storeOptions } = {}) {
+        store(sinon, owner, { adaptive: klass } = {}) {
           owner.register('service:cookies', FakeCookieService);
           let cookieService = owner.lookup('service:cookies');
           sinon.spy(cookieService, 'read');
           sinon.spy(cookieService, 'write');
-          let store = createAdaptiveStore(
-            cookieService,
-            Object.assign(
-              {
-                _isLocalStorageAvailable: false,
-                _cookieName: 'test:session',
-              },
-              storeOptions
-            ),
-            owner
+          owner.register(
+            'session-store:adaptive',
+            klass ||
+              class TestAdaptiveStorage extends AdaptiveStore {
+                __isLocalStorageAvailable = false;
+                _cookieName = 'test:session';
+              }
           );
-          return store;
+          return owner.lookup('session-store:adaptive');
         },
         renew(store, data) {
           return store.get('_store')._renew(data);
@@ -102,14 +96,14 @@ module('AdaptiveStore', function (hooks) {
       sinon.spy(cookieService, 'write');
       run(() => {
         now = new Date();
-        store = createAdaptiveStore(
-          cookieService,
-          {
-            _isLocalStorageAvailable: false,
-            _cookieName: 'test:session',
-          },
-          this.owner
+        this.owner.register(
+          'session-store:adaptive',
+          class TestAdaptiveStorage extends AdaptiveStore {
+            __isLocalStorageAvailable = false;
+            _cookieName = 'test:session';
+          }
         );
+        store = this.owner.lookup('session-store:adaptive');
 
         store.setProperties({
           cookieName: 'test:session',

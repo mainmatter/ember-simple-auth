@@ -4,6 +4,7 @@ import { registerWarnHandler } from '@ember/debug';
 import sinonjs from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';
 import CookieStore from 'ember-simple-auth/session-stores/cookie';
+import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
 
 let warnings;
 registerWarnHandler((message, options, next) => {
@@ -178,9 +179,10 @@ export default function (options) {
             cookieName = 'test-session';
             cookieExpirationTime = 60;
           },
-          adaptive: {
-            cookieName: 'test-session',
-            cookieExpirationTime: 60,
+          adaptive: class TestAdaptiveStore extends AdaptiveStore {
+            __isLocalStorageAvailable = false;
+            cookieName = 'test-session';
+            cookieExpirationTime = 60;
           },
         });
         cookieService = store.get('_cookies');
@@ -217,8 +219,9 @@ export default function (options) {
           cookie: class TestRenewCookieStore extends CookieStore {
             cookieName = 'ember_simple_auth-session';
           },
-          adaptive: {
-            cookieName: 'ember_simple_auth-session',
+          adaptive: class TestAdaptiveStore extends AdaptiveStore {
+            __isLocalStorageAvailable = false;
+            cookieName = 'ember_simple_auth-session';
           },
         });
         triggered = false;
@@ -287,9 +290,10 @@ export default function (options) {
             _cookieName = 'session-foo';
             _cookieExpirationTime = 1000;
           },
-          adaptive: {
-            _cookieName: 'session-foo',
-            _cookieExpirationTime: 1000,
+          adaptive: class TestAdaptiveStore extends AdaptiveStore {
+            __isLocalStorageAvailable = false;
+            _cookieName = 'session-foo';
+            _cookieExpirationTime = 1000;
           },
         });
         cookieService = store.get('_cookies') || store.get('_store._cookies');
@@ -444,8 +448,9 @@ export default function (options) {
           cookie: class TestRenewCookieStore extends CookieStore {
             cookieExpirationTime = expirationTime;
           },
-          adaptive: {
-            cookieExpirationTime: expirationTime,
+          adaptive: class TestAdaptiveStore extends AdaptiveStore {
+            _isLocalStorageAvailable = false;
+            cookieExpirationTime = expirationTime;
           },
         });
         cookieService = store.get('_cookies');

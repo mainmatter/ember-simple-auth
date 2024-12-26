@@ -38,7 +38,7 @@ const proxyToInternalStore = function () {
   @extends BaseStore
   @public
 */
-export default Base.extend({
+export default class AdaptiveStore extends Base {
   /**
     The `localStorage` key the store persists data in if `localStorage` is
     available.
@@ -49,7 +49,7 @@ export default Base.extend({
     @default 'ember_simple_auth-session'
     @public
   */
-  localStorageKey: 'ember_simple_auth-session',
+  localStorageKey = 'ember_simple_auth-session';
 
   /**
     The domain to use for the cookie if `localStorage` is not available, e.g.,
@@ -63,8 +63,9 @@ export default Base.extend({
     @default null
     @public
   */
-  _cookieDomain: null,
-  cookieDomain: proxyToInternalStore(),
+  _cookieDomain = null;
+  @proxyToInternalStore()
+  cookieDomain;
 
   /**
     Allows servers to assert that a cookie ought not to be sent along with
@@ -81,8 +82,9 @@ export default Base.extend({
     @default null
     @public
   */
-  _sameSite: null,
-  sameSite: proxyToInternalStore(),
+  _sameSite = null;
+  @proxyToInternalStore()
+  sameSite;
 
   /**
     Allows servers to assert that a cookie should opt in to partitioned storage,
@@ -99,8 +101,9 @@ export default Base.extend({
     @default null
     @public
   */
-  _partitioned: null,
-  partitioned: proxyToInternalStore(),
+  _partitioned = null;
+  @proxyToInternalStore()
+  partitioned;
 
   /**
     The name of the cookie to use if `localStorage` is not available.
@@ -111,8 +114,9 @@ export default Base.extend({
     @default ember_simple_auth-session
     @public
   */
-  _cookieName: 'ember_simple_auth-session',
-  cookieName: proxyToInternalStore(),
+  _cookieName = 'ember_simple_auth-session';
+  @proxyToInternalStore()
+  cookieName;
 
   /**
     The path to use for the cookie, e.g., "/", "/something".
@@ -123,8 +127,9 @@ export default Base.extend({
     @default '/'
     @public
   */
-  _cookiePath: '/',
-  cookiePath: proxyToInternalStore(),
+  _cookiePath = '/';
+  @proxyToInternalStore()
+  cookiePath;
 
   /**
     The expiration time for the cookie in seconds if `localStorage` is not
@@ -137,20 +142,20 @@ export default Base.extend({
     @type Integer
     @public
   */
-  _cookieExpirationTime: null,
-  cookieExpirationTime: proxyToInternalStore(),
+  _cookieExpirationTime = null;
+  @proxyToInternalStore()
+  cookieExpirationTime;
 
-  _cookies: service('cookies'),
+  @service('cookies') _cookies;
 
-  _isLocalStorageAvailable: computed({
-    get() {
+  __isLocalStorageAvailable = null;
+  get _isLocalStorageAvailable() {
+    if (this.__isLocalStorageAvailable !== null) {
+      return this.__isLocalStorageAvailable;
+    } else {
       return testLocalStorageAvailable();
-    },
-
-    set(key, value) {
-      return value;
-    },
-  }),
+    }
+  }
 
   init() {
     this._super(...arguments);
@@ -188,14 +193,14 @@ export default Base.extend({
 
     this.set('_store', store);
     this._setupStoreEvents(store);
-  },
+  }
 
   _setupStoreEvents(store) {
     store.on('sessionDataUpdated', ({ detail: data }) => {
       this.trigger('sessionDataUpdated', data);
     });
     return store;
-  },
+  }
 
   /**
     Persists the `data` in the `localStorage` if it is available or in a cookie
@@ -209,7 +214,7 @@ export default Base.extend({
   */
   persist() {
     return this.get('_store').persist(...arguments);
-  },
+  }
 
   /**
     Returns all data currently stored in the `localStorage` if that is
@@ -222,7 +227,7 @@ export default Base.extend({
   */
   restore() {
     return this.get('_store').restore();
-  },
+  }
 
   /**
     Clears the store by deleting the
@@ -236,8 +241,8 @@ export default Base.extend({
   */
   clear() {
     return this.get('_store').clear();
-  },
-});
+  }
+}
 
 function testLocalStorageAvailable() {
   try {
