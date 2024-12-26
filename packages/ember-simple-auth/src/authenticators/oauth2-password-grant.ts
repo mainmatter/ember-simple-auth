@@ -1,4 +1,4 @@
-import { A, makeArray } from '@ember/array';
+import { makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
 import { getOwner } from '@ember/application';
 import BaseAuthenticator from './base';
@@ -6,9 +6,7 @@ import isFastBoot from '../utils/is-fastboot';
 import { waitFor } from '@ember/test-waiters';
 import { isTesting } from '@embroider/macros';
 import type { Timer } from '@ember/runloop';
-import { run } from '@ember/runloop';
-import { cancel } from '@ember/runloop';
-import { later } from '@ember/runloop';
+import { run, later, cancel } from '@ember/runloop';
 
 type OAuthResponseSuccess = {
   access_token: string;
@@ -45,6 +43,17 @@ type MakeRequestData =
   | OAuthPasswordRequestData
   | OAuthInvalidateRequestData
   | OAuthRefreshRequestData;
+
+interface OAuth2Response extends Response {
+  /**
+   * @deprecated 'responseText' is deprecated. This is a legacy AJAX API.
+   */
+  responseText: string;
+  /**
+   * @deprecated 'responseJSON' is deprecated. This is a legacy AJAX API.
+   */
+  responseJSON: string;
+}
 
 /**
   Authenticator that conforms to OAuth 2
@@ -369,7 +378,7 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     url: string,
     data: MakeRequestData,
     headers: Record<string, string> = {}
-  ): Promise<OAuthResponseSuccess & { responseText: string } & { responseJSON: string }> {
+  ): Promise<OAuthResponseSuccess> {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
     const clientId = this.get('clientId');
@@ -403,15 +412,13 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
             try {
               let json = JSON.parse(text);
               if (!response.ok) {
-                // @TODO: migrate the old AJAX API.
-                (response as any).responseJSON = json;
+                (response as OAuth2Response).responseJSON = json;
                 reject(response);
               } else {
                 resolve(json);
               }
             } catch (SyntaxError) {
-              // @TODO: migrate the old AJAX API.
-              (response as any).responseText = text;
+              (response as OAuth2Response).responseText = text;
               reject(response);
             }
           });
