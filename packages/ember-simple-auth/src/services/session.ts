@@ -11,6 +11,7 @@ import {
   handleSessionInvalidated,
 } from '../-internals/routing';
 import type Transition from '@ember/routing/transition';
+import { alias } from '@ember/object/computed';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -36,6 +37,7 @@ type InternalSessionMock = {
   requireAuthentication: (transition: Transition, routeOrCallback: RouteOrCallback) => boolean;
   prohibitAuthentication: (routeOrCallback: RouteOrCallback) => boolean;
   restore: () => Promise<void>;
+  set(key: string, value: any): void;
 };
 
 /**
@@ -58,15 +60,12 @@ type InternalSessionMock = {
   @public
 */
 export default class EmberSimpleAuthSessionService extends Service {
-  declare session: InternalSessionMock;
+  session: InternalSessionMock;
 
-  constructor() {
-    super(...arguments);
+  constructor(owner: any) {
+    super(owner);
 
-    const owner = getOwner(this);
-    if (owner) {
-      this.session = owner.lookup('session:main') as InternalSessionMock;
-    }
+    this.session = owner.lookup('session:main') as InternalSessionMock;
   }
 
   /**
@@ -132,17 +131,16 @@ export default class EmberSimpleAuthSessionService extends Service {
     @default null
     @public
   */
-  get attemptedTransition() {
-    return this.session.attemptedTransition;
-  }
+  @alias('session.attemptedTransition')
+  attemptedTransition: null | Transition = null;
 
   set(key: any, value: any) {
     const setsSessionData = SESSION_DATA_KEY_PREFIX.test(key);
     if (setsSessionData) {
       const sessionDataKey = `session.${key.replace(SESSION_DATA_KEY_PREFIX, '')}`;
-      return this._super(sessionDataKey, value);
+      return super.set(sessionDataKey, value);
     } else {
-      return this._super(...arguments);
+      return super.set(key, value);
     }
   }
 

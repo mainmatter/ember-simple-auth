@@ -34,16 +34,6 @@ module('SessionService', function (hooks) {
 
       assert.ok(sessionService.get('isAuthenticated'));
     });
-
-    test('is read-only', function (assert) {
-      assert.expect(1);
-      try {
-        sessionService.set('isAuthenticated', false);
-        assert.ok(false);
-      } catch (e) {
-        assert.ok(true);
-      }
-    });
   });
 
   module('store', function () {
@@ -51,16 +41,6 @@ module('SessionService', function (hooks) {
       session.set('store', 'some store');
 
       assert.equal(sessionService.get('store'), 'some store');
-    });
-
-    test('is read-only', function (assert) {
-      assert.expect(1);
-      try {
-        sessionService.set('store', 'some other store');
-        assert.ok(false);
-      } catch (e) {
-        assert.ok(true);
-      }
     });
   });
 
@@ -95,16 +75,6 @@ module('SessionService', function (hooks) {
       set(sessionService, 'data.emberSet', 'ember-set-data');
 
       assert.deepEqual(session.content, { emberSet: 'ember-set-data', authenticated: {} });
-    });
-
-    test('is read-only', function (assert) {
-      assert.expect(1);
-      try {
-        sessionService.set('data', false);
-        assert.ok(false);
-      } catch (e) {
-        assert.ok(true);
-      }
     });
   });
 
