@@ -1,4 +1,3 @@
-import { alias, readOnly } from '@ember/object/computed';
 import Service from '@ember/service';
 import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
@@ -11,10 +10,12 @@ import {
   handleSessionAuthenticated,
   handleSessionInvalidated,
 } from '../-internals/routing';
+import type Transition from '@ember/routing/transition';
+import { alias } from '@ember/object/computed';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
-function assertSetupHasBeenCalled(isSetupCalled) {
+function assertSetupHasBeenCalled(isSetupCalled: boolean) {
   if (!isSetupCalled) {
     assert(
       "Ember Simple Auth: session#setup wasn't called. Make sure to call session#setup in your application route's beforeModel hook.",
@@ -22,6 +23,22 @@ function assertSetupHasBeenCalled(isSetupCalled) {
     );
   }
 }
+
+type RouteOrCallback = string | (() => void);
+
+type InternalSessionMock = {
+  isAuthenticated: boolean;
+  content: { authenticated: Record<string, string> };
+  store: unknown;
+  attemptedTransition: null;
+  on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
+  authenticate: (authenticator: string, ...args: any[]) => void;
+  invalidate: (...args: any[]) => void;
+  requireAuthentication: (transition: Transition, routeOrCallback: RouteOrCallback) => boolean;
+  prohibitAuthentication: (routeOrCallback: RouteOrCallback) => boolean;
+  restore: () => Promise<void>;
+  set(key: string, value: any): void;
+};
 
 /**
   __The session service provides access to the current session as well as
@@ -42,7 +59,20 @@ function assertSetupHasBeenCalled(isSetupCalled) {
   @extends Service
   @public
 */
-export default Service.extend({
+export default class EmberSimpleAuthSessionService extends Service {
+  session: InternalSessionMock;
+
+  constructor(owner: any) {
+    super(owner);
+
+    this.session = owner.lookup('session:main') as InternalSessionMock;
+  }
+
+  /**
+   * Says whether the service was correctly initialized by the {#linkplain SessionService.setup}
+   */
+  _setupIsCalled = false;
+
   /**
     Returns whether the session is currently authenticated.
 
@@ -53,7 +83,9 @@ export default Service.extend({
     @default false
     @public
   */
-  isAuthenticated: readOnly('session.isAuthenticated'),
+  get isAuthenticated() {
+    return this.session.isAuthenticated;
+  }
 
   /**
     The current session data as a plain object. The
@@ -70,7 +102,9 @@ export default Service.extend({
     @default { authenticated: {} }
     @public
   */
-  data: readOnly('session.content'),
+  get data() {
+    return this.session.content;
+  }
 
   /**
     The session store.
@@ -82,7 +116,9 @@ export default Service.extend({
     @default null
     @public
   */
-  store: readOnly('session.store'),
+  get store() {
+    return this.session.store;
+  }
 
   /**
     A previously attempted but intercepted transition (e.g. by the
@@ -95,34 +131,25 @@ export default Service.extend({
     @default null
     @public
   */
-  attemptedTransition: alias('session.attemptedTransition'),
+  @alias('session.attemptedTransition')
+  attemptedTransition: null | Transition = null;
 
-  session: null,
-
-  init() {
-    this._super(...arguments);
-
-    this.set('session', getOwner(this).lookup('session:main'));
-  },
-
-  set(key, value) {
+  set(key: any, value: any) {
     const setsSessionData = SESSION_DATA_KEY_PREFIX.test(key);
     if (setsSessionData) {
       const sessionDataKey = `session.${key.replace(SESSION_DATA_KEY_PREFIX, '')}`;
-      return this._super(sessionDataKey, value);
+      return super.set(sessionDataKey, value);
     } else {
-      return this._super(...arguments);
+      return super.set(key, value);
     }
-  },
+  }
 
   _setupHandlers() {
-    this.get('session').on('authenticationSucceeded', () =>
+    this.session.on('authenticationSucceeded', () =>
       this.handleAuthentication(Configuration.routeAfterAuthentication)
     );
-    this.get('session').on('invalidationSucceeded', () =>
-      this.handleInvalidation(Configuration.rootURL)
-    );
-  },
+    this.session.on('invalidationSucceeded', () => this.handleInvalidation(Configuration.rootURL));
+  }
 
   /**
     __Authenticates the session with an `authenticator`__ and appropriate
@@ -153,11 +180,9 @@ export default Service.extend({
     @return {Promise} A promise that resolves when the session was authenticated successfully and rejects otherwise
     @public
   */
-  authenticate() {
-    const session = this.get('session');
-
-    return session.authenticate(...arguments);
-  },
+  authenticate(authenticator: string, ...args: any[]) {
+    return this.session.authenticate(authenticator, ...args);
+  }
 
   /**
     __Invalidates the session with the authenticator it is currently
@@ -187,11 +212,9 @@ export default Service.extend({
     @return {Promise} A promise that resolves when the session was invalidated successfully and rejects otherwise
     @public
   */
-  invalidate() {
-    const session = this.get('session');
-
-    return session.invalidate(...arguments);
-  },
+  invalidate(...args: any[]) {
+    return this.session.invalidate(...args);
+  }
 
   /**
     Checks whether the session is authenticated and if it is not, transitions
@@ -212,24 +235,23 @@ export default Service.extend({
     @return {Boolean} true when the session is authenticated, false otherwise
     @public
   */
-  requireAuthentication(transition, routeOrCallback) {
+  requireAuthentication(transition: Transition, routeOrCallback: RouteOrCallback) {
     assertSetupHasBeenCalled(this._setupIsCalled);
     let isAuthenticated = requireAuthentication(getOwner(this), transition);
     if (!isAuthenticated) {
-      let argType = typeof routeOrCallback;
-      if (argType === 'string') {
+      if (typeof routeOrCallback === 'string') {
         triggerAuthentication(getOwner(this), routeOrCallback);
-      } else if (argType === 'function') {
+      } else if (typeof routeOrCallback === 'function') {
         routeOrCallback();
       } else {
         assert(
-          `The second argument to requireAuthentication must be a String or Function, got "${argType}"!`,
+          `The second argument to requireAuthentication must be a String or Function, got "${typeof routeOrCallback}"!`,
           false
         );
       }
     }
     return isAuthenticated;
-  },
+  }
 
   /**
     Checks whether the session is authenticated and if it is, transitions
@@ -241,24 +263,23 @@ export default Service.extend({
     @return {Boolean} true when the session is not authenticated, false otherwise
     @public
   */
-  prohibitAuthentication(routeOrCallback) {
+  prohibitAuthentication(routeOrCallback: RouteOrCallback) {
     assertSetupHasBeenCalled(this._setupIsCalled);
     let isAuthenticated = this.get('isAuthenticated');
     if (isAuthenticated) {
-      let argType = typeof routeOrCallback;
-      if (argType === 'string') {
+      if (typeof routeOrCallback === 'string') {
         prohibitAuthentication(getOwner(this), routeOrCallback);
-      } else if (argType === 'function') {
+      } else if (typeof routeOrCallback === 'function') {
         routeOrCallback();
       } else {
         assert(
-          `The first argument to prohibitAuthentication must be a String or Function, got "${argType}"!`,
+          `The first argument to prohibitAuthentication must be a String or Function, got "${typeof routeOrCallback}"!`,
           false
         );
       }
     }
     return !isAuthenticated;
-  },
+  }
 
   /**
     This method is called whenever the session goes from being unauthenticated
@@ -276,9 +297,9 @@ export default Service.extend({
     @param {String} routeAfterAuthentication The route to transition to
     @public
   */
-  handleAuthentication(routeAfterAuthentication) {
+  handleAuthentication(routeAfterAuthentication: string) {
     handleSessionAuthenticated(getOwner(this), routeAfterAuthentication);
-  },
+  }
 
   /**
     This method is called whenever the session goes from being authenticated to
@@ -296,9 +317,9 @@ export default Service.extend({
     @param {String} routeAfterInvalidation The route to transition to
     @public
   */
-  handleInvalidation(routeAfterInvalidation) {
+  handleInvalidation(routeAfterInvalidation: string) {
     handleSessionInvalidated(getOwner(this), routeAfterInvalidation);
-  },
+  }
 
   /**
     Sets up the session service.
@@ -318,5 +339,5 @@ export default Service.extend({
     return this.session.restore().catch(() => {
       // If it raises an error then it means that restore didn't find any restorable state.
     });
-  },
-});
+  }
+}
