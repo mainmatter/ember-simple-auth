@@ -9,7 +9,7 @@ const addon = new Addon({
 });
 
 // Add extensions here, such as ts, gjs, etc that you may import
-const extensions = ['.js'];
+const extensions = ['.js', '.ts'];
 
 export default {
   // This provides defaults that work well alongside `publicEntrypoints` below.
@@ -60,6 +60,9 @@ export default {
 
     // Ensure that standalone .hbs files are properly integrated as Javascript.
     addon.hbs(),
+
+    // Emit .d.ts
+    addon.declarations('declarations'),
 
     // addons are allowed to contain imports of .css files, which we want rollup
     // to leave alone and keep in the published output.

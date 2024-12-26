@@ -20,6 +20,7 @@
     "lint:fix": "concurrently 'npm:lint:*:fix' --names 'fix:'",
     "lint:hbs": "ember-template-lint . --no-error-on-unmatched-pattern",
     "lint:js": "eslint . --cache",
+    "lint:types": "glint",
     "lint:hbs:fix": "ember-template-lint . --fix --no-error-on-unmatched-pattern",
     "lint:js:fix": "eslint . --fix",
     "start": "rollup --config --watch",
@@ -41,15 +42,23 @@
     "@babel/plugin-proposal-class-properties": "7.18.6",
     "@babel/plugin-proposal-decorators": "7.25.9",
     "@babel/runtime": "7.26.0",
-    "@embroider/addon-dev": "5.0.0",
+    "@embroider/addon-dev": "7.1.1",
+    "@glint/core": "^1.5.0",
+    "@glint/environment-ember-loose": "^1.5.0",
+    "@glint/environment-ember-template-imports": "^1.5.0",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-node-resolve": "15.3.1",
+    "@tsconfig/ember": "^3.0.8",
+    "@types/ember__service": "^4.0.9",
+    "@typescript-eslint/eslint-plugin": "^8.18.1",
+    "@typescript-eslint/parser": "^8.18.1",
     "concurrently": "9.1.0",
     "ember-template-lint": "6.0.0",
     "eslint": "8.57.1",
     "prettier": "3.3.3",
     "rollup": "4.25.0",
-    "rollup-plugin-copy": "3.5.0"
+    "rollup-plugin-copy": "3.5.0",
+    "typescript": "^5.7.2"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -74,15 +83,20 @@
   "exports": {
     ".": "./dist/index.js",
     "./*": "./dist/*.js",
-    "./test-support": "./dist/test-support/index.js",
     "./authenticators/oauth2-password-grant": "./dist/authenticators/oauth2-password-grant.js",
-    "./utils/is-fastboot": "./dist/utils/is-fastboot.js",
-    "./utils/location": "./dist/utils/location.js",
-    "./utils/objects-are-equal": "./dist/utils/objects-are-equal.js",
-    "./addon-main.js": "./addon-main.cjs"
+    "./addon-main.js": "./addon-main.cjs",
+    "./test-support": {
+      "types": "./declarations/test-support/*.d.ts",
+      "default": "./dist/test-support/index.js"
+    },
+    "./utils/*": {
+      "types": "./dist/utils/*.d.ts",
+      "default": "./dist/utils/*.js"
+    }
   },
   "peerDependencies": {
-    "@ember/test-helpers": ">= 3 || > 2.7"
+    "@ember/test-helpers": ">= 3 || > 2.7",
+    "ember-source": ">=4.0"
   },
   "peerDependenciesMeta": {
     "@ember/test-helpers": {
