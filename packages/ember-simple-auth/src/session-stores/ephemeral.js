@@ -10,11 +10,12 @@ import BaseStore from './base';
   @extends BaseStore
   @public
 */
-export default BaseStore.extend({
-  init() {
-    this._super(...arguments);
+export default class EphemeralStore extends BaseStore {
+  constructor(owner, args) {
+    super(owner, args);
+
     this.clear();
-  },
+  }
 
   /**
     Persists `data`. This replaces all currently stored data.
@@ -29,7 +30,7 @@ export default BaseStore.extend({
     this._data = JSON.stringify(data || {});
 
     return Promise.resolve();
-  },
+  }
 
   /**
     Returns all data currently stored as a plain object.
@@ -43,7 +44,7 @@ export default BaseStore.extend({
     const data = JSON.parse(this._data) || {};
 
     return Promise.resolve(data);
-  },
+  }
 
   /**
     Clears the store.
@@ -58,5 +59,5 @@ export default BaseStore.extend({
     this._data = '{}';
 
     return Promise.resolve();
-  },
-});
+  }
+}
