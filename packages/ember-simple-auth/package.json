@@ -43,7 +43,7 @@
     "@babel/runtime": "7.26.0",
     "@embroider/addon-dev": "5.0.0",
     "@rollup/plugin-babel": "6.0.4",
-    "@rollup/plugin-node-resolve": "15.3.0",
+    "@rollup/plugin-node-resolve": "15.3.1",
     "concurrently": "9.1.0",
     "ember-template-lint": "6.0.0",
     "eslint": "8.57.1",
