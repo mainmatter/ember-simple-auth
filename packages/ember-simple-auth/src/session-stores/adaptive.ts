@@ -2,15 +2,18 @@ import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { getOwner } from '@ember/application';
 import Base from './base';
+import type CookiesService from 'ember-cookies/services/cookies';
+import type CookieStore from './cookie';
+import type LocalStorageStore from './local-storage';
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 
 const proxyToInternalStore = function () {
   return computed({
-    get(key) {
+    get(this: AdaptiveStore, key: string) {
       return this.get(`_${key}`);
     },
-    set(key, value) {
+    set(this: AdaptiveStore, key: string, value: any) {
       this.set(`_${key}`, value);
       let _store = this.get('_store');
       if (_store) {
@@ -65,7 +68,7 @@ export default class AdaptiveStore extends Base {
   */
   _cookieDomain = null;
   @proxyToInternalStore()
-  cookieDomain;
+  cookieDomain!: null | string;
 
   /**
     Allows servers to assert that a cookie ought not to be sent along with
@@ -84,7 +87,7 @@ export default class AdaptiveStore extends Base {
   */
   _sameSite = null;
   @proxyToInternalStore()
-  sameSite;
+  sameSite!: null | 'Strict' | 'Lax' | 'None';
 
   /**
     Allows servers to assert that a cookie should opt in to partitioned storage,
@@ -103,7 +106,7 @@ export default class AdaptiveStore extends Base {
   */
   _partitioned = null;
   @proxyToInternalStore()
-  partitioned;
+  partitioned!: null | boolean;
 
   /**
     The name of the cookie to use if `localStorage` is not available.
@@ -116,7 +119,7 @@ export default class AdaptiveStore extends Base {
   */
   _cookieName = 'ember_simple_auth-session';
   @proxyToInternalStore()
-  cookieName;
+  cookieName!: string;
 
   /**
     The path to use for the cookie, e.g., "/", "/something".
@@ -129,7 +132,7 @@ export default class AdaptiveStore extends Base {
   */
   _cookiePath = '/';
   @proxyToInternalStore()
-  cookiePath;
+  cookiePath!: string;
 
   /**
     The expiration time for the cookie in seconds if `localStorage` is not
@@ -144,9 +147,12 @@ export default class AdaptiveStore extends Base {
   */
   _cookieExpirationTime = null;
   @proxyToInternalStore()
-  cookieExpirationTime;
+  cookieExpirationTime!: number | null;
 
-  @service('cookies') _cookies;
+  @service('cookies') declare _cookies: CookiesService;
+  declare _fastboot: any;
+
+  declare _store: CookieStore | LocalStorageStore;
 
   __isLocalStorageAvailable = null;
   get _isLocalStorageAvailable() {
@@ -157,10 +163,10 @@ export default class AdaptiveStore extends Base {
     }
   }
 
-  init() {
-    this._super(...arguments);
+  init(properties: any) {
+    super.init(properties);
 
-    let owner = getOwner(this);
+    let owner = getOwner(this) as any;
     if (owner && !this.hasOwnProperty('_fastboot')) {
       this._fastboot = owner.lookup('service:fastboot');
     }
@@ -168,9 +174,8 @@ export default class AdaptiveStore extends Base {
     let store;
     if (this.get('_isLocalStorageAvailable')) {
       const localStorage = owner.lookup('session-store:local-storage');
-      const options = { key: this.get('localStorageKey') };
+      const options = { key: this.get('localStorageKey'), _isFastBoot: false };
 
-      options._isFastBoot = false;
       localStorage.setProperties(options);
 
       store = localStorage;
@@ -195,7 +200,7 @@ export default class AdaptiveStore extends Base {
     this._setupStoreEvents(store);
   }
 
-  _setupStoreEvents(store) {
+  _setupStoreEvents(store: CookieStore | LocalStorageStore) {
     store.on('sessionDataUpdated', ({ detail: data }) => {
       this.trigger('sessionDataUpdated', data);
     });
@@ -212,8 +217,8 @@ export default class AdaptiveStore extends Base {
     @return {Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
-  persist() {
-    return this.get('_store').persist(...arguments);
+  persist(data: Record<string, string>) {
+    return this.get('_store').persist(data);
   }
 
   /**
@@ -246,7 +251,7 @@ export default class AdaptiveStore extends Base {
 
 function testLocalStorageAvailable() {
   try {
-    localStorage.setItem(LOCAL_STORAGE_TEST_KEY, true);
+    localStorage.setItem(LOCAL_STORAGE_TEST_KEY, 'true');
     localStorage.removeItem(LOCAL_STORAGE_TEST_KEY);
     return true;
   } catch (e) {
