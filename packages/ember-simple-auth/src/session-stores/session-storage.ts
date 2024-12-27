@@ -29,15 +29,19 @@ export default class SessionStorageStore extends BaseStore {
     @public
   */
   key = 'ember_simple_auth-session';
+  _isFastBoot: boolean = false;
+  _boundHandler: (e: any) => void;
+  _lastData: Record<string, string> | null = null;
 
-  init() {
-    this._super(...arguments);
+  constructor(owner: any) {
+    super(owner);
 
     this._isFastBoot = this.hasOwnProperty('_isFastBoot')
       ? this._isFastBoot
       : isFastBoot(getOwner(this));
+    this._boundHandler = bind(this, this._handleStorageEvent);
     if (!this.get('_isFastBoot')) {
-      window.addEventListener('storage', bind(this, this._handleStorageEvent));
+      window.addEventListener('storage', this._boundHandler);
     }
   }
 
@@ -56,10 +60,10 @@ export default class SessionStorageStore extends BaseStore {
     @return {Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
-  persist(data) {
+  persist(data: Record<string, string>) {
     this._lastData = data;
-    data = JSON.stringify(data || {});
-    sessionStorage.setItem(this.key, data);
+    const stringifiedData = JSON.stringify(data || {});
+    sessionStorage.setItem(this.key, stringifiedData);
 
     return Promise.resolve();
   }
@@ -75,7 +79,7 @@ export default class SessionStorageStore extends BaseStore {
   restore() {
     let data = sessionStorage.getItem(this.key);
 
-    return Promise.resolve(JSON.parse(data) || {});
+    return Promise.resolve(JSON.parse(data || '{}'));
   }
 
   /**
@@ -95,7 +99,7 @@ export default class SessionStorageStore extends BaseStore {
     return Promise.resolve();
   }
 
-  _handleStorageEvent(e) {
+  _handleStorageEvent(e: StorageEvent) {
     if (e.key === this.get('key')) {
       this.restore().then(data => {
         if (!objectsAreEqual(data, this._lastData)) {
