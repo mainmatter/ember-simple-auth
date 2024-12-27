@@ -5,7 +5,7 @@ module('TestAuthenticator', function (hooks) {
   let authenticator;
 
   hooks.beforeEach(function () {
-    authenticator = Test.create();
+    authenticator = new Test();
   });
 
   module('#restore', function () {

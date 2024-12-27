@@ -1,11 +1,11 @@
 import BaseAuthenticator from './base';
 
 export default class TestAuthenticator extends BaseAuthenticator {
-  restore(data) {
+  restore(data: any) {
     return Promise.resolve(data);
   }
 
-  authenticate(data) {
+  authenticate(data: any) {
     return Promise.resolve(data);
   }
 
