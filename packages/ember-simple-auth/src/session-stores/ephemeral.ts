@@ -11,8 +11,10 @@ import BaseStore from './base';
   @public
 */
 export default class EphemeralStore extends BaseStore {
-  constructor(owner, args) {
-    super(owner, args);
+  _data = '{}';
+
+  constructor(owner: any) {
+    super(owner);
 
     this.clear();
   }
@@ -26,7 +28,7 @@ export default class EphemeralStore extends BaseStore {
     @return {Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
-  persist(data) {
+  persist(data: Record<string, string>) {
     this._data = JSON.stringify(data || {});
 
     return Promise.resolve();
@@ -41,7 +43,7 @@ export default class EphemeralStore extends BaseStore {
     @public
   */
   restore() {
-    const data = JSON.parse(this._data) || {};
+    const data = JSON.parse(this._data || '{}');
 
     return Promise.resolve(data);
   }
@@ -55,7 +57,6 @@ export default class EphemeralStore extends BaseStore {
     @public
   */
   clear() {
-    delete this._data;
     this._data = '{}';
 
     return Promise.resolve();

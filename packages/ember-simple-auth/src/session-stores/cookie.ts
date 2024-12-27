@@ -1,15 +1,17 @@
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { later, cancel, scheduleOnce, next } from '@ember/runloop';
-import { isPresent, typeOf, isEmpty, isNone } from '@ember/utils';
+import { later, cancel, scheduleOnce, next, type Timer } from '@ember/runloop';
+import { typeOf, isEmpty, isNone } from '@ember/utils';
 import { A } from '@ember/array';
-import { getOwner } from '@ember/application';
 import { warn } from '@ember/debug';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import { isTesting } from '@embroider/macros';
+import type CookiesService from 'ember-cookies/services/cookies';
+import type { WriteOptions } from 'ember-cookies/services/cookies';
+import { getOwner } from '@ember/application';
 
-const persistingProperty = function (beforeSet = function () {}) {
+const persistingProperty = function (beforeSet = function (_key: string, _value: any) {}) {
   return computed({
     get(key) {
       return this.get(`_${key}`);
@@ -70,9 +72,8 @@ const persistingProperty = function (beforeSet = function () {}) {
   @public
 */
 export default class CookieStore extends BaseStore {
-  _syncDataTimeout = null;
-  _renewExpirationTimeout = null;
-
+  _syncDataTimeout: Timer | null = null;
+  _renewExpirationTimeout: Timer | null = null;
   /**
     The domain to use for the cookie, e.g., "example.com", ".example.com"
     (which includes all subdomains) or "subdomain.example.com". If not
@@ -87,7 +88,7 @@ export default class CookieStore extends BaseStore {
   */
   _cookieDomain = null;
   @persistingProperty()
-  cookieDomain;
+  cookieDomain!: null | string;
 
   /**
     Allows servers to assert that a cookie ought not to be sent along with cross-site requests,
@@ -103,7 +104,7 @@ export default class CookieStore extends BaseStore {
   */
   _sameSite = null;
   @persistingProperty()
-  sameSite;
+  sameSite!: null | 'Strict' | 'Lax' | 'None';
 
   /**
     The name of the cookie.
@@ -115,10 +116,12 @@ export default class CookieStore extends BaseStore {
     @public
   */
   _cookieName = 'ember_simple_auth-session';
-  @persistingProperty(function () {
+
+  _oldCookieName: string | null = null;
+  @persistingProperty(function (this: CookieStore) {
     this._oldCookieName = this._cookieName;
   })
-  cookieName;
+  cookieName!: string;
 
   /**
     The path to use for the cookie, e.g., "/", "/something".
@@ -131,7 +134,7 @@ export default class CookieStore extends BaseStore {
   */
   _cookiePath = '/';
   @persistingProperty()
-  cookiePath;
+  cookiePath!: string;
 
   /**
     The expiration time for the cookie in seconds. A value of `null` will make
@@ -149,7 +152,7 @@ export default class CookieStore extends BaseStore {
     @public
   */
   _cookieExpirationTime = null;
-  @persistingProperty(function (key, value) {
+  @persistingProperty(function (this: CookieStore, key, value) {
     // When nulling expiry time on purpose, we need to clear the cached value.
     // Otherwise, `_calculateExpirationTime` will reuse it.
     if (isNone(value)) {
@@ -162,7 +165,7 @@ export default class CookieStore extends BaseStore {
       );
     }
   })
-  cookieExpirationTime;
+  cookieExpirationTime!: number | null;
 
   /**
     Allows servers to assert that a cookie should opt in to partitioned storage,
@@ -181,11 +184,13 @@ export default class CookieStore extends BaseStore {
   */
   _partitioned = null;
   @persistingProperty()
-  partitioned;
+  partitioned!: null | boolean;
 
-  @service('cookies') _cookies;
+  @service('cookies') declare _cookies: CookiesService;
 
-  _secureCookies() {
+  _fastboot: any;
+
+  _secureCookies(): boolean {
     if (this.get('_fastboot.isFastBoot')) {
       return this.get('_fastboot.request.protocol') === 'https:';
     }
@@ -203,16 +208,17 @@ export default class CookieStore extends BaseStore {
     }
   }
 
-  init() {
-    this._super(...arguments);
-    let owner = getOwner(this);
-    if (owner && !this.hasOwnProperty('_fastboot')) {
-      this._fastboot = owner.lookup('service:fastboot');
-    }
+  _isFastBoot: boolean = false;
+  _lastData: Record<string, string> | null = null;
+
+  init(properties: any) {
+    super.init(properties);
+
+    this._fastboot = (getOwner(this) as any).lookup('service:fastboot');
 
     let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
     if (cachedExpirationTime) {
-      this.set('cookieExpirationTime', parseInt(cachedExpirationTime, 10));
+      this.set('cookieExpirationTime', parseInt(cachedExpirationTime as any, 10));
     }
 
     if (!this.get('_fastboot.isFastBoot')) {
@@ -235,11 +241,11 @@ export default class CookieStore extends BaseStore {
     @return {Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
-  persist(data) {
+  persist(data: Record<string, string>) {
     this._lastData = data;
-    data = JSON.stringify(data || {});
+    const stringifiedData = JSON.stringify(data || {});
     let expiration = this._calculateExpirationTime();
-    this._write(data, expiration);
+    this._write(stringifiedData, expiration);
     return Promise.resolve();
   }
 
@@ -253,11 +259,7 @@ export default class CookieStore extends BaseStore {
   */
   restore() {
     let data = this._read(this.get('cookieName'));
-    if (isEmpty(data)) {
-      return Promise.resolve({});
-    } else {
-      return Promise.resolve(JSON.parse(data));
-    }
+    return Promise.resolve(JSON.parse(data && typeof data === 'string' ? data : '{}'));
   }
 
   /**
@@ -274,34 +276,40 @@ export default class CookieStore extends BaseStore {
     return Promise.resolve();
   }
 
-  _read(name) {
+  _read(name: string) {
     return this.get('_cookies').read(name) || '';
   }
 
-  _calculateExpirationTime() {
-    let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
-    cachedExpirationTime = cachedExpirationTime
-      ? new Date().getTime() + cachedExpirationTime * 1000
-      : null;
-    return this.get('cookieExpirationTime')
-      ? new Date().getTime() + this.get('cookieExpirationTime') * 1000
-      : cachedExpirationTime;
+  _calculateExpirationTime(): number | undefined {
+    const cachedExpirationTimeCookie = this._read(`${this.get('cookieName')}-expiration_time`);
+
+    const cachedExpirationTime =
+      cachedExpirationTimeCookie && typeof cachedExpirationTimeCookie === 'number'
+        ? new Date().getTime() + cachedExpirationTimeCookie * 1000
+        : null;
+
+    const thisCookieExpirationTime = this.get('cookieExpirationTime');
+
+    return thisCookieExpirationTime
+      ? new Date().getTime() + thisCookieExpirationTime * 1000
+      : cachedExpirationTime || undefined;
   }
 
-  _write(value, expiration) {
+  _write(value: string, expiration: number | undefined) {
     let cookieOptions = {
       domain: this.get('cookieDomain'),
-      expires: isEmpty(expiration) ? null : new Date(expiration),
+      expires: !expiration ? null : new Date(expiration as number),
       path: this.get('cookiePath'),
       secure: this._secureCookies(),
       sameSite: this.get('sameSite'),
       partitioned: this.get('partitioned'),
-    };
+    } as WriteOptions;
+
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach(oldCookie => {
         this.get('_cookies').clear(oldCookie);
       });
-      delete this._oldCookieName;
+      this._oldCookieName = null;
     }
     this.get('_cookies').write(this.get('cookieName'), value, cookieOptions);
     if (!isEmpty(expiration)) {
@@ -322,7 +330,7 @@ export default class CookieStore extends BaseStore {
         this.trigger('sessionDataUpdated', data);
       }
       if (!isTesting()) {
-        cancel(this._syncDataTimeout);
+        this._syncDataTimeout && cancel(this._syncDataTimeout);
         this._syncDataTimeout = later(this, this._syncData, 500);
       }
     });
@@ -340,7 +348,7 @@ export default class CookieStore extends BaseStore {
 
   _renewExpiration() {
     if (!isTesting()) {
-      cancel(this._renewExpirationTimeout);
+      this._renewExpirationTimeout && cancel(this._renewExpirationTimeout);
       this._renewExpirationTimeout = later(this, this._renewExpiration, 60000);
     }
     if (this._isPageVisible()) {
@@ -354,7 +362,7 @@ export default class CookieStore extends BaseStore {
     // if `cookieName` has not been renamed, `oldCookieName` will be nil
     const cookieName = this._oldCookieName || this._cookieName;
     const data = this._read(cookieName);
-    if (isPresent(data)) {
+    if (data && typeof data === 'string') {
       const expiration = this._calculateExpirationTime();
       this._write(data, expiration);
     }

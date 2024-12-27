@@ -5,37 +5,36 @@ import objectsAreEqual from '../utils/objects-are-equal';
 import isFastBoot from '../utils/is-fastboot';
 
 /**
-  Session store that persists data in the browser's `localStorage`.
+  Session store that persists data in the browser's `sessionStorage`.
 
-  __`localStorage` is not available in Safari when running in private mode. In
-  general it is better to use the
-  {@linkplain AdaptiveStore} that automatically falls back to
-  the {@linkplain CookieStore} when `localStorage` is not
-  available.__
+  __`sessionStorage` is not available in Safari when running in private mode.__
 
   __This session store does not work with FastBoot. In order to use Ember
   Simple Auth with FastBoot, configure the
   {@linkplain CookieStore} as the application's session
   store.__
 
-  @class LocalStorageStore
+  @class SessionStorageStore
   @extends BaseStore
   @public
 */
-export default class LocalStorageStore extends BaseStore {
+export default class SessionStorageStore extends BaseStore {
   /**
-    The `localStorage` key the store persists data in.
+    The `sessionStorage` key the store persists data in.
 
-    @memberof LocalStorageStore
+    @memberof SessionStorageStore
     @property key
     @type String
     @default 'ember_simple_auth-session'
     @public
   */
   key = 'ember_simple_auth-session';
+  _isFastBoot: boolean = false;
+  _boundHandler: (e: any) => void;
+  _lastData: Record<string, string> | null = null;
 
-  init() {
-    this._super(...arguments);
+  constructor(owner: any) {
+    super(owner);
 
     this._isFastBoot = this.hasOwnProperty('_isFastBoot')
       ? this._isFastBoot
@@ -48,59 +47,59 @@ export default class LocalStorageStore extends BaseStore {
 
   willDestroy() {
     if (!this.get('_isFastBoot')) {
-      window.removeEventListener('storage', this._boundHandler);
+      window.removeEventListener('storage', bind(this, this._handleStorageEvent));
     }
   }
 
   /**
-    Persists the `data` in the `localStorage`.
+    Persists the `data` in the `sessionStorage`.
 
-    @memberof LocalStorageStore
+    @memberof SessionStorageStore
     @method persist
     @param {Object} data The data to persist
     @return {Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
-  persist(data) {
+  persist(data: Record<string, string>) {
     this._lastData = data;
-    data = JSON.stringify(data || {});
-    localStorage.setItem(this.key, data);
+    const stringifiedData = JSON.stringify(data || {});
+    sessionStorage.setItem(this.key, stringifiedData);
 
     return Promise.resolve();
   }
 
   /**
-    Returns all data currently stored in the `localStorage` as a plain object.
+    Returns all data currently stored in the `sessionStorage` as a plain object.
 
-    @memberof LocalStorageStore
+    @memberof SessionStorageStore
     @method restore
     @return {Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
   */
   restore() {
-    let data = localStorage.getItem(this.key);
+    let data = sessionStorage.getItem(this.key);
 
-    return Promise.resolve(JSON.parse(data) || {});
+    return Promise.resolve(JSON.parse(data || '{}'));
   }
 
   /**
     Clears the store by deleting the
-    {@linkplain LocalStorageStore.key} from
-    `localStorage`.
+    {@linkplain sessionStorageStore.key} from
+    `sessionStorage`.
 
-    @memberof LocalStorageStore
+    @memberof SessionStorageStore
     @method clear
     @return {Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public
   */
   clear() {
-    localStorage.removeItem(this.key);
+    sessionStorage.removeItem(this.key);
     this._lastData = {};
 
     return Promise.resolve();
   }
 
-  _handleStorageEvent(e) {
+  _handleStorageEvent(e: StorageEvent) {
     if (e.key === this.get('key')) {
       this.restore().then(data => {
         if (!objectsAreEqual(data, this._lastData)) {
