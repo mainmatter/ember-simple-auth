@@ -4,7 +4,7 @@ import BaseAuthenticator from './base';
 
 deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
   id: 'ember-simple-auth.authenticators.torii',
-  until: '7.0.0',
+  until: '8.0.0',
   for: 'ember-simple-auth',
   since: {
     enabled: '4.2.0',
