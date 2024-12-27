@@ -5,6 +5,8 @@ import { waitFor } from '@ember/test-waiters';
 
 const JSON_CONTENT_TYPE = 'application/json';
 
+export type NestedRecord = Record<string, string | Record<string, string>>;
+
 /**
   Authenticator that works with the Ruby gem
   [devise](https://github.com/plataformatec/devise).
@@ -79,7 +81,7 @@ export default class DeviseAuthenticator extends BaseAuthenticator {
     @return {Promise} A promise that when it resolves results in the session becoming or remaining authenticated
     @public
   */
-  restore(data) {
+  restore(data: Record<string, NestedRecord>) {
     return this._validate(data) ? Promise.resolve(data) : Promise.reject();
   }
 
@@ -102,14 +104,14 @@ export default class DeviseAuthenticator extends BaseAuthenticator {
     @return {Promise} A promise that when it resolves results in the session becoming authenticated. If authentication fails, the promise will reject with the server response; however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
     @public
   */
-  authenticate(identification, password) {
+  authenticate(identification: string, password: string) {
     return new Promise((resolve, reject) => {
       const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties(
         'resourceName',
         'identificationAttributeName',
         'tokenAttributeName'
       );
-      const data = {};
+      let data: NestedRecord = {};
       data[resourceName] = { password };
       data[resourceName][identificationAttributeName] = identification;
 
@@ -161,7 +163,7 @@ export default class DeviseAuthenticator extends BaseAuthenticator {
     @protected
   */
   @waitFor
-  makeRequest(data, options = {}) {
+  makeRequest(data: NestedRecord, options: { url?: string } = {}) {
     let url = options.url || this.get('serverTokenEndpoint');
     let requestOptions = {};
     let body = JSON.stringify(data);
@@ -178,7 +180,7 @@ export default class DeviseAuthenticator extends BaseAuthenticator {
     return fetch(url, requestOptions);
   }
 
-  _validate(data) {
+  _validate(data: Record<string, NestedRecord>) {
     const tokenAttributeName = this.get('tokenAttributeName');
     const identificationAttributeName = this.get('identificationAttributeName');
     const resourceName = this.get('resourceName');
