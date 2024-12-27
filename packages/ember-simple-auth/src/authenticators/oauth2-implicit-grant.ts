@@ -1,6 +1,5 @@
 /** @module ember-simple-auth/authenticators/oauth2-implicit-grant **/
 
-import { isEmpty } from '@ember/utils';
 import BaseAuthenticator from './base';
 /**
   Parses the location hash (as received from `window.location.hash`) into an
@@ -15,19 +14,32 @@ import BaseAuthenticator from './base';
   @return {Object} An obect with individual properties and values for the data parsed from the location hash
   @memberof module:ember-simple-auth/authenticators/oauth2-implicit-grant
 */
-export function parseResponse(locationHash) {
-  let params = {};
+export function parseResponse(locationHash: string): Record<string, string> {
+  let params: Record<string, string> = {};
   const query = locationHash.substring(locationHash.indexOf('?'));
   const regex = /([^#?&=]+)=([^&]*)/g;
   let match;
 
   // decode all parameter pairs
   while ((match = regex.exec(query)) !== null) {
-    params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
+    const [_, key, value] = match;
+    if (key && value) {
+      params[decodeURIComponent(key)] = decodeURIComponent(value);
+    }
   }
 
   return params;
 }
+
+type ImplicitGrantData = {
+  response_type: string;
+  client_id: string;
+  redirect_uri: string;
+  scope: string;
+  state: string;
+  access_token: string;
+  error?: string;
+};
 
 /**
  Authenticator that conforms to OAuth 2
@@ -54,7 +66,7 @@ export default class OAuth2ImplicitGrantAuthenticator extends BaseAuthenticator 
    @return {Promise} A promise that when it resolves results in the session becoming or remaining authenticated
    @public
    */
-  restore(data) {
+  restore(data: ImplicitGrantData) {
     return new Promise((resolve, reject) => {
       if (!this._validateData(data)) {
         return reject('Could not restore session - "access_token" missing.');
@@ -79,7 +91,7 @@ export default class OAuth2ImplicitGrantAuthenticator extends BaseAuthenticator 
    @return {Promise} A promise that when it resolves results in the session becoming authenticated
    @public
    */
-  authenticate(hash) {
+  authenticate(hash: ImplicitGrantData) {
     return new Promise((resolve, reject) => {
       if (hash.error) {
         reject(hash.error);
@@ -103,9 +115,8 @@ export default class OAuth2ImplicitGrantAuthenticator extends BaseAuthenticator 
     return Promise.resolve();
   }
 
-  _validateData(data) {
+  _validateData(data: ImplicitGrantData) {
     // see https://tools.ietf.org/html/rfc6749#section-4.2.2
-
-    return !isEmpty(data) && !isEmpty(data.access_token);
+    return data && data.access_token;
   }
 }
