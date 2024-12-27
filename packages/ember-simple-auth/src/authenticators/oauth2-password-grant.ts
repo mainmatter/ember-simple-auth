@@ -1,12 +1,59 @@
-import { isEmpty } from '@ember/utils';
-import { run, later, cancel } from '@ember/runloop';
-import { A, makeArray } from '@ember/array';
+import { makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
 import { getOwner } from '@ember/application';
 import BaseAuthenticator from './base';
 import isFastBoot from '../utils/is-fastboot';
 import { waitFor } from '@ember/test-waiters';
 import { isTesting } from '@embroider/macros';
+import type { Timer } from '@ember/runloop';
+import { run, later, cancel } from '@ember/runloop';
+
+export type OAuthResponseSuccess = {
+  access_token: string;
+  token_type: string;
+  expires_in?: number;
+  expires_at?: number;
+  refresh_token?: string;
+  scope?: string;
+};
+
+export type OAuthPasswordRequestData = {
+  grant_type: string;
+  username: string;
+  password: string;
+  client_id?: string;
+  scope?: string;
+};
+
+export type OAuthInvalidateRequestData = {
+  token_type_hint: 'access_token' | 'refresh_token';
+  token: string;
+  client_id?: string;
+  scope?: string;
+};
+
+export type OAuthRefreshRequestData = {
+  grant_type: 'refresh_token';
+  refresh_token: string;
+  scope?: string;
+  client_id?: string;
+};
+
+export type MakeRequestData =
+  | OAuthPasswordRequestData
+  | OAuthInvalidateRequestData
+  | OAuthRefreshRequestData;
+
+export interface OAuth2Response extends Response {
+  /**
+   * @deprecated 'responseText' is deprecated. This is a legacy AJAX API.
+   */
+  responseText: string;
+  /**
+   * @deprecated 'responseJSON' is deprecated. This is a legacy AJAX API.
+   */
+  responseJSON: string;
+}
 
 /**
   Authenticator that conforms to OAuth 2
@@ -46,7 +93,7 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     @default null
     @public
   */
-  clientId = null;
+  clientId: string | null = null;
 
   /**
     The endpoint on the server that authentication and token refresh requests
@@ -58,7 +105,7 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     @default '/token'
     @public
   */
-  serverTokenEndpoint = '/token';
+  serverTokenEndpoint: string = '/token';
 
   /**
     The endpoint on the server that token revocation requests are sent to. Only
@@ -75,7 +122,7 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     @default null
     @public
   */
-  serverTokenRevocationEndpoint = null;
+  serverTokenRevocationEndpoint: string | null = null;
 
   /**
     Sets whether the authenticator automatically refreshes access tokens if the
@@ -124,7 +171,7 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     return (Math.floor(Math.random() * (max - min)) + min) * 1000;
   }
 
-  _refreshTokenTimeout = null;
+  _refreshTokenTimeout: Timer | undefined = undefined;
 
   /**
     Restores the session from a session data object; __will return a resolving
@@ -144,16 +191,17 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     @return {Promise} A promise that when it resolves results in the session becoming or remaining authenticated. If restoration fails, the promise will reject with the server response (in case the access token had expired and was refreshed using a refresh token); however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
     @public
   */
-  restore(data) {
+  restore(data: OAuthResponseSuccess) {
     return new Promise((resolve, reject) => {
       const now = new Date().getTime();
       const refreshAccessTokens = this.get('refreshAccessTokens');
-      if (!isEmpty(data['expires_at']) && data['expires_at'] < now) {
+      if (data['expires_at'] && data['expires_at'] < now) {
         if (refreshAccessTokens) {
-          this._refreshAccessToken(data['expires_in'], data['refresh_token'], data['scope']).then(
-            resolve,
-            reject
-          );
+          this._refreshAccessToken(
+            data['expires_in'],
+            data['refresh_token'] as string,
+            data['scope']
+          ).then(resolve, reject);
         } else {
           reject();
         }
@@ -228,13 +276,17 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     @return {Promise} A promise that when it resolves results in the session becoming authenticated. If authentication fails, the promise will reject with the server response; however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
     @public
   */
-  authenticate(identification, password, scope = [], headers = {}) {
+  authenticate(identification: string, password: string, scope = [], headers = {}) {
     return new Promise((resolve, reject) => {
-      const data = { grant_type: 'password', username: identification, password };
+      const data: OAuthPasswordRequestData = {
+        grant_type: 'password',
+        username: identification,
+        password,
+      };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
 
       const scopesString = makeArray(scope).join(' ');
-      if (!isEmpty(scopesString)) {
+      if (scopesString.trim().length > 0) {
         data.scope = scopesString;
       }
       this.makeRequest(serverTokenEndpoint, data, headers).then(
@@ -250,7 +302,7 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
               expiresAt,
               response['refresh_token']
             );
-            if (!isEmpty(expiresAt)) {
+            if (expiresAt) {
               response = Object.assign(response, { expires_at: expiresAt });
             }
 
@@ -279,21 +331,21 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     @return {Promise} A promise that when it resolves results in the session being invalidated. If invalidation fails, the promise will reject with the server response (in case token revocation is used); however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
     @public
   */
-  invalidate(data) {
+  invalidate(data: OAuthResponseSuccess) {
     const serverTokenRevocationEndpoint = this.get('serverTokenRevocationEndpoint');
-    function success(resolve) {
+    const success = (resolve: (value?: unknown) => void) => {
       cancel(this._refreshTokenTimeout);
       delete this._refreshTokenTimeout;
       resolve();
-    }
+    };
     return new Promise(resolve => {
-      if (isEmpty(serverTokenRevocationEndpoint)) {
-        success.apply(this, [resolve]);
+      if (!serverTokenRevocationEndpoint) {
+        success(resolve);
       } else {
-        const requests = [];
-        A(['access_token', 'refresh_token']).forEach(tokenType => {
+        const requests: Promise<OAuthResponseSuccess>[] = [];
+        (['access_token', 'refresh_token'] as const).forEach(tokenType => {
           const token = data[tokenType];
-          if (!isEmpty(token)) {
+          if (token) {
             requests.push(
               this.makeRequest(serverTokenRevocationEndpoint, {
                 token_type_hint: tokenType,
@@ -322,18 +374,29 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     @protected
   */
   @waitFor
-  makeRequest(url, data, headers = {}) {
+  makeRequest(
+    url: string,
+    data: MakeRequestData,
+    headers: Record<string, string> = {}
+  ): Promise<OAuthResponseSuccess> {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
     const clientId = this.get('clientId');
-    if (!isEmpty(clientId)) {
-      data['client_id'] = this.get('clientId');
+    if (clientId) {
+      data.client_id = clientId;
     }
 
     const body = Object.keys(data)
       .map(key => {
-        return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`;
+        const value = data[key as keyof MakeRequestData];
+
+        if (value) {
+          return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+        } else {
+          return null;
+        }
       })
+      .filter(Boolean)
       .join('&');
 
     const options = {
@@ -349,13 +412,13 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
             try {
               let json = JSON.parse(text);
               if (!response.ok) {
-                response.responseJSON = json;
+                (response as OAuth2Response).responseJSON = json;
                 reject(response);
               } else {
                 resolve(json);
               }
             } catch (SyntaxError) {
-              response.responseText = text;
+              (response as OAuth2Response).responseText = text;
               reject(response);
             }
           });
@@ -364,34 +427,41 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     });
   }
 
-  _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
+  _scheduleAccessTokenRefresh(
+    expiresIn: number | undefined,
+    expiresAt: number | null | undefined,
+    refreshToken: string | undefined
+  ) {
     const refreshAccessTokens = this.get('refreshAccessTokens') && !isFastBoot(getOwner(this));
     if (refreshAccessTokens) {
       const now = new Date().getTime();
-      if (isEmpty(expiresAt) && !isEmpty(expiresIn)) {
+      if (!expiresAt && expiresIn) {
         expiresAt = new Date(now + expiresIn * 1000).getTime();
       }
       const offset = this.get('tokenRefreshOffset');
-      if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && expiresAt > now - offset) {
+      if (refreshToken && expiresAt && expiresAt > now - offset) {
         cancel(this._refreshTokenTimeout);
         delete this._refreshTokenTimeout;
         if (!isTesting()) {
           this._refreshTokenTimeout = later(
-            this,
-            this._refreshAccessToken,
-            expiresIn,
-            refreshToken,
-            expiresAt - now - offset
+            () => {
+              this._refreshAccessToken(expiresIn, refreshToken);
+            },
+            (expiresAt as number) - now - offset
           );
         }
       }
     }
   }
 
-  _refreshAccessToken(expiresIn, refreshToken, scope) {
-    const data = { grant_type: 'refresh_token', refresh_token: refreshToken };
+  _refreshAccessToken(expiresIn: number | undefined, refreshToken: string, scope?: string) {
+    const data: OAuthRefreshRequestData = {
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+      scope: '',
+    };
     const refreshAccessTokensWithScope = this.get('refreshAccessTokensWithScope');
-    if (refreshAccessTokensWithScope && !isEmpty(scope)) {
+    if (refreshAccessTokensWithScope && scope) {
       data.scope = scope;
     }
 
@@ -409,7 +479,7 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
               expires_at: expiresAt,
               refresh_token: refreshToken,
             });
-            if (refreshAccessTokensWithScope && !isEmpty(scope)) {
+            if (refreshAccessTokensWithScope && scope) {
               data.scope = scope;
             }
             this._scheduleAccessTokenRefresh(expiresIn, null, refreshToken);
@@ -429,13 +499,13 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     });
   }
 
-  _absolutizeExpirationTime(expiresIn) {
-    if (!isEmpty(expiresIn)) {
+  _absolutizeExpirationTime(expiresIn: number | undefined) {
+    if (expiresIn) {
       return new Date(new Date().getTime() + expiresIn * 1000).getTime();
     }
   }
 
-  _validate(data) {
-    return !isEmpty(data['access_token']);
+  _validate(data: OAuthResponseSuccess) {
+    return Boolean(data['access_token']);
   }
 }
