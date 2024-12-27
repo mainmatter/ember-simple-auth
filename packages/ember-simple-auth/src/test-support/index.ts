@@ -5,7 +5,7 @@ import Test from '../authenticators/test';
 const SESSION_SERVICE_KEY = 'service:session';
 const TEST_CONTAINER_KEY = 'authenticator:test';
 
-function ensureAuthenticator(owner) {
+function ensureAuthenticator(owner: any) {
   const authenticator = owner.lookup(TEST_CONTAINER_KEY);
   if (!authenticator) {
     owner.register(TEST_CONTAINER_KEY, Test);
@@ -20,13 +20,13 @@ function ensureAuthenticator(owner) {
  * @return {Promise}
  * @public
  */
-export function authenticateSession(sessionData) {
-  const { owner } = getContext();
+export async function authenticateSession(sessionData: Record<string, string>) {
+  const { owner } = getContext() as { owner: any };
   const session = owner.lookup(SESSION_SERVICE_KEY);
   ensureAuthenticator(owner);
-  return session.authenticate(TEST_CONTAINER_KEY, sessionData).then(() => {
-    return settled();
-  });
+
+  await session.authenticate(TEST_CONTAINER_KEY, sessionData);
+  await settled();
 }
 
 /**
@@ -36,7 +36,7 @@ export function authenticateSession(sessionData) {
  * @public
  */
 export function currentSession() {
-  const { owner } = getContext();
+  const { owner } = getContext() as { owner: any };
   return owner.lookup(SESSION_SERVICE_KEY);
 }
 
@@ -46,15 +46,14 @@ export function currentSession() {
  * @return {Promise}
  * @public
  */
-export function invalidateSession() {
-  const { owner } = getContext();
+export async function invalidateSession() {
+  const { owner } = getContext() as { owner: any };
   const session = owner.lookup(SESSION_SERVICE_KEY);
   const isAuthenticated = get(session, 'isAuthenticated');
-  return Promise.resolve()
-    .then(() => {
-      if (isAuthenticated) {
-        return session.invalidate();
-      }
-    })
-    .then(() => settled());
+
+  if (isAuthenticated) {
+    return session.invalidate();
+  }
+
+  await settled();
 }
