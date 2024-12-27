@@ -1,0 +1,23 @@
+{
+  "extends": "@tsconfig/ember/tsconfig.json",
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    // The combination of `baseUrl` with `paths` allows Ember's classic package
+    // layout, which is not resolvable with the Node resolution algorithm, to
+    // work with TypeScript.
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+
+    "paths": {
+      "test-app/tests/*": ["tests/*"],
+      "test-app/*": ["app/*"],
+      "*": ["types/*"]
+    },
+    "types": ["ember-source/types"]
+  },
+  "glint": {
+    "environment": "ember-loose"
+  },
+  "include": ["app", "tests"]
+}

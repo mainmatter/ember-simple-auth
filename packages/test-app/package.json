@@ -8,6 +8,7 @@
     "lint:fix": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:*:fix\"",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
+    "lint:types": "tsc --noEmit",
     "start": "ember serve",
     "start:fastboot": "NODE_ENV=production node fastboot-server.js",
     "start:demo-api": "node server/demo-api.js",
@@ -17,6 +18,8 @@
     "test:fastboot": "ember fastboot:test"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "7.25.9",
+    "@babel/plugin-transform-typescript": "7.26.3",
     "@ember/legacy-built-in-components": "0.5.0",
     "@ember/optional-features": "2.2.0",
     "@ember/string": "3.1.1",
@@ -24,6 +27,13 @@
     "@embroider/test-setup": "4.0.0",
     "@glimmer/component": "1.1.2",
     "@glimmer/tracking": "1.1.2",
+    "@glint/core": "1.5.0",
+    "@glint/environment-ember-loose": "1.5.0",
+    "@glint/environment-ember-template-imports": "1.5.0",
+    "@tsconfig/ember": "3.0.8",
+    "@types/ember__service": "4.0.9",
+    "@typescript-eslint/eslint-plugin": "8.18.1",
+    "@typescript-eslint/parser": "8.18.1",
     "body-parser": "1.20.3",
     "bootstrap": "5.3.3",
     "broccoli-asset-rev": "3.0.0",
@@ -44,6 +54,7 @@
     "ember-engines": "0.11.0",
     "ember-engines-router-service": "0.6.0",
     "ember-fetch": "8.1.2",
+    "ember-inflector": "^5.0.2",
     "ember-load-initializers": "2.1.2",
     "ember-maybe-import-regenerator": "1.0.0",
     "ember-qunit": "7.0.0",
@@ -65,6 +76,7 @@
     "qunit": "2.23.1",
     "qunit-dom": "2.0.0",
     "torii": "1.0.0-beta.2",
+    "typescript": "5.7.2",
     "webpack": "5.96.1"
   },
   "fastbootDependencies": [
@@ -73,8 +85,5 @@
   ],
   "ember": {
     "edition": "octane"
-  },
-  "dependencies": {
-    "@babel/eslint-parser": "^7.24.7"
   }
 }
