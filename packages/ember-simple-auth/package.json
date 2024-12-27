@@ -34,7 +34,7 @@
     "@embroider/addon-shim": "^1.0.0",
     "@embroider/macros": "^1.0.0",
     "ember-cli-is-package-missing": "^1.0.0",
-    "ember-cookies": "^1.2.0",
+    "ember-cookies": "../../../ember-cookies/packages/ember-cookies",
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
@@ -85,28 +85,45 @@
     }
   },
   "exports": {
-    ".": "./dist/index.js",
-    "./*": "./dist/*.js",
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./declarations/index.d.ts"
+    },
+    "./*": {
+      "default": "./dist/*.js",
+      "types": "./declarations/*.d.ts"
+    },
     "./addon-main.js": "./addon-main.cjs",
     "./authenticators/*": {
-      "types": "./declarations/authenticators/*.d.ts",
-      "default": "./dist/authenticators/*.js"
+      "default": "./dist/authenticators/*.js",
+      "types": "./declarations/authenticators/*.d.ts"
     },
-    "./services/*": {
-      "types": "./declarations/services/*.d.ts",
-      "default": "./dist/services/*.js"
+    "./initializers/*": {
+      "default": "./dist/initializers/*.js",
+      "types": "./declarations/initializers/*.d.ts"
+    },
+    "./services/session": {
+      "default": "./dist/services/session.js",
+      "types": "./declarations/services/session.d.ts"
     },
     "./session-stores/*": {
-      "types": "./declarations/session-stores/*.d.ts",
-      "default": "./dist/session-stores/*.js"
+      "default": "./dist/session-stores/*.js",
+      "types": "./declarations/session-stores/*.d.ts"
     },
     "./test-support": {
-      "types": "./declarations/test-support/index.d.ts",
-      "default": "./dist/test-support/index.js"
+      "default": "./dist/test-support/index.js",
+      "types": "./declarations/test-support/*.d.ts"
     },
     "./utils/*": {
-      "types": "./dist/utils/*.d.ts",
-      "default": "./dist/utils/*.js"
+      "default": "./dist/utils/*.js",
+      "types": "./declarations/utils/*.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./declarations/*.d.ts"
+      ]
     }
   },
   "peerDependencies": {

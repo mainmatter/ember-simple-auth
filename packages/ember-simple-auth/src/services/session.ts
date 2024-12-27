@@ -69,7 +69,7 @@ export default class EmberSimpleAuthSessionService extends Service {
   }
 
   /**
-   * Says whether the service was correctly initialized by the {#linkplain SessionService.setup}
+   * Says whether the service was correctly initialized by the {#linkplain #setup}
    */
   _setupIsCalled = false;
 
