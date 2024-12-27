@@ -86,10 +86,21 @@
   "exports": {
     ".": "./dist/index.js",
     "./*": "./dist/*.js",
-    "./authenticators/oauth2-password-grant": "./dist/authenticators/oauth2-password-grant.js",
     "./addon-main.js": "./addon-main.cjs",
+    "./authenticators/*": {
+      "types": "./declarations/authenticators/*.d.ts",
+      "default": "./dist/authenticators/*.js"
+    },
+    "./services/*": {
+      "types": "./declarations/services/*.d.ts",
+      "default": "./dist/services/*.js"
+    },
+    "./session-stores/*": {
+      "types": "./declarations/session-stores/*.d.ts",
+      "default": "./dist/session-stores/*.js"
+    },
     "./test-support": {
-      "types": "./declarations/test-support/*.d.ts",
+      "types": "./declarations/test-support/index.d.ts",
       "default": "./dist/test-support/index.js"
     },
     "./utils/*": {
