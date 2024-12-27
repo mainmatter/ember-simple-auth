@@ -115,7 +115,7 @@ export default class EsaBaseAuthenticator extends EmberObject {
     @member
     @public
   */
-  restore(...args: any[]): Promise<unknown> {
+  restore(..._args: any[]): Promise<unknown> {
     return Promise.reject();
   }
 
@@ -144,7 +144,7 @@ export default class EsaBaseAuthenticator extends EmberObject {
     @member
     @public
   */
-  authenticate(...args: any[]): Promise<unknown> {
+  authenticate(..._args: any[]): Promise<unknown> {
     return Promise.reject();
   }
 
@@ -169,7 +169,7 @@ export default class EsaBaseAuthenticator extends EmberObject {
     @member
     @public
   */
-  invalidate(...args: any[]): Promise<unknown> {
+  invalidate(..._args: any[]): Promise<unknown> {
     return Promise.resolve();
   }
 

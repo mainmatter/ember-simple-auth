@@ -1,6 +1,11 @@
 import EmberObject from '@ember/object';
+import { TypedEventTarget, type TypedEventListener } from 'typescript-event-target';
 
-class SessionStoreEventTarget extends EventTarget {}
+export interface SessionEvents {
+  sessionDataUpdated: CustomEvent<any>;
+}
+
+class SessionStoreEventTarget extends TypedEventTarget<SessionEvents> {}
 
 /**
   The base class for all session stores. __This serves as a starting point for
@@ -40,7 +45,7 @@ export default class EsaBaseSessionStore extends EmberObject {
     @return {Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
-  persist() {
+  persist(..._args: any[]): Promise<unknown> {
     return Promise.reject();
   }
 
@@ -55,7 +60,7 @@ export default class EsaBaseSessionStore extends EmberObject {
     @return {Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
   */
-  restore() {
+  restore(..._args: any[]): Promise<unknown> {
     return Promise.reject();
   }
 
@@ -70,19 +75,25 @@ export default class EsaBaseSessionStore extends EmberObject {
     @return {Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public
   */
-  clear() {
+  clear(..._args: any[]): Promise<unknown> {
     return Promise.reject();
   }
 
-  on(event, cb) {
+  on<Event extends keyof SessionEvents>(
+    event: Event,
+    cb: TypedEventListener<SessionEvents, Event>
+  ) {
     this.sessionStoreEvents.addEventListener(event, cb);
   }
 
-  off(event, cb) {
+  off<Event extends keyof SessionEvents>(
+    event: Event,
+    cb: TypedEventListener<SessionEvents, Event>
+  ) {
     this.sessionStoreEvents.removeEventListener(event, cb);
   }
 
-  trigger(event, value) {
+  trigger<Event extends keyof SessionEvents>(event: Event, value: SessionEvents[Event]['detail']) {
     let customEvent;
     if (value) {
       customEvent = new CustomEvent(event, { detail: value });
@@ -90,6 +101,6 @@ export default class EsaBaseSessionStore extends EmberObject {
       customEvent = new CustomEvent(event);
     }
 
-    this.sessionStoreEvents.dispatchEvent(customEvent);
+    this.sessionStoreEvents.dispatchTypedEvent(event, customEvent);
   }
 }
