@@ -79,7 +79,6 @@
       "./initializers/ember-simple-auth.js": "./dist/_app_/initializers/ember-simple-auth.js",
       "./services/session.js": "./dist/_app_/services/session.js",
       "./session-stores/application.js": "./dist/_app_/session-stores/application.js",
-      "./utils/inject.js": "./dist/_app_/utils/inject.js",
       "./utils/is-fastboot.js": "./dist/_app_/utils/is-fastboot.js",
       "./utils/location.js": "./dist/_app_/utils/location.js",
       "./utils/objects-are-equal.js": "./dist/_app_/utils/objects-are-equal.js"
@@ -88,10 +87,21 @@
   "exports": {
     ".": "./dist/index.js",
     "./*": "./dist/*.js",
-    "./authenticators/oauth2-password-grant": "./dist/authenticators/oauth2-password-grant.js",
     "./addon-main.js": "./addon-main.cjs",
+    "./authenticators/*": {
+      "types": "./declarations/authenticators/*.d.ts",
+      "default": "./dist/authenticators/*.js"
+    },
+    "./services/*": {
+      "types": "./declarations/services/*.d.ts",
+      "default": "./dist/services/*.js"
+    },
+    "./session-stores/*": {
+      "types": "./declarations/session-stores/*.d.ts",
+      "default": "./dist/session-stores/*.js"
+    },
     "./test-support": {
-      "types": "./declarations/test-support/*.d.ts",
+      "types": "./declarations/test-support/index.d.ts",
       "default": "./dist/test-support/index.js"
     },
     "./utils/*": {
