@@ -9,6 +9,7 @@ import objectsAreEqual from '../utils/objects-are-equal';
 import { isTesting } from '@embroider/macros';
 import type CookiesService from 'ember-cookies/services/cookies';
 import type { WriteOptions } from 'ember-cookies/services/cookies';
+import { getOwner } from '@ember/application';
 
 const persistingProperty = function (beforeSet = function (_key: string, _value: any) {}) {
   return computed({
@@ -87,7 +88,7 @@ export default class CookieStore extends BaseStore {
   */
   _cookieDomain = null;
   @persistingProperty()
-  cookieDomain = null;
+  cookieDomain!: null | string;
 
   /**
     Allows servers to assert that a cookie ought not to be sent along with cross-site requests,
@@ -103,7 +104,7 @@ export default class CookieStore extends BaseStore {
   */
   _sameSite = null;
   @persistingProperty()
-  sameSite = null;
+  sameSite!: null | 'Strict' | 'Lax' | 'None';
 
   /**
     The name of the cookie.
@@ -120,7 +121,7 @@ export default class CookieStore extends BaseStore {
   @persistingProperty(function (this: CookieStore) {
     this._oldCookieName = this._cookieName;
   })
-  cookieName = 'ember_simple_auth-session';
+  cookieName!: string;
 
   /**
     The path to use for the cookie, e.g., "/", "/something".
@@ -133,7 +134,7 @@ export default class CookieStore extends BaseStore {
   */
   _cookiePath = '/';
   @persistingProperty()
-  cookiePath = '/';
+  cookiePath!: string;
 
   /**
     The expiration time for the cookie in seconds. A value of `null` will make
@@ -164,7 +165,7 @@ export default class CookieStore extends BaseStore {
       );
     }
   })
-  cookieExpirationTime = null;
+  cookieExpirationTime!: number | null;
 
   /**
     Allows servers to assert that a cookie should opt in to partitioned storage,
@@ -183,11 +184,11 @@ export default class CookieStore extends BaseStore {
   */
   _partitioned = null;
   @persistingProperty()
-  partitioned = null;
+  partitioned!: null | boolean;
 
   @service('cookies') declare _cookies: CookiesService;
 
-  @service('fastboot') declare _fastboot: any;
+  _fastboot: any;
 
   _secureCookies(): boolean {
     if (this.get('_fastboot.isFastBoot')) {
@@ -210,12 +211,14 @@ export default class CookieStore extends BaseStore {
   _isFastBoot: boolean = false;
   _lastData: Record<string, string> | null = null;
 
-  constructor(owner: any) {
-    super(owner);
+  init(properties: any) {
+    super.init(properties);
+
+    this._fastboot = (getOwner(this) as any).lookup('service:fastboot');
 
     let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
-    if (typeof cachedExpirationTime === 'string' || typeof cachedExpirationTime === 'number') {
-      this.set('cookieExpirationTime', parseInt(cachedExpirationTime, 10));
+    if (cachedExpirationTime) {
+      this.set('cookieExpirationTime', parseInt(cachedExpirationTime as any, 10));
     }
 
     if (!this.get('_fastboot.isFastBoot')) {
@@ -256,7 +259,7 @@ export default class CookieStore extends BaseStore {
   */
   restore() {
     let data = this._read(this.get('cookieName'));
-    return Promise.resolve(JSON.parse(typeof data === 'string' ? data : '{}'));
+    return Promise.resolve(JSON.parse(data && typeof data === 'string' ? data : '{}'));
   }
 
   /**
@@ -293,14 +296,14 @@ export default class CookieStore extends BaseStore {
   }
 
   _write(value: string, expiration: number | undefined) {
-    let cookieOptions: WriteOptions = {
-      domain: this.get('cookieDomain') || undefined,
-      expires: !expiration ? undefined : new Date(expiration),
+    let cookieOptions = {
+      domain: this.get('cookieDomain'),
+      expires: !expiration ? null : new Date(expiration as number),
       path: this.get('cookiePath'),
       secure: this._secureCookies(),
-      sameSite: this.get('sameSite') || undefined,
-      partitioned: this.partitioned || undefined,
-    };
+      sameSite: this.get('sameSite'),
+      partitioned: this.get('partitioned'),
+    } as WriteOptions;
 
     if (this._oldCookieName) {
       A([this._oldCookieName, `${this._oldCookieName}-expiration_time`]).forEach(oldCookie => {
