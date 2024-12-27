@@ -31,7 +31,7 @@ export function parseResponse(locationHash: string): Record<string, string> {
   return params;
 }
 
-type ImplicitGrantData = {
+export type ImplicitGrantData = {
   response_type: string;
   client_id: string;
   redirect_uri: string;

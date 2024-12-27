@@ -8,7 +8,7 @@ import { isTesting } from '@embroider/macros';
 import type { Timer } from '@ember/runloop';
 import { run, later, cancel } from '@ember/runloop';
 
-type OAuthResponseSuccess = {
+export type OAuthResponseSuccess = {
   access_token: string;
   token_type: string;
   expires_in?: number;
@@ -17,7 +17,7 @@ type OAuthResponseSuccess = {
   scope?: string;
 };
 
-type OAuthPasswordRequestData = {
+export type OAuthPasswordRequestData = {
   grant_type: string;
   username: string;
   password: string;
@@ -25,26 +25,26 @@ type OAuthPasswordRequestData = {
   scope?: string;
 };
 
-type OAuthInvalidateRequestData = {
+export type OAuthInvalidateRequestData = {
   token_type_hint: 'access_token' | 'refresh_token';
   token: string;
   client_id?: string;
   scope?: string;
 };
 
-type OAuthRefreshRequestData = {
+export type OAuthRefreshRequestData = {
   grant_type: 'refresh_token';
   refresh_token: string;
   scope?: string;
   client_id?: string;
 };
 
-type MakeRequestData =
+export type MakeRequestData =
   | OAuthPasswordRequestData
   | OAuthInvalidateRequestData
   | OAuthRefreshRequestData;
 
-interface OAuth2Response extends Response {
+export interface OAuth2Response extends Response {
   /**
    * @deprecated 'responseText' is deprecated. This is a legacy AJAX API.
    */
