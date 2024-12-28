@@ -1,12 +1,12 @@
 import EmberObject from '@ember/object';
-import { TypedEventTarget, type TypedEventListener } from 'typescript-event-target';
+import EsaEventTarget, { type EventListener } from '../-internals/event-target';
 
 export interface AuthenticatorEvents {
   sessionDataUpdated: CustomEvent<any>;
   sessionDataInvalidated: CustomEvent;
 }
 
-class AuthenticatorEventTarget extends TypedEventTarget<AuthenticatorEvents> {}
+class AuthenticatorEventTarget extends EsaEventTarget<AuthenticatorEvents> {}
 
 /**
   The base class for all authenticators. __This serves as a starting point for
@@ -175,29 +175,22 @@ export default class EsaBaseAuthenticator extends EmberObject {
 
   on<Event extends keyof AuthenticatorEvents>(
     event: Event,
-    cb: TypedEventListener<AuthenticatorEvents, Event>
+    cb: EventListener<AuthenticatorEvents, Event>
   ) {
-    this.authenticatorEvents.addEventListener(event, cb);
+    this.authenticatorEvents.addEventListener(event, cb as any);
   }
 
   off<Event extends keyof AuthenticatorEvents>(
     event: Event,
-    cb: TypedEventListener<AuthenticatorEvents, Event>
+    cb: EventListener<AuthenticatorEvents, Event>
   ) {
-    this.authenticatorEvents.removeEventListener(event, cb);
+    this.authenticatorEvents.removeEventListener(event, cb as any);
   }
 
   trigger<Event extends keyof AuthenticatorEvents>(
     event: Event,
     value: AuthenticatorEvents[Event]['detail']
   ) {
-    let customEvent;
-    if (value) {
-      customEvent = new CustomEvent(event, { detail: value });
-    } else {
-      customEvent = new CustomEvent(event);
-    }
-
-    this.authenticatorEvents.dispatchTypedEvent(event, customEvent);
+    this.authenticatorEvents.dispatchEvent(event, value);
   }
 }

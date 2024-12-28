@@ -1,11 +1,11 @@
 import EmberObject from '@ember/object';
-import { TypedEventTarget, type TypedEventListener } from 'typescript-event-target';
+import EsaEventTarget, { type EventListener } from '../-internals/event-target';
 
 export interface SessionEvents {
   sessionDataUpdated: CustomEvent<any>;
 }
 
-class SessionStoreEventTarget extends TypedEventTarget<SessionEvents> {}
+class SessionStoreEventTarget extends EsaEventTarget<SessionEvents> {}
 
 /**
   The base class for all session stores. __This serves as a starting point for
@@ -79,28 +79,15 @@ export default class EsaBaseSessionStore extends EmberObject {
     return Promise.reject();
   }
 
-  on<Event extends keyof SessionEvents>(
-    event: Event,
-    cb: TypedEventListener<SessionEvents, Event>
-  ) {
+  on<Event extends keyof SessionEvents>(event: Event, cb: EventListener<SessionEvents, Event>) {
     this.sessionStoreEvents.addEventListener(event, cb);
   }
 
-  off<Event extends keyof SessionEvents>(
-    event: Event,
-    cb: TypedEventListener<SessionEvents, Event>
-  ) {
+  off<Event extends keyof SessionEvents>(event: Event, cb: EventListener<SessionEvents, Event>) {
     this.sessionStoreEvents.removeEventListener(event, cb);
   }
 
   trigger<Event extends keyof SessionEvents>(event: Event, value: SessionEvents[Event]['detail']) {
-    let customEvent;
-    if (value) {
-      customEvent = new CustomEvent(event, { detail: value });
-    } else {
-      customEvent = new CustomEvent(event);
-    }
-
-    this.sessionStoreEvents.dispatchTypedEvent(event, customEvent);
+    this.sessionStoreEvents.dispatchEvent(event, value);
   }
 }

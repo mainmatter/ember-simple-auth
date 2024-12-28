@@ -62,8 +62,7 @@
     "prettier": "3.3.3",
     "rollup": "4.25.0",
     "rollup-plugin-copy": "3.5.0",
-    "typescript": "^5.7.2",
-    "typescript-event-target": "^1.1.1"
+    "typescript": "^5.7.2"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -79,7 +78,6 @@
       "./initializers/ember-simple-auth.js": "./dist/_app_/initializers/ember-simple-auth.js",
       "./services/session.js": "./dist/_app_/services/session.js",
       "./session-stores/application.js": "./dist/_app_/session-stores/application.js",
-      "./utils/inject.js": "./dist/_app_/utils/inject.js",
       "./utils/is-fastboot.js": "./dist/_app_/utils/is-fastboot.js",
       "./utils/location.js": "./dist/_app_/utils/location.js",
       "./utils/objects-are-equal.js": "./dist/_app_/utils/objects-are-equal.js"
