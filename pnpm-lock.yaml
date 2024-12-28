@@ -238,8 +238,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       ember-cookies:
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^1.3.0
+        version: 1.3.0(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5))
       ember-source:
         specifier: '>=4.0'
         version: 5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1)
@@ -5008,9 +5008,11 @@ packages:
     resolution: {integrity: sha512-6GaN0eEDZT9SEUSZBxWzZMlvxjcGKXFTJNjv30LVXTTOxozE5IBmIxiDAEq0udi0UpWUGHLYQBgnANn4jdll7w==}
     engines: {node: '>= 16.*'}
 
-  ember-cookies@1.2.0:
-    resolution: {integrity: sha512-ZbJbXq7dhjqJfOG/BBVlqO1o4Y6SWENrhiEgI7vokwVeuqHrvfaaFWV1emZUrsvoCAbSq/TiEdncO1EdZcI7Fg==}
+  ember-cookies@1.3.0:
+    resolution: {integrity: sha512-nhVDm9lql4EVLpbjxyosyEITFvuNAmHr7cod8K2FmIyw2KcAFWSS0v88quIWc+GvcawBTz3KSMRXOJq/0InVpg==}
     engines: {node: '>= 16.*'}
+    peerDependencies:
+      ember-source: '>=4.0'
 
   ember-data@5.3.9:
     resolution: {integrity: sha512-fUhvmq3piYapfSFlpFpuQrkGn9SPRzPNj9xfHtFhyUq7UrPSXvjbhsihg+vw46VLxNqlTUwVtU3kLjGuJU6O9Q==}
@@ -16915,9 +16917,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-cookies@1.2.0:
+  ember-cookies@1.3.0(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)):
     dependencies:
       '@embroider/addon-shim': 1.8.9
+      ember-source: 5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)
     transitivePeerDependencies:
       - supports-color
 
