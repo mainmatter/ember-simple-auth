@@ -59,7 +59,7 @@ type InternalSessionMock = {
   @extends Service
   @public
 */
-export default class EmberSimpleAuthSessionService extends Service {
+export default class SessionService extends Service {
   session: InternalSessionMock;
 
   constructor(owner: any) {
