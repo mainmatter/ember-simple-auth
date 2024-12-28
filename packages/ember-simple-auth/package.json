@@ -84,17 +84,45 @@
     }
   },
   "exports": {
-    ".": "./dist/index.js",
-    "./*": "./dist/*.js",
-    "./authenticators/oauth2-password-grant": "./dist/authenticators/oauth2-password-grant.js",
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./declarations/index.d.ts"
+    },
+    "./*": {
+      "default": "./dist/*.js",
+      "types": "./declarations/*.d.ts"
+    },
     "./addon-main.js": "./addon-main.cjs",
+    "./authenticators/*": {
+      "default": "./dist/authenticators/*.js",
+      "types": "./declarations/authenticators/*.d.ts"
+    },
+    "./initializers/*": {
+      "default": "./dist/initializers/*.js",
+      "types": "./declarations/initializers/*.d.ts"
+    },
+    "./services/session": {
+      "default": "./dist/services/session.js",
+      "types": "./declarations/services/session.d.ts"
+    },
+    "./session-stores/*": {
+      "default": "./dist/session-stores/*.js",
+      "types": "./declarations/session-stores/*.d.ts"
+    },
     "./test-support": {
-      "types": "./declarations/test-support/*.d.ts",
-      "default": "./dist/test-support/index.js"
+      "default": "./dist/test-support/index.js",
+      "types": "./declarations/test-support/*.d.ts"
     },
     "./utils/*": {
-      "types": "./dist/utils/*.d.ts",
-      "default": "./dist/utils/*.js"
+      "default": "./dist/utils/*.js",
+      "types": "./declarations/utils/*.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./declarations/*.d.ts"
+      ]
     }
   },
   "peerDependencies": {

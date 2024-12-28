@@ -22,6 +22,7 @@ export default {
     addon.publicEntrypoints([
       'services/**/*.js',
       'session-stores/**/*.js',
+      'utils/is-fastboot.js',
       'utils/**/*.js',
       'authenticators/**/*.js',
       'test-support/**/*.js',
