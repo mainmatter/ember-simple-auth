@@ -1,8 +1,8 @@
-import { bind } from '@ember/runloop';
 import { getOwner } from '@ember/application';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import isFastBoot from '../utils/is-fastboot';
+import { action } from '@ember/object';
 
 /**
   Session store that persists data in the browser's `localStorage`.
@@ -35,7 +35,6 @@ export default class LocalStorageStore extends BaseStore {
   key = 'ember_simple_auth-session';
 
   _isFastBoot: boolean = false;
-  _boundHandler: (e: any) => void;
   _lastData: Record<string, string> | null = null;
 
   constructor(owner: any) {
@@ -44,15 +43,14 @@ export default class LocalStorageStore extends BaseStore {
     this._isFastBoot = this.hasOwnProperty('_isFastBoot')
       ? this._isFastBoot
       : isFastBoot(getOwner(this));
-    this._boundHandler = bind(this, this._handleStorageEvent);
     if (!this.get('_isFastBoot')) {
-      window.addEventListener('storage', this._boundHandler);
+      window.addEventListener('storage', this._handleStorageEvent);
     }
   }
 
   willDestroy() {
     if (!this.get('_isFastBoot')) {
-      window.removeEventListener('storage', this._boundHandler);
+      window.removeEventListener('storage', this._handleStorageEvent);
     }
   }
 
@@ -104,6 +102,7 @@ export default class LocalStorageStore extends BaseStore {
     return Promise.resolve();
   }
 
+  @action
   _handleStorageEvent(e: StorageEvent) {
     if (e.key === this.get('key')) {
       this.restore().then(data => {

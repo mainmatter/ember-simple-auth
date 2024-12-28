@@ -1,11 +1,12 @@
 import { isEmpty, isNone } from '@ember/utils';
 import ObjectProxy from '@ember/object/proxy';
-import { set } from '@ember/object';
+import { action, set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
 import { getOwner, setOwner } from '@ember/application';
 import { isTesting } from '@embroider/macros';
+import EsaEventTarget from './-internals/event-target';
 
-class SessionEventTarget extends EventTarget {}
+class SessionEventTarget extends EsaEventTarget {}
 
 /**
   __An internal implementation of Session. Communicates with stores and emits events.__
@@ -97,7 +98,7 @@ export default ObjectProxy.extend({
     let authenticator = this._lookupAuthenticator(this.authenticator);
     return authenticator.invalidate(this.content.authenticated, ...arguments).then(
       () => {
-        authenticator.off('sessionDataUpdated', this._onSessionDataUpdated.bind(this));
+        authenticator.off('sessionDataUpdated', this._onSessionDataUpdated);
         this._busy = false;
         return this._clear(true);
       },
@@ -217,17 +218,17 @@ export default ObjectProxy.extend({
 
   _bindToAuthenticatorEvents() {
     const authenticator = this._lookupAuthenticator(this.authenticator);
-    authenticator.on('sessionDataUpdated', this._onSessionDataUpdated.bind(this));
-    authenticator.on('sessionDataInvalidated', this._onSessionDataInvalidated.bind(this));
+    authenticator.on('sessionDataUpdated', this._onSessionDataUpdated);
+    authenticator.on('sessionDataInvalidated', this._onSessionDataInvalidated);
   },
 
-  _onSessionDataUpdated({ detail: content }) {
+  _onSessionDataUpdated: action(function ({ detail: content }) {
     this._setup(this.authenticator, content);
-  },
+  }),
 
-  _onSessionDataInvalidated() {
+  _onSessionDataInvalidated: action(function () {
     this._clear(true);
-  },
+  }),
 
   _bindToStoreEvents() {
     this.store.on('sessionDataUpdated', ({ detail: content }) => {
@@ -282,13 +283,6 @@ export default ObjectProxy.extend({
   },
 
   trigger(event, value) {
-    let customEvent;
-    if (value) {
-      customEvent = new CustomEvent(event, { detail: value });
-    } else {
-      customEvent = new CustomEvent(event);
-    }
-
-    this.sessionEvents.dispatchEvent(customEvent);
+    this.sessionEvents.dispatchEvent(event, value);
   },
 });
