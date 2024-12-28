@@ -158,7 +158,7 @@ importers:
         version: 11.0.1(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))
       ember-simple-auth:
         specifier: 6.1.0
-        version: 6.1.0(@babel/core@7.25.2)(@ember/test-helpers@3.3.1(@babel/core@7.25.2)(@glint/template@1.5.0)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))(webpack@5.96.1))(@glint/template@1.5.0)(eslint@8.57.1)
+        version: 6.1.0(@babel/core@7.25.2)(@ember/test-helpers@3.3.1(@babel/core@7.25.2)(@glint/template@1.5.0)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))(webpack@5.96.1))(@glint/template@1.5.0)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))(eslint@8.57.1)
       ember-source:
         specifier: 5.12.0
         version: 5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1)
@@ -238,8 +238,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       ember-cookies:
-        specifier: ../../../ember-cookies/packages/ember-cookies
-        version: link:../../../ember-cookies/packages/ember-cookies
+        specifier: ^1.3.0
+        version: 1.3.0(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5))
       ember-source:
         specifier: '>=4.0'
         version: 5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1)
@@ -448,12 +448,17 @@ importers:
         version: 11.0.1(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))
       ember-simple-auth:
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: 6.1.0
         version: 6.1.0(@babel/core@7.26.0)(@ember/test-helpers@3.3.1(@babel/core@7.26.0)(@glint/template@1.5.0)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))(webpack@5.96.1))(@glint/template@1.5.0)(eslint@8.57.1)
 =======
         specifier: ../ember-simple-auth/ember-simple-auth-6.1.0.tgz
         version: file:packages/ember-simple-auth/ember-simple-auth-6.1.0.tgz(@babel/core@7.26.0)(@ember/test-helpers@3.3.1(@babel/core@7.26.0)(@glint/template@1.5.0)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))(webpack@5.96.1))(@glint/template@1.5.0)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))(eslint@8.57.1)
 >>>>>>> 0226b3ab (feat: change exports field. convert test-app to typescript)
+=======
+        specifier: link:../ember-simple-auth
+        version: link:../ember-simple-auth
+>>>>>>> c62ee3d3 (chore(deps): use ember-cookies ^1.3.0)
       ember-source:
         specifier: 5.12.0
         version: 5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1)
@@ -5036,9 +5041,11 @@ packages:
     resolution: {integrity: sha512-BtkjulweiXo9c3yVWrtexw2dTmBrvavD/xixNC6TKOBdrixUwU+6nuOO9dufDWsMxoid7MvtmDpzc9+mE8PdaA==}
     engines: {node: 10.* || >= 12.*}
 
-  ember-cookies@1.2.0:
-    resolution: {integrity: sha512-ZbJbXq7dhjqJfOG/BBVlqO1o4Y6SWENrhiEgI7vokwVeuqHrvfaaFWV1emZUrsvoCAbSq/TiEdncO1EdZcI7Fg==}
+  ember-cookies@1.3.0:
+    resolution: {integrity: sha512-nhVDm9lql4EVLpbjxyosyEITFvuNAmHr7cod8K2FmIyw2KcAFWSS0v88quIWc+GvcawBTz3KSMRXOJq/0InVpg==}
     engines: {node: '>= 16.*'}
+    peerDependencies:
+      ember-source: '>=4.0'
 
   ember-data@5.3.9:
     resolution: {integrity: sha512-fUhvmq3piYapfSFlpFpuQrkGn9SPRzPNj9xfHtFhyUq7UrPSXvjbhsihg+vw46VLxNqlTUwVtU3kLjGuJU6O9Q==}
@@ -5135,6 +5142,7 @@ packages:
         optional: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   ember-simple-auth@file:packages/ember-simple-auth/ember-simple-auth-6.1.0.tgz:
     resolution: {integrity: sha512-lePlD6jR7BFICWsImf66XxNdcy8ktOUaw/MbwYgo0nIOiVmshkBW2gG2rhB5neXrMBqSPgFDgWgXifLJRzwQug==, tarball: file:packages/ember-simple-auth/ember-simple-auth-6.1.0.tgz}
@@ -5147,6 +5155,8 @@ packages:
         optional: true
 
 >>>>>>> 0226b3ab (feat: change exports field. convert test-app to typescript)
+=======
+>>>>>>> c62ee3d3 (chore(deps): use ember-cookies ^1.3.0)
   ember-source-channel-url@3.0.0:
     resolution: {integrity: sha512-vF/8BraOc66ZxIDo3VuNP7iiDrnXEINclJgSJmqwAAEpg84Zb1DHPI22XTXSDA+E8fW5btPUxu65c3ZXi8AQFA==}
     engines: {node: 10.* || 12.* || >= 14}
@@ -16972,9 +16982,17 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  ember-cookies@1.2.0:
+  ember-cookies@1.3.0(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1)):
     dependencies:
       '@embroider/addon-shim': 1.8.9
+      ember-source: 5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1)
+    transitivePeerDependencies:
+      - supports-color
+
+  ember-cookies@1.3.0(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)):
+    dependencies:
+      '@embroider/addon-shim': 1.8.9
+      ember-source: 5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)
     transitivePeerDependencies:
       - supports-color
 
@@ -17251,22 +17269,27 @@ snapshots:
       - supports-color
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   ember-simple-auth@6.1.0(@babel/core@7.26.0)(@ember/test-helpers@3.3.1(@babel/core@7.26.0)(@glint/template@1.5.0)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))(webpack@5.96.1))(@glint/template@1.5.0)(eslint@8.57.1):
 =======
   ember-simple-auth@6.1.0(@babel/core@7.25.2)(@ember/test-helpers@3.3.1(@babel/core@7.25.2)(@glint/template@1.5.0)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))(webpack@5.96.1))(@glint/template@1.5.0)(eslint@8.57.1):
+=======
+  ember-simple-auth@6.1.0(@babel/core@7.25.2)(@ember/test-helpers@3.3.1(@babel/core@7.25.2)(@glint/template@1.5.0)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))(webpack@5.96.1))(@glint/template@1.5.0)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))(eslint@8.57.1):
+>>>>>>> c62ee3d3 (chore(deps): use ember-cookies ^1.3.0)
     dependencies:
       '@babel/eslint-parser': 7.25.1(@babel/core@7.25.2)(eslint@8.57.1)
       '@ember/test-waiters': 3.1.0
       '@embroider/addon-shim': 1.8.9
       '@embroider/macros': 1.16.10(@glint/template@1.5.0)
       ember-cli-is-package-missing: 1.0.0
-      ember-cookies: 1.2.0
+      ember-cookies: 1.3.0(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))
       silent-error: 1.1.1
     optionalDependencies:
       '@ember/test-helpers': 3.3.1(@babel/core@7.25.2)(@glint/template@1.5.0)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.25.2))(@glint/template@1.5.0)(rsvp@4.8.5)(webpack@5.96.1))(webpack@5.96.1)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+<<<<<<< HEAD
       - eslint
       - supports-color
 
@@ -17292,6 +17315,9 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+=======
+      - ember-source
+>>>>>>> c62ee3d3 (chore(deps): use ember-cookies ^1.3.0)
       - eslint
       - supports-color
 
