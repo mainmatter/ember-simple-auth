@@ -216,9 +216,10 @@ export default class CookieStore extends BaseStore {
 
     this._fastboot = (getOwner(this) as any).lookup('service:fastboot');
 
-    let cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
-    if (cachedExpirationTime) {
-      this.set('cookieExpirationTime', parseInt(cachedExpirationTime as any, 10));
+    const cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
+    const parsedExpirationTime = parseInt(cachedExpirationTime, 10);
+    if (parsedExpirationTime) {
+      this.set('cookieExpirationTime', parsedExpirationTime);
     }
 
     if (!this.get('_fastboot.isFastBoot')) {
