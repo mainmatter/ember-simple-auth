@@ -53,6 +53,7 @@ authorization mechanisms__.
 
 * [Managing a current User](guides/managing-current-user.md)
 * [GitHub authorization with torii](guides/auth-torii-with-github.md)
+* [Upgrading to v7](guides/upgrade-to-v7.md)
 * [Upgrading to v4](guides/upgrade-to-v4.md)
 * [Upgrading to v3](guides/upgrade-to-v3.md)
 
@@ -718,6 +719,7 @@ If you're an `ember-mocha` user, we can recommend to check out this
 ## Other guides
 
 * [Managing current User](guides/managing-current-user.md)
+* [Upgrading to v7](guides/upgrade-to-v7.md)
 * [Upgrading to v4](guides/upgrade-to-v4.md)
 * [Upgrading to v3](guides/upgrade-to-v3.md)
 
