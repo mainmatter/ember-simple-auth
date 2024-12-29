@@ -145,7 +145,7 @@ importers:
         specifier: 8.1.2
         version: 8.1.2(encoding@0.1.13)
       ember-inflector:
-        specifier: ^5.0.2
+        specifier: 5.0.2
         version: 5.0.2(@babel/core@7.26.0)
       ember-load-initializers:
         specifier: 2.1.2
@@ -434,7 +434,7 @@ importers:
         specifier: 8.1.2
         version: 8.1.2(encoding@0.1.13)
       ember-inflector:
-        specifier: ^5.0.2
+        specifier: 5.0.2
         version: 5.0.2(@babel/core@7.26.0)
       ember-load-initializers:
         specifier: 2.1.2
