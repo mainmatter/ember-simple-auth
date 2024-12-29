@@ -29,7 +29,6 @@
     "release": "npm publish"
   },
   "dependencies": {
-    "@babel/eslint-parser": "^7.24.7",
     "@ember/test-waiters": "^3",
     "@embroider/addon-shim": "^1.0.0",
     "@embroider/macros": "^1.0.0",
