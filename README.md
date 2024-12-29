@@ -128,7 +128,23 @@ as well as prepare yourself for v5 release which will make it **required**.
 
 ## Walkthrough
 
-Once the library is installed, __the session service can be injected wherever
+Once the library is installed, import a session service and a session-store inside your application__.
+
+### Add `app/services/session.js` or `app/services/session.ts`
+```js
+import Service from 'ember-simple-auth/services/session';
+
+export default class SessionService extends Service {}
+```
+
+### Add `app/session-stores/application.js` or `app/session-stores/application.ts`
+```js
+import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
+
+export default class SessionStore extends AdaptiveStore {}
+```
+
+then __the session service can be injected wherever
 needed in the application__. In order to display login/logout buttons depending
 on the current session state, inject the service into the respective controller
 or component and __query its
