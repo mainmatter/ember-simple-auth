@@ -27,10 +27,10 @@ importers:
         specifier: 7.0.0
         version: 7.0.0(release-it@17.10.0(typescript@5.7.2))
       '@typescript-eslint/eslint-plugin':
-        specifier: ^8.18.1
+        specifier: 8.18.2
         version: 8.18.2(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2)
       '@typescript-eslint/parser':
-        specifier: ^8.18.1
+        specifier: 8.18.2
         version: 8.18.2(eslint@8.57.1)(typescript@5.7.2)
       eslint-config-prettier:
         specifier: 9.1.0
@@ -263,13 +263,13 @@ importers:
         specifier: 7.1.1
         version: 7.1.1(@glint/template@1.5.0)(rollup@4.25.0)
       '@glint/core':
-        specifier: ^1.5.0
+        specifier: 1.5.0
         version: 1.5.0(typescript@5.7.2)
       '@glint/environment-ember-loose':
-        specifier: ^1.5.0
+        specifier: 1.5.0
         version: 1.5.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(@types/ember__array@4.0.10(@babel/core@7.26.0))(@types/ember__component@4.0.22(@babel/core@7.26.0))(@types/ember__controller@4.0.12(@babel/core@7.26.0))(@types/ember__object@4.0.12(@babel/core@7.26.0))(@types/ember__routing@4.0.22(@babel/core@7.26.0))(ember-cli-htmlbars@6.3.0)
       '@glint/environment-ember-template-imports':
-        specifier: ^1.5.0
+        specifier: 1.5.0
         version: 1.5.0(@glint/environment-ember-loose@1.5.0(@glimmer/component@1.1.2(@babel/core@7.26.0))(@glint/template@1.5.0)(@types/ember__array@4.0.10(@babel/core@7.26.0))(@types/ember__component@4.0.22(@babel/core@7.26.0))(@types/ember__controller@4.0.12(@babel/core@7.26.0))(@types/ember__object@4.0.12(@babel/core@7.26.0))(@types/ember__routing@4.0.22(@babel/core@7.26.0))(ember-cli-htmlbars@6.3.0))(@glint/template@1.5.0)(@types/ember__component@4.0.22(@babel/core@7.26.0))(@types/ember__routing@4.0.22(@babel/core@7.26.0))
       '@rollup/plugin-babel':
         specifier: 6.0.4
@@ -278,28 +278,28 @@ importers:
         specifier: 15.3.1
         version: 15.3.1(rollup@4.25.0)
       '@tsconfig/ember':
-        specifier: ^3.0.8
+        specifier: 3.0.8
         version: 3.0.8
       '@types/ember__application':
-        specifier: ^4.0.11
+        specifier: 4.0.11
         version: 4.0.11(@babel/core@7.26.0)
       '@types/ember__debug':
-        specifier: ^4.0.8
+        specifier: 4.0.8
         version: 4.0.8(@babel/core@7.26.0)
       '@types/ember__object':
-        specifier: ^4.0.12
+        specifier: 4.0.12
         version: 4.0.12(@babel/core@7.26.0)
       '@types/ember__routing':
-        specifier: ^4.0.22
+        specifier: 4.0.22
         version: 4.0.22(@babel/core@7.26.0)
       '@types/ember__service':
-        specifier: ^4.0.9
+        specifier: 4.0.9
         version: 4.0.9(@babel/core@7.26.0)
       '@typescript-eslint/eslint-plugin':
-        specifier: ^8.18.1
+        specifier: 8.18.2
         version: 8.18.2(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2)
       '@typescript-eslint/parser':
-        specifier: ^8.18.1
+        specifier: 8.18.2
         version: 8.18.2(eslint@8.57.1)(typescript@5.7.2)
       concurrently:
         specifier: 9.1.0
@@ -320,7 +320,7 @@ importers:
         specifier: 3.5.0
         version: 3.5.0
       typescript:
-        specifier: ^5.7.2
+        specifier: 5.7.2
         version: 5.7.2
 
   packages/test-app:
@@ -11517,26 +11517,6 @@ snapshots:
     dependencies:
       '@types/ms': 0.7.34
 
-  '@types/ember@4.0.11':
-    dependencies:
-      '@types/ember__application': 4.0.11(@babel/core@7.26.0)
-      '@types/ember__array': 4.0.10(@babel/core@7.26.0)
-      '@types/ember__component': 4.0.22(@babel/core@7.26.0)
-      '@types/ember__controller': 4.0.12(@babel/core@7.26.0)
-      '@types/ember__debug': 4.0.8(@babel/core@7.26.0)
-      '@types/ember__engine': 4.0.11(@babel/core@7.26.0)
-      '@types/ember__error': 4.0.6
-      '@types/ember__object': 4.0.12(@babel/core@7.26.0)
-      '@types/ember__polyfills': 4.0.6
-      '@types/ember__routing': 4.0.22(@babel/core@7.26.0)
-      '@types/ember__runloop': 4.0.10
-      '@types/ember__service': 4.0.9(@babel/core@7.26.0)
-      '@types/ember__string': 3.0.15
-      '@types/ember__template': 4.0.7
-      '@types/ember__test': 4.0.6(@babel/core@7.26.0)
-      '@types/ember__utils': 4.0.7
-      '@types/rsvp': 4.0.9
-
   '@types/ember@4.0.11(@babel/core@7.26.0)':
     dependencies:
       '@types/ember__application': 4.0.11(@babel/core@7.26.0)
@@ -11563,7 +11543,7 @@ snapshots:
   '@types/ember__application@4.0.11(@babel/core@7.26.0)':
     dependencies:
       '@glimmer/component': 1.1.2(@babel/core@7.26.0)
-      '@types/ember': 4.0.11
+      '@types/ember': 4.0.11(@babel/core@7.26.0)
       '@types/ember__engine': 4.0.11(@babel/core@7.26.0)
       '@types/ember__object': 4.0.12(@babel/core@7.26.0)
       '@types/ember__owner': 4.0.9
@@ -11635,10 +11615,6 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  '@types/ember__runloop@4.0.10':
-    dependencies:
-      '@types/ember': 4.0.11
-
   '@types/ember__runloop@4.0.10(@babel/core@7.26.0)':
     dependencies:
       '@types/ember': 4.0.11(@babel/core@7.26.0)
@@ -11663,10 +11639,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-
-  '@types/ember__utils@4.0.7':
-    dependencies:
-      '@types/ember': 4.0.11
 
   '@types/ember__utils@4.0.7(@babel/core@7.26.0)':
     dependencies:
