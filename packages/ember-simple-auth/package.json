@@ -74,12 +74,7 @@
     "type": "addon",
     "main": "addon-main.cjs",
     "app-js": {
-      "./initializers/ember-simple-auth.js": "./dist/_app_/initializers/ember-simple-auth.js",
-      "./services/session.js": "./dist/_app_/services/session.js",
-      "./session-stores/application.js": "./dist/_app_/session-stores/application.js",
-      "./utils/is-fastboot.js": "./dist/_app_/utils/is-fastboot.js",
-      "./utils/location.js": "./dist/_app_/utils/location.js",
-      "./utils/objects-are-equal.js": "./dist/_app_/utils/objects-are-equal.js"
+      "./initializers/ember-simple-auth.js": "./dist/_app_/initializers/ember-simple-auth.js"
     }
   },
   "exports": {
