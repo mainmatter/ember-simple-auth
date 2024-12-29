@@ -59,3 +59,12 @@ import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
 
 export default class SessionStore extends AdaptiveStore {}
 ```
+
+## Removed RSVP
+
+Async APIs were built on top of RSVP.Promise, we're no longer relying on it and use the native Promise instead.
+
+## Deprecated `responseJSON` and `responseText` fields returned by OAuth2PasswordGrantAuthenticator.
+
+For historical reasons, when Ajax was still in use. OAuth2PasswordGrantAuthenticator adds `responseJSON` and `responseText` properties to the response returned by its #authenticated method.
+These properties are deprecated and will be removed with later releases.
