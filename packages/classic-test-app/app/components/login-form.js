@@ -13,9 +13,10 @@ export default Component.extend({
       await this.get('session').authenticate('authenticator:oauth2', identification, password);
 
       if (this.rememberMe) {
-        this.get('session').set('store.cookieExpirationTime', 60 * 60 * 24 * 14);
+        this.get('session').set('cookieExpirationTime', 60 * 60 * 24 * 14);
       }
     } catch (response) {
+      console.error(response.toString());
       this.set('errorMessage', response.toString());
     }
   }),
