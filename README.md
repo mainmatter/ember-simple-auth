@@ -127,6 +127,12 @@ due to ESA using initializers. Consult with the guide in order to fix them
 as well as prepare yourself for v5 release which will make it **required**.
 [v4 upgrade guide](guides/upgrade-to-v4.md).
 
+### Upgrading to 7.0 release?
+
+The 7.0 release introduces a **breaking** change, it no longer automatically provides a session service and a default session-store. You have explicitly import these files instead.
+Additional semi-breaking change is how classes provided by us are extended.
+Please see the guide [v7 upgrade guide](guides/upgrade-to-v7.md).
+
 ## Walkthrough
 
 Once the library is installed, import a session service and a session-store inside your application__.
