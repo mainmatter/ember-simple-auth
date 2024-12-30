@@ -60,6 +60,21 @@ import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
 export default class SessionStore extends AdaptiveStore {}
 ```
 
+**Typescript: Optional Generic `Data` argument.**
+
+```ts
+import Service from 'ember-simple-auth/services/session';
+
+type Data = {
+  authenticated: {
+    // Any data your authenticators return
+    id: string;
+  }
+}
+
+export default class SessionService extends Service<Data> {}
+```
+
 ## Removed RSVP
 
 Async APIs were built on top of RSVP.Promise, we're no longer relying on it and use the native Promise instead.

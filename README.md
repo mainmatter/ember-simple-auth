@@ -163,7 +163,7 @@ type Data = {
   }
 }
 
-export default class SessionService<Data> extends Service {}
+export default class SessionService extends Service<Data> {}
 ```
 
 then __the session service can be injected wherever
