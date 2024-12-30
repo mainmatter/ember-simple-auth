@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Configuration.html">Configuration</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li></ul></div>
                 
             </nav>
         </div>
@@ -85,14 +85,13 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import RSVP from 'rsvp';
-import { assert, deprecate } from '@ember/debug';
+            <pre class="prettyprint source linenums"><code>import { assert, deprecate } from '@ember/debug';
 import { isPresent, isEmpty } from '@ember/utils';
 import BaseAuthenticator from './base';
 
 deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
   id: 'ember-simple-auth.authenticators.torii',
-  until: '7.0.0',
+  until: '8.0.0',
   for: 'ember-simple-auth',
   since: {
     enabled: '4.2.0',
@@ -123,8 +122,8 @@ deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
   @extends BaseAuthenticator
   @public
 */
-export default BaseAuthenticator.extend({
-  _provider: null,
+export default class ToriiAuthenticator extends BaseAuthenticator {
+  _provider = null;
 
   /**
     Restores the session by calling the torii provider's `fetch` method.
@@ -146,7 +145,7 @@ export default BaseAuthenticator.extend({
     @memberof ToriiAuthenticator
     @method restore
     @param {Object} data The data to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+    @return {Promise} A promise that when it resolves results in the session becoming or remaining authenticated
     @public
   */
   restore(data) {
@@ -170,9 +169,9 @@ export default BaseAuthenticator.extend({
         );
     } else {
       delete this._provider;
-      return RSVP.reject();
+      return Promise.reject();
     }
-  },
+  }
 
   /**
     Authenticates the session by opening the specified torii provider. For more
@@ -185,7 +184,7 @@ export default BaseAuthenticator.extend({
     @method authenticate
     @param {String} provider The torii provider to authenticate the session with
     @param {Object} options The options to pass to the torii provider
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
+    @return {Promise} A promise that when it resolves results in the session becoming authenticated
     @public
   */
   authenticate(provider, options) {
@@ -197,7 +196,7 @@ export default BaseAuthenticator.extend({
         this._authenticateWithProvider(provider, data);
         return data;
       });
-  },
+  }
 
   /**
     Closes the torii provider. If the provider is successfully closed, this
@@ -206,7 +205,7 @@ export default BaseAuthenticator.extend({
 
     @memberof ToriiAuthenticator
     @method invalidate
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
+    @return {Promise} A promise that when it resolves results in the session being invalidated
     @public
   */
   invalidate(data) {
@@ -215,12 +214,12 @@ export default BaseAuthenticator.extend({
       .then(() => {
         delete this._provider;
       });
-  },
+  }
 
   _authenticateWithProvider(provider, data) {
     data.provider = provider;
     this._provider = data.provider;
-  },
+  }
 
   _assertToriiIsPresent() {
     const torii = this.get('torii');
@@ -228,8 +227,8 @@ export default BaseAuthenticator.extend({
       'You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with "torii: Ember.inject.service()".',
       isPresent(torii)
     );
-  },
-});
+  }
+}
 </code></pre>
         </article>
     </section>
@@ -241,7 +240,7 @@ export default BaseAuthenticator.extend({
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
