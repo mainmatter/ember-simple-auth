@@ -102,7 +102,7 @@ module('Acceptance: Authentication', function (hooks) {
       await authenticateSession({});
       try {
         await visit('/auth-error');
-      } catch (e) {
+      } catch (_e) {
         // ignore the error
       }
 
