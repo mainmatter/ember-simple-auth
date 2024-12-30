@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Configuration</title>
+  <title> LocalStorageStore</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Class</p>
-                    <h1>Configuration</h1>
+                    <h1>LocalStorageStore</h1>
                 </header>
                 
 
@@ -85,7 +85,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Configuration<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>LocalStorageStore<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -104,12 +104,12 @@
 
 
     
-    <h4 class="name" id="Configuration">
-        <a class="href-link" href="#Configuration">#</a>
+    <h4 class="name" id="LocalStorageStore">
+        <a class="href-link" href="#LocalStorageStore">#</a>
         
         <span class="code-name">
             
-                new Configuration<span class="signature">()</span><span class="type-signature"></span>
+                new LocalStorageStore<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -118,7 +118,16 @@
     
     
     <div class="description">
-        <p>Ember Simple Auth's configuration object.</p>
+        <p>Session store that persists data in the browser's <code>localStorage</code>.</p>
+<p><strong><code>localStorage</code> is not available in Safari when running in private mode. In
+general it is better to use the
+<a href="AdaptiveStore.html">AdaptiveStore</a> that automatically falls back to
+the <a href="CookieStore.html">CookieStore</a> when <code>localStorage</code> is not
+available.</strong></p>
+<p><strong>This session store does not work with FastBoot. In order to use Ember
+Simple Auth with FastBoot, configure the
+<a href="CookieStore.html">CookieStore</a> as the application's session
+store.</strong></p>
     </div>
     
 
@@ -167,9 +176,9 @@
 
     
         <p class="tag-source">
-            <a href="configuration.js.html" class="button">View Source</a>
+            <a href="session-stores_local-storage.js.html" class="button">View Source</a>
             <span>
-                <a href="configuration.js.html">configuration.js</a>, <a href="configuration.js.html#line6">line 6</a>
+                <a href="session-stores_local-storage.js.html">session-stores/local-storage.js</a>, <a href="session-stores_local-storage.js.html#line9">line 9</a>
             </span>
         </p>
     
@@ -210,7 +219,7 @@
 
 
     <ul>
-        <li>Object</li>
+        <li><a href="BaseStore.html">BaseStore</a></li>
     </ul>
 
 
@@ -241,17 +250,15 @@
 
     </span>
 
-<h4 class="name" id=".rootURL">
-    <a class="href-link" href="#.rootURL">#</a>
+<h4 class="name" id=".key">
+    <a class="href-link" href="#.key">#</a>
     
         
             <span class='tag'>static</span>
         
-            <span class='tag'>readonly</span>
-        
     
     <span class="code-name">
-        rootURL
+        key
     </span>
     
 </h4>
@@ -260,7 +267,7 @@
 
 
 <div class="description">
-    <p>The root URL of the application as configured in <code>config/environment.js</code>.</p>
+    <p>The <code>localStorage</code> key the store persists data in.</p>
 </div>
 
 
@@ -293,7 +300,7 @@
             
 <tr class="deep-level-0">
     
-        <td class="name"><code>rootURL</code></td>
+        <td class="name"><code>key</code></td>
     
 
     <td class="type">
@@ -341,7 +348,7 @@
     
     <dt class="tag-default">Default Value:</dt>
     <dd class="tag-default"><ul class="dummy">
-            <li>''</li>
+            <li>'ember_simple_auth-session'</li>
         </ul></dd>
     
     
@@ -352,144 +359,9 @@
 
     
         <p class="tag-source">
-            <a href="configuration.js.html" class="button">View Source</a>
+            <a href="session-stores_local-storage.js.html" class="button">View Source</a>
             <span>
-                <a href="configuration.js.html">configuration.js</a>, <a href="configuration.js.html#line24">line 24</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">String</code>
-
-
-    </span>
-
-<h4 class="name" id=".routeAfterAuthentication">
-    <a class="href-link" href="#.routeAfterAuthentication">#</a>
-    
-        
-            <span class='tag'>static</span>
-        
-            <span class='tag'>readonly</span>
-        
-    
-    <span class="code-name">
-        routeAfterAuthentication
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>The route to transition to after successful authentication.</p>
-</div>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>routeAfterAuthentication</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>'index'</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="configuration.js.html" class="button">View Source</a>
-            <span>
-                <a href="configuration.js.html">configuration.js</a>, <a href="configuration.js.html#line37">line 37</a>
+                <a href="session-stores_local-storage.js.html">session-stores/local-storage.js</a>, <a href="session-stores_local-storage.js.html#line37">line 37</a>
             </span>
         </p>
     
@@ -505,6 +377,444 @@
         </div>
     
 
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".clear">
+        <a class="href-link" href="#.clear">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                clear<span class="signature">()</span><span class="type-signature"> &rarr; {Ember.RSVP.Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Clears the store by deleting the
+<a href="LocalStorageStore.html#.key">LocalStorageStore.key</a> from
+<code>localStorage</code>.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="session-stores_local-storage.js.html" class="button">View Source</a>
+            <span>
+                <a href="session-stores_local-storage.js.html">session-stores/local-storage.js</a>, <a href="session-stores_local-storage.js.html#line88">line 88</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A promise that resolves when the store has been cleared successfully and rejects otherwise.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Ember.RSVP.Promise</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".persist">
+        <a class="href-link" href="#.persist">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                persist<span class="signature">(data)</span><span class="type-signature"> &rarr; {Ember.RSVP.Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Persists the <code>data</code> in the <code>localStorage</code>.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>data</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The data to persist</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="session-stores_local-storage.js.html" class="button">View Source</a>
+            <span>
+                <a href="session-stores_local-storage.js.html">session-stores/local-storage.js</a>, <a href="session-stores_local-storage.js.html#line57">line 57</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A promise that resolves when the data has successfully been persisted and rejects otherwise.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Ember.RSVP.Promise</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".restore">
+        <a class="href-link" href="#.restore">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                restore<span class="signature">()</span><span class="type-signature"> &rarr; {Ember.RSVP.Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Returns all data currently stored in the <code>localStorage</code> as a plain object.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="session-stores_local-storage.js.html" class="button">View Source</a>
+            <span>
+                <a href="session-stores_local-storage.js.html">session-stores/local-storage.js</a>, <a href="session-stores_local-storage.js.html#line74">line 74</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Ember.RSVP.Promise</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
     
 
     

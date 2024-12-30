@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> authenticators/torii.js</title>
+  <title> session-stores/local-storage.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>authenticators/torii.js</h1>
+                    <h1>session-stores/local-storage.js</h1>
                 </header>
                 
 
@@ -86,148 +86,118 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import RSVP from 'rsvp';
-import { assert, deprecate } from '@ember/debug';
-import { isPresent, isEmpty } from '@ember/utils';
-import BaseAuthenticator from './base';
 
-deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
-  id: 'ember-simple-auth.authenticators.torii',
-  until: '7.0.0',
-  for: 'ember-simple-auth',
-  since: {
-    enabled: '4.2.0',
-  },
-});
+import { bind } from '@ember/runloop';
+import { getOwner } from '@ember/application';
+import BaseStore from './base';
+import objectsAreEqual from '../utils/objects-are-equal';
+import isFastBoot from '../utils/is-fastboot';
 
 /**
-  Authenticator that wraps the
-  [Torii library](https://github.com/adopted-ember-addons/torii) and thus allows to connect
-  any external authentication provider that torii defines a provider for.
+  Session store that persists data in the browser's `localStorage`.
 
-  In order to use this authenticator, __the application needs to have the
-  [torii addon](https://github.com/adopted-ember-addons/torii) installed and must inject
-  the torii service into the authenticator__:
+  __`localStorage` is not available in Safari when running in private mode. In
+  general it is better to use the
+  {@linkplain AdaptiveStore} that automatically falls back to
+  the {@linkplain CookieStore} when `localStorage` is not
+  available.__
 
-  ```js
-  // app/authenticators/torii.js
-  import Torii from 'ember-simple-auth/authenticators/torii';
-  import { inject as service } from '@ember/service';
+  __This session store does not work with FastBoot. In order to use Ember
+  Simple Auth with FastBoot, configure the
+  {@linkplain CookieStore} as the application's session
+  store.__
 
-  export default class ToriiAuthenticator extends Torii {
-    &amp;#64;service torii;
-  }
-  ```
-
-  @class ToriiAuthenticator
-  @deprecated Implement an authenticator that wraps Torii in application code instead: since 4.2.0
-  @extends BaseAuthenticator
+  @class LocalStorageStore
+  @extends BaseStore
   @public
 */
-export default BaseAuthenticator.extend({
-  _provider: null,
+export default BaseStore.extend({
+  /**
+    The `localStorage` key the store persists data in.
+
+    @memberof LocalStorageStore
+    @property key
+    @type String
+    @default 'ember_simple_auth-session'
+    @public
+  */
+  key: 'ember_simple_auth-session',
+
+  init() {
+    this._super(...arguments);
+
+    this._isFastBoot = this.hasOwnProperty('_isFastBoot')
+      ? this._isFastBoot
+      : isFastBoot(getOwner(this));
+    this._boundHandler = bind(this, this._handleStorageEvent);
+    if (!this.get('_isFastBoot')) {
+      window.addEventListener('storage', this._boundHandler);
+    }
+  },
+
+  willDestroy() {
+    if (!this.get('_isFastBoot')) {
+      window.removeEventListener('storage', this._boundHandler);
+    }
+  },
 
   /**
-    Restores the session by calling the torii provider's `fetch` method.
+    Persists the `data` in the `localStorage`.
 
-    __Many torii providers do not implement the `fetch` method__. If the
-    provider in use does not implement the method simply add it as follows:
+    @memberof LocalStorageStore
+    @method persist
+    @param {Object} data The data to persist
+    @return {Ember.RSVP.Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
+    @public
+  */
+  persist(data) {
+    this._lastData = data;
+    data = JSON.stringify(data || {});
+    localStorage.setItem(this.key, data);
 
-    ```js
-    // app/torii-providers/facebook.js
-    import FacebookOauth2Provider from 'torii/providers/facebook-oauth2';
+    return RSVP.resolve();
+  },
 
-    export default class FacebookToriiProvider extends FacebookOauth2Provider {
-      fetch(data) {
-        return data;
-      }
-    }
-    ```
+  /**
+    Returns all data currently stored in the `localStorage` as a plain object.
 
-    @memberof ToriiAuthenticator
+    @memberof LocalStorageStore
     @method restore
-    @param {Object} data The data to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+    @return {Ember.RSVP.Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
   */
-  restore(data) {
-    this._assertToriiIsPresent();
+  restore() {
+    let data = localStorage.getItem(this.key);
 
-    data = data || {};
-    if (!isEmpty(data.provider)) {
-      const { provider } = data;
+    return RSVP.resolve(JSON.parse(data) || {});
+  },
 
-      return this.get('torii')
-        .fetch(data.provider, data)
-        .then(
-          fetchedData => {
-            this._authenticateWithProvider(provider, fetchedData);
-            return Object.assign(data, fetchedData);
-          },
-          err => {
-            delete this._provider;
-            throw err;
-          }
-        );
-    } else {
-      delete this._provider;
-      return RSVP.reject();
+  /**
+    Clears the store by deleting the
+    {@linkplain LocalStorageStore.key} from
+    `localStorage`.
+
+    @memberof LocalStorageStore
+    @method clear
+    @return {Ember.RSVP.Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
+    @public
+  */
+  clear() {
+    localStorage.removeItem(this.key);
+    this._lastData = {};
+
+    return RSVP.resolve();
+  },
+
+  _handleStorageEvent(e) {
+    if (e.key === this.get('key')) {
+      this.restore().then(data => {
+        if (!objectsAreEqual(data, this._lastData)) {
+          this._lastData = data;
+          this.trigger('sessionDataUpdated', data);
+        }
+      });
     }
-  },
-
-  /**
-    Authenticates the session by opening the specified torii provider. For more
-    documentation on torii and its providers abstraction, see the
-    [project's README]( https://github.com/adopted-ember-addons/torii), specifically
-    the
-    [section on providers](https://github.com/adopted-ember-addons/torii).
-
-    @memberof ToriiAuthenticator
-    @method authenticate
-    @param {String} provider The torii provider to authenticate the session with
-    @param {Object} options The options to pass to the torii provider
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
-    @public
-  */
-  authenticate(provider, options) {
-    this._assertToriiIsPresent();
-
-    return this.get('torii')
-      .open(provider, options || {})
-      .then(data => {
-        this._authenticateWithProvider(provider, data);
-        return data;
-      });
-  },
-
-  /**
-    Closes the torii provider. If the provider is successfully closed, this
-    method returns a resolving promise, otherwise it will return a rejecting
-    promise, thus intercepting session invalidation.
-
-    @memberof ToriiAuthenticator
-    @method invalidate
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
-    @public
-  */
-  invalidate(data) {
-    return this.get('torii')
-      .close(this._provider, data)
-      .then(() => {
-        delete this._provider;
-      });
-  },
-
-  _authenticateWithProvider(provider, data) {
-    data.provider = provider;
-    this._provider = data.provider;
-  },
-
-  _assertToriiIsPresent() {
-    const torii = this.get('torii');
-    assert(
-      'You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with "torii: Ember.inject.service()".',
-      isPresent(torii)
-    );
   },
 });
 </code></pre>

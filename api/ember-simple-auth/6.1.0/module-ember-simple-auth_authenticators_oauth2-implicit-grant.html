@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> authenticators/torii.js</title>
+  <title> ember-simple-auth/authenticators/oauth2-implicit-grant</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -75,164 +73,290 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Source</p>
-                    <h1>authenticators/torii.js</h1>
+                    <p>Module</p>
+                    <h1>ember-simple-auth/authenticators/oauth2-implicit-grant</h1>
                 </header>
                 
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import RSVP from 'rsvp';
-import { assert, deprecate } from '@ember/debug';
-import { isPresent, isEmpty } from '@ember/utils';
-import BaseAuthenticator from './base';
+</header>
 
-deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
-  id: 'ember-simple-auth.authenticators.torii',
-  until: '7.0.0',
-  for: 'ember-simple-auth',
-  since: {
-    enabled: '4.2.0',
-  },
-});
+<article>
+    <div class="container-overview">
+    
+        
 
-/**
-  Authenticator that wraps the
-  [Torii library](https://github.com/adopted-ember-addons/torii) and thus allows to connect
-  any external authentication provider that torii defines a provider for.
+        
 
-  In order to use this authenticator, __the application needs to have the
-  [torii addon](https://github.com/adopted-ember-addons/torii) installed and must inject
-  the torii service into the authenticator__:
 
-  ```js
-  // app/authenticators/torii.js
-  import Torii from 'ember-simple-auth/authenticators/torii';
-  import { inject as service } from '@ember/service';
+<dl class="details">
 
-  export default class ToriiAuthenticator extends Torii {
-    &amp;#64;service torii;
-  }
-  ```
+    
 
-  @class ToriiAuthenticator
-  @deprecated Implement an authenticator that wraps Torii in application code instead: since 4.2.0
-  @extends BaseAuthenticator
-  @public
-*/
-export default BaseAuthenticator.extend({
-  _provider: null,
+    
 
-  /**
-    Restores the session by calling the torii provider's `fetch` method.
+    
 
-    __Many torii providers do not implement the `fetch` method__. If the
-    provider in use does not implement the method simply add it as follows:
+    
 
-    ```js
-    // app/torii-providers/facebook.js
-    import FacebookOauth2Provider from 'torii/providers/facebook-oauth2';
+    
 
-    export default class FacebookToriiProvider extends FacebookOauth2Provider {
-      fetch(data) {
-        return data;
-      }
-    }
-    ```
+    
 
-    @memberof ToriiAuthenticator
-    @method restore
-    @param {Object} data The data to restore the session from
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming or remaining authenticated
-    @public
-  */
-  restore(data) {
-    this._assertToriiIsPresent();
+    
 
-    data = data || {};
-    if (!isEmpty(data.provider)) {
-      const { provider } = data;
+    
 
-      return this.get('torii')
-        .fetch(data.provider, data)
-        .then(
-          fetchedData => {
-            this._authenticateWithProvider(provider, fetchedData);
-            return Object.assign(data, fetchedData);
-          },
-          err => {
-            delete this._provider;
-            throw err;
-          }
-        );
-    } else {
-      delete this._provider;
-      return RSVP.reject();
-    }
-  },
+    
 
-  /**
-    Authenticates the session by opening the specified torii provider. For more
-    documentation on torii and its providers abstraction, see the
-    [project's README]( https://github.com/adopted-ember-addons/torii), specifically
-    the
-    [section on providers](https://github.com/adopted-ember-addons/torii).
+    
 
-    @memberof ToriiAuthenticator
-    @method authenticate
-    @param {String} provider The torii provider to authenticate the session with
-    @param {Object} options The options to pass to the torii provider
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session becoming authenticated
-    @public
-  */
-  authenticate(provider, options) {
-    this._assertToriiIsPresent();
+    
 
-    return this.get('torii')
-      .open(provider, options || {})
-      .then(data => {
-        this._authenticateWithProvider(provider, data);
-        return data;
-      });
-  },
+    
+    
 
-  /**
-    Closes the torii provider. If the provider is successfully closed, this
-    method returns a resolving promise, otherwise it will return a rejecting
-    promise, thus intercepting session invalidation.
+    
 
-    @memberof ToriiAuthenticator
-    @method invalidate
-    @return {Ember.RSVP.Promise} A promise that when it resolves results in the session being invalidated
-    @public
-  */
-  invalidate(data) {
-    return this.get('torii')
-      .close(this._provider, data)
-      .then(() => {
-        delete this._provider;
-      });
-  },
+    
 
-  _authenticateWithProvider(provider, data) {
-    data.provider = provider;
-    this._provider = data.provider;
-  },
+    
+        <p class="tag-source">
+            <a href="authenticators_oauth2-implicit-grant.js.html" class="button">View Source</a>
+            <span>
+                <a href="authenticators_oauth2-implicit-grant.js.html">authenticators/oauth2-implicit-grant.js</a>, <a href="authenticators_oauth2-implicit-grant.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
 
-  _assertToriiIsPresent() {
-    const torii = this.get('torii');
-    assert(
-      'You are trying to use the torii authenticator but torii is not available. Inject torii into the authenticator with "torii: Ember.inject.service()".',
-      isPresent(torii)
-    );
-  },
-});
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".parseResponse">
+        <a class="href-link" href="#.parseResponse">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                parseResponse<span class="signature">(locationHash)</span><span class="type-signature"> &rarr; {Object}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Parses the location hash (as received from <code>window.location.hash</code>) into an
+object, e.g.:</p>
+<pre class="prettyprint source lang-js"><code>parseResponse('/routepath#access_token=secret-token&scope=something'); // => { access_token: 'secret-token', scope: 'something' }
 </code></pre>
-        </article>
-    </section>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>locationHash</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">String</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The location hash (as received from <code>window.location.hash</code>)</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="authenticators_oauth2-implicit-grant.js.html" class="button">View Source</a>
+            <span>
+                <a href="authenticators_oauth2-implicit-grant.js.html">authenticators/oauth2-implicit-grant.js</a>, <a href="authenticators_oauth2-implicit-grant.js.html#line6">line 6</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>An obect with individual properties and values for the data parsed from the location hash</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Object</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
