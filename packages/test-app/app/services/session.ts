@@ -1,7 +1,13 @@
 import { inject as service } from '@ember/service';
 import Session from 'ember-simple-auth/services/session';
 
-export default class SessionService extends Session {
+type Data = {
+  authenticated: {
+    id: string;
+  };
+};
+
+export default class SessionService extends Session<Data> {
   @service sessionAccount: any;
 
   handleAuthentication(routeAfterInvalidation: string) {
