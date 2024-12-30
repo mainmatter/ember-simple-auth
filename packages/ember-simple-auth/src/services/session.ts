@@ -26,9 +26,9 @@ function assertSetupHasBeenCalled(isSetupCalled: boolean) {
 
 type RouteOrCallback = string | (() => void);
 
-type InternalSessionMock = {
+type InternalSessionMock<Data> = {
   isAuthenticated: boolean;
-  content: { authenticated: Record<string, string> };
+  content: Data;
   store: unknown;
   attemptedTransition: null;
   on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
@@ -38,6 +38,13 @@ type InternalSessionMock = {
   prohibitAuthentication: (routeOrCallback: RouteOrCallback) => boolean;
   restore: () => Promise<void>;
   set(key: string, value: any): void;
+};
+
+export type DefaultDataShape = {
+  authenticated: {
+    authenticator: string;
+    [key: string]: string;
+  };
 };
 
 /**
@@ -59,13 +66,13 @@ type InternalSessionMock = {
   @extends Service
   @public
 */
-export default class SessionService extends Service {
-  session: InternalSessionMock;
+export default class SessionService<Data = DefaultDataShape> extends Service {
+  session: InternalSessionMock<Data>;
 
   constructor(owner: any) {
     super(owner);
 
-    this.session = owner.lookup('session:main') as InternalSessionMock;
+    this.session = owner.lookup('session:main');
   }
 
   /**

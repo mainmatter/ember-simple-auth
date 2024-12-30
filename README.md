@@ -151,6 +151,21 @@ import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
 export default class SessionStore extends AdaptiveStore {}
 ```
 
+#### Optional Generic `Data` argument.
+
+```ts
+import Service from 'ember-simple-auth/services/session';
+
+type Data = {
+  authenticated: {
+    // Any data your authenticators return
+    id: string;
+  }
+}
+
+export default class SessionService<Data> extends Service {}
+```
+
 then __the session service can be injected wherever
 needed in the application__. In order to display login/logout buttons depending
 on the current session state, inject the service into the respective controller
