@@ -187,6 +187,7 @@ export default [
     files: ['**/tests/**/*.js'],
     rules: {
       'qunit/require-expect': ['error', 'except-simple'],
+      'no-unused-vars': 'off',
     },
   },
 ];

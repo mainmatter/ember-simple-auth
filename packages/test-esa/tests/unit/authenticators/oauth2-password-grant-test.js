@@ -422,7 +422,6 @@ module('OAuth2PasswordGrantAuthenticator', function (hooks) {
             let body = parsePostData(requestBody);
 
             if (body.token_type_hint === 'refresh_token') {
-              // eslint-disable-next-line qunit/no-conditional-assertions
               assert.deepEqual(body, {
                 token_type_hint: 'refresh_token',
                 token: 'refresh token!',
