@@ -1,5 +1,73 @@
 # Changelog
 
+## Release (2024-12-30)
+
+ember-simple-auth 7.0.0 (major)
+
+#### :boom: Breaking Change
+* `ember-simple-auth`, `test-esa`
+  * [#2895](https://github.com/mainmatter/ember-simple-auth/pull/2895) feat(ember-simple-auth): remove app re-exports ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2885](https://github.com/mainmatter/ember-simple-auth/pull/2885) feat(ember-simple-auth): Remove unused inject util ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2875](https://github.com/mainmatter/ember-simple-auth/pull/2875) Remove Evented mixin. Use native EventTarget.  ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2874](https://github.com/mainmatter/ember-simple-auth/pull/2874) feat: Use native promises, remove RSVP ([@BobrImperator](https://github.com/BobrImperator))
+* `ember-simple-auth`
+  * [#2872](https://github.com/mainmatter/ember-simple-auth/pull/2872) chore(typescript): ember-simple-auth initial setup ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :rocket: Enhancement
+* `ember-simple-auth`
+  * [#2889](https://github.com/mainmatter/ember-simple-auth/pull/2889) chore(ember-simple-auth): depend on ember-cookies >=1.3.0 ([@BobrImperator](https://github.com/BobrImperator))
+* `ember-simple-auth`, `test-esa`
+  * [#2883](https://github.com/mainmatter/ember-simple-auth/pull/2883) refactor(typescript): migrate BaseAuthenticator and OAuthPasswordGrant ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2811](https://github.com/mainmatter/ember-simple-auth/pull/2811) feat: support partitioned cookies ([@Gaurav0](https://github.com/Gaurav0))
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2894](https://github.com/mainmatter/ember-simple-auth/pull/2894) fix(deps): remove babel/eslint-parser from ESA dependencies ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2891](https://github.com/mainmatter/ember-simple-auth/pull/2891) fix(ember-simple-auth): parse expirationTime before setting it ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :memo: Documentation
+* Other
+  * [#2893](https://github.com/mainmatter/ember-simple-auth/pull/2893) doc: v7 release guide ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2857](https://github.com/mainmatter/ember-simple-auth/pull/2857) fix: update authentication test reference ([@emmanuel-ferdman](https://github.com/emmanuel-ferdman))
+  * [#2834](https://github.com/mainmatter/ember-simple-auth/pull/2834) Verified and updated links to ember-simple-auth.com/api/ ([@peter-scholtens](https://github.com/peter-scholtens))
+* `classic-test-app`, `test-app`
+  * [#2892](https://github.com/mainmatter/ember-simple-auth/pull/2892) fix(test-app): Fix extending authenticator. specify ember-simple-auth as a link for test-apps.  ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :house: Internal
+* `classic-test-app`, `test-app`, `test-esa`
+  * [#2897](https://github.com/mainmatter/ember-simple-auth/pull/2897) feat(test-apps): fix Ember 5.x deprecations. Support Ember 6.0 testing ([@BobrImperator](https://github.com/BobrImperator))
+* `classic-test-app`, `test-app`
+  * [#2888](https://github.com/mainmatter/ember-simple-auth/pull/2888) Typescript test app ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2892](https://github.com/mainmatter/ember-simple-auth/pull/2892) fix(test-app): Fix extending authenticator. specify ember-simple-auth as a link for test-apps.  ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2876](https://github.com/mainmatter/ember-simple-auth/pull/2876) refactor(all): use on modifier. Action template helper dropped in 6.0 ([@BobrImperator](https://github.com/BobrImperator))
+* `ember-simple-auth`
+  * [#2890](https://github.com/mainmatter/ember-simple-auth/pull/2890) chore(ember-simple-auth): specify addon exports ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2884](https://github.com/mainmatter/ember-simple-auth/pull/2884) refactor(typescript): migrate session-stores to typescript ([@BobrImperator](https://github.com/BobrImperator))
+* `ember-simple-auth`, `test-app`
+  * [#2887](https://github.com/mainmatter/ember-simple-auth/pull/2887) feat(ember-simple-auth): implement internal EventTarget ([@BobrImperator](https://github.com/BobrImperator))
+* `ember-simple-auth`, `test-esa`
+  * [#2873](https://github.com/mainmatter/ember-simple-auth/pull/2873) chore(typescript): migrate services/session to typescript ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2881](https://github.com/mainmatter/ember-simple-auth/pull/2881) refactor(ember-simple-auth): adaptive store to es6 ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2880](https://github.com/mainmatter/ember-simple-auth/pull/2880) refactor(ember-simple-auth): local-storage, session-storage, ephemeral to ES6 class. ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2879](https://github.com/mainmatter/ember-simple-auth/pull/2879) refactor(ember-simple-auth): session-stores to use ES6 classes ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2878](https://github.com/mainmatter/ember-simple-auth/pull/2878) refactor(ember-simple-auth): authenticators to use ES6 classes ([@BobrImperator](https://github.com/BobrImperator))
+* `test-app`
+  * [#2860](https://github.com/mainmatter/ember-simple-auth/pull/2860) Action helper and modifier are deprecated in login-form.hbs ([@peter-scholtens](https://github.com/peter-scholtens))
+  * [#2854](https://github.com/mainmatter/ember-simple-auth/pull/2854) Create store.js (required in ember-data 6.0) ([@peter-scholtens](https://github.com/peter-scholtens))
+  * [#2835](https://github.com/mainmatter/ember-simple-auth/pull/2835) Expire cookie if RememberMe button is off (again) ([@peter-scholtens](https://github.com/peter-scholtens))
+* Other
+  * [#2824](https://github.com/mainmatter/ember-simple-auth/pull/2824) chore(deps): lock maintenance ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2822](https://github.com/mainmatter/ember-simple-auth/pull/2822) chore(deps): install eslint-config-prettier ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2819](https://github.com/mainmatter/ember-simple-auth/pull/2819) Prepare Release ([@github-actions[bot]](https://github.com/apps/github-actions))
+  * [#2820](https://github.com/mainmatter/ember-simple-auth/pull/2820) chore(release): fix release ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 5
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Emmanuel Ferdman ([@emmanuel-ferdman](https://github.com/emmanuel-ferdman))
+- Gaurav Munjal ([@Gaurav0](https://github.com/Gaurav0))
+- Peter C. S. Scholtens ([@peter-scholtens](https://github.com/peter-scholtens))
+- [@github-actions[bot]](https://github.com/apps/github-actions)
+
 ## Release (2024-09-09)
 
 
