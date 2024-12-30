@@ -63,7 +63,7 @@
     "ember-source": "5.12.0",
     "ember-source-channel-url": "3.0.0",
     "ember-try": "3.0.0",
-    "eslint": "8.57.1",
+    "eslint": "9.17.0",
     "express": "4.21.2",
     "fastboot-app-server": "4.1.4",
     "glob": "11.0.0",
