@@ -2,6 +2,17 @@
 
 ## Release (2024-12-30)
 
+ember-simple-auth 7.1.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-simple-auth`, `test-app`
+  * [#2902](https://github.com/mainmatter/ember-simple-auth/pull/2902) feat(ember-simple-auth): add generic type argument to session ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 1
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+
+## Release (2024-12-30)
+
 ember-simple-auth 7.0.0 (major)
 
 #### :boom: Breaking Change
