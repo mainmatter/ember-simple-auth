@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> authenticators/devise.ts</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>authenticators/devise.ts</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { isEmpty } from '@ember/utils';
+import { run } from '@ember/runloop';
+import BaseAuthenticator from './base';
+import { waitFor } from '@ember/test-waiters';
+
+const JSON_CONTENT_TYPE = 'application/json';
+
+export type NestedRecord = Record&lt;string, string | Record&lt;string, string>>;
+
+/**
+  Authenticator that works with the Ruby gem
+  [devise](https://github.com/plataformatec/devise).
+
+  __As token authentication is not actually part of devise anymore, the server
+  needs to implement some customizations__ to work with this authenticator -
+  see [this gist](https://gist.github.com/josevalim/fb706b1e933ef01e4fb6).
+
+  @class DeviseAuthenticator
+  @extends BaseAuthenticator
+  @public
+*/
+export default class DeviseAuthenticator extends BaseAuthenticator {
+  /**
+    The endpoint on the server that the authentication request is sent to.
+
+    @memberof DeviseAuthenticator
+    @property serverTokenEndpoint
+    @type String
+    @default '/users/sign_in'
+    @public
+  */
+  serverTokenEndpoint = '/users/sign_in';
+
+  /**
+    The devise resource name. __This will be used in the request and also be
+    expected in the server's response.__
+
+    @memberof DeviseAuthenticator
+    @property resourceName
+    @type String
+    @default 'user'
+    @public
+  */
+  resourceName = 'user';
+
+  /**
+    The token attribute name. __This will be used in the request and also be
+    expected in the server's response.__
+
+    @memberof DeviseAuthenticator
+    @property tokenAttributeName
+    @type String
+    @default 'token'
+    @public
+  */
+  tokenAttributeName = 'token';
+
+  /**
+    The identification attribute name. __This will be used in the request and
+    also be expected in the server's response.__
+
+    @memberof DeviseAuthenticator
+    @property identificationAttributeName
+    @type String
+    @default 'email'
+    @public
+  */
+  identificationAttributeName = 'email';
+
+  /**
+    Restores the session from a session data object; __returns a resolving
+    promise when there are non-empty
+    [token]{@linkplain DeviseAuthenticator.tokenAttributeName}
+    and
+    [identification]{@linkplain DeviseAuthenticator.identificationAttributeName}
+    values in `data`__ and a rejecting promise otherwise.
+
+    @memberof DeviseAuthenticator
+    @method restore
+    @param {Object} data The data to restore the session from
+    @return {Promise} A promise that when it resolves results in the session becoming or remaining authenticated
+    @public
+  */
+  restore(data: Record&lt;string, NestedRecord>) {
+    return this._validate(data) ? Promise.resolve(data) : Promise.reject();
+  }
+
+  /**
+    Authenticates the session with the specified `identification` and
+    `password`; the credentials are `POST`ed to the
+    [server]{@linkplain DeviseAuthenticator.serverTokenEndpoint}.
+    If the credentials are valid the server will responds with a
+    [token]{@linkplain DeviseAuthenticator.tokenAttributeName}
+    and
+    [identification]{@linkplain DeviseAuthenticator.identificationAttributeName}.
+    __If the credentials are valid and authentication succeeds, a promise that
+    resolves with the server's response is returned__, otherwise a promise that
+    rejects with the server error is returned.
+
+    @memberof DeviseAuthenticator
+    @method authenticate
+    @param {String} identification The user's identification
+    @param {String} password The user's password
+    @return {Promise} A promise that when it resolves results in the session becoming authenticated. If authentication fails, the promise will reject with the server response; however, the authenticator reads that response already so if you need to read it again you need to clone the response object first
+    @public
+  */
+  authenticate(identification: string, password: string) {
+    return new Promise((resolve, reject) => {
+      const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties(
+        'resourceName',
+        'identificationAttributeName',
+        'tokenAttributeName'
+      );
+      let data: NestedRecord = {};
+      data[resourceName] = { password };
+      data[resourceName][identificationAttributeName] = identification;
+
+      this.makeRequest(data)
+        .then(response => {
+          if (response.ok) {
+            response.json().then(json => {
+              if (this._validate(json)) {
+                const resourceName = this.get('resourceName');
+                const _json = json[resourceName] ? json[resourceName] : json;
+                run(null, resolve, _json);
+              } else {
+                run(
+                  null,
+                  reject,
+                  `Check that server response includes ${tokenAttributeName} and ${identificationAttributeName}`
+                );
+              }
+            });
+          } else {
+            run(null, reject, response);
+          }
+        })
+        .catch(error => run(null, reject, error));
+    });
+  }
+
+  /**
+    Does nothing
+
+    @memberof DeviseAuthenticator
+    @method invalidate
+    @return {Promise} A resolving promise
+    @public
+  */
+  invalidate() {
+    return Promise.resolve();
+  }
+
+  /**
+    Makes a request to the Devise server using
+    [ember-fetch](https://github.com/stefanpenner/ember-fetch).
+
+    @memberof DeviseAuthenticator
+    @method makeRequest
+    @param {Object} data The request data
+    @param {Object} options request options that are passed to `fetch`
+    @return {Promise} The promise returned by `fetch`
+    @protected
+  */
+  @waitFor
+  makeRequest(data: NestedRecord, options: { url?: string } = {}) {
+    let url = options.url || this.get('serverTokenEndpoint');
+    let requestOptions = {};
+    let body = JSON.stringify(data);
+    Object.assign(requestOptions, {
+      body,
+      method: 'POST',
+      headers: {
+        accept: JSON_CONTENT_TYPE,
+        'content-type': JSON_CONTENT_TYPE,
+      },
+    });
+    Object.assign(requestOptions, options || {});
+
+    return fetch(url, requestOptions);
+  }
+
+  _validate(data: Record&lt;string, NestedRecord>) {
+    const tokenAttributeName = this.get('tokenAttributeName');
+    const identificationAttributeName = this.get('identificationAttributeName');
+    const resourceName = this.get('resourceName');
+    const _data = data[resourceName] ? data[resourceName] : data;
+
+    return !isEmpty(_data[tokenAttributeName]) &amp;&amp; !isEmpty(_data[identificationAttributeName]);
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

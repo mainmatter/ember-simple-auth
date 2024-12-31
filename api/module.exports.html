@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Configuration</title>
+  <title> exports</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Class</p>
-                    <h1>Configuration</h1>
+                    <h1>exports</h1>
                 </header>
                 
 
@@ -85,7 +85,10 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Configuration<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>exports<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>This module exists to act as a 'shim' between Native EventTarget API, which unfortunately can't be used due to Fastboot's node environment not providing it.</p>
+<p>It more-or-less implements the same API as an EventTarget would have but on top of Evented mixin instead.</p></div>
         
     
 </header>
@@ -104,22 +107,18 @@
 
 
     
-    <h4 class="name" id="Configuration">
-        <a class="href-link" href="#Configuration">#</a>
+    <h4 class="name" id="exports">
+        <a class="href-link" href="#exports">#</a>
         
         <span class="code-name">
             
-                new Configuration<span class="signature">()</span><span class="type-signature"></span>
+                new exports<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
     
 
     
-    
-    <div class="description">
-        <p>Ember Simple Auth's configuration object.</p>
-    </div>
     
 
 
@@ -167,9 +166,9 @@
 
     
         <p class="tag-source">
-            <a href="configuration.js.html" class="button">View Source</a>
+            <a href="internals_event-target.ts.html" class="button">View Source</a>
             <span>
-                <a href="configuration.js.html">configuration.js</a>, <a href="configuration.js.html#line6">line 6</a>
+                <a href="internals_event-target.ts.html">-internals/event-target.ts</a>, <a href="internals_event-target.ts.html#line9">line 9</a>
             </span>
         </p>
     
@@ -204,17 +203,6 @@
     </div>
     
     
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li>Object</li>
-    </ul>
-
-
-    
 
     
 
@@ -233,25 +221,11 @@
             
                 <div class="member">
 
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">String</code>
-
-
-    </span>
-
-<h4 class="name" id=".rootURL">
-    <a class="href-link" href="#.rootURL">#</a>
-    
-        
-            <span class='tag'>static</span>
-        
-            <span class='tag'>readonly</span>
-        
+<h4 class="name" id="_setupIsCalled">
+    <a class="href-link" href="#_setupIsCalled">#</a>
     
     <span class="code-name">
-        rootURL
+        _setupIsCalled
     </span>
     
 </h4>
@@ -260,57 +234,10 @@
 
 
 <div class="description">
-    <p>The root URL of the application as configured in <code>config/environment.js</code>.</p>
+    <p>Says whether the service was correctly initialized by the {#linkplain SessionService.setup}</p>
 </div>
 
 
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>rootURL</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
 
 
 
@@ -339,11 +266,6 @@
     
 
     
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>''</li>
-        </ul></dd>
-    
     
 
     
@@ -352,144 +274,9 @@
 
     
         <p class="tag-source">
-            <a href="configuration.js.html" class="button">View Source</a>
+            <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="configuration.js.html">configuration.js</a>, <a href="configuration.js.html#line24">line 24</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">String</code>
-
-
-    </span>
-
-<h4 class="name" id=".routeAfterAuthentication">
-    <a class="href-link" href="#.routeAfterAuthentication">#</a>
-    
-        
-            <span class='tag'>static</span>
-        
-            <span class='tag'>readonly</span>
-        
-    
-    <span class="code-name">
-        routeAfterAuthentication
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>The route to transition to after successful authentication.</p>
-</div>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>routeAfterAuthentication</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>'index'</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="configuration.js.html" class="button">View Source</a>
-            <span>
-                <a href="configuration.js.html">configuration.js</a>, <a href="configuration.js.html#line37">line 37</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line48">line 48</a>
             </span>
         </p>
     
