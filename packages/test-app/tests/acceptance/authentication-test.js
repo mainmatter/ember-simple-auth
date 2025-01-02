@@ -35,10 +35,16 @@ module('Acceptance: Authentication', function (hooks) {
 
     await invalidateSession();
     await visit('/login');
+    assert
+      .dom('[data-test-reactivity] [data-is-authenticated]')
+      .doesNotExist('not authenticated yet.');
     await fillIn('[data-test-identification]', 'identification');
     await fillIn('[data-test-password]', 'password');
     await click('button[type="submit"]');
 
+    assert
+      .dom('[data-test-reactivity] [data-is-authenticated]')
+      .exists('session.isAuthenticated is reactive');
     assert.equal(currentURL(), '/');
   });
 
