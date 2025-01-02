@@ -1,4 +1,9 @@
 <MainNavigation @onLogin={{this.transitionToLoginRoute}} />
-<div class="container mt-4">
+<div class='container mt-4'>
   {{outlet}}
+</div>
+
+<div data-test-reactivity hidden>
+  <!-- test SessionService reactivity -->
+  <span data-is-authenticated={{this.session.isAuthenticated}}> </span>
 </div>

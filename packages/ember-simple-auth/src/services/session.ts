@@ -11,7 +11,7 @@ import {
   handleSessionInvalidated,
 } from '../-internals/routing';
 import type Transition from '@ember/routing/transition';
-import { alias } from '@ember/object/computed';
+import { alias, readOnly } from '@ember/object/computed';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -90,9 +90,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default false
     @public
   */
-  get isAuthenticated() {
-    return this.session.isAuthenticated;
-  }
+  @readOnly('session.isAuthenticated') declare isAuthenticated: boolean;
 
   /**
     The current session data as a plain object. The
@@ -109,9 +107,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default { authenticated: {} }
     @public
   */
-  get data() {
-    return this.session.content;
-  }
+  @readOnly('session.content') declare data: Data;
 
   /**
     The session store.
@@ -123,9 +119,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default null
     @public
   */
-  get store() {
-    return this.session.store;
-  }
+  @readOnly('session.store') declare store: unknown;
 
   /**
     A previously attempted but intercepted transition (e.g. by the
