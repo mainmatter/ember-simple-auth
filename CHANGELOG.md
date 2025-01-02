@@ -2,6 +2,17 @@
 
 ## Release (2025-01-02)
 
+ember-simple-auth 7.1.2 (patch)
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2908](https://github.com/mainmatter/ember-simple-auth/pull/2908) fix pnpm peer dependency warning ([@Gaurav0](https://github.com/Gaurav0))
+
+#### Committers: 1
+- Gaurav Munjal ([@Gaurav0](https://github.com/Gaurav0))
+
+## Release (2025-01-02)
+
 ember-simple-auth 7.1.1 (patch)
 
 #### :bug: Bug Fix
