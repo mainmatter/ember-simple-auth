@@ -1,17 +1,17 @@
 {
   "solution": {
     "ember-simple-auth": {
-      "impact": "minor",
-      "oldVersion": "7.0.0",
-      "newVersion": "7.1.0",
+      "impact": "patch",
+      "oldVersion": "7.1.0",
+      "newVersion": "7.1.1",
       "constraints": [
         {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
+          "impact": "patch",
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./packages/ember-simple-auth/package.json"
     }
   },
-  "description": "## Release (2024-12-30)\n\nember-simple-auth 7.1.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-simple-auth`, `test-app`\n  * [#2902](https://github.com/mainmatter/ember-simple-auth/pull/2902) feat(ember-simple-auth): add generic type argument to session ([@BobrImperator](https://github.com/BobrImperator))\n\n#### Committers: 1\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n"
+  "description": "## Release (2025-01-02)\n\nember-simple-auth 7.1.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-simple-auth`, `test-app`\n  * [#2909](https://github.com/mainmatter/ember-simple-auth/pull/2909) fix(ember-simple-auth): setting non 'content' fields with #set on ObjectProxy is not reactive. ([@BobrImperator](https://github.com/BobrImperator))\n\n#### :memo: Documentation\n* `docs`\n  * [#2906](https://github.com/mainmatter/ember-simple-auth/pull/2906) doc: support typescript doc generation ([@BobrImperator](https://github.com/BobrImperator))\n\n#### :house: Internal\n* `test-esa`\n  * [#2905](https://github.com/mainmatter/ember-simple-auth/pull/2905) feat(test-esa) fix missing test scenarios ([@Gaurav0](https://github.com/Gaurav0))\n\n#### Committers: 2\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n- Gaurav Munjal ([@Gaurav0](https://github.com/Gaurav0))\n"
 }

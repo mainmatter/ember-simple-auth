@@ -1,5 +1,25 @@
 # Changelog
 
+## Release (2025-01-02)
+
+ember-simple-auth 7.1.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`, `test-app`
+  * [#2909](https://github.com/mainmatter/ember-simple-auth/pull/2909) fix(ember-simple-auth): setting non 'content' fields with #set on ObjectProxy is not reactive. ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :memo: Documentation
+* `docs`
+  * [#2906](https://github.com/mainmatter/ember-simple-auth/pull/2906) doc: support typescript doc generation ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :house: Internal
+* `test-esa`
+  * [#2905](https://github.com/mainmatter/ember-simple-auth/pull/2905) feat(test-esa) fix missing test scenarios ([@Gaurav0](https://github.com/Gaurav0))
+
+#### Committers: 2
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Gaurav Munjal ([@Gaurav0](https://github.com/Gaurav0))
+
 ## Release (2024-12-30)
 
 ember-simple-auth 7.1.0 (minor)
