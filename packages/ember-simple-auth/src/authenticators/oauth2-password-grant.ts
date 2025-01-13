@@ -374,7 +374,7 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
     @protected
   */
   @waitFor
-  makeRequest(
+  async makeRequest(
     url: string,
     data: MakeRequestData,
     headers: Record<string, string> = {}
@@ -405,26 +405,21 @@ export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator 
       method: 'POST',
     };
 
-    return new Promise((resolve, reject) => {
-      fetch(url, options)
-        .then(response => {
-          response.text().then(text => {
-            try {
-              let json = JSON.parse(text);
-              if (!response.ok) {
-                (response as OAuth2Response).responseJSON = json;
-                reject(response);
-              } else {
-                resolve(json);
-              }
-            } catch (SyntaxError) {
-              (response as OAuth2Response).responseText = text;
-              reject(response);
-            }
-          });
-        })
-        .catch(reject);
-    });
+    const response = await fetch(url, options);
+    const text = await response.text();
+    const cloned = response.clone() as OAuth2Response;
+    try {
+      const json = JSON.parse(text);
+      if (response.ok) {
+        return json;
+      } else {
+        cloned.responseJSON = json;
+        throw cloned;
+      }
+    } catch (SyntaxError) {
+      cloned.responseText = text;
+      throw cloned;
+    }
   }
 
   _scheduleAccessTokenRefresh(
