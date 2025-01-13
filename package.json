@@ -17,7 +17,7 @@
     "@release-it-plugins/lerna-changelog": "7.0.0",
     "@typescript-eslint/eslint-plugin": "8.19.0",
     "@typescript-eslint/parser": "8.19.0",
-    "eslint-config-prettier": "9.1.0",
+    "eslint-config-prettier": "10.0.1",
     "eslint-config-simplabs": "0.4.0",
     "eslint-plugin-ember": "12.3.3",
     "eslint-plugin-n": "17.15.1",
