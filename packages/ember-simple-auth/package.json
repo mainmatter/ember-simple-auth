@@ -106,7 +106,7 @@
     },
     "./test-support": {
       "default": "./dist/test-support/index.js",
-      "types": "./declarations/test-support/*.d.ts"
+      "types": "./declarations/test-support/index.d.ts"
     },
     "./utils/*": {
       "default": "./dist/utils/*.js",
