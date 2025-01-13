@@ -7,11 +7,11 @@ import {
   authenticateSession,
   currentSession,
 } from 'ember-simple-auth/test-support';
-import config from '../../config/environment';
+import config from 'test-app/config/environment';
 
 module('Acceptance: Authentication', function (hooks) {
   setupApplicationTest(hooks);
-  let server;
+  let server: Pretender;
 
   hooks.afterEach(function () {
     if (server) {
@@ -85,7 +85,7 @@ module('Acceptance: Authentication', function (hooks) {
       });
 
       await visit('/');
-      await authenticateSession({ userId: 1, otherData: 'some-data' });
+      await authenticateSession({ userId: '1', otherData: 'some-data' });
       await visit('/protected');
 
       let session = currentSession();
@@ -133,7 +133,7 @@ module('Acceptance: Authentication', function (hooks) {
           '{"data":[]}',
         ]);
       });
-      await authenticateSession({ userId: 1, otherData: 'some-data' });
+      await authenticateSession({ userId: '1', otherData: 'some-data' });
       await visit('/engine/protected');
 
       assert.equal(currentURL(), '/engine/protected');
@@ -150,7 +150,7 @@ module('Acceptance: Authentication', function (hooks) {
           '{"data":[]}',
         ]);
       });
-      await authenticateSession({ userId: 1, otherData: 'some-data' });
+      await authenticateSession({ userId: '1', otherData: 'some-data' });
       await visit('/engine/protected');
       await click('[data-test-logout-button]');
 
@@ -168,7 +168,7 @@ module('Acceptance: Authentication', function (hooks) {
           '{"data":[]}',
         ]);
       });
-      await authenticateSession({ userId: 1, otherData: 'some-data' });
+      await authenticateSession({ userId: '1', otherData: 'some-data' });
       await visit('/engine/open-only');
 
       assert.equal(currentURL(), '/');
@@ -191,7 +191,7 @@ module('Acceptance: Authentication', function (hooks) {
     });
 
     test('cannot be visited when the session is authenticated', async function (assert) {
-      await authenticateSession();
+      await authenticateSession({});
       await visit('/login');
 
       assert.equal(currentURL(), '/');
