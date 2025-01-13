@@ -1,5 +1,23 @@
 # Changelog
 
+## Release (2025-01-13)
+
+ember-simple-auth 7.1.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`, `test-app`
+  * [#2919](https://github.com/mainmatter/ember-simple-auth/pull/2919) fix(typescript): test-support types path ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :house: Internal
+* `classic-test-app`, `test-app`, `test-esa`
+  * [#2920](https://github.com/mainmatter/ember-simple-auth/pull/2920) chore(lint): remove .eslintignore files ([@BobrImperator](https://github.com/BobrImperator))
+* `ember-simple-auth`
+  * [#2908](https://github.com/mainmatter/ember-simple-auth/pull/2908) fix pnpm peer dependency warning ([@Gaurav0](https://github.com/Gaurav0))
+
+#### Committers: 2
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Gaurav Munjal ([@Gaurav0](https://github.com/Gaurav0))
+
 ## Release (2025-01-02)
 
 ember-simple-auth 7.1.1 (patch)
