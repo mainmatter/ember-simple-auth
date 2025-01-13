@@ -2,16 +2,20 @@
   "solution": {
     "ember-simple-auth": {
       "impact": "patch",
-      "oldVersion": "7.1.0",
-      "newVersion": "7.1.1",
+      "oldVersion": "7.1.1",
+      "newVersion": "7.1.2",
       "constraints": [
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
+        },
+        {
+          "impact": "patch",
+          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./packages/ember-simple-auth/package.json"
     }
   },
-  "description": "## Release (2025-01-02)\n\nember-simple-auth 7.1.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-simple-auth`, `test-app`\n  * [#2909](https://github.com/mainmatter/ember-simple-auth/pull/2909) fix(ember-simple-auth): setting non 'content' fields with #set on ObjectProxy is not reactive. ([@BobrImperator](https://github.com/BobrImperator))\n\n#### :memo: Documentation\n* `docs`\n  * [#2906](https://github.com/mainmatter/ember-simple-auth/pull/2906) doc: support typescript doc generation ([@BobrImperator](https://github.com/BobrImperator))\n\n#### :house: Internal\n* `test-esa`\n  * [#2905](https://github.com/mainmatter/ember-simple-auth/pull/2905) feat(test-esa) fix missing test scenarios ([@Gaurav0](https://github.com/Gaurav0))\n\n#### Committers: 2\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n- Gaurav Munjal ([@Gaurav0](https://github.com/Gaurav0))\n"
+  "description": "## Release (2025-01-13)\n\nember-simple-auth 7.1.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-simple-auth`, `test-app`\n  * [#2919](https://github.com/mainmatter/ember-simple-auth/pull/2919) fix(typescript): test-support types path ([@BobrImperator](https://github.com/BobrImperator))\n\n#### :house: Internal\n* `classic-test-app`, `test-app`, `test-esa`\n  * [#2920](https://github.com/mainmatter/ember-simple-auth/pull/2920) chore(lint): remove .eslintignore files ([@BobrImperator](https://github.com/BobrImperator))\n* `ember-simple-auth`\n  * [#2908](https://github.com/mainmatter/ember-simple-auth/pull/2908) fix pnpm peer dependency warning ([@Gaurav0](https://github.com/Gaurav0))\n\n#### Committers: 2\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n- Gaurav Munjal ([@Gaurav0](https://github.com/Gaurav0))\n"
 }
