@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-01-20)
+
+ember-simple-auth 7.1.3 (patch)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2928](https://github.com/mainmatter/ember-simple-auth/pull/2928) The authenticate method returns a Promise ([@andreyfel](https://github.com/andreyfel))
+
+#### Committers: 1
+- Andrey Fel ([@andreyfel](https://github.com/andreyfel))
+
 ## Release (2025-01-13)
 
 ember-simple-auth 7.1.2 (patch)
