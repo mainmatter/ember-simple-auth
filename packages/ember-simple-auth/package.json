@@ -42,9 +42,9 @@
     "@babel/plugin-proposal-decorators": "7.25.9",
     "@babel/runtime": "7.26.0",
     "@embroider/addon-dev": "7.1.1",
-    "@glint/core": "1.5.0",
-    "@glint/environment-ember-loose": "1.5.0",
-    "@glint/environment-ember-template-imports": "1.5.0",
+    "@glint/core": "1.5.1",
+    "@glint/environment-ember-loose": "1.5.1",
+    "@glint/environment-ember-template-imports": "1.5.1",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-node-resolve": "16.0.0",
     "@tsconfig/ember": "3.0.8",
@@ -61,7 +61,7 @@
     "prettier": "3.4.2",
     "rollup": "4.31.0",
     "rollup-plugin-copy": "3.5.0",
-    "typescript": "5.7.2",
+    "typescript": "5.7.3",
     "webpack": "5.97.1"
   },
   "publishConfig": {
