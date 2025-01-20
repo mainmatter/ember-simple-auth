@@ -18,7 +18,7 @@
     "test:fastboot": "ember fastboot:test"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "7.25.9",
+    "@babel/eslint-parser": "7.26.5",
     "@babel/plugin-transform-typescript": "7.26.3",
     "@ember/legacy-built-in-components": "0.5.0",
     "@ember/optional-features": "2.2.0",
@@ -33,8 +33,8 @@
     "@tsconfig/ember": "3.0.8",
     "@types/ember__service": "4.0.9",
     "@types/qunit": "2.19.12",
-    "@typescript-eslint/eslint-plugin": "8.19.0",
-    "@typescript-eslint/parser": "8.19.0",
+    "@typescript-eslint/eslint-plugin": "8.20.0",
+    "@typescript-eslint/parser": "8.20.0",
     "body-parser": "1.20.3",
     "bootstrap": "5.3.3",
     "broccoli-asset-rev": "3.0.0",
@@ -64,7 +64,7 @@
     "ember-source": "5.12.0",
     "ember-source-channel-url": "3.0.0",
     "ember-try": "3.0.0",
-    "eslint": "9.17.0",
+    "eslint": "9.18.0",
     "express": "4.21.2",
     "fastboot-app-server": "4.1.4",
     "glob": "11.0.0",
