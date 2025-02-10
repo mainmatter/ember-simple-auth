@@ -1,5 +1,10 @@
 # Changelog
 
+
+
+
+
+
 ## Release (2025-01-20)
 
 ember-simple-auth 7.1.3 (patch)
