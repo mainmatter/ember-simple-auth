@@ -29,7 +29,7 @@
     "release": "npm publish"
   },
   "dependencies": {
-    "@ember/test-waiters": "^3",
+    "@ember/test-waiters": "^4.0.0",
     "@embroider/addon-shim": "^1.0.0",
     "@embroider/macros": "^1.0.0",
     "ember-cli-is-package-missing": "^1.0.0",
