@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "7.25.9",
-    "@babel/preset-env": "7.26.7",
+    "@babel/preset-env": "7.26.8",
     "@eslint/eslintrc": "3.2.0",
     "@eslint/js": "9.19.0",
     "@mermaid-js/mermaid-cli": "11.4.2",
