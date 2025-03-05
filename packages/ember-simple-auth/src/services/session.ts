@@ -334,11 +334,13 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @public
   */
   setup() {
-    this._setupIsCalled = true;
-    this._setupHandlers();
-
-    return this.session.restore().catch(() => {
-      // If it raises an error then it means that restore didn't find any restorable state.
-    });
+    if(!this._setupIsCalled) {
+      this._setupIsCalled = true;
+      this._setupHandlers();
+  
+      return this.session.restore().catch(() => {
+        // If it raises an error then it means that restore didn't find any restorable state.
+      });
+    }
   }
 }
