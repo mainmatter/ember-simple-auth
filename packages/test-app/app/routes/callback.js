@@ -1,4 +1,4 @@
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { parseResponse } from 'ember-simple-auth/authenticators/oauth2-implicit-grant';
 

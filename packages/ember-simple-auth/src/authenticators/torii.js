@@ -23,7 +23,7 @@ deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
   ```js
   // app/authenticators/torii.js
   import Torii from 'ember-simple-auth/authenticators/torii';
-  import { inject as service } from '@ember/service';
+  import { service } from '@ember/service';
 
   export default class ToriiAuthenticator extends Torii {
     &#64;service torii;
