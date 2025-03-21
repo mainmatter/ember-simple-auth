@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@babel/eslint-parser':
+        specifier: ^7.24.7
+        version: 7.26.8(@babel/core@7.26.9)(eslint@9.19.0(jiti@1.21.7))
       '@babel/plugin-proposal-decorators':
         specifier: 7.25.9
         version: 7.25.9(@babel/core@7.26.9)
@@ -64,11 +67,10 @@ importers:
         version: 0.11.0(encoding@0.1.13)
 
   packages/classic-test-app:
-    dependencies:
+    devDependencies:
       '@babel/eslint-parser':
         specifier: ^7.24.7
         version: 7.26.8(@babel/core@7.26.8)(eslint@9.19.0(jiti@1.21.7))
-    devDependencies:
       '@ember/legacy-built-in-components':
         specifier: 0.5.0
         version: 0.5.0(@glint/template@1.5.2)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.8))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.97.1))
@@ -250,6 +252,9 @@ importers:
       '@babel/core':
         specifier: 7.26.9
         version: 7.26.9
+      '@babel/eslint-parser':
+        specifier: ^7.24.7
+        version: 7.26.8(@babel/core@7.26.9)(eslint@9.19.0(jiti@1.21.7))
       '@babel/plugin-proposal-class-properties':
         specifier: 7.18.6
         version: 7.18.6(@babel/core@7.26.9)
@@ -514,13 +519,13 @@ importers:
 
   packages/test-esa:
     dependencies:
-      '@babel/eslint-parser':
-        specifier: ^7.24.7
-        version: 7.26.8(@babel/core@7.26.9)(eslint@9.19.0(jiti@1.21.7))
       ember-simple-auth:
         specifier: workspace:*
         version: link:../ember-simple-auth
     devDependencies:
+      '@babel/eslint-parser':
+        specifier: ^7.26.8
+        version: 7.26.8(@babel/core@7.26.9)(eslint@9.19.0(jiti@1.21.7))
       '@ember/legacy-built-in-components':
         specifier: 0.5.0
         version: 0.5.0(@glint/template@1.5.2)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.9))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.97.1))
@@ -12923,26 +12928,6 @@ snapshots:
     dependencies:
       '@types/ms': 2.1.0
 
-  '@types/ember@4.0.11':
-    dependencies:
-      '@types/ember__application': 4.0.11(@babel/core@7.26.9)
-      '@types/ember__array': 4.0.10(@babel/core@7.26.9)
-      '@types/ember__component': 4.0.22(@babel/core@7.26.9)
-      '@types/ember__controller': 4.0.12(@babel/core@7.26.9)
-      '@types/ember__debug': 4.0.8(@babel/core@7.26.9)
-      '@types/ember__engine': 4.0.11(@babel/core@7.26.9)
-      '@types/ember__error': 4.0.6
-      '@types/ember__object': 4.0.12(@babel/core@7.26.9)
-      '@types/ember__polyfills': 4.0.6
-      '@types/ember__routing': 4.0.22(@babel/core@7.26.9)
-      '@types/ember__runloop': 4.0.10
-      '@types/ember__service': 4.0.9(@babel/core@7.26.9)
-      '@types/ember__string': 3.0.15
-      '@types/ember__template': 4.0.7
-      '@types/ember__test': 4.0.6(@babel/core@7.26.9)
-      '@types/ember__utils': 4.0.7
-      '@types/rsvp': 4.0.9
-
   '@types/ember@4.0.11(@babel/core@7.26.9)':
     dependencies:
       '@types/ember__application': 4.0.11(@babel/core@7.26.9)
@@ -12969,7 +12954,7 @@ snapshots:
   '@types/ember__application@4.0.11(@babel/core@7.26.9)':
     dependencies:
       '@glimmer/component': 1.1.2(@babel/core@7.26.9)
-      '@types/ember': 4.0.11
+      '@types/ember': 4.0.11(@babel/core@7.26.9)
       '@types/ember__engine': 4.0.11(@babel/core@7.26.9)
       '@types/ember__object': 4.0.12(@babel/core@7.26.9)
       '@types/ember__owner': 4.0.9
@@ -13041,10 +13026,6 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  '@types/ember__runloop@4.0.10':
-    dependencies:
-      '@types/ember': 4.0.11
-
   '@types/ember__runloop@4.0.10(@babel/core@7.26.9)':
     dependencies:
       '@types/ember': 4.0.11(@babel/core@7.26.9)
@@ -13069,10 +13050,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-
-  '@types/ember__utils@4.0.7':
-    dependencies:
-      '@types/ember': 4.0.11
 
   '@types/ember__utils@4.0.7(@babel/core@7.26.9)':
     dependencies:
