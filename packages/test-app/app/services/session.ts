@@ -1,4 +1,4 @@
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import Session from 'ember-simple-auth/services/session';
 
 type Data = {
@@ -8,7 +8,7 @@ type Data = {
 };
 
 export default class SessionService extends Session<Data> {
-  @service sessionAccount: any;
+  @service declare sessionAccount: any;
 
   handleAuthentication(routeAfterInvalidation: string) {
     super.handleAuthentication(routeAfterInvalidation);
