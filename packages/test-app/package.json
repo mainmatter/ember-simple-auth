@@ -30,7 +30,7 @@
     "@glint/core": "1.5.2",
     "@glint/environment-ember-loose": "1.5.2",
     "@glint/environment-ember-template-imports": "1.5.2",
-    "@tsconfig/ember": "3.0.9",
+    "@tsconfig/ember": "3.0.10",
     "@types/ember__service": "4.0.9",
     "@types/qunit": "2.19.12",
     "@typescript-eslint/eslint-plugin": "8.28.0",
