@@ -52,16 +52,16 @@
     "@types/ember__object": "4.0.12",
     "@types/ember__routing": "4.0.22",
     "@types/ember__service": "4.0.9",
-    "@typescript-eslint/eslint-plugin": "8.21.0",
-    "@typescript-eslint/parser": "8.21.0",
+    "@typescript-eslint/eslint-plugin": "8.28.0",
+    "@typescript-eslint/parser": "8.28.0",
     "concurrently": "9.1.2",
     "ember-template-lint": "7.0.1",
-    "eslint": "9.19.0",
-    "prettier": "3.4.2",
-    "rollup": "4.32.0",
+    "eslint": "9.23.0",
+    "prettier": "3.5.3",
+    "rollup": "4.37.0",
     "rollup-plugin-copy": "3.5.0",
-    "typescript": "5.7.3",
-    "webpack": "5.97.1"
+    "typescript": "5.8.2",
+    "webpack": "5.98.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
