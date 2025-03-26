@@ -43,7 +43,8 @@ class AuthenticatorEventTarget extends EsaEventTarget<AuthenticatorEvents> {}
   ```js
   // app/components/login-form.js
   import Component from '@ember/component';
-  import { service } from '@ember/service';
+  import * as s from '@ember/service';
+  const service = s.service ?? s.inject;
   import { action } from '@ember/object';
 
   export default class LoginFormComponent extends Component {

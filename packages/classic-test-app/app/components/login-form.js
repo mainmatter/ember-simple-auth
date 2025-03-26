@@ -1,7 +1,8 @@
-import { service } from '@ember/service';
 import Component from '@ember/component';
 import config from '../config/environment';
 import { action } from '@ember/object';
+import * as s from '@ember/service';
+const service = s.service ?? s.inject;
 
 export default Component.extend({
   session: service('session'),

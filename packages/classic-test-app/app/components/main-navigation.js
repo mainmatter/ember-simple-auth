@@ -1,4 +1,5 @@
-import { service } from '@ember/service';
+import * as s from '@ember/service';
+const service = s.service ?? s.inject;
 import Component from '@ember/component';
 import { action } from '@ember/object';
 

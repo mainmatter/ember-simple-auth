@@ -55,7 +55,8 @@ export type DefaultDataShape = {
   ```js
   // app/components/login-form.js
   import Component from '@ember/component';
-  import { service } from '@ember/service';
+  import * as s from '@ember/service';
+  const service = s.service ?? s.inject;
 
   export default class LoginFormComponent extends Component {
     &#64;service session;

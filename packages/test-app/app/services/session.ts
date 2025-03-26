@@ -1,4 +1,5 @@
-import { service } from '@ember/service';
+import * as s from '@ember/service';
+const service = s.service ?? s.inject;
 import Session from 'ember-simple-auth/services/session';
 
 type Data = {

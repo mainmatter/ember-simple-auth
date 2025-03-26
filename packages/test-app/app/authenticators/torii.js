@@ -1,4 +1,5 @@
-import { service } from '@ember/service';
+import * as s from '@ember/service';
+const service = s.service ?? s.inject;
 import Torii from 'ember-simple-auth/authenticators/torii';
 
 export default class ToriiAuthenticator extends Torii {
