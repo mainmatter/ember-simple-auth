@@ -2,6 +2,7 @@ import Service from '@ember/service';
 import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
 import Configuration from '../configuration';
+import { waitForPromise } from '@ember/test-waiters';
 
 import {
   requireAuthentication,
@@ -33,7 +34,7 @@ type InternalSessionMock<Data> = {
   attemptedTransition: null;
   on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
   authenticate: (authenticator: string, ...args: any[]) => Promise<void>;
-  invalidate: (...args: any[]) => void;
+  invalidate: (...args: any[]) => Promise<void>;
   requireAuthentication: (transition: Transition, routeOrCallback: RouteOrCallback) => boolean;
   prohibitAuthentication: (routeOrCallback: RouteOrCallback) => boolean;
   restore: () => Promise<void>;
@@ -182,7 +183,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @public
   */
   authenticate(authenticator: string, ...args: any[]) {
-    return this.session.authenticate(authenticator, ...args);
+    return waitForPromise(this.session.authenticate(authenticator, ...args));
   }
 
   /**
@@ -214,7 +215,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @public
   */
   invalidate(...args: any[]) {
-    return this.session.invalidate(...args);
+    return waitForPromise(this.session.invalidate(...args));
   }
 
   /**
@@ -337,8 +338,10 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     this._setupIsCalled = true;
     this._setupHandlers();
 
-    return this.session.restore().catch(() => {
-      // If it raises an error then it means that restore didn't find any restorable state.
-    });
+    return waitForPromise(
+      this.session.restore().catch(() => {
+        // If it raises an error then it means that restore didn't find any restorable state.
+      })
+    );
   }
 }
