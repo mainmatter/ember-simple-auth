@@ -1,5 +1,4 @@
-import Service, * as s from '@ember/service';
-const service = s.service ?? s.inject;
+import Service, { service } from '@ember/service';
 
 export default Service.extend({
   session: service('session'),

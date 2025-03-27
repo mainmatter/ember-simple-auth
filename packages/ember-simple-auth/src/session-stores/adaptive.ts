@@ -1,6 +1,5 @@
 import { computed } from '@ember/object';
-import * as s from '@ember/service';
-const service = s.service ?? s.inject;
+import { service } from '@ember/service';
 import { getOwner } from '@ember/application';
 import Base from './base';
 import type CookiesService from 'ember-cookies/services/cookies';

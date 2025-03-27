@@ -1,6 +1,5 @@
 import Controller from '@ember/controller';
-import * as s from '@ember/service';
-const service = s.service ?? s.inject;
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 
 export default class ApplicationController extends Controller {

@@ -1,5 +1,4 @@
-import * as s from '@ember/service';
-const service = s.service ?? s.inject;
+import { service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { parseResponse } from 'ember-simple-auth/authenticators/oauth2-implicit-grant';
 
