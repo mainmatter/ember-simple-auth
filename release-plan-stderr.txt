@@ -1,0 +1,7 @@
+# Unlabeled Changes
+
+* `ember-simple-auth`
+  * [#2953](https://github.com/mainmatter/ember-simple-auth/pull/2953) Addon dependency maintenance ([@Windvis](https://github.com/Windvis))
+
+
+*Cannot plan release until the above changes are labeled*.
