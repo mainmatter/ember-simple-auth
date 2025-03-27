@@ -23,7 +23,7 @@
     "@embroider/test-setup": "4.0.0",
     "@glimmer/component": "1.1.2",
     "@glimmer/tracking": "1.1.2",
-    "body-parser": "1.20.3",
+    "body-parser": "2.2.0",
     "bootstrap": "5.3.3",
     "broccoli-asset-rev": "3.0.0",
     "cors": "2.8.5",
