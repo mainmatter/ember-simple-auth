@@ -1,17 +1,22 @@
 {
   "solution": {
     "ember-simple-auth": {
-      "impact": "patch",
-      "oldVersion": "7.1.2",
-      "newVersion": "7.1.3",
+      "impact": "major",
+      "oldVersion": "7.1.3",
+      "newVersion": "8.0.0",
+      "tagName": "latest",
       "constraints": [
         {
+          "impact": "major",
+          "reason": "Appears in changelog section :boom: Breaking Change"
+        },
+        {
           "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
+          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./packages/ember-simple-auth/package.json"
     }
   },
-  "description": "## Release (2025-01-20)\n\nember-simple-auth 7.1.3 (patch)\n\n#### :bug: Bug Fix\n* `ember-simple-auth`\n  * [#2928](https://github.com/mainmatter/ember-simple-auth/pull/2928) The authenticate method returns a Promise ([@andreyfel](https://github.com/andreyfel))\n\n#### Committers: 1\n- Andrey Fel ([@andreyfel](https://github.com/andreyfel))\n"
+  "description": "## Release (2025-03-31)\n\n* ember-simple-auth 8.0.0 (major)\n\n#### :boom: Breaking Change\n* `ember-simple-auth`\n  * [#2954](https://github.com/mainmatter/ember-simple-auth/pull/2954) Replaced all 'inject as service' to 'service' as it will fail in ember 7.0.0. ([@peter-scholtens](https://github.com/peter-scholtens))\n* Other\n  * [#2964](https://github.com/mainmatter/ember-simple-auth/pull/2964) breaking(esa): drop all end of life versions until March 2025 ([@BobrImperator](https://github.com/BobrImperator))\n\n#### :house: Internal\n* `ember-simple-auth`\n  * [#2953](https://github.com/mainmatter/ember-simple-auth/pull/2953) Allow @ember/test-waiters@4. Addon dependency maintenance ([@Windvis](https://github.com/Windvis))\n\n#### Committers: 3\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n- Peter C. S. Scholtens ([@peter-scholtens](https://github.com/peter-scholtens))\n- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))\n"
 }

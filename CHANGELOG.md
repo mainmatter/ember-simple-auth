@@ -1,5 +1,24 @@
 # Changelog
 
+## Release (2025-03-31)
+
+* ember-simple-auth 8.0.0 (major)
+
+#### :boom: Breaking Change
+* `ember-simple-auth`
+  * [#2954](https://github.com/mainmatter/ember-simple-auth/pull/2954) Replaced all 'inject as service' to 'service' as it will fail in ember 7.0.0. ([@peter-scholtens](https://github.com/peter-scholtens))
+* Other
+  * [#2964](https://github.com/mainmatter/ember-simple-auth/pull/2964) breaking(esa): drop all end of life versions until March 2025 ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#2953](https://github.com/mainmatter/ember-simple-auth/pull/2953) Allow @ember/test-waiters@4. Addon dependency maintenance ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 3
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Peter C. S. Scholtens ([@peter-scholtens](https://github.com/peter-scholtens))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
 ## Release (2025-01-20)
 
 ember-simple-auth 7.1.3 (patch)
