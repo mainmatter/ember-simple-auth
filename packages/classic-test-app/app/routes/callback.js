@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { parseResponse } from 'ember-simple-auth/authenticators/oauth2-implicit-grant';
 
 export default Route.extend({

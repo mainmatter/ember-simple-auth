@@ -1,5 +1,5 @@
 import { computed } from '@ember/object';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { later, cancel, scheduleOnce, next, type Timer } from '@ember/runloop';
 import { typeOf, isEmpty, isNone } from '@ember/utils';
 import { A } from '@ember/array';
@@ -39,7 +39,7 @@ const persistingProperty = function (beforeSet = function (_key: string, _value:
   ```js
   // app/controllers/login.js
   import Controller from '@ember/controller';
-  import { inject as service } from '@ember/service';
+  import { service } from '@ember/service';
 
   export default class LoginController extends Controller {
     &#64;service session;

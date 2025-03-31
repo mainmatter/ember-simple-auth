@@ -176,7 +176,7 @@ in the template__:
 ```js
 // app/controllers/application.js
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class ApplicationController extends Controller {
   @service session;
@@ -207,7 +207,7 @@ to invalidate the session__ and log the user out:
 ```js
 // app/controllers/application.js
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from "@ember/object";
 
 export default class ApplicationController extends Controller {
@@ -258,7 +258,7 @@ the __session can be authenticated with the
 ```js
 // app/controllers/login.js
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from "@ember/object";
 import { tracked } from "@glimmer/tracking";
 
@@ -301,7 +301,7 @@ method in the respective route's  `beforeModel` method:
 ```js
 // app/routes/authenticated.js
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class AuthenticatedRoute extends Route {
   @service session;
@@ -345,7 +345,7 @@ method in the respective route's `beforeModel` method:
 ```js
 // app/routes/login.js
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class LoginRoute extends Route {
   @service session;
@@ -378,7 +378,7 @@ authentication/authorization data, e.g. a token:
 // app/adapters/application.js
 import JSONAPIAdapter from '@ember-data/adapter/json-api';
 import { computed } from '@ember/object';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class ApplicationAdapter extends JSONAPIAdapter {
   @service session;
@@ -672,7 +672,7 @@ done by passing a callback instead of a route name to the session service's
 ```js
 // my-engine/addon/routes/index.js
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class IndexRoute extends Route {
   @service session;
