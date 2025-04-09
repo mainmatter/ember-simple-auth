@@ -13,7 +13,7 @@ __[![Discord](https://img.shields.io/discord/480462759797063690.svg?logo=discord
 > Ember Simple Auth was written and is maintained by [Mainmatter](https://mainmatter.com) and contributors.
 > We offer consulting, training, and team augmentation for Ember.js – check out our [website](https://mainmatter.com/ember-consulting/) to learn more!
 
-#  Ember Simple Auth
+# Ember Simple Auth
 
 ![Logo](http://ember-simple-auth.com/images/logo.png)
 
@@ -351,7 +351,7 @@ export default class LoginRoute extends Route {
   @service session;
 
   beforeModel(transition) {
-    this.get('session').prohibitAuthentication('index');
+    this.session.prohibitAuthentication('index');
   }
 }
 ```
@@ -678,7 +678,7 @@ export default class IndexRoute extends Route {
   @service session;
 
   beforeModel(transition) {
-    this.get('session').requireAuthentication(transition, () => this.transitionToExternal('login'));
+    this.session.requireAuthentication(transition, () => this.transitionToExternal('login'));
   },
 }
 ```
