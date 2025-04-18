@@ -33,8 +33,8 @@
     "@tsconfig/ember": "3.0.10",
     "@types/ember__service": "4.0.9",
     "@types/qunit": "2.19.12",
-    "@typescript-eslint/eslint-plugin": "8.28.0",
-    "@typescript-eslint/parser": "8.28.0",
+    "@typescript-eslint/eslint-plugin": "8.30.1",
+    "@typescript-eslint/parser": "8.30.1",
     "body-parser": "2.2.0",
     "bootstrap": "5.3.3",
     "broccoli-asset-rev": "3.0.0",
@@ -50,7 +50,7 @@
     "ember-cli-inject-live-reload": "2.1.0",
     "ember-cli-sri": "2.1.1",
     "ember-cli-terser": "4.0.2",
-    "ember-data": "5.3.12",
+    "ember-data": "5.4.1",
     "ember-disable-prototype-extensions": "1.1.3",
     "ember-engines": "0.12.0",
     "ember-engines-router-service": "0.6.0",
@@ -64,7 +64,7 @@
     "ember-source": "5.12.0",
     "ember-source-channel-url": "3.0.0",
     "ember-try": "3.0.0",
-    "eslint": "9.23.0",
+    "eslint": "9.25.0",
     "express": "5.1.0",
     "fastboot-app-server": "4.1.4",
     "glob": "11.0.1",
@@ -78,7 +78,7 @@
     "qunit-dom": "2.0.0",
     "torii": "1.0.0-beta.2",
     "typescript": "5.8.2",
-    "webpack": "5.98.0"
+    "webpack": "5.99.6"
   },
   "fastbootDependencies": [
     "node-fetch",
