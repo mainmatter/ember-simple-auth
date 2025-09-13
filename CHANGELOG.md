@@ -1,5 +1,24 @@
 # Changelog
 
+## Release (2025-09-13)
+
+* ember-simple-auth 8.0.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#2974](https://github.com/mainmatter/ember-simple-auth/pull/2974) Closes [#2973](https://github.com/mainmatter/ember-simple-auth/issues/2973) Return type of SessionService.invalidate is wrong ([@BoussonKarel](https://github.com/BoussonKarel))
+
+#### :memo: Documentation
+* [#2968](https://github.com/mainmatter/ember-simple-auth/pull/2968) Remove this.get use from readme ([@kennstenicht](https://github.com/kennstenicht))
+
+#### :house: Internal
+* [#2981](https://github.com/mainmatter/ember-simple-auth/pull/2981) chore(deps): remove ember-fetch. Fails embroider-safe ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 3
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Christoph Wiedenmann ([@kennstenicht](https://github.com/kennstenicht))
+- [@BoussonKarel](https://github.com/BoussonKarel)
+
 ## Release (2025-03-31)
 
 * ember-simple-auth 8.0.0 (major)
