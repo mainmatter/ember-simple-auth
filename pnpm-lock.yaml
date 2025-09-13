@@ -638,8 +638,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       sinon:
-        specifier: 20.0.0
-        version: 20.0.0
+        specifier: 21.0.0
+        version: 21.0.0
       torii:
         specifier: 1.0.0
         version: 1.0.0(@babel/core@7.26.10)(@glint/template@1.5.2)(webpack@5.98.0)
@@ -8545,8 +8545,8 @@ packages:
   simple-swizzle@0.2.2:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
 
-  sinon@20.0.0:
-    resolution: {integrity: sha512-+FXOAbdnj94AQIxH0w1v8gzNxkawVvNqE3jUzRLptR71Oykeu2RrQXXl/VQjKay+Qnh73fDt/oDfMo6xMeDQbQ==}
+  sinon@21.0.0:
+    resolution: {integrity: sha512-TOgRcwFPbfGtpqvZw+hyqJDvqfapr1qUlOizROIk4bBLjlsjlB00Pg6wMFXNtJRpu+eCZuVOaLatG7M8105kAw==}
 
   slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
@@ -12954,6 +12954,26 @@ snapshots:
     dependencies:
       '@types/ms': 2.1.0
 
+  '@types/ember@4.0.11':
+    dependencies:
+      '@types/ember__application': 4.0.11(@babel/core@7.26.10)
+      '@types/ember__array': 4.0.10(@babel/core@7.26.10)
+      '@types/ember__component': 4.0.22(@babel/core@7.26.10)
+      '@types/ember__controller': 4.0.12(@babel/core@7.26.10)
+      '@types/ember__debug': 4.0.8(@babel/core@7.26.10)
+      '@types/ember__engine': 4.0.11(@babel/core@7.26.10)
+      '@types/ember__error': 4.0.6
+      '@types/ember__object': 4.0.12(@babel/core@7.26.10)
+      '@types/ember__polyfills': 4.0.6
+      '@types/ember__routing': 4.0.22(@babel/core@7.26.10)
+      '@types/ember__runloop': 4.0.10
+      '@types/ember__service': 4.0.9(@babel/core@7.26.10)
+      '@types/ember__string': 3.0.15
+      '@types/ember__template': 4.0.7
+      '@types/ember__test': 4.0.6(@babel/core@7.26.10)
+      '@types/ember__utils': 4.0.7
+      '@types/rsvp': 4.0.9
+
   '@types/ember@4.0.11(@babel/core@7.26.10)':
     dependencies:
       '@types/ember__application': 4.0.11(@babel/core@7.26.10)
@@ -12980,7 +13000,7 @@ snapshots:
   '@types/ember__application@4.0.11(@babel/core@7.26.10)':
     dependencies:
       '@glimmer/component': 1.1.2(@babel/core@7.26.10)
-      '@types/ember': 4.0.11(@babel/core@7.26.10)
+      '@types/ember': 4.0.11
       '@types/ember__engine': 4.0.11(@babel/core@7.26.10)
       '@types/ember__object': 4.0.12(@babel/core@7.26.10)
       '@types/ember__owner': 4.0.9
@@ -13052,6 +13072,10 @@ snapshots:
       - '@babel/core'
       - supports-color
 
+  '@types/ember__runloop@4.0.10':
+    dependencies:
+      '@types/ember': 4.0.11
+
   '@types/ember__runloop@4.0.10(@babel/core@7.26.10)':
     dependencies:
       '@types/ember': 4.0.11(@babel/core@7.26.10)
@@ -13076,6 +13100,10 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
+
+  '@types/ember__utils@4.0.7':
+    dependencies:
+      '@types/ember': 4.0.11
 
   '@types/ember__utils@4.0.7(@babel/core@7.26.10)':
     dependencies:
@@ -21056,7 +21084,7 @@ snapshots:
     dependencies:
       is-arrayish: 0.3.2
 
-  sinon@20.0.0:
+  sinon@21.0.0:
     dependencies:
       '@sinonjs/commons': 3.0.1
       '@sinonjs/fake-timers': 13.0.5
