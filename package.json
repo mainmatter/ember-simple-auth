@@ -9,7 +9,7 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "7.27.0",
+    "@babel/eslint-parser": "7.27.5",
     "@babel/plugin-proposal-decorators": "7.25.9",
     "@babel/preset-env": "7.26.9",
     "@eslint/eslintrc": "3.3.1",
@@ -18,11 +18,11 @@
     "@release-it-plugins/lerna-changelog": "7.0.0",
     "@typescript-eslint/eslint-plugin": "8.28.0",
     "@typescript-eslint/parser": "8.28.0",
-    "eslint-config-prettier": "10.1.1",
+    "eslint-config-prettier": "10.1.8",
     "eslint-config-simplabs": "0.4.0",
     "eslint-plugin-ember": "12.5.0",
     "eslint-plugin-n": "17.17.0",
-    "eslint-plugin-prettier": "5.2.5",
+    "eslint-plugin-prettier": "5.2.6",
     "eslint-plugin-qunit": "8.1.2",
     "globals": "15.15.0",
     "lerna-changelog": "2.2.0",
