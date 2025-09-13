@@ -33,7 +33,7 @@ type InternalSessionMock<Data> = {
   attemptedTransition: null;
   on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
   authenticate: (authenticator: string, ...args: any[]) => Promise<void>;
-  invalidate: (...args: any[]) => void;
+  invalidate: (...args: any[]) => Promise<void>;
   requireAuthentication: (transition: Transition, routeOrCallback: RouteOrCallback) => boolean;
   prohibitAuthentication: (routeOrCallback: RouteOrCallback) => boolean;
   restore: () => Promise<void>;
