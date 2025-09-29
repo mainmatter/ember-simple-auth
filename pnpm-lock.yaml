@@ -24,8 +24,8 @@ importers:
         specifier: 9.36.0
         version: 9.36.0
       '@mermaid-js/mermaid-cli':
-        specifier: 11.10.1
-        version: 11.10.1(puppeteer@23.11.1(typescript@5.9.2))(typescript@5.9.2)
+        specifier: 11.12.0
+        version: 11.12.0(puppeteer@23.11.1(typescript@5.9.2))(typescript@5.9.2)
       '@release-it-plugins/lerna-changelog':
         specifier: 7.0.0
         version: 7.0.0(release-it@18.1.2(@types/node@22.13.4)(typescript@5.9.2))
@@ -2452,8 +2452,8 @@ packages:
     resolution: {integrity: sha512-3lBouSuF7CqlseLB+FKES0K4FQ02JrbEoRtJhxnsyB1s5v4AP03gsoohN8jp7DcOImhaR9scYdztq3/sLfk/qQ==}
     engines: {node: '>=14.18.0'}
 
-  '@mermaid-js/mermaid-cli@11.10.1':
-    resolution: {integrity: sha512-SNsni3hXCJxvKNgGFmZbmMpICiGbQdciJGb/s/kC38nVeGNPj3Grl5EKjYzNO3s62eOCrx6qBWT/+zc6a6In9A==}
+  '@mermaid-js/mermaid-cli@11.12.0':
+    resolution: {integrity: sha512-a0swOS6PByXKi0dZnLQQIhbtUEu7ubc6bojmIqXqvUPq7mIJukCNEvVBTv6IAbuEWqB3Ti8QntupoGdz3ej+kg==}
     engines: {node: ^18.19 || >=20.0}
     hasBin: true
     peerDependencies:
@@ -13395,7 +13395,7 @@ snapshots:
       jju: 1.4.0
       js-yaml: 4.1.0
 
-  '@mermaid-js/mermaid-cli@11.10.1(puppeteer@23.11.1(typescript@5.9.2))(typescript@5.9.2)':
+  '@mermaid-js/mermaid-cli@11.12.0(puppeteer@23.11.1(typescript@5.9.2))(typescript@5.9.2)':
     dependencies:
       '@mermaid-js/mermaid-zenuml': 0.2.0(mermaid@11.4.1)(typescript@5.9.2)
       chalk: 5.4.1
@@ -13906,6 +13906,26 @@ snapshots:
     dependencies:
       '@types/ms': 2.1.0
 
+  '@types/ember@4.0.11':
+    dependencies:
+      '@types/ember__application': 4.0.11(@babel/core@7.28.4)
+      '@types/ember__array': 4.0.10(@babel/core@7.28.4)
+      '@types/ember__component': 4.0.22(@babel/core@7.28.4)
+      '@types/ember__controller': 4.0.12(@babel/core@7.28.4)
+      '@types/ember__debug': 4.0.8(@babel/core@7.28.4)
+      '@types/ember__engine': 4.0.11(@babel/core@7.28.4)
+      '@types/ember__error': 4.0.6
+      '@types/ember__object': 4.0.12(@babel/core@7.28.4)
+      '@types/ember__polyfills': 4.0.6
+      '@types/ember__routing': 4.0.22(@babel/core@7.28.4)
+      '@types/ember__runloop': 4.0.10
+      '@types/ember__service': 4.0.9(@babel/core@7.28.4)
+      '@types/ember__string': 3.0.15
+      '@types/ember__template': 4.0.7
+      '@types/ember__test': 4.0.6(@babel/core@7.28.4)
+      '@types/ember__utils': 4.0.7
+      '@types/rsvp': 4.0.9
+
   '@types/ember@4.0.11(@babel/core@7.28.4)':
     dependencies:
       '@types/ember__application': 4.0.11(@babel/core@7.28.4)
@@ -13932,7 +13952,7 @@ snapshots:
   '@types/ember__application@4.0.11(@babel/core@7.28.4)':
     dependencies:
       '@glimmer/component': 1.1.2(@babel/core@7.28.4)
-      '@types/ember': 4.0.11(@babel/core@7.28.4)
+      '@types/ember': 4.0.11
       '@types/ember__engine': 4.0.11(@babel/core@7.28.4)
       '@types/ember__object': 4.0.12(@babel/core@7.28.4)
       '@types/ember__owner': 4.0.9
@@ -14004,6 +14024,10 @@ snapshots:
       - '@babel/core'
       - supports-color
 
+  '@types/ember__runloop@4.0.10':
+    dependencies:
+      '@types/ember': 4.0.11
+
   '@types/ember__runloop@4.0.10(@babel/core@7.28.4)':
     dependencies:
       '@types/ember': 4.0.11(@babel/core@7.28.4)
@@ -14028,6 +14052,10 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
+
+  '@types/ember__utils@4.0.7':
+    dependencies:
+      '@types/ember': 4.0.11
 
   '@types/ember__utils@4.0.7(@babel/core@7.28.4)':
     dependencies:
