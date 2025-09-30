@@ -54,8 +54,8 @@ importers:
         specifier: 8.2.5
         version: 8.2.5(eslint@9.36.0(jiti@1.21.7))
       globals:
-        specifier: 15.15.0
-        version: 15.15.0
+        specifier: 16.4.0
+        version: 16.4.0
       lerna-changelog:
         specifier: 2.2.0
         version: 2.2.0
@@ -180,8 +180,8 @@ importers:
         specifier: 11.0.3
         version: 11.0.3
       globals:
-        specifier: 15.15.0
-        version: 15.15.0
+        specifier: 16.4.0
+        version: 16.4.0
       handlebars:
         specifier: 4.7.8
         version: 4.7.8
@@ -6193,6 +6193,10 @@ packages:
 
   globals@15.15.0:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
+    engines: {node: '>=18'}
+
+  globals@16.4.0:
+    resolution: {integrity: sha512-ob/2LcVVaVGCYN+r14cnwnoDPUufjiYgSqRhiFD0Q1iI4Odora5RE8Iv1D24hAz5oMophRGkGz+yuvQmmUMnMw==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -18632,6 +18636,8 @@ snapshots:
   globals@14.0.0: {}
 
   globals@15.15.0: {}
+
+  globals@16.4.0: {}
 
   globalthis@1.0.4:
     dependencies:
