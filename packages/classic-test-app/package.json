@@ -27,7 +27,7 @@
     "bootstrap": "5.3.8",
     "broccoli-asset-rev": "3.0.0",
     "cors": "2.8.5",
-    "ember-auto-import": "2.10.1",
+    "ember-auto-import": "2.11.0",
     "ember-cli": "6.7.0",
     "ember-cli-babel": "8.2.0",
     "ember-cli-content-security-policy": "1.1.1",
@@ -49,7 +49,7 @@
     "ember-source": "5.12.0",
     "ember-source-channel-url": "3.0.0",
     "ember-try": "3.0.0",
-    "eslint": "9.36.0",
+    "eslint": "9.37.0",
     "express": "5.1.0",
     "glob": "11.0.3",
     "globals": "15.15.0",
@@ -61,7 +61,7 @@
     "qunit": "2.24.1",
     "qunit-dom": "2.0.0",
     "torii": "1.0.0",
-    "webpack": "5.101.3"
+    "webpack": "5.102.0"
   },
   "ember": {
     "edition": "octane"
