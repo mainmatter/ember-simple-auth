@@ -45,7 +45,7 @@
     "@glint/environment-ember-loose": "1.5.2",
     "@glint/environment-ember-template-imports": "1.5.2",
     "@rollup/plugin-babel": "6.0.4",
-    "@rollup/plugin-node-resolve": "16.0.1",
+    "@rollup/plugin-node-resolve": "16.0.2",
     "@tsconfig/ember": "3.0.11",
     "@types/ember__application": "4.0.11",
     "@types/ember__debug": "4.0.8",
@@ -58,9 +58,9 @@
     "ember-template-lint": "7.9.3",
     "eslint": "9.36.0",
     "prettier": "3.6.2",
-    "rollup": "4.52.3",
+    "rollup": "4.52.4",
     "rollup-plugin-copy": "3.5.0",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "webpack": "5.101.3"
   },
   "publishConfig": {
