@@ -318,6 +318,17 @@ module('OAuth2PasswordGrantAuthenticator', function (hooks) {
         }
       });
 
+      test('rejects with original/cloned response', async function (assert) {
+        assert.expect(1);
+        try {
+          await authenticator.authenticate('username', 'password');
+          assert.ok(false, "Mustn't reach here. Test failed.");
+        } catch (response) {
+          const json = await response.json();
+          assert.deepEqual(json, { error: 'invalid_grant' });
+        }
+      });
+
       test('provides access to custom headers', async function (assert) {
         assert.expect(1);
         try {
@@ -346,6 +357,16 @@ module('OAuth2PasswordGrantAuthenticator', function (hooks) {
         } catch (error) {
           assert.notOk(error.responseJSON);
           assert.equal(error.responseText, 'The server has failed completely.');
+        }
+      });
+      test('rejects with response object containing responseText', async function (assert) {
+        assert.expect(1);
+        try {
+          await authenticator.authenticate('username', 'password');
+          assert.ok(false, "Test failed. Mustn't reach here.");
+        } catch (response) {
+          const text = await response.text();
+          assert.equal(text, 'The server has failed completely.');
         }
       });
 
