@@ -58,7 +58,7 @@
     "my-engine": "workspace:./lib/my-engine",
     "npm-run-all2": "7.0.2",
     "pretender": "3.4.7",
-    "qunit": "2.24.1",
+    "qunit": "2.24.2",
     "qunit-dom": "2.0.0",
     "torii": "1.0.0",
     "webpack": "5.102.1"
