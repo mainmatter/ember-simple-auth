@@ -35,8 +35,8 @@
     "bootstrap": "5.3.8",
     "broccoli-asset-rev": "3.0.0",
     "cors": "2.8.5",
-    "ember-auto-import": "2.11.0",
-    "ember-cli": "6.7.0",
+    "ember-auto-import": "2.11.1",
+    "ember-cli": "6.7.2",
     "ember-cli-babel": "8.2.0",
     "ember-cli-content-security-policy": "1.1.1",
     "ember-cli-dependency-checker": "3.3.3",
@@ -68,7 +68,7 @@
     "qunit-dom": "2.0.0",
     "sinon": "21.0.0",
     "torii": "1.0.0",
-    "webpack": "5.102.0"
+    "webpack": "5.102.1"
   },
   "engines": {
     "node": "16.* || >= 18"
