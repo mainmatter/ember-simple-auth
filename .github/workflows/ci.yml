@@ -22,7 +22,6 @@ jobs:
       matrix:
         workspace:
           - test-esa
-          - classic-test-app
           - test-app
           - ember-simple-auth
 
@@ -52,7 +51,6 @@ jobs:
       matrix:
         workspace:
           - test-esa
-          - classic-test-app
           - test-app
         test-suite:
           - test:one ember-lts-4.12
@@ -103,7 +101,6 @@ jobs:
       matrix:
         workspace:
           - test-esa
-          - classic-test-app
           - test-app
         test-suite:
           - test:one ember-beta
@@ -135,53 +132,3 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           outcome: ${{ steps.allowed_to_fail_tests.outcome }}
           test-id: ${{ matrix.workspace }} ${{ matrix.test-suite }}
-
-  extra-tests:
-    name: Tests (Floating Dependenies)
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    strategy:
-      matrix:
-        workspace:
-          - test-esa
-          - classic-test-app
-          - test-app
-
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
-      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: install dependencies
-        run: pnpm install --no-lockfile
-
-      - name: tests
-        run: pnpm run --filter ${{ matrix.workspace }} test
-        continue-on-error: true
-
-  node-tests:
-    name: Node Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
-      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: install dependencies
-        run: pnpm install
-
-      - name: tests
-        run: pnpm run --filter test-esa test:node
