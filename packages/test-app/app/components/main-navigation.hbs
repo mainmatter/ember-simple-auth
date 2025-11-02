@@ -28,8 +28,7 @@
     {{! display logout button when the session is authenticated, login button otherwise }}
     {{#if this.session.isAuthenticated}}
       {{#if this.sessionAccount.account}}
-        <span class="navbar-text mr-3">Signed in as
-          {{this.sessionAccount.account.name}}</span>
+        <span data-testid="greeting-text" class="navbar-text mr-3">Signed in as {{this.sessionAccount.account.name}}</span>
       {{/if}}
       <a
         {{on "click" this.logout}}
@@ -43,6 +42,7 @@
         class="btn btn-success"
         href="#"
         role="button"
+        data-testid="route-login"
       >Login</a>
     {{/if}}
   </form>

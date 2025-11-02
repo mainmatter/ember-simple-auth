@@ -25,6 +25,7 @@ jobs:
           - classic-test-app
           - test-app
           - ember-simple-auth
+          - playwright-tests
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -59,7 +60,7 @@ jobs:
           - test:one ember-lts-5.4
           - test:one ember-lts-5.8
           - test:one ember-lts-5.12
-          - test:one ember-6.0
+          - test:one ember-lts-6.4
           - test:one ember-default
           - test:one ember-release
         allow-failure: [false]
@@ -90,6 +91,41 @@ jobs:
       - name: tests
         run: pnpm run --filter ${{ matrix.workspace }} ${{ matrix.test-suite }}
         continue-on-error: ${{ matrix.allow-failure }}
+
+  browser_tests:
+    name: Browser Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    container:
+      image: mcr.microsoft.com/playwright:v1.53.2-noble
+      options: --user 1001
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ember-version:
+          - ember-lts-4.12
+          - ember-lts-5.4
+          - ember-lts-6.4
+          - ember-default
+          - ember-release
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
+      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install
+      - name: test ${{ matrix.ember-version }}
+        env:
+          EMBER_SERVER_COMMAND: pnpm -F test-app test:one ${{ matrix.ember-version }} --- pnpm start
+        run: pnpm -F playwright-tests test:e2e:chromium
+
 
   allow-fail-try-scenarios:
     name: ${{ matrix.workspace }} ${{ matrix.test-suite }} - Allowed to fail
