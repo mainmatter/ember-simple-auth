@@ -27,7 +27,7 @@ jobs:
           - playwright-tests
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
       - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
       - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
         with:
@@ -74,7 +74,7 @@ jobs:
             allow-failure: false
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
       - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
       - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
         with:
@@ -109,7 +109,7 @@ jobs:
           - ember-release
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
       - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
       - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
         with:
@@ -146,7 +146,7 @@ jobs:
             test-suite: "test:one embroider-optimized"
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
       - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
       - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
         with:
