@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 
-const confirmLoggedIn = async (page: Page) => {
-  await expect(page).toHaveURL('/');
+const confirmLoggedIn = async (page: Page, { expectedUrl } = { expectedUrl: '/' }) => {
+  await expect(page).toHaveURL(expectedUrl);
   await expect(page.getByTestId('greeting-text')).toHaveText('Signed in as Some person');
   await expect(page.locator('[data-is-authenticated]')).toBeTruthy();
 };
@@ -58,5 +58,31 @@ test.describe('TestApp', () => {
     await loginWithPassword(page);
     await confirmLoggedIn(page);
     await confirmLoggedIn(anotherPage);
+  });
+
+  test('user is redirected a protected route they wanted to access originally after successfuly log-in', async ({
+    page,
+  }) => {
+    await page.goto('/protected');
+
+    await page.getByTestId('route-login').click();
+    await expect(page).toHaveURL('/login#');
+
+    await loginWithPassword(page);
+    await confirmLoggedIn(page, { expectedUrl: '/protected' });
+  });
+
+  test('user is redirected a protected route they wanted to access originally after successfuly log-in, with a page reload in-between', async ({
+    page,
+  }) => {
+    await page.goto('/protected');
+
+    await page.getByTestId('route-login').click();
+    await expect(page).toHaveURL('/login#');
+
+    await page.reload();
+
+    await loginWithPassword(page);
+    await confirmLoggedIn(page, { expectedUrl: '/protected' });
   });
 });

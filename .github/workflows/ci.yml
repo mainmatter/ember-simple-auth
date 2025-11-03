@@ -123,6 +123,11 @@ jobs:
         env:
           EMBER_SERVER_COMMAND: pnpm -F test-app test:one ${{ matrix.ember-version }} --- pnpm start
         run: pnpm -F playwright-tests test:e2e:chromium
+      - name: (FASTBOOT_DISABLED) test ${{ matrix.ember-version }}
+        env:
+          FASTBOOT_DISABLED: true
+          EMBER_SERVER_COMMAND: pnpm -F test-app test:one ${{ matrix.ember-version }} --- pnpm start
+        run: pnpm -F playwright-tests test:e2e:chromium
 
 
   allow-fail-try-scenarios:
