@@ -56,11 +56,11 @@ module.exports = function () {
           },
         },
         {
-          name: 'ember-6.0',
+          name: 'ember-lts-6.4',
           npm: {
             devDependencies: {
-              'ember-cli': '~6.0.0',
-              'ember-source': '~6.0.0',
+              'ember-cli': '~6.4.0',
+              'ember-source': '~6.4.0',
               'ember-data': '~5.3.0',
             },
           },
