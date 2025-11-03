@@ -101,6 +101,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        FASTBOOT_DISABLED:
+          # ember-cli-fastboot doesn't parse the `process.env.FASTBOOT_DISABLED` and we must set it to an empty string for 'false'
+          - '' # false
+          - 'true'
+
         ember-version:
           - ember-lts-4.12
           - ember-lts-5.4
@@ -119,16 +124,11 @@ jobs:
             ${{ runner.os }}-pnpm-
 
       - run: pnpm install
-      - name: test ${{ matrix.ember-version }}
+      - name: (FASTBOOT_DISABLED=${{ matrix.FASTBOOT_DISABLED }}) ${{ matrix.ember-version }}
         env:
+          FASTBOOT_DISABLED: ${{ matrix.FASTBOOT_DISABLED }}
           EMBER_SERVER_COMMAND: pnpm -F test-app test:one ${{ matrix.ember-version }} --- pnpm start
         run: pnpm -F playwright-tests test:e2e:chromium
-      - name: (FASTBOOT_DISABLED) test ${{ matrix.ember-version }}
-        env:
-          FASTBOOT_DISABLED: true
-          EMBER_SERVER_COMMAND: pnpm -F test-app test:one ${{ matrix.ember-version }} --- pnpm start
-        run: pnpm -F playwright-tests test:e2e:chromium
-
 
   allow-fail-try-scenarios:
     name: ${{ matrix.workspace }} ${{ matrix.test-suite }} - Allowed to fail
