@@ -5,6 +5,7 @@ import Base from './base';
 import type CookiesService from 'ember-cookies/services/cookies';
 import type CookieStore from './cookie';
 import type LocalStorageStore from './local-storage';
+import { debug } from '@ember/debug';
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 
@@ -154,7 +155,7 @@ export default class AdaptiveStore extends Base {
 
   declare _store: CookieStore | LocalStorageStore;
 
-  __isLocalStorageAvailable = null;
+  __isLocalStorageAvailable: boolean | null = null;
   get _isLocalStorageAvailable() {
     if (this.__isLocalStorageAvailable !== null) {
       return this.__isLocalStorageAvailable;
@@ -163,8 +164,15 @@ export default class AdaptiveStore extends Base {
     }
   }
 
-  init(properties: any) {
-    super.init(properties);
+  init(emberOwner: any, __isLocalStorageAvailable?: boolean | null) {
+    super.init(emberOwner);
+
+    if (typeof __isLocalStorageAvailable == 'boolean') {
+      this.__isLocalStorageAvailable = __isLocalStorageAvailable;
+      debug(
+        `ember-simple-auth: session-store received __isLocalStorageAvailable: ${__isLocalStorageAvailable}`
+      );
+    }
 
     let owner = getOwner(this) as any;
     if (owner && !this.hasOwnProperty('_fastboot')) {
