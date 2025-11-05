@@ -49,6 +49,7 @@ export default ObjectProxy.extend({
   isAuthenticated: false,
   attemptedTransition: null,
   sessionEvents: null,
+  redirectTarget: null,
 
   init() {
     this._super(...arguments);
@@ -284,5 +285,17 @@ export default ObjectProxy.extend({
 
   trigger(event, value) {
     this.sessionEvents.dispatchEvent(event, value);
+  },
+
+  setRedirectTarget(url) {
+    this.store.setRedirectTarget(url);
+  },
+
+  getRedirectTarget() {
+    return this.store.getRedirectTarget();
+  },
+
+  clearRedirectTarget() {
+    return this.store.clearRedirectTarget();
   },
 });

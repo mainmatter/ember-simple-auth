@@ -12,6 +12,7 @@ import {
 } from '../-internals/routing';
 import type Transition from '@ember/routing/transition';
 import { alias, readOnly } from '@ember/object/computed';
+import type EsaBaseSessionStore from '../session-stores/base';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -38,6 +39,14 @@ type InternalSessionMock<Data> = {
   prohibitAuthentication: (routeOrCallback: RouteOrCallback) => boolean;
   restore: () => Promise<void>;
   set(key: string, value: any): void;
+  setRedirectTarget: EsaBaseSessionStore['setRedirectTarget'];
+  getRedirectTarget: EsaBaseSessionStore['getRedirectTarget'];
+  clearRedirectTarget: EsaBaseSessionStore['clearRedirectTarget'];
+};
+
+export type ExtraAuthenticationArgs = {
+  redirectTarget?: string;
+  [key: string]: unknown;
 };
 
 export type DefaultDataShape = {
@@ -236,9 +245,13 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @return {Boolean} true when the session is authenticated, false otherwise
     @public
   */
-  requireAuthentication(transition: Transition, routeOrCallback: RouteOrCallback) {
+  requireAuthentication(
+    transition: Transition,
+    routeOrCallback: RouteOrCallback,
+    extraArgs: ExtraAuthenticationArgs = {}
+  ) {
     assertSetupHasBeenCalled(this._setupIsCalled);
-    let isAuthenticated = requireAuthentication(getOwner(this), transition);
+    let isAuthenticated = requireAuthentication(getOwner(this), transition, extraArgs);
     if (!isAuthenticated) {
       if (typeof routeOrCallback === 'string') {
         triggerAuthentication(getOwner(this), routeOrCallback);

@@ -2,20 +2,21 @@ import isFastBoot from '../utils/is-fastboot';
 import location from '../utils/location';
 import { isTesting } from '@embroider/macros';
 
-export function requireAuthentication(owner, transition) {
+export function requireAuthentication(owner, transition, extraArgs) {
   let sessionService = owner.lookup('service:session');
   let isAuthenticated = sessionService.get('isAuthenticated');
   if (!isAuthenticated) {
-    if (transition && isFastBoot(owner)) {
-      const fastbootService = owner.lookup('service:fastboot');
-      const cookiesService = owner.lookup('service:cookies');
-      cookiesService.write('ember_simple_auth-redirectTarget', transition.intent.url, {
-        path: '/',
-        secure: fastbootService.get('request.protocol') === 'https',
-      });
-    } else if (transition) {
+    const internalSession = sessionService.session;
+    let redirectTarget = extraArgs.redirectTarget;
+
+    if (transition) {
       sessionService.set('attemptedTransition', transition);
+
+      if (!redirectTarget) {
+        redirectTarget = transition.intent.url;
+      }
     }
+    internalSession.setRedirectTarget(redirectTarget);
   }
   return isAuthenticated;
 }
@@ -33,8 +34,8 @@ export function prohibitAuthentication(owner, routeIfAlreadyAuthenticated) {
 export function handleSessionAuthenticated(owner, routeAfterAuthentication) {
   let sessionService = owner.lookup('service:session');
   let attemptedTransition = sessionService.get('attemptedTransition');
-  let cookiesService = owner.lookup('service:cookies');
-  const redirectTarget = cookiesService.read('ember_simple_auth-redirectTarget');
+  const internalSession = sessionService.session;
+  const redirectTarget = internalSession.getRedirectTarget();
 
   let routerService = owner.lookup('service:router');
 
@@ -43,7 +44,7 @@ export function handleSessionAuthenticated(owner, routeAfterAuthentication) {
     sessionService.set('attemptedTransition', null);
   } else if (redirectTarget) {
     routerService.transitionTo(redirectTarget);
-    cookiesService.clear('ember_simple_auth-redirectTarget');
+    internalSession.clearRedirectTarget();
   } else {
     routerService.transitionTo(routeAfterAuthentication);
   }

@@ -113,4 +113,16 @@ export default class LocalStorageStore extends BaseStore {
       });
     }
   }
+
+  setRedirectTarget(url: string) {
+    localStorage.setItem(`${this.key}-redirectTarget`, url);
+  }
+
+  getRedirectTarget() {
+    return localStorage.getItem(`${this.key}-redirectTarget`);
+  }
+
+  clearRedirectTarget() {
+    return localStorage.removeItem(`${this.key}-redirectTarget`);
+  }
 }

@@ -255,6 +255,18 @@ export default class AdaptiveStore extends Base {
   clear() {
     return this.get('_store').clear();
   }
+
+  setRedirectTarget(url: string) {
+    this.get('_store').setRedirectTarget(url);
+  }
+
+  getRedirectTarget() {
+    return this.get('_store').getRedirectTarget();
+  }
+
+  clearRedirectTarget() {
+    return this.get('_store').clearRedirectTarget();
+  }
 }
 
 function testLocalStorageAvailable() {
