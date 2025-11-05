@@ -244,7 +244,10 @@ module('SessionService', function (hooks) {
 
           assert.ok(
             writeCookieStub.calledWith(cookieName, transition.intent.url, {
+              domain: null,
+              partitioned: null,
               path: '/',
+              sameSite: null,
               secure: true,
             })
           );
@@ -256,7 +259,10 @@ module('SessionService', function (hooks) {
 
           assert.ok(
             writeCookieStub.calledWith(cookieName, redirectTarget, {
+              domain: null,
+              partitioned: null,
               path: '/',
+              sameSite: null,
               secure: true,
             })
           );
