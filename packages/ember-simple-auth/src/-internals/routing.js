@@ -7,7 +7,7 @@ export function requireAuthentication(owner, transition, extraArgs) {
   let isAuthenticated = sessionService.get('isAuthenticated');
   if (!isAuthenticated) {
     const internalSession = sessionService.session;
-    let redirectTarget = extraArgs.redirectTarget;
+    let redirectTarget = extraArgs?.redirectTarget;
 
     if (transition) {
       sessionService.set('attemptedTransition', transition);

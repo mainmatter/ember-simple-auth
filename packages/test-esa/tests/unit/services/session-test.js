@@ -135,9 +135,11 @@ module('SessionService', function (hooks) {
   module('requireAuthentication', function (hooks) {
     let transition;
     let router;
+    let redirectTarget;
 
     hooks.beforeEach(async function () {
       await sessionService.setup();
+      redirectTarget = '/redirect-target';
       transition = {
         intent: {
           url: '/transition/target/url',
@@ -235,7 +237,7 @@ module('SessionService', function (hooks) {
           assert.equal(sessionService.get('attemptedTransition'), transition);
         });
 
-        test('sets the redirectTarget cookie in fastboot', function (assert) {
+        test('sets the redirectTarget cookie to transition.intent.url', function (assert) {
           let cookieName = 'ember_simple_auth-session-redirectTarget';
 
           sessionService.requireAuthentication(transition, 'login');
@@ -246,6 +248,26 @@ module('SessionService', function (hooks) {
               secure: true,
             })
           );
+        });
+
+        test('when redirectTarget is provided, cookie is set with its value', function (assert) {
+          let cookieName = 'ember_simple_auth-session-redirectTarget';
+          sessionService.requireAuthentication(transition, 'login', { redirectTarget });
+
+          assert.ok(
+            writeCookieStub.calledWith(cookieName, redirectTarget, {
+              path: '/',
+              secure: true,
+            })
+          );
+        });
+
+        test('when redirectTarget is provided it can be retrieved', function (assert) {
+          let cookieName = 'ember_simple_auth-session-redirectTarget';
+          sessionService.requireAuthentication(transition, 'login', { redirectTarget });
+
+          session.getRedirectTarget();
+          assert.ok(readCookieStub.calledWith(cookieName));
         });
       });
 
