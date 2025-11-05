@@ -20,6 +20,18 @@ module('SessionService', function (hooks) {
       })
     );
 
+    this.owner.register(
+      'service:fastboot',
+      Service.extend({
+        isFastBoot: true,
+        init() {
+          this._super(...arguments);
+          this.request = {
+            protocol: 'https:',
+          };
+        },
+      })
+    );
     sessionService = this.owner.lookup('service:session');
     session = sessionService.get('session');
   });
@@ -201,7 +213,22 @@ module('SessionService', function (hooks) {
         });
       });
 
-      module('if a transition is passed', function () {
+      module('if a transition is passed', function (hooks) {
+        let writeCookieStub;
+        let readCookieStub;
+
+        hooks.beforeEach(function () {
+          writeCookieStub = sinon.stub();
+          readCookieStub = sinon.stub();
+          this.owner.register(
+            'service:cookies',
+            Service.extend({
+              write: writeCookieStub,
+              read: readCookieStub,
+            })
+          );
+          session.store = this.owner.lookup('session-store:cookie');
+        });
         test('stores it in the session', function (assert) {
           sessionService.requireAuthentication(transition, 'login');
 
@@ -209,27 +236,7 @@ module('SessionService', function (hooks) {
         });
 
         test('sets the redirectTarget cookie in fastboot', function (assert) {
-          this.owner.register(
-            'service:fastboot',
-            Service.extend({
-              isFastBoot: true,
-              init() {
-                this._super(...arguments);
-                this.request = {
-                  protocol: 'https',
-                };
-              },
-            })
-          );
-          let writeCookieStub = sinon.stub();
-          this.owner.register(
-            'service:cookies',
-            Service.extend({
-              write: writeCookieStub,
-            })
-          );
-
-          let cookieName = 'ember_simple_auth-redirectTarget';
+          let cookieName = 'ember_simple_auth-session-redirectTarget';
 
           sessionService.requireAuthentication(transition, 'login');
 
@@ -391,7 +398,7 @@ module('SessionService', function (hooks) {
     });
 
     module('when a redirect target is stored in a cookie', function (hooks) {
-      let cookieName = 'ember_simple_auth-redirectTarget';
+      let cookieName = 'ember_simple_auth-session-redirectTarget';
       let targetUrl = 'transition/target/url';
       let clearStub;
 
@@ -400,12 +407,16 @@ module('SessionService', function (hooks) {
         this.owner.register(
           'service:cookies',
           Service.extend({
-            read() {
-              return targetUrl;
+            read(name) {
+              if (name === cookieName) {
+                return targetUrl;
+              }
+              return null;
             },
             clear: clearStub,
           })
         );
+        session.store = this.owner.lookup('session-store:cookie');
       });
 
       test('transitions to the url', function (assert) {
