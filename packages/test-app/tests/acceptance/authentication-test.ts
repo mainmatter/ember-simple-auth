@@ -64,7 +64,7 @@ module('Acceptance: Authentication', function (hooks) {
     await click('button[type="submit"]');
 
     assert.equal(currentURL(), '/login');
-    assert.ok(document.querySelector('[data-test-error-message]'));
+    assert.dom('[data-test-error-message]').hasText('Login failed: invalid_grant Documentation of the error codes can be found in the Error Response section of RFC 6749.');
   });
 
   module('the protected route', function () {
