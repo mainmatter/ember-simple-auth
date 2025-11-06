@@ -25,8 +25,7 @@ export default class LoginFormComponent extends Component {
         this.session.set('store.cookieExpirationTime', null);
       }
     } catch (response) {
-      let responseBody = await response.clone().json();
-      this.errorMessage = responseBody;
+      this.errorMessage = response.responseJSON.error;
     }
   }
 
