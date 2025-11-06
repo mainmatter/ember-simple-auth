@@ -5,6 +5,7 @@ import { action } from '@ember/object';
 export default class ApplicationController extends Controller {
   @service router;
   @service session;
+  @service fastboot;
 
   @action
   transitionToLoginRoute() {

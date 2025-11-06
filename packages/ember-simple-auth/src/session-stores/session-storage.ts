@@ -108,4 +108,16 @@ export default class SessionStorageStore extends BaseStore {
       });
     }
   }
+
+  setRedirectTarget(url: string) {
+    sessionStorage.setItem(`${this.key}-redirectTarget`, url);
+  }
+
+  getRedirectTarget() {
+    return sessionStorage.getItem(`${this.key}-redirectTarget`);
+  }
+
+  clearRedirectTarget() {
+    return sessionStorage.removeItem(`${this.key}-redirectTarget`);
+  }
 }

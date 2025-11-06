@@ -19,5 +19,5 @@
   "glint": {
     "environment": "ember-loose"
   },
-  "include": ["app", "tests"]
+  "include": ["app", "tests", "types"]
 }

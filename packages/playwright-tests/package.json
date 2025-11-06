@@ -10,7 +10,7 @@
     "test:e2e": "PUBLIC_MSW_ENABLED=true playwright test",
     "test:visual": "PUBLIC_MSW_ENABLED=true playwright test",
     "lint": "prettier --check . && ESLINT_USE_FLAT_CONFIG=true eslint .",
-    "format": "prettier --write . && ESLINT_USE_FLAT_CONFIG=true eslint . --fix",
+    "lint:fix": "prettier --write . && ESLINT_USE_FLAT_CONFIG=true eslint . --fix",
     "test:e2e:firefox": "pnpm test:e2e --project=firefox",
     "test:e2e:chromium": "pnpm test:e2e --project=chromium"
   },

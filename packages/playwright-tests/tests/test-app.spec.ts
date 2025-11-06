@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 
-const confirmLoggedIn = async (page: Page) => {
-  await expect(page).toHaveURL('/');
+const confirmLoggedIn = async (page: Page, { expectedUrl } = { expectedUrl: '/' }) => {
+  await expect(page).toHaveURL(expectedUrl);
   await expect(page.getByTestId('greeting-text')).toHaveText('Signed in as Some person');
   await expect(page.locator('[data-is-authenticated]')).toBeTruthy();
 };
@@ -12,51 +12,104 @@ const loginWithPassword = async (page: Page) => {
   await page.locator('button[type="submit"]:has-text("Login")').click();
 };
 
-test.describe('TestApp', () => {
-  test('it renders and is available', async ({ page }) => {
-    await page.goto('/');
+const STORAGE_SCENARIOS = ['cookieStorage', 'localStorage', 'adaptive'] as const;
 
-    await expect(page.getByRole('heading')).toHaveText('Ember Simple Auth example app');
-  });
+const specifyTestAppStorageAdapter = async (
+  page: Page,
+  scenario: (typeof STORAGE_SCENARIOS)[number]
+) => {
+  switch (scenario) {
+    case 'cookieStorage':
+    case 'localStorage':
+      await page.addInitScript({
+        content: `window.ESA_STORAGE_BACKEND = "${scenario}";`,
+      });
+    case 'adaptive':
+      break;
+  }
+};
 
-  test('can log-in', async ({ page }) => {
-    await page.goto('/');
+STORAGE_SCENARIOS.forEach(scenario => {
+  test.describe(scenario, () => {
+    test('it renders and is available', async ({ page }) => {
+      await specifyTestAppStorageAdapter(page, scenario);
+      await page.goto('/');
 
-    await page.getByTestId('route-login').click();
-    await expect(page).toHaveURL('/login#');
+      await expect(page.getByRole('heading')).toHaveText('Ember Simple Auth example app');
+    });
 
-    await loginWithPassword(page);
-    await confirmLoggedIn(page);
-  });
+    test('can log-in', async ({ page }) => {
+      await specifyTestAppStorageAdapter(page, scenario);
+      await page.goto('/');
 
-  test('logged-in state is synchronized between tabs', async ({ page, context }) => {
-    await page.goto('/');
+      await page.getByTestId('route-login').click();
+      await expect(page).toHaveURL('/login#');
 
-    await page.getByTestId('route-login').click();
-    await expect(page).toHaveURL('/login#');
+      await loginWithPassword(page);
+      await confirmLoggedIn(page);
+    });
 
-    await loginWithPassword(page);
-    await confirmLoggedIn(page);
+    test('logged-in state is synchronized between tabs', async ({ page, context }) => {
+      await specifyTestAppStorageAdapter(page, scenario);
+      await page.goto('/');
 
-    const anotherPage = await context.newPage();
-    await anotherPage.goto('/');
-    await confirmLoggedIn(anotherPage);
-  });
+      await page.getByTestId('route-login').click();
+      await expect(page).toHaveURL('/login#');
 
-  test('logged-in state is synchronized between tabs when another page is already opened', async ({
-    page,
-    context,
-  }) => {
-    await page.goto('/');
+      await loginWithPassword(page);
+      await confirmLoggedIn(page);
 
-    await page.getByTestId('route-login').click();
-    await expect(page).toHaveURL('/login#');
+      const anotherPage = await context.newPage();
+      await specifyTestAppStorageAdapter(anotherPage, scenario);
+      await anotherPage.goto('/');
+      await confirmLoggedIn(anotherPage);
+    });
 
-    const anotherPage = await context.newPage();
-    await anotherPage.goto('/');
+    test('logged-in state is synchronized between tabs when another page is already opened', async ({
+      page,
+      context,
+    }) => {
+      await specifyTestAppStorageAdapter(page, scenario);
+      await page.goto('/');
 
-    await loginWithPassword(page);
-    await confirmLoggedIn(page);
-    await confirmLoggedIn(anotherPage);
+      await page.getByTestId('route-login').click();
+      await expect(page).toHaveURL('/login#');
+
+      const anotherPage = await context.newPage();
+      await specifyTestAppStorageAdapter(anotherPage, scenario);
+      await anotherPage.goto('/');
+
+      await loginWithPassword(page);
+      await confirmLoggedIn(page);
+      await confirmLoggedIn(anotherPage);
+    });
+
+    test('user is redirected a protected route they wanted to access originally after successfuly log-in', async ({
+      page,
+    }) => {
+      await specifyTestAppStorageAdapter(page, scenario);
+      await page.goto('/protected');
+
+      await page.getByTestId('route-login').click();
+      await expect(page).toHaveURL('/login#');
+
+      await loginWithPassword(page);
+      await confirmLoggedIn(page, { expectedUrl: '/protected' });
+    });
+
+    test('user is redirected a protected route they wanted to access originally after successfuly log-in, with a page reload in-between', async ({
+      page,
+    }) => {
+      await specifyTestAppStorageAdapter(page, scenario);
+      await page.goto('/protected');
+
+      await page.getByTestId('route-login').click();
+      await expect(page).toHaveURL('/login#');
+
+      await page.reload();
+
+      await loginWithPassword(page);
+      await confirmLoggedIn(page, { expectedUrl: '/protected' });
+    });
   });
 });
