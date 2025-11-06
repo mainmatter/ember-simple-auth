@@ -45,13 +45,7 @@ export type MakeRequestData =
   | OAuthRefreshRequestData;
 
 export interface OAuth2Response extends Response {
-  /**
-   * @deprecated 'responseText' is deprecated. This is a legacy AJAX API.
-   */
   responseText: string;
-  /**
-   * @deprecated 'responseJSON' is deprecated. This is a legacy AJAX API.
-   */
   responseJSON: string;
 }
 
