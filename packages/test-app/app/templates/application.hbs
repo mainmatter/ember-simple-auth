@@ -3,6 +3,8 @@
   {{outlet}}
 </div>
 
+<div data-test-fastboot={{this.fastboot.isFastBoot}} hidden></div>
+
 <div data-test-reactivity hidden>
   <!-- test SessionService reactivity -->
   <span data-is-authenticated={{this.session.isAuthenticated}}> </span>

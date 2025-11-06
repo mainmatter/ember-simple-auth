@@ -22,9 +22,9 @@ jobs:
       matrix:
         workspace:
           - test-esa
-          - classic-test-app
           - test-app
           - ember-simple-auth
+          - playwright-tests
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -52,14 +52,13 @@ jobs:
       matrix:
         workspace:
           - test-esa
-          - classic-test-app
           - test-app
         test-suite:
           - test:one ember-lts-4.12
           - test:one ember-lts-5.4
           - test:one ember-lts-5.8
           - test:one ember-lts-5.12
-          - test:one ember-6.0
+          - test:one ember-lts-6.4
           - test:one ember-default
           - test:one ember-release
         allow-failure: [false]
@@ -91,6 +90,46 @@ jobs:
         run: pnpm run --filter ${{ matrix.workspace }} ${{ matrix.test-suite }}
         continue-on-error: ${{ matrix.allow-failure }}
 
+  browser_tests:
+    name: Browser Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    container:
+      image: mcr.microsoft.com/playwright:v1.53.2-noble
+      options: --user 1001
+
+    strategy:
+      fail-fast: false
+      matrix:
+        FASTBOOT_DISABLED:
+          # ember-cli-fastboot doesn't parse the `process.env.FASTBOOT_DISABLED` and we must set it to an empty string for 'false'
+          - '' # false
+          - 'true'
+
+        ember-version:
+          - ember-lts-4.12
+          - ember-lts-5.4
+          - ember-lts-6.4
+          - ember-default
+          - ember-release
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
+      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install
+      - name: (FASTBOOT_DISABLED=${{ matrix.FASTBOOT_DISABLED }}) ${{ matrix.ember-version }}
+        env:
+          FASTBOOT_DISABLED: ${{ matrix.FASTBOOT_DISABLED }}
+          EMBER_SERVER_COMMAND: pnpm -F test-app test:one ${{ matrix.ember-version }} --- pnpm start
+        run: pnpm -F playwright-tests test:e2e:chromium
+
   allow-fail-try-scenarios:
     name: ${{ matrix.workspace }} ${{ matrix.test-suite }} - Allowed to fail
     runs-on: ubuntu-latest
@@ -103,7 +142,6 @@ jobs:
       matrix:
         workspace:
           - test-esa
-          - classic-test-app
           - test-app
         test-suite:
           - test:one ember-beta
@@ -135,53 +173,3 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           outcome: ${{ steps.allowed_to_fail_tests.outcome }}
           test-id: ${{ matrix.workspace }} ${{ matrix.test-suite }}
-
-  extra-tests:
-    name: Tests (Floating Dependenies)
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    strategy:
-      matrix:
-        workspace:
-          - test-esa
-          - classic-test-app
-          - test-app
-
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
-      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: install dependencies
-        run: pnpm install --no-lockfile
-
-      - name: tests
-        run: pnpm run --filter ${{ matrix.workspace }} test
-        continue-on-error: true
-
-  node-tests:
-    name: Node Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
-      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: install dependencies
-        run: pnpm install
-
-      - name: tests
-        run: pnpm run --filter test-esa test:node

@@ -18,7 +18,7 @@ class SessionStoreEventTarget extends EsaEventTarget<SessionEvents> {}
   @extends Ember.Object
   @public
 */
-export default class EsaBaseSessionStore extends EmberObject {
+export default abstract class EsaBaseSessionStore extends EmberObject {
   sessionStoreEvents = new SessionStoreEventTarget();
   /**
     Triggered when the session store's data changes due to an external event,
@@ -45,9 +45,7 @@ export default class EsaBaseSessionStore extends EmberObject {
     @return {Promise} A promise that resolves when the data has successfully been persisted and rejects otherwise.
     @public
   */
-  persist(..._args: any[]): Promise<unknown> {
-    return Promise.reject();
-  }
+  abstract persist(..._args: any[]): Promise<unknown>;
 
   /**
     Returns all data currently stored as a plain object.
@@ -60,9 +58,7 @@ export default class EsaBaseSessionStore extends EmberObject {
     @return {Promise} A promise that resolves with the data currently persisted in the store when the data has been restored successfully and rejects otherwise.
     @public
   */
-  restore(..._args: any[]): Promise<unknown> {
-    return Promise.reject();
-  }
+  abstract restore(): Promise<unknown>;
 
   /**
     Clears the store.
@@ -75,9 +71,11 @@ export default class EsaBaseSessionStore extends EmberObject {
     @return {Promise} A promise that resolves when the store has been cleared successfully and rejects otherwise.
     @public
   */
-  clear(..._args: any[]): Promise<unknown> {
-    return Promise.reject();
-  }
+  abstract clear(): Promise<unknown>;
+
+  abstract setRedirectTarget(urL: string): void;
+  abstract getRedirectTarget(): string | null;
+  abstract clearRedirectTarget(): void;
 
   on<Event extends keyof SessionEvents>(event: Event, cb: EventListener<SessionEvents, Event>) {
     this.sessionStoreEvents.addEventListener(event, cb);

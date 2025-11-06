@@ -1,0 +1,33 @@
+{
+  "name": "playwright-tests",
+  "version": "1.0.0",
+  "description": "Ember-simple-auth e2e tests",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test:e2e": "PUBLIC_MSW_ENABLED=true playwright test",
+    "test:visual": "PUBLIC_MSW_ENABLED=true playwright test",
+    "lint": "prettier --check . && ESLINT_USE_FLAT_CONFIG=true eslint .",
+    "lint:fix": "prettier --write . && ESLINT_USE_FLAT_CONFIG=true eslint . --fix",
+    "test:e2e:firefox": "pnpm test:e2e --project=firefox",
+    "test:e2e:chromium": "pnpm test:e2e --project=chromium"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.30.1",
+    "@playwright/test": "1.53.2",
+    "@types/node": "^24.9.2",
+    "@typescript-eslint/eslint-plugin": "8.35.1",
+    "@typescript-eslint/parser": "8.35.1",
+    "dotenv": "17.0.1",
+    "dotenv-expand": "12.0.3",
+    "eslint": "9.30.1",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-prettier": "5.5.4",
+    "msw": "2.10.5",
+    "playwright": "1.53.2",
+    "playwright-msw": "3.0.1",
+    "prettier": "3.6.2"
+  }
+}

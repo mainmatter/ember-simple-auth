@@ -3,7 +3,14 @@
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function (defaults) {
-  let app = new EmberApp(defaults, { 'ember-cli-babel': { enableTypeScriptTransform: true } });
+  let app = new EmberApp(defaults, {
+    'ember-cli-babel': { enableTypeScriptTransform: true },
+    '@embroider/macros': {
+      setOwnConfig: {
+        FASTBOOT_DISABLED: process.env.FASTBOOT_DISABLED === 'true',
+      },
+    },
+  });
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

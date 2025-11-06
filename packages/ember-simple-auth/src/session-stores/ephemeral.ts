@@ -61,4 +61,14 @@ export default class EphemeralStore extends BaseStore {
 
     return Promise.resolve();
   }
+
+  setRedirectTarget() {
+    // noop
+  }
+  getRedirectTarget() {
+    return null;
+  }
+  clearRedirectTarget() {
+    return null;
+  }
 }
