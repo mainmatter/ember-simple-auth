@@ -13,7 +13,7 @@ module.exports = async function (defaults) {
     },
   });
 
-  setConfig(app, __dirname, { compatWith: '5.8' });
+  setConfig(app, __dirname, { compatWith: '5.7' });
 
   // Use `app.import` to add additional libraries to the generated
   // output files.
