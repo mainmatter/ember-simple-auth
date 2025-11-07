@@ -268,6 +268,12 @@ module('SessionService', function (hooks) {
           );
         });
 
+        test('when transition.intent.url is empty, redirectTarget is not set', function (assert) {
+          sessionService.requireAuthentication({ intent: { url: '' } }, 'login');
+
+          assert.ok(writeCookieStub.notCalled);
+        });
+
         test('when redirectTarget is provided it can be retrieved', function (assert) {
           let cookieName = 'ember_simple_auth-session-redirectTarget';
           sessionService.requireAuthentication(transition, 'login', { redirectTarget });

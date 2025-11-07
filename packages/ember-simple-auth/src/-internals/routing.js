@@ -16,7 +16,10 @@ export function requireAuthentication(owner, transition, extraArgs) {
         redirectTarget = transition.intent.url;
       }
     }
-    internalSession.setRedirectTarget(redirectTarget);
+
+    if (redirectTarget) {
+      internalSession.setRedirectTarget(redirectTarget);
+    }
   }
   return isAuthenticated;
 }
