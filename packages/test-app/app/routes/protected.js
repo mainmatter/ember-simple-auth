@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { query } from '@warp-drive/utilities/json-api';
 
 export default class ProtectedRoute extends Route {
   @service session;
@@ -10,6 +11,6 @@ export default class ProtectedRoute extends Route {
   }
 
   model() {
-    return this.store.findAll('post');
+    return this.store.request(query('posts'));
   }
 }

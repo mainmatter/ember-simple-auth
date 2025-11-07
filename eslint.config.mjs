@@ -158,7 +158,7 @@ export default [
         ...globals.node,
       },
 
-      ecmaVersion: 6,
+      ecmaVersion: 2020,
       sourceType: 'script',
     },
     rules: {

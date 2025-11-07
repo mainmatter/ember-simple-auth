@@ -4,7 +4,7 @@
 </div>
 <h2>Posts</h2>
 <ul>
-  {{#each this.model as |post|}}
+  {{#each this.model.content.data as |post|}}
     <li>
       <h3>{{post.title}}</h3>
       <p>{{post.body}}</p>
