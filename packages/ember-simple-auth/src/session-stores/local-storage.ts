@@ -40,9 +40,7 @@ export default class LocalStorageStore extends BaseStore {
   constructor(owner: any) {
     super(owner);
 
-    this._isFastBoot = this.hasOwnProperty('_isFastBoot')
-      ? this._isFastBoot
-      : isFastBoot(getOwner(this));
+    this._isFastBoot = isFastBoot(getOwner(this));
     if (!this.get('_isFastBoot')) {
       window.addEventListener('storage', this._handleStorageEvent);
     }
