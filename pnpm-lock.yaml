@@ -388,8 +388,8 @@ importers:
         specifier: 1.0.7
         version: 1.0.7
       npm-run-all2:
-        specifier: 7.0.2
-        version: 7.0.2
+        specifier: 8.0.4
+        version: 8.0.4
       pretender:
         specifier: 3.4.7
         version: 3.4.7
@@ -527,8 +527,8 @@ importers:
         specifier: 1.0.7
         version: 1.0.7
       npm-run-all2:
-        specifier: 7.0.2
-        version: 7.0.2
+        specifier: 8.0.4
+        version: 8.0.4
       pretender:
         specifier: 3.4.7
         version: 3.4.7
@@ -7787,9 +7787,9 @@ packages:
     resolution: {integrity: sha512-r4fFa4FqYY8xaM7fHecQ9Z2nE9hgNfJR+EmoKv0+chvzWkBcORX3r0FpTByP+CbOVJDladMXnPQGVN8PBLGuTQ==}
     engines: {node: ^18.17.0 || >=20.5.0}
 
-  npm-run-all2@7.0.2:
-    resolution: {integrity: sha512-7tXR+r9hzRNOPNTvXegM+QzCuMjzUIIq66VDunL6j60O4RrExx32XUhlrS7UK4VcdGw5/Wxzb3kfNcFix9JKDA==}
-    engines: {node: ^18.17.0 || >=20.5.0, npm: '>= 9'}
+  npm-run-all2@8.0.4:
+    resolution: {integrity: sha512-wdbB5My48XKp2ZfJUlhnLVihzeuA1hgBnqB2J9ahV77wLS+/YAJAlN8I+X3DIFIPZ3m5L7nplmlbhNiFDmXRDA==}
+    engines: {node: ^20.5.0 || >=22.0.0, npm: '>= 10'}
     hasBin: true
 
   npm-run-path@2.0.2:
@@ -9040,10 +9040,6 @@ packages:
   shebang-regex@3.0.0:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
-
-  shell-quote@1.8.2:
-    resolution: {integrity: sha512-AzqKpGKjrj7EM6rKVQEPpB288oCfnrEIuyoT9cyF4nmGa7V8Zk6f7RRqYisX8X9m+Q7bd632aZW4ky7EhbQztA==}
-    engines: {node: '>= 0.4'}
 
   shell-quote@1.8.3:
     resolution: {integrity: sha512-ObmnIF4hXNg1BqhnHmgbDETF8dLPCggZWBjkQfhZpbszZnYur5DUljTcCHii5LC3J5E0yeO/1LIMyH+UvHQgyw==}
@@ -13274,6 +13270,26 @@ snapshots:
     dependencies:
       '@types/ms': 2.1.0
 
+  '@types/ember@4.0.11':
+    dependencies:
+      '@types/ember__application': 4.0.11(@babel/core@7.28.5)
+      '@types/ember__array': 4.0.10(@babel/core@7.28.5)
+      '@types/ember__component': 4.0.22(@babel/core@7.28.5)
+      '@types/ember__controller': 4.0.12(@babel/core@7.28.5)
+      '@types/ember__debug': 4.0.8(@babel/core@7.28.5)
+      '@types/ember__engine': 4.0.11(@babel/core@7.28.5)
+      '@types/ember__error': 4.0.6
+      '@types/ember__object': 4.0.12(@babel/core@7.28.5)
+      '@types/ember__polyfills': 4.0.6
+      '@types/ember__routing': 4.0.23(@babel/core@7.28.5)
+      '@types/ember__runloop': 4.0.10
+      '@types/ember__service': 4.0.9(@babel/core@7.28.5)
+      '@types/ember__string': 3.0.15
+      '@types/ember__template': 4.0.7
+      '@types/ember__test': 4.0.6(@babel/core@7.28.5)
+      '@types/ember__utils': 4.0.7
+      '@types/rsvp': 4.0.9
+
   '@types/ember@4.0.11(@babel/core@7.28.5)':
     dependencies:
       '@types/ember__application': 4.0.11(@babel/core@7.28.5)
@@ -13300,7 +13316,7 @@ snapshots:
   '@types/ember__application@4.0.11(@babel/core@7.28.5)':
     dependencies:
       '@glimmer/component': 1.1.2(@babel/core@7.28.5)
-      '@types/ember': 4.0.11(@babel/core@7.28.5)
+      '@types/ember': 4.0.11
       '@types/ember__engine': 4.0.11(@babel/core@7.28.5)
       '@types/ember__object': 4.0.12(@babel/core@7.28.5)
       '@types/ember__owner': 4.0.9
@@ -13372,6 +13388,10 @@ snapshots:
       - '@babel/core'
       - supports-color
 
+  '@types/ember__runloop@4.0.10':
+    dependencies:
+      '@types/ember': 4.0.11
+
   '@types/ember__runloop@4.0.10(@babel/core@7.28.5)':
     dependencies:
       '@types/ember': 4.0.11(@babel/core@7.28.5)
@@ -13396,6 +13416,10 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
+
+  '@types/ember__utils@4.0.7':
+    dependencies:
+      '@types/ember': 4.0.11
 
   '@types/ember__utils@4.0.7(@babel/core@7.28.5)':
     dependencies:
@@ -19858,15 +19882,15 @@ snapshots:
       npm-package-arg: 12.0.2
       semver: 7.7.2
 
-  npm-run-all2@7.0.2:
+  npm-run-all2@8.0.4:
     dependencies:
       ansi-styles: 6.2.1
       cross-spawn: 7.0.6
       memorystream: 0.3.1
-      minimatch: 9.0.5
+      picomatch: 4.0.2
       pidtree: 0.6.0
       read-package-json-fast: 4.0.0
-      shell-quote: 1.8.2
+      shell-quote: 1.8.3
       which: 5.0.0
 
   npm-run-path@2.0.2:
@@ -21310,8 +21334,6 @@ snapshots:
   shebang-regex@1.0.0: {}
 
   shebang-regex@3.0.0: {}
-
-  shell-quote@1.8.2: {}
 
   shell-quote@1.8.3: {}
 
