@@ -35,8 +35,8 @@
     "ember-cookies": "^1.3.0"
   },
   "devDependencies": {
-    "@babel/core": "7.28.4",
-    "@babel/eslint-parser": "7.28.4",
+    "@babel/core": "7.28.5",
+    "@babel/eslint-parser": "7.28.5",
     "@babel/plugin-proposal-class-properties": "7.18.6",
     "@babel/plugin-proposal-decorators": "7.28.0",
     "@babel/runtime": "7.28.4",
@@ -52,8 +52,8 @@
     "@types/ember__object": "4.0.12",
     "@types/ember__routing": "4.0.23",
     "@types/ember__service": "4.0.9",
-    "@typescript-eslint/eslint-plugin": "8.46.1",
-    "@typescript-eslint/parser": "8.46.1",
+    "@typescript-eslint/eslint-plugin": "8.46.3",
+    "@typescript-eslint/parser": "8.46.3",
     "concurrently": "9.2.1",
     "ember-template-lint": "7.9.3",
     "eslint": "9.38.0",
