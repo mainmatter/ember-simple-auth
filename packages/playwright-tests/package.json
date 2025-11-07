@@ -1,5 +1,6 @@
 {
   "name": "playwright-tests",
+  "private": true,
   "version": "1.0.0",
   "description": "Ember-simple-auth e2e tests",
   "license": "ISC",
