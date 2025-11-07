@@ -4,6 +4,7 @@ import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
 import '@warp-drive/ember/install';
 
+// @ts-expect-error the warp-drive types appear to be incorrect for this package
 import { setBuildURLConfig } from '@ember-data/request-utils';
 
 setBuildURLConfig({

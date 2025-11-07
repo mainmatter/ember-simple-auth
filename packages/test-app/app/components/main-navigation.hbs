@@ -27,8 +27,8 @@
   <form class="form-inline">
     {{! display logout button when the session is authenticated, login button otherwise }}
     {{#if this.session.isAuthenticated}}
-      {{#if this.sessionAccount.account}}
-        <span data-testid="greeting-text" class="navbar-text mr-3">Signed in as {{this.sessionAccount.account.name}}</span>
+      {{#if this.sessionAccount.account.value.data}}
+        <span data-testid="greeting-text" class="navbar-text mr-3">Signed in as {{this.sessionAccount.account.value.data.name}}</span>
       {{/if}}
       <a
         {{on "click" this.logout}}
