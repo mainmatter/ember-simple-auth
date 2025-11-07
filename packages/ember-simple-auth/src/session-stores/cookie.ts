@@ -370,10 +370,14 @@ export default class CookieStore extends BaseStore {
   }
 
   setRedirectTarget(url: string) {
-    this.get('_cookies').write(`${this.cookieName}-redirectTarget`, url, {
-      path: '/',
+    let cookieOptions = {
+      domain: this.get('cookieDomain'),
+      path: this.get('cookiePath'),
       secure: this._secureCookies(),
-    });
+      sameSite: this.get('sameSite'),
+      partitioned: this.get('partitioned'),
+    } as WriteOptions;
+    this.get('_cookies').write(`${this.cookieName}-redirectTarget`, url, cookieOptions);
   }
 
   getRedirectTarget() {
