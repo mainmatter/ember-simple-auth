@@ -478,9 +478,6 @@ importers:
       ember-cli-terser:
         specifier: 4.0.2
         version: 4.0.2
-      ember-data:
-        specifier: 5.7.0
-        version: 5.7.0(@ember/test-helpers@3.3.1(@babel/core@7.28.4)(@glint/template@1.5.2)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.5.2)(rsvp@4.8.5)(webpack@5.102.1))(webpack@5.102.1))(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(ember-inflector@5.0.2(@babel/core@7.28.4))(qunit@2.24.2)
       ember-disable-prototype-extensions:
         specifier: 1.1.3
         version: 1.1.3
