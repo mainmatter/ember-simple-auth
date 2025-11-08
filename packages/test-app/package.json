@@ -26,7 +26,7 @@
     "@ember/test-helpers": "5.4.0",
     "@embroider/macros": "1.18.1",
     "@embroider/test-setup": "4.0.0",
-    "@glimmer/component": "1.1.2",
+    "@glimmer/component": "2.0.0",
     "@glimmer/tracking": "1.1.2",
     "@glint/core": "1.5.2",
     "@glint/environment-ember-loose": "1.5.2",
