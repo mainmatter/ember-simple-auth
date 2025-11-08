@@ -120,7 +120,7 @@
     }
   },
   "peerDependencies": {
-    "@ember/test-helpers": ">= 3 || > 2.7",
+    "@ember/test-helpers": ">=4 || >= 3 || > 2.7",
     "ember-source": ">=6.0 || >=4.0"
   },
   "peerDependenciesMeta": {
