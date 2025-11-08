@@ -30,7 +30,7 @@
     "release-plan": "0.17.2"
   },
   "volta": {
-    "node": "20.19.5",
+    "node": "24.11.0",
     "pnpm": "10.20.0"
   },
   "packageManager": "pnpm@10.20.0"
