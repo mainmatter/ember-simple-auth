@@ -2,6 +2,7 @@ module.exports = function () {
   return {
     buildSandboxGlobals(defaultGlobals) {
       return Object.assign({}, defaultGlobals, {
+        structuredClone,
         AbortController,
         ReadableStream:
           typeof ReadableStream !== 'undefined'
