@@ -56,9 +56,9 @@
     "@typescript-eslint/parser": "8.46.3",
     "concurrently": "9.2.1",
     "ember-template-lint": "7.9.3",
-    "eslint": "9.38.0",
+    "eslint": "9.39.1",
     "prettier": "3.6.2",
-    "rollup": "4.52.5",
+    "rollup": "4.53.2",
     "rollup-plugin-copy": "3.5.0",
     "typescript": "5.9.3",
     "webpack": "5.102.1"
