@@ -1,18 +1,26 @@
 {
   "solution": {
     "ember-simple-auth": {
-      "impact": "patch",
-      "oldVersion": "8.0.0",
-      "newVersion": "8.0.1",
+      "impact": "minor",
+      "oldVersion": "8.0.1",
+      "newVersion": "8.1.0",
       "tagName": "latest",
       "constraints": [
         {
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
+        },
+        {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
+        },
+        {
+          "impact": "patch",
+          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./packages/ember-simple-auth/package.json"
     }
   },
-  "description": "## Release (2025-09-13)\n\n* ember-simple-auth 8.0.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-simple-auth`\n  * [#2974](https://github.com/mainmatter/ember-simple-auth/pull/2974) Closes [#2973](https://github.com/mainmatter/ember-simple-auth/issues/2973) Return type of SessionService.invalidate is wrong ([@BoussonKarel](https://github.com/BoussonKarel))\n\n#### :memo: Documentation\n* [#2968](https://github.com/mainmatter/ember-simple-auth/pull/2968) Remove this.get use from readme ([@kennstenicht](https://github.com/kennstenicht))\n\n#### :house: Internal\n* [#2981](https://github.com/mainmatter/ember-simple-auth/pull/2981) chore(deps): remove ember-fetch. Fails embroider-safe ([@BobrImperator](https://github.com/BobrImperator))\n\n#### Committers: 3\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n- Christoph Wiedenmann ([@kennstenicht](https://github.com/kennstenicht))\n- [@BoussonKarel](https://github.com/BoussonKarel)\n"
+  "description": "## Release (2025-11-13)\n\n* ember-simple-auth 8.1.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-simple-auth`\n  * [#3010](https://github.com/mainmatter/ember-simple-auth/pull/3010) feat: redirectTarget, use cookie store configuration to set the cookie. ([@BobrImperator](https://github.com/BobrImperator))\n  * [#3006](https://github.com/mainmatter/ember-simple-auth/pull/3006) Feature: formalize `redirectTarget` across stores. Add ability to set `redirectTarget` with `requireAuthentication` method ([@BobrImperator](https://github.com/BobrImperator))\n\n#### :bug: Bug Fix\n* `ember-simple-auth`\n  * [#3014](https://github.com/mainmatter/ember-simple-auth/pull/3014) Fix FastBoot check in LocalStorageStore always returning false ([@felixbuenemann](https://github.com/felixbuenemann))\n  * [#3012](https://github.com/mainmatter/ember-simple-auth/pull/3012) fix(ember-simple-auth): don't set redirectTarget when falsy ([@BobrImperator](https://github.com/BobrImperator))\n  * [#3007](https://github.com/mainmatter/ember-simple-auth/pull/3007) chore: remove responseText, responseJSON deprecation ([@BobrImperator](https://github.com/BobrImperator))\n\n#### :house: Internal\n* `ember-simple-auth`\n  * [#3015](https://github.com/mainmatter/ember-simple-auth/pull/3015) chore: bump ember-cookies ([@BobrImperator](https://github.com/BobrImperator))\n* Other\n  * [#3011](https://github.com/mainmatter/ember-simple-auth/pull/3011) chore(test-app): use service import directly ([@BobrImperator](https://github.com/BobrImperator))\n  * [#3009](https://github.com/mainmatter/ember-simple-auth/pull/3009) chore(test-esa): remove ember-data ([@BobrImperator](https://github.com/BobrImperator))\n  * [#3008](https://github.com/mainmatter/ember-simple-auth/pull/3008) test: login error, check for an actual message and not element presence ([@BobrImperator](https://github.com/BobrImperator))\n  * [#2969](https://github.com/mainmatter/ember-simple-auth/pull/2969) incorrect credentials doesn't show data-test-error-message ([@peter-scholtens](https://github.com/peter-scholtens))\n  * [#3002](https://github.com/mainmatter/ember-simple-auth/pull/3002) test: setup playwright-tests repo with e2e tests ([@BobrImperator](https://github.com/BobrImperator))\n  * [#3003](https://github.com/mainmatter/ember-simple-auth/pull/3003) cleanup: remove ember classic-test-app ([@BobrImperator](https://github.com/BobrImperator))\n\n#### Committers: 3\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n- Felix Bünemann ([@felixbuenemann](https://github.com/felixbuenemann))\n- Peter C. S. Scholtens ([@peter-scholtens](https://github.com/peter-scholtens))\n"
 }

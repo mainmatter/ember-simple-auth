@@ -1,5 +1,36 @@
 # Changelog
 
+## Release (2025-11-13)
+
+* ember-simple-auth 8.1.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-simple-auth`
+  * [#3010](https://github.com/mainmatter/ember-simple-auth/pull/3010) feat: redirectTarget, use cookie store configuration to set the cookie. ([@BobrImperator](https://github.com/BobrImperator))
+  * [#3006](https://github.com/mainmatter/ember-simple-auth/pull/3006) Feature: formalize `redirectTarget` across stores. Add ability to set `redirectTarget` with `requireAuthentication` method ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#3014](https://github.com/mainmatter/ember-simple-auth/pull/3014) Fix FastBoot check in LocalStorageStore always returning false ([@felixbuenemann](https://github.com/felixbuenemann))
+  * [#3012](https://github.com/mainmatter/ember-simple-auth/pull/3012) fix(ember-simple-auth): don't set redirectTarget when falsy ([@BobrImperator](https://github.com/BobrImperator))
+  * [#3007](https://github.com/mainmatter/ember-simple-auth/pull/3007) chore: remove responseText, responseJSON deprecation ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :house: Internal
+* `ember-simple-auth`
+  * [#3015](https://github.com/mainmatter/ember-simple-auth/pull/3015) chore: bump ember-cookies ([@BobrImperator](https://github.com/BobrImperator))
+* Other
+  * [#3011](https://github.com/mainmatter/ember-simple-auth/pull/3011) chore(test-app): use service import directly ([@BobrImperator](https://github.com/BobrImperator))
+  * [#3009](https://github.com/mainmatter/ember-simple-auth/pull/3009) chore(test-esa): remove ember-data ([@BobrImperator](https://github.com/BobrImperator))
+  * [#3008](https://github.com/mainmatter/ember-simple-auth/pull/3008) test: login error, check for an actual message and not element presence ([@BobrImperator](https://github.com/BobrImperator))
+  * [#2969](https://github.com/mainmatter/ember-simple-auth/pull/2969) incorrect credentials doesn't show data-test-error-message ([@peter-scholtens](https://github.com/peter-scholtens))
+  * [#3002](https://github.com/mainmatter/ember-simple-auth/pull/3002) test: setup playwright-tests repo with e2e tests ([@BobrImperator](https://github.com/BobrImperator))
+  * [#3003](https://github.com/mainmatter/ember-simple-auth/pull/3003) cleanup: remove ember classic-test-app ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 3
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Felix Bünemann ([@felixbuenemann](https://github.com/felixbuenemann))
+- Peter C. S. Scholtens ([@peter-scholtens](https://github.com/peter-scholtens))
+
 ## Release (2025-09-13)
 
 * ember-simple-auth 8.0.1 (patch)
