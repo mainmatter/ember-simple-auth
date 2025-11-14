@@ -4,6 +4,7 @@ module.exports = function () {
       return Object.assign({}, defaultGlobals, {
         fetch,
         URLSearchParams,
+        structuredClone,
         AbortController,
         DOMException,
         Response,
