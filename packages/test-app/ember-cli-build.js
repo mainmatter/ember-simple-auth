@@ -2,7 +2,8 @@
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-module.exports = function (defaults) {
+module.exports = async function (defaults) {
+  const { setConfig } = await import('@warp-drive/core/build-config');
   let app = new EmberApp(defaults, {
     'ember-cli-babel': { enableTypeScriptTransform: true },
     '@embroider/macros': {
@@ -11,6 +12,8 @@ module.exports = function (defaults) {
       },
     },
   });
+
+  setConfig(app, __dirname, { compatWith: '5.7' });
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

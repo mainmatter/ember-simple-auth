@@ -4,6 +4,7 @@ import Session from 'ember-simple-auth/services/session';
 type Data = {
   authenticated: {
     id: string;
+    access_token: string;
   };
 };
 

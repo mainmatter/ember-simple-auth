@@ -21,7 +21,6 @@ module.exports = function () {
             devDependencies: {
               'ember-cli': '~4.12.0',
               'ember-source': '~4.12.0',
-              'ember-data': '~5.3.0',
             },
           },
         },
@@ -31,7 +30,6 @@ module.exports = function () {
             devDependencies: {
               'ember-cli': '~5.4.0',
               'ember-source': '~5.4.0',
-              'ember-data': '~5.3.0',
             },
           },
         },
@@ -41,7 +39,6 @@ module.exports = function () {
             devDependencies: {
               'ember-cli': '~5.8.0',
               'ember-source': '~5.8.0',
-              'ember-data': '~5.3.0',
             },
           },
         },
@@ -51,7 +48,6 @@ module.exports = function () {
             devDependencies: {
               'ember-cli': '~5.12.0',
               'ember-source': '~5.12.0',
-              'ember-data': '~5.3.0',
             },
           },
         },
@@ -61,7 +57,6 @@ module.exports = function () {
             devDependencies: {
               'ember-cli': '~6.4.0',
               'ember-source': '~6.4.0',
-              'ember-data': '~5.3.0',
             },
           },
         },
@@ -70,7 +65,6 @@ module.exports = function () {
           npm: {
             devDependencies: {
               'ember-cli': 'latest',
-              'ember-data': 'latest',
               'ember-source': releaseUrl,
               torii: null,
             },
@@ -81,7 +75,6 @@ module.exports = function () {
           npm: {
             devDependencies: {
               'ember-cli': 'beta',
-              'ember-data': 'beta',
               'ember-source': betaUrl,
               torii: null,
             },
@@ -92,7 +85,6 @@ module.exports = function () {
           npm: {
             devDependencies: {
               'ember-cli': 'beta',
-              'ember-data': 'canary',
               'ember-source': canaryUrl,
               torii: null,
             },

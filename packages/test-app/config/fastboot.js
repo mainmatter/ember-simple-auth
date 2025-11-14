@@ -2,8 +2,13 @@ module.exports = function () {
   return {
     buildSandboxGlobals(defaultGlobals) {
       return Object.assign({}, defaultGlobals, {
+        fetch,
+        URLSearchParams,
         structuredClone,
         AbortController,
+        DOMException,
+        Response,
+        queueMicrotask,
         ReadableStream:
           typeof ReadableStream !== 'undefined'
             ? ReadableStream

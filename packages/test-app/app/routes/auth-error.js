@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { findRecord } from '@warp-drive/utilities/json-api';
 
 export default class AuthErrorRoute extends Route {
   @service session;
@@ -10,6 +11,6 @@ export default class AuthErrorRoute extends Route {
   }
 
   model() {
-    return this.store.findRecord('post', 3);
+    return this.store.request(findRecord('post', '3'));
   }
 }
