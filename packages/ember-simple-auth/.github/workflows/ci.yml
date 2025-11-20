@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -72,7 +72,7 @@ jobs:
           - embroider-optimized
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:

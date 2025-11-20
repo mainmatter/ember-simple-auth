@@ -25,7 +25,7 @@ jobs:
       command: ${{ steps.check-release.outputs.command }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           ref: 'master'
@@ -45,7 +45,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
       - run: pnpm install --frozen-lockfile
       - name: Set publishing config
