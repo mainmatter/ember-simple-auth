@@ -34,8 +34,8 @@
     "@tsconfig/ember": "3.0.12",
     "@types/ember__service": "4.0.9",
     "@types/qunit": "2.19.13",
-    "@typescript-eslint/eslint-plugin": "8.46.4",
-    "@typescript-eslint/parser": "8.46.4",
+    "@typescript-eslint/eslint-plugin": "8.47.0",
+    "@typescript-eslint/parser": "8.47.0",
     "body-parser": "2.2.0",
     "bootstrap": "5.3.8",
     "broccoli-asset-rev": "3.0.0",
@@ -78,7 +78,7 @@
     "qunit-dom": "3.5.0",
     "torii": "1.0.0",
     "typescript": "5.9.3",
-    "webpack": "5.102.1"
+    "webpack": "5.103.0"
   },
   "fastbootDependencies": [
     "node-fetch",
