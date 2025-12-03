@@ -20,7 +20,7 @@ function ensureAuthenticator(owner: any) {
  * @return {Promise}
  * @public
  */
-export async function authenticateSession(sessionData: Record<string, string>) {
+export async function authenticateSession(sessionData: Record<string, any>) {
   const { owner } = getContext() as { owner: any };
   const session = owner.lookup(SESSION_SERVICE_KEY);
   ensureAuthenticator(owner);
