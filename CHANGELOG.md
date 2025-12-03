@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2025-12-03)
+
+* ember-simple-auth 8.2.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-simple-auth`
+  * [#3039](https://github.com/mainmatter/ember-simple-auth/pull/3039) Relax sessionData Record type from string to any ([@acorncom](https://github.com/acorncom))
+
+#### :house: Internal
+* [#3020](https://github.com/mainmatter/ember-simple-auth/pull/3020) fix(fastboot): add structuredClone to fastboot startup ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 2
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- David Baker ([@acorncom](https://github.com/acorncom))
+
 ## Release (2025-11-13)
 
 * ember-simple-auth 8.1.0 (minor)
