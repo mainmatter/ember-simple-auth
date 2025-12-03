@@ -301,8 +301,8 @@ importers:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.28.5)
       ember-cli-content-security-policy:
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 2.0.3
+        version: 2.0.3
       ember-cli-dependency-checker:
         specifier: 3.3.3
         version: 3.3.3(ember-cli@6.8.0(@types/node@24.10.1)(handlebars@4.7.8)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(underscore@1.13.7))
@@ -461,8 +461,8 @@ importers:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.28.5)
       ember-cli-content-security-policy:
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 2.0.3
+        version: 2.0.3
       ember-cli-dependency-checker:
         specifier: 3.3.3
         version: 3.3.3(ember-cli@6.8.0(@types/node@24.10.1)(handlebars@4.7.8)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(underscore@1.13.7))
@@ -4616,9 +4616,9 @@ packages:
     peerDependencies:
       '@babel/core': ^7.12.0
 
-  ember-cli-content-security-policy@1.1.1:
-    resolution: {integrity: sha512-QgGAFt1nmsb0qF2YXI5iSM7jJVb09R2hrfX7uR+kkXMb5VyNQXdo2ZlX/DuIbePQVY4q9THpRh8Yf0UHJNbvDQ==}
-    engines: {node: ^4.5 || 6.* || >= 7.*}
+  ember-cli-content-security-policy@2.0.3:
+    resolution: {integrity: sha512-tSGRbR2XiOjHk7oEH7LVF1y5S643rUEjl3mujI6EYPkrQbHaV0WdLyIWJkLvuP1KGnjBfvnLCyiKDFu6z2PjVg==}
+    engines: {node: 12.* || 14.* || >= 16}
 
   ember-cli-dependency-checker@3.3.3:
     resolution: {integrity: sha512-mvp+HrE0M5Zhc2oW8cqs8wdhtqq0CfQXAYzaIstOzHJJn/U01NZEGu3hz7J7zl/+jxZkyygylzcS57QqmPXMuQ==}
@@ -7946,6 +7946,7 @@ packages:
   puppeteer@23.11.1:
     resolution: {integrity: sha512-53uIX3KR5en8l7Vd8n5DUv90Ae9QDQsyIthaUFVzwV6yU750RjqRznEtNMBT20VthqAdemnJN+hxVdmMHKt7Zw==}
     engines: {node: '>=18'}
+    deprecated: < 24.15.0 is no longer supported
     hasBin: true
 
   qs@6.13.0:
@@ -12169,6 +12170,26 @@ snapshots:
     dependencies:
       '@types/ms': 2.1.0
 
+  '@types/ember@4.0.11':
+    dependencies:
+      '@types/ember__application': 4.0.11(@babel/core@7.28.5)
+      '@types/ember__array': 4.0.10(@babel/core@7.28.5)
+      '@types/ember__component': 4.0.22(@babel/core@7.28.5)
+      '@types/ember__controller': 4.0.12(@babel/core@7.28.5)
+      '@types/ember__debug': 4.0.8(@babel/core@7.28.5)
+      '@types/ember__engine': 4.0.11(@babel/core@7.28.5)
+      '@types/ember__error': 4.0.6
+      '@types/ember__object': 4.0.12(@babel/core@7.28.5)
+      '@types/ember__polyfills': 4.0.6
+      '@types/ember__routing': 4.0.23(@babel/core@7.28.5)
+      '@types/ember__runloop': 4.0.10
+      '@types/ember__service': 4.0.9(@babel/core@7.28.5)
+      '@types/ember__string': 3.0.15
+      '@types/ember__template': 4.0.7
+      '@types/ember__test': 4.0.6(@babel/core@7.28.5)
+      '@types/ember__utils': 4.0.7
+      '@types/rsvp': 4.0.9
+
   '@types/ember@4.0.11(@babel/core@7.28.5)':
     dependencies:
       '@types/ember__application': 4.0.11(@babel/core@7.28.5)
@@ -12195,7 +12216,7 @@ snapshots:
   '@types/ember__application@4.0.11(@babel/core@7.28.5)':
     dependencies:
       '@glimmer/component': 1.1.2(@babel/core@7.28.5)
-      '@types/ember': 4.0.11(@babel/core@7.28.5)
+      '@types/ember': 4.0.11
       '@types/ember__engine': 4.0.11(@babel/core@7.28.5)
       '@types/ember__object': 4.0.12(@babel/core@7.28.5)
       '@types/ember__owner': 4.0.9
@@ -12267,6 +12288,10 @@ snapshots:
       - '@babel/core'
       - supports-color
 
+  '@types/ember__runloop@4.0.10':
+    dependencies:
+      '@types/ember': 4.0.11
+
   '@types/ember__runloop@4.0.10(@babel/core@7.28.5)':
     dependencies:
       '@types/ember': 4.0.11(@babel/core@7.28.5)
@@ -12291,6 +12316,10 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
+
+  '@types/ember__utils@4.0.7':
+    dependencies:
+      '@types/ember': 4.0.11
 
   '@types/ember__utils@4.0.7(@babel/core@7.28.5)':
     dependencies:
@@ -14926,10 +14955,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-cli-content-security-policy@1.1.1:
+  ember-cli-content-security-policy@2.0.3:
     dependencies:
       body-parser: 1.20.3
-      chalk: 2.4.2
+      chalk: 4.1.2
+      debug: 4.4.3
+      ember-cli-babel: 7.26.11
+      ember-cli-version-checker: 5.1.2
     transitivePeerDependencies:
       - supports-color
 
