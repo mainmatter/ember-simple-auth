@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.1",
-    "@playwright/test": "1.56.1",
+    "@playwright/test": "1.57.0",
     "@types/node": "24.10.1",
     "@typescript-eslint/eslint-plugin": "8.47.0",
     "@typescript-eslint/parser": "8.47.0",
@@ -27,7 +27,7 @@
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
     "msw": "2.12.3",
-    "playwright": "1.56.1",
+    "playwright": "1.57.0",
     "playwright-msw": "3.0.1",
     "prettier": "3.6.2"
   }
