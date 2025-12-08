@@ -310,8 +310,8 @@ importers:
         specifier: 4.1.5
         version: 4.1.5(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5))
       ember-cli-fastboot-testing:
-        specifier: 0.6.2
-        version: 0.6.2(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(@glint/template@1.7.3)(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5))(webpack@5.103.0)
+        specifier: 0.7.0
+        version: 0.7.0(@babel/core@7.28.5)(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(@glint/template@1.7.3)(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5))(webpack@5.103.0)
       ember-cli-htmlbars:
         specifier: 7.0.0
         version: 7.0.0(@babel/core@7.28.5)(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5))
@@ -4596,12 +4596,12 @@ packages:
     peerDependencies:
       ember-cli: ^3.2.0 || >=4.0.0
 
-  ember-cli-fastboot-testing@0.6.2:
-    resolution: {integrity: sha512-RwOM0Y2fT5PtiMkG7yXWCaCLGFatwKpfPT4Xt6Hxqf2ZAEkbVQWJw/aFaKLLOAo2kfted8nKdkRvZM6Jm647Pg==}
-    engines: {node: 12.* || 14.* || 16.* || >= 18}
+  ember-cli-fastboot-testing@0.7.0:
+    resolution: {integrity: sha512-yc8GBq/pkQ5osbbgKvMUCbSjZTPl4su4emF4ug9fjlnXhBxK1+XFBlUg8q5S+voDRpOwpjxqEQEugtCjUhNMjw==}
+    engines: {node: 18.* || 20.* || >= 22}
     peerDependencies:
       '@ember/test-helpers': '>= 3.0.0'
-      ember-source: ^3.28.0 || ^4.0.0 || ^5.0.0
+      ember-source: ^3.28.0 || >= 4.0.0
 
   ember-cli-fastboot@4.1.5:
     resolution: {integrity: sha512-XVigHzn+xXMqvovdrPNQHXRCzVOkU78ij6adU8Qt7PAaF3stR9oPh/35f30aJ2vcL6jwR72glnuCyXpm3EL22A==}
@@ -14850,12 +14850,12 @@ snapshots:
       resolve: 1.22.11
       semver: 5.7.2
 
-  ember-cli-fastboot-testing@0.6.2(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(@glint/template@1.7.3)(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5))(webpack@5.103.0):
+  ember-cli-fastboot-testing@0.7.0(@babel/core@7.28.5)(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(@glint/template@1.7.3)(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5))(webpack@5.103.0):
     dependencies:
       '@ember/test-helpers': 5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3)
-      body-parser: 1.20.4
+      body-parser: 2.2.1
       ember-auto-import: 2.11.2(@glint/template@1.7.3)(webpack@5.103.0)
-      ember-cli-babel: 7.26.11
+      ember-cli-babel: 8.2.0(@babel/core@7.28.5)
       ember-source: 6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5)
       fastboot: 4.1.5
       json-fn: 1.1.1
@@ -14864,6 +14864,7 @@ snapshots:
       resolve: 1.22.11
       whatwg-fetch: 3.6.20
     transitivePeerDependencies:
+      - '@babel/core'
       - '@glint/template'
       - bufferutil
       - canvas
