@@ -26,7 +26,7 @@
     "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
-    "msw": "2.12.3",
+    "msw": "2.12.4",
     "playwright": "1.57.0",
     "playwright-msw": "3.0.1",
     "prettier": "3.6.2"

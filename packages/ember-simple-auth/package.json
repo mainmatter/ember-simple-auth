@@ -40,7 +40,7 @@
     "@babel/plugin-proposal-class-properties": "7.18.6",
     "@babel/plugin-proposal-decorators": "7.28.0",
     "@babel/runtime": "7.28.4",
-    "@embroider/addon-dev": "7.1.5",
+    "@embroider/addon-dev": "7.1.6",
     "@glint/core": "1.5.2",
     "@glint/environment-ember-loose": "1.5.2",
     "@glint/environment-ember-template-imports": "1.5.2",
