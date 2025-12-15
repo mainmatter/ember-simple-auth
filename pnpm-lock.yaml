@@ -70,7 +70,7 @@ importers:
     dependencies:
       better-docs:
         specifier: ^2.7.3
-        version: 2.7.3(prop-types@15.8.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 2.7.3(prop-types@15.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       jsdoc:
         specifier: ^4.0.2
         version: 4.0.5
@@ -296,7 +296,7 @@ importers:
         version: 2.11.2(@glint/template@1.7.3)(webpack@5.103.0)
       ember-cli:
         specifier: 6.8.1
-        version: 6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(underscore@1.13.7)
+        version: 6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7)
       ember-cli-babel:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.28.5)
@@ -305,7 +305,7 @@ importers:
         version: 1.1.1
       ember-cli-dependency-checker:
         specifier: 3.3.3
-        version: 3.3.3(ember-cli@6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(underscore@1.13.7))
+        version: 3.3.3(ember-cli@6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7))
       ember-cli-fastboot:
         specifier: 4.1.5
         version: 4.1.5(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5))
@@ -456,7 +456,7 @@ importers:
         version: 2.11.2(@glint/template@1.7.3)(webpack@5.103.0)
       ember-cli:
         specifier: 6.8.1
-        version: 6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(underscore@1.13.7)
+        version: 6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7)
       ember-cli-babel:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.28.5)
@@ -465,7 +465,7 @@ importers:
         version: 1.1.1
       ember-cli-dependency-checker:
         specifier: 3.3.3
-        version: 3.3.3(ember-cli@6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(underscore@1.13.7))
+        version: 3.3.3(ember-cli@6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7))
       ember-cli-htmlbars:
         specifier: 7.0.0
         version: 7.0.0(@babel/core@7.28.5)(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5))
@@ -2248,14 +2248,14 @@ packages:
     resolution: {integrity: sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==}
     engines: {node: '>=6'}
 
-  '@tanstack/react-virtual@3.13.12':
-    resolution: {integrity: sha512-Gd13QdxPSukP8ZrkbgS2RwoZseTTbQPLnQEn7HY/rqtM+8Zt95f7xKC7N0EsKs7aoz0WzZ+fditZux+F8EzYxA==}
+  '@tanstack/react-virtual@3.13.13':
+    resolution: {integrity: sha512-4o6oPMDvQv+9gMi8rE6gWmsOjtUZUYIJHv7EB+GblyYdi8U6OqLl8rhHWIUZSL1dUU2dPwTdTgybCKf9EjIrQg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  '@tanstack/virtual-core@3.13.12':
-    resolution: {integrity: sha512-1YBOJfRHV4sXUmWsFSf5rQor4Ss82G8dQWLRbnk3GA4jeP8hQt1hxXh0tmflpC0dz3VgEv/1+qwPyLeWkQuPFA==}
+  '@tanstack/virtual-core@3.13.13':
+    resolution: {integrity: sha512-uQFoSdKKf5S8k51W5t7b2qpfkyIbdHMzAn+AMQvHPxKUPeo1SsGaA4JRISQT87jm28b7z8OEqPcg1IOZagQHcA==}
 
   '@tootallnate/once@1.1.2':
     resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==}
@@ -2599,8 +2599,8 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/tsconfig-utils@8.48.1':
-    resolution: {integrity: sha512-k0Jhs4CpEffIBm6wPaCXBAD7jxBtrHjrSgtfCjUvPp9AZ78lXKdTR8fxyZO5y4vWNlOvYXRtngSZNSn+H53Jkw==}
+  '@typescript-eslint/tsconfig-utils@8.49.0':
+    resolution: {integrity: sha512-8prixNi1/6nawsRYxet4YOhnbW+W9FK/bQPxsGB1D3ZrDzbJ5FXw5XmzxZv82X3B+ZccuSxo/X8q9nQ+mFecWA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '>=4.8.4 <6.0.0'
@@ -3209,8 +3209,8 @@ packages:
     resolution: {integrity: sha512-5T6P4xPgpp0YDFvSWwEZ4NoE3aM4QBQXDzmVbraCkFj8zHM+mba8SyqB5DbZWyR7mYHo6Y7BdQo3MoA4m0TeQg==}
     engines: {node: '>=0.10.0'}
 
-  baseline-browser-mapping@2.9.4:
-    resolution: {integrity: sha512-ZCQ9GEWl73BVm8bu5Fts8nt7MHdbt5vY9bP6WGnUh+r3l8M7CgfyTlwsgCbMC66BNxPr6Xoce3j66Ms5YUQTNA==}
+  baseline-browser-mapping@2.9.7:
+    resolution: {integrity: sha512-k9xFKplee6KIio3IDbwj+uaCLpqzOwakOgmqzPezM0sFJlFKcg30vk2wOiAJtkTSfx0SSQDSe8q+mWA/fSH5Zg==}
     hasBin: true
 
   basic-auth@2.0.1:
@@ -3532,8 +3532,8 @@ packages:
     resolution: {integrity: sha512-RbsNrFyhwkx+6psk/0fK/Q9orOUr9VMxohGd8vTa4djf4TGLfblBgUfqZChrZuW0Q+mz2eBPFLusw9Jfukzmhg==}
     hasBin: true
 
-  caniuse-lite@1.0.30001759:
-    resolution: {integrity: sha512-Pzfx9fOKoKvevQf8oCXoyNRQ5QyxJj+3O0Rqx2V5oxT61KGx8+n6hV/IUyJeifUci2clnmmKVpvtiqRzgiWjSw==}
+  caniuse-lite@1.0.30001760:
+    resolution: {integrity: sha512-7AAMPcueWELt1p3mi13HR/LHH0TJLT11cnwDJEs3xA4+CK/PLKeO9Kl1oru24htkyUKtkGCvAx4ohB0Ttry8Dw==}
 
   capture-exit@2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
@@ -4518,8 +4518,8 @@ packages:
     engines: {node: '>=12'}
     deprecated: Use your platform's native DOMException instead
 
-  dompurify@3.3.0:
-    resolution: {integrity: sha512-r+f6MYR1gGN1eJv0TVQbhA7if/U7P87cdPl3HN5rikqaBSBxLiCb/b9O+2eG0cxz0ghyU+mU1QkbsOwERMYlWQ==}
+  dompurify@3.3.1:
+    resolution: {integrity: sha512-qkdCKzLNtrgPFP1Vo+98FRzJnBRGe4ffyCea9IwHB1fyxPOeNTHpLKYGd4Uk9xvNoH0ZoOjwZxNptyMwqrId1Q==}
 
   dot-case@3.0.4:
     resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
@@ -4561,8 +4561,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  electron-to-chromium@1.5.266:
-    resolution: {integrity: sha512-kgWEglXvkEfMH7rxP5OSZZwnaDWT7J9EoZCujhnpLbfi0bbNtRkgdX2E3gt0Uer11c61qCYktB3hwkAS325sJg==}
+  electron-to-chromium@1.5.267:
+    resolution: {integrity: sha512-0Drusm6MVRXSOJpGbaSVgcQsuB4hEkMpHXaVstcPmhu5LIedxs1xNK/nIxmQIU/RPC0+1/o0AVZfBTkTNJOdUw==}
 
   ember-asset-loader@1.0.0:
     resolution: {integrity: sha512-JXr9bEkkzXiamW2kMk36U2VugLzo4MeoTQGRxvpNFqU1oldUMzm/yFPVvtjsVOjishH4pVwQuOK9Sjrx9E2xZg==}
@@ -4838,8 +4838,8 @@ packages:
     resolution: {integrity: sha512-ZCkIjSYNDyGn0R6ewHDtXgns/Zre/NT6Agvq1/WobF7JXgFff4SeDroKiCO3fNJreU9YG429Sc81o4w5ok/W5g==}
     engines: {node: '>=10.2.0'}
 
-  enhanced-resolve@5.18.3:
-    resolution: {integrity: sha512-d4lC8xfavMeBjzGr2vECC3fsGXziXZQyJxD868h2M/mBI3PwAuODxAkLkq5HYuvrPYcUtiLzsTo8U3PgX3Ocww==}
+  enhanced-resolve@5.18.4:
+    resolution: {integrity: sha512-LgQMM4WXU3QI+SYgEc2liRgznaD5ojbmY3sb8LxyguVkIg5FxdpTkvk72te2R38/TGKxH634oLxXRGY6d7AP+Q==}
     engines: {node: '>=10.13.0'}
 
   ensure-posix-path@1.1.1:
@@ -4873,8 +4873,8 @@ packages:
   error@7.2.1:
     resolution: {integrity: sha512-fo9HBvWnx3NGUKMvMwB/CBCMMrfEJgbDTVDEkPygA3Bdd3lM1OyCd+rbQ8BwnpF6GdVeOLDNmyL4N5Bg80ZvdA==}
 
-  es-abstract@1.24.0:
-    resolution: {integrity: sha512-WSzPgsdLtTcQwm4CROfS5ju2Wa1QQcVeT37jFjYzdFz1r9ahadC8B8/a4qxJxM+09F18iumCdRmlr96ZYkQvEg==}
+  es-abstract@1.24.1:
+    resolution: {integrity: sha512-zHXBLhP+QehSSbsS9Pt23Gg964240DPd6QCf8WpkqEXxQ7fhdZzYsocOr5u7apWonsS5EjZDmTF+/slGMyasvw==}
     engines: {node: '>= 0.4'}
 
   es-define-property@1.0.1:
@@ -4900,8 +4900,8 @@ packages:
     resolution: {integrity: sha512-w+5mJ3GuFL+NjVtJlvydShqE1eN3h3PbI7/5LAsYJP/2qtuMXjfL2LpHSRqo4b4eSF5K/DH1JXKUAHSB2UW50g==}
     engines: {node: '>= 0.4'}
 
-  es-toolkit@1.42.0:
-    resolution: {integrity: sha512-SLHIyY7VfDJBM8clz4+T2oquwTQxEzu263AyhVK4jREOAwJ+8eebaa4wM3nlvnAqhDrMm2EsA6hWHaQsMPQ1nA==}
+  es-toolkit@1.43.0:
+    resolution: {integrity: sha512-SKCT8AsWvYzBBuUqMk4NPwFlSdqLpJwmy6AP322ERn8W2YLIB6JBXnwMI2Qsh2gfphT3q7EKAxKb23cvFHFwKA==}
 
   escalade@3.2.0:
     resolution: {integrity: sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA==}
@@ -5885,8 +5885,8 @@ packages:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
 
-  iconv-lite@0.7.0:
-    resolution: {integrity: sha512-cf6L2Ds3h57VVmkZe+Pn+5APsT7FpqJtEhhieDCvrE2MK5Qk9MyffgQyuxQTm6BChfeZNtcOLHp9IcWRVcIcBQ==}
+  iconv-lite@0.7.1:
+    resolution: {integrity: sha512-2Tth85cXwGFHfvRgZWszZSvdo+0Xsqmw8k8ZwxScfcBneNUraK+dxRxRm24nszx80Y0TVio8kKLt5sLE7ZCLlw==}
     engines: {node: '>=0.10.0'}
 
   icss-utils@5.1.0:
@@ -6332,8 +6332,8 @@ packages:
   jju@1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
 
-  jotai@2.15.2:
-    resolution: {integrity: sha512-El86CCfXNMEOytp20NPfppqGGmcp6H6kIA+tJHdmASEUURJCYW4fh8nTHEnB8rUXEFAY1pm8PdHPwnrcPGwdEg==}
+  jotai@2.16.0:
+    resolution: {integrity: sha512-NmkwPBet0SHQ28GBfEb10sqnbVOYyn6DL4iazZgGRDUKxSWL0iqcm+IK4TqTSFC2ixGk+XX2e46Wbv364a3cKg==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@babel/core': '>=7.0.0'
@@ -7991,10 +7991,10 @@ packages:
     engines: {node: '>=8.10.0'}
     hasBin: true
 
-  react-dom@19.2.1:
-    resolution: {integrity: sha512-ibrK8llX2a4eOskq1mXKu/TGZj9qzomO+sNfO98M6d9zIPOEhlBkMkBUBLd1vgS0gQsLDBzA+8jJBVXDnfHmJg==}
+  react-dom@19.2.3:
+    resolution: {integrity: sha512-yELu4WmLPw5Mr/lmeEpox5rw3RETacE++JgHqQzd2dg+YbJuat3jH4ingc+WPZhxaoFzdv9y33G+F7Nl5O0GBg==}
     peerDependencies:
-      react: ^19.2.1
+      react: ^19.2.3
 
   react-frame-component@5.2.7:
     resolution: {integrity: sha512-ROjHtSLoSVYUBfTieazj/nL8jIX9rZFmHC0yXEU+dx6Y82OcBEGgU9o7VyHMrBFUN9FuQ849MtIPNNLsb4krbg==}
@@ -8006,8 +8006,8 @@ packages:
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
-  react@19.2.1:
-    resolution: {integrity: sha512-DGrYcCWK7tvYMnWh79yrPHt+vdx9tY+1gPZa7nJQtO/p8bLTDaHp4dzwEhQB7pZ4Xe3ok4XKuEPrVuc+wlpkmw==}
+  react@19.2.3:
+    resolution: {integrity: sha512-Ku/hhYbVjOQnXDZFv2+RibmLFGwFdeeKHFcOTlrt7xplBnya5OGn/hIRDsqDiSUcfORsDC7MPxwork8jBwsIWA==}
     engines: {node: '>=0.10.0'}
 
   read-cache@1.0.0:
@@ -8856,8 +8856,8 @@ packages:
   tailwind-merge@3.4.0:
     resolution: {integrity: sha512-uSaO4gnW+b3Y2aWoWfFpX62vn2sR3skfhbjsEnaBI81WD1wBLlHZe5sWf0AqjksNdYTbGBEd0UasQMT3SNV15g==}
 
-  tailwindcss@3.4.18:
-    resolution: {integrity: sha512-6A2rnmW5xZMdw11LYjhcI5846rt9pbLSabY5XPxo+XWdxwZaFEn47Go4NzFiHu9sNNmr/kXivP1vStfvMaK1GQ==}
+  tailwindcss@3.4.19:
+    resolution: {integrity: sha512-3ofp+LL8E+pK/JuPLPggVAIaEuhvIz4qNcf3nA1Xn2o/7fb7s/TYpHhwGDv1ZU3PkBluUVaF8PyCHcm48cKLWQ==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -8887,8 +8887,8 @@ packages:
     resolution: {integrity: sha512-yYrrsWnrXMcdsnu/7YMYAofM1ktpL5By7vZhf15CrXijWWrEYZks5AXBudalfSWJLlnen/QUJUB5aoB0kqZUGA==}
     engines: {node: '>=6.0.0'}
 
-  terser-webpack-plugin@5.3.15:
-    resolution: {integrity: sha512-PGkOdpRFK+rb1TzVz+msVhw4YMRT9txLF4kRqvJhGhCM324xuR3REBSHALN+l+sAhKUmz0aotnjp5D+P83mLhQ==}
+  terser-webpack-plugin@5.3.16:
+    resolution: {integrity: sha512-h9oBFCWrq78NyWWVcSwZarJkZ01c2AyGrzs1crmHZO3QUg9D61Wu4NPjBy69n7JqylFF5y+CsUZYmYEIZ3mR+Q==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
       '@swc/core': '*'
@@ -8912,8 +8912,8 @@ packages:
     resolution: {integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==}
     engines: {node: '>=8'}
 
-  testem@3.16.0:
-    resolution: {integrity: sha512-TKQ3CuG/u+vDa7IUQgRQHN753wjDlgYMWE45KF5WkXyWjTNxXHPrY0qPBmHWI+kDYWc3zsJqzbS7pdzt5sc33A==}
+  testem@3.17.0:
+    resolution: {integrity: sha512-j91I0w9pCVg6P1NU95gUsAujd7RBuAZGcwqQiB0smmXFZvRLaFZ+yZoTE/qK/QRl/x6GBNckM+GDDU59KsHsJg==}
     engines: {node: '>= 7.*'}
     hasBin: true
 
@@ -10931,26 +10931,26 @@ snapshots:
       '@floating-ui/core': 1.7.3
       '@floating-ui/utils': 0.2.10
 
-  '@floating-ui/react-dom@2.1.6(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@floating-ui/react-dom@2.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@floating-ui/dom': 1.7.4
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
 
-  '@floating-ui/react@0.26.28(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@floating-ui/react@0.26.28(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@floating-ui/utils': 0.2.10
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
       tabbable: 6.3.0
 
-  '@floating-ui/react@0.27.16(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@floating-ui/react@0.27.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@floating-ui/utils': 0.2.10
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
       tabbable: 6.3.0
 
   '@floating-ui/utils@0.2.10': {}
@@ -11189,19 +11189,19 @@ snapshots:
 
   '@handlebars/parser@2.2.2': {}
 
-  '@headlessui/react@2.2.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@headlessui/react@2.2.9(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@floating-ui/react': 0.26.28(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@react-aria/focus': 3.21.2(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@react-aria/interactions': 3.25.6(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@tanstack/react-virtual': 3.13.12(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
-      use-sync-external-store: 1.6.0(react@19.2.1)
+      '@floating-ui/react': 0.26.28(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/focus': 3.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/interactions': 3.25.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@tanstack/react-virtual': 3.13.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+      use-sync-external-store: 1.6.0(react@19.2.3)
 
-  '@headlessui/tailwindcss@0.2.2(tailwindcss@3.4.18)':
+  '@headlessui/tailwindcss@0.2.2(tailwindcss@3.4.19)':
     dependencies:
-      tailwindcss: 3.4.18
+      tailwindcss: 3.4.19
 
   '@humanfs/core@0.19.1': {}
 
@@ -11273,7 +11273,7 @@ snapshots:
   '@inquirer/external-editor@1.0.3(@types/node@24.10.4)':
     dependencies:
       chardet: 2.1.1
-      iconv-lite: 0.7.0
+      iconv-lite: 0.7.1
     optionalDependencies:
       '@types/node': 24.10.4
 
@@ -11710,54 +11710,54 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@react-aria/focus@3.21.2(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@react-aria/focus@3.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@react-aria/interactions': 3.25.6(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@react-aria/utils': 3.31.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@react-types/shared': 3.32.1(react@19.2.1)
+      '@react-aria/interactions': 3.25.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/utils': 3.31.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-types/shared': 3.32.1(react@19.2.3)
       '@swc/helpers': 0.5.17
       clsx: 2.1.1
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
 
-  '@react-aria/interactions@3.25.6(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@react-aria/interactions@3.25.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@react-aria/ssr': 3.9.10(react@19.2.1)
-      '@react-aria/utils': 3.31.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@react-aria/ssr': 3.9.10(react@19.2.3)
+      '@react-aria/utils': 3.31.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-stately/flags': 3.1.2
-      '@react-types/shared': 3.32.1(react@19.2.1)
+      '@react-types/shared': 3.32.1(react@19.2.3)
       '@swc/helpers': 0.5.17
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
 
-  '@react-aria/ssr@3.9.10(react@19.2.1)':
+  '@react-aria/ssr@3.9.10(react@19.2.3)':
     dependencies:
       '@swc/helpers': 0.5.17
-      react: 19.2.1
+      react: 19.2.3
 
-  '@react-aria/utils@3.31.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@react-aria/utils@3.31.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@react-aria/ssr': 3.9.10(react@19.2.1)
+      '@react-aria/ssr': 3.9.10(react@19.2.3)
       '@react-stately/flags': 3.1.2
-      '@react-stately/utils': 3.10.8(react@19.2.1)
-      '@react-types/shared': 3.32.1(react@19.2.1)
+      '@react-stately/utils': 3.10.8(react@19.2.3)
+      '@react-types/shared': 3.32.1(react@19.2.3)
       '@swc/helpers': 0.5.17
       clsx: 2.1.1
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
 
   '@react-stately/flags@3.1.2':
     dependencies:
       '@swc/helpers': 0.5.17
 
-  '@react-stately/utils@3.10.8(react@19.2.1)':
+  '@react-stately/utils@3.10.8(react@19.2.3)':
     dependencies:
       '@swc/helpers': 0.5.17
-      react: 19.2.1
+      react: 19.2.3
 
-  '@react-types/shared@3.32.1(react@19.2.1)':
+  '@react-types/shared@3.32.1(react@19.2.3)':
     dependencies:
-      react: 19.2.1
+      react: 19.2.3
 
   '@release-it-plugins/lerna-changelog@8.0.1(release-it@19.0.6(@types/node@24.10.4))':
     dependencies:
@@ -11917,13 +11917,13 @@ snapshots:
     dependencies:
       defer-to-connect: 1.1.3
 
-  '@tanstack/react-virtual@3.13.12(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@tanstack/react-virtual@3.13.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@tanstack/virtual-core': 3.13.12
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      '@tanstack/virtual-core': 3.13.13
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
 
-  '@tanstack/virtual-core@3.13.12': {}
+  '@tanstack/virtual-core@3.13.13': {}
 
   '@tootallnate/once@1.1.2': {}
 
@@ -12079,6 +12079,26 @@ snapshots:
     dependencies:
       '@types/ms': 2.1.0
 
+  '@types/ember@4.0.11':
+    dependencies:
+      '@types/ember__application': 4.0.11(@babel/core@7.28.5)
+      '@types/ember__array': 4.0.10(@babel/core@7.28.5)
+      '@types/ember__component': 4.0.22(@babel/core@7.28.5)
+      '@types/ember__controller': 4.0.12(@babel/core@7.28.5)
+      '@types/ember__debug': 4.0.8(@babel/core@7.28.5)
+      '@types/ember__engine': 4.0.11(@babel/core@7.28.5)
+      '@types/ember__error': 4.0.6
+      '@types/ember__object': 4.0.12(@babel/core@7.28.5)
+      '@types/ember__polyfills': 4.0.6
+      '@types/ember__routing': 4.0.23(@babel/core@7.28.5)
+      '@types/ember__runloop': 4.0.10
+      '@types/ember__service': 4.0.9(@babel/core@7.28.5)
+      '@types/ember__string': 3.0.15
+      '@types/ember__template': 4.0.7
+      '@types/ember__test': 4.0.6(@babel/core@7.28.5)
+      '@types/ember__utils': 4.0.7
+      '@types/rsvp': 4.0.9
+
   '@types/ember@4.0.11(@babel/core@7.28.5)':
     dependencies:
       '@types/ember__application': 4.0.11(@babel/core@7.28.5)
@@ -12105,7 +12125,7 @@ snapshots:
   '@types/ember__application@4.0.11(@babel/core@7.28.5)':
     dependencies:
       '@glimmer/component': 1.1.2(@babel/core@7.28.5)
-      '@types/ember': 4.0.11(@babel/core@7.28.5)
+      '@types/ember': 4.0.11
       '@types/ember__engine': 4.0.11(@babel/core@7.28.5)
       '@types/ember__object': 4.0.12(@babel/core@7.28.5)
       '@types/ember__owner': 4.0.9
@@ -12177,6 +12197,10 @@ snapshots:
       - '@babel/core'
       - supports-color
 
+  '@types/ember__runloop@4.0.10':
+    dependencies:
+      '@types/ember': 4.0.11
+
   '@types/ember__runloop@4.0.10(@babel/core@7.28.5)':
     dependencies:
       '@types/ember': 4.0.11(@babel/core@7.28.5)
@@ -12201,6 +12225,10 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
+
+  '@types/ember__utils@4.0.7':
+    dependencies:
+      '@types/ember': 4.0.11
 
   '@types/ember__utils@4.0.7(@babel/core@7.28.5)':
     dependencies:
@@ -12426,7 +12454,7 @@ snapshots:
     dependencies:
       typescript: 5.9.3
 
-  '@typescript-eslint/tsconfig-utils@8.48.1(typescript@5.9.3)':
+  '@typescript-eslint/tsconfig-utils@8.49.0(typescript@5.9.3)':
     dependencies:
       typescript: 5.9.3
 
@@ -12650,28 +12678,28 @@ snapshots:
 
   '@zenuml/core@3.43.2(@babel/core@7.28.5)(@babel/template@7.27.2)':
     dependencies:
-      '@floating-ui/react': 0.27.16(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@headlessui/react': 2.2.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@headlessui/tailwindcss': 0.2.2(tailwindcss@3.4.18)
+      '@floating-ui/react': 0.27.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@headlessui/react': 2.2.9(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@headlessui/tailwindcss': 0.2.2(tailwindcss@3.4.19)
       antlr4: 4.11.0
       class-variance-authority: 0.7.1
       clsx: 2.1.1
       color-string: 2.1.4
-      dompurify: 3.3.0
+      dompurify: 3.3.1
       highlight.js: 10.7.3
       html-to-image: 1.11.13
       immer: 10.2.0
-      jotai: 2.15.2(@babel/core@7.28.5)(@babel/template@7.27.2)(react@19.2.1)
+      jotai: 2.16.0(@babel/core@7.28.5)(@babel/template@7.27.2)(react@19.2.3)
       lodash: 4.17.21
       marked: 4.3.0
       pako: 2.1.0
       pino: 8.21.0
       radash: 12.1.1
       ramda: 0.28.0
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
       tailwind-merge: 3.4.0
-      tailwindcss: 3.4.18
+      tailwindcss: 3.4.19
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/template'
@@ -12886,7 +12914,7 @@ snapshots:
       array-buffer-byte-length: 1.0.2
       call-bind: 1.0.8
       define-properties: 1.2.1
-      es-abstract: 1.24.0
+      es-abstract: 1.24.1
       es-errors: 1.3.0
       get-intrinsic: 1.3.0
       is-array-buffer: 3.0.5
@@ -13149,7 +13177,7 @@ snapshots:
       mixin-deep: 1.3.2
       pascalcase: 0.1.1
 
-  baseline-browser-mapping@2.9.4: {}
+  baseline-browser-mapping@2.9.7: {}
 
   basic-auth@2.0.1:
     dependencies:
@@ -13161,14 +13189,14 @@ snapshots:
 
   before-after-hook@4.0.0: {}
 
-  better-docs@2.7.3(prop-types@15.8.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
+  better-docs@2.7.3(prop-types@15.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       brace: 0.11.1
-      react: 19.2.1
-      react-ace: 9.5.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      react: 19.2.3
+      react-ace: 9.5.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react-docgen: 5.4.3
-      react-dom: 19.2.1(react@19.2.1)
-      react-frame-component: 5.2.7(prop-types@15.8.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      react-dom: 19.2.3(react@19.2.3)
+      react-frame-component: 5.2.7(prop-types@15.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       typescript: 4.9.5
       underscore: 1.13.7
       vue-docgen-api: 3.26.0
@@ -13222,7 +13250,7 @@ snapshots:
       content-type: 1.0.5
       debug: 4.4.3
       http-errors: 2.0.1
-      iconv-lite: 0.7.0
+      iconv-lite: 0.7.1
       on-finished: 2.4.1
       qs: 6.14.0
       raw-body: 3.0.2
@@ -13699,9 +13727,9 @@ snapshots:
 
   browserslist@4.28.1:
     dependencies:
-      baseline-browser-mapping: 2.9.4
-      caniuse-lite: 1.0.30001759
-      electron-to-chromium: 1.5.266
+      baseline-browser-mapping: 2.9.7
+      caniuse-lite: 1.0.30001760
+      electron-to-chromium: 1.5.267
       node-releases: 2.0.27
       update-browserslist-db: 1.2.2(browserslist@4.28.1)
 
@@ -13837,7 +13865,7 @@ snapshots:
     dependencies:
       tmp: 0.0.28
 
-  caniuse-lite@1.0.30001759: {}
+  caniuse-lite@1.0.30001760: {}
 
   capture-exit@2.0.0:
     dependencies:
@@ -14162,15 +14190,15 @@ snapshots:
       ora: 3.4.0
       through2: 3.0.2
 
-  consolidate@0.16.0(handlebars@4.7.8)(lodash@4.17.21)(mustache@4.2.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(underscore@1.13.7):
+  consolidate@0.16.0(handlebars@4.7.8)(lodash@4.17.21)(mustache@4.2.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7):
     dependencies:
       bluebird: 3.7.2
     optionalDependencies:
       handlebars: 4.7.8
       lodash: 4.17.21
       mustache: 4.2.0
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
       underscore: 1.13.7
 
   constantinople@3.1.2:
@@ -14668,7 +14696,7 @@ snapshots:
     dependencies:
       webidl-conversions: 7.0.0
 
-  dompurify@3.3.0:
+  dompurify@3.3.1:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
@@ -14708,7 +14736,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  electron-to-chromium@1.5.266: {}
+  electron-to-chromium@1.5.267: {}
 
   ember-asset-loader@1.0.0:
     dependencies:
@@ -14841,10 +14869,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-cli-dependency-checker@3.3.3(ember-cli@6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(underscore@1.13.7)):
+  ember-cli-dependency-checker@3.3.3(ember-cli@6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7)):
     dependencies:
       chalk: 2.4.2
-      ember-cli: 6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(underscore@1.13.7)
+      ember-cli: 6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7)
       find-yarn-workspace-root: 2.0.0
       is-git-url: 1.0.0
       resolve: 1.22.11
@@ -15091,7 +15119,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-cli@6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(underscore@1.13.7):
+  ember-cli@6.8.1(@types/node@24.10.4)(handlebars@4.7.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7):
     dependencies:
       '@ember-tooling/blueprint-blueprint': 0.2.1
       '@ember-tooling/blueprint-model': 0.4.1
@@ -15173,7 +15201,7 @@ snapshots:
       sort-package-json: 2.15.1
       symlink-or-copy: 1.3.1
       temp: 0.9.4
-      testem: 3.16.0(handlebars@4.7.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(underscore@1.13.7)
+      testem: 3.17.0(handlebars@4.7.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7)
       tiny-lr: 2.0.0
       tree-sync: 2.1.0
       walk-sync: 3.0.0
@@ -15333,7 +15361,7 @@ snapshots:
       '@babel/core': 7.28.5
       '@babel/eslint-parser': 7.28.5(@babel/core@7.28.5)(eslint@9.39.2(jiti@1.21.7))
       '@glimmer/syntax': 0.95.0
-      '@typescript-eslint/tsconfig-utils': 8.48.1(typescript@5.9.3)
+      '@typescript-eslint/tsconfig-utils': 8.49.0(typescript@5.9.3)
       content-tag: 2.0.3
       eslint-scope: 7.2.2
       html-tags: 3.3.1
@@ -15473,7 +15501,7 @@ snapshots:
       cli-table3: 0.6.5
       debug: 4.4.3
       ember-try-config: 4.0.0(encoding@0.1.13)
-      es-toolkit: 1.42.0
+      es-toolkit: 1.43.0
       execa: 4.1.0
       fs-extra: 6.0.1
       resolve: 1.22.11
@@ -15522,7 +15550,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  enhanced-resolve@5.18.3:
+  enhanced-resolve@5.18.4:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.0
@@ -15549,7 +15577,7 @@ snapshots:
     dependencies:
       string-template: 0.2.1
 
-  es-abstract@1.24.0:
+  es-abstract@1.24.1:
     dependencies:
       array-buffer-byte-length: 1.0.2
       arraybuffer.prototype.slice: 1.0.4
@@ -15629,7 +15657,7 @@ snapshots:
       is-date-object: 1.1.0
       is-symbol: 1.1.1
 
-  es-toolkit@1.42.0: {}
+  es-toolkit@1.43.0: {}
 
   escalade@3.2.0: {}
 
@@ -15700,7 +15728,7 @@ snapshots:
   eslint-plugin-n@17.23.1(eslint@9.39.2(jiti@1.21.7))(typescript@5.9.3):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.2(jiti@1.21.7))
-      enhanced-resolve: 5.18.3
+      enhanced-resolve: 5.18.4
       eslint: 9.39.2(jiti@1.21.7)
       eslint-plugin-es-x: 7.8.0(eslint@9.39.2(jiti@1.21.7))
       get-tsconfig: 4.13.0
@@ -17035,7 +17063,7 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  iconv-lite@0.7.0:
+  iconv-lite@0.7.1:
     dependencies:
       safer-buffer: 2.1.2
 
@@ -17464,11 +17492,11 @@ snapshots:
 
   jju@1.4.0: {}
 
-  jotai@2.15.2(@babel/core@7.28.5)(@babel/template@7.27.2)(react@19.2.1):
+  jotai@2.16.0(@babel/core@7.28.5)(@babel/template@7.27.2)(react@19.2.3):
     optionalDependencies:
       '@babel/core': 7.28.5
       '@babel/template': 7.27.2
-      react: 19.2.1
+      react: 19.2.3
 
   jquery-deferred@0.3.1: {}
 
@@ -18023,7 +18051,7 @@ snapshots:
       d3-sankey: 0.12.3
       dagre-d3-es: 7.0.13
       dayjs: 1.11.19
-      dompurify: 3.3.0
+      dompurify: 3.3.1
       katex: 0.16.27
       khroma: 2.1.0
       lodash-es: 4.17.21
@@ -19292,7 +19320,7 @@ snapshots:
     dependencies:
       bytes: 3.1.2
       http-errors: 2.0.1
-      iconv-lite: 0.7.0
+      iconv-lite: 0.7.1
       unpipe: 1.0.0
 
   rc9@2.1.2:
@@ -19307,15 +19335,15 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
-  react-ace@9.5.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
+  react-ace@9.5.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       ace-builds: 1.43.5
       diff-match-patch: 1.0.5
       lodash.get: 4.4.2
       lodash.isequal: 4.5.0
       prop-types: 15.8.1
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
 
   react-docgen@5.4.3:
     dependencies:
@@ -19332,20 +19360,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-dom@19.2.1(react@19.2.1):
+  react-dom@19.2.3(react@19.2.3):
     dependencies:
-      react: 19.2.1
+      react: 19.2.3
       scheduler: 0.27.0
 
-  react-frame-component@5.2.7(prop-types@15.8.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
+  react-frame-component@5.2.7(prop-types@15.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       prop-types: 15.8.1
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
 
   react-is@16.13.1: {}
 
-  react@19.2.1: {}
+  react@19.2.3: {}
 
   read-cache@1.0.0:
     dependencies:
@@ -19414,7 +19442,7 @@ snapshots:
     dependencies:
       call-bind: 1.0.8
       define-properties: 1.2.1
-      es-abstract: 1.24.0
+      es-abstract: 1.24.1
       es-errors: 1.3.0
       es-object-atoms: 1.1.1
       get-intrinsic: 1.3.0
@@ -20253,7 +20281,7 @@ snapshots:
       call-bind: 1.0.8
       call-bound: 1.0.4
       define-properties: 1.2.1
-      es-abstract: 1.24.0
+      es-abstract: 1.24.1
       es-errors: 1.3.0
       es-object-atoms: 1.1.1
       get-intrinsic: 1.3.0
@@ -20270,7 +20298,7 @@ snapshots:
       call-bound: 1.0.4
       define-data-property: 1.1.4
       define-properties: 1.2.1
-      es-abstract: 1.24.0
+      es-abstract: 1.24.1
       es-object-atoms: 1.1.1
       has-property-descriptors: 1.0.2
 
@@ -20411,7 +20439,7 @@ snapshots:
 
   tailwind-merge@3.4.0: {}
 
-  tailwindcss@3.4.18:
+  tailwindcss@3.4.19:
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -20484,7 +20512,7 @@ snapshots:
       mkdirp: 0.5.6
       rimraf: 2.6.3
 
-  terser-webpack-plugin@5.3.15(webpack@5.103.0):
+  terser-webpack-plugin@5.3.16(webpack@5.103.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
@@ -20506,7 +20534,7 @@ snapshots:
       glob: 7.2.3
       minimatch: 3.1.2
 
-  testem@3.16.0(handlebars@4.7.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(underscore@1.13.7):
+  testem@3.17.0(handlebars@4.7.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7):
     dependencies:
       '@xmldom/xmldom': 0.8.11
       backbone: 1.6.1
@@ -20514,7 +20542,7 @@ snapshots:
       charm: 1.0.2
       commander: 2.20.3
       compression: 1.8.1
-      consolidate: 0.16.0(handlebars@4.7.8)(lodash@4.17.21)(mustache@4.2.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(underscore@1.13.7)
+      consolidate: 0.16.0(handlebars@4.7.8)(lodash@4.17.21)(mustache@4.2.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7)
       execa: 1.0.0
       express: 4.22.1
       fireworm: 0.7.2
@@ -20970,9 +20998,9 @@ snapshots:
       querystringify: 2.2.0
       requires-port: 1.0.0
 
-  use-sync-external-store@1.6.0(react@19.2.1):
+  use-sync-external-store@1.6.0(react@19.2.3):
     dependencies:
-      react: 19.2.1
+      react: 19.2.3
 
   use@3.1.1: {}
 
@@ -21150,7 +21178,7 @@ snapshots:
       acorn-import-phases: 1.0.4(acorn@8.15.0)
       browserslist: 4.28.1
       chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.18.3
+      enhanced-resolve: 5.18.4
       es-module-lexer: 1.7.0
       eslint-scope: 5.1.1
       events: 3.3.0
@@ -21162,7 +21190,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.0
-      terser-webpack-plugin: 5.3.15(webpack@5.103.0)
+      terser-webpack-plugin: 5.3.16(webpack@5.103.0)
       watchpack: 2.4.4
       webpack-sources: 3.3.3
     transitivePeerDependencies:
