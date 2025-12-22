@@ -1,18 +1,8 @@
 {
   "solution": {
     "ember-simple-auth": {
-      "impact": "minor",
-      "oldVersion": "8.1.0",
-      "newVersion": "8.2.0",
-      "tagName": "latest",
-      "constraints": [
-        {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
-        }
-      ],
-      "pkgJSONPath": "./packages/ember-simple-auth/package.json"
+      "oldVersion": "8.2.0"
     }
   },
-  "description": "## Release (2025-12-03)\n\n* ember-simple-auth 8.2.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-simple-auth`\n  * [#3039](https://github.com/mainmatter/ember-simple-auth/pull/3039) Relax sessionData Record type from string to any ([@acorncom](https://github.com/acorncom))\n\n#### :house: Internal\n* [#3020](https://github.com/mainmatter/ember-simple-auth/pull/3020) fix(fastboot): add structuredClone to fastboot startup ([@BobrImperator](https://github.com/BobrImperator))\n\n#### Committers: 2\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n- David Baker ([@acorncom](https://github.com/acorncom))\n"
+  "description": "\n\n\n\n"
 }
