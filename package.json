@@ -24,7 +24,7 @@
     "eslint-plugin-n": "17.23.1",
     "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-qunit": "8.2.5",
-    "globals": "16.5.0",
+    "globals": "17.0.0",
     "lerna-changelog": "2.2.0",
     "release-it": "19.0.6",
     "release-plan": "0.17.2"
