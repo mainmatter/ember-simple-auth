@@ -36,7 +36,7 @@
     "@types/qunit": "2.19.13",
     "@typescript-eslint/eslint-plugin": "8.47.0",
     "@typescript-eslint/parser": "8.47.0",
-    "body-parser": "2.2.1",
+    "body-parser": "2.2.2",
     "bootstrap": "5.3.8",
     "broccoli-asset-rev": "3.0.0",
     "cors": "2.8.5",
