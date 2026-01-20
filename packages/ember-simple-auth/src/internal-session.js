@@ -8,6 +8,17 @@ import EsaEventTarget from './-internals/event-target';
 
 class SessionEventTarget extends EsaEventTarget {}
 
+const SESSION_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
+function testSessionStorage() {
+  try {
+    sessionStorage.setItem(SESSION_STORAGE_TEST_KEY, 'true')
+    sessionStorage.removeItem(SESSION_STORAGE_TEST_KEY)
+    return true
+  } catch(e) {
+    return false
+  }
+}
+
 /**
   __An internal implementation of Session. Communicates with stores and emits events.__
 
@@ -50,6 +61,9 @@ export default ObjectProxy.extend({
   attemptedTransition: null,
   sessionEvents: null,
   redirectTarget: null,
+
+  _redirectTargetKey: 'ember_simple_auth-redirect_target',
+  _sessionStorageAvailable: null,
 
   init() {
     this._super(...arguments);
@@ -287,15 +301,36 @@ export default ObjectProxy.extend({
     this.sessionEvents.dispatchEvent(event, value);
   },
 
+  _isSessionStorageAvailable() {
+    if (this._sessionStorageAvailable === null) {
+      this._sessionStorageAvailable = testSessionStorage()
+    }
+
+    return this._sessionStorageAvailable
+  },
+
   setRedirectTarget(url) {
-    this.store.setRedirectTarget(url);
+    if (this._isSessionStorageAvailable()) {
+      sessionStorage.setItem(this._redirectTargetKey, url);
+    }
+
+    this.store.setRedirectTarget(url)
   },
 
   getRedirectTarget() {
-    return this.store.getRedirectTarget();
+    let target
+    if (this._isSessionStorageAvailable()) {
+      target = sessionStorage.getItem(this._redirectTargetKey)
+    }
+
+    return target || this.store.getRedirectTarget();
   },
 
   clearRedirectTarget() {
-    return this.store.clearRedirectTarget();
-  },
+    if (this._isSessionStorageAvailable()) {
+      sessionStorage.removeItem(this._redirectTargetKey);
+    }
+
+    this.store.clearRedirectTarget()
+  }
 });
