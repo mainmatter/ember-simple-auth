@@ -39,7 +39,7 @@
     "body-parser": "2.2.2",
     "bootstrap": "5.3.8",
     "broccoli-asset-rev": "3.0.0",
-    "cors": "2.8.5",
+    "cors": "2.8.6",
     "ember-auto-import": "2.11.2",
     "ember-cli": "6.8.1",
     "ember-cli-babel": "8.2.0",
