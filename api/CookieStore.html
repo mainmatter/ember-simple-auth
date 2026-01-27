@@ -66,7 +66,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -128,7 +128,7 @@ either store the session persistently or in a session cookie depending on
 whether the user opted in or not:</p>
 <pre class="prettyprint source lang-js"><code>// app/controllers/login.js
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class LoginController extends Controller {
   &#64;service session;
@@ -384,7 +384,7 @@ authenticated on.</p>
         <p class="tag-source">
             <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line380">line 380</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line396">line 396</a>
             </span>
         </p>
     
@@ -519,7 +519,7 @@ that, the cookie may expire before its expiration time is extended
         <p class="tag-source">
             <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line429">line 429</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line445">line 445</a>
             </span>
         </p>
     
@@ -648,7 +648,7 @@ that, the cookie may expire before its expiration time is extended
         <p class="tag-source">
             <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line403">line 403</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line419">line 419</a>
             </span>
         </p>
     
@@ -777,7 +777,7 @@ that, the cookie may expire before its expiration time is extended
         <p class="tag-source">
             <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line413">line 413</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line429">line 429</a>
             </span>
         </p>
     
@@ -912,7 +912,7 @@ third party context</p>
         <p class="tag-source">
             <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line445">line 445</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line461">line 461</a>
             </span>
         </p>
     
@@ -1045,7 +1045,7 @@ Available options:
         <p class="tag-source">
             <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line393">line 393</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line409">line 409</a>
             </span>
         </p>
     
@@ -1956,7 +1956,7 @@ Available options:
         <p class="tag-source">
             <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line465">line 465</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line481">line 481</a>
             </span>
         </p>
     
@@ -2133,7 +2133,7 @@ Available options:
         <p class="tag-source">
             <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line446">line 446</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line462">line 462</a>
             </span>
         </p>
     
@@ -2259,7 +2259,7 @@ Available options:
         <p class="tag-source">
             <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line456">line 456</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line472">line 472</a>
             </span>
         </p>
     
@@ -2330,7 +2330,7 @@ Available options:
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

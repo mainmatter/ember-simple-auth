@@ -66,7 +66,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -123,7 +123,7 @@ methods to authenticate it, invalidate it, etc.</strong> It is the main interfac
 the application to Ember Simple Auth's functionality.</p>
 <pre class="prettyprint source lang-js"><code>// app/components/login-form.js
 import Component from '@ember/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class LoginFormComponent extends Component {
   &#64;service session;
@@ -298,7 +298,7 @@ export default class LoginFormComponent extends Component {
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line320">line 320</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line287">line 287</a>
             </span>
         </p>
     
@@ -429,7 +429,411 @@ If an attempted transition is present it will be retried.</p>
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line374">line 374</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line341">line 341</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Object</code>
+
+
+    </span>
+
+<h4 class="name" id="data">
+    <a class="href-link" href="#data">#</a>
+    
+        
+            <span class='tag'>readonly</span>
+        
+    
+    <span class="code-name">
+        data
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>The current session data as a plain object. The
+<code>authenticated</code> key inside  SessionService.data holds the session data that the authenticator resolved
+with when the session was authenticated (see <a href="BaseAuthenticator.html#.authenticate">BaseAuthenticator.authenticate</a>) and
+that will be cleared when the session is invalidated. This data cannot be
+written. All other session data is writable and will not be cleared when
+the session is invalidated.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>data</code></td>
+    
+
+    <td class="type">
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>{ authenticated: {} }</li>
+        </ul></dd>
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.ts.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line316">line 316</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Boolean</code>
+
+
+    </span>
+
+<h4 class="name" id="isAuthenticated">
+    <a class="href-link" href="#isAuthenticated">#</a>
+    
+        
+            <span class='tag'>readonly</span>
+        
+    
+    <span class="code-name">
+        isAuthenticated
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Returns whether the session is currently authenticated.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>isAuthenticated</code></td>
+    
+
+    <td class="type">
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>false</li>
+        </ul></dd>
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.ts.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line299">line 299</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type"><a href="BaseStore.html">BaseStore</a></code>
+
+
+    </span>
+
+<h4 class="name" id="store">
+    <a class="href-link" href="#store">#</a>
+    
+        
+            <span class='tag'>readonly</span>
+        
+    
+    <span class="code-name">
+        store
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>The session store.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>store</code></td>
+    
+
+    <td class="type">
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>null</li>
+        </ul></dd>
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.ts.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line328">line 328</a>
             </span>
         </p>
     
@@ -564,417 +968,7 @@ If an attempted transition is present it will be retried.</p>
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line104">line 104</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">Object</code>
-
-
-    </span>
-
-<h4 class="name" id=".data">
-    <a class="href-link" href="#.data">#</a>
-    
-        
-            <span class='tag'>static</span>
-        
-            <span class='tag'>readonly</span>
-        
-    
-    <span class="code-name">
-        data
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>The current session data as a plain object. The
-<code>authenticated</code> key inside  <a href="SessionService.html#.data">SessionService.data</a> holds the session data that the authenticator resolved
-with when the session was authenticated (see <a href="BaseAuthenticator.html#.authenticate">BaseAuthenticator.authenticate</a>) and
-that will be cleared when the session is invalidated. This data cannot be
-written. All other session data is writable and will not be cleared when
-the session is invalidated.</p>
-</div>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>data</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>{ authenticated: {} }</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="services_session.ts.html" class="button">View Source</a>
-            <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line77">line 77</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">Boolean</code>
-
-
-    </span>
-
-<h4 class="name" id=".isAuthenticated">
-    <a class="href-link" href="#.isAuthenticated">#</a>
-    
-        
-            <span class='tag'>static</span>
-        
-            <span class='tag'>readonly</span>
-        
-    
-    <span class="code-name">
-        isAuthenticated
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Returns whether the session is currently authenticated.</p>
-</div>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>isAuthenticated</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>false</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="services_session.ts.html" class="button">View Source</a>
-            <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line59">line 59</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type"><a href="BaseStore.html">BaseStore</a></code>
-
-
-    </span>
-
-<h4 class="name" id=".store">
-    <a class="href-link" href="#.store">#</a>
-    
-        
-            <span class='tag'>static</span>
-        
-            <span class='tag'>readonly</span>
-        
-    
-    <span class="code-name">
-        store
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>The session store.</p>
-</div>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>store</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>null</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="services_session.ts.html" class="button">View Source</a>
-            <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line90">line 90</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line60">line 60</a>
             </span>
         </p>
     
@@ -994,458 +988,6 @@ the session is invalidated.</p>
         <div class='vertical-section'>
             <h1>Methods</h1>
             <div class="members">
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="data">
-        <a class="href-link" href="#data">#</a>
-        
-        <span class="code-name">
-            
-                data<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>The current session data as a plain object. The
-<code>authenticated</code> key inside  <a href="SessionService.html#.data">SessionService.data</a> holds the session data that the authenticator resolved
-with when the session was authenticated (see <a href="BaseAuthenticator.html#.authenticate">BaseAuthenticator.authenticate</a>) and
-that will be cleared when the session is invalidated. This data cannot be
-written. All other session data is writable and will not be cleared when
-the session is invalidated.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>data</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>{ authenticated: {} }</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="services_session.ts.html" class="button">View Source</a>
-            <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line349">line 349</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="isAuthenticated">
-        <a class="href-link" href="#isAuthenticated">#</a>
-        
-        <span class="code-name">
-            
-                isAuthenticated<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Returns whether the session is currently authenticated.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>isAuthenticated</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>false</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="services_session.ts.html" class="button">View Source</a>
-            <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line332">line 332</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="store">
-        <a class="href-link" href="#store">#</a>
-        
-        <span class="code-name">
-            
-                store<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>The session store.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>store</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>null</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="services_session.ts.html" class="button">View Source</a>
-            <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line361">line 361</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
             
                 <div class="member">
 
@@ -1477,14 +1019,14 @@ returns a promise after doing so. The session handles the returned promise
 and when it resolves becomes authenticated, otherwise remains
 unauthenticated. All data the authenticator resolves with will be
 accessible via the
-<a href="SessionService.html#.data">SessionService.data</a> session data's
+SessionService.data session data's
 <code>authenticated</code> property.</p>
 <pre><code>This method returns a promise. A resolving promise indicates that the
 session was successfully authenticated while a rejecting promise
 indicates that authentication failed and the session remains
 unauthenticated. The promise does not resolve with a value; instead, the
 data returned from the authenticator is available via the
-<a href="SessionService.html#.data">SessionService.data</a> property.
+SessionService.data property.
 
 When authentication succeeds this will trigger the
 SessionService.authenticationSucceeded event.
@@ -1635,7 +1177,7 @@ SessionService.authenticationSucceeded event.
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line375">line 375</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line342">line 342</a>
             </span>
         </p>
     
@@ -1820,7 +1362,7 @@ routeAfterAuthentication.</p>
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line465">line 465</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line432">line 432</a>
             </span>
         </p>
     
@@ -1980,7 +1522,7 @@ simply transition to the index route.
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line482">line 482</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line449">line 449</a>
             </span>
         </p>
     
@@ -2040,7 +1582,7 @@ and handles the returned promise accordingly.</p>
 session was successfully invalidated while a rejecting promise indicates
 that invalidation failed and the session remains authenticated. Once the
 session is successfully invalidated it clears all of its authenticated data
-(see <a href="SessionService.html#.data">SessionService.data</a>).
+(see SessionService.data).
 
 When invalidation succeeds this will trigger the
 SessionService.invalidationSucceeded
@@ -2151,7 +1693,7 @@ immediately.
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line405">line 405</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line372">line 372</a>
             </span>
         </p>
     
@@ -2332,7 +1874,7 @@ to the specified route or invokes the specified callback.</p>
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line454">line 454</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line421">line 421</a>
             </span>
         </p>
     
@@ -2546,7 +2088,7 @@ browser after authentication is complete.
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line434">line 434</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line401">line 401</a>
             </span>
         </p>
     
@@ -2676,7 +2218,7 @@ method.
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line499">line 499</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line466">line 466</a>
             </span>
         </p>
     
@@ -2722,7 +2264,7 @@ method.
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

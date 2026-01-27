@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> AdaptiveStore</title>
+  <title> CookieStore</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -66,7 +66,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Class</p>
-                    <h1>AdaptiveStore</h1>
+                    <h1>CookieStore</h1>
                 </header>
                 
 
@@ -85,7 +85,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>AdaptiveStore<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>CookieStore<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -104,12 +104,12 @@
 
 
     
-    <h4 class="name" id="AdaptiveStore">
-        <a class="href-link" href="#AdaptiveStore">#</a>
+    <h4 class="name" id="CookieStore">
+        <a class="href-link" href="#CookieStore">#</a>
         
         <span class="code-name">
             
-                new AdaptiveStore<span class="signature">()</span><span class="type-signature"></span>
+                new CookieStore<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -118,15 +118,40 @@
     
     
     <div class="description">
-        <p>Session store that persists data in the browser's <code>localStorage</code> (see
-<a href="LocalStorageStore.html">LocalStorageStore</a>) if that is available or in
-a cookie (see <a href="CookieStore.html">CookieStore</a>) if it is not.</p>
-<p><strong>This is the default store that Ember Simple Auth will use when the
-application doesn't define a custom store.</strong></p>
-<p><strong>This session store does not work with FastBoot. In order to use Ember
-Simple Auth with FastBoot, configure the
-<a href="CookieStore.html">CookieStore</a> as the application's session
-store.</strong></p>
+        <p>Session store that persists data in a cookie.</p>
+<p>By default the cookie session store uses a session cookie that expires and is
+deleted when the browser is closed. The cookie expiration period can be
+configured by setting the
+CookieStore.cookieExpirationTime
+property. This can be used to implement &quot;remember me&quot; functionality that will
+either store the session persistently or in a session cookie depending on
+whether the user opted in or not:</p>
+<pre class="prettyprint source lang-js"><code>// app/controllers/login.js
+import Controller from '@ember/controller';
+import { service } from '@ember/service';
+
+export default class LoginController extends Controller {
+  &#64;service session;
+  _rememberMe = false;
+
+  get rememberMe() {
+    return this._rememberMe;
+  }
+
+  set rememberMe(value) {
+    let expirationTime = value ? (14 * 24 * 60 * 60) : null;
+    this.set('session.store.cookieExpirationTime', expirationTime);
+    this._rememberMe = value;
+  }
+}
+</code></pre>
+<p><strong>Applications that use FastBoot must use this session store by defining the
+application session store like this:</strong></p>
+<pre class="prettyprint source lang-js"><code>// app/session-stores/application.js
+import CookieStore from 'ember-simple-auth/session-stores/cookie';
+
+export default class ApplicationSessionStore extends CookieStore {}
+</code></pre>
     </div>
     
 
@@ -175,9 +200,9 @@ store.</strong></p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line28">line 28</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line31">line 31</a>
             </span>
         </p>
     
@@ -262,10 +287,10 @@ store.</strong></p>
 
 
 <div class="description">
-    <p>The domain to use for the cookie if <code>localStorage</code> is not available, e.g.,
-&quot;example.com&quot;, &quot;.example.com&quot; (which includes all subdomains) or
-&quot;subdomain.example.com&quot;. If not explicitly set, the cookie domain defaults
-to the domain the session was authenticated on.</p>
+    <p>The domain to use for the cookie, e.g., &quot;example.com&quot;, &quot;.example.com&quot;
+(which includes all subdomains) or &quot;subdomain.example.com&quot;. If not
+explicitly set, the cookie domain defaults to the domain the session was
+authenticated on.</p>
 </div>
 
 
@@ -357,9 +382,9 @@ to the domain the session was authenticated on.</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line282">line 282</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line396">line 396</a>
             </span>
         </p>
     
@@ -394,9 +419,13 @@ to the domain the session was authenticated on.</p>
 
 
 <div class="description">
-    <p>The expiration time for the cookie in seconds if <code>localStorage</code> is not
-available. A value of <code>null</code> will make the cookie a session cookie that
-expires and gets deleted when the browser is closed.</p>
+    <p>The expiration time for the cookie in seconds. A value of <code>null</code> will make
+the cookie a session cookie that expires and gets deleted when the browser
+is closed.</p>
+<pre><code>The recommended minimum value is 90 seconds. If your value is less than
+that, the cookie may expire before its expiration time is extended
+(expiration time is extended every 60 seconds).
+</code></pre>
 </div>
 
 
@@ -488,9 +517,9 @@ expires and gets deleted when the browser is closed.</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line346">line 346</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line445">line 445</a>
             </span>
         </p>
     
@@ -525,7 +554,7 @@ expires and gets deleted when the browser is closed.</p>
 
 
 <div class="description">
-    <p>The name of the cookie to use if <code>localStorage</code> is not available.</p>
+    <p>The name of the cookie.</p>
 </div>
 
 
@@ -617,9 +646,9 @@ expires and gets deleted when the browser is closed.</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line324">line 324</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line419">line 419</a>
             </span>
         </p>
     
@@ -746,9 +775,9 @@ expires and gets deleted when the browser is closed.</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line334">line 334</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line429">line 429</a>
             </span>
         </p>
     
@@ -881,9 +910,9 @@ third party context</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line314">line 314</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line461">line 461</a>
             </span>
         </p>
     
@@ -918,13 +947,11 @@ third party context</p>
 
 
 <div class="description">
-    <p>Allows servers to assert that a cookie ought not to be sent along with
-cross-site requests, which provides some protection against cross-site
-request forgery attacks (CSRF).</p>
-<pre><code>Available options:
+    <p>Allows servers to assert that a cookie ought not to be sent along with cross-site requests,
+which provides some protection against cross-site request forgery attacks (CSRF).
+Available options:
 - &quot;Strict&quot;
-- &quot;Lax&quot;
-</code></pre>
+- &quot;Lax&quot;</p>
 </div>
 
 
@@ -1016,139 +1043,9 @@ request forgery attacks (CSRF).</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line298">line 298</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">String</code>
-
-
-    </span>
-
-<h4 class="name" id="localStorageKey">
-    <a class="href-link" href="#localStorageKey">#</a>
-    
-    <span class="code-name">
-        localStorageKey
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>The <code>localStorage</code> key the store persists data in if <code>localStorage</code> is
-available.</p>
-</div>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>localStorageKey</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>'ember_simple_auth-session'</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
-            <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line269">line 269</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line409">line 409</a>
             </span>
         </p>
     
@@ -1187,10 +1084,10 @@ available.</p>
 
 
 <div class="description">
-    <p>The domain to use for the cookie if <code>localStorage</code> is not available, e.g.,
-&quot;example.com&quot;, &quot;.example.com&quot; (which includes all subdomains) or
-&quot;subdomain.example.com&quot;. If not explicitly set, the cookie domain defaults
-to the domain the session was authenticated on.</p>
+    <p>The domain to use for the cookie, e.g., &quot;example.com&quot;, &quot;.example.com&quot;
+(which includes all subdomains) or &quot;subdomain.example.com&quot;. If not
+explicitly set, the cookie domain defaults to the domain the session was
+authenticated on.</p>
 </div>
 
 
@@ -1282,9 +1179,9 @@ to the domain the session was authenticated on.</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line69">line 69</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line92">line 92</a>
             </span>
         </p>
     
@@ -1323,9 +1220,13 @@ to the domain the session was authenticated on.</p>
 
 
 <div class="description">
-    <p>The expiration time for the cookie in seconds if <code>localStorage</code> is not
-available. A value of <code>null</code> will make the cookie a session cookie that
-expires and gets deleted when the browser is closed.</p>
+    <p>The expiration time for the cookie in seconds. A value of <code>null</code> will make
+the cookie a session cookie that expires and gets deleted when the browser
+is closed.</p>
+<pre><code>  The recommended minimum value is 90 seconds. If your value is less than
+  that, the cookie may expire before its expiration time is extended
+  (expiration time is extended every 60 seconds).
+</code></pre>
 </div>
 
 
@@ -1417,9 +1318,9 @@ expires and gets deleted when the browser is closed.</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line138">line 138</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line146">line 146</a>
             </span>
         </p>
     
@@ -1458,7 +1359,7 @@ expires and gets deleted when the browser is closed.</p>
 
 
 <div class="description">
-    <p>The name of the cookie to use if <code>localStorage</code> is not available.</p>
+    <p>The name of the cookie.</p>
 </div>
 
 
@@ -1550,9 +1451,9 @@ expires and gets deleted when the browser is closed.</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line114">line 114</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line117">line 117</a>
             </span>
         </p>
     
@@ -1683,9 +1584,9 @@ expires and gets deleted when the browser is closed.</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line125">line 125</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line129">line 129</a>
             </span>
         </p>
     
@@ -1822,9 +1723,9 @@ third party context</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line103">line 103</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line163">line 163</a>
             </span>
         </p>
     
@@ -1863,13 +1764,11 @@ third party context</p>
 
 
 <div class="description">
-    <p>Allows servers to assert that a cookie ought not to be sent along with
-cross-site requests, which provides some protection against cross-site
-request forgery attacks (CSRF).</p>
-<pre><code>  Available options:
-  - &quot;Strict&quot;
-  - &quot;Lax&quot;
-</code></pre>
+    <p>Allows servers to assert that a cookie ought not to be sent along with cross-site requests,
+which provides some protection against cross-site request forgery attacks (CSRF).
+Available options:
+- &quot;Strict&quot;
+- &quot;Lax&quot;</p>
 </div>
 
 
@@ -1961,143 +1860,9 @@ request forgery attacks (CSRF).</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line86">line 86</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<code class="param-type">String</code>
-
-
-    </span>
-
-<h4 class="name" id=".localStorageKey">
-    <a class="href-link" href="#.localStorageKey">#</a>
-    
-        
-            <span class='tag'>static</span>
-        
-    
-    <span class="code-name">
-        localStorageKey
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>The <code>localStorage</code> key the store persists data in if <code>localStorage</code> is
-available.</p>
-</div>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>localStorageKey</code></td>
-    
-
-    <td class="type">
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>'ember_simple_auth-session'</li>
-        </ul></dd>
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
-            <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line56">line 56</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line106">line 106</a>
             </span>
         </p>
     
@@ -2140,9 +1905,7 @@ available.</p>
     
     
     <div class="description">
-        <p>Clears the store by deleting the
-<a href="LocalStorageStore.html#.key">LocalStorageStore.key</a> from
-<code>localStorage</code> if that is available or by deleting the cookie if it is not.</p>
+        <p>Clears the store by deleting the cookie.</p>
     </div>
     
 
@@ -2191,9 +1954,9 @@ available.</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line368">line 368</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line481">line 481</a>
             </span>
         </p>
     
@@ -2268,8 +2031,7 @@ available.</p>
     
     
     <div class="description">
-        <p>Persists the <code>data</code> in the <code>localStorage</code> if it is available or in a cookie
-if it is not.</p>
+        <p>Persists the <code>data</code> in the cookie.</p>
     </div>
     
 
@@ -2369,9 +2131,9 @@ if it is not.</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line347">line 347</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line462">line 462</a>
             </span>
         </p>
     
@@ -2446,8 +2208,7 @@ if it is not.</p>
     
     
     <div class="description">
-        <p>Returns all data currently stored in the <code>localStorage</code> if that is
-available - or if it is not, in the cookie - as a plain object.</p>
+        <p>Returns all data currently stored in the cookie as a plain object.</p>
     </div>
     
 
@@ -2496,9 +2257,9 @@ available - or if it is not, in the cookie - as a plain object.</p>
 
     
         <p class="tag-source">
-            <a href="session-stores_adaptive.ts.html" class="button">View Source</a>
+            <a href="session-stores_cookie.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_adaptive.ts.html">session-stores/adaptive.ts</a>, <a href="session-stores_adaptive.ts.html#line358">line 358</a>
+                <a href="session-stores_cookie.ts.html">session-stores/cookie.ts</a>, <a href="session-stores_cookie.ts.html#line472">line 472</a>
             </span>
         </p>
     
@@ -2569,7 +2330,7 @@ available - or if it is not, in the cookie - as a plain object.</p>
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

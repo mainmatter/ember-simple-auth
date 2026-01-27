@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> OAuth2ImplicitGrantAuthenticator</title>
+  <title> exports</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -66,7 +66,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Class</p>
-                    <h1>OAuth2ImplicitGrantAuthenticator</h1>
+                    <h1>exports</h1>
                 </header>
                 
 
@@ -85,8 +85,10 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a>~</span>OAuth2ImplicitGrantAuthenticator<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>exports<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>This module exists to act as a 'shim' between Native EventTarget API, which unfortunately can't be used due to Fastboot's node environment not providing it.</p>
+<p>It more-or-less implements the same API as an EventTarget would have but on top of Evented mixin instead.</p></div>
         
     
 </header>
@@ -105,27 +107,18 @@
 
 
     
-    <h4 class="name" id="OAuth2ImplicitGrantAuthenticator">
-        <a class="href-link" href="#OAuth2ImplicitGrantAuthenticator">#</a>
+    <h4 class="name" id="exports">
+        <a class="href-link" href="#exports">#</a>
         
         <span class="code-name">
             
-                new OAuth2ImplicitGrantAuthenticator<span class="signature">()</span><span class="type-signature"></span>
+                new exports<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
     
 
     
-    
-    <div class="description">
-        <p>Authenticator that conforms to OAuth 2
-(<a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>), specifically the <em>&quot;Implicit
-Grant Type&quot;</em>.</p>
-<p>Use <a href="SessionService.html#.authenticate">SessionService.authenticate</a> in your
-OAuth 2.0 redirect route to parse authentication parameters from location
-hash string into an object.</p>
-    </div>
     
 
 
@@ -173,9 +166,9 @@ hash string into an object.</p>
 
     
         <p class="tag-source">
-            <a href="authenticators_oauth2-implicit-grant.ts.html" class="button">View Source</a>
+            <a href="internals_event-target.ts.html" class="button">View Source</a>
             <span>
-                <a href="authenticators_oauth2-implicit-grant.ts.html">authenticators/oauth2-implicit-grant.ts</a>, <a href="authenticators_oauth2-implicit-grant.ts.html#line31">line 31</a>
+                <a href="internals_event-target.ts.html">-internals/event-target.ts</a>, <a href="internals_event-target.ts.html#line9">line 9</a>
             </span>
         </p>
     
@@ -210,15 +203,45 @@ hash string into an object.</p>
     </div>
     
     
-        <h3 class="subsection-title">Extends</h3>
 
-        
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id="_setupIsCalled">
+    <a class="href-link" href="#_setupIsCalled">#</a>
+    
+    <span class="code-name">
+        _setupIsCalled
+    </span>
+    
+</h4>
 
 
-    <ul>
-        <li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li>
-    </ul>
 
+
+<div class="description">
+    <p>Says whether the service was correctly initialized by the {#linkplain SessionService.setup}</p>
+</div>
+
+
+
+
+
+<dl class="details">
 
     
 
@@ -232,6 +255,41 @@ hash string into an object.</p>
 
     
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.ts.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line48">line 48</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
     
 
     
@@ -250,7 +308,7 @@ hash string into an object.</p>
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

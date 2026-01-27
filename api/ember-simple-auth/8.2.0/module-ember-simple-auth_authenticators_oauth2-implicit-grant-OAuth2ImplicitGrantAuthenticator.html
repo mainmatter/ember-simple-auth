@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> EphemeralStore</title>
+  <title> OAuth2ImplicitGrantAuthenticator</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -66,7 +66,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Class</p>
-                    <h1>EphemeralStore</h1>
+                    <h1>OAuth2ImplicitGrantAuthenticator</h1>
                 </header>
                 
 
@@ -85,7 +85,8 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>EphemeralStore<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a>~</span>OAuth2ImplicitGrantAuthenticator<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -104,12 +105,12 @@
 
 
     
-    <h4 class="name" id="EphemeralStore">
-        <a class="href-link" href="#EphemeralStore">#</a>
+    <h4 class="name" id="OAuth2ImplicitGrantAuthenticator">
+        <a class="href-link" href="#OAuth2ImplicitGrantAuthenticator">#</a>
         
         <span class="code-name">
             
-                new EphemeralStore<span class="signature">()</span><span class="type-signature"></span>
+                new OAuth2ImplicitGrantAuthenticator<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -118,10 +119,12 @@
     
     
     <div class="description">
-        <p>Session store that <strong>persists data in memory and thus is not actually
-persistent</strong>. It does also not synchronize the session's state across
-multiple tabs or windows as those cannot share memory. <strong>This store is mainly
-useful for testing and will automatically be used when running tests.</strong></p>
+        <p>Authenticator that conforms to OAuth 2
+(<a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a>), specifically the <em>&quot;Implicit
+Grant Type&quot;</em>.</p>
+<p>Use <a href="SessionService.html#.authenticate">SessionService.authenticate</a> in your
+OAuth 2.0 redirect route to parse authentication parameters from location
+hash string into an object.</p>
     </div>
     
 
@@ -170,9 +173,9 @@ useful for testing and will automatically be used when running tests.</strong></
 
     
         <p class="tag-source">
-            <a href="session-stores_ephemeral.ts.html" class="button">View Source</a>
+            <a href="authenticators_oauth2-implicit-grant.ts.html" class="button">View Source</a>
             <span>
-                <a href="session-stores_ephemeral.ts.html">session-stores/ephemeral.ts</a>, <a href="session-stores_ephemeral.ts.html#line3">line 3</a>
+                <a href="authenticators_oauth2-implicit-grant.ts.html">authenticators/oauth2-implicit-grant.ts</a>, <a href="authenticators_oauth2-implicit-grant.ts.html#line31">line 31</a>
             </span>
         </p>
     
@@ -213,7 +216,7 @@ useful for testing and will automatically be used when running tests.</strong></
 
 
     <ul>
-        <li><a href="BaseStore.html">BaseStore</a></li>
+        <li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li>
     </ul>
 
 
@@ -247,7 +250,7 @@ useful for testing and will automatically be used when running tests.</strong></
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

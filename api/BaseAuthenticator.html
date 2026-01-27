@@ -66,7 +66,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -127,7 +127,7 @@ provider like Facebook, etc. The details depend on the specific authenticator.
 Upon successful authentication, any data that the authenticator receives and
 resolves via the promise returned from the
 <a href="BaseAuthenticator.html#.authenticate">BaseAuthenticator.authenticate</a>
-method is stored in the session's <a href="SessionService.html#.data">SessionService.data</a>.</p>
+method is stored in the session's SessionService.data.</p>
 <p>The authenticator also decides whether a set of data that was restored from
 the session store (see <a href="BaseStore.html#.restore">BaseStore.restore</a>) makes up an
 authenticated session or not.</p>
@@ -144,7 +144,7 @@ export default class OAuth2Authenticator extends OAuth2PasswordGrantAuthenticato
 within the Ember container.</p>
 <pre class="prettyprint source lang-js"><code>// app/components/login-form.js
 import Component from '@ember/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 
 export default class LoginFormComponent extends Component {
@@ -295,7 +295,7 @@ session will invoke this method in order to authenticate itself</strong> (see
 <pre><code>  __This method returns a promise. A resolving promise will result in the
   session becoming authenticated.__ Any data the promise resolves with will
   be saved in and accessible via the session service's `data.authenticated`
-  property (see <a href="SessionService.html#.data">SessionService.data</a>).
+  property (see SessionService.data).
   A rejecting promise indicates that authentication failed and will result in
   the session remaining unauthenticated.
 
@@ -383,7 +383,7 @@ session will invoke this method in order to authenticate itself</strong> (see
 <pre><code>__This method returns a promise. A resolving promise will result in the
 session becoming authenticated.__ Any data the promise resolves with will
 be saved in and accessible via the session service's `data.authenticated`
-property (see <a href="SessionService.html#.data">SessionService.data</a>).
+property (see SessionService.data).
 A rejecting promise indicates that authentication failed and will result in
 the session remaining unauthenticated.
 
@@ -638,7 +638,7 @@ validated for whether it constitutes an authenticated session.</p>
   becoming or remaining authenticated.__ Any data the promise resolves with
   will be saved in and accessible via the session service's
   `data.authenticated` property (see
-  <a href="SessionService.html#.data">SessionService.data</a>. A rejecting
+  SessionService.data. A rejecting
   promise indicates that `data` does not constitute a valid session and will
   result in the session being invalidated or remaining unauthenticated.
 
@@ -1172,7 +1172,7 @@ method and handles the result of that invocation accordingly.</p>
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="BaseStore.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant.html">ember-simple-auth/authenticators/oauth2-implicit-grant</a></li></ul><h3>Classes</h3><ul><li><a href="AdaptiveStore.html">AdaptiveStore</a></li><li><a href="BaseAuthenticator.html">BaseAuthenticator</a></li><li><a href="BaseStore.html">BaseStore</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="CookieStore.html">CookieStore</a></li><li><a href="DeviseAuthenticator.html">DeviseAuthenticator</a></li><li><a href="EphemeralStore.html">EphemeralStore</a></li><li><a href="LocalStorageStore.html">LocalStorageStore</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html">OAuth2PasswordGrantAuthenticator</a></li><li><a href="SessionService.html">SessionService</a></li><li><a href="SessionStorageStore.html">SessionStorageStore</a></li><li><a href="ToriiAuthenticator.html">ToriiAuthenticator</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module-ember-simple-auth_authenticators_oauth2-implicit-grant-OAuth2ImplicitGrantAuthenticator.html">OAuth2ImplicitGrantAuthenticator</a></li></ul><h3>Events</h3><ul><li><a href="BaseAuthenticator.html#.event:sessionDataInvalidated">sessionDataInvalidated</a></li><li><a href="BaseAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li><li><a href="OAuth2PasswordGrantAuthenticator.html#.event:sessionDataUpdated">sessionDataUpdated</a></li></ul></div>
                 
             </nav>
         </div>
@@ -98,7 +98,8 @@ import {
   handleSessionInvalidated,
 } from '../-internals/routing';
 import type Transition from '@ember/routing/transition';
-import { alias } from '@ember/object/computed';
+import { alias, readOnly } from '@ember/object/computed';
+import type EsaBaseSessionStore from '../session-stores/base';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -119,12 +120,20 @@ type InternalSessionMock&lt;Data> = {
   store: unknown;
   attemptedTransition: null;
   on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
-  authenticate: (authenticator: string, ...args: any[]) => void;
-  invalidate: (...args: any[]) => void;
+  authenticate: (authenticator: string, ...args: any[]) => Promise&lt;void>;
+  invalidate: (...args: any[]) => Promise&lt;void>;
   requireAuthentication: (transition: Transition, routeOrCallback: RouteOrCallback) => boolean;
   prohibitAuthentication: (routeOrCallback: RouteOrCallback) => boolean;
   restore: () => Promise&lt;void>;
   set(key: string, value: any): void;
+  setRedirectTarget: EsaBaseSessionStore['setRedirectTarget'];
+  getRedirectTarget: EsaBaseSessionStore['getRedirectTarget'];
+  clearRedirectTarget: EsaBaseSessionStore['clearRedirectTarget'];
+};
+
+export type ExtraAuthenticationArgs = {
+  redirectTarget?: string;
+  [key: string]: unknown;
 };
 
 export type DefaultDataShape = {
@@ -142,7 +151,7 @@ export type DefaultDataShape = {
   ```js
   // app/components/login-form.js
   import Component from '@ember/component';
-  import { inject as service } from '@ember/service';
+  import { service } from '@ember/service';
 
   export default class LoginFormComponent extends Component {
     &amp;#64;service session;
@@ -177,9 +186,7 @@ export default class SessionService&lt;Data = DefaultDataShape> extends Service 
     @default false
     @public
   */
-  get isAuthenticated() {
-    return this.session.isAuthenticated;
-  }
+  @readOnly('session.isAuthenticated') declare isAuthenticated: boolean;
 
   /**
     The current session data as a plain object. The
@@ -196,9 +203,7 @@ export default class SessionService&lt;Data = DefaultDataShape> extends Service 
     @default { authenticated: {} }
     @public
   */
-  get data() {
-    return this.session.content;
-  }
+  @readOnly('session.content') declare data: Data;
 
   /**
     The session store.
@@ -210,9 +215,7 @@ export default class SessionService&lt;Data = DefaultDataShape> extends Service 
     @default null
     @public
   */
-  get store() {
-    return this.session.store;
-  }
+  @readOnly('session.store') declare store: unknown;
 
   /**
     A previously attempted but intercepted transition (e.g. by the
@@ -329,9 +332,13 @@ export default class SessionService&lt;Data = DefaultDataShape> extends Service 
     @return {Boolean} true when the session is authenticated, false otherwise
     @public
   */
-  requireAuthentication(transition: Transition, routeOrCallback: RouteOrCallback) {
+  requireAuthentication(
+    transition: Transition,
+    routeOrCallback: RouteOrCallback,
+    extraArgs: ExtraAuthenticationArgs = {}
+  ) {
     assertSetupHasBeenCalled(this._setupIsCalled);
-    let isAuthenticated = requireAuthentication(getOwner(this), transition);
+    let isAuthenticated = requireAuthentication(getOwner(this), transition, extraArgs);
     if (!isAuthenticated) {
       if (typeof routeOrCallback === 'string') {
         triggerAuthentication(getOwner(this), routeOrCallback);
@@ -446,7 +453,7 @@ export default class SessionService&lt;Data = DefaultDataShape> extends Service 
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
