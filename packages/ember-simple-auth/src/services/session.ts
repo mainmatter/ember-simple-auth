@@ -144,6 +144,15 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
   @alias('session.attemptedTransition')
   attemptedTransition: null | Transition = null;
 
+  get redirectTargetKey(): string | null {
+    const store = this.store as { key?: string; cookieName?: string };
+    const key = store.key || store.cookieName;
+    if (key) {
+      return `${key}-redirectTarget`;
+    }
+    return null;
+  }
+
   set(key: any, value: any) {
     const setsSessionData = SESSION_DATA_KEY_PREFIX.test(key);
     if (setsSessionData) {
@@ -353,5 +362,29 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     return this.session.restore().catch(() => {
       // If it raises an error then it means that restore didn't find any restorable state.
     });
+  }
+
+  setRedirectTarget(url: string) {
+    this.session.setRedirectTarget(url);
+    if (this.redirectTargetKey) {
+      globalThis.sessionStorage?.setItem(this.redirectTargetKey, url);
+    }
+  }
+
+  getRedirectTarget() {
+    let redirectTarget: string | null = this.session.getRedirectTarget();
+
+    if (this.redirectTargetKey) {
+      return globalThis.sessionStorage?.getItem(this.redirectTargetKey) || redirectTarget;
+    } else {
+      return redirectTarget;
+    }
+  }
+
+  clearRedirectTarget() {
+    this.session.clearRedirectTarget();
+    if (this.redirectTargetKey) {
+      globalThis.sessionStorage?.removeItem(this.redirectTargetKey);
+    }
   }
 }

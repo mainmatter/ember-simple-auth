@@ -9,6 +9,7 @@ class Router extends EmberRouter {
 Router.map(function () {
   this.route('login');
   this.route('protected');
+  this.route('another-protected');
   this.route('auth-error');
   this.route('callback');
   this.mount('my-engine', { as: 'engine', path: '/engine' });
