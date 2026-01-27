@@ -288,14 +288,14 @@ export default ObjectProxy.extend({
   },
 
   setRedirectTarget(url) {
-    this.store.setRedirectTarget(url);
+    this.store.setRedirectTarget?.(url);
   },
 
   getRedirectTarget() {
-    return this.store.getRedirectTarget();
+    return this.store.getRedirectTarget?.();
   },
 
   clearRedirectTarget() {
-    return this.store.clearRedirectTarget();
+    return this.store.clearRedirectTarget?.();
   },
 });
