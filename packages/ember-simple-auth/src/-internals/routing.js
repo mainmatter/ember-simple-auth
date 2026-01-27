@@ -6,7 +6,6 @@ export function requireAuthentication(owner, transition, extraArgs) {
   let sessionService = owner.lookup('service:session');
   let isAuthenticated = sessionService.get('isAuthenticated');
   if (!isAuthenticated) {
-    const internalSession = sessionService.session;
     let redirectTarget = extraArgs?.redirectTarget;
 
     if (transition) {
@@ -18,7 +17,7 @@ export function requireAuthentication(owner, transition, extraArgs) {
     }
 
     if (redirectTarget) {
-      internalSession.setRedirectTarget(redirectTarget);
+      sessionService.setRedirectTarget(redirectTarget);
     }
   }
   return isAuthenticated;
@@ -37,8 +36,7 @@ export function prohibitAuthentication(owner, routeIfAlreadyAuthenticated) {
 export function handleSessionAuthenticated(owner, routeAfterAuthentication) {
   let sessionService = owner.lookup('service:session');
   let attemptedTransition = sessionService.get('attemptedTransition');
-  const internalSession = sessionService.session;
-  const redirectTarget = internalSession.getRedirectTarget();
+  const redirectTarget = sessionService.getRedirectTarget();
 
   let routerService = owner.lookup('service:router');
 
@@ -47,7 +45,7 @@ export function handleSessionAuthenticated(owner, routeAfterAuthentication) {
     sessionService.set('attemptedTransition', null);
   } else if (redirectTarget) {
     routerService.transitionTo(redirectTarget);
-    internalSession.clearRedirectTarget();
+    sessionService.clearRedirectTarget();
   } else {
     routerService.transitionTo(routeAfterAuthentication);
   }
