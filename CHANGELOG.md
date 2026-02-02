@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-02-02)
+
+* ember-simple-auth 8.3.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-simple-auth`
+  * [#3075](https://github.com/mainmatter/ember-simple-auth/pull/3075) feat(ember-simple-auth): redirectTarget should be stored in sessionStorage when available ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 1
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+
 ## Release (2025-12-03)
 
 * ember-simple-auth 8.2.0 (minor)
