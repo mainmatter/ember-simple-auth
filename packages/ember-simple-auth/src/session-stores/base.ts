@@ -73,8 +73,52 @@ export default abstract class EsaBaseSessionStore extends EmberObject {
   */
   abstract clear(): Promise<unknown>;
 
+  /**
+    Called by {@linkplain SessionService.setRedirectTarget}.
+
+    This method is used to persist a `redirectTarget` which is an alternative to the non-persistent {@linkplain SessionService.attemptedTransition}.
+    `redirectTarget` is meant to replace {@linkplain SessionService.attemptedTransition} that is discarded the moment a browser tab is refreshed.
+
+    This method is meant to be always implemented but can be `undefined` for backwards compatibility.
+    Additionally can be assigned `null` to opt out of using this mechanism.
+
+    @example
+      setRedirectTarget = null;
+
+    @memberof BaseStore
+    @method setRedirectTarget
+    @public
+  */
   abstract setRedirectTarget(urL: string): void;
+
+  /**
+    Called by {@linkplain SessionService.getRedirectTarget}.
+
+    This method is retrieve a persisted `redirectTarget` from a child class' store mechanism.
+    Additionally can be assigned `null` to opt out of using this mechanism.
+
+    @example
+      getRedirectTarget = null;
+
+    @memberof BaseStore
+    @method getRedirectTarget
+    @public
+  */
   abstract getRedirectTarget(): string | null;
+
+  /**
+    Called by {@linkplain SessionService.clearRedirectTarget}.
+
+    This method clears a `redirectTarget` from a child class' store mechanism.
+    Additionally can be assigned `null` to opt out of using this mechanism.
+
+    @example
+      clearRedirectTarget = null;
+
+    @memberof BaseStore
+    @method clearRedirectTarget
+    @public
+  */
   abstract clearRedirectTarget(): void;
 
   on<Event extends keyof SessionEvents>(event: Event, cb: EventListener<SessionEvents, Event>) {
