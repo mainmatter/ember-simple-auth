@@ -371,6 +371,285 @@ method must be overridden in subclasses__.
 
 
     
+    <h4 class="name" id=".clearRedirectTarget">
+        <a class="href-link" href="#.clearRedirectTarget">#</a>
+        
+            
+                <span class='tag'>abstract</span>
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                clearRedirectTarget<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Called by <a href="SessionService.html#.clearRedirectTarget">SessionService.clearRedirectTarget</a>.</p>
+<pre><code>This method clears a `redirectTarget` from a child class' store mechanism.
+Additionally can be assigned `null` to opt out of using this mechanism.
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="session-stores_base.ts.html" class="button">View Source</a>
+            <span>
+                <a href="session-stores_base.ts.html">session-stores/base.ts</a>, <a href="session-stores_base.ts.html#line113">line 113</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">void</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>clearRedirectTarget = null;
+
+    </code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".getRedirectTarget">
+        <a class="href-link" href="#.getRedirectTarget">#</a>
+        
+            
+                <span class='tag'>abstract</span>
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                getRedirectTarget<span class="signature">()</span><span class="type-signature"> &rarr; {string|null}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Called by <a href="SessionService.html#.getRedirectTarget">SessionService.getRedirectTarget</a>.</p>
+<pre><code>This method is retrieve a persisted `redirectTarget` from a child class' store mechanism.
+Additionally can be assigned `null` to opt out of using this mechanism.
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="session-stores_base.ts.html" class="button">View Source</a>
+            <span>
+                <a href="session-stores_base.ts.html">session-stores/base.ts</a>, <a href="session-stores_base.ts.html#line97">line 97</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">string</code>
+|
+
+<code class="param-type">null</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>getRedirectTarget = null;
+
+    </code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+
+    
     <h4 class="name" id=".restore">
         <a class="href-link" href="#.restore">#</a>
         
@@ -675,6 +954,198 @@ handles the result of that invocation accordingly.</p>
     </div>
 
 
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".setRedirectTarget">
+        <a class="href-link" href="#.setRedirectTarget">#</a>
+        
+            
+                <span class='tag'>abstract</span>
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                setRedirectTarget<span class="signature">(urL)</span><span class="type-signature"> &rarr; {void}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Called by <a href="SessionService.html#.setRedirectTarget">SessionService.setRedirectTarget</a>.</p>
+<pre><code>This method is used to persist a `redirectTarget` which is an alternative to the non-persistent <a href="SessionService.html#.attemptedTransition">SessionService.attemptedTransition</a>.
+`redirectTarget` is meant to replace <a href="SessionService.html#.attemptedTransition">SessionService.attemptedTransition</a> that is discarded the moment a browser tab is refreshed.
+
+This method is meant to be always implemented but can be `undefined` for backwards compatibility.
+Additionally can be assigned `null` to opt out of using this mechanism.
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>urL</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="session-stores_base.ts.html" class="button">View Source</a>
+            <span>
+                <a href="session-stores_base.ts.html">session-stores/base.ts</a>, <a href="session-stores_base.ts.html#line77">line 77</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">void</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>setRedirectTarget = null;
+
+    </code></pre>
+    
 
 
 </div>

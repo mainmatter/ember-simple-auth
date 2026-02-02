@@ -298,7 +298,7 @@ export default class LoginFormComponent extends Component {
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line287">line 287</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line355">line 355</a>
             </span>
         </p>
     
@@ -336,6 +336,9 @@ export default class LoginFormComponent extends Component {
     <p>A previously attempted but intercepted transition (e.g. by the
 <a href="SessionService.html#.requireAuthentication">SessionService.requireAuthentication</a>
 If an attempted transition is present it will be retried.</p>
+<pre><code>This is an `in-memory` property, see <a href="SessionService.html#.setRedirectTarget">SessionService.setRedirectTarget</a>, <a href="SessionService.html#.getRedirectTarget">SessionService.getRedirectTarget</a> for a persistent redirect mechanism.
+`attemptedTransition` is used _first_ if set.
+</code></pre>
 </div>
 
 
@@ -429,7 +432,7 @@ If an attempted transition is present it will be retried.</p>
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line341">line 341</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line412">line 412</a>
             </span>
         </p>
     
@@ -567,7 +570,7 @@ the session is invalidated.</p>
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line316">line 316</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line384">line 384</a>
             </span>
         </p>
     
@@ -700,7 +703,7 @@ the session is invalidated.</p>
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line299">line 299</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line367">line 367</a>
             </span>
         </p>
     
@@ -833,7 +836,7 @@ the session is invalidated.</p>
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line328">line 328</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line396">line 396</a>
             </span>
         </p>
     
@@ -875,6 +878,9 @@ the session is invalidated.</p>
     <p>A previously attempted but intercepted transition (e.g. by the
 <a href="SessionService.html#.requireAuthentication">SessionService.requireAuthentication</a>
 If an attempted transition is present it will be retried.</p>
+<pre><code>  This is an `in-memory` property, see <a href="SessionService.html#.setRedirectTarget">SessionService.setRedirectTarget</a>, <a href="SessionService.html#.getRedirectTarget">SessionService.getRedirectTarget</a> for a persistent redirect mechanism.
+  `attemptedTransition` is used _first_ if set.
+</code></pre>
 </div>
 
 
@@ -968,7 +974,7 @@ If an attempted transition is present it will be retried.</p>
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line60">line 60</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line63">line 63</a>
             </span>
         </p>
     
@@ -1177,7 +1183,7 @@ SessionService.authenticationSucceeded event.
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line342">line 342</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line413">line 413</a>
             </span>
         </p>
     
@@ -1224,6 +1230,213 @@ SessionService.authenticationSucceeded event.
                 
         </div>
     </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".clearRedirectTarget">
+        <a class="href-link" href="#.clearRedirectTarget">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                clearRedirectTarget<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Clears the <code>redirectTarget</code> from <code>globalThis.sessionStorage</code> and the <code>session-store:application</code>.</p>
+<pre><code>This method is internally called by <a href="SessionService.html#.handleAuthentication">SessionService.handleAuthentication</a>.
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.ts.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line579">line 579</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".getRedirectTarget">
+        <a class="href-link" href="#.getRedirectTarget">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                getRedirectTarget<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Retrieves the <code>redirectTarget</code> from <code>globalThis.sessionStorage</code> first,
+falls back to <code>session-store:application</code> when nothing's found.</p>
+<pre><code>This method is internally called by <a href="SessionService.html#.handleAuthentication">SessionService.handleAuthentication</a>.
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.ts.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line568">line 568</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1362,7 +1575,7 @@ routeAfterAuthentication.</p>
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line432">line 432</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line510">line 510</a>
             </span>
         </p>
     
@@ -1522,7 +1735,7 @@ simply transition to the index route.
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line449">line 449</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line527">line 527</a>
             </span>
         </p>
     
@@ -1693,7 +1906,7 @@ immediately.
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line372">line 372</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line443">line 443</a>
             </span>
         </p>
     
@@ -1874,7 +2087,7 @@ to the specified route or invokes the specified callback.</p>
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line421">line 421</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line499">line 499</a>
             </span>
         </p>
     
@@ -1958,6 +2171,8 @@ property so that  it can be retried after the session is authenticated. If
 the transition is aborted in Fastboot mode, the transition's target URL
 will be saved in a `ember_simple_auth-redirectTarget` cookie for use by the
 browser after authentication is complete.
+
+Accepts an optional object with `redirectTarget` property. Related to <a href="SessionService.html#.setRedirectTarget">SessionService.setRedirectTarget</a>, <a href="SessionService.html#.getRedirectTarget">SessionService.getRedirectTarget</a>
 </code></pre>
     </div>
     
@@ -2088,7 +2303,7 @@ browser after authentication is complete.
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line401">line 401</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line472">line 472</a>
             </span>
         </p>
     
@@ -2135,6 +2350,172 @@ browser after authentication is complete.
                 
         </div>
     </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// your-route.js
+      this.session.requireAuthentication(transition, 'login', { redirectTarget: '/alternative-to-transition.intent.url' })
+
+
+    </code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".setRedirectTarget">
+        <a class="href-link" href="#.setRedirectTarget">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                setRedirectTarget<span class="signature">(url)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Stores the <code>redirectTarget</code> in both <code>globalThis.sessionStorage</code> and the configured <code>session-store</code>.
+Key is computed based on the <code>session-store:application</code> <code>key</code> or <code>cookieName</code> property.</p>
+<pre><code>This method is internally called by <a href="SessionService.html#.requireAuthentication">SessionService.requireAuthentication</a>.
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>url</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_session.ts.html" class="button">View Source</a>
+            <span>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line556">line 556</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2218,7 +2599,7 @@ method.
         <p class="tag-source">
             <a href="services_session.ts.html" class="button">View Source</a>
             <span>
-                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line466">line 466</a>
+                <a href="services_session.ts.html">services/session.ts</a>, <a href="services_session.ts.html#line544">line 544</a>
             </span>
         </p>
     
