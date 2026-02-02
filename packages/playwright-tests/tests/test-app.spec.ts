@@ -111,5 +111,34 @@ STORAGE_SCENARIOS.forEach(scenario => {
       await loginWithPassword(page);
       await confirmLoggedIn(page, { expectedUrl: '/protected' });
     });
+
+    test('user is redirected to the last visited route for a given browser tab session', async ({
+      page,
+      context,
+    }) => {
+      test.skip(
+        process.env.FASTBOOT_DISABLED !== 'true',
+        'This feature relies on SessionStorage which is unavailable in fastboot.'
+      );
+      await specifyTestAppStorageAdapter(page, scenario);
+      await page.goto('/protected');
+
+      await page.getByTestId('route-login').click();
+      await expect(page).toHaveURL('/login#');
+
+      const anotherPage = await context.newPage();
+      await specifyTestAppStorageAdapter(anotherPage, scenario);
+      await anotherPage.goto('/another-protected');
+
+      // Make sure to verify persistence
+      await anotherPage.reload();
+      await page.reload();
+
+      await expect(anotherPage).toHaveURL('/login');
+
+      await loginWithPassword(page);
+      await confirmLoggedIn(page, { expectedUrl: '/protected' });
+      await confirmLoggedIn(anotherPage, { expectedUrl: '/another-protected' });
+    });
   });
 });

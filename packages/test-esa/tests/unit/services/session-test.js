@@ -3,6 +3,7 @@ import { setupTest } from 'ember-qunit';
 import Service from '@ember/service';
 import EmberObject, { set } from '@ember/object';
 import sinonjs from 'sinon';
+import { MockSessionStorage } from '../../helpers/mocked-session-storage';
 
 module('SessionService', function (hooks) {
   setupTest(hooks);
@@ -13,6 +14,7 @@ module('SessionService', function (hooks) {
 
   hooks.beforeEach(function () {
     sinon = sinonjs.createSandbox();
+    sinon.stub(window, 'sessionStorage').value(new MockSessionStorage());
     this.owner.register(
       'authorizer:custom',
       EmberObject.extend({
@@ -280,6 +282,15 @@ module('SessionService', function (hooks) {
 
           session.getRedirectTarget();
           assert.ok(readCookieStub.calledWith(cookieName));
+        });
+
+        test("doesn't throw when session-store doesn't implement redirectTarget methods", function (assert) {
+          assert.expect(0);
+          session.store.setRedirectTarget = null;
+          session.store.getRedirectTarget = null;
+          session.store.clearRedirectTarget = null;
+
+          sessionService.requireAuthentication(transition, 'login', { redirectTarget });
         });
       });
 

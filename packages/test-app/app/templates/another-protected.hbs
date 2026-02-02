@@ -1,0 +1,13 @@
+<h1>Another Protected Page</h1>
+<div class="alert alert-warning">
+  This is an "another" protected page only visible to authenticated users!
+</div>
+<h2>Posts</h2>
+<ul>
+  {{#each this.model as |post|}}
+    <li>
+      <h3>{{post.title}}</h3>
+      <p>{{post.body}}</p>
+    </li>
+  {{/each}}
+</ul>

@@ -135,6 +135,9 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     {@linkplain SessionService.requireAuthentication}
     If an attempted transition is present it will be retried.
 
+    This is an `in-memory` property, see {@linkplain SessionService.setRedirectTarget}, {@linkplain SessionService.getRedirectTarget} for a persistent redirect mechanism.
+    `attemptedTransition` is used _first_ if set.
+
     @memberof SessionService
     @property attemptedTransition
     @type Transition
@@ -143,6 +146,15 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
   */
   @alias('session.attemptedTransition')
   attemptedTransition: null | Transition = null;
+
+  get redirectTargetKey(): string | null {
+    const store = this.store as { key?: string; cookieName?: string };
+    const key = store.key || store.cookieName;
+    if (key) {
+      return `${key}-redirectTarget`;
+    }
+    return null;
+  }
 
   set(key: any, value: any) {
     const setsSessionData = SESSION_DATA_KEY_PREFIX.test(key);
@@ -237,6 +249,13 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     the transition is aborted in Fastboot mode, the transition's target URL
     will be saved in a `ember_simple_auth-redirectTarget` cookie for use by the
     browser after authentication is complete.
+
+    Accepts an optional object with `redirectTarget` property. Related to {@linkplain SessionService.setRedirectTarget}, {@linkplain SessionService.getRedirectTarget}
+
+    @example
+      // your-route.js
+      this.session.requireAuthentication(transition, 'login', { redirectTarget: '/alternative-to-transition.intent.url' })
+
 
     @memberof SessionService
     @method requireAuthentication
@@ -353,5 +372,58 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     return this.session.restore().catch(() => {
       // If it raises an error then it means that restore didn't find any restorable state.
     });
+  }
+
+  /**
+    Stores the `redirectTarget` in both `globalThis.sessionStorage` and the configured `session-store`.
+    Key is computed based on the `session-store:application` `key` or `cookieName` property.
+
+    This method is internally called by {@linkplain SessionService.requireAuthentication}.
+
+    @memberof SessionService
+    @method setRedirectTarget
+    @public
+  */
+  setRedirectTarget(url: string) {
+    this.session.setRedirectTarget(url);
+    if (this.redirectTargetKey) {
+      globalThis.sessionStorage?.setItem(this.redirectTargetKey, url);
+    }
+  }
+
+  /**
+    Retrieves the `redirectTarget` from `globalThis.sessionStorage` first,
+    falls back to `session-store:application` when nothing's found.
+
+    This method is internally called by {@linkplain SessionService.handleAuthentication}.
+
+    @memberof SessionService
+    @method getRedirectTarget
+    @public
+  */
+  getRedirectTarget() {
+    let redirectTarget: string | null = this.session.getRedirectTarget();
+
+    if (this.redirectTargetKey) {
+      return globalThis.sessionStorage?.getItem(this.redirectTargetKey) || redirectTarget;
+    } else {
+      return redirectTarget;
+    }
+  }
+
+  /**
+    Clears the `redirectTarget` from `globalThis.sessionStorage` and the `session-store:application`.
+
+    This method is internally called by {@linkplain SessionService.handleAuthentication}.
+
+    @memberof SessionService
+    @method clearRedirectTarget
+    @public
+  */
+  clearRedirectTarget() {
+    this.session.clearRedirectTarget();
+    if (this.redirectTargetKey) {
+      globalThis.sessionStorage?.removeItem(this.redirectTargetKey);
+    }
   }
 }
