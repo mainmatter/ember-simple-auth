@@ -301,8 +301,8 @@ importers:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.28.6)
       ember-cli-content-security-policy:
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 2.0.3
+        version: 2.0.3
       ember-cli-dependency-checker:
         specifier: 3.3.3
         version: 3.3.3(ember-cli@6.8.1(@types/node@24.10.9)(handlebars@4.7.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7))
@@ -461,8 +461,8 @@ importers:
         specifier: 8.2.0
         version: 8.2.0(@babel/core@7.28.6)
       ember-cli-content-security-policy:
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 2.0.3
+        version: 2.0.3
       ember-cli-dependency-checker:
         specifier: 3.3.3
         version: 3.3.3(ember-cli@6.8.1(@types/node@24.10.9)(handlebars@4.7.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(underscore@1.13.7))
@@ -4587,9 +4587,9 @@ packages:
     peerDependencies:
       '@babel/core': ^7.12.0
 
-  ember-cli-content-security-policy@1.1.1:
-    resolution: {integrity: sha512-QgGAFt1nmsb0qF2YXI5iSM7jJVb09R2hrfX7uR+kkXMb5VyNQXdo2ZlX/DuIbePQVY4q9THpRh8Yf0UHJNbvDQ==}
-    engines: {node: ^4.5 || 6.* || >= 7.*}
+  ember-cli-content-security-policy@2.0.3:
+    resolution: {integrity: sha512-tSGRbR2XiOjHk7oEH7LVF1y5S643rUEjl3mujI6EYPkrQbHaV0WdLyIWJkLvuP1KGnjBfvnLCyiKDFu6z2PjVg==}
+    engines: {node: 12.* || 14.* || >= 16}
 
   ember-cli-dependency-checker@3.3.3:
     resolution: {integrity: sha512-mvp+HrE0M5Zhc2oW8cqs8wdhtqq0CfQXAYzaIstOzHJJn/U01NZEGu3hz7J7zl/+jxZkyygylzcS57QqmPXMuQ==}
@@ -14906,10 +14906,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-cli-content-security-policy@1.1.1:
+  ember-cli-content-security-policy@2.0.3:
     dependencies:
       body-parser: 1.20.4
-      chalk: 2.4.2
+      chalk: 4.1.2
+      debug: 4.4.3
+      ember-cli-babel: 7.26.11
+      ember-cli-version-checker: 5.1.2
     transitivePeerDependencies:
       - supports-color
 
