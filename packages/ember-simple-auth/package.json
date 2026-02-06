@@ -35,10 +35,10 @@
     "ember-cookies": "^1.4.1"
   },
   "devDependencies": {
-    "@babel/core": "7.28.6",
+    "@babel/core": "7.29.0",
     "@babel/eslint-parser": "7.28.6",
     "@babel/plugin-proposal-class-properties": "7.18.6",
-    "@babel/plugin-proposal-decorators": "7.28.6",
+    "@babel/plugin-proposal-decorators": "7.29.0",
     "@babel/runtime": "7.28.6",
     "@embroider/addon-dev": "7.1.6",
     "@glint/core": "1.5.2",
@@ -52,16 +52,16 @@
     "@types/ember__object": "4.0.12",
     "@types/ember__routing": "4.0.23",
     "@types/ember__service": "4.0.9",
-    "@typescript-eslint/eslint-plugin": "8.47.0",
-    "@typescript-eslint/parser": "8.47.0",
+    "@typescript-eslint/eslint-plugin": "8.54.0",
+    "@typescript-eslint/parser": "8.54.0",
     "concurrently": "9.2.1",
     "ember-template-lint": "7.9.3",
     "eslint": "9.39.2",
-    "prettier": "3.6.2",
-    "rollup": "4.53.3",
+    "prettier": "3.8.1",
+    "rollup": "4.57.1",
     "rollup-plugin-copy": "3.5.0",
     "typescript": "5.9.3",
-    "webpack": "5.103.0"
+    "webpack": "5.105.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
