@@ -25,7 +25,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "7.28.6",
     "@ember/legacy-built-in-components": "0.5.0",
-    "@ember/optional-features": "2.2.0",
+    "@ember/optional-features": "2.3.0",
     "@ember/string": "3.1.1",
     "@ember/test-helpers": "5.4.1",
     "@embroider/test-setup": "4.0.0",
@@ -35,9 +35,9 @@
     "bootstrap": "5.3.8",
     "broccoli-asset-rev": "3.0.0",
     "cors": "2.8.5",
-    "ember-auto-import": "2.11.2",
-    "ember-cli": "6.8.1",
-    "ember-cli-babel": "8.2.0",
+    "ember-auto-import": "2.12.0",
+    "ember-cli": "6.10.0",
+    "ember-cli-babel": "8.3.1",
     "ember-cli-content-security-policy": "1.1.1",
     "ember-cli-dependency-checker": "3.3.3",
     "ember-cli-htmlbars": "7.0.0",
@@ -51,11 +51,11 @@
     "ember-qunit": "9.0.4",
     "ember-resolver": "11.0.1",
     "ember-simple-auth": "workspace:*",
-    "ember-source": "6.8.1",
+    "ember-source": "6.10.1",
     "ember-source-channel-url": "3.0.0",
     "ember-try": "4.0.0",
     "eslint": "9.39.2",
-    "express": "5.1.0",
+    "express": "5.2.1",
     "glob": "13.0.0",
     "handlebars": "4.7.8",
     "loader.js": "4.7.0",
@@ -67,7 +67,7 @@
     "qunit-dom": "3.5.0",
     "sinon": "21.0.1",
     "torii": "1.0.0",
-    "webpack": "5.103.0"
+    "webpack": "5.105.0"
   },
   "engines": {
     "node": "16.* || >= 18"
