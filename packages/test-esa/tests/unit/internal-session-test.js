@@ -974,4 +974,87 @@ module('InternalSession', function (hooks) {
       });
     });
   });
+
+  module('race condition guards', function () {
+    module('_lookupAuthenticator', function () {
+      test('returns null when authenticator name is falsy', function (assert) {
+        assert.strictEqual(session._lookupAuthenticator(null), null);
+        assert.strictEqual(session._lookupAuthenticator(undefined), null);
+        assert.strictEqual(session._lookupAuthenticator(''), null);
+      });
+    });
+
+    module('invalidate', function () {
+      test('calls _clear(true) directly when this.authenticator is null', async function (assert) {
+        session.set('isAuthenticated', true);
+        session.set('authenticator', null);
+
+        await session.invalidate();
+
+        assert.notOk(session.get('isAuthenticated'));
+      });
+
+      test('calls _clear(true) when authenticator lookup returns null', async function (assert) {
+        session.set('isAuthenticated', true);
+        session.set('authenticator', 'authenticator:nonexistent');
+
+        // The lookup will throw an assertion in dev; we verify it handles the error gracefully
+        try {
+          await session.invalidate();
+        } catch (_) {
+          // expected in dev mode due to assertion
+        }
+
+        assert.notOk(session.get('isAuthenticated'));
+      });
+    });
+
+    module('_onSessionDataUpdated', function () {
+      test('does nothing when this.authenticator is null', function (assert) {
+        session.set('authenticator', null);
+        sinon.spy(session, '_setup');
+
+        session._onSessionDataUpdated({ detail: { some: 'data' } });
+
+        assert.notOk(session._setup.called, '_setup should not be called when authenticator is null');
+      });
+    });
+
+    module('_updateStore', function () {
+      test('returns a resolved promise when isAuthenticated but authenticator is empty', async function (assert) {
+        session.set('isAuthenticated', true);
+        session.set('authenticator', null);
+        sinon.spy(store, 'persist');
+
+        await session._updateStore();
+
+        assert.notOk(store.persist.called, 'store.persist should not be called when authenticator is empty');
+      });
+    });
+
+    module('_bindToAuthenticatorEvents', function () {
+      test('does not throw when authenticator is null', function (assert) {
+        session.set('authenticator', null);
+
+        // Should not throw
+        session._bindToAuthenticatorEvents();
+
+        assert.ok(true, '_bindToAuthenticatorEvents did not throw with null authenticator');
+      });
+    });
+
+    module('_clear', function () {
+      test('unbinds authenticator events before clearing', async function (assert) {
+        sinon.stub(authenticator, 'authenticate').resolves({ some: 'property' });
+        await session.authenticate('authenticator:test');
+
+        sinon.spy(authenticator, 'off');
+
+        await session._clear(true);
+
+        assert.ok(authenticator.off.called, 'authenticator.off should be called during _clear');
+        assert.notOk(session.get('isAuthenticated'));
+      });
+    });
+  });
 });

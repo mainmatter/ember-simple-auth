@@ -96,7 +96,24 @@ export default ObjectProxy.extend({
       return Promise.resolve();
     }
 
-    let authenticator = this._lookupAuthenticator(this.authenticator);
+    if (!this.authenticator) {
+      this._busy = false;
+      return this._clear(true);
+    }
+
+    let authenticator;
+    try {
+      authenticator = this._lookupAuthenticator(this.authenticator);
+    } catch (e) {
+      this._busy = false;
+      return this._clear(true);
+    }
+
+    if (isNone(authenticator)) {
+      this._busy = false;
+      return this._clear(true);
+    }
+
     return authenticator.invalidate(this.content.authenticated, ...arguments).then(
       () => {
         authenticator.off('sessionDataUpdated', this._onSessionDataUpdated);
@@ -120,7 +137,26 @@ export default ObjectProxy.extend({
         let { authenticator: authenticatorFactory } = restoredContent.authenticated || {};
         if (authenticatorFactory) {
           delete restoredContent.authenticated.authenticator;
-          const authenticator = this._lookupAuthenticator(authenticatorFactory);
+
+          let authenticator;
+          try {
+            authenticator = this._lookupAuthenticator(authenticatorFactory);
+          } catch (e) {
+            debug(
+              `The authenticator "${authenticatorFactory}" could not be found - invalidating…`
+            );
+            this._busy = false;
+            return this._clearWithContent(restoredContent).then(reject, reject);
+          }
+
+          if (isNone(authenticator)) {
+            debug(
+              `The authenticator "${authenticatorFactory}" could not be found - invalidating…`
+            );
+            this._busy = false;
+            return this._clearWithContent(restoredContent).then(reject, reject);
+          }
+
           return authenticator.restore(restoredContent.authenticated).then(
             content => {
               this.set('content', restoredContent);
@@ -178,6 +214,20 @@ export default ObjectProxy.extend({
 
   _clear(trigger) {
     trigger = Boolean(trigger) && this.get('isAuthenticated');
+
+    if (this.authenticator) {
+      let authenticator;
+      try {
+        authenticator = this._lookupAuthenticator(this.authenticator);
+      } catch (_) {
+        // authenticator could not be found; nothing to unbind
+      }
+      if (authenticator) {
+        try { authenticator.off('sessionDataUpdated', this._onSessionDataUpdated); } catch (_) {}
+        try { authenticator.off('sessionDataInvalidated', this._onSessionDataInvalidated); } catch (_) {}
+      }
+    }
+
     this.setProperties({
       isAuthenticated: false,
       authenticator: null,
@@ -207,6 +257,9 @@ export default ObjectProxy.extend({
 
   _updateStore() {
     let data = this.content;
+    if (this.isAuthenticated && isEmpty(this.authenticator)) {
+      return Promise.resolve();
+    }
     if (!isEmpty(this.authenticator)) {
       set(
         data,
@@ -219,11 +272,15 @@ export default ObjectProxy.extend({
 
   _bindToAuthenticatorEvents() {
     const authenticator = this._lookupAuthenticator(this.authenticator);
+    if (!authenticator) return;
+    try { authenticator.off('sessionDataUpdated', this._onSessionDataUpdated); } catch (_) {}
+    try { authenticator.off('sessionDataInvalidated', this._onSessionDataInvalidated); } catch (_) {}
     authenticator.on('sessionDataUpdated', this._onSessionDataUpdated);
     authenticator.on('sessionDataInvalidated', this._onSessionDataInvalidated);
   },
 
   _onSessionDataUpdated: action(function ({ detail: content }) {
+    if (!this.authenticator) return;
     this._setup(this.authenticator, content);
   }),
 
@@ -238,7 +295,25 @@ export default ObjectProxy.extend({
         let { authenticator: authenticatorFactory } = content.authenticated || {};
         if (authenticatorFactory) {
           delete content.authenticated.authenticator;
-          const authenticator = this._lookupAuthenticator(authenticatorFactory);
+
+          let authenticator;
+          try {
+            authenticator = this._lookupAuthenticator(authenticatorFactory);
+          } catch (e) {
+            debug(
+              `The authenticator "${authenticatorFactory}" could not be found - invalidating…`
+            );
+            this._busy = false;
+            this._clearWithContent(content, true);
+            return;
+          }
+
+          if (isNone(authenticator)) {
+            this._busy = false;
+            this._clearWithContent(content, true);
+            return;
+          }
+
           authenticator.restore(content.authenticated).then(
             authenticatedContent => {
               this.set('content', content);
@@ -265,6 +340,9 @@ export default ObjectProxy.extend({
   },
 
   _lookupAuthenticator(authenticatorName) {
+    if (!authenticatorName) {
+      return null;
+    }
     let owner = getOwner(this);
     let authenticator = owner.lookup(authenticatorName);
     assert(
