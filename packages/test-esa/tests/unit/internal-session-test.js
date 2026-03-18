@@ -988,24 +988,32 @@ module('InternalSession', function (hooks) {
       test('calls _clear(true) directly when this.authenticator is null', async function (assert) {
         session.set('isAuthenticated', true);
         session.set('authenticator', null);
+        assert.true(session.get('isAuthenticated'), 'precondition: session is authenticated');
 
+        assert.step('invalidating');
         await session.invalidate();
+        assert.step('invalidated');
 
-        assert.notOk(session.get('isAuthenticated'));
+        assert.notOk(session.get('isAuthenticated'), 'session should no longer be authenticated');
+        assert.verifySteps(['invalidating', 'invalidated'], 'invalidate resolved without error');
       });
 
       test('calls _clear(true) when authenticator lookup returns null', async function (assert) {
         session.set('isAuthenticated', true);
         session.set('authenticator', 'authenticator:nonexistent');
+        assert.true(session.get('isAuthenticated'), 'precondition: session is authenticated');
 
+        assert.step('invalidating');
         // The lookup will throw an assertion in dev; we verify it handles the error gracefully
         try {
           await session.invalidate();
+          assert.step('invalidated');
         } catch (_) {
-          // expected in dev mode due to assertion
+          assert.step('invalidate threw');
         }
 
-        assert.notOk(session.get('isAuthenticated'));
+        assert.notOk(session.get('isAuthenticated'), 'session should no longer be authenticated');
+        assert.verifySteps(['invalidating', 'invalidated'], 'invalidate resolved cleanly');
       });
     });
 
@@ -1033,13 +1041,14 @@ module('InternalSession', function (hooks) {
     });
 
     module('_bindToAuthenticatorEvents', function () {
-      test('does not throw when authenticator is null', function (assert) {
+      test('does not throw and does not bind listeners when authenticator is null', function (assert) {
         session.set('authenticator', null);
+        sinon.spy(authenticator, 'on');
 
-        // Should not throw
         session._bindToAuthenticatorEvents();
 
         assert.ok(true, '_bindToAuthenticatorEvents did not throw with null authenticator');
+        assert.notOk(authenticator.on.called, 'authenticator.on should not be called when authenticator is null');
       });
     });
 

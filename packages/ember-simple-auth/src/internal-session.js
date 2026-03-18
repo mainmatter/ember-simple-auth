@@ -223,8 +223,8 @@ export default ObjectProxy.extend({
         // authenticator could not be found; nothing to unbind
       }
       if (authenticator) {
-        try { authenticator.off('sessionDataUpdated', this._onSessionDataUpdated); } catch (_) {}
-        try { authenticator.off('sessionDataInvalidated', this._onSessionDataInvalidated); } catch (_) {}
+        try { authenticator.off('sessionDataUpdated', this._onSessionDataUpdated); } catch (e) { debug(`Failed to unbind sessionDataUpdated: ${e}`); }
+        try { authenticator.off('sessionDataInvalidated', this._onSessionDataInvalidated); } catch (e) { debug(`Failed to unbind sessionDataInvalidated: ${e}`); }
       }
     }
 
@@ -258,6 +258,7 @@ export default ObjectProxy.extend({
   _updateStore() {
     let data = this.content;
     if (this.isAuthenticated && isEmpty(this.authenticator)) {
+      debug('_updateStore: skipping persist — session is authenticated but authenticator is empty');
       return Promise.resolve();
     }
     if (!isEmpty(this.authenticator)) {
@@ -273,8 +274,8 @@ export default ObjectProxy.extend({
   _bindToAuthenticatorEvents() {
     const authenticator = this._lookupAuthenticator(this.authenticator);
     if (!authenticator) return;
-    try { authenticator.off('sessionDataUpdated', this._onSessionDataUpdated); } catch (_) {}
-    try { authenticator.off('sessionDataInvalidated', this._onSessionDataInvalidated); } catch (_) {}
+    try { authenticator.off('sessionDataUpdated', this._onSessionDataUpdated); } catch (e) { debug(`Failed to unbind sessionDataUpdated: ${e}`); }
+    try { authenticator.off('sessionDataInvalidated', this._onSessionDataInvalidated); } catch (e) { debug(`Failed to unbind sessionDataInvalidated: ${e}`); }
     authenticator.on('sessionDataUpdated', this._onSessionDataUpdated);
     authenticator.on('sessionDataInvalidated', this._onSessionDataInvalidated);
   },
