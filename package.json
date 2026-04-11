@@ -29,6 +29,11 @@
     "release-it": "19.0.6",
     "release-plan": "0.17.2"
   },
+  "pnpm": {
+    "overrides": {
+      "ember-cli-htmlbars": "^7.0.0"
+    }
+  },
   "volta": {
     "node": "24.13.0",
     "pnpm": "10.28.1"
