@@ -124,8 +124,8 @@ importers:
         specifier: 1.5.2
         version: 1.5.2(@glint/environment-ember-loose@1.5.2(@glimmer/component@2.0.0)(@glint/template@1.7.7)(@types/ember__array@4.0.10(@babel/core@7.28.6))(@types/ember__component@4.0.22(@babel/core@7.28.6))(@types/ember__controller@4.0.12(@babel/core@7.28.6))(@types/ember__object@4.0.12(@babel/core@7.28.6))(@types/ember__routing@4.0.23(@babel/core@7.28.6))(ember-cli-htmlbars@6.3.0))(@glint/template@1.7.7)(@types/ember__component@4.0.22(@babel/core@7.28.6))(@types/ember__routing@4.0.23(@babel/core@7.28.6))
       '@rollup/plugin-babel':
-        specifier: 6.1.0
-        version: 6.1.0(@babel/core@7.28.6)(rollup@4.53.3)
+        specifier: 7.1.0
+        version: 7.1.0(@babel/core@7.28.6)(rollup@4.53.3)
       '@rollup/plugin-node-resolve':
         specifier: 16.0.3
         version: 16.0.3(rollup@4.53.3)
@@ -2050,13 +2050,13 @@ packages:
     peerDependencies:
       release-it: ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  '@rollup/plugin-babel@6.1.0':
-    resolution: {integrity: sha512-dFZNuFD2YRcoomP4oYf+DvQNSUA9ih+A3vUqopQx5EdtPGo3WBnQcI/S8pwpz91UsGfL0HsMSOlaMld8HrbubA==}
+  '@rollup/plugin-babel@7.1.0':
+    resolution: {integrity: sha512-h9Y+xYha6p4wKO+FwdiPIkE+eIYCm8MzZPpX1iARIoFBnmKP9CnpT1p9dDf/DTFm6fyN8PmuLyRI5qZgchnitw==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@babel/core': ^7.0.0
       '@types/babel__core': ^7.1.9
-      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+      rollup: ^2.0.0||^3.0.0||^4.0.0
     peerDependenciesMeta:
       '@types/babel__core':
         optional: true
@@ -2714,6 +2714,7 @@ packages:
   '@xmldom/xmldom@0.9.9':
     resolution: {integrity: sha512-qycIHAucxy/LXAYIjmLmtQ8q9GPnMbnjG1KXhWm9o5sCr6pOYDATkMPiTNa6/v8eELyqOQ2FsEqeoFYmgv/gJg==}
     engines: {node: '>=14.6'}
+    deprecated: this version has critical issues, please update to the latest version
 
   '@xtuc/ieee754@1.2.0':
     resolution: {integrity: sha512-DX8nKgqcGwsc0eJSqYt5lwP4DH5FlHnmuWWBRy7X0NcaGR0ZtuyeESgMwTYVEtxmsNGY+qit4QYT/MIYTOTPeA==}
@@ -9253,6 +9254,7 @@ packages:
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   v8-to-istanbul@9.3.0:
@@ -11706,11 +11708,12 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@rollup/plugin-babel@6.1.0(@babel/core@7.28.6)(rollup@4.53.3)':
+  '@rollup/plugin-babel@7.1.0(@babel/core@7.28.6)(rollup@4.53.3)':
     dependencies:
       '@babel/core': 7.28.6
       '@babel/helper-module-imports': 7.28.6
       '@rollup/pluginutils': 5.3.0(rollup@4.53.3)
+      workerpool: 9.3.4
     optionalDependencies:
       rollup: 4.53.3
     transitivePeerDependencies:
