@@ -86,9 +86,6 @@ importers:
       '@embroider/addon-shim':
         specifier: ^1.0.0
         version: 1.10.2
-      '@embroider/macros':
-        specifier: ^1.0.0
-        version: 1.19.6(@glint/template@1.7.7)
       ember-cookies:
         specifier: ^1.4.1
         version: 1.4.1(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5))
@@ -114,6 +111,9 @@ importers:
       '@embroider/addon-dev':
         specifier: 7.1.6
         version: 7.1.6(@glint/template@1.7.7)(rollup@4.53.3)
+      '@embroider/macros':
+        specifier: ^1.0.0
+        version: 1.19.6(@glint/template@1.7.7)
       '@glint/core':
         specifier: 1.5.2
         version: 1.5.2(typescript@5.9.3)
