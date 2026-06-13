@@ -1,5 +1,22 @@
 # Changelog
 
+## Release (2026-06-13)
+
+* ember-simple-auth 8.3.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#3105](https://github.com/mainmatter/ember-simple-auth/pull/3105) Remove `@embroider/macros` from `dependencies` ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :house: Internal
+* [#3107](https://github.com/mainmatter/ember-simple-auth/pull/3107) chore(release): npx create-release-plan-setup@latest ([@BobrImperator](https://github.com/BobrImperator))
+* [#3088](https://github.com/mainmatter/ember-simple-auth/pull/3088) Update ember-cli-babel and ember-cli-htmlbars for ember 7 compatibility ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))
+
+#### Committers: 3
+- @NullVoxPopuli's reduced-access machine account for AI usage ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2026-02-02)
 
 * ember-simple-auth 8.3.0 (minor)
