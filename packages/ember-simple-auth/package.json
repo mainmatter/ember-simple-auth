@@ -44,7 +44,7 @@
     "@glint/core": "1.5.2",
     "@glint/environment-ember-loose": "1.5.2",
     "@glint/environment-ember-template-imports": "1.5.2",
-    "@rollup/plugin-babel": "6.1.0",
+    "@rollup/plugin-babel": "7.1.0",
     "@rollup/plugin-node-resolve": "16.0.3",
     "@tsconfig/ember": "3.0.12",
     "@types/ember__application": "4.0.11",
