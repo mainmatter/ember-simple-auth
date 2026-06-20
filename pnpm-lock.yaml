@@ -27,8 +27,8 @@ importers:
         specifier: 11.12.0
         version: 11.12.0(@babel/core@7.28.6)(@babel/template@7.28.6)(puppeteer@23.11.1(typescript@5.9.3))(yaml@2.8.3)
       '@release-it-plugins/lerna-changelog':
-        specifier: 8.0.1
-        version: 8.0.1(release-it@19.0.6(@types/node@24.10.9))
+        specifier: 9.0.0
+        version: 9.0.0(prettier@3.6.2)(release-it@19.0.6(@types/node@24.10.9))
       '@typescript-eslint/eslint-plugin':
         specifier: 8.47.0
         version: 8.47.0(@typescript-eslint/parser@8.47.0(eslint@9.39.2(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.2(jiti@1.21.7))(typescript@5.9.3)
@@ -2195,11 +2195,15 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
-  '@release-it-plugins/lerna-changelog@8.0.1':
-    resolution: {integrity: sha512-T3bdj8TWa+msrEKxeoXoRTXtr/YG5oE1zOxXvv+AKAI2Ng3RLIiY2bpJa85+TEe2wdaVdYlyPQPn1DOq3f+jAw==}
-    engines: {node: '>=20'}
+  '@release-it-plugins/lerna-changelog@9.0.0':
+    resolution: {integrity: sha512-Nxq1XLggMMlrEUmsjiS1VMwHMkx7vzDMi86jQ/wC7peDHTARtArWLR+NNaFPD5qUG2IsrsNCLM5NxoQbuGdH7g==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24.0.0}
     peerDependencies:
-      release-it: ^17.0.0 || ^18.0.0 || ^19.0.0
+      prettier: ^3.0.0
+      release-it: ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0
+    peerDependenciesMeta:
+      prettier:
+        optional: true
 
   '@rollup/plugin-babel@7.1.0':
     resolution: {integrity: sha512-h9Y+xYha6p4wKO+FwdiPIkE+eIYCm8MzZPpX1iARIoFBnmKP9CnpT1p9dDf/DTFm6fyN8PmuLyRI5qZgchnitw==}
@@ -9134,8 +9138,8 @@ packages:
     resolution: {integrity: sha512-J7Z2K08jbGcdA1kkQpJSqLF6T0tdQqpR2pnSUXsIchbPdTI9v3e85cLW0d6WDhwuAleOV71j2xWs8qMPfK7nKw==}
     engines: {node: '>=6'}
 
-  tmp@0.2.5:
-    resolution: {integrity: sha512-voyz6MApa1rQGUxT3E+BK7/ROe8itEx7vD8/HEvt4xwXucvQ5G5oeEiHkmHZJuBO21RpOf+YYm9MOivj709jow==}
+  tmp@0.2.7:
+    resolution: {integrity: sha512-e0votIpp4Uo2AJYSzVHV6xCcawuiez3DzqDAbrTc3YxBkplN6e+dM13ZeIcZnDg/QpSuU2zfZ3rzwY8ukEnaXw==}
     engines: {node: '>=14.14'}
 
   tmpl@1.0.5:
@@ -9683,6 +9687,11 @@ packages:
   which@5.0.0:
     resolution: {integrity: sha512-JEdGzHwwkrbWoGOlIHqQ5gtprKGOenpDHpxE9zVR1bWbOtYRyPPHMe9FaP6x61CmNaTThSkb0DAJte5jD+DmzQ==}
     engines: {node: ^18.17.0 || >=20.5.0}
+    hasBin: true
+
+  which@6.0.1:
+    resolution: {integrity: sha512-oGLe46MIrCRqX7ytPUf66EAYvdeMIZYn3WaocqqKZAxrBpkqHfL/qvTyJ/bTk5+AqHCjXmrv3CEWgy368zhRUg==}
+    engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
 
   which@7.0.0:
@@ -12022,16 +12031,18 @@ snapshots:
     dependencies:
       react: 19.2.5
 
-  '@release-it-plugins/lerna-changelog@8.0.1(release-it@19.0.6(@types/node@24.10.9))':
+  '@release-it-plugins/lerna-changelog@9.0.0(prettier@3.6.2)(release-it@19.0.6(@types/node@24.10.9))':
     dependencies:
-      execa: 5.1.1
+      execa: 9.6.1
       lerna-changelog: 2.2.0
       lodash: 4.18.1
       mdast-util-from-markdown: 2.0.3
       release-it: 19.0.6(@types/node@24.10.9)
-      tmp: 0.2.5
+      tmp: 0.2.7
       validate-peer-dependencies: 2.2.0
-      which: 5.0.0
+      which: 6.0.1
+    optionalDependencies:
+      prettier: 3.6.2
     transitivePeerDependencies:
       - bluebird
       - supports-color
@@ -20940,7 +20951,7 @@ snapshots:
     dependencies:
       rimraf: 2.7.1
 
-  tmp@0.2.5: {}
+  tmp@0.2.7: {}
 
   tmpl@1.0.5: {}
 
@@ -21538,6 +21549,10 @@ snapshots:
   which@5.0.0:
     dependencies:
       isexe: 3.1.5
+
+  which@6.0.1:
+    dependencies:
+      isexe: 4.0.0
 
   which@7.0.0:
     dependencies:
