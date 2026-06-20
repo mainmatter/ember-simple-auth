@@ -63,7 +63,7 @@ importers:
         specifier: 19.0.6
         version: 19.0.6(@types/node@24.10.9)
       release-plan:
-        specifier: ^0.18.0
+        specifier: 0.18.0
         version: 0.18.0
 
   packages/docs:
