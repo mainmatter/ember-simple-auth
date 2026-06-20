@@ -1,18 +1,8 @@
 {
   "solution": {
     "ember-simple-auth": {
-      "impact": "patch",
-      "oldVersion": "8.3.0",
-      "newVersion": "8.3.1",
-      "tagName": "latest",
-      "constraints": [
-        {
-          "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
-        }
-      ],
-      "pkgJSONPath": "./packages/ember-simple-auth/package.json"
+      "oldVersion": "8.3.1"
     }
   },
-  "description": "## Release (2026-06-13)\n\n* ember-simple-auth 8.3.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-simple-auth`\n  * [#3105](https://github.com/mainmatter/ember-simple-auth/pull/3105) Remove `@embroider/macros` from `dependencies` ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* [#3107](https://github.com/mainmatter/ember-simple-auth/pull/3107) chore(release): npx create-release-plan-setup@latest ([@BobrImperator](https://github.com/BobrImperator))\n* [#3088](https://github.com/mainmatter/ember-simple-auth/pull/3088) Update ember-cli-babel and ember-cli-htmlbars for ember 7 compatibility ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))\n\n#### Committers: 3\n- @NullVoxPopuli's reduced-access machine account for AI usage ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "\n\n\n\n"
 }

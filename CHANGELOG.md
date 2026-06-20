@@ -1,5 +1,10 @@
 # Changelog
 
+
+
+
+
+
 ## Release (2026-06-13)
 
 * ember-simple-auth 8.3.1 (patch)
