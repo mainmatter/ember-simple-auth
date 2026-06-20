@@ -65,7 +65,7 @@
     "pretender": "3.4.7",
     "qunit": "2.26.0",
     "qunit-dom": "3.5.1",
-    "sinon": "21.0.1",
+    "sinon": "22.0.0",
     "torii": "1.0.0",
     "webpack": "5.103.0"
   },
