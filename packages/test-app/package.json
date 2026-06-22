@@ -77,7 +77,7 @@
     "qunit": "2.26.0",
     "qunit-dom": "3.5.1",
     "torii": "1.0.0",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "webpack": "5.103.0"
   },
   "fastbootDependencies": [
