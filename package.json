@@ -29,9 +29,9 @@
     "release-it": "19.0.6",
     "release-plan": "^0.18.0"
   },
-  "packageManager": "pnpm@10.34.3",
+  "packageManager": "pnpm@11.9.0",
   "volta": {
     "node": "24.13.0",
-    "pnpm": "10.34.3"
+    "pnpm": "11.9.0"
   }
 }
