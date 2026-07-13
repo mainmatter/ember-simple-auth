@@ -171,8 +171,37 @@ export default class SessionService extends BaseSessionService {
     try {
       await this.currentUser.load();
     } catch(err) {
+      console.error("Unable to load current user: ", err);
       await this.invalidate();
     }
   }
 }
+```
+
+### Testing
+
+To run acceptance tests for routes that are authenticated you'll need to
+make sure that a request to `/users/me` will work.
+
+If you're using [Mirage](https://miragejs.com/) and JSONAPI that would look something
+like this:
+
+```js
+let userData = {
+  "data": {
+    "id": "1",
+    "type": "users",
+    "links": {
+      "self": "/jsonapi/v1/users/1"
+    },
+    "attributes": {
+      "email": "test-user@example.com",
+      "first-name": "Test",
+      "last-name": "User",
+    }
+  }
+}
+
+
+this.get('/users/me', (schema) => userData );
 ```
