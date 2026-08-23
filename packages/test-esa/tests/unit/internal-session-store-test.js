@@ -46,7 +46,7 @@ module('InternalSession store injection', function (hooks) {
   });
 
   module('authenticator creation', function () {
-    test('looks up authenticators when no createAuthenticator is passed', function (assert) {
+    test('looks up authenticators when no authenticators map is passed', function (assert) {
       this.owner.register('authenticator:test', TestAuthenticator);
       session = new InternalSession(this.owner);
 
@@ -56,27 +56,26 @@ module('InternalSession store injection', function (hooks) {
       );
     });
 
-    test('uses createAuthenticator when it is passed', function (assert) {
+    test('uses the authenticators map when it is passed', function (assert) {
       const store = new Ephemeral(this.owner);
       const authenticator = new TestAuthenticator(this.owner);
       session = new InternalSession(this.owner, store, {
-        createAuthenticator: name => {
-          assert.equal(name, 'authenticator:oauth2');
-          return authenticator;
+        authenticators: {
+          'authenticator:oauth2': authenticator,
         },
       });
 
       assert.equal(session._lookupAuthenticator('authenticator:oauth2'), authenticator);
     });
 
-    test('asserts when useResolver is false and createAuthenticator is missing', function (assert) {
+    test('asserts when useResolver is false and authenticators are missing', function (assert) {
       Configuration.load({ useResolver: false });
       const store = new Ephemeral(this.owner);
       session = new InternalSession(this.owner, store);
 
       assert.throws(
         () => session._lookupAuthenticator('authenticator:test'),
-        /createAuthenticator/
+        /createAuthenticators/
       );
     });
   });

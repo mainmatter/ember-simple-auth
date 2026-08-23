@@ -1,7 +1,7 @@
 import { isEmpty, isNone } from '@ember/utils';
 import EmberObject, { action, get, set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
-import { getOwner, setOwner } from '@ember/application';
+import { getOwner } from '@ember/application';
 import { associateDestroyableChild } from '@ember/destroyable';
 import { isTesting } from '@embroider/macros';
 import Configuration from './configuration';
@@ -59,8 +59,7 @@ export default class InternalSession extends EmberObject {
     this.set('content', { authenticated: {} });
     this.sessionEvents = new SessionEventTarget();
     this._busy = false;
-    this._createAuthenticator = options.createAuthenticator;
-    this._authenticators = this._createAuthenticator ? {} : null;
+    this._authenticators = options.authenticators || null;
 
     const store = sessionStore || this._lookupStore();
     assert('Ember Simple Auth: InternalSession requires a session store.', store);
@@ -296,23 +295,17 @@ export default class InternalSession extends EmberObject {
   _lookupAuthenticator(authenticatorName) {
     let owner = getOwner(this);
 
-    if (this._createAuthenticator) {
+    if (this._authenticators) {
       let authenticator = this._authenticators[authenticatorName];
-      if (!authenticator) {
-        authenticator = this._createAuthenticator(authenticatorName);
-        assert(
-          `No authenticator for factory "${authenticatorName}" could be found!`,
-          !isNone(authenticator)
-        );
-        setOwner(authenticator, owner);
-        associateDestroyableChild(this, authenticator);
-        this._authenticators[authenticatorName] = authenticator;
-      }
+      assert(
+        `No matching authenticator was returned from 'SessionService.createAuthenticators': "${authenticatorName}" could be found!`,
+        !isNone(authenticator)
+      );
       return authenticator;
     }
 
     assert(
-      'Ember Simple Auth: InternalSession requires createAuthenticator when useResolver is false.',
+      'Ember Simple Auth: InternalSession requires createAuthenticators when useResolver is false.',
       Configuration.useResolver
     );
 
@@ -321,7 +314,6 @@ export default class InternalSession extends EmberObject {
       `No authenticator for factory "${authenticatorName}" could be found!`,
       !isNone(authenticator)
     );
-    setOwner(authenticator, owner);
     return authenticator;
   }
 

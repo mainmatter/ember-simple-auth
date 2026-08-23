@@ -4,7 +4,7 @@ Existing apps keep working with `useResolver: true` (the default). v9 can drop r
 
 ## Resolver registration
 
-Set `useResolver` to `false`. The addon will no longer register `session:main`, `session-store:adaptive`, `session-store:cookie`, `session-store:local-storage`, or `session-store:test`, and will not look up `session-store:application` or `authenticator:*`. Implement `createSessionStore` and `createAuthenticator` on the session service.
+Set `useResolver` to `false`. The addon will no longer register `session:main`, `session-store:adaptive`, `session-store:cookie`, `session-store:local-storage`, or `session-store:test`, and will not look up `session-store:application` or `authenticator:*`. Implement `createSessionStore` and `createAuthenticators` on the session service.
 
 ```js
 // config/environment.js
@@ -24,10 +24,10 @@ export default class Session extends SessionService {
     return new SessionStore(owner);
   }
 
-  createAuthenticator(owner, name) {
-    if (name === 'authenticator:oauth2' || name === 'oauth2') {
-      return new OAuth2(owner);
-    }
+  createAuthenticators(owner) {
+    return {
+      'authenticator:oauth2': new OAuth2(owner),
+    };
   }
 }
 ```
