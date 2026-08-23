@@ -27,7 +27,7 @@
     "globals": "17.0.0",
     "lerna-changelog": "2.2.0",
     "release-it": "19.0.6",
-    "release-plan": "^0.18.0"
+    "release-plan": "0.18.0"
   },
   "packageManager": "pnpm@10.34.3",
   "volta": {
