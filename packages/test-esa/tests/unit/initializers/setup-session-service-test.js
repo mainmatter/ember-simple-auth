@@ -1,6 +1,34 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
+import { registerDeprecationHandler } from '@ember/debug';
 import sinonjs from 'sinon';
+import Configuration from 'ember-simple-auth/configuration';
+import InternalSession from 'ember-simple-auth/internal-session';
+import setupSession from 'ember-simple-auth/initializers/setup-session';
+
+const SESSION_MAIN_DEPRECATION_ID = 'ember-simple-auth.session-main';
+
+function collectDeprecations() {
+  const deprecations = [];
+
+  registerDeprecationHandler((message, options, next) => {
+    deprecations.push({ message, options });
+    next(message, options);
+  });
+
+  return deprecations;
+}
+
+function createRegistry() {
+  const registrations = {};
+
+  return {
+    registrations,
+    register(name, factory) {
+      registrations[name] = factory;
+    },
+  };
+}
 
 module('setupSessionService', function (hooks) {
   setupTest(hooks);
@@ -11,10 +39,68 @@ module('setupSessionService', function (hooks) {
   });
 
   hooks.afterEach(function () {
+    Configuration.load({});
     sinon.restore();
   });
 
-  test('injects the session into the session service', function (assert) {
+  test('looks up session:main when useInternalSessionLookup is true', function (assert) {
+    const deprecations = collectDeprecations();
+
     assert.equal(this.owner.lookup('service:session').session, this.owner.lookup('session:main'));
+    assert.ok(
+      deprecations.some(({ options }) => options.id === SESSION_MAIN_DEPRECATION_ID),
+      'deprecates looking up session:main'
+    );
+  });
+
+  test('constructs InternalSession when useInternalSessionLookup is false', function (assert) {
+    Configuration.load({ useInternalSessionLookup: false });
+    const deprecations = collectDeprecations();
+    const originalLookup = this.owner.lookup.bind(this.owner);
+    this.owner.lookup = (fullName, ...args) => {
+      if (fullName === 'session:main') {
+        return undefined;
+      }
+
+      return originalLookup(fullName, ...args);
+    };
+
+    const service = this.owner.lookup('service:session');
+
+    assert.ok(service.session instanceof InternalSession);
+    assert.notOk(
+      deprecations.some(({ options }) => options.id === SESSION_MAIN_DEPRECATION_ID),
+      'does not deprecate when session:main is not used'
+    );
+  });
+
+  test('does not register session:main when useInternalSessionLookup is false', function (assert) {
+    Configuration.load({ useInternalSessionLookup: false });
+    const registry = createRegistry();
+
+    setupSession(registry);
+
+    assert.notOk(registry.registrations['session:main']);
+  });
+
+  test('registers session:main when useInternalSessionLookup is true', function (assert) {
+    const registry = createRegistry();
+
+    setupSession(registry);
+
+    assert.ok(registry.registrations['session:main']);
+  });
+
+  test('asserts when useInternalSessionLookup is true and session:main is missing', function (assert) {
+    const originalLookup = this.owner.lookup.bind(this.owner);
+    this.owner.lookup = (fullName, ...args) => {
+      if (fullName === 'session:main') {
+        return undefined;
+      }
+
+      return originalLookup(fullName, ...args);
+    };
+
+    assert.throws(() => this.owner.lookup('service:session'));
   });
 });

@@ -28,6 +28,7 @@ export default {
       'test-support/**/*.js',
       'configuration.js',
       'initializers/**/*.js',
+      'internal-session.js',
     ]),
 
     // These are the modules that should get reexported into the traditional

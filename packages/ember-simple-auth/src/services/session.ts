@@ -1,7 +1,9 @@
 import Service from '@ember/service';
 import { getOwner } from '@ember/application';
-import { assert } from '@ember/debug';
+import { assert, deprecate } from '@ember/debug';
+import { associateDestroyableChild } from '@ember/destroyable';
 import Configuration from '../configuration';
+import InternalSession from '../internal-session';
 
 import {
   requireAuthentication,
@@ -35,8 +37,6 @@ type InternalSessionMock<Data> = {
   on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
   authenticate: (authenticator: string, ...args: any[]) => Promise<void>;
   invalidate: (...args: any[]) => Promise<void>;
-  requireAuthentication: (transition: Transition, routeOrCallback: RouteOrCallback) => boolean;
-  prohibitAuthentication: (routeOrCallback: RouteOrCallback) => boolean;
   restore: () => Promise<void>;
   set(key: string, value: any): void;
   setRedirectTarget: EsaBaseSessionStore['setRedirectTarget'];
@@ -76,12 +76,31 @@ export type DefaultDataShape = {
   @public
 */
 export default class SessionService<Data = DefaultDataShape> extends Service {
-  session: InternalSessionMock<Data>;
+  session!: InternalSessionMock<Data>;
 
   constructor(owner: any) {
     super(owner);
 
-    this.session = owner.lookup('session:main');
+    if (!this.session) {
+      if (Configuration.useInternalSessionLookup) {
+        this.session = owner.lookup('session:main');
+        assert('Ember Simple Auth: session:main is not registered.', this.session);
+        deprecate('Ember Simple Auth: session:main resolver lookup is deprecated.', false, {
+          id: 'ember-simple-auth.session-main',
+          until: '9.0.0',
+          for: 'ember-simple-auth',
+          since: {
+            available: '8.4.0',
+            enabled: '8.4.0',
+          },
+          url: 'https://github.com/mainmatter/ember-simple-auth/blob/master/guides/upgrade-to-v9.md#sessionmain-resolver-registration',
+        });
+      } else {
+        this.session = new InternalSession(owner) as unknown as InternalSessionMock<Data>;
+      }
+
+      associateDestroyableChild(this, this.session);
+    }
   }
 
   /**

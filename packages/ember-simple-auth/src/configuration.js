@@ -1,6 +1,7 @@
 const DEFAULTS = {
   rootURL: '',
   routeAfterAuthentication: 'index',
+  useInternalSessionLookup: true,
 };
 
 /**
@@ -36,11 +37,28 @@ export default {
   */
   routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
 
+  /**
+    When `true`, the session service looks up `session:main` from the resolver.
+    When `false`, the session service constructs `InternalSession` itself.
+
+    @memberof Configuration
+    @property useInternalSessionLookup
+    @static
+    @type Boolean
+    @default true
+    @public
+  */
+  useInternalSessionLookup: DEFAULTS.useInternalSessionLookup,
+
   load(config) {
     this.rootURL = config.rootURL !== undefined ? config.rootURL : DEFAULTS.rootURL;
     this.routeAfterAuthentication =
       config.routeAfterAuthentication !== undefined
         ? config.routeAfterAuthentication
         : DEFAULTS.routeAfterAuthentication;
+    this.useInternalSessionLookup =
+      config.useInternalSessionLookup !== undefined
+        ? config.useInternalSessionLookup
+        : DEFAULTS.useInternalSessionLookup;
   },
 };
