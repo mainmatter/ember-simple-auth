@@ -1,10 +1,10 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { registerDeprecationHandler } from '@ember/debug';
-import { getOwner } from '@ember/application';
 import sinonjs from 'sinon';
+import Configuration from 'ember-simple-auth/configuration';
 import InternalSession from 'ember-simple-auth/internal-session';
-import SessionService from 'ember-simple-auth/services/session';
+import setupSession from 'ember-simple-auth/initializers/setup-session';
 
 const SESSION_MAIN_DEPRECATION_ID = 'ember-simple-auth.session-main';
 
@@ -19,6 +19,17 @@ function collectDeprecations() {
   return deprecations;
 }
 
+function createRegistry() {
+  const registrations = {};
+
+  return {
+    registrations,
+    register(name, factory) {
+      registrations[name] = factory;
+    },
+  };
+}
+
 module('setupSessionService', function (hooks) {
   setupTest(hooks);
   let sinon;
@@ -28,10 +39,11 @@ module('setupSessionService', function (hooks) {
   });
 
   hooks.afterEach(function () {
+    Configuration.load({});
     sinon.restore();
   });
 
-  test('injects the session into the session service', function (assert) {
+  test('looks up session:main when useInternalSessionLookup is true', function (assert) {
     const deprecations = collectDeprecations();
 
     assert.equal(this.owner.lookup('service:session').session, this.owner.lookup('session:main'));
@@ -41,9 +53,17 @@ module('setupSessionService', function (hooks) {
     );
   });
 
-  test('creates InternalSession when session:main is not registered', function (assert) {
-    this.owner.unregister('session:main');
+  test('constructs InternalSession when useInternalSessionLookup is false', function (assert) {
+    Configuration.load({ useInternalSessionLookup: false });
     const deprecations = collectDeprecations();
+    const originalLookup = this.owner.lookup.bind(this.owner);
+    this.owner.lookup = (fullName, ...args) => {
+      if (fullName === 'session:main') {
+        return undefined;
+      }
+
+      return originalLookup(fullName, ...args);
+    };
 
     const service = this.owner.lookup('service:session');
 
@@ -54,18 +74,33 @@ module('setupSessionService', function (hooks) {
     );
   });
 
-  test('uses an InternalSession assigned on the session service', function (assert) {
-    this.owner.unregister('service:session');
-    this.owner.register(
-      'service:session',
-      class extends SessionService {
-        session = new InternalSession(getOwner(this));
+  test('does not register session:main when useInternalSessionLookup is false', function (assert) {
+    Configuration.load({ useInternalSessionLookup: false });
+    const registry = createRegistry();
+
+    setupSession(registry);
+
+    assert.notOk(registry.registrations['session:main']);
+  });
+
+  test('registers session:main when useInternalSessionLookup is true', function (assert) {
+    const registry = createRegistry();
+
+    setupSession(registry);
+
+    assert.ok(registry.registrations['session:main']);
+  });
+
+  test('asserts when useInternalSessionLookup is true and session:main is missing', function (assert) {
+    const originalLookup = this.owner.lookup.bind(this.owner);
+    this.owner.lookup = (fullName, ...args) => {
+      if (fullName === 'session:main') {
+        return undefined;
       }
-    );
 
-    const service = this.owner.lookup('service:session');
+      return originalLookup(fullName, ...args);
+    };
 
-    assert.ok(service.session instanceof InternalSession);
-    assert.notEqual(service.session, this.owner.lookup('session:main'));
+    assert.throws(() => this.owner.lookup('service:session'));
   });
 });

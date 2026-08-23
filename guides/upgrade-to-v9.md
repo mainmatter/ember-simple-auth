@@ -4,14 +4,11 @@ v9 removes resolver-based `session:main` wiring. The session service owns `Inter
 
 ## `session:main` resolver registration
 
-Assign an `InternalSession` on your session service instead of looking it up via `session:main`.
+Set `useInternalSessionLookup` to `false` so the session service constructs `InternalSession` and `session:main` is not registered.
 
 ```js
-import { getOwner } from '@ember/application';
-import Service from 'ember-simple-auth/services/session';
-import InternalSession from 'ember-simple-auth/internal-session';
-
-export default class SessionService extends Service {
-  session = new InternalSession(getOwner(this));
-}
+// config/environment.js
+ENV['ember-simple-auth'] = {
+  useInternalSessionLookup: false,
+};
 ```

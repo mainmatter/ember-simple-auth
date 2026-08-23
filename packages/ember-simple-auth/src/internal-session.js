@@ -44,7 +44,7 @@ export default class InternalSession extends EmberObject {
     @private
   */
   authenticator = null;
-  content = null;
+  content = { authenticated: {} };
   store = null;
   isAuthenticated = false;
   attemptedTransition = null;

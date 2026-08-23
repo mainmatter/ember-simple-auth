@@ -22,6 +22,14 @@ module('Configuration', function (hooks) {
     });
   });
 
+  module('useInternalSessionLookup', function () {
+    test('defaults to true', function (assert) {
+      Configuration.load({});
+
+      assert.true(Configuration.useInternalSessionLookup);
+    });
+  });
+
   module('.load', function () {
     test('sets rootURL correctly', function (assert) {
       Configuration.load({ rootURL: '/rootURL' });
@@ -33,6 +41,12 @@ module('Configuration', function (hooks) {
       Configuration.load({ routeAfterAuthentication: '/some-route' });
 
       assert.equal(Configuration.routeAfterAuthentication, '/some-route');
+    });
+
+    test('sets useInternalSessionLookup correctly', function (assert) {
+      Configuration.load({ useInternalSessionLookup: false });
+
+      assert.false(Configuration.useInternalSessionLookup);
     });
   });
 });
