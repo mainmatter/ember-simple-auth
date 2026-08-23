@@ -1,11 +1,16 @@
 import { get } from '@ember/object';
 import { getContext, settled } from '@ember/test-helpers';
 import Test from '../authenticators/test';
+import Configuration from '../configuration';
 
 const SESSION_SERVICE_KEY = 'service:session';
 const TEST_CONTAINER_KEY = 'authenticator:test';
 
 function ensureAuthenticator(owner: any) {
+  if (!Configuration.useResolver) {
+    return;
+  }
+
   const authenticator = owner.lookup(TEST_CONTAINER_KEY);
   if (!authenticator) {
     owner.register(TEST_CONTAINER_KEY, Test);
