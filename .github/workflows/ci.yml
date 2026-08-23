@@ -72,6 +72,9 @@ jobs:
           - workspace: test-app
             test-suite: "test:one embroider-safe"
             allow-failure: false
+          - workspace: test-app
+            test-suite: test:no-resolver
+            allow-failure: false
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
