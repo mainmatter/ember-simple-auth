@@ -19,7 +19,7 @@ module('InternalSession', function (hooks) {
 
     this.owner.register('authenticator:test', Authenticator);
     authenticator = this.owner.lookup('authenticator:test');
-    session = InternalSession.create(this.owner);
+    session = new InternalSession(this.owner);
     store = session.get('store');
   });
 

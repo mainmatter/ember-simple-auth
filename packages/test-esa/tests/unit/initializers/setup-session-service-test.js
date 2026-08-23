@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { registerDeprecationHandler } from '@ember/debug';
+import { getOwner } from '@ember/application';
 import sinonjs from 'sinon';
 import InternalSession from 'ember-simple-auth/internal-session';
 import SessionService from 'ember-simple-auth/services/session';
@@ -58,7 +59,7 @@ module('setupSessionService', function (hooks) {
     this.owner.register(
       'service:session',
       class extends SessionService {
-        session = InternalSession.create(this);
+        session = new InternalSession(getOwner(this));
       }
     );
 

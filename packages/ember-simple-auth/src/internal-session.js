@@ -15,7 +15,7 @@ class SessionEventTarget extends EsaEventTarget {}
   @private
 */
 
-const InternalSession = EmberObject.extend({
+export default class InternalSession extends EmberObject {
   /**
     Triggered whenever the session is successfully authenticated. This happens
     when the session gets authenticated via
@@ -43,16 +43,17 @@ const InternalSession = EmberObject.extend({
     @event invalidationSucceeded
     @private
   */
-  authenticator: null,
-  content: null,
-  store: null,
-  isAuthenticated: false,
-  attemptedTransition: null,
-  sessionEvents: null,
-  redirectTarget: null,
+  authenticator = null;
+  content = null;
+  store = null;
+  isAuthenticated = false;
+  attemptedTransition = null;
+  sessionEvents = null;
+  redirectTarget = null;
 
-  init() {
-    this._super(...arguments);
+  constructor(owner) {
+    super(owner);
+
     this.set('content', { authenticated: {} });
     let storeFactory = 'session-store:application';
     if (isTesting()) {
@@ -63,7 +64,7 @@ const InternalSession = EmberObject.extend({
     this.set('store', getOwner(this).lookup(storeFactory));
     this._busy = false;
     this._bindToStoreEvents();
-  },
+  }
 
   authenticate(authenticatorFactory, ...args) {
     this._busy = true;
@@ -85,7 +86,7 @@ const InternalSession = EmberObject.extend({
         return this._clear().then(rejectWithError, rejectWithError);
       }
     );
-  },
+  }
 
   invalidate() {
     this._busy = true;
@@ -109,7 +110,7 @@ const InternalSession = EmberObject.extend({
         return Promise.reject(error);
       }
     );
-  },
+  }
 
   restore() {
     this._busy = true;
@@ -149,7 +150,7 @@ const InternalSession = EmberObject.extend({
         return this._clear().then(reject, reject);
       }
     );
-  },
+  }
 
   _setup(authenticator, authenticatedContent, trigger) {
     trigger = Boolean(trigger) && !this.get('isAuthenticated');
@@ -174,7 +175,7 @@ const InternalSession = EmberObject.extend({
         });
       }
     );
-  },
+  }
 
   _clear(trigger) {
     trigger = Boolean(trigger) && this.get('isAuthenticated');
@@ -189,18 +190,18 @@ const InternalSession = EmberObject.extend({
         this.trigger('invalidationSucceeded');
       }
     });
-  },
+  }
 
   _clearWithContent(content, trigger) {
     this.set('content', content);
     return this._clear(trigger);
-  },
+  }
 
   // ObjectProxy shim for content key delegation.
   unknownProperty(key) {
     let content = get(this, 'content');
     return content ? get(content, key) : undefined;
-  },
+  }
 
   setUnknownProperty(key, value) {
     assert('"authenticated" is a reserved key used by Ember Simple Auth!', key !== 'authenticated');
@@ -215,7 +216,7 @@ const InternalSession = EmberObject.extend({
       this._updateStore();
     }
     return result;
-  },
+  }
 
   _updateStore() {
     let data = this.content;
@@ -227,21 +228,23 @@ const InternalSession = EmberObject.extend({
       );
     }
     return this.store.persist(data);
-  },
+  }
 
   _bindToAuthenticatorEvents() {
     const authenticator = this._lookupAuthenticator(this.authenticator);
     authenticator.on('sessionDataUpdated', this._onSessionDataUpdated);
     authenticator.on('sessionDataInvalidated', this._onSessionDataInvalidated);
-  },
+  }
 
-  _onSessionDataUpdated: action(function ({ detail: content }) {
+  @action
+  _onSessionDataUpdated({ detail: content }) {
     this._setup(this.authenticator, content);
-  }),
+  }
 
-  _onSessionDataInvalidated: action(function () {
+  @action
+  _onSessionDataInvalidated() {
     this._clear(true);
-  }),
+  }
 
   _bindToStoreEvents() {
     this.store.on('sessionDataUpdated', ({ detail: content }) => {
@@ -274,7 +277,7 @@ const InternalSession = EmberObject.extend({
         }
       }
     });
-  },
+  }
 
   _lookupAuthenticator(authenticatorName) {
     let owner = getOwner(this);
@@ -285,43 +288,29 @@ const InternalSession = EmberObject.extend({
     );
     setOwner(authenticator, owner);
     return authenticator;
-  },
+  }
 
   on(event, cb) {
     this.sessionEvents.addEventListener(event, cb);
-  },
+  }
 
   off(event, cb) {
     this.sessionEvents.removeEventListener(event, cb);
-  },
+  }
 
   trigger(event, value) {
     this.sessionEvents.dispatchEvent(event, value);
-  },
+  }
 
   setRedirectTarget(url) {
     this.store.setRedirectTarget?.(url);
-  },
+  }
 
   getRedirectTarget() {
     return this.store.getRedirectTarget?.();
-  },
+  }
 
   clearRedirectTarget() {
     return this.store.clearRedirectTarget?.();
-  },
-});
-
-InternalSession.reopenClass({
-  create(parent, ...rest) {
-    let owner = parent && (getOwner(parent) || (typeof parent.lookup === 'function' ? parent : null));
-
-    if (owner) {
-      return this._super(owner.ownerInjection(), ...rest);
-    }
-
-    return this._super(...arguments);
-  },
-});
-
-export default InternalSession;
+  }
+}

@@ -7,10 +7,11 @@ v9 removes resolver-based `session:main` wiring. The session service owns `Inter
 Assign an `InternalSession` on your session service instead of looking it up via `session:main`.
 
 ```js
-import SessionService from 'ember-simple-auth/services/session';
+import { getOwner } from '@ember/application';
+import Service from 'ember-simple-auth/services/session';
 import InternalSession from 'ember-simple-auth/internal-session';
 
-export default class extends SessionService {
-  session = InternalSession.create(this);
+export default class SessionService extends Service {
+  session = new InternalSession(getOwner(this));
 }
 ```

@@ -94,11 +94,9 @@ module('SessionService', function (hooks) {
 
   module('authenticate', function (hooks) {
     hooks.beforeEach(function () {
-      session.reopen({
-        authenticate() {
-          return 'value';
-        },
-      });
+      session.authenticate = function () {
+        return 'value';
+      };
     });
 
     test('authenticates the session', function (assert) {
@@ -115,11 +113,9 @@ module('SessionService', function (hooks) {
 
   module('invalidate', function (hooks) {
     hooks.beforeEach(function () {
-      session.reopen({
-        invalidate() {
-          return 'value';
-        },
-      });
+      session.invalidate = function () {
+        return 'value';
+      };
     });
 
     test('invalidates the session', function (assert) {

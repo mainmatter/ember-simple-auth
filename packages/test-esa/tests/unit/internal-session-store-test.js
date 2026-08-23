@@ -27,7 +27,7 @@ module('InternalSession store injection', function (hooks) {
     });
 
     test('looks up the test session store when created without the resolver', function (assert) {
-      session = InternalSession.create(this.owner);
+      session = new InternalSession(this.owner);
       assert.equal(session.get('store'), this.owner.lookup('session-store:test'));
     });
   });

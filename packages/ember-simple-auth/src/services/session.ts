@@ -85,7 +85,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
 
     if (!this.session) {
       const resolvedSession = owner.lookup('session:main');
-      this.session = resolvedSession ?? InternalSession.create(this);
+      this.session = resolvedSession ?? new InternalSession(owner);
 
       deprecate(
         'Ember Simple Auth: session:main resolver lookup is deprecated.',
