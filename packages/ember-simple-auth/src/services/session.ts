@@ -1,7 +1,9 @@
 import Service from '@ember/service';
 import { getOwner } from '@ember/application';
-import { assert } from '@ember/debug';
+import { assert, deprecate } from '@ember/debug';
+import { associateDestroyableChild } from '@ember/destroyable';
 import Configuration from '../configuration';
+import InternalSession from '../internal-session';
 
 import {
   requireAuthentication,
@@ -81,7 +83,26 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
   constructor(owner: any) {
     super(owner);
 
-    this.session = owner.lookup('session:main');
+    if (!this.session) {
+      const resolvedSession = owner.lookup('session:main');
+      this.session = resolvedSession ?? InternalSession.create(this);
+
+      deprecate(
+        'Ember Simple Auth: session:main resolver lookup is deprecated.',
+        !resolvedSession,
+        {
+          id: 'ember-simple-auth.session-main',
+          until: '9.0.0',
+          for: 'ember-simple-auth',
+          since: {
+            enabled: '8.4.0',
+          },
+          url: 'https://github.com/mainmatter/ember-simple-auth/blob/master/guides/upgrade-to-v9.md#sessionmain-resolver-registration',
+        }
+      );
+
+      associateDestroyableChild(this, this.session);
+    }
   }
 
   /**

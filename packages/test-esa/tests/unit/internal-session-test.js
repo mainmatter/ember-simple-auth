@@ -1,8 +1,10 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { next } from '@ember/runloop';
+import { get, set } from '@ember/object';
 import sinonjs from 'sinon';
 import Authenticator from 'ember-simple-auth/authenticators/base';
+import InternalSession from 'ember-simple-auth/internal-session';
 
 module('InternalSession', function (hooks) {
   setupTest(hooks);
@@ -17,11 +19,12 @@ module('InternalSession', function (hooks) {
 
     this.owner.register('authenticator:test', Authenticator);
     authenticator = this.owner.lookup('authenticator:test');
-    session = this.owner.lookup('session:main');
+    session = InternalSession.create(this.owner);
     store = session.get('store');
   });
 
   hooks.afterEach(function () {
+    session.destroy();
     sinon.restore();
   });
 
@@ -33,6 +36,13 @@ module('InternalSession', function (hooks) {
     } catch (e) {
       assert.ok(true);
     }
+  });
+
+  test('delegates unknown property reads and writes to its content', function (assert) {
+    set(session, 'some', 'data');
+
+    assert.equal(get(session, 'some'), 'data');
+    assert.equal(session.content.some, 'data');
   });
 
   function itHandlesAuthenticatorEvents(preparation) {

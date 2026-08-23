@@ -1,6 +1,5 @@
 import { isEmpty, isNone } from '@ember/utils';
-import ObjectProxy from '@ember/object/proxy';
-import { action, set } from '@ember/object';
+import EmberObject, { action, get, set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
 import { getOwner, setOwner } from '@ember/application';
 import { isTesting } from '@embroider/macros';
@@ -12,11 +11,11 @@ class SessionEventTarget extends EsaEventTarget {}
   __An internal implementation of Session. Communicates with stores and emits events.__
 
   @class InternalSession
-  @extends ObjectProxy
+  @extends EmberObject
   @private
 */
 
-export default ObjectProxy.extend({
+const InternalSession = EmberObject.extend({
   /**
     Triggered whenever the session is successfully authenticated. This happens
     when the session gets authenticated via
@@ -45,6 +44,7 @@ export default ObjectProxy.extend({
     @private
   */
   authenticator: null,
+  content: null,
   store: null,
   isAuthenticated: false,
   attemptedTransition: null,
@@ -196,9 +196,21 @@ export default ObjectProxy.extend({
     return this._clear(trigger);
   },
 
+  // ObjectProxy shim for content key delegation.
+  unknownProperty(key) {
+    let content = get(this, 'content');
+    return content ? get(content, key) : undefined;
+  },
+
   setUnknownProperty(key, value) {
     assert('"authenticated" is a reserved key used by Ember Simple Auth!', key !== 'authenticated');
-    let result = this._super(key, value);
+    let content = get(this, 'content');
+    assert(
+      `Cannot delegate set('${key}', ${value}) to the 'content' property of the internal session: its 'content' is undefined.`,
+      content
+    );
+    let result = set(content, key, value);
+    this.notifyPropertyChange(key);
     if (!/^_/.test(key)) {
       this._updateStore();
     }
@@ -299,3 +311,17 @@ export default ObjectProxy.extend({
     return this.store.clearRedirectTarget?.();
   },
 });
+
+InternalSession.reopenClass({
+  create(parent, ...rest) {
+    let owner = parent && (getOwner(parent) || (typeof parent.lookup === 'function' ? parent : null));
+
+    if (owner) {
+      return this._super(owner.ownerInjection(), ...rest);
+    }
+
+    return this._super(...arguments);
+  },
+});
+
+export default InternalSession;
