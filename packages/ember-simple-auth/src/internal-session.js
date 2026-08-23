@@ -2,7 +2,9 @@ import { isEmpty, isNone } from '@ember/utils';
 import EmberObject, { action, get, set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
 import { getOwner, setOwner } from '@ember/application';
+import { associateDestroyableChild } from '@ember/destroyable';
 import { isTesting } from '@embroider/macros';
+import Configuration from './configuration';
 import EsaEventTarget from './-internals/event-target';
 
 class SessionEventTarget extends EsaEventTarget {}
@@ -51,19 +53,29 @@ export default class InternalSession extends EmberObject {
   sessionEvents = null;
   redirectTarget = null;
 
-  constructor(owner) {
+  constructor(owner, sessionStore) {
     super(owner);
 
     this.set('content', { authenticated: {} });
-    let storeFactory = 'session-store:application';
-    if (isTesting()) {
-      storeFactory = 'session-store:test';
+    this.sessionEvents = new SessionEventTarget();
+    this._busy = false;
+
+    const store = sessionStore || this._lookupStore();
+    assert('Ember Simple Auth: InternalSession requires a session store.', store);
+    this.set('store', store);
+    if (sessionStore) {
+      associateDestroyableChild(this, sessionStore);
+    }
+    this._bindToStoreEvents();
+  }
+
+  _lookupStore() {
+    if (!Configuration.useResolver) {
+      return null;
     }
 
-    this.sessionEvents = new SessionEventTarget();
-    this.set('store', getOwner(this).lookup(storeFactory));
-    this._busy = false;
-    this._bindToStoreEvents();
+    let storeFactory = isTesting() ? 'session-store:test' : 'session-store:application';
+    return getOwner(this).lookup(storeFactory);
   }
 
   authenticate(authenticatorFactory, ...args) {
