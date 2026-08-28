@@ -27,12 +27,12 @@ export default class SessionService extends Session<Data> {
   }
 
   createAuthenticators(owner: any) {
-    return {
-      'authenticator:oauth2': new OAuth2(owner),
-      'authenticator:oauth2-implicit-grant': new OAuth2ImplicitGrant(owner),
-      'authenticator:torii': new Torii(owner),
-      ...(isTesting() ? { 'authenticator:test': new TestAuthenticator(owner) } : {}),
-    };
+    return [
+      new OAuth2(owner),
+      new OAuth2ImplicitGrant(owner),
+      new Torii(owner),
+      ...(isTesting() ? [new TestAuthenticator(owner)] : []),
+    ];
   }
 
   handleAuthentication(routeAfterInvalidation: string) {

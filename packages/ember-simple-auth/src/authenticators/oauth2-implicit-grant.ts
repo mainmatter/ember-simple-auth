@@ -55,6 +55,8 @@ export type ImplicitGrantData = {
  @public
  */
 export default class OAuth2ImplicitGrantAuthenticator extends BaseAuthenticator {
+  static id = 'oauth2-implicit-grant';
+
   /**
    Restores the session from a session data object; __will return a resolving
    promise when there is a non-empty `access_token` in the session data__ and

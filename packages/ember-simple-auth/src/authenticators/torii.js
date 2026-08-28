@@ -36,6 +36,7 @@ deprecate('Ember Simple Auth: The Torii authenticator is deprecated.', false, {
   @public
 */
 export default class ToriiAuthenticator extends BaseAuthenticator {
+  static id = 'torii';
   _provider = null;
 
   /**
