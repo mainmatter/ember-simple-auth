@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import { currentURL, visit, fillIn, click } from '@ember/test-helpers';
+import { currentURL, visit, fillIn, click, getContext } from '@ember/test-helpers';
 import Pretender from 'pretender';
 import {
   invalidateSession,
@@ -8,6 +8,8 @@ import {
   currentSession,
 } from 'ember-simple-auth/test-support';
 import config from 'test-app/config/environment';
+
+const useResolver = config['ember-simple-auth'].useResolver ?? true;
 
 module('Acceptance: Authentication', function (hooks) {
   setupApplicationTest(hooks);
@@ -17,6 +19,19 @@ module('Acceptance: Authentication', function (hooks) {
     if (server) {
       server.shutdown();
     }
+  });
+
+  test('does not register session:main when useResolver is false', function (assert) {
+    if (useResolver) {
+      assert.expect(0);
+      return;
+    }
+
+    const { owner } = getContext() as { owner: { factoryFor: (name: string) => unknown } };
+
+    assert.false(config['ember-simple-auth'].useResolver);
+    assert.notOk(owner.factoryFor('session:main'));
+    assert.notOk(owner.factoryFor('session-store:cookie'));
   });
 
   test('logging in with correct credentials works', async function (assert) {
@@ -38,13 +53,22 @@ module('Acceptance: Authentication', function (hooks) {
     assert
       .dom('[data-test-reactivity] [data-is-authenticated]')
       .doesNotExist('not authenticated yet.');
+    assert
+      .dom('[data-test-reactivity] [data-access-token]')
+      .doesNotExist('no session data yet.');
     await fillIn('[data-test-identification]', 'identification');
     await fillIn('[data-test-password]', 'password');
     await click('button[type="submit"]');
 
+    const session = currentSession();
+    assert.true(session.get('isAuthenticated'), 'session is authenticated after login');
+    assert.equal(session.get('data.authenticated.access_token'), 'secret token!');
     assert
       .dom('[data-test-reactivity] [data-is-authenticated]')
       .exists('session.isAuthenticated is reactive');
+    assert
+      .dom('[data-test-reactivity] [data-access-token]')
+      .exists('session.data.authenticated.access_token is reactive');
     assert.equal(currentURL(), '/');
   });
 

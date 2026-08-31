@@ -46,6 +46,10 @@ module.exports = function (environment) {
     fastboot: {
       hostWhitelist: [/^localhost:\d+$/],
     },
+
+    'ember-simple-auth': {
+      ...(process.env.PUBLIC_ESA_USE_RESOLVER === 'false' ? { useResolver: false } : {}),
+    },
   };
 
   if (environment === 'development') {

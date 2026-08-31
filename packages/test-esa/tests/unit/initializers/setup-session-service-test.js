@@ -4,7 +4,11 @@ import { registerDeprecationHandler } from '@ember/debug';
 import sinonjs from 'sinon';
 import Configuration from 'ember-simple-auth/configuration';
 import InternalSession from 'ember-simple-auth/internal-session';
+import SessionService from 'ember-simple-auth/services/session';
+import Ephemeral from 'ember-simple-auth/session-stores/ephemeral';
+import TestAuthenticator from 'ember-simple-auth/authenticators/test';
 import setupSession from 'ember-simple-auth/initializers/setup-session';
+import emberSimpleAuthInitializer from 'ember-simple-auth/initializers/ember-simple-auth';
 
 const SESSION_MAIN_DEPRECATION_ID = 'ember-simple-auth.session-main';
 
@@ -43,7 +47,7 @@ module('setupSessionService', function (hooks) {
     sinon.restore();
   });
 
-  test('looks up session:main when useInternalSessionLookup is true', function (assert) {
+  test('looks up session:main when useResolver is true', function (assert) {
     const deprecations = collectDeprecations();
 
     assert.equal(this.owner.lookup('service:session').session, this.owner.lookup('session:main'));
@@ -53,8 +57,14 @@ module('setupSessionService', function (hooks) {
     );
   });
 
-  test('constructs InternalSession when useInternalSessionLookup is false', function (assert) {
-    Configuration.load({ useInternalSessionLookup: false });
+  test('looks up session-store:test when useResolver is true', function (assert) {
+    const service = this.owner.lookup('service:session');
+
+    assert.equal(service.session.store, this.owner.lookup('session-store:test'));
+  });
+
+  test('constructs InternalSession when useResolver is false', function (assert) {
+    Configuration.load({ useResolver: false });
     const deprecations = collectDeprecations();
     const originalLookup = this.owner.lookup.bind(this.owner);
     this.owner.lookup = (fullName, ...args) => {
@@ -64,6 +74,15 @@ module('setupSessionService', function (hooks) {
 
       return originalLookup(fullName, ...args);
     };
+
+    this.owner.register(
+      'service:session',
+      class TestSession extends SessionService {
+        createAuthenticators() {
+          return [];
+        }
+      }
+    );
 
     const service = this.owner.lookup('service:session');
 
@@ -74,8 +93,92 @@ module('setupSessionService', function (hooks) {
     );
   });
 
-  test('does not register session:main when useInternalSessionLookup is false', function (assert) {
-    Configuration.load({ useInternalSessionLookup: false });
+  test('createSessionStore constructs a store when useResolver is false', function (assert) {
+    Configuration.load({ useResolver: false });
+
+    this.owner.register(
+      'service:session',
+      class TestSession extends SessionService {
+        createSessionStore(owner) {
+          return new Ephemeral(owner);
+        }
+
+        createAuthenticators() {
+          return [];
+        }
+      }
+    );
+
+    const service = this.owner.lookup('service:session');
+
+    assert.ok(service.session.store instanceof Ephemeral);
+  });
+
+  test('asserts when createAuthenticators is missing when useResolver is false', function (assert) {
+    Configuration.load({ useResolver: false });
+
+    assert.throws(() => this.owner.lookup('service:session'), /createAuthenticators/);
+  });
+
+  test('createAuthenticators override is used when useResolver is false', async function (assert) {
+    Configuration.load({ useResolver: false });
+
+    this.owner.register(
+      'service:session',
+      class TestSession extends SessionService {
+        createAuthenticators(owner) {
+          return [new TestAuthenticator(owner)];
+        }
+      }
+    );
+
+    const service = this.owner.lookup('service:session');
+    await service.session.authenticate('authenticator:test', { token: 't' });
+
+    assert.true(service.session.isAuthenticated);
+    assert.equal(service.session.content.authenticated.authenticator, 'authenticator:test');
+  });
+
+  test('restore uses the persisted authenticator name from createAuthenticators', async function (assert) {
+    Configuration.load({ useResolver: false });
+
+    this.owner.register(
+      'service:session',
+      class TestSession extends SessionService {
+        createAuthenticators(owner) {
+          return [new TestAuthenticator(owner)];
+        }
+      }
+    );
+
+    const service = this.owner.lookup('service:session');
+    await service.session.store.persist({
+      authenticated: { authenticator: 'authenticator:test', token: 't' },
+    });
+    await service.session.restore();
+
+    assert.true(service.session.isAuthenticated);
+  });
+
+  test('uses Ephemeral when useResolver is false and createSessionStore is not overridden', function (assert) {
+    Configuration.load({ useResolver: false });
+
+    this.owner.register(
+      'service:session',
+      class TestSession extends SessionService {
+        createAuthenticators() {
+          return [];
+        }
+      }
+    );
+
+    const service = this.owner.lookup('service:session');
+
+    assert.ok(service.session.store instanceof Ephemeral);
+  });
+
+  test('does not register session:main when useResolver is false', function (assert) {
+    Configuration.load({ useResolver: false });
     const registry = createRegistry();
 
     setupSession(registry);
@@ -83,7 +186,7 @@ module('setupSessionService', function (hooks) {
     assert.notOk(registry.registrations['session:main']);
   });
 
-  test('registers session:main when useInternalSessionLookup is true', function (assert) {
+  test('registers session:main when useResolver is true', function (assert) {
     const registry = createRegistry();
 
     setupSession(registry);
@@ -91,7 +194,7 @@ module('setupSessionService', function (hooks) {
     assert.ok(registry.registrations['session:main']);
   });
 
-  test('asserts when useInternalSessionLookup is true and session:main is missing', function (assert) {
+  test('asserts when useResolver is true and session:main is missing', function (assert) {
     const originalLookup = this.owner.lookup.bind(this.owner);
     this.owner.lookup = (fullName, ...args) => {
       if (fullName === 'session:main') {
@@ -102,5 +205,59 @@ module('setupSessionService', function (hooks) {
     };
 
     assert.throws(() => this.owner.lookup('service:session'));
+  });
+
+  test('registers session-store:test when useResolver is true', function (assert) {
+    Configuration.load({ useResolver: true });
+    const registry = createRegistry();
+
+    setupSession(registry);
+
+    assert.ok(registry.registrations['session-store:test']);
+  });
+
+  test('does not register session-store:test when useResolver is false', function (assert) {
+    Configuration.load({ useResolver: false });
+    const registry = createRegistry();
+
+    setupSession(registry);
+
+    assert.notOk(registry.registrations['session-store:test']);
+  });
+
+  test('registers built-in session stores when useResolver is true', function (assert) {
+    const registry = {
+      registrations: {},
+      register(name, factory) {
+        this.registrations[name] = factory;
+      },
+      resolveRegistration() {
+        return { rootURL: '/', 'ember-simple-auth': {} };
+      },
+    };
+
+    emberSimpleAuthInitializer.initialize(registry);
+
+    assert.ok(registry.registrations['session-store:adaptive']);
+    assert.ok(registry.registrations['session-store:cookie']);
+    assert.ok(registry.registrations['session-store:local-storage']);
+  });
+
+  test('does not register built-in session stores when useResolver is false', function (assert) {
+    const registry = {
+      registrations: {},
+      register(name, factory) {
+        this.registrations[name] = factory;
+      },
+      resolveRegistration() {
+        return { rootURL: '/', 'ember-simple-auth': { useResolver: false } };
+      },
+    };
+
+    emberSimpleAuthInitializer.initialize(registry);
+
+    assert.notOk(registry.registrations['session-store:adaptive']);
+    assert.notOk(registry.registrations['session-store:cookie']);
+    assert.notOk(registry.registrations['session-store:local-storage']);
   });
 });

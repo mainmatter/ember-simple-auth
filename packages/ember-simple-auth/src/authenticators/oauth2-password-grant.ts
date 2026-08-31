@@ -63,6 +63,8 @@ export interface OAuth2Response extends Response {
   @public
 */
 export default class OAuth2PasswordGrantAuthenticator extends BaseAuthenticator {
+  static id = 'oauth2-password-grant';
+
   /**
     Triggered when the authenticator refreshed the access token (see
     [RFC 6749, section 6](http://tools.ietf.org/html/rfc6749#section-6)).

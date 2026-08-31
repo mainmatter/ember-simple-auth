@@ -4,8 +4,15 @@
 </div>
 
 <div data-test-fastboot={{this.fastboot.isFastBoot}} hidden></div>
+<div
+  data-testid='use-resolver'
+  data-use-resolver={{if this.useResolver 'true' 'false'}}
+  data-session-main={{if this.sessionMainRegistered 'true' 'false'}}
+  hidden
+></div>
 
 <div data-test-reactivity hidden>
   <!-- test SessionService reactivity -->
   <span data-is-authenticated={{this.session.isAuthenticated}}> </span>
+  <span data-access-token={{this.session.data.authenticated.access_token}}> </span>
 </div>

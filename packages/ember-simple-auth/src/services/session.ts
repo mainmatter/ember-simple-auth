@@ -2,8 +2,11 @@ import Service from '@ember/service';
 import { getOwner } from '@ember/application';
 import { assert, deprecate } from '@ember/debug';
 import { associateDestroyableChild } from '@ember/destroyable';
+import { isTesting } from '@embroider/macros';
 import Configuration from '../configuration';
 import InternalSession from '../internal-session';
+import Ephemeral from '../session-stores/ephemeral';
+import type EsaBaseAuthenticator from '../authenticators/base';
 
 import {
   requireAuthentication,
@@ -13,8 +16,7 @@ import {
   handleSessionInvalidated,
 } from '../-internals/routing';
 import type Transition from '@ember/routing/transition';
-import { alias, readOnly } from '@ember/object/computed';
-import type EsaBaseSessionStore from '../session-stores/base';
+import EsaBaseSessionStore, { setupStore } from '../session-stores/base';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -33,9 +35,10 @@ type InternalSessionMock<Data> = {
   isAuthenticated: boolean;
   content: Data;
   store: unknown;
-  attemptedTransition: null;
+  attemptedTransition: null | Transition;
+  _authenticators?: EsaBaseAuthenticator[] | null;
   on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
-  authenticate: (authenticator: string, ...args: any[]) => Promise<void>;
+  authenticate: (authenticator: AuthenticatorReference, ...args: any[]) => Promise<void>;
   invalidate: (...args: any[]) => Promise<void>;
   restore: () => Promise<void>;
   set(key: string, value: any): void;
@@ -43,6 +46,12 @@ type InternalSessionMock<Data> = {
   getRedirectTarget: EsaBaseSessionStore['getRedirectTarget'];
   clearRedirectTarget: EsaBaseSessionStore['clearRedirectTarget'];
 };
+
+export type AuthenticatorClass = (new (...args: any[]) => EsaBaseAuthenticator) & {
+  id: string;
+};
+
+export type AuthenticatorReference = string | EsaBaseAuthenticator | AuthenticatorClass;
 
 export type ExtraAuthenticationArgs = {
   redirectTarget?: string;
@@ -82,7 +91,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     super(owner);
 
     if (!this.session) {
-      if (Configuration.useInternalSessionLookup) {
+      if (Configuration.useResolver) {
         this.session = owner.lookup('session:main');
         assert('Ember Simple Auth: session:main is not registered.', this.session);
         deprecate('Ember Simple Auth: session:main resolver lookup is deprecated.', false, {
@@ -93,15 +102,82 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
             available: '8.4.0',
             enabled: '8.4.0',
           },
-          url: 'https://github.com/mainmatter/ember-simple-auth/blob/master/guides/upgrade-to-v9.md#sessionmain-resolver-registration',
+          url: 'https://github.com/mainmatter/ember-simple-auth/blob/master/guides/upgrade-to-v9.md#resolver-registration',
         });
+        if (typeof this.createAuthenticators === 'function' && !this.session._authenticators) {
+          const authenticators = this.createAuthenticators(owner);
+          this.session._authenticators = authenticators;
+          authenticators.forEach(authenticator => {
+            associateDestroyableChild(this.session, authenticator);
+          });
+        }
       } else {
-        this.session = new InternalSession(owner) as unknown as InternalSessionMock<Data>;
+        assert(
+          'Ember Simple Auth: implement createAuthenticators on the session service.',
+          typeof this.createAuthenticators === 'function'
+        );
+        this.session = new InternalSession(owner, setupStore(this.createSessionStore(owner)), {
+          authenticators: this.createAuthenticators(owner),
+        }) as unknown as InternalSessionMock<Data>;
       }
 
       associateDestroyableChild(this, this.session);
     }
   }
+
+  /**
+    Constructs the session store. Override this to use the session-store of your choice.
+    If you have a `app/session-stores/application`, you can import it directly and initialize in this method.
+
+    ```js
+    // app/services/session.js
+    import SessionService from 'ember-simple-auth/services/session';
+    import SessionStore from '../session-stores/application';
+
+    export default class Session extends SessionService {
+      createSessionStore(owner) {
+        return new SessionStore(owner);
+      }
+    }
+    ```
+
+    @memberof SessionService
+    @method createSessionStore
+    @param {Object} owner The application owner
+    @return {BaseStore} The session store instance
+    @public
+  */
+  createSessionStore(owner: any): EsaBaseSessionStore {
+    if (isTesting()) {
+      return new Ephemeral(owner);
+    }
+
+    assert('Ember Simple Auth: implement createSessionStore on the session service.', false);
+  }
+
+  /**
+    Constructs the authenticators used by this session. Declare this to use the
+    authenticators of your choice. Each instance needs a static id.
+
+    ```js
+    // app/services/session.js
+    import SessionService from 'ember-simple-auth/services/session';
+    import OAuth2 from '../authenticators/oauth2';
+
+    export default class Session extends SessionService {
+      createAuthenticators(owner) {
+        return [new OAuth2(owner)];
+      }
+    }
+    ```
+
+    @memberof SessionService
+    @method createAuthenticators
+    @param {Object} owner The application owner
+    @return {Array} Authenticator instances
+    @public
+  */
+  createAuthenticators?(owner: any): EsaBaseAuthenticator[];
 
   /**
    * Says whether the service was correctly initialized by the {#linkplain SessionService.setup}
@@ -118,7 +194,9 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default false
     @public
   */
-  @readOnly('session.isAuthenticated') declare isAuthenticated: boolean;
+  get isAuthenticated(): boolean {
+    return Boolean(this.session?.isAuthenticated);
+  }
 
   /**
     The current session data as a plain object. The
@@ -135,7 +213,9 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default { authenticated: {} }
     @public
   */
-  @readOnly('session.content') declare data: Data;
+  get data(): Data {
+    return (this.session?.content ?? { authenticated: {} }) as Data;
+  }
 
   /**
     The session store.
@@ -147,7 +227,9 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default null
     @public
   */
-  @readOnly('session.store') declare store: unknown;
+  get store(): unknown {
+    return this.session?.store;
+  }
 
   /**
     A previously attempted but intercepted transition (e.g. by the
@@ -163,8 +245,15 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default null
     @public
   */
-  @alias('session.attemptedTransition')
-  attemptedTransition: null | Transition = null;
+  get attemptedTransition(): null | Transition {
+    return this.session?.attemptedTransition ?? null;
+  }
+
+  set attemptedTransition(value: null | Transition) {
+    if (this.session) {
+      this.session.attemptedTransition = value;
+    }
+  }
 
   get redirectTargetKey(): string | null {
     const store = this.store as { key?: string; cookieName?: string };
@@ -216,12 +305,12 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
 
     @memberof SessionService
     @method authenticate
-    @param {String} authenticator The authenticator to use to authenticate the session
+    @param {String|BaseAuthenticator|Function} authenticator The authenticator to use to authenticate the session
     @param {Any} [...args] The arguments to pass to the authenticator; depending on the type of authenticator these might be a set of credentials, a Facebook OAuth Token, etc.
     @return {Promise} A promise that resolves when the session was authenticated successfully and rejects otherwise
     @public
   */
-  authenticate(authenticator: string, ...args: any[]) {
+  authenticate(authenticator: AuthenticatorReference, ...args: any[]) {
     return this.session.authenticate(authenticator, ...args);
   }
 
@@ -395,7 +484,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
 
   /**
     Stores the `redirectTarget` in both `globalThis.sessionStorage` and the configured `session-store`.
-    Key is computed based on the `session-store:application` `key` or `cookieName` property.
+    Key is computed based on the session store `key` or `cookieName` property.
 
     This method is internally called by {@linkplain SessionService.requireAuthentication}.
 
@@ -412,7 +501,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
 
   /**
     Retrieves the `redirectTarget` from `globalThis.sessionStorage` first,
-    falls back to `session-store:application` when nothing's found.
+    falls back to the session store when nothing's found.
 
     This method is internally called by {@linkplain SessionService.handleAuthentication}.
 
@@ -431,7 +520,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
   }
 
   /**
-    Clears the `redirectTarget` from `globalThis.sessionStorage` and the `session-store:application`.
+    Clears the `redirectTarget` from `globalThis.sessionStorage` and the session store.
 
     This method is internally called by {@linkplain SessionService.handleAuthentication}.
 
