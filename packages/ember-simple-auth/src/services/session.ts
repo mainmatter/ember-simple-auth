@@ -36,6 +36,7 @@ type InternalSessionMock<Data> = {
   content: Data;
   store: unknown;
   attemptedTransition: null | Transition;
+  _authenticators?: EsaBaseAuthenticator[] | null;
   on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
   authenticate: (authenticator: AuthenticatorReference, ...args: any[]) => Promise<void>;
   invalidate: (...args: any[]) => Promise<void>;
@@ -103,6 +104,13 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
           },
           url: 'https://github.com/mainmatter/ember-simple-auth/blob/master/guides/upgrade-to-v9.md#resolver-registration',
         });
+        if (typeof this.createAuthenticators === 'function' && !this.session._authenticators) {
+          const authenticators = this.createAuthenticators(owner);
+          this.session._authenticators = authenticators;
+          authenticators.forEach(authenticator => {
+            associateDestroyableChild(this.session, authenticator);
+          });
+        }
       } else {
         assert(
           'Ember Simple Auth: implement createAuthenticators on the session service.',

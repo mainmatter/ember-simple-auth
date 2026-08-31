@@ -48,7 +48,7 @@ module.exports = function (environment) {
     },
 
     'ember-simple-auth': {
-      useResolver: process.env.ESA_USE_RESOLVER !== 'false',
+      ...(process.env.PUBLIC_ESA_USE_RESOLVER === 'false' ? { useResolver: false } : {}),
     },
   };
 

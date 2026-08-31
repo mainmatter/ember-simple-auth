@@ -4,7 +4,7 @@ declare const config: {
   modulePrefix: string;
   podModulePrefix: string;
   'ember-simple-auth': {
-    useResolver: boolean;
+    useResolver?: boolean;
   };
 };
 
