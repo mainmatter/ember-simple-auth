@@ -349,8 +349,8 @@ importers:
         specifier: 9.1.0
         version: 9.1.0(@ember/test-helpers@5.4.3(@babel/core@7.28.6)(@glint/template@1.7.7))(qunit@2.26.0)
       ember-resolver:
-        specifier: 11.0.1
-        version: 11.0.1(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5))
+        specifier: 13.2.0
+        version: 13.2.0
       ember-simple-auth:
         specifier: link:../ember-simple-auth
         version: link:../ember-simple-auth
@@ -494,8 +494,8 @@ importers:
         specifier: 9.1.0
         version: 9.1.0(@ember/test-helpers@5.4.3(@babel/core@7.28.6)(@glint/template@1.7.7))(qunit@2.26.0)
       ember-resolver:
-        specifier: 11.0.1
-        version: 11.0.1(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5))
+        specifier: 13.2.0
+        version: 13.2.0
       ember-source:
         specifier: 6.8.1
         version: 6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5)
@@ -3759,6 +3759,7 @@ packages:
 
   charm@1.0.2:
     resolution: {integrity: sha512-wqW3VdPnlSWT4eRiYX+hcs+C6ViBPUWk1qTCd+37qw9kEm/a5n2qcyQDMBWvSYKN/ctqZzeXNQaeBjOetJJUkw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   chevrotain-allstar@0.4.1:
     resolution: {integrity: sha512-PvVJm3oGqrveUVW2Vt/eZGeiAIsJszYweUcYwcskg9e+IubNYKKD+rHHem7A6XVO22eDAL+inxNIGAzZ/VIWlA==}
@@ -4934,14 +4935,8 @@ packages:
       '@ember/test-helpers': '>=3.0.3'
       qunit: ^2.13.0
 
-  ember-resolver@11.0.1:
-    resolution: {integrity: sha512-ucBk3oM+PR+AfYoSUXeQh8cDQS1sSiEKp4Pcgbew5cFMSqPxJfqd1zyZsfQKNTuyubeGmWxBOyMVSTvX2LeCyg==}
-    engines: {node: 14.* || 16.* || >= 18}
-    peerDependencies:
-      ember-source: ^4.8.3 || >= 5.0.0
-    peerDependenciesMeta:
-      ember-source:
-        optional: true
+  ember-resolver@13.2.0:
+    resolution: {integrity: sha512-A+BffoSKC0ngiczbgaz/IOY66ovZVRRHHIDDi+d7so5i0By8xuB4nXgZZ6Dv3u/3WwoUyixgUvb0xTUO+MtupA==}
 
   ember-rfc176-data@0.3.18:
     resolution: {integrity: sha512-JtuLoYGSjay1W3MQAxt3eINWXNYYQliK90tLwtb8aeCuQK8zKGCRbBodVIrkcTqshULMnRuTOS6t1P7oQk3g6Q==}
@@ -5185,6 +5180,7 @@ packages:
   eslint@9.39.2:
     resolution: {integrity: sha512-LEyamqS7W5HB3ujJyvi0HQK/dtVINZvd5mAAp9eT5S/ujByGjiZLCzPcHVzuXbpJDJF/cxwHlfceVUDZ2lnSTw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -15665,13 +15661,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-resolver@11.0.1(ember-source@6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5)):
-    dependencies:
-      ember-cli-babel: 7.26.11
-    optionalDependencies:
-      ember-source: 6.8.1(@glimmer/component@2.0.0)(rsvp@4.8.5)
-    transitivePeerDependencies:
-      - supports-color
+  ember-resolver@13.2.0: {}
 
   ember-rfc176-data@0.3.18: {}
 
