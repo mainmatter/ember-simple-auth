@@ -32,7 +32,7 @@ type RouteOrCallback = string | (() => void);
 type InternalSessionMock<Data> = {
   isAuthenticated: boolean;
   content: Data;
-  store: unknown;
+  store: EsaBaseSessionStore;
   attemptedTransition: null;
   on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
   authenticate: (authenticator: string, ...args: any[]) => Promise<void>;
@@ -147,7 +147,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default null
     @public
   */
-  @readOnly('session.store') declare store: unknown;
+  @readOnly('session.store') declare store: EsaBaseSessionStore;
 
   /**
     A previously attempted but intercepted transition (e.g. by the
