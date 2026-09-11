@@ -180,7 +180,7 @@ module('InternalSession store injection', function (hooks) {
           new InternalSession(this.owner, store, {
             authenticators: [new TestAuthenticator(this.owner), new TestAuthenticator(this.owner)],
           }),
-        /duplicate authenticator id "test"/
+        /unique, non-empty static string id/
       );
     });
 

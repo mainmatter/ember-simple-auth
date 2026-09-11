@@ -35,12 +35,8 @@ const assertAuthenticators = authenticators => {
   authenticators.forEach(authenticator => {
     const id = authenticator?.constructor?.id;
     assert(
-      'Ember Simple Auth: each authenticator returned from createAuthenticators must have a static string id.',
-      typeof id === 'string' && !isEmpty(id)
-    );
-    assert(
-      `Ember Simple Auth: duplicate authenticator id "${id}" returned from createAuthenticators.`,
-      !seen.has(id)
+      'Ember Simple Auth: each authenticator returned from createAuthenticators must have a unique, non-empty static string id.',
+      typeof id === 'string' && !isEmpty(id) && !seen.has(id)
     );
     seen.add(id);
   });
@@ -275,11 +271,10 @@ export default class InternalSession extends EmberObject {
   }
 
   setUnknownProperty(key, value) {
-    assert('"authenticated" is a reserved key used by Ember Simple Auth!', key !== 'authenticated');
     let content = get(this, 'content');
     assert(
-      `Cannot delegate set('${key}', ${value}) to the 'content' property of the internal session: its 'content' is undefined.`,
-      content
+      `Cannot delegate set('${key}', ${value}) to the internal session: 'content' must be defined and "authenticated" is a reserved key used by Ember Simple Auth.`,
+      key !== 'authenticated' && content
     );
     let result = set(content, key, value);
     this.notifyPropertyChange(key);
