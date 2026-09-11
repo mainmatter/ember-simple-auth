@@ -6,6 +6,8 @@ import { isTesting } from '@embroider/macros';
 import Configuration from '../configuration';
 import InternalSession from '../internal-session';
 import Ephemeral from '../session-stores/ephemeral';
+import TestAuthenticator from '../authenticators/test';
+import type EsaBaseAuthenticator from '../authenticators/base';
 
 import {
   requireAuthentication,
@@ -98,10 +100,9 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
           url: 'https://github.com/mainmatter/ember-simple-auth/blob/master/guides/upgrade-to-v9.md#resolver-registration',
         });
       } else {
-        this.session = new InternalSession(
-          owner,
-          setupStore(this.createSessionStore(owner))
-        ) as unknown as InternalSessionMock<Data>;
+        this.session = new InternalSession(owner, setupStore(this.createSessionStore(owner)), {
+          createAuthenticator: (name: string) => this.createAuthenticator(owner, name),
+        }) as unknown as InternalSessionMock<Data>;
       }
 
       associateDestroyableChild(this, this.session);
@@ -136,6 +137,45 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     }
 
     assert('Ember Simple Auth: implement createSessionStore on the session service.', false);
+  }
+
+  /**
+    Constructs an authenticator by name. Override this to use the authenticators
+    of your choice.
+
+    ```js
+    // app/services/session.js
+    import SessionService from 'ember-simple-auth/services/session';
+    import OAuth2 from '../authenticators/oauth2';
+
+    export default class Session extends SessionService {
+      createAuthenticator(owner, name) {
+        if (name === 'authenticator:oauth2' || name === 'oauth2') {
+          return new OAuth2(owner);
+        }
+      }
+    }
+    ```
+
+    Persist and restore still use the same authenticator name
+    (`authenticator:oauth2`).
+
+    @memberof SessionService
+    @method createAuthenticator
+    @param {Object} owner The application owner
+    @param {String} name The authenticator name passed to `authenticate` / stored on the session
+    @return {BaseAuthenticator} The authenticator instance
+    @public
+  */
+  createAuthenticator(owner: any, name: string): EsaBaseAuthenticator {
+    if (isTesting() && name === 'authenticator:test') {
+      return new TestAuthenticator(owner);
+    }
+
+    assert(
+      `Ember Simple Auth: implement createAuthenticator on the session service (unknown authenticator "${name}").`,
+      false
+    );
   }
 
   /**
@@ -430,7 +470,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
 
   /**
     Stores the `redirectTarget` in both `globalThis.sessionStorage` and the configured `session-store`.
-    Key is computed based on the `session-store:application` `key` or `cookieName` property.
+    Key is computed based on the session store `key` or `cookieName` property.
 
     This method is internally called by {@linkplain SessionService.requireAuthentication}.
 
@@ -447,7 +487,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
 
   /**
     Retrieves the `redirectTarget` from `globalThis.sessionStorage` first,
-    falls back to `session-store:application` when nothing's found.
+    falls back to the session store when nothing's found.
 
     This method is internally called by {@linkplain SessionService.handleAuthentication}.
 
@@ -466,7 +506,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
   }
 
   /**
-    Clears the `redirectTarget` from `globalThis.sessionStorage` and the `session-store:application`.
+    Clears the `redirectTarget` from `globalThis.sessionStorage` and the session store.
 
     This method is internally called by {@linkplain SessionService.handleAuthentication}.
 

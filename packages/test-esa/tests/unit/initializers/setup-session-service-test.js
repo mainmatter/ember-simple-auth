@@ -6,6 +6,7 @@ import Configuration from 'ember-simple-auth/configuration';
 import InternalSession from 'ember-simple-auth/internal-session';
 import SessionService from 'ember-simple-auth/services/session';
 import Ephemeral from 'ember-simple-auth/session-stores/ephemeral';
+import TestAuthenticator from 'ember-simple-auth/authenticators/test';
 import setupSession from 'ember-simple-auth/initializers/setup-session';
 import emberSimpleAuthInitializer from 'ember-simple-auth/initializers/ember-simple-auth';
 
@@ -98,6 +99,62 @@ module('setupSessionService', function (hooks) {
     const service = this.owner.lookup('service:session');
 
     assert.ok(service.session.store instanceof Ephemeral);
+  });
+
+  test('createAuthenticator constructs the test authenticator when useResolver is false', async function (assert) {
+    Configuration.load({ useResolver: false });
+
+    const service = this.owner.lookup('service:session');
+    await service.session.authenticate('authenticator:test', { id: '1' });
+
+    assert.true(service.session.isAuthenticated);
+    assert.equal(service.session.content.authenticated.authenticator, 'authenticator:test');
+  });
+
+  test('createAuthenticator override is used when useResolver is false', async function (assert) {
+    Configuration.load({ useResolver: false });
+    let created;
+
+    this.owner.register(
+      'service:session',
+      class TestSession extends SessionService {
+        createAuthenticator(owner, name) {
+          created = name;
+          return new TestAuthenticator(owner);
+        }
+      }
+    );
+
+    const service = this.owner.lookup('service:session');
+    await service.session.authenticate('authenticator:oauth2', { token: 't' });
+
+    assert.equal(created, 'authenticator:oauth2');
+    assert.true(service.session.isAuthenticated);
+    assert.equal(service.session.content.authenticated.authenticator, 'authenticator:oauth2');
+  });
+
+  test('restore uses createAuthenticator with the persisted authenticator name', async function (assert) {
+    Configuration.load({ useResolver: false });
+    const names = [];
+
+    this.owner.register(
+      'service:session',
+      class TestSession extends SessionService {
+        createAuthenticator(owner, name) {
+          names.push(name);
+          return new TestAuthenticator(owner);
+        }
+      }
+    );
+
+    const service = this.owner.lookup('service:session');
+    await service.session.store.persist({
+      authenticated: { authenticator: 'authenticator:oauth2', token: 't' },
+    });
+    await service.session.restore();
+
+    assert.ok(names.includes('authenticator:oauth2'));
+    assert.true(service.session.isAuthenticated);
   });
 
   test('uses Ephemeral when useResolver is false and createSessionStore is not overridden', function (assert) {

@@ -38,9 +38,10 @@ export default {
   routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
 
   /**
-    When `true`, the session service looks up `session:main` and session stores
-    from the resolver. When `false`, it constructs `InternalSession` and the
-    store via `createSessionStore`.
+    When `true`, the session service looks up `session:main`, session stores,
+    and authenticators from the resolver. When `false`, it constructs
+    `InternalSession` and the store via `createSessionStore`, and authenticators
+    via `createAuthenticator`.
 
     @memberof Configuration
     @property useResolver

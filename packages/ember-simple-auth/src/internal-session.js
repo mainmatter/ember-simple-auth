@@ -53,12 +53,14 @@ export default class InternalSession extends EmberObject {
   sessionEvents = null;
   redirectTarget = null;
 
-  constructor(owner, sessionStore) {
+  constructor(owner, sessionStore, options = {}) {
     super(owner);
 
     this.set('content', { authenticated: {} });
     this.sessionEvents = new SessionEventTarget();
     this._busy = false;
+    this._createAuthenticator = options.createAuthenticator;
+    this._authenticators = this._createAuthenticator ? {} : null;
 
     const store = sessionStore || this._lookupStore();
     assert('Ember Simple Auth: InternalSession requires a session store.', store);
@@ -293,6 +295,27 @@ export default class InternalSession extends EmberObject {
 
   _lookupAuthenticator(authenticatorName) {
     let owner = getOwner(this);
+
+    if (this._createAuthenticator) {
+      let authenticator = this._authenticators[authenticatorName];
+      if (!authenticator) {
+        authenticator = this._createAuthenticator(authenticatorName);
+        assert(
+          `No authenticator for factory "${authenticatorName}" could be found!`,
+          !isNone(authenticator)
+        );
+        setOwner(authenticator, owner);
+        associateDestroyableChild(this, authenticator);
+        this._authenticators[authenticatorName] = authenticator;
+      }
+      return authenticator;
+    }
+
+    assert(
+      'Ember Simple Auth: InternalSession requires createAuthenticator when useResolver is false.',
+      Configuration.useResolver
+    );
+
     let authenticator = owner.lookup(authenticatorName);
     assert(
       `No authenticator for factory "${authenticatorName}" could be found!`,

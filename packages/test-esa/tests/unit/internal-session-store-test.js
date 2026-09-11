@@ -4,6 +4,7 @@ import sinonjs from 'sinon';
 import Configuration from 'ember-simple-auth/configuration';
 import InternalSession from 'ember-simple-auth/internal-session';
 import Ephemeral from 'ember-simple-auth/session-stores/ephemeral';
+import TestAuthenticator from 'ember-simple-auth/authenticators/test';
 
 module('InternalSession store injection', function (hooks) {
   setupApplicationTest(hooks);
@@ -41,6 +42,42 @@ module('InternalSession store injection', function (hooks) {
       Configuration.load({ useResolver: false });
 
       assert.throws(() => new InternalSession(this.owner));
+    });
+  });
+
+  module('authenticator creation', function () {
+    test('looks up authenticators when no createAuthenticator is passed', function (assert) {
+      this.owner.register('authenticator:test', TestAuthenticator);
+      session = new InternalSession(this.owner);
+
+      assert.equal(
+        session._lookupAuthenticator('authenticator:test'),
+        this.owner.lookup('authenticator:test')
+      );
+    });
+
+    test('uses createAuthenticator when it is passed', function (assert) {
+      const store = new Ephemeral(this.owner);
+      const authenticator = new TestAuthenticator(this.owner);
+      session = new InternalSession(this.owner, store, {
+        createAuthenticator: name => {
+          assert.equal(name, 'authenticator:oauth2');
+          return authenticator;
+        },
+      });
+
+      assert.equal(session._lookupAuthenticator('authenticator:oauth2'), authenticator);
+    });
+
+    test('asserts when useResolver is false and createAuthenticator is missing', function (assert) {
+      Configuration.load({ useResolver: false });
+      const store = new Ephemeral(this.owner);
+      session = new InternalSession(this.owner, store);
+
+      assert.throws(
+        () => session._lookupAuthenticator('authenticator:test'),
+        /createAuthenticator/
+      );
     });
   });
 });
