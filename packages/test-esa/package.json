@@ -64,7 +64,7 @@
     "npm-run-all2": "9.0.2",
     "pretender": "3.4.7",
     "qunit": "2.26.0",
-    "qunit-dom": "3.5.1",
+    "qunit-dom": "3.6.0",
     "sinon": "21.0.1",
     "torii": "1.0.0",
     "webpack": "5.103.0"
