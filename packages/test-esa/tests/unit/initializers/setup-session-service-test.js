@@ -101,7 +101,7 @@ module('setupSessionService', function (hooks) {
     assert.ok(service.session.store instanceof Ephemeral);
   });
 
-  test('createAuthenticator constructs the test authenticator when useResolver is false', async function (assert) {
+  test('createAuthenticators constructs the test authenticator when useResolver is false', async function (assert) {
     Configuration.load({ useResolver: false });
 
     const service = this.owner.lookup('service:session');
@@ -111,16 +111,16 @@ module('setupSessionService', function (hooks) {
     assert.equal(service.session.content.authenticated.authenticator, 'authenticator:test');
   });
 
-  test('createAuthenticator override is used when useResolver is false', async function (assert) {
+  test('createAuthenticators override is used when useResolver is false', async function (assert) {
     Configuration.load({ useResolver: false });
-    let created;
 
     this.owner.register(
       'service:session',
       class TestSession extends SessionService {
-        createAuthenticator(owner, name) {
-          created = name;
-          return new TestAuthenticator(owner);
+        createAuthenticators(owner) {
+          return {
+            'authenticator:oauth2': new TestAuthenticator(owner),
+          };
         }
       }
     );
@@ -128,21 +128,20 @@ module('setupSessionService', function (hooks) {
     const service = this.owner.lookup('service:session');
     await service.session.authenticate('authenticator:oauth2', { token: 't' });
 
-    assert.equal(created, 'authenticator:oauth2');
     assert.true(service.session.isAuthenticated);
     assert.equal(service.session.content.authenticated.authenticator, 'authenticator:oauth2');
   });
 
-  test('restore uses createAuthenticator with the persisted authenticator name', async function (assert) {
+  test('restore uses the persisted authenticator name from createAuthenticators', async function (assert) {
     Configuration.load({ useResolver: false });
-    const names = [];
 
     this.owner.register(
       'service:session',
       class TestSession extends SessionService {
-        createAuthenticator(owner, name) {
-          names.push(name);
-          return new TestAuthenticator(owner);
+        createAuthenticators(owner) {
+          return {
+            'authenticator:oauth2': new TestAuthenticator(owner),
+          };
         }
       }
     );
@@ -153,7 +152,6 @@ module('setupSessionService', function (hooks) {
     });
     await service.session.restore();
 
-    assert.ok(names.includes('authenticator:oauth2'));
     assert.true(service.session.isAuthenticated);
   });
 

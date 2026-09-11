@@ -101,7 +101,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
         });
       } else {
         this.session = new InternalSession(owner, setupStore(this.createSessionStore(owner)), {
-          createAuthenticator: (name: string) => this.createAuthenticator(owner, name),
+          authenticators: this.createAuthenticators(owner),
         }) as unknown as InternalSessionMock<Data>;
       }
 
@@ -140,8 +140,9 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
   }
 
   /**
-    Constructs an authenticator by name. Override this to use the authenticators
-    of your choice.
+    Constructs the authenticators used by this session. Override this to use the
+    authenticators of your choice. Keys must match the names passed to
+    `authenticate` and persisted on the session.
 
     ```js
     // app/services/session.js
@@ -149,33 +150,28 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     import OAuth2 from '../authenticators/oauth2';
 
     export default class Session extends SessionService {
-      createAuthenticator(owner, name) {
-        if (name === 'authenticator:oauth2' || name === 'oauth2') {
-          return new OAuth2(owner);
-        }
+      createAuthenticators(owner) {
+        return {
+          'authenticator:oauth2': new OAuth2(owner),
+        };
       }
     }
     ```
 
-    Persist and restore still use the same authenticator name
-    (`authenticator:oauth2`).
-
     @memberof SessionService
-    @method createAuthenticator
+    @method createAuthenticators
     @param {Object} owner The application owner
-    @param {String} name The authenticator name passed to `authenticate` / stored on the session
-    @return {BaseAuthenticator} The authenticator instance
+    @return {Object} Authenticator instances keyed by name
     @public
   */
-  createAuthenticator(owner: any, name: string): EsaBaseAuthenticator {
-    if (isTesting() && name === 'authenticator:test') {
-      return new TestAuthenticator(owner);
+  createAuthenticators(owner: any): Record<string, EsaBaseAuthenticator> {
+    if (isTesting()) {
+      return {
+        'authenticator:test': new TestAuthenticator(owner),
+      };
     }
 
-    assert(
-      `Ember Simple Auth: implement createAuthenticator on the session service (unknown authenticator "${name}").`,
-      false
-    );
+    assert('Ember Simple Auth: implement createAuthenticators on the session service.', false);
   }
 
   /**

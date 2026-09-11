@@ -41,7 +41,7 @@ export default {
     When `true`, the session service looks up `session:main`, session stores,
     and authenticators from the resolver. When `false`, it constructs
     `InternalSession` and the store via `createSessionStore`, and authenticators
-    via `createAuthenticator`.
+    via `createAuthenticators`.
 
     @memberof Configuration
     @property useResolver
