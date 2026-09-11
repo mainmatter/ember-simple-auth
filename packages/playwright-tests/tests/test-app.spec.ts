@@ -38,6 +38,18 @@ STORAGE_SCENARIOS.forEach(scenario => {
       await expect(page.getByRole('heading')).toHaveText('Ember Simple Auth example app');
     });
 
+    test('does not register session:main when useResolver is false', async ({ page }) => {
+      test.skip(
+        process.env.PUBLIC_ESA_USE_RESOLVER !== 'false',
+        'This assertion only applies when useResolver is false.'
+      );
+      await specifyTestAppStorageAdapter(page, scenario);
+      await page.goto('/');
+
+      await expect(page.getByTestId('use-resolver')).toHaveAttribute('data-use-resolver', 'false');
+      await expect(page.getByTestId('use-resolver')).toHaveAttribute('data-session-main', 'false');
+    });
+
     test('can log-in', async ({ page }) => {
       await specifyTestAppStorageAdapter(page, scenario);
       await page.goto('/');

@@ -9,9 +9,9 @@ import {
 } from 'ember-simple-auth/test-support';
 import config from 'test-app/config/environment';
 
-const useResolver = config['ember-simple-auth'].useResolver;
+const useResolver = config['ember-simple-auth'].useResolver ?? true;
 
-module(`Acceptance: Authentication (useResolver: ${useResolver})`, function (hooks) {
+module('Acceptance: Authentication', function (hooks) {
   setupApplicationTest(hooks);
   let server: Pretender;
 
@@ -21,12 +21,17 @@ module(`Acceptance: Authentication (useResolver: ${useResolver})`, function (hoo
     }
   });
 
-  test('boots with the configured useResolver flag', function (assert) {
+  test('does not register session:main when useResolver is false', function (assert) {
+    if (useResolver) {
+      assert.expect(0);
+      return;
+    }
+
     const { owner } = getContext() as { owner: { factoryFor: (name: string) => unknown } };
 
-    assert.strictEqual(config['ember-simple-auth'].useResolver, useResolver);
-    assert.strictEqual(Boolean(owner.factoryFor('session:main')), useResolver);
-    assert.strictEqual(Boolean(owner.factoryFor('session-store:cookie')), useResolver);
+    assert.false(config['ember-simple-auth'].useResolver);
+    assert.notOk(owner.factoryFor('session:main'));
+    assert.notOk(owner.factoryFor('session-store:cookie'));
   });
 
   test('logging in with correct credentials works', async function (assert) {
