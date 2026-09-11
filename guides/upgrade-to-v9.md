@@ -4,13 +4,22 @@ Existing apps keep working with `useResolver: true` (the default). v9 can drop r
 
 ## Resolver registration
 
-Set `useResolver` to `false`. The addon will no longer register `session:main`, `session-store:adaptive`, `session-store:cookie`, `session-store:local-storage`, or `session-store:test`, and will not look up `session-store:application` or `authenticator:*`. Implement `createSessionStore` and `createAuthenticators` on the session service.
+Set `useResolver` to `false`. The addon will no longer register `session:main`, `session-store:adaptive`, `session-store:cookie`, `session-store:local-storage`, or `session-store:test`, and will not look up `session-store:application`. Implement `createSessionStore` and `createAuthenticators` on the session service.
 
 ```js
 // config/environment.js
 ENV['ember-simple-auth'] = {
   useResolver: false,
 };
+```
+
+```js
+// app/authenticators/oauth2.js
+import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
+
+export default class OAuth2 extends OAuth2PasswordGrant {
+  static id = 'oauth2';
+}
 ```
 
 ```js
@@ -25,9 +34,11 @@ export default class Session extends SessionService {
   }
 
   createAuthenticators(owner) {
-    return {
-      'authenticator:oauth2': new OAuth2(owner),
-    };
+    return [new OAuth2(owner)];
   }
 }
 ```
+
+Each authenticator must have a static `id`.
+`authenticate` accepts class, instance, id, or factory name.
+Set `static id` to the old filename.

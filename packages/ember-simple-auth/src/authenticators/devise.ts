@@ -20,6 +20,8 @@ export type NestedRecord = Record<string, string | Record<string, string>>;
   @public
 */
 export default class DeviseAuthenticator extends BaseAuthenticator {
+  static id = 'devise';
+
   /**
     The endpoint on the server that the authentication request is sent to.
 

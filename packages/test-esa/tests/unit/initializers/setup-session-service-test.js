@@ -75,6 +75,15 @@ module('setupSessionService', function (hooks) {
       return originalLookup(fullName, ...args);
     };
 
+    this.owner.register(
+      'service:session',
+      class TestSession extends SessionService {
+        createAuthenticators() {
+          return [];
+        }
+      }
+    );
+
     const service = this.owner.lookup('service:session');
 
     assert.ok(service.session instanceof InternalSession);
@@ -93,6 +102,10 @@ module('setupSessionService', function (hooks) {
         createSessionStore(owner) {
           return new Ephemeral(owner);
         }
+
+        createAuthenticators() {
+          return [];
+        }
       }
     );
 
@@ -101,14 +114,10 @@ module('setupSessionService', function (hooks) {
     assert.ok(service.session.store instanceof Ephemeral);
   });
 
-  test('createAuthenticators constructs the test authenticator when useResolver is false', async function (assert) {
+  test('asserts when createAuthenticators is missing when useResolver is false', function (assert) {
     Configuration.load({ useResolver: false });
 
-    const service = this.owner.lookup('service:session');
-    await service.session.authenticate('authenticator:test', { id: '1' });
-
-    assert.true(service.session.isAuthenticated);
-    assert.equal(service.session.content.authenticated.authenticator, 'authenticator:test');
+    assert.throws(() => this.owner.lookup('service:session'), /createAuthenticators/);
   });
 
   test('createAuthenticators override is used when useResolver is false', async function (assert) {
@@ -118,18 +127,16 @@ module('setupSessionService', function (hooks) {
       'service:session',
       class TestSession extends SessionService {
         createAuthenticators(owner) {
-          return {
-            'authenticator:oauth2': new TestAuthenticator(owner),
-          };
+          return [new TestAuthenticator(owner)];
         }
       }
     );
 
     const service = this.owner.lookup('service:session');
-    await service.session.authenticate('authenticator:oauth2', { token: 't' });
+    await service.session.authenticate('authenticator:test', { token: 't' });
 
     assert.true(service.session.isAuthenticated);
-    assert.equal(service.session.content.authenticated.authenticator, 'authenticator:oauth2');
+    assert.equal(service.session.content.authenticated.authenticator, 'authenticator:test');
   });
 
   test('restore uses the persisted authenticator name from createAuthenticators', async function (assert) {
@@ -139,16 +146,14 @@ module('setupSessionService', function (hooks) {
       'service:session',
       class TestSession extends SessionService {
         createAuthenticators(owner) {
-          return {
-            'authenticator:oauth2': new TestAuthenticator(owner),
-          };
+          return [new TestAuthenticator(owner)];
         }
       }
     );
 
     const service = this.owner.lookup('service:session');
     await service.session.store.persist({
-      authenticated: { authenticator: 'authenticator:oauth2', token: 't' },
+      authenticated: { authenticator: 'authenticator:test', token: 't' },
     });
     await service.session.restore();
 
@@ -157,6 +162,15 @@ module('setupSessionService', function (hooks) {
 
   test('uses Ephemeral when useResolver is false and createSessionStore is not overridden', function (assert) {
     Configuration.load({ useResolver: false });
+
+    this.owner.register(
+      'service:session',
+      class TestSession extends SessionService {
+        createAuthenticators() {
+          return [];
+        }
+      }
+    );
 
     const service = this.owner.lookup('service:session');
 

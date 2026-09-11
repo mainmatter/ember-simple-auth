@@ -6,7 +6,6 @@ import { isTesting } from '@embroider/macros';
 import Configuration from '../configuration';
 import InternalSession from '../internal-session';
 import Ephemeral from '../session-stores/ephemeral';
-import TestAuthenticator from '../authenticators/test';
 import type EsaBaseAuthenticator from '../authenticators/base';
 
 import {
@@ -38,7 +37,7 @@ type InternalSessionMock<Data> = {
   store: unknown;
   attemptedTransition: null | Transition;
   on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
-  authenticate: (authenticator: string, ...args: any[]) => Promise<void>;
+  authenticate: (authenticator: AuthenticatorReference, ...args: any[]) => Promise<void>;
   invalidate: (...args: any[]) => Promise<void>;
   restore: () => Promise<void>;
   set(key: string, value: any): void;
@@ -46,6 +45,12 @@ type InternalSessionMock<Data> = {
   getRedirectTarget: EsaBaseSessionStore['getRedirectTarget'];
   clearRedirectTarget: EsaBaseSessionStore['clearRedirectTarget'];
 };
+
+export type AuthenticatorClass = (new (...args: any[]) => EsaBaseAuthenticator) & {
+  id: string;
+};
+
+export type AuthenticatorReference = string | EsaBaseAuthenticator | AuthenticatorClass;
 
 export type ExtraAuthenticationArgs = {
   redirectTarget?: string;
@@ -99,6 +104,10 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
           url: 'https://github.com/mainmatter/ember-simple-auth/blob/master/guides/upgrade-to-v9.md#resolver-registration',
         });
       } else {
+        assert(
+          'Ember Simple Auth: implement createAuthenticators on the session service.',
+          typeof this.createAuthenticators === 'function'
+        );
         this.session = new InternalSession(owner, setupStore(this.createSessionStore(owner)), {
           authenticators: this.createAuthenticators(owner),
         }) as unknown as InternalSessionMock<Data>;
@@ -139,9 +148,8 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
   }
 
   /**
-    Constructs the authenticators used by this session. Override this to use the
-    authenticators of your choice. Keys must match the names passed to
-    `authenticate` and persisted on the session.
+    Constructs the authenticators used by this session. Declare this to use the
+    authenticators of your choice. Each instance needs a static id.
 
     ```js
     // app/services/session.js
@@ -150,9 +158,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
 
     export default class Session extends SessionService {
       createAuthenticators(owner) {
-        return {
-          'authenticator:oauth2': new OAuth2(owner),
-        };
+        return [new OAuth2(owner)];
       }
     }
     ```
@@ -160,18 +166,10 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @memberof SessionService
     @method createAuthenticators
     @param {Object} owner The application owner
-    @return {Object} Authenticator instances keyed by name
+    @return {Array} Authenticator instances
     @public
   */
-  createAuthenticators(owner: any): Record<string, EsaBaseAuthenticator> {
-    if (isTesting()) {
-      return {
-        'authenticator:test': new TestAuthenticator(owner),
-      };
-    }
-
-    assert('Ember Simple Auth: implement createAuthenticators on the session service.', false);
-  }
+  createAuthenticators?(owner: any): EsaBaseAuthenticator[];
 
   /**
    * Says whether the service was correctly initialized by the {#linkplain SessionService.setup}
@@ -299,12 +297,12 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
 
     @memberof SessionService
     @method authenticate
-    @param {String} authenticator The authenticator to use to authenticate the session
+    @param {String|BaseAuthenticator|Function} authenticator The authenticator to use to authenticate the session
     @param {Any} [...args] The arguments to pass to the authenticator; depending on the type of authenticator these might be a set of credentials, a Facebook OAuth Token, etc.
     @return {Promise} A promise that resolves when the session was authenticated successfully and rejects otherwise
     @public
   */
-  authenticate(authenticator: string, ...args: any[]) {
+  authenticate(authenticator: AuthenticatorReference, ...args: any[]) {
     return this.session.authenticate(authenticator, ...args);
   }
 

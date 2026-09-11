@@ -4,11 +4,51 @@ import { debug, assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 import { associateDestroyableChild } from '@ember/destroyable';
 import { tracked } from '@glimmer/tracking';
-import { isTesting } from '@embroider/macros';
+import { isTesting, isDevelopingApp, macroCondition } from '@embroider/macros';
 import Configuration from './configuration';
 import EsaEventTarget from './-internals/event-target';
 
 class SessionEventTarget extends EsaEventTarget {}
+
+const authenticatorMatches = (authenticator, authenticatorRef) => {
+  if (authenticator === authenticatorRef) {
+    return true;
+  } else if (typeof authenticatorRef === 'function') {
+    return (
+      authenticator.constructor === authenticatorRef || authenticator instanceof authenticatorRef
+    );
+  } else if (typeof authenticatorRef === 'string') {
+    const id = authenticator.constructor.id;
+    return id === authenticatorRef || `authenticator:${id}` === authenticatorRef;
+  } else {
+    return false;
+  }
+};
+
+const assertAuthenticators = authenticators => {
+  if (!authenticators) {
+    return;
+  }
+
+  assert(
+    'Ember Simple Auth: createAuthenticators must return an array of authenticator instances.',
+    Array.isArray(authenticators)
+  );
+
+  const seen = new Set();
+  authenticators.forEach(authenticator => {
+    const id = authenticator?.constructor?.id;
+    assert(
+      'Ember Simple Auth: each authenticator returned from createAuthenticators must have a static id.',
+      !isEmpty(id)
+    );
+    assert(
+      `Ember Simple Auth: duplicate authenticator id "${id}" returned from createAuthenticators.`,
+      !seen.has(id)
+    );
+    seen.add(id);
+  });
+};
 
 /**
   __An internal implementation of Session. Communicates with stores and emits events.__
@@ -61,12 +101,20 @@ export default class InternalSession extends EmberObject {
     this.sessionEvents = new SessionEventTarget();
     this._busy = false;
     this._authenticators = options.authenticators || null;
+    if (macroCondition(isDevelopingApp())) {
+      assertAuthenticators(this._authenticators);
+    }
 
     const store = sessionStore || this._lookupStore();
     assert('Ember Simple Auth: InternalSession requires a session store.', store);
     this.store = store;
     if (sessionStore) {
       associateDestroyableChild(this, sessionStore);
+    }
+    if (this._authenticators) {
+      this._authenticators.forEach(authenticator => {
+        associateDestroyableChild(this, authenticator);
+      });
     }
     this._bindToStoreEvents();
   }
@@ -84,9 +132,9 @@ export default class InternalSession extends EmberObject {
     this._busy = true;
     assert(
       `Session#authenticate requires the authenticator to be specified, was "${authenticatorFactory}"!`,
-      !isEmpty(authenticatorFactory)
+      authenticatorFactory != null && authenticatorFactory !== ''
     );
-    const authenticator = this._lookupAuthenticator(authenticatorFactory);
+    const authenticator = this._findAuthenticator(authenticatorFactory);
 
     return authenticator.authenticate(...args).then(
       content => {
@@ -111,7 +159,7 @@ export default class InternalSession extends EmberObject {
       return Promise.resolve();
     }
 
-    let authenticator = this._lookupAuthenticator(this.authenticator);
+    let authenticator = this._findAuthenticator(this.authenticator);
     return authenticator.invalidate(this.content.authenticated, ...arguments).then(
       () => {
         authenticator.off('sessionDataUpdated', this._onSessionDataUpdated);
@@ -135,7 +183,7 @@ export default class InternalSession extends EmberObject {
         let { authenticator: authenticatorFactory } = restoredContent.authenticated || {};
         if (authenticatorFactory) {
           delete restoredContent.authenticated.authenticator;
-          const authenticator = this._lookupAuthenticator(authenticatorFactory);
+          const authenticator = this._findAuthenticator(authenticatorFactory);
           return authenticator.restore(restoredContent.authenticated).then(
             content => {
               this.content = restoredContent;
@@ -179,7 +227,10 @@ export default class InternalSession extends EmberObject {
   _setup(authenticator, authenticatedContent, trigger) {
     trigger = Boolean(trigger) && !this.get('isAuthenticated');
     this.isAuthenticated = true;
-    this.authenticator = authenticator;
+    this.authenticator =
+      typeof authenticator === 'string'
+        ? authenticator
+        : this._findAuthenticator(authenticator).constructor.id;
     this._withAuthenticated(authenticatedContent);
     this._bindToAuthenticatorEvents();
 
@@ -248,7 +299,7 @@ export default class InternalSession extends EmberObject {
   }
 
   _bindToAuthenticatorEvents() {
-    const authenticator = this._lookupAuthenticator(this.authenticator);
+    const authenticator = this._findAuthenticator(this.authenticator);
     authenticator.on('sessionDataUpdated', this._onSessionDataUpdated);
     authenticator.on('sessionDataInvalidated', this._onSessionDataInvalidated);
   }
@@ -270,7 +321,7 @@ export default class InternalSession extends EmberObject {
         let { authenticator: authenticatorFactory } = content.authenticated || {};
         if (authenticatorFactory) {
           delete content.authenticated.authenticator;
-          const authenticator = this._lookupAuthenticator(authenticatorFactory);
+          const authenticator = this._findAuthenticator(authenticatorFactory);
           authenticator.restore(content.authenticated).then(
             authenticatedContent => {
               this._replaceContent(content);
@@ -296,29 +347,41 @@ export default class InternalSession extends EmberObject {
     });
   }
 
-  _lookupAuthenticator(authenticatorName) {
-    let owner = getOwner(this);
-
+  _findAuthenticator(authenticatorRef) {
     if (this._authenticators) {
-      let authenticator = this._authenticators[authenticatorName];
-      assert(
-        `No matching authenticator was returned from 'SessionService.createAuthenticators': "${authenticatorName}" could be found!`,
-        !isNone(authenticator)
+      const matches = this._authenticators.filter(authenticator =>
+        authenticatorMatches(authenticator, authenticatorRef)
       );
-      return authenticator;
+
+      if (typeof authenticatorRef === 'function') {
+        assert(
+          `Multiple authenticators returned from 'SessionService.createAuthenticators' matched factory "${
+            authenticatorRef.name || authenticatorRef
+          }".`,
+          matches.length <= 1
+        );
+      }
+
+      if (matches[0]) {
+        return matches[0];
+      }
+    }
+
+    if (typeof authenticatorRef === 'string' && authenticatorRef.includes(':')) {
+      const fromRegistry = getOwner(this).lookup(authenticatorRef);
+      if (!isNone(fromRegistry)) {
+        return fromRegistry;
+      }
     }
 
     assert(
       'Ember Simple Auth: InternalSession requires createAuthenticators when useResolver is false.',
-      Configuration.useResolver
+      Boolean(this._authenticators) || Configuration.useResolver
     );
-
-    let authenticator = owner.lookup(authenticatorName);
     assert(
-      `No authenticator for factory "${authenticatorName}" could be found!`,
-      !isNone(authenticator)
+      `No authenticator for factory "${authenticatorRef}" could be found!`,
+      false
     );
-    return authenticator;
   }
 
   on(event, cb) {
