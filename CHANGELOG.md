@@ -1,5 +1,21 @@
 # Changelog
 
+## Release (2026-09-11)
+
+* ember-simple-auth 8.4.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-simple-auth`
+  * [#3121](https://github.com/mainmatter/ember-simple-auth/pull/3121) feat: add `useResolver` flag. Allow session usage without Ember resolver ([@BobrImperator](https://github.com/BobrImperator))
+  * [#3120](https://github.com/mainmatter/ember-simple-auth/pull/3120) Refactor: InternalSession native class (extends EmberObject still) ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :memo: Documentation
+* [#3116](https://github.com/mainmatter/ember-simple-auth/pull/3116) Update `currentUser` guide to mention testing ([@jagthedrummer](https://github.com/jagthedrummer))
+
+#### Committers: 2
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Jeremy Green ([@jagthedrummer](https://github.com/jagthedrummer))
+
 ## Release (2026-06-13)
 
 * ember-simple-auth 8.3.1 (patch)
