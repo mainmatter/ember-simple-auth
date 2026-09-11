@@ -1,4 +1,5 @@
-import { computed } from '@ember/object';
+import { computed, notifyPropertyChange } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { associateDestroyableChild } from '@ember/destroyable';
@@ -148,9 +149,19 @@ export default class AdaptiveStore extends Base {
     @type Integer
     @public
   */
-  _cookieExpirationTime = null;
-  @proxyToInternalStore()
-  cookieExpirationTime!: number | null;
+  @tracked _cookieExpirationTime: number | null = null;
+
+  get cookieExpirationTime(): number | null {
+    return this._cookieExpirationTime;
+  }
+
+  set cookieExpirationTime(value: number | null) {
+    this._cookieExpirationTime = value;
+    if (this._store) {
+      this._store.set('cookieExpirationTime', value);
+    }
+    notifyPropertyChange(this, 'cookieExpirationTime');
+  }
 
   @service('cookies') declare _cookies: CookiesService;
   declare _fastboot: any;

@@ -76,11 +76,6 @@ export default class SessionStore extends AdaptiveStore {
 }
 ```
 
-## Property assignment
-
-Use regular assignment to update custom properties; `Ember.set` and `.set()` also work with tracked fields.
-Declare custom state consumed by templates or reactive getters with `@tracked`.
-
 ## Complete session service
 
 With `useResolver: false` configured above, this service combines a typed cookie store with the OAuth2 authenticator from the earlier example.

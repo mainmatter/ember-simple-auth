@@ -1,8 +1,8 @@
-import { module, skip, test } from 'qunit';
+import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render, settled } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
-import { set } from '@ember/object';
+import { computed, defineProperty, set } from '@ember/object';
 import { createCache, getValue } from '@glimmer/tracking/primitives/cache';
 import Configuration from 'ember-simple-auth/configuration';
 import SessionService from 'ember-simple-auth/services/session';
@@ -59,9 +59,32 @@ for (const useResolver of [true, false]) {
     });
 
     for (const Store of [CookieStore, AdaptiveCookieStore]) {
+      if (useResolver) {
+        test(`${Store.name} updates existing computed consumers`, async function (assert) {
+          assert.expect(7);
+          const store = createSession(this.owner, Store).store;
+          const consumer = { store };
+          defineProperty(
+            consumer,
+            'rememberMe',
+            computed('store.cookieExpirationTime', () => store.cookieExpirationTime !== null)
+          );
+          assert.false(consumer.rememberMe);
+
+          for (const [method, update] of Object.entries(updates)) {
+            update(store, 120);
+            await settled();
+            assert.true(consumer.rememberMe, `${method} invalidates the computed property`);
+
+            update(store, null);
+            await settled();
+            assert.false(consumer.rememberMe);
+          }
+        });
+      }
+
       for (const [method, update] of Object.entries(updates)) {
-        const testUpdate = method === 'assignment' ? skip : test;
-        testUpdate(`${Store.name} remember me updates through ${method}`, async function (assert) {
+        test(`${Store.name} remember me updates through ${method}`, async function (assert) {
           const session = createSession(this.owner, Store);
           this.store = session.store;
           const rememberMe = createCache(() => this.store.cookieExpirationTime !== null);
