@@ -13,6 +13,7 @@ import setupSession from 'ember-simple-auth/initializers/setup-session';
 import emberSimpleAuthInitializer from 'ember-simple-auth/initializers/ember-simple-auth';
 
 const SESSION_MAIN_DEPRECATION_ID = 'ember-simple-auth.session-main';
+const CONFIGURATION_DEPRECATION_ID = 'ember-simple-auth.configuration-resolver';
 
 function collectDeprecations() {
   const deprecations = [];
@@ -25,15 +26,26 @@ function collectDeprecations() {
   return deprecations;
 }
 
-function createRegistry() {
+function createRegistry(useResolver = true) {
   const registrations = {};
 
   return {
     registrations,
+    resolveRegistration() {
+      return { rootURL: '/', 'ember-simple-auth': { useResolver } };
+    },
     register(name, factory) {
       registrations[name] = factory;
     },
   };
+}
+
+function configureSession(owner, config) {
+  owner.register(
+    'config:environment',
+    { ...owner.resolveRegistration('config:environment'), 'ember-simple-auth': config },
+    { instantiate: false }
+  );
 }
 
 module('setupSessionService', function (hooks) {
@@ -56,6 +68,10 @@ module('setupSessionService', function (hooks) {
     assert.ok(
       deprecations.some(({ options }) => options.id === SESSION_MAIN_DEPRECATION_ID),
       'deprecates looking up session:main'
+    );
+    assert.ok(
+      deprecations.some(({ options }) => options.id === CONFIGURATION_DEPRECATION_ID),
+      'suggests overriding createConfiguration without preventing default startup'
     );
   });
 
@@ -127,8 +143,73 @@ module('setupSessionService', function (hooks) {
     assert.strictEqual(service.data.authenticated.token, 'test-token');
   });
 
+  test('loads configuration from config:environment', function (assert) {
+    this.owner.register(
+      'config:environment',
+      {
+        rootURL: '/application/',
+        'ember-simple-auth': { useResolver: false, routeAfterAuthentication: 'dashboard' },
+      },
+      { instantiate: false }
+    );
+    this.owner.register(
+      'service:session',
+      class ApplicationSession extends SessionService {
+        createAuthenticators() {
+          return [];
+        }
+      }
+    );
+
+    this.owner.lookup('service:session');
+
+    assert.strictEqual(Configuration.rootURL, '/application/');
+    assert.strictEqual(Configuration.routeAfterAuthentication, 'dashboard');
+  });
+
+  test('createConfiguration can supply shared configuration before the other factories', function (assert) {
+    const deprecations = collectDeprecations();
+    const calls = [];
+    this.owner.register(
+      'service:session',
+      class ApplicationSession extends SessionService {
+        createConfiguration() {
+          calls.push('configuration');
+          return Configuration.load({
+            useResolver: false,
+            rootURL: '/custom/',
+          });
+        }
+
+        createSessionStore(owner) {
+          calls.push('store');
+          return new Ephemeral(owner);
+        }
+
+        createAuthenticators() {
+          calls.push('authenticators');
+          return [];
+        }
+      }
+    );
+
+    this.owner.lookup('service:session');
+
+    assert.deepEqual(calls, ['configuration', 'store', 'authenticators']);
+    assert.strictEqual(Configuration.rootURL, '/custom/');
+    assert.notOk(deprecations.some(({ options }) => options.id === CONFIGURATION_DEPRECATION_ID));
+  });
+
+  test('loads the legacy baseURL when rootURL is absent', function (assert) {
+    this.owner.register('config:environment', { baseURL: '/legacy/' }, { instantiate: false });
+
+    this.owner.lookup('service:session');
+
+    assert.strictEqual(Configuration.rootURL, '/legacy/');
+  });
+
   test('constructs InternalSession when useResolver is false', function (assert) {
-    Configuration.load({ useResolver: false });
+    configureSession(this.owner, { useResolver: false });
     const deprecations = collectDeprecations();
     const originalLookup = this.owner.lookup.bind(this.owner);
     this.owner.lookup = (fullName, ...args) => {
@@ -158,7 +239,7 @@ module('setupSessionService', function (hooks) {
   });
 
   test('createSessionStore constructs a store when useResolver is false', function (assert) {
-    Configuration.load({ useResolver: false });
+    configureSession(this.owner, { useResolver: false });
 
     this.owner.register(
       'service:session',
@@ -179,13 +260,13 @@ module('setupSessionService', function (hooks) {
   });
 
   test('asserts when createAuthenticators is missing when useResolver is false', function (assert) {
-    Configuration.load({ useResolver: false });
+    configureSession(this.owner, { useResolver: false });
 
     assert.throws(() => this.owner.lookup('service:session'), /createAuthenticators/);
   });
 
   test('createAuthenticators override is used when useResolver is false', async function (assert) {
-    Configuration.load({ useResolver: false });
+    configureSession(this.owner, { useResolver: false });
 
     this.owner.register(
       'service:session',
@@ -204,7 +285,7 @@ module('setupSessionService', function (hooks) {
   });
 
   test('restore uses the persisted authenticator name from createAuthenticators', async function (assert) {
-    Configuration.load({ useResolver: false });
+    configureSession(this.owner, { useResolver: false });
 
     this.owner.register(
       'service:session',
@@ -225,7 +306,7 @@ module('setupSessionService', function (hooks) {
   });
 
   test('uses Ephemeral when useResolver is false and createSessionStore is not overridden', function (assert) {
-    Configuration.load({ useResolver: false });
+    configureSession(this.owner, { useResolver: false });
 
     this.owner.register(
       'service:session',
@@ -242,10 +323,9 @@ module('setupSessionService', function (hooks) {
   });
 
   test('does not register session:main when useResolver is false', function (assert) {
-    Configuration.load({ useResolver: false });
-    const registry = createRegistry();
+    const registry = createRegistry(false);
 
-    setupSession(registry);
+    emberSimpleAuthInitializer.initialize(registry);
 
     assert.notOk(registry.registrations['session:main']);
   });
@@ -272,7 +352,6 @@ module('setupSessionService', function (hooks) {
   });
 
   test('registers session-store:test when useResolver is true', function (assert) {
-    Configuration.load({ useResolver: true });
     const registry = createRegistry();
 
     setupSession(registry);
@@ -281,42 +360,28 @@ module('setupSessionService', function (hooks) {
   });
 
   test('does not register session-store:test when useResolver is false', function (assert) {
-    Configuration.load({ useResolver: false });
-    const registry = createRegistry();
+    const registry = createRegistry(false);
 
-    setupSession(registry);
+    emberSimpleAuthInitializer.initialize(registry);
 
     assert.notOk(registry.registrations['session-store:test']);
   });
 
   test('registers built-in session stores when useResolver is true', function (assert) {
-    const registry = {
-      registrations: {},
-      register(name, factory) {
-        this.registrations[name] = factory;
-      },
-      resolveRegistration() {
-        return { rootURL: '/', 'ember-simple-auth': {} };
-      },
-    };
+    const loadConfiguration = sinon.spy(Configuration, 'load');
+    const registry = createRegistry();
 
     emberSimpleAuthInitializer.initialize(registry);
 
     assert.ok(registry.registrations['session-store:adaptive']);
     assert.ok(registry.registrations['session-store:cookie']);
     assert.ok(registry.registrations['session-store:local-storage']);
+    assert.ok(registry.registrations['session:main']);
+    assert.notOk(loadConfiguration.called, 'registration does not load configuration');
   });
 
   test('does not register built-in session stores when useResolver is false', function (assert) {
-    const registry = {
-      registrations: {},
-      register(name, factory) {
-        this.registrations[name] = factory;
-      },
-      resolveRegistration() {
-        return { rootURL: '/', 'ember-simple-auth': { useResolver: false } };
-      },
-    };
+    const registry = createRegistry(false);
 
     emberSimpleAuthInitializer.initialize(registry);
 

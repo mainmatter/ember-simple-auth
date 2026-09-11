@@ -1,4 +1,3 @@
-import Configuration from '../configuration';
 import setupSession from './setup-session';
 import Adaptive from '../session-stores/adaptive';
 import LocalStorage from '../session-stores/local-storage';
@@ -9,16 +8,14 @@ export default {
 
   initialize(registry) {
     const ENV = registry.resolveRegistration('config:environment');
-    const config = ENV['ember-simple-auth'] || {};
-    config.rootURL = ENV.rootURL || ENV.baseURL;
-    Configuration.load(config);
-
-    if (Configuration.useResolver) {
-      registry.register('session-store:adaptive', Adaptive);
-      registry.register('session-store:cookie', Cookie);
-      registry.register('session-store:local-storage', LocalStorage);
+    const { useResolver = true } = ENV['ember-simple-auth'] || {};
+    if (!useResolver) {
+      return;
     }
 
+    registry.register('session-store:adaptive', Adaptive);
+    registry.register('session-store:cookie', Cookie);
+    registry.register('session-store:local-storage', LocalStorage);
     setupSession(registry);
   },
 };

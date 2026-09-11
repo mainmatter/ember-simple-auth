@@ -50,7 +50,14 @@ for (const useResolver of [true, false]) {
     setupRenderingTest(hooks);
 
     hooks.beforeEach(function () {
-      Configuration.load({ useResolver });
+      this.owner.register(
+        'config:environment',
+        {
+          ...this.owner.resolveRegistration('config:environment'),
+          'ember-simple-auth': { useResolver },
+        },
+        { instantiate: false }
+      );
       this.owner.register('service:cookies', FakeCookieService);
     });
 
