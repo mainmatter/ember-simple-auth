@@ -1,8 +1,9 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import Service from '@ember/service';
-import EmberObject, { set } from '@ember/object';
+import EmberObject, { computed, set } from '@ember/object';
 import sinonjs from 'sinon';
+import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 import { MockSessionStorage } from '../../helpers/mocked-session-storage';
 
 module('SessionService', function (hooks) {
@@ -40,6 +41,73 @@ module('SessionService', function (hooks) {
 
   hooks.afterEach(function () {
     sinon.restore();
+  });
+
+  test('updates classic computed properties that depend on the public session properties', function (assert) {
+    const consumer = EmberObject.extend({
+      session: sessionService,
+      signedIn: computed('session.isAuthenticated', function () {
+        return this.session.isAuthenticated;
+      }),
+      token: computed('session.data.authenticated.token', function () {
+        return this.session.data.authenticated.token;
+      }),
+      storage: computed('session.store', function () {
+        return this.session.store;
+      }),
+      transition: computed('session.attemptedTransition', function () {
+        return this.session.attemptedTransition;
+      }),
+    }).create();
+
+    assert.false(consumer.get('signedIn'));
+    assert.strictEqual(consumer.get('token'), undefined);
+    assert.strictEqual(consumer.get('storage'), session.store);
+    assert.strictEqual(consumer.get('transition'), null);
+
+    const transition = {};
+    const store = {};
+    session.setProperties({
+      isAuthenticated: true,
+      content: { authenticated: { token: 'updated' } },
+      store,
+      attemptedTransition: transition,
+    });
+
+    assert.true(consumer.get('signedIn'));
+    assert.strictEqual(consumer.get('token'), 'updated');
+    assert.strictEqual(consumer.get('storage'), store);
+    assert.strictEqual(consumer.get('transition'), transition);
+    consumer.destroy();
+  });
+
+  test('notifies synchronous observers when authentication changes', async function (assert) {
+    this.owner.register(
+      'authenticator:legacy',
+      class LegacyAuthenticator extends BaseAuthenticator {
+        authenticate() {
+          return Promise.resolve({ token: 'secret' });
+        }
+      }
+    );
+    const observedStates = [];
+    const onChange = () => observedStates.push(sessionService.isAuthenticated);
+    sessionService.addObserver('isAuthenticated', null, onChange, true);
+
+    await sessionService.authenticate('authenticator:legacy');
+    await sessionService.invalidate();
+
+    sessionService.removeObserver('isAuthenticated', null, onChange, true);
+    assert.deepEqual(observedStates, [true, false]);
+  });
+
+  test('updates existing session data references when setting a custom property', function (assert) {
+    const data = sessionService.data;
+
+    sessionService.set('data.preference', 'dark');
+
+    assert.strictEqual(data.preference, 'dark');
+    assert.strictEqual(sessionService.data, data);
   });
 
   module('isAuthenticated', function () {

@@ -14,6 +14,32 @@ import Configuration from 'ember-simple-auth/configuration';
 module('AdaptiveStore', function (hooks) {
   setupTest(hooks);
 
+  test('classic subclasses preserve init and unrelated _setup methods', function (assert) {
+    Configuration.load({ useResolver: true });
+    let initCalls = 0;
+    let customSetupCalls = 0;
+    this.owner.register('service:cookies', FakeCookieService);
+    this.owner.register(
+      'session-store:adaptive',
+      AdaptiveStore.extend({
+        __isLocalStorageAvailable: true,
+        init() {
+          initCalls++;
+          this._super(...arguments);
+        },
+        _setup() {
+          customSetupCalls++;
+        },
+      })
+    );
+
+    const store = this.owner.lookup('session-store:adaptive');
+
+    assert.strictEqual(initCalls, 1);
+    assert.strictEqual(customSetupCalls, 0);
+    assert.ok(store.get('_store') instanceof LocalStorageStore);
+  });
+
   module('when localStorage is available', function (hooks) {
     itBehavesLikeAStore({
       hooks,

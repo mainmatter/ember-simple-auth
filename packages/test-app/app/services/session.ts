@@ -1,7 +1,6 @@
 import { service } from '@ember/service';
 import { isTesting } from '@embroider/macros';
 import Session from 'ember-simple-auth/services/session';
-import TestAuthenticator from 'ember-simple-auth/authenticators/test';
 import Ephemeral from 'ember-simple-auth/session-stores/ephemeral';
 import SessionStore from '../session-stores/application';
 import OAuth2 from '../authenticators/oauth2';
@@ -27,12 +26,7 @@ export default class SessionService extends Session<Data> {
   }
 
   createAuthenticators(owner: any) {
-    return [
-      new OAuth2(owner),
-      new OAuth2ImplicitGrant(owner),
-      new Torii(owner),
-      ...(isTesting() ? [new TestAuthenticator(owner)] : []),
-    ];
+    return [new OAuth2(owner), new OAuth2ImplicitGrant(owner), new Torii(owner)];
   }
 
   handleAuthentication(routeAfterInvalidation: string) {

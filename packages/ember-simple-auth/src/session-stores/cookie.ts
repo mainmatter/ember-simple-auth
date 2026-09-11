@@ -4,7 +4,7 @@ import { later, cancel, scheduleOnce, next, type Timer } from '@ember/runloop';
 import { typeOf, isEmpty, isNone } from '@ember/utils';
 import { A } from '@ember/array';
 import { warn } from '@ember/debug';
-import BaseStore from './base';
+import BaseStore, { SESSION_STORE_SETUP, setupStore } from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import { isTesting } from '@embroider/macros';
 import type CookiesService from 'ember-cookies/services/cookies';
@@ -213,10 +213,10 @@ export default class CookieStore extends BaseStore {
 
   init(properties: any) {
     super.init(properties);
-    this._ensureSetup();
+    setupStore(this);
   }
 
-  _setup() {
+  [SESSION_STORE_SETUP]() {
     this._fastboot = (getOwner(this) as any).lookup('service:fastboot');
 
     const cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);

@@ -3,7 +3,7 @@ import { service } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { associateDestroyableChild } from '@ember/destroyable';
 import { debug } from '@ember/debug';
-import Base, { setupStore } from './base';
+import Base, { SESSION_STORE_SETUP, setupStore } from './base';
 import Configuration from '../configuration';
 import CookieStore from './cookie';
 import LocalStorageStore from './local-storage';
@@ -175,10 +175,10 @@ export default class AdaptiveStore extends Base {
       );
     }
 
-    this._ensureSetup();
+    setupStore(this);
   }
 
-  _setup() {
+  [SESSION_STORE_SETUP]() {
     let owner = getOwner(this) as any;
     if (owner && !this.hasOwnProperty('_fastboot')) {
       this._fastboot = owner.lookup('service:fastboot');

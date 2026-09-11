@@ -1,4 +1,4 @@
-import { module } from 'qunit';
+import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
@@ -15,6 +15,33 @@ class TestCookieStoreBehavior extends CookieStore {
 
 module('CookieStore', function (hooks) {
   setupTest(hooks);
+
+  test('existing subclass setup properties do not replace store initialization', function (assert) {
+    let initCalls = 0;
+    let customSetupCalls = 0;
+    this.owner.register('service:cookies', FakeCookieService);
+    this.owner.register(
+      'session-store:cookie',
+      class ApplicationCookieStore extends CookieStore {
+        _setupRan = true;
+
+        init(...args) {
+          initCalls++;
+          super.init(...args);
+        }
+
+        _setup() {
+          customSetupCalls++;
+        }
+      }
+    );
+
+    const store = this.owner.lookup('session-store:cookie');
+
+    assert.strictEqual(initCalls, 1);
+    assert.strictEqual(customSetupCalls, 0);
+    assert.strictEqual(store._fastboot, this.owner.lookup('service:fastboot'));
+  });
 
   module('StoreBehavior', function (hooks) {
     itBehavesLikeAStore({

@@ -16,6 +16,7 @@ import {
   handleSessionInvalidated,
 } from '../-internals/routing';
 import type Transition from '@ember/routing/transition';
+import { alias, readOnly } from '@ember/object/computed';
 import EsaBaseSessionStore, { setupStore } from '../session-stores/base';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
@@ -36,7 +37,6 @@ type InternalSessionMock<Data> = {
   content: Data;
   store: unknown;
   attemptedTransition: null | Transition;
-  _authenticators?: EsaBaseAuthenticator[] | null;
   on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
   authenticate: (authenticator: AuthenticatorReference, ...args: any[]) => Promise<void>;
   invalidate: (...args: any[]) => Promise<void>;
@@ -84,7 +84,7 @@ export type DefaultDataShape = {
   @extends Service
   @public
 */
-export default class SessionService<Data = DefaultDataShape> extends Service {
+export default class SessionService<Data = DefaultDataShape, Store = unknown> extends Service {
   session!: InternalSessionMock<Data>;
 
   constructor(owner: any) {
@@ -104,13 +104,6 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
           },
           url: 'https://github.com/mainmatter/ember-simple-auth/blob/master/guides/upgrade-to-v9.md#resolver-registration',
         });
-        if (typeof this.createAuthenticators === 'function' && !this.session._authenticators) {
-          const authenticators = this.createAuthenticators(owner);
-          this.session._authenticators = authenticators;
-          authenticators.forEach(authenticator => {
-            associateDestroyableChild(this.session, authenticator);
-          });
-        }
       } else {
         assert(
           'Ember Simple Auth: implement createAuthenticators on the session service.',
@@ -147,9 +140,10 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @return {BaseStore} The session store instance
     @public
   */
-  createSessionStore(owner: any): EsaBaseSessionStore {
+  createSessionStore(owner: any): EsaBaseSessionStore & Store {
     if (isTesting()) {
-      return new Ephemeral(owner);
+      const store: EsaBaseSessionStore = new Ephemeral(owner);
+      return store as EsaBaseSessionStore & Store;
     }
 
     assert('Ember Simple Auth: implement createSessionStore on the session service.', false);
@@ -194,9 +188,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default false
     @public
   */
-  get isAuthenticated(): boolean {
-    return Boolean(this.session?.isAuthenticated);
-  }
+  @readOnly('session.isAuthenticated') declare isAuthenticated: boolean;
 
   /**
     The current session data as a plain object. The
@@ -213,9 +205,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default { authenticated: {} }
     @public
   */
-  get data(): Data {
-    return (this.session?.content ?? { authenticated: {} }) as Data;
-  }
+  @readOnly('session.content') declare data: Data;
 
   /**
     The session store.
@@ -227,9 +217,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default null
     @public
   */
-  get store(): unknown {
-    return this.session?.store;
-  }
+  @readOnly('session.store') declare store: Store;
 
   /**
     A previously attempted but intercepted transition (e.g. by the
@@ -245,15 +233,8 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default null
     @public
   */
-  get attemptedTransition(): null | Transition {
-    return this.session?.attemptedTransition ?? null;
-  }
-
-  set attemptedTransition(value: null | Transition) {
-    if (this.session) {
-      this.session.attemptedTransition = value;
-    }
-  }
+  @alias('session.attemptedTransition')
+  attemptedTransition: null | Transition = null;
 
   get redirectTargetKey(): string | null {
     const store = this.store as { key?: string; cookieName?: string };

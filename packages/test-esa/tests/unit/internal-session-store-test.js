@@ -118,15 +118,17 @@ module('InternalSession store injection', function (hooks) {
       assert.equal(session._findAuthenticator(authenticator), authenticator);
     });
 
-    test('asserts when useResolver is false and authenticators are missing', function (assert) {
+    test('does not fall back to the resolver when authenticators are missing', function (assert) {
       Configuration.load({ useResolver: false });
       const store = new Ephemeral(this.owner);
       session = new InternalSession(this.owner, store);
+      const lookup = sinon.spy(this.owner, 'lookup');
 
       assert.throws(
         () => session._findAuthenticator('authenticator:test'),
-        /createAuthenticators/
+        /No authenticator for factory "authenticator:test" could be found!/
       );
+      assert.notOk(lookup.calledWith('authenticator:test'), 'does not fall back to the registry');
     });
 
     test('asserts when authenticators is not an array', function (assert) {
@@ -152,7 +154,21 @@ module('InternalSession store injection', function (hooks) {
           new InternalSession(this.owner, store, {
             authenticators: [new NoIdAuthenticator(this.owner)],
           }),
-        /static id/
+        /static string id/
+      );
+    });
+
+    test('asserts when an authenticator has a non-string id', function (assert) {
+      const store = new Ephemeral(this.owner);
+      class InvalidIdAuthenticator extends TestAuthenticator {}
+      InvalidIdAuthenticator.id = 123;
+
+      assert.throws(
+        () =>
+          new InternalSession(this.owner, store, {
+            authenticators: [new InvalidIdAuthenticator(this.owner)],
+          }),
+        /static string id/
       );
     });
 
@@ -162,10 +178,7 @@ module('InternalSession store injection', function (hooks) {
       assert.throws(
         () =>
           new InternalSession(this.owner, store, {
-            authenticators: [
-              new TestAuthenticator(this.owner),
-              new TestAuthenticator(this.owner),
-            ],
+            authenticators: [new TestAuthenticator(this.owner), new TestAuthenticator(this.owner)],
           }),
         /duplicate authenticator id "test"/
       );
@@ -174,16 +187,10 @@ module('InternalSession store injection', function (hooks) {
     test('asserts when a class matches multiple authenticators', function (assert) {
       const store = new Ephemeral(this.owner);
       session = new InternalSession(this.owner, store, {
-        authenticators: [
-          new OAuth2Authenticator(this.owner),
-          new ToriiAuthenticator(this.owner),
-        ],
+        authenticators: [new OAuth2Authenticator(this.owner), new ToriiAuthenticator(this.owner)],
       });
 
-      assert.throws(
-        () => session._findAuthenticator(TestAuthenticator),
-        /Multiple authenticators/
-      );
+      assert.throws(() => session._findAuthenticator(TestAuthenticator), /Multiple authenticators/);
     });
 
     test('asserts when no authenticator matches', function (assert) {
@@ -196,6 +203,45 @@ module('InternalSession store injection', function (hooks) {
         () => session._findAuthenticator('authenticator:foo'),
         /No authenticator for factory "authenticator:foo" could be found!/
       );
+    });
+
+    ['class', 'instance'].forEach(referenceType => {
+      test(`authenticates and restores using an authenticator ${referenceType}`, async function (assert) {
+        Configuration.load({ useResolver: false });
+        const store = new Ephemeral(this.owner);
+        const authenticator = new OAuth2Authenticator(this.owner);
+        const initialSession = new InternalSession(this.owner, store, {
+          authenticators: [authenticator],
+        });
+        const reference = referenceType === 'class' ? OAuth2Authenticator : authenticator;
+
+        await initialSession.authenticate(reference, { token: 'secret' });
+        const persisted = await store.restore();
+
+        assert.equal(persisted.authenticated.authenticator, 'oauth2');
+
+        initialSession.destroy();
+        const restoredStore = new Ephemeral(this.owner);
+        await restoredStore.persist(persisted);
+        session = new InternalSession(this.owner, restoredStore, {
+          authenticators: [new OAuth2Authenticator(this.owner)],
+        });
+        await session.restore();
+
+        assert.true(session.isAuthenticated);
+        assert.equal(session.content.authenticated.token, 'secret');
+      });
+    });
+
+    test('destroys injected stores and authenticators with the session', function (assert) {
+      const store = new Ephemeral(this.owner);
+      const authenticator = new OAuth2Authenticator(this.owner);
+      session = new InternalSession(this.owner, store, { authenticators: [authenticator] });
+
+      session.destroy();
+
+      assert.true(store.isDestroying);
+      assert.true(authenticator.isDestroying);
     });
   });
 });

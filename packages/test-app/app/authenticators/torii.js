@@ -2,7 +2,6 @@ import { service } from '@ember/service';
 import Torii from 'ember-simple-auth/authenticators/torii';
 
 export default class ToriiAuthenticator extends Torii {
-  static id = 'torii';
   @service torii;
 
   authenticate() {

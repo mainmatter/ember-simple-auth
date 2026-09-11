@@ -34,6 +34,21 @@ module('Acceptance: Authentication', function (hooks) {
     assert.notOk(owner.factoryFor('session-store:cookie'));
   });
 
+  test('authenticateSession works without registering an authenticator', async function (assert) {
+    if (useResolver) {
+      assert.expect(0);
+      return;
+    }
+
+    const { owner } = getContext() as { owner: { factoryFor: (name: string) => unknown } };
+    assert.notOk(owner.factoryFor('authenticator:test'));
+
+    await authenticateSession({ userId: '1' });
+
+    assert.true(currentSession().isAuthenticated);
+    assert.notOk(owner.factoryFor('authenticator:test'));
+  });
+
   test('logging in with correct credentials works', async function (assert) {
     server = new Pretender(function () {
       this.post(`${config.apiHost}/token`, () => [
@@ -53,9 +68,7 @@ module('Acceptance: Authentication', function (hooks) {
     assert
       .dom('[data-test-reactivity] [data-is-authenticated]')
       .doesNotExist('not authenticated yet.');
-    assert
-      .dom('[data-test-reactivity] [data-access-token]')
-      .doesNotExist('no session data yet.');
+    assert.dom('[data-test-reactivity] [data-access-token]').doesNotExist('no session data yet.');
     await fillIn('[data-test-identification]', 'identification');
     await fillIn('[data-test-password]', 'password');
     await click('button[type="submit"]');
@@ -88,7 +101,11 @@ module('Acceptance: Authentication', function (hooks) {
     await click('button[type="submit"]');
 
     assert.equal(currentURL(), '/login');
-    assert.dom('[data-test-error-message]').hasText('Login failed: invalid_grant Documentation of the error codes can be found in the Error Response section of RFC 6749.');
+    assert
+      .dom('[data-test-error-message]')
+      .hasText(
+        'Login failed: invalid_grant Documentation of the error codes can be found in the Error Response section of RFC 6749.'
+      );
   });
 
   module('the protected route', function () {

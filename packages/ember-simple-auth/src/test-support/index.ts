@@ -6,15 +6,22 @@ import Configuration from '../configuration';
 const SESSION_SERVICE_KEY = 'service:session';
 const TEST_CONTAINER_KEY = 'authenticator:test';
 
-function ensureAuthenticator(owner: any) {
-  if (!Configuration.useResolver) {
-    return;
+function ensureAuthenticator(session: any, owner: any) {
+  if (Configuration.useResolver) {
+    const authenticator = owner.lookup(TEST_CONTAINER_KEY);
+    if (!authenticator) {
+      owner.register(TEST_CONTAINER_KEY, Test);
+    }
+    return TEST_CONTAINER_KEY;
   }
 
-  const authenticator = owner.lookup(TEST_CONTAINER_KEY);
+  const authenticators = session.session._authenticators || [];
+  let authenticator = authenticators.find((candidate: Test) => candidate.constructor === Test);
   if (!authenticator) {
-    owner.register(TEST_CONTAINER_KEY, Test);
+    authenticator = new Test(owner);
+    session.session._setAuthenticators([...authenticators, authenticator]);
   }
+  return authenticator;
 }
 
 /**
@@ -28,9 +35,8 @@ function ensureAuthenticator(owner: any) {
 export async function authenticateSession(sessionData: Record<string, any>) {
   const { owner } = getContext() as { owner: any };
   const session = owner.lookup(SESSION_SERVICE_KEY);
-  ensureAuthenticator(owner);
 
-  await session.authenticate(TEST_CONTAINER_KEY, sessionData);
+  await session.authenticate(ensureAuthenticator(session, owner), sessionData);
   await settled();
 }
 

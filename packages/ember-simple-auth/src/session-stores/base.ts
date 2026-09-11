@@ -7,8 +7,14 @@ export interface SessionEvents {
 
 class SessionStoreEventTarget extends EsaEventTarget<SessionEvents> {}
 
+const initializedStores = new WeakSet<EsaBaseSessionStore>();
+export const SESSION_STORE_SETUP = Symbol('ember-simple-auth-session-store-setup');
+
 export function setupStore<T extends EsaBaseSessionStore>(store: T): T {
-  store._ensureSetup();
+  if (!initializedStores.has(store)) {
+    initializedStores.add(store);
+    store[SESSION_STORE_SETUP]();
+  }
   return store;
 }
 
@@ -25,19 +31,8 @@ export function setupStore<T extends EsaBaseSessionStore>(store: T): T {
 */
 export default abstract class EsaBaseSessionStore extends EmberObject {
   sessionStoreEvents = new SessionStoreEventTarget();
-  _setupRan = false;
 
-  _ensureSetup() {
-    if (this._setupRan) {
-      return this;
-    }
-
-    this._setupRan = true;
-    this._setup();
-    return this;
-  }
-
-  _setup() {}
+  [SESSION_STORE_SETUP]() {}
 
   /**
     Triggered when the session store's data changes due to an external event,

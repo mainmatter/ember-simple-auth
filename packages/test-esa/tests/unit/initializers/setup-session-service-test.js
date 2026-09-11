@@ -7,6 +7,8 @@ import InternalSession from 'ember-simple-auth/internal-session';
 import SessionService from 'ember-simple-auth/services/session';
 import Ephemeral from 'ember-simple-auth/session-stores/ephemeral';
 import TestAuthenticator from 'ember-simple-auth/authenticators/test';
+import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
+import { authenticateSession } from 'ember-simple-auth/test-support';
 import setupSession from 'ember-simple-auth/initializers/setup-session';
 import emberSimpleAuthInitializer from 'ember-simple-auth/initializers/ember-simple-auth';
 
@@ -61,6 +63,68 @@ module('setupSessionService', function (hooks) {
     const service = this.owner.lookup('service:session');
 
     assert.equal(service.session.store, this.owner.lookup('session-store:test'));
+  });
+
+  test('default configuration uses registered authenticators without ids or factory hooks', async function (assert) {
+    let initCalls = 0;
+    const lookupAuthenticator = sinon.spy(InternalSession.prototype, '_lookupAuthenticator');
+    this.owner.register(
+      'authenticator:legacy',
+      class LegacyAuthenticator extends BaseAuthenticator {
+        init(...args) {
+          super.init(...args);
+          initCalls++;
+        }
+
+        authenticate(data) {
+          return Promise.resolve(data);
+        }
+
+        restore(data) {
+          return Promise.resolve(data);
+        }
+      }
+    );
+    this.owner.register(
+      'service:session',
+      class ApplicationSession extends SessionService {
+        createAuthenticators() {
+          throw new Error('createAuthenticators must require useResolver: false');
+        }
+
+        createSessionStore() {
+          throw new Error('createSessionStore must require useResolver: false');
+        }
+      }
+    );
+
+    const service = this.owner.lookup('service:session');
+    await service.authenticate('authenticator:legacy', { token: 'legacy-token' });
+    await service.session.restore();
+
+    assert.strictEqual(initCalls, 1, 'uses the registered singleton and its existing init hook');
+    assert.ok(lookupAuthenticator.calledWith('authenticator:legacy'));
+    assert.true(service.isAuthenticated);
+    assert.strictEqual(service.data.authenticated.token, 'legacy-token');
+    assert.strictEqual(service.data.authenticated.authenticator, 'authenticator:legacy');
+  });
+
+  test('authenticateSession respects a registered test authenticator by default', async function (assert) {
+    this.owner.register(
+      'authenticator:test',
+      class ApplicationTestAuthenticator extends BaseAuthenticator {
+        authenticate(data) {
+          return Promise.resolve({ ...data, customAuthenticator: true });
+        }
+      }
+    );
+
+    await authenticateSession({ token: 'test-token' });
+    const service = this.owner.lookup('service:session');
+
+    assert.true(service.isAuthenticated);
+    assert.true(service.data.authenticated.customAuthenticator);
+    assert.strictEqual(service.data.authenticated.token, 'test-token');
   });
 
   test('constructs InternalSession when useResolver is false', function (assert) {
