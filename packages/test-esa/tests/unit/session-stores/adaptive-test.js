@@ -6,6 +6,10 @@ import itBehavesLikeAStore from './shared/store-behavior';
 import itBehavesLikeACookieStore from './shared/cookie-store-behavior';
 import FakeCookieService from '../../helpers/fake-cookie-service';
 import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
+import LocalStorageStore from 'ember-simple-auth/session-stores/local-storage';
+import CookieStore from 'ember-simple-auth/session-stores/cookie';
+import { setupStore } from 'ember-simple-auth/session-stores/base';
+import Configuration from 'ember-simple-auth/configuration';
 
 module('AdaptiveStore', function (hooks) {
   setupTest(hooks);
@@ -128,6 +132,36 @@ module('AdaptiveStore', function (hooks) {
           })
         )
       );
+    });
+  });
+
+  module('useResolver', function (hooks) {
+    hooks.afterEach(function () {
+      Configuration.load({});
+    });
+
+    test('constructs LocalStorageStore when the flag is false', function (assert) {
+      Configuration.load({ useResolver: false });
+      this.owner.register('service:cookies', FakeCookieService);
+
+      class TestAdaptiveStore extends AdaptiveStore {
+        __isLocalStorageAvailable = true;
+      }
+      let store = setupStore(new TestAdaptiveStore(this.owner));
+
+      assert.ok(store.get('_store') instanceof LocalStorageStore);
+    });
+
+    test('constructs CookieStore when the flag is false', function (assert) {
+      Configuration.load({ useResolver: false });
+      this.owner.register('service:cookies', FakeCookieService);
+
+      class TestAdaptiveStore extends AdaptiveStore {
+        __isLocalStorageAvailable = false;
+      }
+      let store = setupStore(new TestAdaptiveStore(this.owner));
+
+      assert.ok(store.get('_store') instanceof CookieStore);
     });
   });
 });

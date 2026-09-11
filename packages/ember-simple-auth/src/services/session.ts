@@ -2,8 +2,10 @@ import Service from '@ember/service';
 import { getOwner } from '@ember/application';
 import { assert, deprecate } from '@ember/debug';
 import { associateDestroyableChild } from '@ember/destroyable';
+import { isTesting } from '@embroider/macros';
 import Configuration from '../configuration';
 import InternalSession from '../internal-session';
+import Ephemeral from '../session-stores/ephemeral';
 
 import {
   requireAuthentication,
@@ -14,7 +16,7 @@ import {
 } from '../-internals/routing';
 import type Transition from '@ember/routing/transition';
 import { alias, readOnly } from '@ember/object/computed';
-import type EsaBaseSessionStore from '../session-stores/base';
+import EsaBaseSessionStore, { setupStore } from '../session-stores/base';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
 
@@ -82,7 +84,7 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     super(owner);
 
     if (!this.session) {
-      if (Configuration.useInternalSessionLookup) {
+      if (Configuration.useResolver) {
         this.session = owner.lookup('session:main');
         assert('Ember Simple Auth: session:main is not registered.', this.session);
         deprecate('Ember Simple Auth: session:main resolver lookup is deprecated.', false, {
@@ -93,14 +95,47 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
             available: '8.4.0',
             enabled: '8.4.0',
           },
-          url: 'https://github.com/mainmatter/ember-simple-auth/blob/master/guides/upgrade-to-v9.md#sessionmain-resolver-registration',
+          url: 'https://github.com/mainmatter/ember-simple-auth/blob/master/guides/upgrade-to-v9.md#resolver-registration',
         });
       } else {
-        this.session = new InternalSession(owner) as unknown as InternalSessionMock<Data>;
+        this.session = new InternalSession(
+          owner,
+          setupStore(this.createSessionStore(owner))
+        ) as unknown as InternalSessionMock<Data>;
       }
 
       associateDestroyableChild(this, this.session);
     }
+  }
+
+  /**
+    Constructs the session store. Override this to use the session-store of your choice.
+    If you have a `app/session-stores/application`, you can import it directly and initialize in this method.
+
+    ```js
+    // app/services/session.js
+    import SessionService from 'ember-simple-auth/services/session';
+    import SessionStore from '../session-stores/application';
+
+    export default class Session extends SessionService {
+      createSessionStore(owner) {
+        return new SessionStore(owner);
+      }
+    }
+    ```
+
+    @memberof SessionService
+    @method createSessionStore
+    @param {Object} owner The application owner
+    @return {BaseStore} The session store instance
+    @public
+  */
+  createSessionStore(owner: any): EsaBaseSessionStore {
+    if (isTesting()) {
+      return new Ephemeral(owner);
+    }
+
+    assert('Ember Simple Auth: implement createSessionStore on the session service.', false);
   }
 
   /**

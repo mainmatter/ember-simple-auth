@@ -1,7 +1,7 @@
 const DEFAULTS = {
   rootURL: '',
   routeAfterAuthentication: 'index',
-  useInternalSessionLookup: true,
+  useResolver: true,
 };
 
 /**
@@ -38,17 +38,18 @@ export default {
   routeAfterAuthentication: DEFAULTS.routeAfterAuthentication,
 
   /**
-    When `true`, the session service looks up `session:main` from the resolver.
-    When `false`, the session service constructs `InternalSession` itself.
+    When `true`, the session service looks up `session:main` and session stores
+    from the resolver. When `false`, it constructs `InternalSession` and the
+    store via `createSessionStore`.
 
     @memberof Configuration
-    @property useInternalSessionLookup
+    @property useResolver
     @static
     @type Boolean
     @default true
     @public
   */
-  useInternalSessionLookup: DEFAULTS.useInternalSessionLookup,
+  useResolver: DEFAULTS.useResolver,
 
   load(config) {
     this.rootURL = config.rootURL !== undefined ? config.rootURL : DEFAULTS.rootURL;
@@ -56,9 +57,6 @@ export default {
       config.routeAfterAuthentication !== undefined
         ? config.routeAfterAuthentication
         : DEFAULTS.routeAfterAuthentication;
-    this.useInternalSessionLookup =
-      config.useInternalSessionLookup !== undefined
-        ? config.useInternalSessionLookup
-        : DEFAULTS.useInternalSessionLookup;
+    this.useResolver = config.useResolver !== undefined ? config.useResolver : DEFAULTS.useResolver;
   },
 };

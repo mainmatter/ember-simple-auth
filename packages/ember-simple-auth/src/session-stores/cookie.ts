@@ -213,7 +213,10 @@ export default class CookieStore extends BaseStore {
 
   init(properties: any) {
     super.init(properties);
+    this._ensureSetup();
+  }
 
+  _setup() {
     this._fastboot = (getOwner(this) as any).lookup('service:fastboot');
 
     const cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);
