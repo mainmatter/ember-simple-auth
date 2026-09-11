@@ -13,6 +13,7 @@
     "start:fastboot": "NODE_ENV=production node fastboot-server.js",
     "start:demo-api": "node server/demo-api.js",
     "test": "ember test",
+    "test:no-resolver": "ESA_USE_RESOLVER=false ember test",
     "test:all": "ember try:each",
     "test:one": "ember try:one",
     "test:fastboot": "ember fastboot:test"

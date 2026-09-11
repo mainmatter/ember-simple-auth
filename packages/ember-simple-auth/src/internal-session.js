@@ -1,8 +1,9 @@
 import { isEmpty, isNone } from '@ember/utils';
-import EmberObject, { action, get, set } from '@ember/object';
+import EmberObject, { action, get } from '@ember/object';
 import { debug, assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 import { associateDestroyableChild } from '@ember/destroyable';
+import { tracked } from '@glimmer/tracking';
 import { isTesting } from '@embroider/macros';
 import Configuration from './configuration';
 import EsaEventTarget from './-internals/event-target';
@@ -46,24 +47,24 @@ export default class InternalSession extends EmberObject {
     @private
   */
   authenticator = null;
-  content = { authenticated: {} };
-  store = null;
-  isAuthenticated = false;
-  attemptedTransition = null;
+  @tracked content = { authenticated: {} };
+  @tracked store = null;
+  @tracked isAuthenticated = false;
+  @tracked attemptedTransition = null;
   sessionEvents = null;
   redirectTarget = null;
 
   constructor(owner, sessionStore, options = {}) {
     super(owner);
 
-    this.set('content', { authenticated: {} });
+    this.content = { authenticated: {} };
     this.sessionEvents = new SessionEventTarget();
     this._busy = false;
     this._authenticators = options.authenticators || null;
 
     const store = sessionStore || this._lookupStore();
     assert('Ember Simple Auth: InternalSession requires a session store.', store);
-    this.set('store', store);
+    this.store = store;
     if (sessionStore) {
       associateDestroyableChild(this, sessionStore);
     }
@@ -103,7 +104,7 @@ export default class InternalSession extends EmberObject {
 
   invalidate() {
     this._busy = true;
-    this.set('attemptedTransition', null);
+    this.attemptedTransition = null;
 
     if (!this.get('isAuthenticated')) {
       this._busy = false;
@@ -137,7 +138,7 @@ export default class InternalSession extends EmberObject {
           const authenticator = this._lookupAuthenticator(authenticatorFactory);
           return authenticator.restore(restoredContent.authenticated).then(
             content => {
-              this.set('content', restoredContent);
+              this.content = restoredContent;
               this._busy = false;
               return this._setup(authenticatorFactory, content);
             },
@@ -165,13 +166,21 @@ export default class InternalSession extends EmberObject {
     );
   }
 
+  _replaceContent(next) {
+    this.content = next;
+  }
+
+  _withAuthenticated(authenticatedContent) {
+    this._replaceContent(
+      Object.assign({}, this.content || {}, { authenticated: authenticatedContent })
+    );
+  }
+
   _setup(authenticator, authenticatedContent, trigger) {
     trigger = Boolean(trigger) && !this.get('isAuthenticated');
-    this.setProperties({
-      isAuthenticated: true,
-      authenticator,
-      'content.authenticated': authenticatedContent,
-    });
+    this.isAuthenticated = true;
+    this.authenticator = authenticator;
+    this._withAuthenticated(authenticatedContent);
     this._bindToAuthenticatorEvents();
 
     return this._updateStore().then(
@@ -181,22 +190,18 @@ export default class InternalSession extends EmberObject {
         }
       },
       () => {
-        this.setProperties({
-          isAuthenticated: false,
-          authenticator: null,
-          'content.authenticated': {},
-        });
+        this.isAuthenticated = false;
+        this.authenticator = null;
+        this._withAuthenticated({});
       }
     );
   }
 
   _clear(trigger) {
     trigger = Boolean(trigger) && this.get('isAuthenticated');
-    this.setProperties({
-      isAuthenticated: false,
-      authenticator: null,
-      'content.authenticated': {},
-    });
+    this.isAuthenticated = false;
+    this.authenticator = null;
+    this._withAuthenticated({});
 
     return this._updateStore().then(() => {
       if (trigger) {
@@ -206,7 +211,7 @@ export default class InternalSession extends EmberObject {
   }
 
   _clearWithContent(content, trigger) {
-    this.set('content', content);
+    this._replaceContent(content);
     return this._clear(trigger);
   }
 
@@ -223,22 +228,21 @@ export default class InternalSession extends EmberObject {
       `Cannot delegate set('${key}', ${value}) to the 'content' property of the internal session: its 'content' is undefined.`,
       content
     );
-    let result = set(content, key, value);
+    this._replaceContent(Object.assign({}, content, { [key]: value }));
     this.notifyPropertyChange(key);
     if (!/^_/.test(key)) {
       this._updateStore();
     }
-    return result;
+    return value;
   }
 
   _updateStore() {
     let data = this.content;
     if (!isEmpty(this.authenticator)) {
-      set(
-        data,
-        'authenticated',
-        Object.assign({ authenticator: this.authenticator }, data.authenticated || {})
-      );
+      data = Object.assign({}, data, {
+        authenticated: Object.assign({ authenticator: this.authenticator }, data.authenticated || {}),
+      });
+      this._replaceContent(data);
     }
     return this.store.persist(data);
   }
@@ -269,7 +273,7 @@ export default class InternalSession extends EmberObject {
           const authenticator = this._lookupAuthenticator(authenticatorFactory);
           authenticator.restore(content.authenticated).then(
             authenticatedContent => {
-              this.set('content', content);
+              this._replaceContent(content);
               this._busy = false;
               this._setup(authenticatorFactory, authenticatedContent, true);
             },

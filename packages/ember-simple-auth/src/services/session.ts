@@ -17,7 +17,6 @@ import {
   handleSessionInvalidated,
 } from '../-internals/routing';
 import type Transition from '@ember/routing/transition';
-import { alias, readOnly } from '@ember/object/computed';
 import EsaBaseSessionStore, { setupStore } from '../session-stores/base';
 
 const SESSION_DATA_KEY_PREFIX = /^data\./;
@@ -37,7 +36,7 @@ type InternalSessionMock<Data> = {
   isAuthenticated: boolean;
   content: Data;
   store: unknown;
-  attemptedTransition: null;
+  attemptedTransition: null | Transition;
   on: (event: 'authenticationSucceeded' | 'invalidationSucceeded', cb: () => void) => void;
   authenticate: (authenticator: string, ...args: any[]) => Promise<void>;
   invalidate: (...args: any[]) => Promise<void>;
@@ -189,7 +188,9 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default false
     @public
   */
-  @readOnly('session.isAuthenticated') declare isAuthenticated: boolean;
+  get isAuthenticated(): boolean {
+    return Boolean(this.session?.isAuthenticated);
+  }
 
   /**
     The current session data as a plain object. The
@@ -206,7 +207,9 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default { authenticated: {} }
     @public
   */
-  @readOnly('session.content') declare data: Data;
+  get data(): Data {
+    return (this.session?.content ?? { authenticated: {} }) as Data;
+  }
 
   /**
     The session store.
@@ -218,7 +221,9 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default null
     @public
   */
-  @readOnly('session.store') declare store: unknown;
+  get store(): unknown {
+    return this.session?.store;
+  }
 
   /**
     A previously attempted but intercepted transition (e.g. by the
@@ -234,8 +239,15 @@ export default class SessionService<Data = DefaultDataShape> extends Service {
     @default null
     @public
   */
-  @alias('session.attemptedTransition')
-  attemptedTransition: null | Transition = null;
+  get attemptedTransition(): null | Transition {
+    return this.session?.attemptedTransition ?? null;
+  }
+
+  set attemptedTransition(value: null | Transition) {
+    if (this.session) {
+      this.session.attemptedTransition = value;
+    }
+  }
 
   get redirectTargetKey(): string | null {
     const store = this.store as { key?: string; cookieName?: string };

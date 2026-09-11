@@ -8,4 +8,5 @@
 <div data-test-reactivity hidden>
   <!-- test SessionService reactivity -->
   <span data-is-authenticated={{this.session.isAuthenticated}}> </span>
+  <span data-access-token={{this.session.data.authenticated.access_token}}> </span>
 </div>
