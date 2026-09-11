@@ -1,10 +1,11 @@
-import { computed } from '@ember/object';
+import { computed, notifyPropertyChange } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { later, cancel, scheduleOnce, next, type Timer } from '@ember/runloop';
 import { typeOf, isEmpty, isNone } from '@ember/utils';
 import { A } from '@ember/array';
 import { warn } from '@ember/debug';
-import BaseStore from './base';
+import BaseStore, { SESSION_STORE_SETUP, setupStore } from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import { isTesting } from '@embroider/macros';
 import type CookiesService from 'ember-cookies/services/cookies';
@@ -43,16 +44,14 @@ const persistingProperty = function (beforeSet = function (_key: string, _value:
 
   export default class LoginController extends Controller {
     &#64;service session;
-    _rememberMe = false;
 
     get rememberMe() {
-      return this._rememberMe;
+      return this.session.store.cookieExpirationTime !== null;
     }
 
     set rememberMe(value) {
       let expirationTime = value ? (14 * 24 * 60 * 60) : null;
-      this.set('session.store.cookieExpirationTime', expirationTime);
-      this._rememberMe = value;
+      this.session.store.cookieExpirationTime = expirationTime;
     }
   }
   ```
@@ -151,8 +150,13 @@ export default class CookieStore extends BaseStore {
     @type Integer
     @public
   */
-  _cookieExpirationTime = null;
-  @persistingProperty(function (this: CookieStore, key, value) {
+  @tracked _cookieExpirationTime: number | null = null;
+
+  get cookieExpirationTime(): number | null {
+    return this._cookieExpirationTime;
+  }
+
+  set cookieExpirationTime(value: number | null) {
     // When nulling expiry time on purpose, we need to clear the cached value.
     // Otherwise, `_calculateExpirationTime` will reuse it.
     if (isNone(value)) {
@@ -164,8 +168,10 @@ export default class CookieStore extends BaseStore {
         { id: 'ember-simple-auth.cookieExpirationTime' }
       );
     }
-  })
-  cookieExpirationTime!: number | null;
+    this._cookieExpirationTime = value;
+    notifyPropertyChange(this, 'cookieExpirationTime');
+    scheduleOnce('actions', this, this.rewriteCookie);
+  }
 
   /**
     Allows servers to assert that a cookie should opt in to partitioned storage,
@@ -213,7 +219,10 @@ export default class CookieStore extends BaseStore {
 
   init(properties: any) {
     super.init(properties);
+    setupStore(this);
+  }
 
+  [SESSION_STORE_SETUP]() {
     this._fastboot = (getOwner(this) as any).lookup('service:fastboot');
 
     const cachedExpirationTime = this._read(`${this.get('cookieName')}-expiration_time`);

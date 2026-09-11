@@ -22,11 +22,11 @@ module('Configuration', function (hooks) {
     });
   });
 
-  module('useInternalSessionLookup', function () {
+  module('useResolver', function () {
     test('defaults to true', function (assert) {
       Configuration.load({});
 
-      assert.true(Configuration.useInternalSessionLookup);
+      assert.true(Configuration.useResolver);
     });
   });
 
@@ -43,10 +43,10 @@ module('Configuration', function (hooks) {
       assert.equal(Configuration.routeAfterAuthentication, '/some-route');
     });
 
-    test('sets useInternalSessionLookup correctly', function (assert) {
-      Configuration.load({ useInternalSessionLookup: false });
+    test('sets useResolver correctly', function (assert) {
+      Configuration.load({ useResolver: false });
 
-      assert.false(Configuration.useInternalSessionLookup);
+      assert.false(Configuration.useResolver);
     });
   });
 });

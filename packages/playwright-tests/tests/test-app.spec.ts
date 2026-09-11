@@ -13,6 +13,7 @@ const loginWithPassword = async (page: Page) => {
 };
 
 const STORAGE_SCENARIOS = ['cookieStorage', 'localStorage', 'adaptive'] as const;
+const useResolver = process.env.PUBLIC_ESA_USE_RESOLVER !== 'false';
 
 const specifyTestAppStorageAdapter = async (
   page: Page,
@@ -38,6 +39,18 @@ STORAGE_SCENARIOS.forEach(scenario => {
       await expect(page.getByRole('heading')).toHaveText('Ember Simple Auth example app');
     });
 
+    test(`initializes the session store with useResolver: ${useResolver}`, async ({ page }) => {
+      await specifyTestAppStorageAdapter(page, scenario);
+      await page.goto('/');
+
+      const session = page.getByTestId('use-resolver');
+      const expectedUseResolver = useResolver ? 'true' : 'false';
+      await expect(session).toHaveAttribute('data-use-resolver', expectedUseResolver);
+      await expect(session).toHaveAttribute('data-session-main', expectedUseResolver);
+      // Resolver-created stores retain EmberObject's init hook. Direct `new` does not call it.
+      await expect(session).toHaveAttribute('data-store-init-calls', useResolver ? '1' : '0');
+    });
+
     test('can log-in', async ({ page }) => {
       await specifyTestAppStorageAdapter(page, scenario);
       await page.goto('/');
@@ -47,6 +60,19 @@ STORAGE_SCENARIOS.forEach(scenario => {
 
       await loginWithPassword(page);
       await confirmLoggedIn(page);
+
+      const persistedSession = await page.evaluate(() => ({
+        cookie: document.cookie
+          .split('; ')
+          .some(value => value.startsWith('ember_simple_auth-session=')),
+        localStorage: localStorage.getItem('ember_simple_auth-session') !== null,
+      }));
+      const expectsCookie =
+        process.env.FASTBOOT_DISABLED !== 'true' || scenario === 'cookieStorage';
+      expect(persistedSession).toEqual({
+        cookie: expectsCookie,
+        localStorage: !expectsCookie,
+      });
     });
 
     test('logged-in state is synchronized between tabs', async ({ page, context }) => {

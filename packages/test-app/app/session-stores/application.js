@@ -2,13 +2,13 @@ import { macroCondition, getOwnConfig } from '@embroider/macros';
 import CookieStore from 'ember-simple-auth/session-stores/cookie';
 import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
 
-let klass = class extends CookieStore {};
+let klass = CookieStore;
 if (macroCondition(getOwnConfig().FASTBOOT_DISABLED)) {
   // Playwright testing
   klass = class extends AdaptiveStore {
-    init(emberOwner) {
-      let __isLocalStorageAvailable = determineStorageBackend();
-      super.init(emberOwner, __isLocalStorageAvailable);
+    constructor(owner) {
+      super(owner);
+      this.__isLocalStorageAvailable = determineStorageBackend();
     }
   };
   function determineStorageBackend() {
@@ -25,4 +25,12 @@ if (macroCondition(getOwnConfig().FASTBOOT_DISABLED)) {
   }
 }
 
-export default klass;
+export default class ApplicationSessionStore extends klass {
+  // Expose the legacy lifecycle to the Playwright compatibility test.
+  initCalls = 0;
+
+  init(...args) {
+    super.init(...args);
+    this.initCalls++;
+  }
+}

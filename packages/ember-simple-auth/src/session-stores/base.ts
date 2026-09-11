@@ -7,6 +7,17 @@ export interface SessionEvents {
 
 class SessionStoreEventTarget extends EsaEventTarget<SessionEvents> {}
 
+const initializedStores = new WeakSet<EsaBaseSessionStore>();
+export const SESSION_STORE_SETUP = Symbol('ember-simple-auth-session-store-setup');
+
+export function setupStore<T extends EsaBaseSessionStore>(store: T): T {
+  if (!initializedStores.has(store)) {
+    initializedStores.add(store);
+    store[SESSION_STORE_SETUP]();
+  }
+  return store;
+}
+
 /**
   The base class for all session stores. __This serves as a starting point for
   implementing custom session stores and must not be used directly.__
@@ -20,6 +31,9 @@ class SessionStoreEventTarget extends EsaEventTarget<SessionEvents> {}
 */
 export default abstract class EsaBaseSessionStore extends EmberObject {
   sessionStoreEvents = new SessionStoreEventTarget();
+
+  [SESSION_STORE_SETUP]() {}
+
   /**
     Triggered when the session store's data changes due to an external event,
     e.g., from another tab or window of the same application. The session

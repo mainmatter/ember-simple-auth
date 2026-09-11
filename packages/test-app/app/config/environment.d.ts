@@ -3,6 +3,9 @@ declare const config: {
   APP: string;
   modulePrefix: string;
   podModulePrefix: string;
+  'ember-simple-auth': {
+    useResolver?: boolean;
+  };
 };
 
 export default config;

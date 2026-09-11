@@ -72,6 +72,9 @@ jobs:
           - workspace: test-app
             test-suite: "test:one embroider-safe"
             allow-failure: false
+          - workspace: test-app
+            test-suite: test:no-resolver
+            allow-failure: false
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -112,6 +115,10 @@ jobs:
           - ember-lts-6.4
           - ember-default
           - ember-release
+        include:
+          - FASTBOOT_DISABLED: 'true'
+            ember-version: ember-default
+            esa-use-resolver: 'false'
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -124,9 +131,10 @@ jobs:
             ${{ runner.os }}-pnpm-
 
       - run: pnpm install
-      - name: (FASTBOOT_DISABLED=${{ matrix.FASTBOOT_DISABLED }}) ${{ matrix.ember-version }}
+      - name: (FASTBOOT_DISABLED=${{ matrix.FASTBOOT_DISABLED }}) ${{ matrix.ember-version }}${{ matrix.esa-use-resolver == 'false' && ' useResolver=false' || '' }}
         env:
           FASTBOOT_DISABLED: ${{ matrix.FASTBOOT_DISABLED }}
+          PUBLIC_ESA_USE_RESOLVER: ${{ matrix.esa-use-resolver }}
           EMBER_SERVER_COMMAND: pnpm -F test-app test:one ${{ matrix.ember-version }} --- pnpm start
         run: pnpm -F playwright-tests test:e2e:chromium
 

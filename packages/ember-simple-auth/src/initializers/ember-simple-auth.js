@@ -13,9 +13,11 @@ export default {
     config.rootURL = ENV.rootURL || ENV.baseURL;
     Configuration.load(config);
 
-    registry.register('session-store:adaptive', Adaptive);
-    registry.register('session-store:cookie', Cookie);
-    registry.register('session-store:local-storage', LocalStorage);
+    if (Configuration.useResolver) {
+      registry.register('session-store:adaptive', Adaptive);
+      registry.register('session-store:cookie', Cookie);
+      registry.register('session-store:local-storage', LocalStorage);
+    }
 
     setupSession(registry);
   },

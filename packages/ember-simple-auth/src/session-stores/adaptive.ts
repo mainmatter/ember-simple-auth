@@ -1,11 +1,14 @@
-import { computed } from '@ember/object';
+import { computed, notifyPropertyChange } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { getOwner } from '@ember/application';
-import Base from './base';
-import type CookiesService from 'ember-cookies/services/cookies';
-import type CookieStore from './cookie';
-import type LocalStorageStore from './local-storage';
+import { associateDestroyableChild } from '@ember/destroyable';
 import { debug } from '@ember/debug';
+import Base, { SESSION_STORE_SETUP, setupStore } from './base';
+import Configuration from '../configuration';
+import CookieStore from './cookie';
+import LocalStorageStore from './local-storage';
+import type CookiesService from 'ember-cookies/services/cookies';
 
 const LOCAL_STORAGE_TEST_KEY = '_ember_simple_auth_test_key';
 
@@ -146,13 +149,22 @@ export default class AdaptiveStore extends Base {
     @type Integer
     @public
   */
-  _cookieExpirationTime = null;
-  @proxyToInternalStore()
-  cookieExpirationTime!: number | null;
+  @tracked _cookieExpirationTime: number | null = null;
+
+  get cookieExpirationTime(): number | null {
+    return this._cookieExpirationTime;
+  }
+
+  set cookieExpirationTime(value: number | null) {
+    this._cookieExpirationTime = value;
+    if (this._store) {
+      this._store.set('cookieExpirationTime', value);
+    }
+    notifyPropertyChange(this, 'cookieExpirationTime');
+  }
 
   @service('cookies') declare _cookies: CookiesService;
   declare _fastboot: any;
-
   declare _store: CookieStore | LocalStorageStore;
 
   __isLocalStorageAvailable: boolean | null = null;
@@ -174,6 +186,10 @@ export default class AdaptiveStore extends Base {
       );
     }
 
+    setupStore(this);
+  }
+
+  [SESSION_STORE_SETUP]() {
     let owner = getOwner(this) as any;
     if (owner && !this.hasOwnProperty('_fastboot')) {
       this._fastboot = owner.lookup('service:fastboot');
@@ -181,31 +197,45 @@ export default class AdaptiveStore extends Base {
 
     let store;
     if (this.get('_isLocalStorageAvailable')) {
-      const localStorage = owner.lookup('session-store:local-storage');
-      const options = { key: this.get('localStorageKey'), _isFastBoot: false };
-
-      localStorage.setProperties(options);
-
+      const localStorage = this._createOrLookupStore(
+        owner,
+        'session-store:local-storage',
+        LocalStorageStore
+      );
+      localStorage.setProperties({ key: this.get('localStorageKey'), _isFastBoot: false });
       store = localStorage;
     } else {
-      const cookieStorage = owner.lookup('session-store:cookie');
-      const options = this.getProperties(
-        'cookieDomain',
-        'cookieName',
-        'cookieExpirationTime',
-        'cookiePath',
-        'sameSite',
-        'partitioned'
+      const cookieStorage = this._createOrLookupStore(owner, 'session-store:cookie', CookieStore);
+      cookieStorage.setProperties(
+        this.getProperties(
+          'cookieDomain',
+          'cookieName',
+          'cookieExpirationTime',
+          'cookiePath',
+          'sameSite',
+          'partitioned'
+        )
       );
-
-      cookieStorage.setProperties(options);
       this.set('cookieExpirationTime', cookieStorage.get('cookieExpirationTime'));
-
       store = cookieStorage;
     }
 
     this.set('_store', store);
     this._setupStoreEvents(store);
+  }
+
+  _createOrLookupStore(
+    owner: any,
+    factoryName: string,
+    Store: typeof CookieStore | typeof LocalStorageStore
+  ) {
+    if (Configuration.useResolver) {
+      return owner.lookup(factoryName);
+    }
+
+    const store = setupStore(new Store(owner));
+    associateDestroyableChild(this, store);
+    return store;
   }
 
   _setupStoreEvents(store: CookieStore | LocalStorageStore) {
