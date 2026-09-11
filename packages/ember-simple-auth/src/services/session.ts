@@ -90,6 +90,8 @@ export default class SessionService<Data = DefaultDataShape, Store = unknown> ex
   constructor(owner: any) {
     super(owner);
 
+    this.createConfiguration(owner);
+
     if (!this.session) {
       if (Configuration.useResolver) {
         this.session = owner.lookup('session:main');
@@ -116,6 +118,39 @@ export default class SessionService<Data = DefaultDataShape, Store = unknown> ex
 
       associateDestroyableChild(this, this.session);
     }
+  }
+
+  /**
+    Loads the shared configuration before constructing the internal session.
+    Override this method to supply custom options to `Configuration.load`.
+
+    @memberof SessionService
+    @method createConfiguration
+    @param {Object} owner The application owner
+    @return {Configuration} The shared configuration object
+    @public
+  */
+  createConfiguration(owner: any): typeof Configuration {
+    const ENV = owner.resolveRegistration('config:environment');
+    const configuration = Configuration.load({
+      ...ENV['ember-simple-auth'],
+      rootURL: ENV.rootURL || ENV.baseURL,
+    });
+    deprecate(
+      'Ember Simple Auth: config:environment lookup with useResolver: true is deprecated. Override createConfiguration and return Configuration.load(options).',
+      !configuration.useResolver,
+      {
+        id: 'ember-simple-auth.configuration-resolver',
+        until: '9.0.0',
+        for: 'ember-simple-auth',
+        since: {
+          available: '8.4.0',
+          enabled: '8.4.0',
+        },
+        url: 'https://github.com/mainmatter/ember-simple-auth/blob/master/guides/upgrade-to-v9.md#configuration',
+      }
+    );
+    return configuration;
   }
 
   /**

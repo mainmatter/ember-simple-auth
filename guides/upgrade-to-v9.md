@@ -60,6 +60,11 @@ export default class Session extends SessionService<DefaultDataShape, CookieStor
 }
 ```
 
+## Configuration
+
+Until v9, configuration is read from the `config:environment` registration by default.
+Override `createConfiguration()` on your session service and return `Configuration.load(options)` with your configuration.
+
 ## Initialization
 
 With `useResolver: false`, stores and authenticators are created with `new`, which skips `init`.
@@ -78,16 +83,24 @@ export default class SessionStore extends AdaptiveStore {
 
 ## Complete session service
 
-With `useResolver: false` configured above, this service combines a typed cookie store with the OAuth2 authenticator from the earlier example.
+With `useResolver: false` configured above, this service combines custom configuration, a typed cookie store, and the OAuth2 authenticator from the earlier example.
 
 ```ts
 // app/services/session.ts
 import type Owner from '@ember/owner';
+import Configuration from 'ember-simple-auth/configuration';
 import SessionService, { type DefaultDataShape } from 'ember-simple-auth/services/session';
 import CookieStore from 'ember-simple-auth/session-stores/cookie';
 import OAuth2 from '../authenticators/oauth2';
 
 export default class Session extends SessionService<DefaultDataShape, CookieStore> {
+  createConfiguration() {
+    return Configuration.load({
+      useResolver: false,
+      rootURL: '/',
+    });
+  }
+
   createSessionStore(owner: Owner) {
     return new CookieStore(owner);
   }

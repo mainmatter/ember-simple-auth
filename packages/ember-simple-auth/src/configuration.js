@@ -5,7 +5,7 @@ const DEFAULTS = {
 };
 
 /**
-  Ember Simple Auth's configuration object.
+  Ember Simple Auth's module-scoped configuration object, shared by session services.
 
   @class Configuration
   @extends Object
@@ -59,5 +59,6 @@ export default {
         ? config.routeAfterAuthentication
         : DEFAULTS.routeAfterAuthentication;
     this.useResolver = config.useResolver !== undefined ? config.useResolver : DEFAULTS.useResolver;
+    return this;
   },
 };
