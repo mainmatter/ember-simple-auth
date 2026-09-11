@@ -2,6 +2,17 @@
 
 ## Release (2026-09-11)
 
+* ember-simple-auth 8.4.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-simple-auth`
+  * [#3128](https://github.com/mainmatter/ember-simple-auth/pull/3128) fix: add createConfiguration method to the session service ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 1
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+
+## Release (2026-09-11)
+
 * ember-simple-auth 8.4.0 (minor)
 
 #### :rocket: Enhancement
