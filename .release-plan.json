@@ -1,18 +1,18 @@
 {
   "solution": {
     "ember-simple-auth": {
-      "impact": "minor",
-      "oldVersion": "8.3.1",
-      "newVersion": "8.4.0",
+      "impact": "patch",
+      "oldVersion": "8.4.0",
+      "newVersion": "8.4.1",
       "tagName": "latest",
       "constraints": [
         {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
+          "impact": "patch",
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./packages/ember-simple-auth/package.json"
     }
   },
-  "description": "## Release (2026-09-11)\n\n* ember-simple-auth 8.4.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-simple-auth`\n  * [#3121](https://github.com/mainmatter/ember-simple-auth/pull/3121) feat: add `useResolver` flag. Allow session usage without Ember resolver ([@BobrImperator](https://github.com/BobrImperator))\n  * [#3120](https://github.com/mainmatter/ember-simple-auth/pull/3120) Refactor: InternalSession native class (extends EmberObject still) ([@BobrImperator](https://github.com/BobrImperator))\n\n#### :memo: Documentation\n* [#3116](https://github.com/mainmatter/ember-simple-auth/pull/3116) Update `currentUser` guide to mention testing ([@jagthedrummer](https://github.com/jagthedrummer))\n\n#### Committers: 2\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n- Jeremy Green ([@jagthedrummer](https://github.com/jagthedrummer))\n"
+  "description": "## Release (2026-09-11)\n\n* ember-simple-auth 8.4.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-simple-auth`\n  * [#3128](https://github.com/mainmatter/ember-simple-auth/pull/3128) fix: add createConfiguration method to the session service ([@BobrImperator](https://github.com/BobrImperator))\n\n#### Committers: 1\n- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))\n"
 }
